@@ -1,5 +1,11 @@
-import ReactiveController from './controller';
+import { Methods } from './controller';
 
-export default {
-  'ReactiveController': ReactiveController
-};
+export const controllers = {};
+
+export const register = controller => {
+  if (!controllers[controller.identifier]) {
+    Object.assign(controller, Methods);
+    controllers[controller.identifier] = controller;
+  }
+  return controller;
+}

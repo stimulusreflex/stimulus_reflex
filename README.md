@@ -2,6 +2,11 @@
 
 #### Server side reactive behavior for Stimulus controllers
 
+## TODO
+
+- [ ] Allow Ruby channels to override the stream_name
+- [ ] Support send without render
+
 ## Usage
 
 ```ruby
@@ -15,7 +20,20 @@ gem "stimulus_reflex"
 //= require stimulus_reflex
 ```
 
+```javascript
+// javascript/controllers/example.js
+import { Controller } from "stimulus"
 
+export default class extends Controller {
+  initialize() {
+    StimulusReflex.register(this);
+  }
+
+  doStuff() {
+    send('Example#do_stuff', arg1, arg2, ...);
+  }
+}
+```
 
 
 ## JavaScript Development

@@ -1,6 +1,6 @@
 {
   "name": "StimulusReflex",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Server side reactive behavior for Stimulus controllers",
   "main": "index.js",
   "repository": "https://github.com/hopsoft/stimulus_reflex",
@@ -11,9 +11,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "actioncable": "^5.2.1",
-    "lodash.debounce": "^4.0.8",
-    "stimulus": "^1.1.0"
+    "lodash.debounce": "^4.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

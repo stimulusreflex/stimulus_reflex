@@ -583,30 +583,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@stimulus/core@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@stimulus/core/-/core-1.1.0.tgz#0fe7f5bf555aa2a31b4576f2b3389fd192a27138"
-  integrity sha512-tBQkrijjk8p3ZAhMMu2u87kXbTeBLPWiemoZqmb62krUt/IofQMFrbbiSzPAkkVqlv3kwjs0bmlO3H4fWE9HBQ==
-  dependencies:
-    "@stimulus/mutation-observers" "^1.1.0"
-
-"@stimulus/multimap@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@stimulus/multimap/-/multimap-1.1.0.tgz#f373ff72feab4218b2a9ae00866acc47d5032f5e"
-  integrity sha512-LoAyUhHX5b8/gVXHVMKUXT8vZnXSyJAWs1sopQZNBWDs34zSpWF5tqclf0T3TNg3aCbQlWaHnYv3lickpbrNEQ==
-
-"@stimulus/mutation-observers@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@stimulus/mutation-observers/-/mutation-observers-1.1.0.tgz#8744d8b37302baeffcdd9123021c55084fb82beb"
-  integrity sha512-Tr0bmJEFqAm3o0mJPZcCLurlW+lp8gohFeUQNbkjj9bmCGygQKuWr1b3dwyJgG94qRuzo66QdKkvp04tp1o7lw==
-  dependencies:
-    "@stimulus/multimap" "^1.1.0"
-
-"@stimulus/webpack-helpers@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@stimulus/webpack-helpers/-/webpack-helpers-1.1.0.tgz#17f00ea6eaa38b490ba84fec6f6c436c604a4a85"
-  integrity sha512-trzloYQ7RBZcYIbB5hLLgYvC7MHJkj1avPFIrEFCd2t7WCFhH5wQApyzAZAS+BtjvFwHp0o1o7Rp1OceRgjOCw==
-
 "@webassemblyjs/ast@1.7.8":
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.8.tgz#f31f480debeef957f01b623f27eabc695fa4fe8f"
@@ -776,11 +752,6 @@ acorn@^5.0.0, acorn@^5.6.2:
   version "5.7.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
   integrity sha512-T/zvzYRfbVojPWahDsE5evJdHb3oJoQfFbsrKM7w5Zcs++Tr257tia3BmMP8XYVjp1S9RZXQMh7gao96BlqZOw==
-
-actioncable@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.1.tgz#615428a8a302cec55117d9049f0fd7952011c962"
-  integrity sha512-z/YnsgKYUC0E28Pr8YGaq8sZXNQLTZNa8PAJGmqj5qODiGHTyaCVy/DkP1+xpJtAX/UaHSGHobIemoDY/x5SbQ==
 
 ajv-keywords@^3.1.0:
   version "3.2.0"
@@ -3220,14 +3191,6 @@ static-extend@^0.1.1:
   dependencies:
     define-property "^0.2.5"
     object-copy "^0.1.0"
-
-stimulus@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/stimulus/-/stimulus-1.1.0.tgz#d313e59bc0085eec5e072a401e0fb2c5fb0a0301"
-  integrity sha512-H5B/jYGoKHW7KZCdkxsjml16wMp9ubHh/Db2ewcMWIV5Y4LOGKqYOKsNDs650DidKdGht8CBTtF7jAodIOHZMA==
-  dependencies:
-    "@stimulus/core" "^1.1.0"
-    "@stimulus/webpack-helpers" "^1.1.0"
 
 stream-browserify@^2.0.1:
   version "2.0.1"
