@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 
-window.App = App || {};
+window.App = window.App || {};
 App.cable = App.cable || ActionCable.createConsumer();
 App.stimulusReflex = App.stimulusReflex || App.cable.subscriptions.create("StimulusReflex::Channel", {
   received: function(data) {
