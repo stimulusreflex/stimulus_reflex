@@ -41,8 +41,9 @@ export default class extends Controller {
 class ExampleStimulusController < StimulusReflex::Controller
   def do_stuff(arg1, arg2, ...)
     # hard work...
-    # - the page that triggered this call will rererender & the HTML will be sent over the ActionCable socket
-    # - client side JavaScript will dom diff and mutate only the modified nodes
+    # - the page that triggered this call will rererender
+    # - the HTML will be sent over the ActionCable socket
+    # - client side JavaScript will DOM diff and mutate only the changed nodes
   end
 end
 ```
