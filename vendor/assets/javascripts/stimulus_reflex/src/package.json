@@ -1,0 +1,25 @@
+{
+  "name": "StimulusReflex",
+  "version": "0.1.1",
+  "description": "Server side reactive behavior for Stimulus controllers",
+  "main": "index.js",
+  "repository": "https://github.com/hopsoft/stimulus_reflex",
+  "contributors": [
+    "Nathan Hopkins",
+    "Ron Cooke"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "actioncable": "^5.2.1",
+    "lodash.debounce": "^4.0.8",
+    "stimulus": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2"
+  }
+}
