@@ -1,9 +1,21 @@
 import debounce from 'lodash.debounce';
-import App from './cable';
 
-const debouncedSend = debounce(options => App.stimulus.send(options), 250, {});
+window.App = App || {};
+App.cable = App.cable || ActionCable.createConsumer();
+App.stimulusReflex = App.stimulusReflex || App.cable.subscriptions.create("StimulusReflex::Channel", {
+  received: function(data) {
+    if (data.cableReady) debouncedPerform(data.operations);
+  }
+});
 
-export const Methods = {
+const debouncedSend = debounce(options => App.stimulusReflex.send(options), 250, {});
+
+const debouncedPerform = debounce(operations => {
+  CableReady.perform(operations);
+  document.dispatchEvent(new Event('turbolinks:load'));
+}, 200, {});
+
+export const ControllerMethods = {
   send() {
     let args = Array.prototype.slice.call(arguments);
     let target = args.shift();

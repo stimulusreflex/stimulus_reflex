@@ -10,7 +10,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   include CableReady::Broadcaster
 
   def stream_name
-    "#{channel_name}_#{person.id}"
+    ids = connection.identifiers.map do |identifier|
+      send(identifier).try(:id)
+    end
+    "#{channel_name}#{ids.join ":"}"
   end
 
   def subscribed
