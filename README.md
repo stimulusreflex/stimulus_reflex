@@ -6,7 +6,6 @@
 
 ## TODO
 
-- [ ] Allow Ruby channels to override the stream_name
 - [ ] Support send without render
 
 ## Usage
@@ -16,7 +15,7 @@
 gem "stimulus_reflex"
 ```
 
-```
+```javascript
 // app/assets/javascripts/cable.js
 //= require cable_ready
 //= require stimulus_reflex
