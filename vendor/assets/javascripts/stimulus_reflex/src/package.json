@@ -1,6 +1,5 @@
 {
   "name": "StimulusReflex",
-  "version": "0.1.4",
   "description": "Server side reactive behavior for Stimulus controllers",
   "main": "index.js",
   "repository": "https://github.com/hopsoft/stimulus_reflex",
