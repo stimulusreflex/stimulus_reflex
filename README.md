@@ -37,7 +37,7 @@ export default class extends Controller {
 ```
 
 ```ruby
-# app/stimulus_controllers
+# app/stimulus_controllers/example_stimulus_controller.rb
 class ExampleStimulusController < StimulusReflex::Controller
   def do_stuff(arg1, arg2, ...)
     # hard work...
