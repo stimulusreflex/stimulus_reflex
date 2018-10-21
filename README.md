@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-131-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-136-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/hopsoft/stimulus_reflex.svg)](https://codeclimate.com/github/hopsoft/stimulus_reflex)
 
 # StimulusReflex

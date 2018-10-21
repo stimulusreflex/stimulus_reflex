@@ -41,7 +41,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   private
 
   def delegate_call_to_stimulus_controller(stimulus_controller, method_name, arguments = [])
-    instrument_payload = { stimulus_controller: stimulus_controller.class.name, method_name: method_name, arguments: arguments.inspect }
+    instrument_payload = {stimulus_controller: stimulus_controller.class.name, method_name: method_name, arguments: arguments.inspect}
     ActiveSupport::Notifications.instrument "delegate_call.stimulus_reflex", instrument_payload do
       if stimulus_controller.method(method_name).arity > 0
         stimulus_controller.send method_name, *arguments
