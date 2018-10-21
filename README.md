@@ -5,6 +5,8 @@
 
 #### Server side reactive behavior for Stimulus controllers
 
+This library provides functionality very similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
+
 ## Usage
 
 ```ruby
