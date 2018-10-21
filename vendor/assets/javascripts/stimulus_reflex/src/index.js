@@ -1,25 +1,28 @@
-import debounce from 'lodash.debounce';
+let cableReadyTimeout;
+let defaultRenderDelay = 400;
 
 window.App = window.App || {};
+
 App.cable = App.cable || ActionCable.createConsumer();
+
 App.stimulusReflex = App.stimulusReflex || App.cable.subscriptions.create("StimulusReflex::Channel", {
   received: data => {
-    if (data.cableReady) debouncedPerform(data.operations);
+    if (data.cableReady) {
+      clearTimeout(cableReadyTimeout);
+      cableReadyTimeout = setTimeout(() => {
+        CableReady.perform(data.operations);
+        document.dispatchEvent(new Event('turbolinks:load'));
+      }, StimulusReflex.renderDelay || defaultRenderDelay);
+    }
   }
 });
 
-const debouncedSend = debounce(options => App.stimulusReflex.send(options), 250, {});
-
-const debouncedPerform = debounce(operations => {
-  CableReady.perform(operations);
-  document.dispatchEvent(new Event('turbolinks:load'));
-}, 200, {});
-
 const methods = {
   send() {
+    clearTimeout(cableReadyTimeout);
     let args = Array.prototype.slice.call(arguments);
     let target = args.shift();
-    debouncedSend({
+    App.stimulusReflex.send({
       url: location.href,
       target: target,
       args: args,
