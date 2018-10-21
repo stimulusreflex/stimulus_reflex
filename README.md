@@ -5,7 +5,7 @@
 
 #### Server side reactive behavior for Stimulus controllers
 
-Add the benefits of single page app (SPA) behavior to your Rails/Stimulus app with a minimal investment in time, resources, and complexity.
+Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
 _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
 
 > This library provides functionality similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
