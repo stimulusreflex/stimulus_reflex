@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (0.1.7)
+    stimulus_reflex (0.1.8)
       actioncable (>= 5.2.1)
       actionpack (>= 5.2.1)
       cable_ready (>= 2.0.5)

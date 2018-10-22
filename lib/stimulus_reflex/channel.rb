@@ -66,9 +66,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       controller.instance_variable_set :"@stimulus_reflex", true
 
       env = {
-        Rack::SCRIPT_NAME => uri.path,
+        Rack::REQUEST_PATH => uri.path,
         Rack::QUERY_STRING => uri.query,
         Rack::PATH_INFO => "",
+        Rack::SCRIPT_NAME => "",
       }
       request = ActionDispatch::Request.new(connection.env.merge(env))
       controller.request = request
