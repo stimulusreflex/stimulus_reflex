@@ -31,7 +31,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       begin
         stimulus_controller = stimulus_controller_name.constantize.new(self)
         delegate_call_to_stimulus_controller stimulus_controller, method_name, arguments
-        render_page_and_broadcast_morph url
+        render_page_and_broadcast_morph url, stimulus_controller
       rescue StandardError => invoke_error
         logger.error "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}"
       end
@@ -51,12 +51,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url)
-    html = render_page(url)
+  def render_page_and_broadcast_morph(url, stimulus_controller)
+    html = render_page(url, stimulus_controller)
     broadcast_morph url, html if html.present?
   end
 
-  def render_page(url)
+  def render_page(url, stimulus_controller)
     html = nil
     ActiveSupport::Notifications.instrument "render_page.stimulus_reflex", url: url do
       uri = URI.parse(url)
@@ -64,6 +64,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       controller_class = "#{url_params[:controller]}_controller".classify.constantize
       controller = controller_class.new
       controller.instance_variable_set :"@stimulus_reflex", true
+      stimulus_controller.instance_variables.each do |name|
+        controller.instance_variable_set name, stimulus_controller.instance_variable_get(name)
+      end
 
       env = {
         Rack::REQUEST_PATH => uri.path,

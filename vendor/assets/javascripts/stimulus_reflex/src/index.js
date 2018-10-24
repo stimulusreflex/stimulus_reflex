@@ -5,17 +5,19 @@ window.App = window.App || {};
 
 App.cable = App.cable || ActionCable.createConsumer();
 
-App.stimulusReflex = App.stimulusReflex || App.cable.subscriptions.create("StimulusReflex::Channel", {
-  received: data => {
-    if (data.cableReady) {
-      clearTimeout(cableReadyTimeout);
-      cableReadyTimeout = setTimeout(() => {
-        CableReady.perform(data.operations);
-        document.dispatchEvent(new Event('turbolinks:load'));
-      }, StimulusReflex.renderDelay || defaultRenderDelay);
-    }
-  }
-});
+App.stimulusReflex =
+  App.stimulusReflex ||
+  App.cable.subscriptions.create('StimulusReflex::Channel', {
+    received: data => {
+      if (data.cableReady) {
+        clearTimeout(cableReadyTimeout);
+        cableReadyTimeout = setTimeout(() => {
+          CableReady.perform(data.operations);
+          document.dispatchEvent(new Event('stimulus_reflex:morph'));
+        }, StimulusReflex.renderDelay || defaultRenderDelay);
+      }
+    },
+  });
 
 const methods = {
   send() {
@@ -27,7 +29,7 @@ const methods = {
       target: target,
       args: args,
     });
-  }
+  },
 };
 
 export const register = controller => {

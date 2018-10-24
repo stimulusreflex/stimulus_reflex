@@ -34,7 +34,7 @@ export default class extends Controller {
   }
 
   doStuff() {
-    send('Example#do_stuff', arg1, arg2, ...);
+    this.send('Example#do_stuff', arg1, arg2, ...);
   }
 }
 ```
