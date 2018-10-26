@@ -95,10 +95,10 @@ end
 
 ## JavaScript Development
 
-The JavaScript source is located in `vendor/assets/javascripts/stimulus_reflex/src`
-& transpiles to `vendor/assets/javascripts/stimulus_reflex/stimulus_reflex.js` via Webpack.
+The JavaScript source is located in `app/assets/javascripts/stimulus_reflex/src`
+& transpiles to `app/assets/javascripts/stimulus_reflex/stimulus_reflex.js` via Webpack.
 
 ```sh
-cd vendor/assets/javascripts/stimulus_reflex/src
-node_modules/webpack/bin/webpack.js
+# build the javascript
+./bin/webpack
 ```

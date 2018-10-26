@@ -1,13 +1,6 @@
 {
   "name": "StimulusReflex",
-  "description": "Server side reactive behavior for Stimulus controllers",
   "main": "index.js",
-  "repository": "https://github.com/hopsoft/stimulus_reflex",
-  "contributors": [
-    "Nathan Hopkins",
-    "Ron Cooke"
-  ],
-  "license": "MIT",
   "private": true,
   "dependencies": {},
   "devDependencies": {

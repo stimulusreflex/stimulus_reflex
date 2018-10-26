@@ -13,7 +13,6 @@ App.stimulusReflex =
         clearTimeout(cableReadyTimeout);
         cableReadyTimeout = setTimeout(() => {
           CableReady.perform(data.operations);
-          document.dispatchEvent(new Event('stimulus_reflex:morph'));
         }, StimulusReflex.renderDelay || defaultRenderDelay);
       }
     },
