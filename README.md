@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-136-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-141-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/hopsoft/stimulus_reflex.svg)](https://codeclimate.com/github/hopsoft/stimulus_reflex)
 
 # StimulusReflex
@@ -96,7 +96,7 @@ end
 ## JavaScript Development
 
 The JavaScript source is located in `app/assets/javascripts/stimulus_reflex/src`
-& transpiles to `app/assets/javascripts/stimulus_reflex/stimulus_reflex.js` via Webpack.
+& transpiles to `app/assets/javascripts/stimulus_reflex.js` via Webpack.
 
 ```sh
 # build the javascript
