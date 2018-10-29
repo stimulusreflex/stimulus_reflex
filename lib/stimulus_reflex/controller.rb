@@ -1,11 +1,12 @@
 class StimulusReflex::Controller
-  attr_reader :channel
+  attr_reader :channel, :url
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel)
+  def initialize(channel, url: nil)
     @channel = channel
+    @url = url
   end
 
   def request

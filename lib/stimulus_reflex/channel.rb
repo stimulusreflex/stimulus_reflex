@@ -29,7 +29,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       arguments = data["args"] || []
 
       begin
-        stimulus_controller = stimulus_controller_name.constantize.new(self)
+        stimulus_controller = stimulus_controller_name.constantize.new(self, url: url)
         delegate_call_to_stimulus_controller stimulus_controller, method_name, arguments
         render_page_and_broadcast_morph url, stimulus_controller
       rescue StandardError => invoke_error
