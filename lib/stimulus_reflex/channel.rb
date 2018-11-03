@@ -31,9 +31,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       begin
         stimulus_controller = stimulus_controller_name.constantize.new(self, url: url)
         delegate_call_to_stimulus_controller stimulus_controller, method_name, arguments
-        render_page_and_broadcast_morph url, stimulus_controller
       rescue StandardError => invoke_error
         logger.error "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}"
+      end
+
+      begin
+        render_page_and_broadcast_morph url, stimulus_controller
+      rescue StandardError => render_error
+        logger.error "StimulusReflex::Channel Failed to rerender #{url} #{render_error}"
       end
     end
   end
@@ -68,12 +73,18 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         controller.instance_variable_set name, stimulus_controller.instance_variable_get(name)
       end
 
+      query_hash = Rack::Utils.parse_nested_query(uri.query)
       env = {
-        Rack::REQUEST_PATH => uri.path,
-        Rack::QUERY_STRING => uri.query,
+        "action_dispatch.request.path_parameters" => url_params,
+        "action_dispatch.request.query_parameters" => query_hash,
+        "rack.request.query_hash" => query_hash,
+        "rack.request.query_string" => uri.query,
         Rack::PATH_INFO => "",
+        Rack::QUERY_STRING => uri.query,
+        Rack::REQUEST_PATH => uri.path,
         Rack::SCRIPT_NAME => "",
       }
+
       request = ActionDispatch::Request.new(connection.env.merge(env))
       controller.request = request
       controller.response = ActionDispatch::Response.new
