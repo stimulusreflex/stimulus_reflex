@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-142-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-160-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/hopsoft/stimulus_reflex.svg)](https://codeclimate.com/github/hopsoft/stimulus_reflex)
 
 # StimulusReflex
@@ -24,7 +24,7 @@ gem "stimulus_reflex"
 ```
 
 ```erb
-<!-- app/views/layouts/application.html.erb --%>
+<!-- app/views/layouts/application.html.erb -->
 <!-- Opt-in to establish the ActionCable connection -->
 <!-- SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36 -->
 <body data-cable>
@@ -58,6 +58,8 @@ class ExampleStimulusController < StimulusReflex::Controller
   end
 end
 ```
+
+Note that ActionCable defaults are expected. This library will use or create `window.App` and `App.cable`.
 
 ## Advanced Usage
 
