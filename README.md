@@ -26,15 +26,19 @@ gem "stimulus_reflex"
 //= require_tree ./channels
 
 (function() {
-  // be defensive here since stimulus_reflex initializes both this.App and App.cable
-  this.App || (this.App = {});
-  App.cable || (App.cable = ActionCable.createConsumer());
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('body[data-cable]')) {
+      // be defensive since stimulus_reflex also initializes this.App and App.cable
+      this.App || (this.App = {});
+      App.cable || (App.cable = ActionCable.createConsumer());
+    }
+  });
 }.call(this));
 ```
 
 ```erb
 <!-- app/views/layouts/application.html.erb -->
-<!-- Opt-in to establish the ActionCable connection -->
+<!-- opt-in to establish the ActionCable connection -->
 <!-- SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36 -->
 <body data-cable>
   <%= yield %>
