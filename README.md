@@ -18,6 +18,22 @@ _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effo
 gem "stimulus_reflex"
 ```
 
+### app/views/layouts/application.html.erb
+
+Pages should opt in to establish the ActionCable connection.
+This elminates unwanted connection attempts that aren't authorized.
+
+SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
+
+```erb
+<html>
+  <head></head>
+  <body data-cable>
+    <%= yield %>
+  </body>
+</html>
+```
+
 ### app/assets/javascripts/cable.js
 
 ```javascript
@@ -36,16 +52,6 @@ gem "stimulus_reflex"
     }
   });
 }.call(this));
-```
-
-### app/views/layouts/application.html.erb
-
-```erb
-<!-- opt-in to establish the ActionCable connection -->
-<!-- SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36 -->
-<body data-cable>
-  <%= yield %>
-</body>
 ```
 
 ### app/javascript/controllers/example.js
