@@ -20,11 +20,6 @@ gem "stimulus_reflex"
 
 ### app/views/layouts/application.html.erb
 
-Pages should opt in to establish the ActionCable connection.
-This elminates unwanted connection attempts that aren't authorized.
-
-SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
-
 ```erb
 <html>
   <head></head>
@@ -33,6 +28,11 @@ SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
   </body>
 </html>
 ```
+
+Pages must opt in to establish the ActionCable connection.
+This elminates unauthorized connection attempts.
+
+SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
 
 ### app/assets/javascripts/cable.js
 
