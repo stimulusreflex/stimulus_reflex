@@ -12,13 +12,15 @@ _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effo
 
 ## Usage
 
+### Gemfile
+
 ```ruby
-# Gemfile
 gem "stimulus_reflex"
 ```
 
+### app/assets/javascripts/cable.js
+
 ```javascript
-// app/assets/javascripts/cable.js
 //= require action_cable
 //= require cable_ready
 //= require stimulus_reflex
@@ -36,8 +38,9 @@ gem "stimulus_reflex"
 }.call(this));
 ```
 
+### app/views/layouts/application.html.erb
+
 ```erb
-<!-- app/views/layouts/application.html.erb -->
 <!-- opt-in to establish the ActionCable connection -->
 <!-- SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36 -->
 <body data-cable>
@@ -45,8 +48,9 @@ gem "stimulus_reflex"
 </body>
 ```
 
+### app/javascript/controllers/example.js
+
 ```javascript
-// app/javascript/controllers/example.js
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -60,8 +64,9 @@ export default class extends Controller {
 }
 ```
 
+### app/stimulus_controllers/example_stimulus_controller.rb
+
 ```ruby
-# app/stimulus_controllers/example_stimulus_controller.rb
 class ExampleStimulusController < StimulusReflex::Controller
   def do_stuff(arg1, arg2, ...)
     # hard work...
