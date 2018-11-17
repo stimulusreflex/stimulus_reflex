@@ -19,8 +19,17 @@ gem "stimulus_reflex"
 
 ```javascript
 // app/assets/javascripts/cable.js
+//= require action_cable
 //= require cable_ready
 //= require stimulus_reflex
+//= require_self
+//= require_tree ./channels
+
+(function() {
+  // be defensive here since stimulus_reflex initializes both this.App and App.cable
+  this.App || (this.App = {});
+  App.cable || (App.cable = ActionCable.createConsumer());
+}.call(this));
 ```
 
 ```erb
@@ -59,7 +68,10 @@ class ExampleStimulusController < StimulusReflex::Controller
 end
 ```
 
-Note that ActionCable defaults are expected. This library will use or create `window.App` and `App.cable`.
+### ActionCable Defaults Expected
+
+StimulusReflex will use or create `window.App` and `App.cable`
+and is typically loaded before the default ActionCable initialization code.
 
 ## Advanced Usage
 
