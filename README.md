@@ -75,13 +75,16 @@ export default class extends Controller {
 ```ruby
 class ExampleStimulusController < StimulusReflex::Controller
   def do_stuff(arg1, arg2, ...)
-    # hard work...
-    # 1. the page that triggered this call will rererender
-    # 2. the HTML will be sent over the ActionCable socket
-    # 3. client side JavaScript will DOM diff and mutate only the changed nodes
+    # stuff...
   end
 end
 ```
+
+The magic happens after the `StimulusReflex::Controller` method call completes.
+
+1. The page that triggered the call will be re-rerendered
+1. The rendered HTML will be sent over the ActionCable socket
+1. The client will DOM diff the existing page with the new page and apply DOM changes for the delta
 
 ### ActionCable Defaults Expected
 
