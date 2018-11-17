@@ -65,6 +65,7 @@ export default class extends Controller {
   }
 
   doStuff() {
+    // invoke a method on the server
     this.send('Example#do_stuff', arg1, arg2, ...);
   }
 }
@@ -80,7 +81,7 @@ class ExampleStimulusController < StimulusReflex::Controller
 end
 ```
 
-The magic happens after the `StimulusReflex::Controller` method call completes.
+The magic happens after the `StimulusReflex::Controller` method call finishes.
 
 1. The page that triggered the call will be re-rerendered
 1. The rendered HTML will be sent over the ActionCable socket
