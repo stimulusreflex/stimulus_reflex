@@ -3,6 +3,8 @@
 
 # StimulusReflex
 
+## Effortlessly create interactive and reactive UIs with a standard Rails app
+
 #### Server side reactive behavior for Stimulus
 
 Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
