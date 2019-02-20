@@ -3,7 +3,7 @@
 
 # StimulusReflex
 
-## Effortlessly create interactive and reactive UIs with a standard Rails app
+__Effortlessly create rich interactive UIs with standard Rails... no need for a complex frontend framework.__
 
 #### Server side reactive behavior for Stimulus
 
