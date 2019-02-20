@@ -1,4 +1,4 @@
-class StimulusReflex::Controller
+class StimulusReflex::Reflex
   attr_reader :channel, :url
 
   delegate :connection, to: :channel

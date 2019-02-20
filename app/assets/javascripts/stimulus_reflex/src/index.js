@@ -24,7 +24,7 @@ const connect = () => {
 
 document.addEventListener('DOMContentLoaded', connect);
 const methods = {
-  send() {
+  stimulate() {
     if (!App.stimulusReflex)
       throw "ActionCable connection not established! Don't foget to opt-in with: body[data-cable]";
     clearTimeout(cableReadyTimeout);
