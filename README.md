@@ -3,7 +3,7 @@
 
 # StimulusReflex
 
-#### Server side reactive behavior for Stimulus controllers
+#### Server side reactive behavior for Stimulus
 
 Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
 _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
@@ -30,7 +30,7 @@ gem "stimulus_reflex"
 ```
 
 Pages must opt in to establish the ActionCable connection.
-This elminates unauthorized connection attempts.
+This eliminates unauthorized connection attempts.
 
 SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
 
@@ -65,27 +65,27 @@ export default class extends Controller {
   }
 
   doStuff() {
-    // invoke a method on the server
-    this.send('Example#do_stuff', arg1, arg2, ...);
+    // trigger a server side reflex and a re-render
+    this.stimulate('ExampleReflex#do_stuff', arg1, arg2, ...);
   }
 }
 ```
 
-### app/stimulus_controllers/example_stimulus_controller.rb
+### app/reflexes/example_reflex.rb
 
 ```ruby
-class ExampleStimulusController < StimulusReflex::Controller
+class ExampleReflex < StimulusReflex::Reflex
   def do_stuff(arg1, arg2, ...)
     # stuff...
   end
 end
 ```
 
-The magic happens after the `StimulusReflex::Controller` method call finishes.
+The magic happens after the `StimulusReflex::Reflex` method call finishes.
 
-1. The page that triggered the call will be re-rerendered
-1. The rendered HTML will be sent over the ActionCable socket
-1. The client will DOM diff the existing page with the new page and apply DOM changes for the delta
+1. The page that triggered the reflex is re-rerendered
+1. The re-rendered HTML is sent over the ActionCable socket
+1. The client side DOM diffs the existing page's HTML with the fresh HTML and applies DOM updates for the change delta
 
 ### ActionCable Defaults Expected
 
@@ -109,7 +109,7 @@ StimulusReflex.renderDelay = 200;
 SEE: https://guides.rubyonrails.org/active_support_instrumentation.html
 
 ```ruby
-# wraps the stimulus controller method invocation
+# wraps the stimulus reflex method invocation
 ActiveSupport::Notifications.subscribe "delegate_call.stimulus_reflex" do |*args|
   event = ActiveSupport::Notifications::Event.new(*args)
   Rails.logger.debug "#{event.name} #{event.duration} #{event.payload.inspect}"
@@ -141,5 +141,6 @@ The JavaScript source is located in `app/assets/javascripts/stimulus_reflex/src`
 
 ```sh
 # build the javascript
+./bin/yarn
 ./bin/webpack
 ```

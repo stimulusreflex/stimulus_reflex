@@ -9,9 +9,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   include CableReady::Broadcaster
 
   def stream_name
-    ids = connection.identifiers.map do |identifier|
+    ids = connection.identifiers.map { |identifier|
       send(identifier).try(:id)
-    end
+    }
     "#{channel_name}#{ids.join ":"}"
   end
 
@@ -21,23 +21,22 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     ActiveSupport::Notifications.instrument "receive.stimulus_reflex", data do
-      start = Time.current
       url = data["url"].to_s
       target = data["target"].to_s
-      stimulus_controller_name, method_name = target.split("#")
-      stimulus_controller_name = "#{stimulus_controller_name.classify}StimulusController"
+      reflex_name, method_name = target.split("#")
+      reflex_name = reflex_name.classify
       arguments = data["args"] || []
 
       begin
-        stimulus_controller = stimulus_controller_name.constantize.new(self, url: url)
-        delegate_call_to_stimulus_controller stimulus_controller, method_name, arguments
-      rescue StandardError => invoke_error
+        reflex = reflex_name.constantize.new(self, url: url)
+        delegate_call_to_reflex reflex, method_name, arguments
+      rescue => invoke_error
         logger.error "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}"
       end
 
       begin
-        render_page_and_broadcast_morph url, stimulus_controller
-      rescue StandardError => render_error
+        render_page_and_broadcast_morph url, reflex
+      rescue => render_error
         logger.error "StimulusReflex::Channel Failed to rerender #{url} #{render_error}"
       end
     end
@@ -45,23 +44,23 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   private
 
-  def delegate_call_to_stimulus_controller(stimulus_controller, method_name, arguments = [])
-    instrument_payload = {stimulus_controller: stimulus_controller.class.name, method_name: method_name, arguments: arguments.inspect}
+  def delegate_call_to_reflex(reflex, method_name, arguments = [])
+    instrument_payload = {reflex: reflex.class.name, method_name: method_name, arguments: arguments.inspect}
     ActiveSupport::Notifications.instrument "delegate_call.stimulus_reflex", instrument_payload do
-      if stimulus_controller.method(method_name).arity > 0
-        stimulus_controller.send method_name, *arguments
+      if reflex.method(method_name).arity > 0
+        reflex.send method_name, *arguments
       else
-        stimulus_controller.send method_name
+        reflex.send method_name
       end
     end
   end
 
-  def render_page_and_broadcast_morph(url, stimulus_controller)
-    html = render_page(url, stimulus_controller)
+  def render_page_and_broadcast_morph(url, reflex)
+    html = render_page(url, reflex)
     broadcast_morph url, html if html.present?
   end
 
-  def render_page(url, stimulus_controller)
+  def render_page(url, reflex)
     html = nil
     ActiveSupport::Notifications.instrument "render_page.stimulus_reflex", url: url do
       uri = URI.parse(url)
@@ -69,8 +68,8 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       controller_class = "#{url_params[:controller]}_controller".classify.constantize
       controller = controller_class.new
       controller.instance_variable_set :"@stimulus_reflex", true
-      stimulus_controller.instance_variables.each do |name|
-        controller.instance_variable_set name, stimulus_controller.instance_variable_get(name)
+      reflex.instance_variables.each do |name|
+        controller.instance_variable_set name, reflex.instance_variable_get(name)
       end
 
       query_hash = Rack::Utils.parse_nested_query(uri.query)
