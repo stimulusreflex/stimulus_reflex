@@ -85,11 +85,11 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 
-The magic happens after the `StimulusReflex::Reflex` method call finishes.
+The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 1. The page that triggered the reflex is re-rerendered
-1. The re-rendered HTML is sent over the ActionCable socket
-1. The client side DOM diffs the existing page's HTML with the fresh HTML and applies DOM updates for the change delta
+1. The re-rendered HTML is sent to the client over the ActionCable socket
+1. JavaScript on the client updates the page with any changes via fast DOM diffing
 
 ### ActionCable Defaults Expected
 
