@@ -5,6 +5,10 @@
 
 __Effortlessly create rich interactive UIs with standard Rails... no need for a complex frontend framework.__
 
+1. Use ActionCable to invoke a method on the server
+1. Watch the page automatically render updates via a fast [DOM diffing algorithm](https://github.com/patrick-steele-idem/morphdom)
+1. That's it
+
 #### Server side reactive behavior for Stimulus
 
 Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
