@@ -3,16 +3,14 @@
 
 # StimulusReflex
 
-__Effortlessly create rich interactive UIs with standard Rails... no need for a complex frontend framework.__
+#### Build rich interactive UIs with standard Rails... no need for a complex frontend framework
+
+Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
+_The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
 
 1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server
 1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
 1. That's it
-
-#### Server side reactive behavior for Stimulus
-
-Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
-_The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
 
 > This library provides functionality similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
 
