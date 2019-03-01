@@ -78,10 +78,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         "action_dispatch.request.query_parameters" => query_hash,
         "rack.request.query_hash" => query_hash,
         "rack.request.query_string" => uri.query,
-        Rack::PATH_INFO => "",
-        Rack::QUERY_STRING => uri.query,
-        Rack::REQUEST_PATH => uri.path,
+        "ORIGINAL_SCRIPT_NAME" => "",
+        "ORIGINAL_FULLPATH" => uri.path,
         Rack::SCRIPT_NAME => "",
+        Rack::PATH_INFO => uri.path,
+        Rack::REQUEST_PATH => uri.path,
+        Rack::QUERY_STRING => uri.query,
       }
 
       request = ActionDispatch::Request.new(connection.env.merge(env))

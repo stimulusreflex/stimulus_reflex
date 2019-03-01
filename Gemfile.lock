@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (0.3.0)
+    stimulus_reflex (0.3.1)
       actioncable (>= 5.2.1)
       actionpack (>= 5.2.1)
       cable_ready (>= 2.0.7)
@@ -51,7 +51,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
-    parallel (1.13.0)
+    parallel (1.14.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
     powerpack (0.1.2)
@@ -65,7 +65,7 @@ GEM
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
     rainbow (3.0.0)
-    rake (12.3.1)
+    rake (12.3.2)
     rubocop (0.65.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -76,7 +76,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.4.0)
     ruby-progressbar (1.10.0)
-    standard (0.0.30)
+    standard (0.0.32)
       rubocop (>= 0.63)
     standardrb (1.0.0)
       standard
