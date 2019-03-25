@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "actionpack", ">= 5.2.1"
   gem.add_dependency "cable_ready", ">= 2.0.7"
 
-  gem.add_development_dependency "bundler", "~> 1.16"
+  gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "standardrb"
 end

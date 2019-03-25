@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cloc lib app/assets/javascripts/stimulus_reflex/src/index.js

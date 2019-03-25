@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-160-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-161-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 
 # StimulusReflex
@@ -102,10 +102,10 @@ and is typically loaded before the default ActionCable initialization code.
 
 The page is always rerendered after triggering a `StimulusReflex`.
 The client side JavaScript debounces this render via `setTimeout` to prevent a jarring user experience.
-The default delay of `400ms` can be overriddend with the following JavaScript.
+The default delay of `200ms` can be overriddend with the following JavaScript.
 
 ```javascript
-StimulusReflex.renderDelay = 200;
+StimulusReflex.renderDelay = 100;
 ```
 
 ## Instrumentation

@@ -1,5 +1,5 @@
 let cableReadyTimeout;
-let defaultRenderDelay = 400;
+let defaultRenderDelay = 200;
 
 const connect = () => {
   if (document.querySelector('body[data-cable]')) {
