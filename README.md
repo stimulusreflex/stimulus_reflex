@@ -1,7 +1,7 @@
 [![Lines of Code](http://img.shields.io/badge/lines_of_code-161-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
-[![Ruby Dependency Graph](https://img.shields.io/badge/dependencies-ruby-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/gem_graph.svg)
-[![JavaScript Dependency Graph](https://img.shields.io/badge/dependencies-javascript-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/javascript_graph.txt)
+[![Ruby Dependency Graph](https://img.shields.io/badge/deps-ruby-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/gem_graph.svg)
+[![JavaScript Dependency Graph](https://img.shields.io/badge/deps-javascript-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/javascript_graph.txt)
 
 # StimulusReflex
 
