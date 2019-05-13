@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "nokogiri"
   gem.add_dependency "actioncable", ">= 5.2.1"
   gem.add_dependency "actionpack", ">= 5.2.1"
-  gem.add_dependency "cable_ready", ">= 3.0.0"
+  gem.add_dependency "cable_ready", ">= 3.0.1"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "rake"
