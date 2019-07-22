@@ -12,7 +12,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     ids = connection.identifiers.map { |identifier|
       send(identifier).try(:id)
     }
-    "#{channel_name}#{ids.join ":"}"
+    "#{channel_name}#{ids.join ":"}#{params[:room]}"
   end
 
   def subscribed
