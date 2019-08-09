@@ -85,8 +85,6 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will attempt to establish a new socket connection.
 
-## Advanced Usage
-
 ## Instrumentation
 
 SEE: https://guides.rubyonrails.org/active_support_instrumentation.html
