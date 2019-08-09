@@ -79,7 +79,7 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 1. The page that triggered the reflex is re-rerendered. _Note that instance variables created in the reflex are available to both the controller and view templates._
 2. The re-rendered HTML is sent to the client over the ActionCable socket.
-3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body re-rendered and sent over the socket._
+3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body is re-rendered and sent over the socket._
 
 ### ActionCable
 
