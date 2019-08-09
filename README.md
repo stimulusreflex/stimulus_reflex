@@ -73,7 +73,8 @@ end
 
 The following happens after the `StimulusReflex::Reflex` method call finishes.
 
-1. The page that triggered the reflex is re-rerendered _(instance variables created in the reflex are made available to the controller and the view templates)_
+1. The page that triggered the reflex is re-rerendered
+   _instance variables created in the reflex are made available to the controller and the view templates_
 1. The re-rendered HTML is sent to the client over the ActionCable socket
 1. JavaScript on the client updates the page with any changes via fast DOM diffing
 
