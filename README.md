@@ -36,7 +36,9 @@ gem "stimulus_reflex"
 ```erb
 <head></head>
   <body>
-    <a href="#" data-controller="example" data-action="click->example#doStuff">Increment <%= @count.to_i %></a>
+    <a href="#" data-controller="example" data-action="click->example#doStuff">
+      Increment <%= @count.to_i %>
+    </a>
   </body>
 </html>
 ```
