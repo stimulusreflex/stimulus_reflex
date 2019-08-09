@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (0.3.3)
+    stimulus_reflex (1.0.0)
       actioncable (>= 5.2.1)
       actionpack (>= 5.2.1)
       cable_ready (>= 3.0.1)
@@ -48,7 +48,7 @@ GEM
       nokogiri (>= 1.5.9)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
-    nio4r (2.3.1)
+    nio4r (2.4.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     parallel (1.17.0)
@@ -82,9 +82,9 @@ GEM
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     unicode-display_width (1.5.0)
-    websocket-driver (0.7.0)
+    websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.3)
+    websocket-extensions (0.1.4)
 
 PLATFORMS
   ruby

@@ -1,7 +1,6 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-161-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-120-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 [![Ruby Dependency Graph](https://img.shields.io/badge/deps-ruby-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/gem_graph.svg)
-[![JavaScript Dependency Graph](https://img.shields.io/badge/deps-javascript-informational.svg?style=flat)](https://github.com/hopsoft/stimulus_reflex/blob/master/javascript_graph.txt)
 
 # StimulusReflex
 
@@ -16,7 +15,13 @@ _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effo
 
 > This library provides functionality similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
 
-## Usage
+## Setup
+
+### JavaScript
+
+```
+yarn add stimulus_reflex
+```
 
 ### Gemfile
 
@@ -24,55 +29,32 @@ _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effo
 gem "stimulus_reflex"
 ```
 
-### app/views/layouts/application.html.erb
+## Usage
+
+### app/views/pages/example.html.erb
 
 ```erb
-<html>
-  <head></head>
-  <body data-cable>
-    <%= yield %>
+<head></head>
+  <body>
+    <a href="#" data-controller="example" data-action="click->example#doStuff">Increment <%= @count.to_i %></a>
   </body>
 </html>
-```
-
-Pages must opt in to establish the ActionCable connection.
-This eliminates unauthorized connection attempts.
-
-SEE: https://gist.github.com/hopsoft/02dfdf4456b3ac52f4eaf242289bdd36
-
-### app/assets/javascripts/cable.js
-
-```javascript
-//= require action_cable
-//= require cable_ready
-//= require stimulus_reflex
-//= require_self
-//= require_tree ./channels
-
-(function() {
-  document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('body[data-cable]')) {
-      // be defensive since stimulus_reflex also initializes this.App and App.cable
-      this.App || (this.App = {});
-      App.cable || (App.cable = ActionCable.createConsumer());
-    }
-  });
-}.call(this));
 ```
 
 ### app/javascript/controllers/example.js
 
 ```javascript
 import { Controller } from "stimulus"
+import StimulusReflex from "stimulus_reflex"
 
 export default class extends Controller {
   connect() {
     StimulusReflex.register(this);
   }
 
-  doStuff() {
+  increment() {
     // trigger a server side reflex and a re-render
-    this.stimulate('ExampleReflex#do_stuff', arg1, arg2, ...);
+    this.stimulate('ExampleReflex#increment', 1);
   }
 }
 ```
@@ -81,8 +63,8 @@ export default class extends Controller {
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
-  def do_stuff(arg1, arg2, ...)
-    # stuff...
+  def increment(step = 1)
+    @count = @count.to_i += step
   end
 end
 ```
@@ -93,22 +75,12 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 1. The re-rendered HTML is sent to the client over the ActionCable socket
 1. JavaScript on the client updates the page with any changes via fast DOM diffing
 
-### ActionCable Defaults Expected
+### ActionCable
 
-StimulusReflex will use or create `window.App` and `App.cable`
-and is typically loaded before the default ActionCable initialization code.
+StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
+If these defaults do not exist, StimulusReflex will attempt to establish a new socket connection.
 
 ## Advanced Usage
-
-### Page Rerender
-
-The page is always rerendered after triggering a `StimulusReflex`.
-The client side JavaScript debounces this render via `setTimeout` to prevent a jarring user experience.
-The default delay of `200ms` can be overriddend with the following JavaScript.
-
-```javascript
-StimulusReflex.renderDelay = 100;
-```
 
 ## Instrumentation
 
@@ -142,11 +114,4 @@ end
 
 ## JavaScript Development
 
-The JavaScript source is located in `app/assets/javascripts/stimulus_reflex/src`
-& transpiles to `app/assets/javascripts/stimulus_reflex.js` via Webpack.
-
-```sh
-# build the javascript
-./bin/yarn
-./bin/webpack
-```
+The JavaScript library is hosted at: https://github.com/hopsoft/stimulus_reflex_client
