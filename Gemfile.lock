@@ -4,7 +4,7 @@ PATH
     stimulus_reflex (1.0.0)
       actioncable (>= 5.2.1)
       actionpack (>= 5.2.1)
-      cable_ready (>= 3.0.1)
+      cable_ready (>= 4.0.0)
       nokogiri
       rack
 
@@ -35,7 +35,7 @@ GEM
       tzinfo (~> 1.1)
     ast (2.4.0)
     builder (3.2.3)
-    cable_ready (3.0.1)
+    cable_ready (4.0.0)
       activesupport (>= 5.0.0)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
@@ -61,7 +61,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.4)
+    rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
     rainbow (3.0.0)
     rake (12.3.2)

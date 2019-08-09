@@ -9,9 +9,13 @@
 Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
 _The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
 
-1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server
-1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
-1. That's it
+1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server.
+1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom).
+1. That's it...
+
+  - Yes, it really is that simple. Just write your HTML page.
+  - If you hit refresh, that works, too.
+  - There is no hidden gotcha.
 
 > This library provides functionality similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
 
@@ -73,47 +77,14 @@ end
 
 The following happens after the `StimulusReflex::Reflex` method call finishes.
 
-1. The page that triggered the reflex is re-rerendered
-
-   _Instance variables created in the reflex are made available to the controller and the view templates_
-
-1. The re-rendered HTML is sent to the client over the ActionCable socket
-1. JavaScript on the client updates the page with any changes via fast DOM diffing
+1. The page that triggered the reflex is re-rerendered. Note that instance variables created in the reflex are available to both the controller and view templates.
+2. The re-rendered HTML is sent to the client over the ActionCable socket.
+3. The body node is replaced via fast DOM diffing courtesy of morphdom. _While future versions of stimulus_reflex library might support more granular updates, today the entire body re-rendered and sent over the socket._
 
 ### ActionCable
 
 StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will attempt to establish a new socket connection.
-
-## Instrumentation
-
-SEE: https://guides.rubyonrails.org/active_support_instrumentation.html
-
-```ruby
-# wraps the stimulus reflex method invocation
-ActiveSupport::Notifications.subscribe "delegate_call.stimulus_reflex" do |*args|
-  event = ActiveSupport::Notifications::Event.new(*args)
-  Rails.logger.debug "#{event.name} #{event.duration} #{event.payload.inspect}"
-end
-
-# instruments the page rerender
-ActiveSupport::Notifications.subscribe "render_page.stimulus_reflex" do |*args|
-  event = ActiveSupport::Notifications::Event.new(*args)
-  Rails.logger.debug "#{event.name} #{event.duration} #{event.payload.inspect}"
-end
-
-# wraps the web socket broadcast
-ActiveSupport::Notifications.subscribe "broadcast.stimulus_reflex" do |*args|
-  event = ActiveSupport::Notifications::Event.new(*args)
-  Rails.logger.debug "#{event.name} #{event.duration} #{event.payload.inspect}"
-end
-
-# wraps the entire receive operation which includes everything above
-ActiveSupport::Notifications.subscribe "receive.stimulus_reflex" do |*args|
-  event = ActiveSupport::Notifications::Event.new(*args)
-  Rails.logger.debug "#{event.name} #{event.duration} #{event.payload.inspect}"
-end
-```
 
 ## JavaScript Development
 
