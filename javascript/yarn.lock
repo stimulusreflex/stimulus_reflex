@@ -7,10 +7,10 @@ actioncable@^5.2.3:
   resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.3.tgz#639d98855b854b7bfe2059ab97d6e0ae8fd60a1d"
   integrity sha512-KNdZHRDu92VDSO7SOEJS8Bf5G//LZZLz5e6m7mv8Wjafe9Svdp/DPJ/DpO7rJmPAlKcLAYwi/R7pNJ/VCHV1FQ==
 
-cable_ready@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.0.tgz#fae8e1ac7b7e8f56a4e4ab59a8c6a67b38623590"
-  integrity sha512-WVVM/eAQkOZ8iNHaqliBE5vloKMH9kvT+uFBN1H4Acqz3zgOf4yv8oIT8UHzvFs/WjHwp0FhCEghWhWT0SobzA==
+cable_ready@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.2.tgz#3b5c968d400bf8f150cad008739410f4b857bc6c"
+  integrity sha512-06R3yqjcrTRrkUcG/Po6ZHdZo5Z2ChEjaCff/Y/YpI4Qlc1Ha4f3PF/2QD4nnww1EltUE9RPxsiUBdnGKzzARQ==
   dependencies:
     morphdom "^2.5.6"
 
