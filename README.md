@@ -3,20 +3,23 @@
 
 # StimulusReflex
 
-#### Build rich interactive UIs with standard Rails... no need for a complex frontend framework
+#### Build reactive user interfaces with Rails and Stimulus... no need for a complex frontend framework
 
-This library provides functionality similar to [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670) for Rails applications.
+This project aims to support the building of [Single Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application)
+with standard Rails tooling. Server rendered HTML, Stimulus, Turbolinks, etc...
+_No need for a separate and complex front-end stack._
 
-Add the benefits of single page apps (SPA) to server rendered Rails/Stimulus projects with a minimal investment of time, resources, and complexity.
-_The goal is to provide 80% of the benefits of SPAs with 20% of the typical effort._
+Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670).
+
+## How it Works
 
 1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server.
 1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom).
 1. That's it...
 
-  - Yes, it really is that simple. Just write your HTML page.
-  - If you hit refresh, that works, too.
-  - There's no hidden gotcha.
+__Yes, it really is that simple.__
+Just create a server rendered HTML page and send an RPC calls to the server via web socket.
+There are no hidden gotchas.
 
 ## Setup
 
@@ -32,7 +35,7 @@ yarn add stimulus_reflex
 gem "stimulus_reflex"
 ```
 
-## Usage
+## Basic Usage
 
 ### app/views/pages/example.html.erb
 
@@ -80,11 +83,31 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 2. The re-rendered HTML is sent to the client over the ActionCable socket.
 3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body is re-rendered and sent over the socket._
 
+## Advanced Usage
+
+### Render Delay
+
+An attempt is made to reduce repaint/reflow jitter when users may trigger lots of updates.
+
+You can control how long to wait (think debounce) prior to updating the page.
+Simply set the `renderDelay` _(milliseconds)_ option when registering the controller.
+
+```javascript
+StimulusReflex.register(this, {renderDelay: 200});
+```
+
+The default value is `25`.
+
+### ActionCable Rooms
+
+You may find the need to restrict notifications to a specific room.
+This can be accomplished by setting the `data-room` attribute on the StimulusController element.
+
+```
+<a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
+```
+
 ### ActionCable
 
 StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
-If these defaults do not exist, StimulusReflex will attempt to establish a new socket connection.
-
-## JavaScript Development
-
-The JavaScript library is hosted at: https://github.com/hopsoft/stimulus_reflex_client
+If these defaults do not exist, StimulusReflex will establish a new socket connection.
