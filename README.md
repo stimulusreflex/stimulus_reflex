@@ -18,6 +18,8 @@ Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
 1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
 1. That's it...
 
+![How it Works](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/docs/diagram.png)
+
 __Yes, it really is that simple.__
 Just create a server rendered HTML page and send RPC calls to the server via web socket.
 There are no hidden gotchas.
