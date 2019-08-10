@@ -9,10 +9,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   include CableReady::Broadcaster
 
   def stream_name
-    ids = connection.identifiers.map { |identifier|
-      send(identifier).try(:id)
-    }
-    "#{channel_name}#{ids.join ":"}"
+    ids = connection.identifiers.map { |identifier| send(identifier).try(:id) }
+    [
+      params[:channel],
+      params[:room],
+      ids.select(&:present?).join(";"),
+    ].select(&:present?).join(":")
   end
 
   def subscribed

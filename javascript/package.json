@@ -1,0 +1,15 @@
+{
+  "name": "stimulus_reflex",
+  "version": "1.0.0",
+  "main": "./stimulus_reflex.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
+  },
+  "author": "Nathan Hopkins",
+  "license": "MIT",
+  "dependencies": {
+    "actioncable": "^5.2.3",
+    "cable_ready": "^4.0.2"
+  }
+}
