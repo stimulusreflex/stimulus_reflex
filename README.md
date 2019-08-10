@@ -3,22 +3,23 @@
 
 # StimulusReflex
 
-#### Build reactive user interfaces with Rails and Stimulus... no need for a complex frontend framework
+### Reactive user interfaces with Rails and Stimulus
 
-This project aims to support the building of [Single Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application)
-with standard Rails tooling. Server rendered HTML, Stimulus, Turbolinks, etc...
-_No need for a separate and complex front-end stack._
+#### No need for a complex frontend framework
 
-Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670).
+This project aims to support the building of [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
+with standard Rails tooling. Think server rendered HTML, Stimulus, Turbolinks, etc...
+
+Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
 
 ## How it Works
 
-1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server.
-1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom).
+1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server
+1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
 1. That's it...
 
 __Yes, it really is that simple.__
-Just create a server rendered HTML page and send an RPC calls to the server via web socket.
+Just create a server rendered HTML page and send RPC calls to the server via web socket.
 There are no hidden gotchas.
 
 ## Setup
@@ -85,6 +86,20 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 ## Advanced Usage
 
+### ActionCable
+
+StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
+If these defaults do not exist, StimulusReflex will establish a new socket connection.
+
+### ActionCable Rooms
+
+You may find the need to restrict notifications to a specific room.
+This can be accomplished by setting the `data-room` attribute on the StimulusController element.
+
+```
+<a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
+```
+
 ### Render Delay
 
 An attempt is made to reduce repaint/reflow jitter when users may trigger lots of updates.
@@ -97,17 +112,3 @@ StimulusReflex.register(this, {renderDelay: 200});
 ```
 
 The default value is `25`.
-
-### ActionCable Rooms
-
-You may find the need to restrict notifications to a specific room.
-This can be accomplished by setting the `data-room` attribute on the StimulusController element.
-
-```
-<a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
-```
-
-### ActionCable
-
-StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
-If these defaults do not exist, StimulusReflex will establish a new socket connection.
