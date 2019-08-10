@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-bundle viz --version --format svg --without development test

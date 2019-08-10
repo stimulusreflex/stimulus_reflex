@@ -37,10 +37,9 @@ const extend = controller => {
     stimulate() {
       clearTimeout(controller.StimulusReflex.timeout);
       const url = location.href;
-      const { room } = controller.StimulusReflex;
       let args = Array.prototype.slice.call(arguments);
       let target = args.shift();
-      controller.StimulusReflex.subscription.send({ target, args, url, room });
+      controller.StimulusReflex.subscription.send({ target, args, url });
     },
   });
 };
