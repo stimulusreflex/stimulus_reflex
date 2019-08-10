@@ -88,7 +88,7 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 ### ActionCable
 
-StimulusReflex will use the Rails' ActionCable defaults `window.App` and `App.cable` if they exist.
+StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
 ### ActionCable Rooms
@@ -102,9 +102,9 @@ This can be accomplished by setting the `data-room` attribute on the StimulusCon
 
 ### Render Delay
 
-An attempt is made to reduce repaint/reflow jitter when users may trigger lots of updates.
+An attempt is made to reduce repaint/reflow jitter when users trigger lots of updates.
 
-You can control how long to wait (think debounce) prior to updating the page.
+You can control how long to wait _(think debounce)_ prior to updating the page.
 Simply set the `renderDelay` _(milliseconds)_ option when registering the controller.
 
 ```javascript
