@@ -108,7 +108,11 @@ You can control how long to wait _(think debounce)_ prior to updating the page.
 Simply set the `renderDelay` _(milliseconds)_ option when registering the controller.
 
 ```javascript
-StimulusReflex.register(this, {renderDelay: 200});
+export default class extends Controller {
+  connect() {
+    StimulusReflex.register(this, {renderDelay: 200});
+  }
+}
 ```
 
 The default value is `25`.
