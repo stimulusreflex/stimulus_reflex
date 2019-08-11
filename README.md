@@ -64,7 +64,7 @@ export default class extends Controller {
   }
 
   increment() {
-    // trigger a server side reflex and a re-render
+    // trigger a server-side reflex and a client-side page update
     this.stimulate('ExampleReflex#increment', 1);
   }
 }
@@ -75,7 +75,7 @@ export default class extends Controller {
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def increment(step = 1)
-    @count = @count.to_i += step
+    @count = @count.to_i + step
   end
 end
 ```
