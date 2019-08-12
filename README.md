@@ -5,11 +5,11 @@
 
 ### Reactive user interfaces with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
-#### No need for a complex frontend framework
-
 This project aims to support the building of [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
 with the Rails tooling you already know and love.
 Works perfectly with server rendered HTML, [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
+
+#### No need for a complex frontend framework
 
 > The lifecycle of a "modern" SPA app is so convoluted, it requires a team to build and support.
 > The wire size and computation demands of these heavy client sites frequently run slower than the server-rendered pages that they replaced.
