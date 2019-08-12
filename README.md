@@ -24,7 +24,8 @@ Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
 1. That's it...
 
 __Yes, it really is that simple.__
-Just create a server rendered HTML page and send RPC calls to the server via web socket.
+Just render a standard Rails view template.
+Then use Stimulus to send [AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) [RPC calls](https://en.wikipedia.org/wiki/Remote_procedure_call) via web socket.
 There are no hidden gotchas.
 
 ![How it Works](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/docs/diagram.png)
