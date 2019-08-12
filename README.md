@@ -19,13 +19,12 @@ Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
 
 ## How it Works
 
-1. Use [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server
+1. Render a standard Rails view template
+1. Use [Stimulus](https://stimulusjs.org) and [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html) to invoke a method on the server
 1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
 1. That's it...
 
 __Yes, it really is that simple.__
-Just render a standard Rails view template.
-Then use Stimulus to send [AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) [RPC calls](https://en.wikipedia.org/wiki/Remote_procedure_call) via web socket.
 There are no hidden gotchas.
 
 ![How it Works](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/docs/diagram.png)
