@@ -126,4 +126,8 @@ The default value is `25`.
 
 ## Demo Applications
 
+Building apps with StimulusReflex should evoke your memories of the original [Rails demo video](https://www.youtube.com/watch?v=Gzj723LkRJY).
+
+> Look at all the things I'm **not** doing. -DHH
+
 - [TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc)
