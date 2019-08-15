@@ -103,7 +103,7 @@ If these defaults do not exist, StimulusReflex will establish a new socket conne
 You may find the need to restrict notifications to a specific room.
 This can be accomplished by setting the `data-room` attribute on the StimulusController element.
 
-```
+```html
 <a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
 ```
 
