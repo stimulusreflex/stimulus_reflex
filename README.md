@@ -5,7 +5,7 @@
 
 ### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
-This project supports building [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
+This project supports building [reactive applications](https://en.wikipedia.org/wiki/Reactive_programming)
 with the Rails tooling you already know and love.
 Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
 [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
