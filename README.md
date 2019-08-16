@@ -3,7 +3,7 @@
 
 # StimulusReflex
 
-### Reactive user interfaces with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
+### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
 This project supports building [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
 with the Rails tooling you already know and love.
