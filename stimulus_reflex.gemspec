@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.authors = ["Nathan Hopkins", "Ron Cooke"]
   gem.email = ["natehop@gmail.com", "brasco@thebrascode.com"]
   gem.homepage = "https://github.com/hopsoft/stimulus_reflex"
-  gem.summary = "Build rich interactive UIs with standard Rails"
+  gem.summary = "Build reactive Single Page Applications (SPAs) with Rails and Stimulus"
 
   gem.files = Dir["lib/**/*.rb", "app/assets/javascripts/stimulus_reflex.js", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
