@@ -32,39 +32,56 @@ const createSubscription = controller => {
 }
 
 const extend = controller => {
+  const url = location.href
   Object.assign(controller, {
     stimulate () {
       clearTimeout(controller.StimulusReflex.timeout)
       const args = Array.prototype.slice.call(arguments)
       const target = args.shift()
-      const url = location.href
       controller.StimulusReflex.subscription.send({ target, args, url })
     },
     reflex (el) {
       clearTimeout(controller.StimulusReflex.timeout)
-      const name = el.target.dataset.reflex.split('#')
+      const segments = el.target.dataset.reflex.split('->')
+      const name =
+        segments.length == 1 ? segments[0].split('#') : segments[1].split('#')
       const target = `${name[0].charAt(0).toUpperCase() +
         name[0].slice(1)}Reflex#${name[1]}`
       let args = []
       for (const arg in el.target.dataset) {
-        if (/^reflexArg/.test(arg)) args.push(el.target.dataset[arg])
+        if (/^reflexValue/.test(arg)) args.push(el.target.value)
+        else if (/^reflex.+/.test(arg)) args.push(el.target.dataset[arg])
       }
-      const url = location.href
       controller.StimulusReflex.subscription.send({ target, args, url })
     },
-    wire () {
-      document
-        .querySelectorAll('[data-reflex]')
-        .forEach(el => el.addEventListener('click', controller.reflex))
-    },
-    unwire () {
-      document
-        .querySelectorAll('[data-reflex]')
-        .forEach(el => el.removeEventListener('click', controller.reflex))
+    wire (e) {
+      const method =
+        e && e.type === 'cable-ready:before-morph'
+          ? 'removeEventListener'
+          : 'addEventListener'
+      const events = {
+        a: 'click',
+        button: 'click',
+        form: 'submit',
+        input: 'change',
+        select: 'change',
+        textarea: 'change'
+      }
+      document.querySelectorAll('[data-reflex]').forEach(el => {
+        const tagName = el.tagName.toLowerCase()
+        let event = events[tagName]
+        if (/^\w+->\w+#\w+$/.test(el.dataset.reflex)) {
+          el[method](el.dataset.reflex.split('->')[0], controller.reflex)
+        } else if (event) {
+          // https://stimulusjs.org/reference/actions#event-shorthand
+          if (tagName === 'input' && el.type === 'submit') event = 'click'
+          el[method](event, controller.reflex)
+        } else el[method]('click', controller.reflex)
+      })
     }
   })
 
-  document.addEventListener('cable-ready:before-morph', controller.unwire)
+  document.addEventListener('cable-ready:before-morph', controller.wire)
   document.addEventListener('cable-ready:after-morph', controller.wire)
 
   controller.wire()
