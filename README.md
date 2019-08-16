@@ -7,7 +7,7 @@
 
 This project supports building [reactive applications](https://en.wikipedia.org/wiki/Reactive_programming)
 with the Rails tooling you already know and love.
-Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
+It's designed to work perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
 [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
 [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
