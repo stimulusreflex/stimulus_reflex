@@ -5,9 +5,11 @@
 
 ### Reactive user interfaces with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
-This project aims to support the building of [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
+This project supports building [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
 with the Rails tooling you already know and love.
-Works perfectly with server rendered HTML, [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
+Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
+[Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
+[Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
 #### No need for a complex frontend framework
 
