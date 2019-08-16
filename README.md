@@ -11,11 +11,16 @@ Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/actio
 [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
 [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
+
 #### No need for a complex frontend framework
+
+---
 
 > The lifecycle of a "modern" SPA app is so convoluted, it requires a team to build and support.
 > The wire size and computation demands of these heavy client sites frequently run slower than the server-rendered pages that they replaced.
 > With Stimulus Reflex, a Rails developer can build Single Page Applications without the need for client rendering or heavy JS frameworks.
+
+---
 
 Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
 
