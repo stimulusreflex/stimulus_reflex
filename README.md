@@ -12,7 +12,7 @@ Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/actio
 [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
 
-#### No need for a complex frontend framework
+__No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
 
 ---
 
@@ -22,7 +22,7 @@ Works perfectly with [server rendered HTML](https://guides.rubyonrails.org/actio
 
 ---
 
-Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
+_Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
 ## How it Works
 
@@ -138,3 +138,4 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 > Look at all the things I'm **not** doing. -DHH
 
 - [TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc)
+
