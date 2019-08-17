@@ -9,7 +9,7 @@
   "author": "Nathan Hopkins",
   "license": "MIT",
   "dependencies": {
-    "actioncable": "^5.2.3",
-    "cable_ready": "^4.0.2"
+    "actioncable": ">= 5.2",
+    "cable_ready": ">= 4.0.3"
   }
 }

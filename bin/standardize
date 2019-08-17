@@ -1,3 +1,4 @@
 #!/bin/bash
 
 bundle exec standardrb --fix
+prettier --write javascript/stimulus_reflex.js

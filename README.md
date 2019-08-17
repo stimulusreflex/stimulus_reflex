@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-171-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-159-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 
 # StimulusReflex
@@ -105,12 +105,22 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
+### Performance
+
+ActionCable emits verbose log messages. Disabling ActionCable logs may improve performance.
+
+```ruby
+# config/application.rb
+
+ActionCable.server.config.logger = Logger.new(nil)
+```
+
 ### ActionCable Rooms
 
 You may find the need to restrict notifications to a specific room.
 This can be accomplished by setting the `data-room` attribute on the StimulusController element.
 
-```html
+```erb
 <a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
 ```
 
@@ -139,3 +149,8 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 
 - [TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc)
 
+## Contributing
+
+This project uses [Standard](https://github.com/testdouble/standard)
+and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
+Please run `./bin/standardize` prior submitting pull requests.
