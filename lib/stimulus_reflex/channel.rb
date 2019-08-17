@@ -1,11 +1,3 @@
-require "uri"
-require "rack"
-require "nokogiri"
-require "active_support/all"
-require "action_dispatch"
-require "cable_ready"
-require "stimulus_reflex/sax_document"
-
 class StimulusReflex::Channel < ActionCable::Channel::Base
   include CableReady::Broadcaster
 
@@ -96,8 +88,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   def extract_body_html(html)
-    doc = StimulusReflex::SaxDocument.new
-    Nokogiri::HTML::SAX::Parser.new(doc).parse(html)
-    doc.body
+    doc = Nokogiri::HTML(html)
+    doc.css("body").to_s
   end
 end

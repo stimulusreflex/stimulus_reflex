@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-actioncable@^5.2.3:
+"actioncable@>= 5.2":
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.3.tgz#639d98855b854b7bfe2059ab97d6e0ae8fd60a1d"
   integrity sha512-KNdZHRDu92VDSO7SOEJS8Bf5G//LZZLz5e6m7mv8Wjafe9Svdp/DPJ/DpO7rJmPAlKcLAYwi/R7pNJ/VCHV1FQ==
 
-cable_ready@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.2.tgz#3b5c968d400bf8f150cad008739410f4b857bc6c"
-  integrity sha512-06R3yqjcrTRrkUcG/Po6ZHdZo5Z2ChEjaCff/Y/YpI4Qlc1Ha4f3PF/2QD4nnww1EltUE9RPxsiUBdnGKzzARQ==
+"cable_ready@>= 4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.3.tgz#3ce960da4150162d68f8b20172978f6d2aa83c08"
+  integrity sha512-F+yUa1/yvGEHSMHJ97m0srwd4IirvaZbkLMIjWaE7OV+RPI/u62Lv7cJr0A0fNK2hDzDiAV8VUAzXGDAKIIOjA==
   dependencies:
     morphdom "^2.5.6"
 
