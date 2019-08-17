@@ -3,19 +3,26 @@
 
 # StimulusReflex
 
-### Reactive user interfaces with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
+### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
-This project aims to support the building of [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
+This project supports building [reactive applications](https://en.wikipedia.org/wiki/Reactive_programming)
 with the Rails tooling you already know and love.
-Works perfectly with server rendered HTML, [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
+It's designed to work perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
+[Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
+[Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
-#### No need for a complex frontend framework
+
+__No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
+
+---
 
 > The lifecycle of a "modern" SPA app is so convoluted, it requires a team to build and support.
 > The wire size and computation demands of these heavy client sites frequently run slower than the server-rendered pages that they replaced.
 > With Stimulus Reflex, a Rails developer can build Single Page Applications without the need for client rendering or heavy JS frameworks.
 
-Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
+---
+
+_Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
 ## How it Works
 
