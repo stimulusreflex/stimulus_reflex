@@ -3,8 +3,7 @@ import CableReady from 'cable_ready'
 
 const app = window.App || {}
 app.StimulusReflex = app.StimulusReflex || {}
-app.StimulusReflex.consumer =
-  app.StimulusReflex.consumer || ActionCable.createConsumer()
+app.StimulusReflex.consumer = app.StimulusReflex.consumer || ActionCable.createConsumer()
 app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
 
 const createSubscription = controller => {
