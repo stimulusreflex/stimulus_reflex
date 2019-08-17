@@ -98,6 +98,16 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
+### Performance
+
+ActionCable emits verbose log messages. Disabling ActionCable logs may improve performance.
+
+```ruby
+# config/application.rb
+
+ActionCable.server.config.logger = Logger.new(nil)
+```
+
 ### ActionCable Rooms
 
 You may find the need to restrict notifications to a specific room.
@@ -131,3 +141,9 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 > Look at all the things I'm **not** doing. -DHH
 
 - [TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc)
+
+## Contributing
+
+This project uses [Standard](https://github.com/testdouble/standard)
+and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
+Please run `./bin/standardize` prior submitting pull requests.
