@@ -24,6 +24,14 @@ __No need for a complex front-end framework. No need to grow your team or duplic
 
 _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
+## Before you Start
+
+StimulusReflex provides functionality similar to what can already be achieved with Rails by combining
+[UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html) remote elements
+, [Stimulus](https://stimulusjs.org), and [Turbolinks](https://github.com/turbolinks/turbolinks).
+The principal difference being that communication occurs on the web socket via [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html).
+Thus reducing the latency associated with establishing multiple traditional HTTP connections.
+
 ## How it Works
 
 1. Render a standard Rails view template
