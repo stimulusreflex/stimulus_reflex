@@ -29,8 +29,9 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 StimulusReflex provides functionality similar to what can already be achieved with Rails by combining
 [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements)
 , [Stimulus](https://stimulusjs.org), and [Turbolinks](https://github.com/turbolinks/turbolinks).
+
 The principal difference being that communication occurs on the web socket via [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html).
-Thus reducing the latency associated with establishing multiple traditional HTTP connections.
+Thus reducing the latency associated with establishing multiple HTTP connections.
 We also bypass the traditional Rails request lifecycle i.e the middleware chain etc... This also reduces latency.
 
 ## How it Works
