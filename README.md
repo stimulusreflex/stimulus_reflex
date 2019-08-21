@@ -13,6 +13,8 @@ It's designed to work perfectly with [server rendered HTML](https://guides.rubyo
 
 __No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
 
+_Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
+
 <!-- toc -->
 
 - [Before you Begin](#before-you-begin)
@@ -34,16 +36,6 @@ __No need for a complex front-end framework. No need to grow your team or duplic
 
 <!-- tocstop -->
 
----
-
-> The lifecycle of a "modern" SPA app is so convoluted, it requires a team to build and support.
-> The wire size and computation demands of these heavy client sites frequently run slower than the server-rendered pages that they replaced.
-> With Stimulus Reflex, a Rails developer can build Single Page Applications without the need for client rendering or heavy JS frameworks.
-
----
-
-_Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
-
 ## Before you Begin
 
 StimulusReflex provides functionality similar to what can already be achieved with Rails by combining
@@ -53,17 +45,9 @@ _Consider building with standard Rails tooling before introducing StimulusReflex
 
 StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request/response cycle.
 
-1. __Communication happens on the ActionCable web socket__
-
-    _Saves time by avoiding the overhead of establishishing traditional HTTP connections_
-
-1. __The controller action is invoked directly__
-
-    _Skips framework overhead such as the middleware chain, etc..._
-
-1. __DOM diffing is used to update the page__
-
-    _Provides faster rendering and less jitter_
+1. __Communication happens on the ActionCable web socket__ _- saves time by avoiding the overhead of establishishing traditional HTTP connections_
+1. __The controller action is invoked directly__ _- skips framework overhead such as the middleware chain, etc..._
+1. __DOM diffing is used to update the page__ _- provides faster rendering and less jitter_
 
 ## How it Works
 
