@@ -11,8 +11,28 @@ It's designed to work perfectly with [server rendered HTML](https://guides.rubyo
 [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
 [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
-
 __No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
+
+<!-- toc -->
+
+- [Before you Begin](#before-you-begin)
+- [How it Works](#how-it-works)
+- [Setup](#setup)
+  * [JavaScript](#javascript)
+  * [Gemfile](#gemfile)
+- [Basic Usage](#basic-usage)
+  * [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+  * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+  * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+- [Advanced Usage](#advanced-usage)
+  * [ActionCable](#actioncable)
+  * [Performance](#performance)
+  * [ActionCable Rooms](#actioncable-rooms)
+  * [Render Delay](#render-delay)
+- [Demo Applications](#demo-applications)
+- [Contributing](#contributing)
+
+<!-- tocstop -->
 
 ---
 
@@ -24,7 +44,7 @@ __No need for a complex front-end framework. No need to grow your team or duplic
 
 _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
-## Before you Start
+## Before you Begin
 
 StimulusReflex provides functionality similar to what can already be achieved with Rails by combining
 [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements)
@@ -41,7 +61,7 @@ StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request
 
     _Skips framework overhead such as the middleware chain, etc..._
 
-1. __DOM Diffing is used to update the page__
+1. __DOM diffing is used to update the page__
 
     _Provides faster rendering and less jitter_
 
