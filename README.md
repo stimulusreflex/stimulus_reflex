@@ -35,15 +35,15 @@ StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request
 
 1. __Communication happens on the ActionCable web socket__
 
-  _Saves time by avoiding the overhead of establishishing traditional HTTP connections_
+    _Saves time by avoiding the overhead of establishishing traditional HTTP connections_
 
 1. __The controller action is invoked directly__
 
-  _Skips framework overhead such as the middleware chain, etc..._
+    _Skips framework overhead such as the middleware chain, etc..._
 
 1. __DOM Diffing is used to update the page__
 
-  _Provides faster rendering and less jitter_
+    _Provides faster rendering and less jitter_
 
 ## How it Works
 
