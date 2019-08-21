@@ -31,10 +31,11 @@ StimulusReflex provides functionality similar to what can already be achieved wi
 , [Stimulus](https://stimulusjs.org), and [Turbolinks](https://github.com/turbolinks/turbolinks).
 _Consider building with standard Rails tooling before introducing StimulusReflex._
 
-The primary difference when using StimulusReflex is that communication occurs on the web socket via [ActionCable](https://edgeguides.rubyonrails.org/action_cable_overview.html).
-This reduces latency associated with establishing multiple HTTP connections.
-We also bypass the traditional Rails request lifecycle _(i.e the middleware chain etc...)_
-This also reduces latency.
+StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request/response cycle.
+
+1. __Communication happens on the ActionCable web socket__ _saves time by avoiding the overhead of establishishing traditional HTTP connections_
+1. __The controller action is invoked directly__ _skips framework overhead such as the middleware chain, etc..._
+1. __DOM Diffing is used to update the page__ _provides faster rendering and less jitter_
 
 ## How it Works
 
