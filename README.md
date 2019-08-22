@@ -15,6 +15,8 @@ __No need for a complex front-end framework. No need to grow your team or duplic
 
 _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
+## Table of Contents
+
 <!-- toc -->
 
 - [Before you Begin](#before-you-begin)
