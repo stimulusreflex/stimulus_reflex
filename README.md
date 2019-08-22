@@ -44,6 +44,7 @@ StimulusReflex provides functionality similar to what can already be achieved wi
 [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements)
 , [Stimulus](https://stimulusjs.org), and [Turbolinks](https://github.com/turbolinks/turbolinks).
 _Consider building with standard Rails tooling before introducing StimulusReflex._
+_Check out the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example if you are unsure how to accomplish this._
 
 StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request/response cycle.
 
