@@ -1,4 +1,4 @@
 #!/bin/bash
 
 bundle exec standardrb --fix
-prettier --write javascript/stimulus_reflex.js
+yarn run prettier --write javascript/stimulus_reflex.js

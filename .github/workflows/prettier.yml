@@ -1,0 +1,16 @@
+on: push
+name: Run Prettier Lints
+jobs:
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Yarn
+      uses: Borales/actions-yarn@master
+      with:
+        args: install
+    - name: Prettier
+      uses: Borales/actions-yarn@master
+      with:
+        args: run prettier-check
