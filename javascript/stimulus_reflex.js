@@ -49,7 +49,9 @@ const extend = controller => {
       let args = []
       for (const arg in el.target.dataset) {
         if (/^reflexValue/.test(arg)) args.push(el.target.value)
-        else if (/^reflex.+/.test(arg)) args.push(el.target.dataset[arg])
+        else if (/^reflexChecked/.test(arg)) {
+          args.push(el.target.checked ? '1' : '0') 
+        } else if (/^reflex.+/.test(arg)) args.push(el.target.dataset[arg])
       }
       controller.StimulusReflex.subscription.send({ target, args, url })
     },
