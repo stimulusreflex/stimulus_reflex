@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StimulusReflex::Channel < ActionCable::Channel::Base
   include CableReady::Broadcaster
 
