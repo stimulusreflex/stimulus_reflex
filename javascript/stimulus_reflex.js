@@ -1,10 +1,11 @@
 import ActionCable from 'actioncable'
 import CableReady from 'cable_ready'
 
-const app = window.App || {};
-app.StimulusReflex = app.StimulusReflex || {};
-app.StimulusReflex.consumer = app.StimulusReflex.consumer || ActionCable.createConsumer();
-app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {};
+const app = window.App || {}
+app.StimulusReflex = app.StimulusReflex || {}
+app.StimulusReflex.consumer =
+  app.StimulusReflex.consumer || ActionCable.createConsumer()
+app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
 
 const createSubscription = controller => {
   const { channel, room } = controller.StimulusReflex
@@ -50,7 +51,7 @@ const extend = controller => {
       for (const arg in el.target.dataset) {
         if (/^reflexValue/.test(arg)) args.push(el.target.value)
         else if (/^reflexChecked/.test(arg)) {
-          args.push(el.target.checked ? '1' : '0') 
+          args.push(el.target.checked ? '1' : '0')
         } else if (/^reflex.+/.test(arg)) args.push(el.target.dataset[arg])
       }
       controller.StimulusReflex.subscription.send({ target, args, url })
@@ -68,7 +69,7 @@ const extend = controller => {
         select: 'change',
         textarea: 'change'
       }
-      document.querySelectorAll('[data-reflex]').forEach(el => {
+      controller.element.querySelectorAll('[data-reflex]').forEach(el => {
         const tagName = el.tagName.toLowerCase()
         let event = events[tagName]
         if (/^\w+->\w+#\w+$/.test(el.dataset.reflex)) {
@@ -82,8 +83,14 @@ const extend = controller => {
     }
   })
 
-  document.addEventListener('cable-ready:before-morph', controller.wire)
-  document.addEventListener('cable-ready:after-morph', controller.wire)
+  controller.element.addEventListener(
+    'cable-ready:before-morph',
+    controller.wire
+  )
+  controller.element.addEventListener(
+    'cable-ready:after-morph',
+    controller.wire
+  )
 
   controller.wire()
 }
