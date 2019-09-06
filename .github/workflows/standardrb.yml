@@ -1,0 +1,16 @@
+on: push
+name: Run Standard Lints
+jobs:
+  standard:
+    name: Standard
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Bundle
+      uses: CultureHQ/actions-bundler@master
+      with:
+        args: install
+    - name: Standard
+      uses: CultureHQ/actions-bundler@master
+      with:
+        args: exec standardrb

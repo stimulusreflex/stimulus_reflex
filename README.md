@@ -1,21 +1,56 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-171-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-159-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 
 # StimulusReflex
 
-### Reactive user interfaces with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
+### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
-This project aims to support the building of [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application)
+This project supports building [reactive applications](https://en.wikipedia.org/wiki/Reactive_programming)
 with the Rails tooling you already know and love.
-Works perfectly with server rendered HTML, [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
+It's designed to work perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html),
+[Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
+[Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
-#### No need for a complex frontend framework
+__No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
 
-> The lifecycle of a "modern" SPA app is so convoluted, it requires a team to build and support.
-> The wire size and computation demands of these heavy client sites frequently run slower than the server-rendered pages that they replaced.
-> With Stimulus Reflex, a Rails developer can build Single Page Applications without the need for client rendering or heavy JS frameworks.
+_Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
-Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670). 🙌
+## Table of Contents
+
+<!-- toc -->
+
+- [Before you Begin](#before-you-begin)
+- [How it Works](#how-it-works)
+- [Setup](#setup)
+  * [JavaScript](#javascript)
+  * [Gemfile](#gemfile)
+- [Basic Usage](#basic-usage)
+  * [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+  * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+  * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+- [Advanced Usage](#advanced-usage)
+  * [ActionCable](#actioncable)
+  * [Performance](#performance)
+  * [ActionCable Rooms](#actioncable-rooms)
+  * [Render Delay](#render-delay)
+- [Demo Applications](#demo-applications)
+- [Contributing](#contributing)
+
+<!-- tocstop -->
+
+## Before you Begin
+
+StimulusReflex provides functionality similar to what can already be achieved with Rails by combining
+[UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements)
+, [Stimulus](https://stimulusjs.org), and [Turbolinks](https://github.com/turbolinks/turbolinks).
+_Consider building with standard Rails tooling before introducing StimulusReflex._
+_Check out the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example if you are unsure how to accomplish this._
+
+StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request/response cycle.
+
+1. __Communication happens on the ActionCable web socket__ _- saves time by avoiding the overhead of establishishing traditional HTTP connections_
+1. __The controller action is invoked directly__ _- skips framework overhead such as the middleware chain, etc..._
+1. __DOM diffing is used to update the page__ _- provides faster rendering and less jitter_
 
 ## How it Works
 
@@ -98,12 +133,22 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
+### Performance
+
+ActionCable emits verbose log messages. Disabling ActionCable logs may improve performance.
+
+```ruby
+# config/application.rb
+
+ActionCable.server.config.logger = Logger.new(nil)
+```
+
 ### ActionCable Rooms
 
 You may find the need to restrict notifications to a specific room.
 This can be accomplished by setting the `data-room` attribute on the StimulusController element.
 
-```
+```erb
 <a href="#" data-controller="example" data-action="click->example#increment" data-room="12345">
 ```
 
@@ -131,3 +176,9 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 > Look at all the things I'm **not** doing. -DHH
 
 - [TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc)
+
+## Contributing
+
+This project uses [Standard](https://github.com/testdouble/standard)
+and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
+Please run `./bin/standardize` prior submitting pull requests.

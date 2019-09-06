@@ -1,7 +1,10 @@
 {
   "name": "stimulus_reflex",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./stimulus_reflex.js",
+  "scripts": {
+    "prettier-check": "yarn run prettier --check javascript/stimulus_reflex.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
@@ -9,7 +12,10 @@
   "author": "Nathan Hopkins",
   "license": "MIT",
   "dependencies": {
-    "actioncable": "^5.2.3",
-    "cable_ready": "^4.0.2"
+    "actioncable": ">= 5.2",
+    "cable_ready": ">= 4.0.3"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
   }
 }
