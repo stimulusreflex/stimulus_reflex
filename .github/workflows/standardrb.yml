@@ -1,6 +1,8 @@
 name: Run Standard Lints
 
-on: [push]
+on:
+  - push
+  - pull_request
 
 jobs:
   standard:
