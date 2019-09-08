@@ -14,6 +14,6 @@ jobs:
         args: install
     - name: Prettier
       uses: Borales/actions-yarn@master
-      working-directory: javascript/
+      - working-directory: javascript/
       with:
         args: run prettier-check
