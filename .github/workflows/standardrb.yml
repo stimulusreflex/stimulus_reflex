@@ -17,4 +17,4 @@ jobs:
     - name: Standard
       uses: CultureHQ/actions-bundler@master
       with:
-        args: exec standardrb
+        args: exec standardrb --format progress --parallel true
