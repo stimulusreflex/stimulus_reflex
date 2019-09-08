@@ -42,6 +42,17 @@ const extend = controller => {
         memo[attribute.name] = attribute.value;
         return memo;
       });
+
+      if (this.element.hasOwnProperty('value')) attrs.value = this.element.value;
+      if (this.element.hasOwnProperty('checked')) attrs.checked = this.element.checked;
+      if (this.element.tagName === 'SELECT' && this.element.selectedIndex > -1) {
+        if (this.element.multiple) {
+          // TODO: handle multiple selected values? set attrs.values as an array?
+        } else {
+          attrs.value = this.element.options[this.element.selectedIndex].value;
+        }
+      }
+
       controller.StimulusReflex.subscription.send({ target, args, attrs, url });
     },
   });
