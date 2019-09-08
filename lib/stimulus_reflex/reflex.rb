@@ -14,4 +14,15 @@ class StimulusReflex::Reflex
   def request
     @request ||= ActionDispatch::Request.new(connection.env)
   end
+
+  def wait_for_it(target)
+    Thread.new do
+      @channel.receive({
+        "target" => "#{self.class}##{target}",
+        "args" => yield, 
+        "url" => @url
+      })
+    end if block_given?
+  end
+
 end
