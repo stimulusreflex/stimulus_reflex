@@ -1,5 +1,7 @@
-on: push
 name: Run Prettier Lints
+
+on: [push]
+
 jobs:
   prettier:
     name: Prettier

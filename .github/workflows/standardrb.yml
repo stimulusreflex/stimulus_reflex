@@ -1,5 +1,7 @@
-on: push
 name: Run Standard Lints
+
+on: [push]
+
 jobs:
   standard:
     name: Standard
