@@ -7,7 +7,6 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     steps:
-    -  working-directory: javascript/
     - uses: actions/checkout@master
     - name: Yarn
       uses: Borales/actions-yarn@master
@@ -15,5 +14,6 @@ jobs:
         args: install
     - name: Prettier
       uses: Borales/actions-yarn@master
+      working-directory: javascript/
       with:
         args: run prettier-check
