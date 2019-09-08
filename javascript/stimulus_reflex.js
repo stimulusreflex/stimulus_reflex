@@ -38,7 +38,11 @@ const extend = controller => {
       const url = location.href;
       let args = Array.prototype.slice.call(arguments);
       let target = args.shift();
-      controller.StimulusReflex.subscription.send({ target, args, url });
+      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo = {}, attribute) => {
+        memo[attribute.name] = attribute.value;
+        return memo;
+      });
+      controller.StimulusReflex.subscription.send({ target, args, attrs, url });
     },
   });
 };
