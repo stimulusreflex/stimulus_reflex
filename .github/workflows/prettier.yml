@@ -9,6 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Setup Node
+      uses: actions/setup-node@master
       with:
         version: '12.x'
     - run: yarn
