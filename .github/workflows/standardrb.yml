@@ -1,5 +1,7 @@
-on: push
 name: Run Standard Lints
+
+on: [push, pull_request]
+
 jobs:
   standard:
     name: Standard
