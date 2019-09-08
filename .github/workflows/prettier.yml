@@ -1,6 +1,8 @@
 name: Run Prettier Lints
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
   prettier:

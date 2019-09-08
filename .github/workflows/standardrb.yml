@@ -1,6 +1,8 @@
 name: Run Standard Lints
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
   standard:
@@ -15,4 +17,4 @@ jobs:
     - name: Standard
       uses: CultureHQ/actions-bundler@master
       with:
-        args: exec standardrb
+        args: exec standardrb --format progress
