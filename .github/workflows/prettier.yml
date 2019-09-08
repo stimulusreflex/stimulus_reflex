@@ -1,5 +1,9 @@
-on: push
 name: Run Prettier Lints
+
+on:
+  - push
+  - pull_request
+
 jobs:
   prettier:
     name: Prettier
