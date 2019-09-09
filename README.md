@@ -246,8 +246,8 @@ Please run `./bin/standardize` prior submitting pull requests.
 ### Releasing
 
 1. Bump version number at `lib/stimulus_reflex/version.rb`
-1. Push changes to GitHub
 1. Run `rake release`
+1. Change directories `cd ./javascript`
 1. Run `yarn publish`
 1. Assign same version number to the JavaScript package
 1. Push changes to GitHub
