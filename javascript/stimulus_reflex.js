@@ -38,7 +38,24 @@ const extend = controller => {
       const url = location.href;
       let args = Array.prototype.slice.call(arguments);
       let target = args.shift();
-      controller.StimulusReflex.subscription.send({ target, args, url });
+      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo, attr) => {
+        memo[attr.name] = attr.value;
+        return memo;
+      }, {});
+
+      attrs.value = this.element.value;
+      attrs.checked = !!this.element.checked;
+      attrs.selected = !!this.element.selected;
+      if (this.element.tagName.match(/select/i)) {
+        if (this.element.multiple) {
+          const checkedOptions = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));
+          attrs.values = checkedOptions.map(o => o.value);
+        } else if (this.element.selectedIndex > -1) {
+          attrs.value = this.element.options[this.element.selectedIndex].value;
+        }
+      }
+
+      controller.StimulusReflex.subscription.send({ target, args, attrs, url });
     },
   });
 };

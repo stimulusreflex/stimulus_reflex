@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "main": "./stimulus_reflex.js",
   "scripts": {
-    "prettier-check": "yarn run prettier --check javascript/stimulus_reflex.js"
+    "prettier-check": "yarn run prettier --check ./stimulus_reflex.js"
   },
   "repository": {
     "type": "git",
