@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Yarn
-      uses: Borales/actions-yarn@master
+    - name: Setup Node
+      uses: actions/setup-node@master
       with:
-        args: install
-    - name: Prettier
-      uses: Borales/actions-yarn@master
-      with:
-        args: run prettier-check
+        version: '12.x'
+    - run: yarn
+      working-directory: javascript/
+    - run: yarn run prettier-check
+      working-directory: javascript/
