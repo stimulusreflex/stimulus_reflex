@@ -39,6 +39,8 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
   * [Render Delay](#render-delay)
 - [Demo Applications](#demo-applications)
 - [Contributing](#contributing)
+  * [Coding Standards](#coding-standards)
+  * [Releasing](#releasing)
 
 <!-- tocstop -->
 
@@ -235,6 +237,22 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 
 ## Contributing
 
+### Coding Standards
+
 This project uses [Standard](https://github.com/testdouble/standard)
 and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
 Please run `./bin/standardize` prior submitting pull requests.
+
+### Releasing
+
+1. Bump version number at `lib/stimulus_reflex/version.rb`
+1. Push changes to GitHub
+1. Run `rake release`
+1. Run `yarn publish`
+1. Assign same version number to the JavaScript package
+1. Push changes to GitHub
+1. Push tags to GitHub
+
+    ```
+    git push --tags
+    ```
