@@ -246,6 +246,7 @@ Please run `./bin/standardize` prior submitting pull requests.
 ### Releasing
 
 1. Bump version number at `lib/stimulus_reflex/version.rb`
+1. Run `rake build`
 1. Run `rake release`
 1. Change directories `cd ./javascript`
 1. Run `yarn publish`
