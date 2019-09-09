@@ -44,11 +44,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     method = reflex.method(method_name)
     required_params = method.parameters.select { |(kind, _)| kind == :req }
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
+    accepts_options_kwarg = method.parameters.select { |(kind, name)| name == :options && kind.to_s.start_with?("key") }.size > 0
 
     if arguments.size == 0 && required_params.size == 0
-      reflex.public_send method_name
+      if accepts_options_kwarg
+        reflex.public_send method_name, {options: options}
+      else
+        reflex.public_send method_name
+      end
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
-      accepts_options_kwarg = method.parameters.select { |(kind, name)| name == :options && kind.to_s.start_with?("key") }.size > 0
       if accepts_options_kwarg
         reflex.public_send method_name, *arguments, {options: options}
       else

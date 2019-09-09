@@ -38,17 +38,18 @@ const extend = controller => {
       const url = location.href;
       let args = Array.prototype.slice.call(arguments);
       let target = args.shift();
-      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo = {}, attribute) => {
-        memo[attribute.name] = attribute.value;
+      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo, attr) => {
+        memo[attr.name] = attr.value;
         return memo;
-      });
+      }, {});
 
-      if (this.element.hasOwnProperty('value')) attrs.value = this.element.value;
-      if (this.element.hasOwnProperty('checked')) attrs.checked = this.element.checked;
-      if (this.element.tagName === 'SELECT' && this.element.selectedIndex > -1) {
+      attrs.value = this.element.value;
+      attrs.checked = !!this.element.checked;
+      if (this.element.tagName.match(/select/i)) {
         if (this.element.multiple) {
-          // TODO: handle multiple selected values? set attrs.values as an array?
-        } else {
+          const checkedOptions = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));
+          attrs.values = checkedOptions.map(o => o.value);
+        } else if (this.element.selectedIndex > -1) {
           attrs.value = this.element.options[this.element.selectedIndex].value;
         }
       }
