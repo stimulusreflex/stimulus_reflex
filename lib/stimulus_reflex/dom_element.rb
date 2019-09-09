@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StimulusReflex::DomElement
   attr_reader :attributes
 

@@ -45,6 +45,7 @@ const extend = controller => {
 
       attrs.value = this.element.value;
       attrs.checked = !!this.element.checked;
+      attrs.selected = !!this.element.selected;
       if (this.element.tagName.match(/select/i)) {
         if (this.element.multiple) {
           const checkedOptions = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));

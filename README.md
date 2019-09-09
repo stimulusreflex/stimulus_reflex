@@ -3,6 +3,8 @@
 
 # StimulusReflex
 
+_reflex_ - an action that is performed as a response to a stimulus
+
 ### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
 This project supports building [reactive applications](https://en.wikipedia.org/wiki/Reactive_programming)
@@ -29,9 +31,11 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
   * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
   * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
 - [Advanced Usage](#advanced-usage)
+  * [Reflex Methods](#reflex-methods)
+    + [The `options` Keyword Argument](#the-options-keyword-argument)
   * [ActionCable](#actioncable)
-  * [Performance](#performance)
-  * [ActionCable Rooms](#actioncable-rooms)
+    + [Performance](#performance)
+    + [ActionCable Rooms](#actioncable-rooms)
   * [Render Delay](#render-delay)
 - [Demo Applications](#demo-applications)
 - [Contributing](#contributing)
@@ -128,12 +132,64 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 ## Advanced Usage
 
+### Reflex Methods
+
+#### The `options` Keyword Argument
+
+Reflex methods support an _optional_ `options` keyword argument.
+
+- This is the only supported keyword argument.
+- It must appear after ordinal arguments.
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def work(options: {})
+    # ...
+  end
+
+  def other_work(value, options: {})
+    # ...
+  end
+end
+```
+
+The `options` value contains all of the Stimulus controller's
+[DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
+_Most of the values will be strings._
+Here's an example:
+
+```html
+<checkbox checked label="Example" data-controller="checkbox" data-value="123" />
+```
+
+The markup above produces the following behavior in a reflex method.
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def work(options: {})
+    options[:checked]            # => true
+    options[:label]              # => "Example"
+    options["data-controller"]   # => "checkbox"
+    options["data-value"]        # => "123"
+    options.dataset[:controller] # => "checkbox"
+    options.dataset[:value]      # => "123"
+  end
+end
+```
+
+- `options[:checked]` holds a boolean
+- `options[:selected]` holds a boolean
+- `options[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
+- `select` elements assign `options[:value]` to their selected option's value
+- `select` elements with _multiselect_ enabled assign `options[:values]` to their selected options values
+- All other values stored in `options` are extracted from the DOM element's attributes
+
 ### ActionCable
 
 StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
-### Performance
+#### Performance
 
 ActionCable emits verbose log messages. Disabling ActionCable logs may improve performance.
 
@@ -143,7 +199,7 @@ ActionCable emits verbose log messages. Disabling ActionCable logs may improve p
 ActionCable.server.config.logger = Logger.new(nil)
 ```
 
-### ActionCable Rooms
+#### ActionCable Rooms
 
 You may find the need to restrict notifications to a specific room.
 This can be accomplished by setting the `data-room` attribute on the StimulusController element.
