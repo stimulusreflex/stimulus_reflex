@@ -81,10 +81,11 @@ class StimulusReflexController extends Controller {
   connect() {
     register(this);
   }
+
   perform(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.stimulate(this.element.dataset.reflex);
+    this.element.dataset.reflex.split(' ').forEach(reflex => this.stimulate(this.element.dataset.reflex));
   }
 }
 
@@ -93,9 +94,12 @@ application.register('stimulus-reflex', StimulusReflexController);
 
 const init = () => {
   document.querySelectorAll('[data-stimulus][data-reflex]').forEach(el => {
-    if (!el.hasAttribute('data-action'))
-      el.setAttribute('data-action', `${el.dataset.stimulus}->stimulus-reflex#perform`);
-    if (!el.hasAttribute('data-controller')) el.setAttribute('data-controller', `stimulus-reflex`);
+    if (el.hasAttribute('data-controller')) return;
+    el.setAttribute('data-controller', `stimulus-reflex`);
+    const actions = el.dataset.stimulus.split(' ').map(stimulus => {
+      return `${stimulus}->stimulus-reflex#perform`;
+    });
+    el.setAttribute('data-action', actions.join(' '));
   });
 };
 
