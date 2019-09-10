@@ -94,7 +94,7 @@ application.register('stimulus-reflex', StimulusReflexController);
 
 const init = () => {
   document.querySelectorAll('[data-stimulus][data-reflex]').forEach(el => {
-    if (el.hasAttribute('data-controller')) return;
+    if (String(el.getAttribute('data-controller')).indexOf('stimulus-reflex') >= 0) return;
     el.setAttribute('data-controller', `stimulus-reflex`);
     const actions = el.dataset.stimulus.split(' ').map(stimulus => {
       return `${stimulus}->stimulus-reflex#perform`;
