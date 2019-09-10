@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StimulusReflex::DomElement
+class StimulusReflex::Element
   attr_reader :attributes
 
   delegate :[], to: :"@attributes"
