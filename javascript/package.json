@@ -13,7 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "actioncable": ">= 5.2",
-    "cable_ready": ">= 4.0.3"
+    "cable_ready": ">= 4.0.3",
+    "stimulus": "^1.1.1"
   },
   "devDependencies": {
     "prettier": "^1.18.2"

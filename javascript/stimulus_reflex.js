@@ -1,4 +1,5 @@
 import ActionCable from 'actioncable';
+import { Application, Controller } from 'stimulus';
 import CableReady from 'cable_ready';
 
 const app = window.App || {};
@@ -60,20 +61,47 @@ const extend = controller => {
   });
 };
 
-export default {
-  //
-  // Registers a Stimulus controller and extends it with StimulusReflex behavior
-  // The room can be specified via a data attribute on the Stimulus controller element i.e. data-room="12345"
-  //
-  // controller - the Stimulus controller
-  // options - optional configuration
-  //   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
-  //
-  register: (controller, options = {}) => {
-    const channel = 'StimulusReflex::Channel';
-    const room = controller.element.dataset.room || '';
-    controller.StimulusReflex = { ...options, channel, room };
-    createSubscription(controller);
-    extend(controller);
-  },
+// Registers a Stimulus controller and extends it with StimulusReflex behavior
+// The room can be specified via a data attribute on the Stimulus controller element i.e. data-room="12345"
+//
+// controller - the Stimulus controller
+// options - optional configuration
+//   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
+//
+const register = (controller, options = {}) => {
+  const channel = 'StimulusReflex::Channel';
+  const room = controller.element.dataset.room || '';
+  controller.StimulusReflex = { ...options, channel, room };
+  createSubscription(controller);
+  extend(controller);
 };
+
+// Start declarative stimulus/reflex behavior ................................................................
+class StimulusReflexController extends Controller {
+  connect() {
+    register(this);
+  }
+  perform(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.stimulate(this.element.dataset.reflex);
+  }
+}
+
+const application = Application.start();
+application.register('stimulus-reflex', StimulusReflexController);
+
+const init = () => {
+  document.querySelectorAll('[data-stimulus][data-reflex]').forEach(el => {
+    if (!el.hasAttribute('data-action'))
+      el.setAttribute('data-action', `${el.dataset.stimulus}->stimulus-reflex#perform`);
+    if (!el.hasAttribute('data-controller')) el.setAttribute('data-controller', `stimulus-reflex`);
+  });
+};
+
+window.addEventListener('load', init);
+document.addEventListener('turbolinks:load', init);
+document.addEventListener('cable-ready:after-morph', init);
+// End declarative stimulus/reflex behavior ................................................................
+
+export default { register };
