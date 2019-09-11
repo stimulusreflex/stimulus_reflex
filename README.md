@@ -301,5 +301,4 @@ Please run `./bin/standardize` prior submitting pull requests.
 1. Run `rake build`
 1. Run `rake release`
 1. Change directories `cd ./javascript`
-1. Run `yarn publish --tag GIT_TAG_CREATED_BY_RUBYGEMS`
-1. Assign same version number to the JavaScript package _Might not be required?_
+1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish
