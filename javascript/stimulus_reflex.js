@@ -1,6 +1,6 @@
 import ActionCable from 'actioncable';
-import { Application, Controller } from 'stimulus';
 import CableReady from 'cable_ready';
+import StimulusReflexController from './stimulus_reflex_controller';
 
 const app = window.App || {};
 app.StimulusReflex = app.StimulusReflex || {};
@@ -61,6 +61,27 @@ const extend = controller => {
   });
 };
 
+// Sets up implicit declarative reflex behavior
+const setup = () => {
+  document.querySelectorAll('[data-reflex]').forEach(el => {
+    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return;
+    const controllers = el.dataset.controller ? el.dataset.controller.split(' ') : [];
+    const actions = el.dataset.action ? el.dataset.action.split(' ') : [];
+    controllers.push('stimulus-reflex');
+    el.setAttribute('data-controller', controllers.join(' '));
+    el.dataset.reflex.split(' ').forEach(reflex => {
+      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#perform`);
+    });
+    el.setAttribute('data-action', actions.join(' '));
+  });
+};
+
+// Initializes StimulusReflex by registering the default Stimulus controller
+// with the passed Stimulus application
+const initialize = application => {
+  application.register('stimulus-reflex', StimulusReflexController);
+};
+
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
 // The room can be specified via a data attribute on the Stimulus controller element i.e. data-room="12345"
 //
@@ -76,42 +97,13 @@ const register = (controller, options = {}) => {
   extend(controller);
 };
 
-// Start declarative stimulus/reflex behavior ................................................................
-class StimulusReflexController extends Controller {
-  connect() {
-    register(this);
-  }
-
-  perform(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.element.dataset.reflex.split(' ').forEach(reflex => this.stimulate(reflex.split('->')[1]));
-  }
-}
-
-const application = Application.start();
-application.register('stimulus-reflex', StimulusReflexController);
-
-const init = () => {
-  document.querySelectorAll('[data-reflex]').forEach(el => {
-    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return;
-    const controllers = el.dataset.controller ? el.dataset.controller.split(' ') : [];
-    const actions = el.dataset.action ? el.dataset.action.split(' ') : [];
-    controllers.push('stimulus-reflex');
-    el.setAttribute('data-controller', controllers.join(' '));
-    el.dataset.reflex.split(' ').forEach(reflex => {
-      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#perform`);
-    });
-    el.setAttribute('data-action', actions.join(' '));
-  });
-};
+StimulusReflexController.register = register;
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true;
-  window.addEventListener('load', init);
-  document.addEventListener('turbolinks:load', init);
-  document.addEventListener('cable-ready:after-morph', init);
+  window.addEventListener('load', setup);
+  document.addEventListener('turbolinks:load', setup);
+  document.addEventListener('cable-ready:after-morph', setup);
 }
-// End declarative stimulus/reflex behavior ................................................................
 
-export default { register };
+export default { initialize, register };

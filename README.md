@@ -25,11 +25,17 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 - [How it Works](#how-it-works)
 - [Setup](#setup)
   * [JavaScript](#javascript)
+    + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
   * [Gemfile](#gemfile)
-- [Basic Usage](#basic-usage)
-  * [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
-  * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
-  * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+- [Usage](#usage)
+  * [Implicit Declarative Reflexes](#implicit-declarative-reflexes)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+  * [Explicitly Defined Reflexes](#explicitly-defined-reflexes)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
+    + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
+- [What Just Happened](#what-just-happened)
 - [Advanced Usage](#advanced-usage)
   * [Reflex Methods](#reflex-methods)
     + [The Reflex `element` property](#the-reflex-element-property)
@@ -77,6 +83,21 @@ There are no hidden gotchas.
 ```
 yarn add stimulus_reflex
 ```
+#### app/javascript/controllers/index.js
+
+This is the file where Stimulus is initialized in your application.
+_Note that your file location may be different._
+
+```javascript
+import { Application } from 'stimulus';
+import { definitionsFromContext } from 'stimulus/webpack-helpers';
+import StimulusReflex from 'stimulus_reflex';
+
+const application = Application.start();
+const context = require.context('controllers', true, /_controller\.js$/);
+application.load(definitionsFromContext(context));
+StimulusReflex.initialize(application);
+```
 
 ### Gemfile
 
@@ -84,9 +105,47 @@ yarn add stimulus_reflex
 gem "stimulus_reflex"
 ```
 
-## Basic Usage
+## Usage
 
-### app/views/pages/example.html.erb
+### Implicit Declarative Reflexes
+
+This example shows how to create a reactive feature without the need to write any JavaScript
+other than initializing StimulusReflex itself _([see the setup instructions](#javascript))_. Everything else is managed entirely by HTML and Ruby.
+
+#### app/views/pages/example.html.erb
+
+```erb
+<head></head>
+  <body>
+    <a href="#" data-reflex="click->ExampleReflex#increment" data-step="1" data-count="<%= @count.to_i %>">
+      Increment <%= @count.to_i %>
+    </a>
+  </body>
+</html>
+```
+
+#### app/reflexes/example_reflex.rb
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def increment
+    @count = element.dataset[:count].to_i + element.dataset[:step].to_i
+  end
+end
+```
+
+The code above will automatically update the relevant DOM nodes with the updated count whenever the anchor is clicked.
+
+__Note that all concerns from managing state to rendering views is handled on the server side.__
+This technique works regardless of how complex the UI may become.
+For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
+
+### Explicitly Defined Reflexes
+
+This example shows how to create a reactive feature by defining an explicit client side
+Stimulus controller to handle the DOM event and trigger the server side reflex.
+
+#### app/views/pages/example.html.erb
 
 ```erb
 <head></head>
@@ -98,7 +157,7 @@ gem "stimulus_reflex"
 </html>
 ```
 
-### app/javascript/controllers/example.js
+#### app/javascript/controllers/example.js
 
 ```javascript
 import { Controller } from "stimulus"
@@ -116,7 +175,7 @@ export default class extends Controller {
 }
 ```
 
-### app/reflexes/example_reflex.rb
+#### app/reflexes/example_reflex.rb
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
@@ -126,11 +185,15 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 
-The following happens after the `StimulusReflex::Reflex` method call finishes.
+## What Just Happened
+
+The following happens when a `StimulusReflex::Reflex` is invoked.
 
 1. The page that triggered the reflex is re-rerendered. _Instance variables created in the reflex are available to both the controller and view templates._
 2. The re-rendered HTML is sent to the client over the ActionCable socket.
-3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body is re-rendered and sent over the socket._
+3. The page is updated via fast DOM diffing courtesy of morphdom.
+
+   _NOTE: While future versions of StimulusReflex may support more granular updates, today the entire body is re-rendered and sent over the socket._
 
 ## Advanced Usage
 
