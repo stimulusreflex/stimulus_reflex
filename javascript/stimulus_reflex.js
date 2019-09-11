@@ -106,9 +106,12 @@ const init = () => {
   });
 };
 
-window.addEventListener('load', init);
-document.addEventListener('turbolinks:load', init);
-document.addEventListener('cable-ready:after-morph', init);
+if (!document.stimulusReflexInitialized) {
+  document.stimulusReflexInitialized = true;
+  window.addEventListener('load', init);
+  document.addEventListener('turbolinks:load', init);
+  document.addEventListener('cable-ready:after-morph', init);
+}
 // End declarative stimulus/reflex behavior ................................................................
 
 export default { register };
