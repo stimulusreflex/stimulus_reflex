@@ -32,7 +32,7 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
   * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
 - [Advanced Usage](#advanced-usage)
   * [Reflex Methods](#reflex-methods)
-    + [The `options` Keyword Argument](#the-options-keyword-argument)
+    + [The Reflex `element` property](#the-reflex-element-property)
   * [ActionCable](#actioncable)
     + [Performance](#performance)
     + [ActionCable Rooms](#actioncable-rooms)
@@ -136,55 +136,45 @@ The following happens after the `StimulusReflex::Reflex` method call finishes.
 
 ### Reflex Methods
 
-#### The `options` Keyword Argument
+#### The Reflex `element` property
 
-Reflex methods support an _optional_ `options` keyword argument.
-
-- This is the only supported keyword argument.
-- It must appear after ordinal arguments.
-
-```ruby
-class ExampleReflex < StimulusReflex::Reflex
-  def work(options: {})
-    # ...
-  end
-
-  def other_work(value, options: {})
-    # ...
-  end
-end
-```
-
-The `options` value contains all of the Stimulus controller's
+All reflex methods expose an `element` property.
+This property holds a Hash like data structure that represents the HTML element that triggered the refelx.
+It contains all of the Stimulus controller's
 [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
 _Most of the values will be strings._
-Here's an example:
 
 ```html
-<checkbox checked label="Example" data-controller="checkbox" data-value="123" />
+<checkbox id="example"
+          label="Example"
+          data-controller="checkbox"
+          data-value="123"
+          checked />
 ```
-
-The markup above produces the following behavior in a reflex method.
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
-  def work(options: {})
-    options[:checked]            # => true
-    options[:label]              # => "Example"
-    options["data-controller"]   # => "checkbox"
-    options["data-value"]        # => "123"
-    options.dataset[:controller] # => "checkbox"
-    options.dataset[:value]      # => "123"
+  def work()
+    element[:id]    # => the HTML element's id attribute value
+    element.dataset # => a Hash that represents the HTML element's dataset
+
+    element[:id]                 # => "example"
+    element[:checked]            # => true
+    element[:label]              # => "Example"
+    element["data-controller"]   # => "checkbox"
+    element["data-value"]        # => "123"
+    element.dataset[:controller] # => "checkbox"
+    element.dataset[:value]      # => "123"
   end
 end
 ```
 
-- `options[:checked]` holds a boolean
-- `options[:selected]` holds a boolean
-- `options[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
-- `select` elements assign `options[:value]` to their selected option's value
-- `select` elements with _multiselect_ enabled assign `options[:values]` to their selected options values
-- All other values stored in `options` are extracted from the DOM element's attributes
+- `element[:checked]` holds a boolean
+- `element[:selected]` holds a boolean
+- `element[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
+- `select` elements assign `element[:value]` to their selected option's value
+- `select` elements with _multiselect_ enabled assign `element[:values]` to their selected options values
+- All other values exposed in `element` are extracted from the DOM element's attributes
 
 ### ActionCable
 
