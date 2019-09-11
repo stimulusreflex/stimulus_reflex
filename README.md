@@ -1,7 +1,11 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-159-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-220-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
+![Prettier](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier%20Check%20Action/badge.svg)
+![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB%20Check%20Action/badge.svg)
 
 # StimulusReflex
+
+_reflex_ - an action that is performed as a response to a stimulus
 
 ### Build reactive [Single Page Applications (SPAs)](https://en.wikipedia.org/wiki/Single-page_application) with [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org)
 
@@ -23,18 +27,27 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 - [How it Works](#how-it-works)
 - [Setup](#setup)
   * [JavaScript](#javascript)
+    + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
   * [Gemfile](#gemfile)
-- [Basic Usage](#basic-usage)
-  * [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
-  * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
-  * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+- [Usage](#usage)
+  * [Zero JavaScript](#zero-javascript)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+  * [Minimal JavaScript](#minimal-javascript)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
+    + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
+- [What Just Happened](#what-just-happened)
 - [Advanced Usage](#advanced-usage)
+  * [The Reflex `element` property](#the-reflex-element-property)
   * [ActionCable](#actioncable)
-  * [Performance](#performance)
-  * [ActionCable Rooms](#actioncable-rooms)
+    + [Performance](#performance)
+    + [ActionCable Rooms](#actioncable-rooms)
   * [Render Delay](#render-delay)
 - [Demo Applications](#demo-applications)
 - [Contributing](#contributing)
+  * [Coding Standards](#coding-standards)
+  * [Releasing](#releasing)
 
 <!-- tocstop -->
 
@@ -71,6 +84,21 @@ There are no hidden gotchas.
 ```
 yarn add stimulus_reflex
 ```
+#### app/javascript/controllers/index.js
+
+This is the file where Stimulus is initialized in your application.
+_Note that your file location may be different._
+
+```javascript
+import { Application } from 'stimulus';
+import { definitionsFromContext } from 'stimulus/webpack-helpers';
+import StimulusReflex from 'stimulus_reflex';
+
+const application = Application.start();
+const context = require.context('controllers', true, /_controller\.js$/);
+application.load(definitionsFromContext(context));
+StimulusReflex.initialize(application);
+```
 
 ### Gemfile
 
@@ -78,21 +106,64 @@ yarn add stimulus_reflex
 gem "stimulus_reflex"
 ```
 
-## Basic Usage
+## Usage
 
-### app/views/pages/example.html.erb
+### Zero JavaScript
+
+This example shows how to create a reactive feature without the need to write any JavaScript
+other than initializing StimulusReflex itself _([see the setup instructions](#javascript))_. Everything else is managed entirely by HTML and Ruby.
+
+#### app/views/pages/example.html.erb
 
 ```erb
 <head></head>
   <body>
-    <a href="#" data-controller="example" data-action="click->example#increment">
+    <a href="#"
+       data-reflex="click->ExampleReflex#increment"
+       data-step="1"
+       data-count="<%= @count.to_i %>">
       Increment <%= @count.to_i %>
     </a>
   </body>
 </html>
 ```
 
-### app/javascript/controllers/example.js
+#### app/reflexes/example_reflex.rb
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def increment
+    @count = element.dataset[:count].to_i + element.dataset[:step].to_i
+  end
+end
+```
+
+The code above will automatically update the relevant DOM nodes with the updated count whenever the anchor is clicked.
+
+__Note that all concerns (from managing state to rendering views) are handled server side.__
+This technique works regardless of how complex the UI may become.
+For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
+
+### Minimal JavaScript
+
+This example shows how to create a reactive feature by defining an explicit client side
+Stimulus controller to handle the DOM event and trigger the server side reflex.
+
+#### app/views/pages/example.html.erb
+
+```erb
+<head></head>
+  <body>
+    <a href="#"
+       data-controller="example"
+       data-action="click->example#increment">
+      Increment <%= @count.to_i %>
+    </a>
+  </body>
+</html>
+```
+
+#### app/javascript/controllers/example.js
 
 ```javascript
 import { Controller } from "stimulus"
@@ -105,12 +176,13 @@ export default class extends Controller {
 
   increment() {
     // trigger a server-side reflex and a client-side page update
+    // pass the step argument with a value of `1` to the reflex method
     this.stimulate('ExampleReflex#increment', 1);
   }
 }
 ```
 
-### app/reflexes/example_reflex.rb
+#### app/reflexes/example_reflex.rb
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
@@ -120,20 +192,64 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 
-The following happens after the `StimulusReflex::Reflex` method call finishes.
+## What Just Happened
+
+The following happens when a `StimulusReflex::Reflex` is invoked.
 
 1. The page that triggered the reflex is re-rerendered. _Instance variables created in the reflex are available to both the controller and view templates._
 2. The re-rendered HTML is sent to the client over the ActionCable socket.
-3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body is re-rendered and sent over the socket._
+3. The page is updated via fast DOM diffing courtesy of morphdom.
+
+   _NOTE: While future versions of StimulusReflex may support more granular updates, today the entire body is re-rendered and sent over the socket._
 
 ## Advanced Usage
+
+### The Reflex `element` property
+
+All reflex methods expose an `element` property.
+This property holds a Hash like data structure that represents the HTML element that triggered the refelx.
+It contains all of the Stimulus controller's
+[DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
+_Most of the values will be strings._
+
+```html
+<checkbox id="example"
+          label="Example"
+          data-controller="checkbox"
+          data-value="123"
+          checked />
+```
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def work()
+    element[:id]    # => the HTML element's id attribute value
+    element.dataset # => a Hash that represents the HTML element's dataset
+
+    element[:id]                 # => "example"
+    element[:checked]            # => true
+    element[:label]              # => "Example"
+    element["data-controller"]   # => "checkbox"
+    element["data-value"]        # => "123"
+    element.dataset[:controller] # => "checkbox"
+    element.dataset[:value]      # => "123"
+  end
+end
+```
+
+- `element[:checked]` holds a boolean
+- `element[:selected]` holds a boolean
+- `element[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
+- `select` elements assign `element[:value]` to their selected option's value
+- `select` elements with _multiselect_ enabled assign `element[:values]` to their selected options values
+- All other values exposed in `element` are extracted from the DOM element's attributes
 
 ### ActionCable
 
 StimulusReflex will use the ActionCable defaults of `window.App` and `App.cable` if they exist.
 If these defaults do not exist, StimulusReflex will establish a new socket connection.
 
-### Performance
+#### Performance
 
 ActionCable emits verbose log messages. Disabling ActionCable logs may improve performance.
 
@@ -143,7 +259,7 @@ ActionCable emits verbose log messages. Disabling ActionCable logs may improve p
 ActionCable.server.config.logger = Logger.new(nil)
 ```
 
-### ActionCable Rooms
+#### ActionCable Rooms
 
 You may find the need to restrict notifications to a specific room.
 This can be accomplished by setting the `data-room` attribute on the StimulusController element.
@@ -179,6 +295,16 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 
 ## Contributing
 
+### Coding Standards
+
 This project uses [Standard](https://github.com/testdouble/standard)
 and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
 Please run `./bin/standardize` prior submitting pull requests.
+
+### Releasing
+
+1. Bump version number at `lib/stimulus_reflex/version.rb`
+1. Run `rake build`
+1. Run `rake release`
+1. Change directories `cd ./javascript`
+1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish

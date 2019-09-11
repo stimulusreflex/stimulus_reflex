@@ -22,28 +22,37 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
+    element = StimulusReflex::Element.new(data["attrs"])
 
     begin
-      reflex = reflex_name.constantize.new(self, url: url)
+      reflex_class = reflex_name.constantize
+      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless reflex_class == StimulusReflex::Reflex
+      reflex = reflex_class.new(self, url: url, element: element)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
-      logger.error "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}"
+      logger.error "\e[31mStimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}\e[0m"
     end
 
     begin
       render_page_and_broadcast_morph url, reflex
     rescue => render_error
-      logger.error "StimulusReflex::Channel Failed to rerender #{url} #{render_error}"
+      logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
     end
   end
 
   private
 
   def delegate_call_to_reflex(reflex, method_name, arguments = [])
-    if reflex.method(method_name).arity != 0
-      reflex.send method_name, *arguments
+    method = reflex.method(method_name)
+    required_params = method.parameters.select { |(kind, _)| kind == :req }
+    optional_params = method.parameters.select { |(kind, _)| kind == :opt }
+
+    if arguments.size == 0 && required_params.size == 0
+      reflex.public_send method_name
+    elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
+      reflex.public_send method_name, *arguments
     else
-      reflex.send method_name
+      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end
   end
 
