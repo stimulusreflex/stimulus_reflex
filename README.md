@@ -37,8 +37,7 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
     + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
 - [What Just Happened](#what-just-happened)
 - [Advanced Usage](#advanced-usage)
-  * [Reflex Methods](#reflex-methods)
-    + [The Reflex `element` property](#the-reflex-element-property)
+  * [The Reflex `element` property](#the-reflex-element-property)
   * [ActionCable](#actioncable)
     + [Performance](#performance)
     + [ActionCable Rooms](#actioncable-rooms)
@@ -197,9 +196,7 @@ The following happens when a `StimulusReflex::Reflex` is invoked.
 
 ## Advanced Usage
 
-### Reflex Methods
-
-#### The Reflex `element` property
+### The Reflex `element` property
 
 All reflex methods expose an `element` property.
 This property holds a Hash like data structure that represents the HTML element that triggered the refelx.
