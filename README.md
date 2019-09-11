@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-203-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-218-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 ![Prettier](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier%20Check%20Action/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB%20Check%20Action/badge.svg)
@@ -27,14 +27,19 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 - [How it Works](#how-it-works)
 - [Setup](#setup)
   * [JavaScript](#javascript)
+    + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
   * [Gemfile](#gemfile)
-- [Basic Usage](#basic-usage)
-  * [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
-  * [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
-  * [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+- [Usage](#usage)
+  * [Implicit Declarative Reflexes](#implicit-declarative-reflexes)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+  * [Explicitly Defined Reflexes](#explicitly-defined-reflexes)
+    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
+    + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
+- [What Just Happened](#what-just-happened)
 - [Advanced Usage](#advanced-usage)
-  * [Reflex Methods](#reflex-methods)
-    + [The `options` Keyword Argument](#the-options-keyword-argument)
+  * [The Reflex `element` property](#the-reflex-element-property)
   * [ActionCable](#actioncable)
     + [Performance](#performance)
     + [ActionCable Rooms](#actioncable-rooms)
@@ -79,6 +84,21 @@ There are no hidden gotchas.
 ```
 yarn add stimulus_reflex
 ```
+#### app/javascript/controllers/index.js
+
+This is the file where Stimulus is initialized in your application.
+_Note that your file location may be different._
+
+```javascript
+import { Application } from 'stimulus';
+import { definitionsFromContext } from 'stimulus/webpack-helpers';
+import StimulusReflex from 'stimulus_reflex';
+
+const application = Application.start();
+const context = require.context('controllers', true, /_controller\.js$/);
+application.load(definitionsFromContext(context));
+StimulusReflex.initialize(application);
+```
 
 ### Gemfile
 
@@ -86,9 +106,47 @@ yarn add stimulus_reflex
 gem "stimulus_reflex"
 ```
 
-## Basic Usage
+## Usage
 
-### app/views/pages/example.html.erb
+### Implicit Declarative Reflexes
+
+This example shows how to create a reactive feature without the need to write any JavaScript
+other than initializing StimulusReflex itself _([see the setup instructions](#javascript))_. Everything else is managed entirely by HTML and Ruby.
+
+#### app/views/pages/example.html.erb
+
+```erb
+<head></head>
+  <body>
+    <a href="#" data-reflex="click->ExampleReflex#increment" data-step="1" data-count="<%= @count.to_i %>">
+      Increment <%= @count.to_i %>
+    </a>
+  </body>
+</html>
+```
+
+#### app/reflexes/example_reflex.rb
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def increment
+    @count = element.dataset[:count].to_i + element.dataset[:step].to_i
+  end
+end
+```
+
+The code above will automatically update the relevant DOM nodes with the updated count whenever the anchor is clicked.
+
+__Note that all concerns from managing state to rendering views are handled server side.__
+This technique works regardless of how complex the UI may become.
+For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
+
+### Explicitly Defined Reflexes
+
+This example shows how to create a reactive feature by defining an explicit client side
+Stimulus controller to handle the DOM event and trigger the server side reflex.
+
+#### app/views/pages/example.html.erb
 
 ```erb
 <head></head>
@@ -100,7 +158,7 @@ gem "stimulus_reflex"
 </html>
 ```
 
-### app/javascript/controllers/example.js
+#### app/javascript/controllers/example.js
 
 ```javascript
 import { Controller } from "stimulus"
@@ -118,7 +176,7 @@ export default class extends Controller {
 }
 ```
 
-### app/reflexes/example_reflex.rb
+#### app/reflexes/example_reflex.rb
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
@@ -128,65 +186,57 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 
-The following happens after the `StimulusReflex::Reflex` method call finishes.
+## What Just Happened
+
+The following happens when a `StimulusReflex::Reflex` is invoked.
 
 1. The page that triggered the reflex is re-rerendered. _Instance variables created in the reflex are available to both the controller and view templates._
 2. The re-rendered HTML is sent to the client over the ActionCable socket.
-3. The page is updated via fast DOM diffing courtesy of morphdom. _While future versions of StimulusReflex might support more granular updates, today the entire body is re-rendered and sent over the socket._
+3. The page is updated via fast DOM diffing courtesy of morphdom.
+
+   _NOTE: While future versions of StimulusReflex may support more granular updates, today the entire body is re-rendered and sent over the socket._
 
 ## Advanced Usage
 
-### Reflex Methods
+### The Reflex `element` property
 
-#### The `options` Keyword Argument
-
-Reflex methods support an _optional_ `options` keyword argument.
-
-- This is the only supported keyword argument.
-- It must appear after ordinal arguments.
-
-```ruby
-class ExampleReflex < StimulusReflex::Reflex
-  def work(options: {})
-    # ...
-  end
-
-  def other_work(value, options: {})
-    # ...
-  end
-end
-```
-
-The `options` value contains all of the Stimulus controller's
+All reflex methods expose an `element` property.
+This property holds a Hash like data structure that represents the HTML element that triggered the refelx.
+It contains all of the Stimulus controller's
 [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
 _Most of the values will be strings._
-Here's an example:
 
 ```html
-<checkbox checked label="Example" data-controller="checkbox" data-value="123" />
+<checkbox id="example"
+          label="Example"
+          data-controller="checkbox"
+          data-value="123"
+          checked />
 ```
-
-The markup above produces the following behavior in a reflex method.
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
-  def work(options: {})
-    options[:checked]            # => true
-    options[:label]              # => "Example"
-    options["data-controller"]   # => "checkbox"
-    options["data-value"]        # => "123"
-    options.dataset[:controller] # => "checkbox"
-    options.dataset[:value]      # => "123"
+  def work()
+    element[:id]    # => the HTML element's id attribute value
+    element.dataset # => a Hash that represents the HTML element's dataset
+
+    element[:id]                 # => "example"
+    element[:checked]            # => true
+    element[:label]              # => "Example"
+    element["data-controller"]   # => "checkbox"
+    element["data-value"]        # => "123"
+    element.dataset[:controller] # => "checkbox"
+    element.dataset[:value]      # => "123"
   end
 end
 ```
 
-- `options[:checked]` holds a boolean
-- `options[:selected]` holds a boolean
-- `options[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
-- `select` elements assign `options[:value]` to their selected option's value
-- `select` elements with _multiselect_ enabled assign `options[:values]` to their selected options values
-- All other values stored in `options` are extracted from the DOM element's attributes
+- `element[:checked]` holds a boolean
+- `element[:selected]` holds a boolean
+- `element[:value]` holds the [DOM element's value](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#value)
+- `select` elements assign `element[:value]` to their selected option's value
+- `select` elements with _multiselect_ enabled assign `element[:values]` to their selected options values
+- All other values exposed in `element` are extracted from the DOM element's attributes
 
 ### ActionCable
 

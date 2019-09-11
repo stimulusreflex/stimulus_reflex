@@ -10,7 +10,7 @@ require "nokogiri"
 require "cable_ready"
 require "stimulus_reflex/version"
 require "stimulus_reflex/reflex"
-require "stimulus_reflex/dom_element"
+require "stimulus_reflex/element"
 require "stimulus_reflex/channel"
 
 module StimulusReflex
