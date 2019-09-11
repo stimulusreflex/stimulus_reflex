@@ -1,8 +1,12 @@
-name: Run Prettier Lints
+name: Prettier Check Action
 
 on:
-  - push
-  - pull_request
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
 
 jobs:
   prettier:

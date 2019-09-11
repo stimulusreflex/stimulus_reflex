@@ -1,8 +1,12 @@
-name: Run Standard Lints
+name: StandardRB Check Action
 
 on:
-  - push
-  - pull_request
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
 
 jobs:
   standard:
@@ -10,11 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Bundle
-      uses: CultureHQ/actions-bundler@master
-      with:
-        args: install
     - name: Standard
       uses: CultureHQ/actions-bundler@master
       with:
-        args: exec standardrb --format progress
+        args: install && bundle exec standardrb --format progress
