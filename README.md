@@ -1,4 +1,4 @@
-[![Lines of Code](http://img.shields.io/badge/lines_of_code-218-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-220-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 ![Prettier](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier%20Check%20Action/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB%20Check%20Action/badge.svg)
@@ -30,10 +30,10 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
     + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
   * [Gemfile](#gemfile)
 - [Usage](#usage)
-  * [Implicit Declarative Reflexes](#implicit-declarative-reflexes)
+  * [Zero JavaScript](#zero-javascript)
     + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
     + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
-  * [Explicitly Defined Reflexes](#explicitly-defined-reflexes)
+  * [Minimal JavaScript](#minimal-javascript)
     + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
     + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
     + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
@@ -108,7 +108,7 @@ gem "stimulus_reflex"
 
 ## Usage
 
-### Implicit Declarative Reflexes
+### Zero JavaScript
 
 This example shows how to create a reactive feature without the need to write any JavaScript
 other than initializing StimulusReflex itself _([see the setup instructions](#javascript))_. Everything else is managed entirely by HTML and Ruby.
@@ -141,7 +141,7 @@ __Note that all concerns from managing state to rendering views are handled serv
 This technique works regardless of how complex the UI may become.
 For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 
-### Explicitly Defined Reflexes
+### Minimal JavaScript
 
 This example shows how to create a reactive feature by defining an explicit client side
 Stimulus controller to handle the DOM event and trigger the server side reflex.
@@ -171,6 +171,7 @@ export default class extends Controller {
 
   increment() {
     // trigger a server-side reflex and a client-side page update
+    // pass the step argument with a value of `1` to the reflex method
     this.stimulate('ExampleReflex#increment', 1);
   }
 }
@@ -301,5 +302,4 @@ Please run `./bin/standardize` prior submitting pull requests.
 1. Run `rake build`
 1. Run `rake release`
 1. Change directories `cd ./javascript`
-1. Run `yarn publish --tag GIT_TAG_CREATED_BY_RUBYGEMS`
-1. Assign same version number to the JavaScript package _Might not be required?_
+1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish
