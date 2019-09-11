@@ -30,10 +30,10 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
     + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
   * [Gemfile](#gemfile)
 - [Usage](#usage)
-  * [Implicit Declarative Reflexes](#implicit-declarative-reflexes)
+  * [Zero JavaScript](#zero-javascript)
     + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
     + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
-  * [Explicitly Defined Reflexes](#explicitly-defined-reflexes)
+  * [Minimal JavaScript](#minimal-javascript)
     + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
     + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
     + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
@@ -108,7 +108,7 @@ gem "stimulus_reflex"
 
 ## Usage
 
-### Implicit Declarative Reflexes
+### Zero JavaScript
 
 This example shows how to create a reactive feature without the need to write any JavaScript
 other than initializing StimulusReflex itself _([see the setup instructions](#javascript))_. Everything else is managed entirely by HTML and Ruby.
@@ -141,7 +141,7 @@ __Note that all concerns from managing state to rendering views are handled serv
 This technique works regardless of how complex the UI may become.
 For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 
-### Explicitly Defined Reflexes
+### Minimal JavaScript
 
 This example shows how to create a reactive feature by defining an explicit client side
 Stimulus controller to handle the DOM event and trigger the server side reflex.
@@ -171,6 +171,7 @@ export default class extends Controller {
 
   increment() {
     // trigger a server-side reflex and a client-side page update
+    // pass the step argument with a value of `1` to the reflex method
     this.stimulate('ExampleReflex#increment', 1);
   }
 }
