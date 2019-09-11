@@ -135,7 +135,7 @@ end
 
 The code above will automatically update the relevant DOM nodes with the updated count whenever the anchor is clicked.
 
-__Note that all concerns from managing state to rendering views is handled on the server side.__
+__Note that all concerns from managing state to rendering views are handled server side.__
 This technique works regardless of how complex the UI may become.
 For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 
