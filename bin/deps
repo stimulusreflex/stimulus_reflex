@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-bundle viz --version --format svg --without development test
-cd ./app/assets/javascripts/stimulus_reflex/src
-yarn list -s --prod > ../../../../../javascript_graph.txt

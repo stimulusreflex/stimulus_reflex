@@ -1,0 +1,24 @@
+name: Prettier Check Action
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+
+jobs:
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Node
+      uses: actions/setup-node@master
+      with:
+        version: '12.x'
+    - run: yarn
+      working-directory: javascript/
+    - run: yarn run prettier-check
+      working-directory: javascript/
