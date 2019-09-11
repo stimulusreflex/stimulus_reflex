@@ -118,7 +118,10 @@ other than initializing StimulusReflex itself _([see the setup instructions](#ja
 ```erb
 <head></head>
   <body>
-    <a href="#" data-reflex="click->ExampleReflex#increment" data-step="1" data-count="<%= @count.to_i %>">
+    <a href="#"
+       data-reflex="click->ExampleReflex#increment"
+       data-step="1"
+       data-count="<%= @count.to_i %>">
       Increment <%= @count.to_i %>
     </a>
   </body>
@@ -151,7 +154,9 @@ Stimulus controller to handle the DOM event and trigger the server side reflex.
 ```erb
 <head></head>
   <body>
-    <a href="#" data-controller="example" data-action="click->example#increment">
+    <a href="#"
+       data-controller="example"
+       data-action="click->example#increment">
       Increment <%= @count.to_i %>
     </a>
   </body>
