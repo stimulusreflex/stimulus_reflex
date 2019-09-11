@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-cd ./app/assets/javascripts/stimulus_reflex/src
-./node_modules/webpack/bin/webpack.js "$@"

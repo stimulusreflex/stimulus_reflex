@@ -1,0 +1,20 @@
+name: StandardRB Check Action
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+
+jobs:
+  standard:
+    name: Standard
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Standard
+      uses: CultureHQ/actions-bundler@master
+      with:
+        args: install && bundle exec standardrb --format progress

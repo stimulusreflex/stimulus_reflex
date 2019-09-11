@@ -1,4 +1,4 @@
 #!/bin/bash
 
 bundle exec standardrb --fix
-prettier --no-config --single-quote --trailing-comma es5 --write app/assets/javascripts/stimulus_reflex/src/*.js
+cd ./javascript && yarn run prettier --write stimulus_reflex.js
