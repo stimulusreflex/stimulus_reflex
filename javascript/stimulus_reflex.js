@@ -94,10 +94,13 @@ application.register('stimulus-reflex', StimulusReflexController);
 
 const init = () => {
   document.querySelectorAll('[data-reflex]').forEach(el => {
-    if (String(el.getAttribute('data-controller')).indexOf('stimulus-reflex') >= 0) return;
-    el.setAttribute('data-controller', `stimulus-reflex`);
-    const actions = el.dataset.reflex.split(' ').map(reflex => {
-      return `${reflex.split('->')[0]}->stimulus-reflex#perform`;
+    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return;
+    const controllers = el.dataset.controller ? el.dataset.controller.split(' ') : [];
+    const actions = el.dataset.action ? el.dataset.action.split(' ') : [];
+    controllers.push('stimulus-reflex');
+    el.setAttribute('data-controller', controllers.join(' '));
+    el.dataset.reflex.split(' ').forEach(reflex => {
+      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#perform`);
     });
     el.setAttribute('data-action', actions.join(' '));
   });
