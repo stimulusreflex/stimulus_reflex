@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+require "fileutils"
+require "json"
+require "pry"
+require_relative "../lib/stimulus_reflex/version"
+
+class Publish
+  ROOT = Pathname.new File.expand_path("..", __dir__)
+  VERSION_TYPES = %w(major minor patch).freeze
+  RELEASE_VERSION = ARGV[0]
+
+  def perform
+    check_supplied_version
+    # binding.pry
+    p new_version
+    update_release_version_in_file
+  end
+
+  def check_supplied_version
+    format_error("version not supplied") unless RELEASE_VERSION
+
+    format_error("version not valid, please use 'major', 'minor', or 'patch'") unless %w(major minor patch).include? RELEASE_VERSION
+  end
+
+  def format_error(message)
+    abort("\e[31mERROR: #{message}\e[0m")
+  end
+
+  def format_warning(message)
+    warn("\e[33mWARNING: #{message}\e[0m")
+  end
+
+  def update_release_version_in_file
+    FileUtils.chdir ROOT do
+      filepath = "lib/stimulus_reflex/version.rb"
+      # text = File.read(filepath)
+      # replace = text.gsub(/\d.\d.\d/, new_version)
+      # File.open(filepath, "w") { |file| file.puts replace }
+      IO.write(filepath, File.open(filepath) { |f| f.read.gsub(/\d.\d.\d/, new_version) })
+    end
+  end
+
+  def current_version
+    @current_version ||= StimulusReflex::VERSION
+  end
+
+  def new_version
+    new_version = current_version.split(".").map(&:to_i)
+
+    case RELEASE_VERSION
+    when "major"
+      new_version[0] += 1
+      new_version[1] = 0
+      new_version[2] = 0
+    when "minor"
+      new_version[1] += 1
+      new_version[2] = 0
+    when "patch"
+      new_version[2] += 1
+    end
+
+    return new_version.join(".")
+  end
+end
+
+Publish.new.perform
