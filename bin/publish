@@ -2,66 +2,137 @@
 
 require "pathname"
 require "fileutils"
-require "json"
-require "pry"
 require_relative "../lib/stimulus_reflex/version"
 
 class Publish
   ROOT = Pathname.new File.expand_path("..", __dir__)
   VERSION_TYPES = %w(major minor patch).freeze
   RELEASE_VERSION = ARGV[0]
+  LIBRARY = ARGV[1]
 
   def perform
     check_supplied_version
-    # binding.pry
-    p new_version
-    update_release_version_in_file
-  end
+    format_warning("Bumping version number to: v#{new_version}")
 
-  def check_supplied_version
-    format_error("version not supplied") unless RELEASE_VERSION
-
-    format_error("version not valid, please use 'major', 'minor', or 'patch'") unless %w(major minor patch).include? RELEASE_VERSION
-  end
-
-  def format_error(message)
-    abort("\e[31mERROR: #{message}\e[0m")
-  end
-
-  def format_warning(message)
-    warn("\e[33mWARNING: #{message}\e[0m")
-  end
-
-  def update_release_version_in_file
     FileUtils.chdir ROOT do
-      filepath = "lib/stimulus_reflex/version.rb"
-      # text = File.read(filepath)
-      # replace = text.gsub(/\d.\d.\d/, new_version)
-      # File.open(filepath, "w") { |file| file.puts replace }
-      IO.write(filepath, File.open(filepath) { |f| f.read.gsub(/\d.\d.\d/, new_version) })
+      bump_version
     end
   end
 
+  # make sure new version is:
+  # 1. supplied
+  # 2. valid
+  def check_supplied_version
+    format_error("Version not supplied!\n\nPlease supply the type of version bump this is.") unless RELEASE_VERSION
+
+    format_error("Version not valid!\n\nTry again with 'major', 'minor', or 'patch'") unless %w(major minor patch).include? RELEASE_VERSION
+  end
+
+  # decide what we are bumping
+  def bump_version
+    case LIBRARY
+    when "gem"
+      update_gem_version
+      commit_files
+      release_gem
+    when "package"
+      update_package_version
+      commit_files
+      release_package
+    when "both"
+      update_gem_version
+      update_package_version
+      commit_files
+      release_gem
+      release_package
+    else
+      format_error("You didn't specify what you wanted to release!\n\nTry again with 'gem', 'package', or 'both'.")
+    end
+  end
+
+  def commit_files
+    system! "git branch --set-upstream origin version-bump-#{new_version.gsub(".", "-")}"
+    system! "git add . && git commit -m 'Bump version to: #{new_version}'"
+  end
+
+  # update the version in version.rb
+  def update_gem_version
+    update_version_file("lib/stimulus_reflex/version.rb")
+  end
+
+  # update the version in package.json
+  def update_package_version
+    update_version_file("javascript/package.json")
+  end
+
+  # run commands to release the gem
+  def release_gem
+    format_warning("Releasing Gem..")
+
+    system! "rake build"
+    system! "rake release"
+
+    format_warning("Gem Released!")
+  end
+
+  # run commands to release the package
+  def release_package
+    format_warning("Releasing Package..")
+
+    FileUtils.chdir "javascript/" do
+      system! "yarn publish"
+    end
+
+    format_warning("Package released!")
+  end
+
+  # takes in path, finds "#.#.#" and replaces with the new version number
+  def update_version_file(path)
+    IO.write(path, File.open(path) { |f| f.read.gsub(/"\d.\d.\d"/, "\"#{new_version}\"") })
+  end
+
+  # current library version
   def current_version
     @current_version ||= StimulusReflex::VERSION
   end
 
+  # the new version number
   def new_version
-    new_version = current_version.split(".").map(&:to_i)
+    @new_version ||= calculate_new_version
+  end
+
+  # returns the calculated version bump number
+  def calculate_new_version
+    version = current_version.split(".").map(&:to_i)
 
     case RELEASE_VERSION
     when "major"
-      new_version[0] += 1
-      new_version[1] = 0
-      new_version[2] = 0
+      version[0] += 1
+      version[1] = 0
+      version[2] = 0
     when "minor"
-      new_version[1] += 1
-      new_version[2] = 0
+      version[1] += 1
+      version[2] = 0
     when "patch"
-      new_version[2] += 1
+      version[2] += 1
     end
 
-    return new_version.join(".")
+    return version.join(".")
+  end
+
+  # helper for calling system commands
+  def system!(*args)
+    system(*args) || format_error(*args)
+  end
+
+  # format errors in red and abort
+  def format_error(message)
+    abort("\e[31mERROR: #{message}\e[0m")
+  end
+
+  # format warnings in yellow
+  def format_warning(message)
+    warn("\e[33m\n#{message}\n\e[0m")
   end
 end
 
