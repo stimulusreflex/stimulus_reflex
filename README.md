@@ -294,7 +294,7 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 
 ### Code of Conduct
 
-Everyone interacting with StimulusReflex is expected to follow the [Code of Conduct][CODE_OF_CONDUCT.md]
+Everyone interacting with StimulusReflex is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ### Coding Standards
 
@@ -312,4 +312,4 @@ Please run `./bin/standardize` prior submitting pull requests.
 
 ## License
 
-StimulusReflex is released under the [MIT License][/LICENSE.txt].
+StimulusReflex is released under the [MIT License](LICENSE.txt).
