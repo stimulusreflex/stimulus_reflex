@@ -10,7 +10,7 @@ on:
 
 jobs:
   prettier:
-    name: Prettier
+    name: Prettier Check Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
