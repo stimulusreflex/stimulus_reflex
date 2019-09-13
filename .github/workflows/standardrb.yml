@@ -1,4 +1,4 @@
-name: StandardRB Check Action
+name: StandardRB
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   standard:
-    name: Standard
+    name: StandardRB Check Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
