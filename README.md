@@ -15,7 +15,7 @@ It's designed to work perfectly with [server rendered HTML](https://guides.rubyo
 [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching),
 [Stimulus](https://stimulusjs.org), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc...
 
-__No need for a complex front-end framework. No need to grow your team or duplicate your efforts.__
+**No need for a complex front-end framework. No need to grow your team or duplicate your efforts.**
 
 _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
@@ -26,28 +26,28 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 - [Before you Begin](#before-you-begin)
 - [How it Works](#how-it-works)
 - [Setup](#setup)
-  * [JavaScript](#javascript)
-    + [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
-  * [Gemfile](#gemfile)
+  - [JavaScript](#javascript)
+    - [app/javascript/controllers/index.js](#appjavascriptcontrollersindexjs)
+  - [Gemfile](#gemfile)
 - [Usage](#usage)
-  * [Zero JavaScript](#zero-javascript)
-    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
-    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
-  * [Minimal JavaScript](#minimal-javascript)
-    + [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
-    + [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
-    + [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
+  - [Zero JavaScript](#zero-javascript)
+    - [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb)
+    - [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb)
+  - [Minimal JavaScript](#minimal-javascript)
+    - [app/views/pages/example.html.erb](#appviewspagesexamplehtmlerb-1)
+    - [app/javascript/controllers/example.js](#appjavascriptcontrollersexamplejs)
+    - [app/reflexes/example_reflex.rb](#appreflexesexample_reflexrb-1)
 - [What Just Happened](#what-just-happened)
 - [Advanced Usage](#advanced-usage)
-  * [The Reflex `element` property](#the-reflex-element-property)
-  * [ActionCable](#actioncable)
-    + [Performance](#performance)
-    + [ActionCable Rooms](#actioncable-rooms)
-  * [Render Delay](#render-delay)
+  - [The Reflex `element` property](#the-reflex-element-property)
+  - [ActionCable](#actioncable)
+    - [Performance](#performance)
+    - [ActionCable Rooms](#actioncable-rooms)
+  - [Render Delay](#render-delay)
 - [Demo Applications](#demo-applications)
 - [Contributing](#contributing)
-  * [Coding Standards](#coding-standards)
-  * [Releasing](#releasing)
+  - [Coding Standards](#coding-standards)
+  - [Releasing](#releasing)
 
 <!-- tocstop -->
 
@@ -61,9 +61,9 @@ _Check out the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) e
 
 StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request/response cycle.
 
-1. __Communication happens on the ActionCable web socket__ _- saves time by avoiding the overhead of establishishing traditional HTTP connections_
-1. __The controller action is invoked directly__ _- skips framework overhead such as the middleware chain, etc..._
-1. __DOM diffing is used to update the page__ _- provides faster rendering and less jitter_
+1. **Communication happens on the ActionCable web socket** _- saves time by avoiding the overhead of establishishing traditional HTTP connections_
+1. **The controller action is invoked directly** _- skips framework overhead such as the middleware chain, etc..._
+1. **DOM diffing is used to update the page** _- provides faster rendering and less jitter_
 
 ## How it Works
 
@@ -72,7 +72,7 @@ StimulusReflex offers 3 primary benefits over the traditional Rails HTTP request
 1. Watch the page automatically render updates via fast [DOM diffing](https://github.com/patrick-steele-idem/morphdom)
 1. That's it...
 
-__Yes, it really is that simple.__
+**Yes, it really is that simple.**
 There are no hidden gotchas.
 
 ![How it Works](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/docs/diagram.png)
@@ -81,9 +81,10 @@ There are no hidden gotchas.
 
 ### JavaScript
 
-```
+```sh
 yarn add stimulus_reflex
 ```
+
 #### app/javascript/controllers/index.js
 
 This is the file where Stimulus is initialized in your application.
@@ -140,7 +141,7 @@ end
 
 The code above will automatically update the relevant DOM nodes with the updated count whenever the anchor is clicked.
 
-__Note that all concerns (from managing state to rendering views) are handled server side.__
+**Note that all concerns (from managing state to rendering views) are handled server side.**
 This technique works regardless of how complex the UI may become.
 For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 
@@ -166,8 +167,8 @@ Stimulus controller to handle the DOM event and trigger the server side reflex.
 #### app/javascript/controllers/example.js
 
 ```javascript
-import { Controller } from "stimulus"
-import StimulusReflex from "stimulus_reflex"
+import { Controller } from 'stimulus';
+import StimulusReflex from 'stimulus_reflex';
 
 export default class extends Controller {
   connect() {
@@ -213,11 +214,7 @@ It contains all of the Stimulus controller's
 _Most of the values will be strings._
 
 ```html
-<checkbox id="example"
-          label="Example"
-          data-controller="checkbox"
-          data-value="123"
-          checked />
+<checkbox id="example" label="Example" data-controller="checkbox" data-value="123" checked />
 ```
 
 ```ruby
@@ -278,7 +275,7 @@ Simply set the `renderDelay` _(milliseconds)_ option when registering the contro
 ```javascript
 export default class extends Controller {
   connect() {
-    StimulusReflex.register(this, {renderDelay: 200});
+    StimulusReflex.register(this, { renderDelay: 200 });
   }
 }
 ```
@@ -295,6 +292,10 @@ Building apps with StimulusReflex should evoke your memories of the original [Ra
 
 ## Contributing
 
+### Code of Conduct
+
+Everyone interacting with StimulusReflex is expected to follow the [Code of Conduct][CODE_OF_CONDUCT.md]
+
 ### Coding Standards
 
 This project uses [Standard](https://github.com/testdouble/standard)
@@ -308,3 +309,7 @@ Please run `./bin/standardize` prior submitting pull requests.
 1. Run `rake release`
 1. Change directories `cd ./javascript`
 1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish
+
+## License
+
+StimulusReflex is released under the [MIT License][/LICENSE.txt].
