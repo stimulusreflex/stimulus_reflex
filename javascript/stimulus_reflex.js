@@ -78,8 +78,8 @@ const setup = () => {
 
 // Initializes StimulusReflex by registering the default Stimulus controller
 // with the passed Stimulus application
-const initialize = application => {
-  application.register('stimulus-reflex', StimulusReflexController);
+const initialize = (application, controller) => {
+  application.register('stimulus-reflex', controller || StimulusReflexController);
 };
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
