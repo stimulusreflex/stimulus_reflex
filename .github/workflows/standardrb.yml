@@ -1,4 +1,4 @@
-name: StandardRB Check Action
+name: StandardRB
 
 on:
   pull_request:

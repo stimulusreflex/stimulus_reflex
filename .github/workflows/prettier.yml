@@ -1,4 +1,4 @@
-name: Prettier Check Action
+name: Prettier
 
 on:
   pull_request:
