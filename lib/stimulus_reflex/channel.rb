@@ -20,6 +20,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     url = data["url"].to_s
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
+    controller_name = reflex_name[0..-7].downcase
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
     element = StimulusReflex::Element.new(data["attrs"])
@@ -34,7 +35,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex
+      render_page_and_broadcast_morph url, reflex, controller_name, method_name
     rescue => render_error
       logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
     end
@@ -56,9 +57,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex)
+  def render_page_and_broadcast_morph(url, reflex, controller_name, method_name)
     html = render_page(url, reflex)
-    broadcast_morph url, html if html.present?
+    broadcast_morph url, reflex, controller_name, method_name, html if html.present?
   end
 
   def render_page(url, reflex)
@@ -92,9 +93,17 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, html)
+  def broadcast_morph(url, reflex, controller_name, method_name, html)
     html = extract_body_html(html)
-    cable_ready[stream_name].morph selector: "body", html: html, children_only: true
+    cable_ready[stream_name].morph({
+      selector: "body",
+      html: html,
+      children_only: true,
+      callback: reflex.callback,
+      redirect: reflex.redirect,
+      controller: controller_name,
+      method: method_name
+    })
     cable_ready.broadcast
   end
 

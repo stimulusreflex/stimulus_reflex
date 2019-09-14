@@ -1,16 +1,17 @@
-import ActionCable from 'actioncable';
-import CableReady from 'cable_ready';
-import StimulusReflexController from './stimulus_reflex_controller';
+import ActionCable from 'actioncable'
+import CableReady from 'cable_ready'
+import StimulusReflexController from './stimulus_reflex_controller'
 
-const app = window.App || {};
-app.StimulusReflex = app.StimulusReflex || {};
-app.StimulusReflex.consumer = app.StimulusReflex.consumer || ActionCable.createConsumer();
-app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {};
+const app = window.App || {}
+app.StimulusReflex = app.StimulusReflex || {}
+app.StimulusReflex.consumer =
+  app.StimulusReflex.consumer || ActionCable.createConsumer()
+app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
 
 const createSubscription = controller => {
-  const { channel, room } = controller.StimulusReflex;
-  const id = `${channel}${room}`;
-  const renderDelay = controller.StimulusReflex.renderDelay || 25;
+  const { channel, room } = controller.StimulusReflex
+  const id = `${channel}${room}`
+  const renderDelay = controller.StimulusReflex.renderDelay || 25
 
   const subscription =
     app.StimulusReflex.subscriptions[id] ||
@@ -19,68 +20,96 @@ const createSubscription = controller => {
       {
         received: data => {
           if (data.cableReady) {
-            clearTimeout(controller.StimulusReflex.timeout);
+            clearTimeout(controller.StimulusReflex.timeout)
             controller.StimulusReflex.timeout = setTimeout(() => {
-              CableReady.perform(data.operations);
-            }, renderDelay);
+              if (data.operations.morph[0].redirect) {
+                if (typeof Turbolinks === 'object') {
+                  Turbolinks.visit(data.operations.morph[0].redirect)
+                } else window.location = data.operations.morph[0].redirect
+              }
+              CableReady.perform(data.operations)
+              const targetController = controller.application.getControllerForElementAndIdentifier(
+                controller.element,
+                data.operations.morph[0].controller
+              )
+              if (
+                data.operations.morph[0].callback &&
+                typeof targetController[data.operations.morph[0].callback] ===
+                  'function'
+              ) {
+                targetController[data.operations.morph[0].callback]()
+              } else {
+                let method = data.operations.morph[0].method
+                method = 'on' + method.charAt(0).toUpperCase() + method.slice(1)
+                if (typeof targetController[method] === 'function') {
+                  targetController[method]()
+                }
+              }
+            }, renderDelay)
           }
-        },
+        }
       }
-    );
+    )
 
-  app.StimulusReflex.subscriptions[id] = subscription;
-  controller.StimulusReflex.subscription = subscription;
-};
+  app.StimulusReflex.subscriptions[id] = subscription
+  controller.StimulusReflex.subscription = subscription
+}
 
 const extend = controller => {
   Object.assign(controller, {
-    stimulate() {
-      clearTimeout(controller.StimulusReflex.timeout);
-      const url = location.href;
-      let args = Array.prototype.slice.call(arguments);
-      let target = args.shift();
-      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo, attr) => {
-        memo[attr.name] = attr.value;
-        return memo;
-      }, {});
+    stimulate () {
+      clearTimeout(controller.StimulusReflex.timeout)
+      const url = location.href
+      let args = Array.prototype.slice.call(arguments)
+      let target = args.shift()
+      let attrs = Array.prototype.slice
+        .call(this.element.attributes)
+        .reduce((memo, attr) => {
+          memo[attr.name] = attr.value
+          return memo
+        }, {})
 
-      attrs.value = this.element.value;
-      attrs.checked = !!this.element.checked;
-      attrs.selected = !!this.element.selected;
+      attrs.value = this.element.value
+      attrs.checked = !!this.element.checked
+      attrs.selected = !!this.element.selected
       if (this.element.tagName.match(/select/i)) {
         if (this.element.multiple) {
-          const checkedOptions = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));
-          attrs.values = checkedOptions.map(o => o.value);
+          const checkedOptions = Array.prototype.slice.call(
+            this.element.querySelectorAll('option:checked')
+          )
+          attrs.values = checkedOptions.map(o => o.value)
         } else if (this.element.selectedIndex > -1) {
-          attrs.value = this.element.options[this.element.selectedIndex].value;
+          attrs.value = this.element.options[this.element.selectedIndex].value
         }
       }
 
-      controller.StimulusReflex.subscription.send({ target, args, attrs, url });
-    },
-  });
-};
+      controller.StimulusReflex.subscription.send({ target, args, attrs, url })
+    }
+  })
+}
 
 // Sets up implicit declarative reflex behavior
 const setup = () => {
   document.querySelectorAll('[data-reflex]').forEach(el => {
-    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return;
-    const controllers = el.dataset.controller ? el.dataset.controller.split(' ') : [];
-    const actions = el.dataset.action ? el.dataset.action.split(' ') : [];
-    controllers.push('stimulus-reflex');
-    el.setAttribute('data-controller', controllers.join(' '));
+    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return
+    const controllers = el.dataset.controller
+      ? el.dataset.controller.split(' ')
+      : []
+    const actions = el.dataset.action ? el.dataset.action.split(' ') : []
+    controllers.push('stimulus-reflex')
+    el.setAttribute('data-controller', controllers.join(' '))
     el.dataset.reflex.split(' ').forEach(reflex => {
-      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#perform`);
-    });
-    el.setAttribute('data-action', actions.join(' '));
-  });
-};
+      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#perform`)
+    })
+    el.setAttribute('data-action', actions.join(' '))
+  })
+}
 
 // Initializes StimulusReflex by registering the default Stimulus controller
 // with the passed Stimulus application
-const initialize = (application, controller) => {
-  application.register('stimulus-reflex', controller || StimulusReflexController);
-};
+const initialize = application => {
+  application.register('stimulus-reflex', StimulusReflexController)
+}
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
 // The room can be specified via a data attribute on the Stimulus controller element i.e. data-room="12345"
@@ -90,20 +119,20 @@ const initialize = (application, controller) => {
 //   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
 //
 const register = (controller, options = {}) => {
-  const channel = 'StimulusReflex::Channel';
-  const room = controller.element.dataset.room || '';
-  controller.StimulusReflex = { ...options, channel, room };
-  createSubscription(controller);
-  extend(controller);
-};
-
-StimulusReflexController.register = register;
-
-if (!document.stimulusReflexInitialized) {
-  document.stimulusReflexInitialized = true;
-  window.addEventListener('load', setup);
-  document.addEventListener('turbolinks:load', setup);
-  document.addEventListener('cable-ready:after-morph', setup);
+  const channel = 'StimulusReflex::Channel'
+  const room = controller.element.dataset.room || ''
+  controller.StimulusReflex = { ...options, channel, room }
+  createSubscription(controller)
+  extend(controller)
 }
 
-export default { initialize, register };
+StimulusReflexController.register = register
+
+if (!document.stimulusReflexInitialized) {
+  document.stimulusReflexInitialized = true
+  window.addEventListener('load', setup)
+  document.addEventListener('turbolinks:load', setup)
+  document.addEventListener('cable-ready:after-morph', setup)
+}
+
+export default { initialize, register }

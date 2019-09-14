@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
-  attr_reader :channel, :url, :element
+  attr_reader :channel, :url, :element, :callback, :redirect
 
   delegate :connection, to: :channel
   delegate :session, to: :request
@@ -10,6 +10,8 @@ class StimulusReflex::Reflex
     @channel = channel
     @url = url
     @element = element
+    @callback = nil
+    @redirect = nil
   end
 
   def request
