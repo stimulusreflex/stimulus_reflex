@@ -26,7 +26,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
     begin
       reflex_class = reflex_name.constantize
-      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless reflex_class == StimulusReflex::Reflex
+      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless reflex_class < StimulusReflex::Reflex
       reflex = reflex_class.new(self, url: url, element: element)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
