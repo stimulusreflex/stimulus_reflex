@@ -26,7 +26,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
     begin
       reflex_class = reflex_name.constantize
-      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless reflex_class < StimulusReflex::Reflex
+      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
       reflex = reflex_class.new(self, url: url, element: element)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
@@ -41,6 +41,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   private
+
+  def is_reflex?(reflex_class)
+    reflex_class.ancestors.include? StimulusReflex::Reflex
+  end
 
   def delegate_call_to_reflex(reflex, method_name, arguments = [])
     method = reflex.method(method_name)
