@@ -26,23 +26,25 @@ const createSubscription = controller => {
                 if (typeof Turbolinks === 'object') {
                   Turbolinks.visit(data.operations.morph[0].redirect)
                 } else window.location = data.operations.morph[0].redirect
-              }
-              CableReady.perform(data.operations)
-              const targetController = controller.application.getControllerForElementAndIdentifier(
-                controller.element,
-                data.operations.morph[0].controller
-              )
-              if (
-                data.operations.morph[0].callback &&
-                typeof targetController[data.operations.morph[0].callback] ===
-                  'function'
-              ) {
-                targetController[data.operations.morph[0].callback]()
               } else {
-                let method = data.operations.morph[0].method
-                method = 'on' + method.charAt(0).toUpperCase() + method.slice(1)
-                if (typeof targetController[method] === 'function') {
-                  targetController[method]()
+                CableReady.perform(data.operations)
+                const targetController = controller.application.getControllerForElementAndIdentifier(
+                  controller.element,
+                  data.operations.morph[0].controller
+                )
+                if (
+                  data.operations.morph[0].callback &&
+                  typeof targetController[data.operations.morph[0].callback] ===
+                    'function'
+                ) {
+                  targetController[data.operations.morph[0].callback]()
+                } else {
+                  let method = data.operations.morph[0].method
+                  method =
+                    'on' + method.charAt(0).toUpperCase() + method.slice(1)
+                  if (typeof targetController[method] === 'function') {
+                    targetController[method]()
+                  }
                 }
               }
             }, renderDelay)
