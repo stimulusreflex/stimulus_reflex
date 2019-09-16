@@ -34,7 +34,7 @@ const createSubscription = controller => {
 
 const extend = controller => {
   Object.assign(controller, {
-    stimulate() {
+    stimulate () {
       clearTimeout(controller.StimulusReflex.timeout);
       const url = location.href;
       let args = Array.prototype.slice.call(arguments);
