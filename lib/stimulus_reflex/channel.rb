@@ -106,7 +106,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       callback: reflex.callback,
       redirect: reflex.redirect,
       controller: controller_name,
-      method: method_name
+      method: method_name,
     })
     cable_ready.broadcast
   end
