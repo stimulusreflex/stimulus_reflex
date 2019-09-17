@@ -37,10 +37,10 @@ const extend = controller => {
   Object.assign(controller, {
     stimulate () {
       clearTimeout(controller.StimulusReflex.timeout)
-      const url = location.href
-      let args = Array.prototype.slice.call(arguments)
-      let target = args.shift()
-      let attrs = Array.prototype.slice
+      const url = window.location.href
+      const args = Array.prototype.slice.call(arguments)
+      const target = args.shift()
+      const attrs = Array.prototype.slice
         .call(this.element.attributes)
         .reduce((memo, attr) => {
           memo[attr.name] = attr.value
@@ -123,6 +123,7 @@ const initialize = (application, controller) => {
 // controller - the Stimulus controller
 // options - optional configuration
 //   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
+//   * url - the route from which this controller is rendered. defaults to location.href
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'

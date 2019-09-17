@@ -34,11 +34,11 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       logger.error "\e[31mStimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}\e[0m"
     end
 
-    # begin
-    render_page_and_broadcast_morph url, reflex, xpath
-    # rescue => render_error
-    #   logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
-    # end
+    begin
+      render_page_and_broadcast_morph url, reflex, xpath
+    rescue => render_error
+      logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
+    end
   end
 
   private
