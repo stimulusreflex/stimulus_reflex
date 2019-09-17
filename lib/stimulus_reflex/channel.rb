@@ -18,6 +18,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     url = data["url"].to_s
+    xpath = data["xpath"].to_s
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
@@ -27,17 +28,17 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element)
+      reflex = reflex_class.new(self, url: url, element: element, xpath: xpath)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       logger.error "\e[31mStimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}\e[0m"
     end
 
-    begin
-      render_page_and_broadcast_morph url, reflex
-    rescue => render_error
-      logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
-    end
+    # begin
+    render_page_and_broadcast_morph url, reflex, xpath
+    # rescue => render_error
+    #   logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
+    # end
   end
 
   private
@@ -60,9 +61,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex)
+  def render_page_and_broadcast_morph(url, reflex, xpath)
     html = render_page(url, reflex)
-    broadcast_morph url, html if html.present?
+    broadcast_morph url, xpath, html if html.present?
   end
 
   def render_page(url, reflex)
@@ -96,14 +97,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, html)
-    html = extract_body_html(html)
-    cable_ready[stream_name].morph selector: "body", html: html, children_only: true
+  def broadcast_morph(url, xpath, html)
+    html = extract_html(html, xpath)
+    cable_ready[stream_name].morph selector: xpath, html: html, children_only: false, xpath: true
     cable_ready.broadcast
   end
 
-  def extract_body_html(html)
+  def extract_html(html, xpath)
     doc = Nokogiri::HTML(html)
-    doc.css("body").to_s
+    doc.xpath(xpath).to_s
   end
 end
