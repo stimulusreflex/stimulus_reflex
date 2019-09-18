@@ -17,13 +17,14 @@ class StimulusReflex::Reflex
   end
 
   def wait_for_it(target)
-    Thread.new do
-      @channel.receive({
-        "target" => "#{self.class}##{target}",
-        "args" => yield, 
-        "url" => @url
-      })
-    end if block_given?
+    if block_given?
+      Thread.new do
+        @channel.receive({
+          "target" => "#{self.class}##{target}",
+          "args" => yield,
+          "url" => @url,
+        })
+      end
+    end
   end
-
 end
