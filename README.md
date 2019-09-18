@@ -302,6 +302,8 @@ This project uses [Standard](https://github.com/testdouble/standard)
 and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
 Please run `./bin/standardize` prior submitting pull requests.
 
+View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
+
 ### Releasing
 
 1. Bump version number at `lib/stimulus_reflex/version.rb`
