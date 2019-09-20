@@ -21,7 +21,7 @@ export const dispatch = (name, detail, stimulusApplication) => {
     ? stimulusApplication.getControllerForElementAndIdentifier(element, attrs['data-controller'])
     : null;
 
-  const methods = ['beforeStimulate', 'reflexSuccess', 'reflexError', 'reflexComplete'];
+  const methods = ['reflexStart', 'reflexSuccess', 'reflexError', 'reflexComplete'];
   methods.forEach(method => {
     if (typeof evt.stimulusController[method] === 'function') evt.stimulusController[method](detail);
   });
