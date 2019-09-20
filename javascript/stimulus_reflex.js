@@ -58,7 +58,9 @@ const extend = controller => {
         }
       }
 
-      controller.StimulusReflex.subscription.send({ target, args, attrs, url });
+      const data = { target, args, attrs, url };
+      dispatch('stimulus-reflex:before', data, stimulusApplication);
+      controller.StimulusReflex.subscription.send(data);
     },
   });
 };
@@ -108,12 +110,20 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('turbolinks:load', setup);
   document.addEventListener('cable-ready:after-morph', event => {
     setup();
-    if (event.detail.stimulusReflex)
+    if (event.detail.stimulusReflex) {
       dispatch('stimulus-reflex:success', event.detail.stimulusReflex, stimulusApplication);
+      dispatch('stimulus-reflex:complete', event.detail.stimulusReflex, stimulusApplication);
+    }
   });
   document.addEventListener('stimulus-reflex:500', event => {
     dispatch('stimulus-reflex:error', event.detail.stimulusReflex, stimulusApplication);
+    dispatch('stimulus-reflex:complete', event.detail.stimulusReflex, stimulusApplication);
   });
+
+  // document.addEventListener('stimulus-reflex:before', event => {
+  //   const controller = event.stimulusController;
+  //   debugger;
+  // });
 
   // document.addEventListener('stimulus-reflex:success', event => {
   //   const controller = event.stimulusController;
