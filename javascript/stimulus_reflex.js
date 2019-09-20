@@ -108,13 +108,19 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('turbolinks:load', setup);
   document.addEventListener('cable-ready:after-morph', event => {
     setup();
-
-    if (event.detail.stimulusReflex) {
+    if (event.detail.stimulusReflex)
       dispatch('stimulus-reflex:success', event.detail.stimulusReflex, stimulusApplication);
-    }
+  });
+  document.addEventListener('stimulus-reflex:500', event => {
+    dispatch('stimulus-reflex:error', event.detail.stimulusReflex, stimulusApplication);
   });
 
   // document.addEventListener('stimulus-reflex:success', event => {
+  //   const controller = event.stimulusController;
+  //   debugger;
+  // });
+
+  // document.addEventListener('stimulus-reflex:error', event => {
   //   const controller = event.stimulusController;
   //   debugger;
   // });
