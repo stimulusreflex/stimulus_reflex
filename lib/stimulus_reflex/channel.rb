@@ -30,13 +30,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       reflex = reflex_class.new(self, url: url, element: element)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
-      logger.error "\e[31mStimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}\e[0m"
+      return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}")
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex
+      render_page_and_broadcast_morph url, reflex, data
     rescue => render_error
-      logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
+      broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{render_error}"
     end
   end
 
@@ -60,9 +60,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex)
+  def render_page_and_broadcast_morph(url, reflex, data = {})
     html = render_page(url, reflex)
-    broadcast_morph url, html if html.present?
+    broadcast_morph url, html, data if html.present?
   end
 
   def render_page(url, reflex)
@@ -96,9 +96,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, html)
+  def broadcast_morph(url, html, data = {})
     html = extract_body_html(html)
-    cable_ready[stream_name].morph selector: "body", html: html, children_only: true
+    cable_ready[stream_name].morph selector: "body", html: html, children_only: true, stimulus_reflex: data
+    cable_ready.broadcast
+  end
+
+  def broadcast_error(message)
+    logger.error "\e[31m#{message}\e[0m"
+    cable_ready[stream_name].dispatch_event name: "stimulus-reflex:error", detail: {message: message}
     cable_ready.broadcast
   end
 

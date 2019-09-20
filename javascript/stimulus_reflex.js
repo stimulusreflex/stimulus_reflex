@@ -1,7 +1,9 @@
 import ActionCable from 'actioncable';
 import CableReady from 'cable_ready';
 import StimulusReflexController from './stimulus_reflex_controller';
+import { dispatch } from './helpers';
 
+let stimulusApplication;
 const app = window.App || {};
 app.StimulusReflex = app.StimulusReflex || {};
 app.StimulusReflex.consumer = app.StimulusReflex.consumer || ActionCable.createConsumer();
@@ -79,7 +81,8 @@ const setup = () => {
 // Initializes StimulusReflex by registering the default Stimulus controller
 // with the passed Stimulus application
 const initialize = (application, controller) => {
-  application.register('stimulus-reflex', controller || StimulusReflexController);
+  stimulusApplication = application;
+  stimulusApplication.register('stimulus-reflex', controller || StimulusReflexController);
 };
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
@@ -103,7 +106,18 @@ if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true;
   window.addEventListener('load', setup);
   document.addEventListener('turbolinks:load', setup);
-  document.addEventListener('cable-ready:after-morph', setup);
+  document.addEventListener('cable-ready:after-morph', event => {
+    setup();
+
+    if (event.detail.stimulusReflex) {
+      dispatch('stimulus-reflex:success', event.detail.stimulusReflex, stimulusApplication);
+    }
+  });
+
+  // document.addEventListener('stimulus-reflex:success', event => {
+  //   const controller = event.stimulusController;
+  //   debugger;
+  // });
 }
 
 export default { initialize, register };
