@@ -16,7 +16,7 @@ export const dispatch = (name, detail, stimulusApplication) => {
       elements = document.querySelectorAll(selectors.join(''));
     } catch (error) {
       console.log(
-        'StimulusReflex encountered an error attempting to find the Stimulus element. Consider adding an [id] to the element.',
+        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an [id] to the element.',
         error,
         detail
       );
@@ -34,6 +34,10 @@ export const dispatch = (name, detail, stimulusApplication) => {
     methods.forEach(method => {
       if (typeof evt.stimulusController[method] === 'function') evt.stimulusController[method](detail);
     });
+  } else {
+    console.log(
+      'StimulusReflex was unable to identify the Stimulus controller. Consider adding an [id] to the element.'
+    );
   }
 
   document.dispatchEvent(evt);
