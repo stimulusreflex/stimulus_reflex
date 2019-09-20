@@ -29,10 +29,12 @@ export const dispatch = (name, detail, stimulusApplication) => {
     ? stimulusApplication.getControllerForElementAndIdentifier(element, attrs['data-controller'])
     : null;
 
-  const methods = ['reflexStart', 'reflexSuccess', 'reflexError', 'reflexComplete'];
-  methods.forEach(method => {
-    if (typeof evt.stimulusController[method] === 'function') evt.stimulusController[method](detail);
-  });
+  if (evt.stimulusController) {
+    const methods = ['reflexStart', 'reflexSuccess', 'reflexError', 'reflexComplete'];
+    methods.forEach(method => {
+      if (typeof evt.stimulusController[method] === 'function') evt.stimulusController[method](detail);
+    });
+  }
 
   document.dispatchEvent(evt);
 };
