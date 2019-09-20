@@ -1,6 +1,6 @@
 export const dispatch = (name, detail, stimulusApplication) => {
   const attrs = detail.attrs;
-  let elements;
+  let elements = [];
   if (attrs.id) {
     elements = document.querySelectorAll(`#${attrs.id}`);
   } else {
