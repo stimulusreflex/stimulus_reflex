@@ -12,7 +12,15 @@ export const dispatch = (name, detail, stimulusApplication) => {
       if (!attrs.hasOwnProperty(key)) continue;
       selectors.push(`[${key}="${attrs[key]}"]`);
     }
-    elements = document.querySelectorAll(selectors.join(''));
+    try {
+      elements = document.querySelectorAll(selectors.join(''));
+    } catch (error) {
+      console.log(
+        'StimulusReflex encountered an error attempting to find the Stimulus element. Consider adding an [id] to the element.',
+        error,
+        detail
+      );
+    }
   }
   const element = elements.length === 1 ? elements[0] : null;
   const evt = new Event(name, { bubbles: true, cancelable: true });
