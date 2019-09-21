@@ -36,7 +36,7 @@ export const dispatch = (name, detail, stimulusApplication) => {
     });
   } else {
     console.log(
-      'StimulusReflex was unable to identify the Stimulus controller. Consider adding an [id] to the element.'
+      'StimulusReflex was unable to identify the Stimulus controller. Consider adding an #id to the element.'
     );
   }
 
