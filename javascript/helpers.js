@@ -16,7 +16,7 @@ export const dispatch = (name, detail, stimulusApplication) => {
       elements = document.querySelectorAll(selectors.join(''));
     } catch (error) {
       console.log(
-        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an [id] to the element.',
+        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
         detail
       );
