@@ -1,4 +1,11 @@
-export const dispatch = (name, detail, stimulusApplication) => {
+const eventCallbackMappings = {
+  'stimulus-reflex:before': 'reflexStart',
+  'stimulus-reflex:success': 'reflexSuccess',
+  'stimulus-reflex:error': 'reflexError',
+  'stimulus-reflex:complete': 'reflexComplete',
+};
+
+export default (name, detail, stimulusApplication) => {
   const attrs = detail.attrs;
   let elements = [];
   if (attrs.id) {
@@ -6,6 +13,7 @@ export const dispatch = (name, detail, stimulusApplication) => {
   } else {
     let selectors = [];
     for (const key in attrs) {
+      if (key.indexOf('.') >= 0) continue;
       if (key === 'value') continue;
       if (key === 'checked') continue;
       if (key === 'selected') continue;
@@ -22,18 +30,19 @@ export const dispatch = (name, detail, stimulusApplication) => {
       );
     }
   }
+
+  let controller = null;
   const element = elements.length === 1 ? elements[0] : null;
+  const callback = eventCallbackMappings[name];
   const evt = new Event(name, { bubbles: true, cancelable: true });
   evt.detail = detail;
-  evt.stimulusController = element
-    ? stimulusApplication.getControllerForElementAndIdentifier(element, attrs['data-controller'])
-    : null;
 
-  if (evt.stimulusController) {
-    const methods = ['reflexStart', 'reflexSuccess', 'reflexError', 'reflexComplete'];
-    methods.forEach(method => {
-      if (typeof evt.stimulusController[method] === 'function') evt.stimulusController[method](detail);
-    });
+  if (element)
+    controller = stimulusApplication.getControllerForElementAndIdentifier(element, attrs['data-controller']);
+  evt.stimulusController = controller;
+
+  if (controller) {
+    if (typeof controller[callback] === 'function') controller[callback](detail);
   } else {
     console.log(
       'StimulusReflex was unable to identify the Stimulus controller. Consider adding an #id to the element.'

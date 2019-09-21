@@ -1,7 +1,7 @@
 import ActionCable from 'actioncable';
 import CableReady from 'cable_ready';
 import StimulusReflexController from './stimulus_reflex_controller';
-import { dispatch } from './helpers';
+import dispatch from './dispatch';
 
 let stimulusApplication;
 const app = window.App || {};
