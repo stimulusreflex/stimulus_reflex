@@ -10,19 +10,19 @@ let stimulusApplication;
 // SEE: stimulute()
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
-const findElement = attrs => {
+const findElement = attributes => {
   let elements = [];
-  if (attrs.id) {
-    elements = document.querySelectorAll(`#${attrs.id}`);
+  if (attributes.id) {
+    elements = document.querySelectorAll(`#${attributes.id}`);
   } else {
     let selectors = [];
-    for (const key in attrs) {
-      if (key.indexOf('.') >= 0) continue;
+    for (const key in attributes) {
+      if (key.includes('.')) continue;
       if (key === 'value') continue;
       if (key === 'checked') continue;
       if (key === 'selected') continue;
-      if (!attrs.hasOwnProperty(key)) continue;
-      selectors.push(`[${key}="${attrs[key]}"]`);
+      if (!attributes.hasOwnProperty(key)) continue;
+      selectors.push(`[${key}="${attributes[key]}"]`);
     }
     try {
       elements = document.querySelectorAll(selectors.join(''));
@@ -39,17 +39,50 @@ const findElement = attrs => {
   return element;
 };
 
+// Extracts attributes from a DOM element
+const extractElementAttributes = element => {
+  let attrs = Array.prototype.slice.call(element.attributes).reduce((memo, attr) => {
+    memo[attr.name] = attr.value;
+    return memo;
+  }, {});
+
+  attrs.value = element.value;
+  attrs.checked = !!element.checked;
+  attrs.selected = !!element.selected;
+  if (element.tagName.match(/select/i)) {
+    if (element.multiple) {
+      const checkedOptions = Array.prototype.slice.call(element.querySelectorAll('option:checked'));
+      attrs.values = checkedOptions.map(o => o.value);
+    } else if (element.selectedIndex > -1) {
+      attrs.value = element.options[element.selectedIndex].value;
+    }
+  }
+  return attrs;
+};
+
 // Finds the Stimulus controller for the DOM element matching the passed set of DOM element attributes.
 // This is the same set of attributes forwared to the serer side reflex.
 // SEE: stimulute()
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
-const findController = attrs => {
-  const element = findElement(attrs);
+const findController = (name, attributes) => {
+  const element = findElement(attributes);
   if (!element) return null;
-  if (!element.dataset.controller) return null;
   if (!stimulusApplication) return null;
-  return stimulusApplication.getControllerForElementAndIdentifier(element, element.dataset.controller);
+  return stimulusApplication.getControllerForElementAndIdentifier(element, name);
+};
+
+// Finds the closest StimulusReflex controller name in the DOM tree
+const findStimulusReflexControllerName = element => {
+  const controllerNames = element.dataset.controller ? element.dataset.controller.split(' ') : [];
+  let controllerName = controllerNames.reduce((memo, name) => {
+    const controller = findController(name, extractElementAttributes(element));
+    return memo || (controller && typeof controller.stimulate === 'function') ? name : null;
+  }, null);
+
+  return controllerName || element.parentElement
+    ? findStimulusReflexControllerName(element.parentElement)
+    : null;
 };
 
 // Invokes a callback on a StimulusReflex controller.
@@ -109,25 +142,9 @@ const extendStimulusController = controller => {
     stimulate() {
       clearTimeout(controller.StimulusReflex.timeout);
       const url = location.href;
-      let args = Array.prototype.slice.call(arguments);
-      let target = args.shift();
-      let attrs = Array.prototype.slice.call(this.element.attributes).reduce((memo, attr) => {
-        memo[attr.name] = attr.value;
-        return memo;
-      }, {});
-
-      attrs.value = this.element.value;
-      attrs.checked = !!this.element.checked;
-      attrs.selected = !!this.element.selected;
-      if (this.element.tagName.match(/select/i)) {
-        if (this.element.multiple) {
-          const checkedOptions = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));
-          attrs.values = checkedOptions.map(o => o.value);
-        } else if (this.element.selectedIndex > -1) {
-          attrs.value = this.element.options[this.element.selectedIndex].value;
-        }
-      }
-
+      const args = Array.prototype.slice.call(arguments);
+      const target = args.shift();
+      const attrs = extractElementAttributes(this.element);
       const data = { target, args, attrs, url };
       invokeCallback('reflexStart', this);
       controller.StimulusReflex.subscription.send(data);
@@ -147,16 +164,17 @@ const extendStimulusController = controller => {
 // Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
-  document.querySelectorAll('[data-reflex]').forEach(el => {
-    if (String(el.dataset.controller).indexOf('stimulus-reflex') >= 0) return;
-    const controllers = el.dataset.controller ? el.dataset.controller.split(' ') : [];
-    const actions = el.dataset.action ? el.dataset.action.split(' ') : [];
-    controllers.push('stimulus-reflex');
-    el.setAttribute('data-controller', controllers.join(' '));
-    el.dataset.reflex.split(' ').forEach(reflex => {
-      actions.push(`${reflex.split('->')[0]}->stimulus-reflex#__perform`);
+  document.querySelectorAll('[data-reflex]').forEach(element => {
+    const controllerNames = element.dataset.controller ? element.dataset.controller.split(' ') : [];
+    const controllerName = findStimulusReflexControllerName(element);
+    const actionNames = element.dataset.action ? element.dataset.action.split(' ') : [];
+    element.dataset.reflex.split(' ').map(reflex => {
+      const actionName = `${reflex.split('->')[0]}->stimulus-reflex#__perform`;
+      if (!actionNames.includes(actionName)) actionNames.push(actionName);
     });
-    el.setAttribute('data-action', actions.join(' '));
+    if (!controllerName) controllerNames.push('stimulus-reflex');
+    element.setAttribute('data-controller', controllerNames.join(' '));
+    element.setAttribute('data-action', actionNames.join(' '));
   });
 };
 
@@ -208,18 +226,24 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('turbolinks:load', setupDeclarativeReflexes);
   document.addEventListener('cable-ready:after-morph', setupDeclarativeReflexes);
   document.addEventListener('cable-ready:before-morph', event => {
-    if (event.detail.stimulusReflex) {
-      let controller = findController(event.detail.stimulusReflex.attrs);
+    let { attrs } = event.detail.stimulusReflex || {};
+    if (!attrs) return;
+    attrs['data-controller'].split(' ').forEach(name => {
+      let controller = findController(name, attrs);
       setTimeout(() => {
         invokeCallback('reflexSuccess', controller);
         invokeCallback('reflexComplete', controller);
       }, 1);
-    }
+    });
   });
   document.addEventListener('stimulus-reflex:500', event => {
-    let controller = findController(event.detail.stimulusReflex.attrs);
-    invokeCallback('reflexError', controller);
-    invokeCallback('reflexComplete', controller);
+    let { attrs } = event.detail.stimulusReflex || {};
+    if (!attrs) return;
+    attrs['data-controller'].split(' ').forEach(name => {
+      let controller = findController(name, attrs);
+      invokeCallback('reflexError', controller);
+      invokeCallback('reflexComplete', controller);
+    });
   });
 }
 
