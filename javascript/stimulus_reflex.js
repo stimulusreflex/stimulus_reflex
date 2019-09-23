@@ -65,8 +65,7 @@ const extractElementAttributes = element => {
 // SEE: stimulute()
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
-const findController = (name, attributes) => {
-  const element = findElement(attributes);
+const findController = (name, element) => {
   if (!element) return null;
   if (!stimulusApplication) return null;
   return stimulusApplication.getControllerForElementAndIdentifier(element, name);
@@ -76,7 +75,7 @@ const findController = (name, attributes) => {
 const findStimulusReflexControllerName = element => {
   const controllerNames = element.dataset.controller ? element.dataset.controller.split(' ') : [];
   let controllerName = controllerNames.reduce((memo, name) => {
-    const controller = findController(name, extractElementAttributes(element));
+    const controller = findController(name, element);
     return memo || (controller && typeof controller.stimulate === 'function') ? name : null;
   }, null);
 
@@ -229,7 +228,9 @@ if (!document.stimulusReflexInitialized) {
     let { attrs } = event.detail.stimulusReflex || {};
     if (!attrs) return;
     attrs['data-controller'].split(' ').forEach(name => {
-      let controller = findController(name, attrs);
+      const element = findElement(attrs);
+      const controllerName = findStimulusReflexControllerName(element);
+      let controller = findController(controllerName, element);
       setTimeout(() => {
         invokeCallback('reflexSuccess', controller);
         invokeCallback('reflexComplete', controller);
@@ -240,7 +241,9 @@ if (!document.stimulusReflexInitialized) {
     let { attrs } = event.detail.stimulusReflex || {};
     if (!attrs) return;
     attrs['data-controller'].split(' ').forEach(name => {
-      let controller = findController(name, attrs);
+      const element = findElement(attrs);
+      const controllerName = findStimulusReflexControllerName(element);
+      let controller = findController(controllerName, element);
       invokeCallback('reflexError', controller);
       invokeCallback('reflexComplete', controller);
     });
