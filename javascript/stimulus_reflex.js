@@ -82,13 +82,7 @@ const findStimulusReflexControllerName = element => {
   }, null);
 };
 
-// Invokes a callback on a StimulusReflex controller.
-//
-// - reflexStart
-// - reflexSuccess
-// - reflexError
-// - reflexComplete
-//
+// Invokes a method on a StimulusReflex controller.
 const invokeCallback = (name, controller) => {
   if (controller && typeof controller[name] === 'function') controller[name]();
 };
@@ -107,8 +101,6 @@ const invokeLifecycleCallback = (stage, element) => {
       ? `${stage}${camelize(reflexMethodName)}`
       : `${camelize(reflexMethodName, false)}${camelize(stage)}`;
   }
-
-  console.log(reflexCallbackName, genericCallbackName);
 
   setTimeout(() => {
     if (reflexCallbackName) {
