@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
 import ActionCable from 'actioncable';
-import Inflection from 'inflection';
+import { camelize } from 'inflected';
 import CableReady from 'cable_ready';
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -12,6 +12,7 @@ let stimulusApplication;
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
 const findElement = attributes => {
+  attributes = attributes || {};
   let elements = [];
   if (attributes.id) {
     elements = document.querySelectorAll(`#${attributes.id}`);
@@ -31,7 +32,7 @@ const findElement = attributes => {
       console.log(
         'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
-        detail
+        attributes
       );
     }
   }
@@ -99,13 +100,15 @@ const invokeLifecycleCallback = (stage, element) => {
   const [_reflexClassName, reflexMethodName] = (element.dataset.reflex || '').split('#');
   const genericCallbackName = ['before', 'after'].includes(stage)
     ? `${stage}Reflex`
-    : `reflex${Inflection.camelize(stage)}`;
+    : `reflex${camelize(stage)}`;
   let reflexCallbackName;
   if (reflexMethodName) {
     reflexCallbackName = ['before', 'after'].includes(stage)
-      ? `${stage}${Inflection.camelize(reflexMethodName)}`
-      : `${Inflection.camelize(reflexMethodName, true)}${Inflection.camelize(stage)}`;
+      ? `${stage}${camelize(reflexMethodName)}`
+      : `${camelize(reflexMethodName, false)}${camelize(stage)}`;
   }
+
+  console.log(reflexCallbackName, genericCallbackName);
 
   setTimeout(() => {
     if (reflexCallbackName) {

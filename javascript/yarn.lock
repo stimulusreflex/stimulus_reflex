@@ -38,6 +38,11 @@
   dependencies:
     morphdom "^2.5.6"
 
+inflected@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/inflected/-/inflected-2.0.4.tgz#323770961ccbe992a98ea930512e9a82d3d3ef77"
+  integrity sha512-HQPzFLTTUvwfeUH6RAGjD8cHS069mBqXG5n4qaxX7sJXBhVQrsGgF+0ZJGkSuN6a8pcUWB/GXStta11kKi/WvA==
+
 morphdom@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.5.6.tgz#85c59b36597a014d7107b09e0b836b3292086185"
