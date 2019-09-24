@@ -1,5 +1,6 @@
 import { Controller } from 'stimulus';
 import ActionCable from 'actioncable';
+import Inflection from 'inflection';
 import CableReady from 'cable_ready';
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -74,14 +75,10 @@ const findController = (name, element) => {
 // Finds the closest StimulusReflex controller name in the DOM tree
 const findStimulusReflexControllerName = element => {
   const controllerNames = element.dataset.controller ? element.dataset.controller.split(' ') : [];
-  let controllerName = controllerNames.reduce((memo, name) => {
+  return controllerNames.reduce((memo, name) => {
     const controller = findController(name, element);
     return memo || (controller && typeof controller.stimulate === 'function') ? name : null;
   }, null);
-
-  return controllerName || element.parentElement
-    ? findStimulusReflexControllerName(element.parentElement)
-    : null;
 };
 
 // Invokes a callback on a StimulusReflex controller.
@@ -93,6 +90,34 @@ const findStimulusReflexControllerName = element => {
 //
 const invokeCallback = (name, controller) => {
   if (controller && typeof controller[name] === 'function') controller[name]();
+};
+
+const invokeLifecycleCallback = (stage, element) => {
+  if (!element) return;
+  const stimulusReflexController = findController(findStimulusReflexControllerName(element), element);
+  const actions = element.dataset.action ? element.dataset.action.split(' ') : [];
+  const [_reflexClassName, reflexMethodName] = (element.dataset.reflex || '').split('#');
+  const genericCallbackName = ['before', 'after'].includes(stage)
+    ? `${stage}Reflex`
+    : `reflex${Inflection.camelize(stage)}`;
+  let reflexCallbackName;
+  if (reflexMethodName) {
+    reflexCallbackName = ['before', 'after'].includes(stage)
+      ? `${stage}${Inflection.camelize(reflexMethodName)}`
+      : `${Inflection.camelize(reflexMethodName, true)}${Inflection.camelize(stage)}`;
+  }
+
+  setTimeout(() => {
+    if (reflexCallbackName) {
+      actions.forEach(action => {
+        const [_eventName, handler] = action.split('->');
+        const [controllerName, _methodName] = handler.split('#');
+        const controller = findController(controllerName, element);
+        invokeCallback(reflexCallbackName, controller);
+      });
+    }
+    invokeCallback(genericCallbackName, stimulusReflexController);
+  }, 1);
 };
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -145,7 +170,7 @@ const extendStimulusController = controller => {
       const target = args.shift();
       const attrs = extractElementAttributes(this.element);
       const data = { target, args, attrs, url };
-      invokeCallback('reflexStart', this);
+      invokeLifecycleCallback('before', this.element);
       controller.StimulusReflex.subscription.send(data);
     },
 
@@ -225,28 +250,16 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('turbolinks:load', setupDeclarativeReflexes);
   document.addEventListener('cable-ready:after-morph', setupDeclarativeReflexes);
   document.addEventListener('cable-ready:before-morph', event => {
-    let { attrs } = event.detail.stimulusReflex || {};
-    if (!attrs) return;
-    attrs['data-controller'].split(' ').forEach(name => {
-      const element = findElement(attrs);
-      const controllerName = findStimulusReflexControllerName(element);
-      let controller = findController(controllerName, element);
-      setTimeout(() => {
-        invokeCallback('reflexSuccess', controller);
-        invokeCallback('reflexComplete', controller);
-      }, 1);
-    });
+    const { attrs } = event.detail.stimulusReflex || {};
+    const element = findElement(attrs);
+    invokeLifecycleCallback('success', element);
+    invokeLifecycleCallback('after', element);
   });
   document.addEventListener('stimulus-reflex:500', event => {
-    let { attrs } = event.detail.stimulusReflex || {};
-    if (!attrs) return;
-    attrs['data-controller'].split(' ').forEach(name => {
-      const element = findElement(attrs);
-      const controllerName = findStimulusReflexControllerName(element);
-      let controller = findController(controllerName, element);
-      invokeCallback('reflexError', controller);
-      invokeCallback('reflexComplete', controller);
-    });
+    const { attrs } = event.detail.stimulusReflex || {};
+    const element = findElement(attrs);
+    invokeLifecycleCallback('error', element);
+    invokeLifecycleCallback('after', element);
   });
 }
 
