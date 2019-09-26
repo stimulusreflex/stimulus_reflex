@@ -31,7 +31,7 @@ const extractElementAttributes = element => {
 
 // Finds an element based on the passed represention the DOM element's attributes.
 //
-// NOTE: This is the same set of attributes forwared to the serer side reflex.
+// NOTE: This is the same set of attributes extrated via extractElementAttributes and forwarded to the server side reflex.
 // SEE: stimulute()
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
@@ -144,9 +144,8 @@ const extendStimulusController = controller => {
   Object.assign(controller, {
     // Invokes a server side reflex method.
     //
-    // arguments
-    //   first arg: the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
-    //   remaining args: any remaining arguments are forwarded to the reflex method
+    // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
+    // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate() {
       clearTimeout(controller.StimulusReflex.timeout);
@@ -237,7 +236,7 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('turbolinks:load', setupDeclarativeReflexes);
   document.addEventListener('cable-ready:after-morph', setupDeclarativeReflexes);
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
-  // to the source element in case it gets removed from the DOM by morph.
+  // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
     const { target, attrs } = event.detail.stimulusReflex || {};
