@@ -150,6 +150,8 @@ For example, we could render multiple instances of `@count` in unrelated section
 This example shows how to create a reactive feature by defining an explicit client side
 Stimulus controller to handle the DOM event and trigger the server side reflex.
 
+**Note that this example will require a persistent store of the `@count` content. So, for this example to work, we will temporarily store the data in the session instead of setting up a database backend. This is for simplicity sake and not a best practice.**
+
 #### app/views/pages/example.html.erb
 
 ```erb
@@ -188,7 +190,14 @@ export default class extends Controller {
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def increment(step = 1)
-    @count = @count.to_i + step
+    # Normally, you would have the controller set the value of the @count
+    # as it would retrieve it from a persistent store.
+    # @count = @count.to_i + step
+
+    # So, in this example, instead, we will temporarily store the count
+    # value in the session.
+    session[:count] = session[:count].to_i + step
+    @count = session[:count]
   end
 end
 ```
