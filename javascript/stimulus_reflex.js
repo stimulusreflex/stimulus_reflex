@@ -99,9 +99,9 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
     : `${camelize(reflexMethodName, false)}${camelize(stage)}`;
 
   if (typeof controller[specificCallbackName] === 'function')
-    setTimeout(() => controller[specificCallbackName](element), 1);
+    setTimeout(() => controller[specificCallbackName](element, element.reflexError), 1);
   if (typeof controller[genericCallbackName] === 'function')
-    setTimeout(() => controller[genericCallbackName](element), 1);
+    setTimeout(() => controller[genericCallbackName](element, element.reflexError), 1);
 };
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -267,8 +267,9 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('after', target, element);
   });
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs } = event.detail.stimulusReflex || {};
+    const { target, attrs, error } = event.detail.stimulusReflex || {};
     const element = findElement(attrs);
+    element.reflexError = error;
     invokeLifecycleMethod('error', target, element);
     invokeLifecycleMethod('after', target, element);
   });
