@@ -172,9 +172,16 @@ const extendStimulusController = controller => {
     __perform(event) {
       event.preventDefault();
       event.stopPropagation();
-      event.target.dataset.reflex
-        .split(' ')
-        .forEach(reflex => this.__stimulate(reflex.split('->')[1], event.target));
+
+      let element = event.target;
+      let reflex = element.dataset.reflex;
+
+      while (element && !reflex) {
+        reflex = element.dataset.reflex;
+        if (!reflex) element = element.parentElement;
+      }
+
+      reflex.split(' ').forEach(reflex => this.__stimulate(reflex.split('->')[1], element));
     },
   });
 };
@@ -211,19 +218,20 @@ class StimulusReflexController extends Controller {
 const setupDeclarativeReflexes = () => {
   document.querySelectorAll('[data-reflex]').forEach(element => {
     const controllerNames = (element.dataset.controller || '').split(' ');
-    const reflexNames = (element.dataset.reflex || '').split(' ');
-    const actionNames = (element.dataset.action || '').split(' ');
     let controller = findStimulusReflexController(element);
-
     if (!controller && !controllerNames.includes('stimulus-reflex')) controllerNames.push('stimulus-reflex');
     element.setAttribute('data-controller', controllerNames.join(' '));
-    controller = controller || findStimulusReflexController(element);
 
-    reflexNames.forEach(reflex => {
-      const actionName = `${reflex.split('->')[0]}->${controller.identifier}#__perform`;
-      if (!actionNames.includes(actionName)) actionNames.push(actionName);
-    });
-    if (actionNames.length > 0) element.setAttribute('data-action', actionNames.join(' '));
+    setTimeout(() => {
+      controller = controller || findStimulusReflexController(element);
+      const reflexNames = (element.dataset.reflex || '').split(' ');
+      const actionNames = (element.dataset.action || '').split(' ');
+      reflexNames.forEach(reflex => {
+        const actionName = `${reflex.split('->')[0]}->${controller.identifier}#__perform`;
+        if (!actionNames.includes(actionName)) actionNames.push(actionName);
+      });
+      if (actionNames.length > 0) element.setAttribute('data-action', actionNames.join(' '));
+    }, 1);
   });
 };
 
