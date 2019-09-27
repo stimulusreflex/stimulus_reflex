@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
 import ActionCable from 'actioncable';
-import { camelize } from 'inflected';
+import { camelize, dasherize, underscore } from 'inflected';
 import CableReady from 'cable_ready';
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -48,7 +48,7 @@ const findElement = attributes => {
       if (key === 'value') continue;
       if (key === 'checked') continue;
       if (key === 'selected') continue;
-      if (!attributes.hasOwnProperty(key)) continue;
+      if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue;
       selectors.push(`[${key}="${attributes[key]}"]`);
     }
     try {
@@ -66,13 +66,28 @@ const findElement = attributes => {
   return element;
 };
 
-const findStimulusReflexController = element => {
+// Returns the expected matching controller name for the passed reflex.
+//
+// Example
+//
+//   matchingControllerName('ExampleReflex#do_stuff') // -> 'example'
+//
+const matchingControllerName = reflex => {
+  return dasherize(underscore(reflex.split('#')[0].replace(/Reflex$/, '')));
+};
+
+// Finds the registered StimulusReflex controller for the passed element that matches the reflex.
+// Traverses DOM ancestors starting with element until a match is found.
+//
+const findReflexController = (element, reflex) => {
+  const name = matchingControllerName(reflex);
   let controller;
   while (element && !controller) {
-    controller = (element.dataset.controller || '').split(' ').reduce((memo, name) => {
-      memo = memo || stimulusApplication.getControllerForElementAndIdentifier(element, name);
-      return memo && memo.StimulusReflex ? memo : null;
-    }, null);
+    const controllers = (element.dataset.controller || '').split(' ');
+    if (controllers.includes(name)) {
+      const candidate = stimulusApplication.getControllerForElementAndIdentifier(element, name);
+      if (candidate && candidate.StimulusReflex) controller = candidate;
+    }
     element = element.parentElement;
   }
   return controller;
@@ -87,21 +102,21 @@ const findStimulusReflexController = element => {
 //
 const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return;
-  const controller = findStimulusReflexController(element);
+  const controller = findReflexController(element, reflex);
   if (!controller) return;
 
-  const [_, reflexMethodName] = reflex.split('#');
-  const genericCallbackName = ['before', 'after'].includes(stage)
+  const reflexMethodName = reflex.split('#')[1];
+  const genericLifecycleMethodName = ['before', 'after'].includes(stage)
     ? `${stage}Reflex`
     : `reflex${camelize(stage)}`;
-  const specificCallbackName = ['before', 'after'].includes(stage)
+  const specificLifecycleMethodName = ['before', 'after'].includes(stage)
     ? `${stage}${camelize(reflexMethodName)}`
     : `${camelize(reflexMethodName, false)}${camelize(stage)}`;
 
-  if (typeof controller[specificCallbackName] === 'function')
-    setTimeout(() => controller[specificCallbackName](element, element.reflexError), 1);
-  if (typeof controller[genericCallbackName] === 'function')
-    setTimeout(() => controller[genericCallbackName](element, element.reflexError), 1);
+  if (typeof controller[specificLifecycleMethodName] === 'function')
+    setTimeout(() => controller[specificLifecycleMethodName](element, element.reflexError), 1);
+  if (typeof controller[genericLifecycleMethodName] === 'function')
+    setTimeout(() => controller[genericLifecycleMethodName](element, element.reflexError), 1);
 };
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -217,21 +232,23 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document.querySelectorAll('[data-reflex]').forEach(element => {
-    const controllerNames = (element.dataset.controller || '').split(' ');
-    let controller = findStimulusReflexController(element);
-    if (!controller && !controllerNames.includes('stimulus-reflex')) controllerNames.push('stimulus-reflex');
-    element.setAttribute('data-controller', controllerNames.join(' '));
-
-    setTimeout(() => {
-      controller = controller || findStimulusReflexController(element);
-      const reflexNames = (element.dataset.reflex || '').split(' ');
-      const actionNames = (element.dataset.action || '').split(' ');
-      reflexNames.forEach(reflex => {
-        const actionName = `${reflex.split('->')[0]}->${controller.identifier}#__perform`;
-        if (!actionNames.includes(actionName)) actionNames.push(actionName);
-      });
-      if (actionNames.length > 0) element.setAttribute('data-action', actionNames.join(' '));
-    }, 1);
+    const controllers = (element.dataset.controller || '').split(' ');
+    const reflexes = (element.dataset.reflex || '').split(' ');
+    const actions = (element.dataset.action || '').split(' ');
+    reflexes.forEach(reflex => {
+      const controller = findReflexController(element, reflex);
+      let action;
+      if (controller) {
+        action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`;
+        if (!actions.includes(action)) actions.push(action);
+      } else {
+        action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`;
+        if (!controllers.includes('stimulus-reflex')) controllers.push('stimulus-reflex');
+        if (!actions.includes(action)) actions.push(action);
+      }
+    });
+    if (controllers.length > 0) element.setAttribute('data-controller', controllers.join(' '));
+    if (actions.length > 0) element.setAttribute('data-action', actions.join(' '));
   });
 };
 
