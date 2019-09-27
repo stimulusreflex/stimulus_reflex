@@ -66,22 +66,31 @@ const findElement = attributes => {
   return element;
 };
 
-// Invokes a lifecycle method on a controller and its ancestors.
-// NOTE: This bubbles up the DOM tree.
+const findStimulusReflexController = element => {
+  let controller;
+  while (element && !controller) {
+    controller = (element.dataset.controller || '').split(' ').reduce((memo, name) => {
+      memo = memo || stimulusApplication.getControllerForElementAndIdentifier(element, name);
+      return memo && memo.StimulusReflex ? memo : null;
+    }, null);
+    element = element.parentElement;
+  }
+  return controller;
+};
+
+// Invokes a lifecycle method on a StimulusReflex controller.
 //
 // - before
 // - success
 // - error
 // - after
 //
-const invokeLifecycleMethod = (stage, reflex, sourceElement, currentElement) => {
-  if (!sourceElement) return;
-  if (!currentElement) return;
+const invokeLifecycleMethod = (stage, reflex, element) => {
+  if (!element) return;
+  const controller = findStimulusReflexController(element);
+  if (!controller) return;
 
   const [_, reflexMethodName] = reflex.split('#');
-  const controllerNames = currentElement.dataset.controller
-    ? currentElement.dataset.controller.split(' ')
-    : [];
   const genericCallbackName = ['before', 'after'].includes(stage)
     ? `${stage}Reflex`
     : `reflex${camelize(stage)}`;
@@ -89,20 +98,10 @@ const invokeLifecycleMethod = (stage, reflex, sourceElement, currentElement) => 
     ? `${stage}${camelize(reflexMethodName)}`
     : `${camelize(reflexMethodName, false)}${camelize(stage)}`;
 
-  controllerNames.forEach(controllerName => {
-    const controller = stimulusApplication.getControllerForElementAndIdentifier(
-      currentElement,
-      controllerName
-    );
-    if (controller) {
-      if (typeof controller[specificCallbackName] === 'function')
-        setTimeout(() => controller[specificCallbackName](sourceElement), 1);
-      if (typeof controller[genericCallbackName] === 'function')
-        setTimeout(() => controller[genericCallbackName](sourceElement), 1);
-    }
-  });
-
-  invokeLifecycleMethod(stage, reflex, sourceElement, currentElement.parentElement);
+  if (typeof controller[specificCallbackName] === 'function')
+    setTimeout(() => controller[specificCallbackName](element), 1);
+  if (typeof controller[genericCallbackName] === 'function')
+    setTimeout(() => controller[genericCallbackName](element), 1);
 };
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -154,7 +153,17 @@ const extendStimulusController = controller => {
       const target = args.shift();
       const attrs = extractElementAttributes(this.element);
       const data = { target, args, url, attrs };
-      invokeLifecycleMethod('before', target, this.element, this.element);
+      invokeLifecycleMethod('before', target, this.element);
+      controller.StimulusReflex.subscription.send(data);
+    },
+
+    __stimulate(target, element) {
+      clearTimeout(controller.StimulusReflex.timeout);
+      const url = location.href;
+      const args = {};
+      const attrs = extractElementAttributes(element);
+      const data = { target, args, url, attrs };
+      invokeLifecycleMethod('before', target, element);
       controller.StimulusReflex.subscription.send(data);
     },
 
@@ -163,7 +172,9 @@ const extendStimulusController = controller => {
     __perform(event) {
       event.preventDefault();
       event.stopPropagation();
-      this.element.dataset.reflex.split(' ').forEach(reflex => this.stimulate(reflex.split('->')[1]));
+      event.target.dataset.reflex
+        .split(' ')
+        .forEach(reflex => this.__stimulate(reflex.split('->')[1], event.target));
     },
   });
 };
@@ -199,14 +210,17 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document.querySelectorAll('[data-reflex]').forEach(element => {
-    const controllerNames = element.dataset.controller ? element.dataset.controller.split(' ') : [];
-    const actionNames = element.dataset.action ? element.dataset.action.split(' ') : [];
+    const controllerNames = (element.dataset.controller || '').split(' ');
+    const reflexNames = (element.dataset.reflex || '').split(' ');
+    const actionNames = (element.dataset.action || '').split(' ');
+    let controller = findStimulusReflexController(element);
 
-    if (!controllerNames.includes('stimulus-reflex')) controllerNames.push('stimulus-reflex');
-    if (controllerNames.length > 0) element.setAttribute('data-controller', controllerNames.join(' '));
+    if (!controller && !controllerNames.includes('stimulus-reflex')) controllerNames.push('stimulus-reflex');
+    element.setAttribute('data-controller', controllerNames.join(' '));
+    controller = controller || findStimulusReflexController(element);
 
-    element.dataset.reflex.split(' ').map(reflex => {
-      const actionName = `${reflex.split('->')[0]}->stimulus-reflex#__perform`;
+    reflexNames.forEach(reflex => {
+      const actionName = `${reflex.split('->')[0]}->${controller.identifier}#__perform`;
       if (!actionNames.includes(actionName)) actionNames.push(actionName);
     });
     if (actionNames.length > 0) element.setAttribute('data-action', actionNames.join(' '));
@@ -241,14 +255,14 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('cable-ready:before-morph', event => {
     const { target, attrs } = event.detail.stimulusReflex || {};
     const element = findElement(attrs);
-    invokeLifecycleMethod('success', target, element, element);
-    invokeLifecycleMethod('after', target, element, element);
+    invokeLifecycleMethod('success', target, element);
+    invokeLifecycleMethod('after', target, element);
   });
   document.addEventListener('stimulus-reflex:500', event => {
     const { target, attrs } = event.detail.stimulusReflex || {};
     const element = findElement(attrs);
-    invokeLifecycleMethod('error', target, element, element);
-    invokeLifecycleMethod('after', target, element, element);
+    invokeLifecycleMethod('error', target, element);
+    invokeLifecycleMethod('after', target, element);
   });
 }
 
