@@ -6,6 +6,11 @@ description: Ensure your projects are fast to market... with a small team
 
 ###### Read this document on the [official docs site](https://docs.stimulusreflex.com).
 
+[![Lines of Code](http://img.shields.io/badge/lines_of_code-359-brightgreen.svg?style=flat)](http://blog.codinghorror.com/the-best-code-is-no-code-at-all/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
+![Prettier](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier/badge.svg)
+![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
+
 **Build reactive applications with the Rails tooling you already know and love.** StimulusReflex is designed to work perfectly with [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/), [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA), etc... and strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
 
 ## Before you Begin
