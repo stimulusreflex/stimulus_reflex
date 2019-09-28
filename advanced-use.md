@@ -4,9 +4,11 @@ description: How to get the most out of StimulusReflex
 
 # Advanced Use
 
+###### Read this document on the [official docs site](https://docs.stimulusreflex.com/advanced-use).
+
 ## ActionCable
 
-StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library. 
+StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
 
 {% hint style="info" %}
 ActionCable defaults of `window.App` and `App.cable` are used if they exist. **A new socket connection will be established if these do not exist.**
@@ -29,9 +31,9 @@ ActionCable.server.config.logger = Logger.new(nil)
 You might find the need to restrict communication to a specific room. This can be accomplished by setting the `data-room`attribute on the StimulusController element.
 
 ```markup
-<a href="#" 
-   data-controller="example" 
-   data-reflex="click->ExampleReflex#do_stuff" 
+<a href="#"
+   data-controller="example"
+   data-reflex="click->ExampleReflex#do_stuff"
    data-room="12345">
 ```
 

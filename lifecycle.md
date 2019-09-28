@@ -4,6 +4,8 @@ description: The life of a stimulus reflex
 
 # Lifecycle
 
+###### Read this document on the [official docs site](https://docs.stimulusreflex.com/lifecycle).
+
 StimulusReflex supports 4 lifecycle events.
 
 1. **`before`** - prior to sending a stimulate request over the web socket
@@ -22,8 +24,8 @@ Simply declare lifecycle methods in your StimulusReflex controller.
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
 ```text
-<a href="#" 
-   data-controller="example" 
+<a href="#"
+   data-controller="example"
    data-reflex="click->ExampleReflex#update">
 ```
 {% endcode-tabs-item %}
@@ -39,11 +41,11 @@ export default class extends Controller {
   connect () {
     StimulusReflex.register(this)
   }
-  
+
   beforeUpdate() {
     // show spinner
   }
-  
+
   afterUpdate() {
     // hide spinner
   }
@@ -58,7 +60,7 @@ The methods `beforeUpdate` and `afterUpdate` use a naming convention that matche
 
 ## Generic Lifecycle Methods
 
-StimulusReflex controllers can define 4 generic lifecycle methods which provide a simple way to hook into descendant reflexes. 
+StimulusReflex controllers can define 4 generic lifecycle methods which provide a simple way to hook into descendant reflexes.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -86,7 +88,7 @@ export default class extends Controller {
   connect () {
     StimulusReflex.register(this)
   }
-  
+
   beforeReflex(anchorElement) {
     const { reflex } = anchorElement.dataset
     if (reflex.match(/update$/)) anchorElement.innerText = 'Updating...'
@@ -127,21 +129,21 @@ export default class extends Controller {
   connect () {
     StimulusReflex.register(this)
   }
-  
+
   beforeUpdate(anchorElement) {
     anchorElement.innerText = 'Updating...'
   }
-  
+
   beforeDelete(anchorElement) {
     anchorElement.innerText = 'Deleting...'
-  }  
+  }
 }
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
 {% hint style="info" %}
-**It's not required to implement all lifecycle methods.** Pick and choose which lifecycle methods makes sense for your application. 
+**It's not required to implement all lifecycle methods.** Pick and choose which lifecycle methods makes sense for your application.
 {% endhint %}
 
 ## Conventions
@@ -159,8 +161,8 @@ Lifecycle methods apply a naming convention based on the reflex. For example, th
 
 Both generic and custom lifecycle methods share the same function arguments.
 
-* `beforeReflex(element)`  **element** - the element that triggered the reflex 
-* `reflexSuccess(element)` **element** - the element that triggered the reflex 
-* `reflexError(element, error)` **element** - the element that triggered the reflex **error** - the error message 
+* `beforeReflex(element)`  **element** - the element that triggered the reflex
+* `reflexSuccess(element)` **element** - the element that triggered the reflex
+* `reflexError(element, error)` **element** - the element that triggered the reflex **error** - the error message
 * `afterReflex(element, error)` **element** - the element that triggered the reflex **error** - the error message if an error occurred, otherwise `null`
 
