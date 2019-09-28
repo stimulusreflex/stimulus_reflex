@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "./stimulus_reflex.js",
   "scripts": {
     "prettier-check": "yarn run prettier-standard --check ./stimulus_reflex.js"
