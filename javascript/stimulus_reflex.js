@@ -174,6 +174,7 @@ const extendStimulusController = controller => {
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
+    // - element - [optional] the triggering element, defaults to this.element
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -181,16 +182,10 @@ const extendStimulusController = controller => {
       const url = location.href
       const args = Array.from(arguments)
       const target = args.shift()
-      const attrs = extractElementAttributes(this.element)
-      const data = { target, args, url, attrs }
-      invokeLifecycleMethod('before', target, this.element)
-      controller.StimulusReflex.subscription.send(data)
-    },
-
-    __stimulate (target, element) {
-      clearTimeout(controller.StimulusReflex.timeout)
-      const url = location.href
-      const args = {}
+      const element =
+        args[0] && args[0].nodeType === Node.ELEMENT_NODE
+          ? args.shift()
+          : this.element
       const attrs = extractElementAttributes(element)
       const data = { target, args, url, attrs }
       invokeLifecycleMethod('before', target, element)
@@ -213,7 +208,7 @@ const extendStimulusController = controller => {
 
       reflex
         .split(' ')
-        .forEach(reflex => this.__stimulate(reflex.split('->')[1], element))
+        .forEach(reflex => this.stimulate(reflex.split('->')[1], element))
     }
   })
 }
