@@ -4,8 +4,6 @@ description: How to get the most out of StimulusReflex
 
 # Advanced Use
 
-###### Read this document on the [official docs site](https://docs.stimulusreflex.com/advanced-use).
-
 ## ActionCable
 
 StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
