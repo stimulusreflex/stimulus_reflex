@@ -4,8 +4,6 @@ description: The life of a stimulus reflex
 
 # Lifecycle
 
-###### Read this document on the [official docs site](https://docs.stimulusreflex.com/lifecycle).
-
 StimulusReflex supports 4 lifecycle events.
 
 1. **`before`** - prior to sending a stimulate request over the web socket

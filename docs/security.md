@@ -4,8 +4,6 @@ description: How to secure your StimulusReflex app
 
 # Security
 
-###### Read this document on the [official docs site](https://docs.stimulusreflex.com/security).
-
 StimulusReflex leans on [ActionCable for security](https://guides.rubyonrails.org/action_cable_overview.html#server-side-components-connections), but here's a **TLDR** to get you going.
 
 {% hint style="info" %}
