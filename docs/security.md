@@ -46,7 +46,7 @@ end
 {% endcode-tabs-item %}
 
 {% code-tabs-item title=undefined %}
-```
+```text
 
 ```
 {% endcode-tabs-item %}
