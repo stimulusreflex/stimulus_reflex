@@ -35,7 +35,7 @@ You might find the need to restrict communication to a specific room. This can b
    data-room="12345">
 ```
 
-## Stimulus Controller
+## Stimulus Controllers
 
 ### Render Delay
 
@@ -74,7 +74,7 @@ Server side reflexes inherit from `StimulusReflex::Reflex` and hold logic respon
 
 #### `element`
 
-This property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
+The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
 
 {% hint style="info" %}
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
