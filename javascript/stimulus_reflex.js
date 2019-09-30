@@ -74,10 +74,10 @@ const findElement = attributes => {
 //
 // Example
 //
-//   matchingControllerName('ExampleReflex#do_stuff') // -> 'example'
+//   matchingControllerName('click->ExampleReflex#do_stuff') // -> 'example'
 //
 const matchingControllerName = reflex => {
-  return dasherize(underscore(reflex.split('#')[0].replace(/Reflex$/, '')))
+  return dasherize(underscore(reflex.split(/\#|-\>/)[1].replace(/Reflex$/, '')))
 }
 
 // Finds the registered StimulusReflex controller for the passed element that matches the reflex.
@@ -214,15 +214,15 @@ const extendStimulusController = controller => {
 }
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
-// The room can be specified via a data attribute on the Stimulus controller element i.e. data-room="12345"
 //
 // controller - the Stimulus controller
 // options - [optional] configuration
+//   * room - the ActionCable room to subscribe to
 //   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
-  const room = controller.element.dataset.room || ''
+  const room = options.room || controller.element.dataset.room || ''
   controller.StimulusReflex = { ...options, channel, room }
   extendStimulusController(controller)
   createSubscription(controller)
