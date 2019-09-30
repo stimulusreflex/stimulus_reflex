@@ -182,8 +182,6 @@ const extendStimulusController = controller => {
     stimulate () {
       clearTimeout(controller.StimulusReflex.timeout)
       const url = window.location.href
-      let xpath = getPathTo(document.body)
-      xpath = xpath.startsWith('//*') ? xpath : '/html/' + xpath
       const args = Array.from(arguments)
       const target = args.shift()
       const element =
@@ -191,6 +189,7 @@ const extendStimulusController = controller => {
           ? args.shift()
           : this.element
       const attrs = extractElementAttributes(element)
+      const xpath = getXPath(element, target)
       const data = { target, args, url, attrs, xpath }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
@@ -272,6 +271,32 @@ const setupDeclarativeReflexes = () => {
       element.setAttribute('data-action', actions.join(' '))
     }
   })
+}
+
+// compute the DOM element which will be the morph root
+// use the data-reflex-root attribute on the reflex or the controller
+// optional value is a CSS selector; omit selector to indicate self
+// order of preference is data-reflex, data-controller, document body (default)
+const getXPath = (element, target) => {
+  let reflexRoot = element.dataset.reflexRoot
+  if (reflexRoot !== undefined) {
+    reflexRoot = reflexRoot.length
+      ? document.querySelector(reflexRoot) || element
+      : element
+  } else {
+    const controllerElement = findReflexController(element, target).element
+    reflexRoot = controllerElement.dataset.reflexRoot
+    if (reflexRoot !== undefined) {
+      reflexRoot = reflexRoot.length
+        ? document.querySelector(reflexRoot) || controllerElement
+        : controllerElement
+    } else {
+      reflexRoot = document.body
+    }
+  }
+  const xpath = getPathTo(reflexRoot)
+  console.log(xpath)
+  return xpath.startsWith('//*') ? xpath : '/html/' + xpath
 }
 
 // construct a valid xPath for an element in the DOM
