@@ -28,7 +28,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element)
+      reflex = reflex_class.new(self, url: url, element: element, xpath: xpath)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}", data)
