@@ -97,7 +97,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, xpath, data = {}, html)
+  def broadcast_morph(url, xpath, data, html)
     html = Nokogiri::HTML(html).xpath(xpath).to_s
     cable_ready[stream_name].morph selector: xpath, html: html, children_only: true, xpath: true, stimulus_reflex: data
     cable_ready.broadcast
