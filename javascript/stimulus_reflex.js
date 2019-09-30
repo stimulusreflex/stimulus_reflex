@@ -252,9 +252,9 @@ const setupDeclarativeReflexes = () => {
       }
     })
     if (controllers.length > 0)
-      element.setAttribute('data-controller', controllers.join(' '))
+      element.setAttribute('data-controller', controllers.join(' ').trim())
     if (actions.length > 0)
-      element.setAttribute('data-action', actions.join(' '))
+      element.setAttribute('data-action', actions.join(' ').trim())
   })
 }
 
