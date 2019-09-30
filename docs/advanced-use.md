@@ -26,7 +26,23 @@ ActionCable.server.config.logger = Logger.new(nil)
 
 ### Rooms
 
-You might find the need to restrict communication to a specific room. This can be accomplished by setting the `data-room`attribute on the StimulusController element.
+You might find the need to restrict communication to a specific room. This can be accomplished in 2 ways.
+
+1. Passing the room name as an option to `register`.
+
+{% code-tabs %}
+{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
+```javascript
+export default class extends Controller {
+  connect() {
+    StimulusReflex.register(this, { room: 'ExampleRoom12345' });
+  }
+}
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+2. Setting the `data-room` attribute on the StimulusController element.
 
 ```markup
 <a href="#"
@@ -34,6 +50,10 @@ You might find the need to restrict communication to a specific room. This can b
    data-reflex="click->ExampleReflex#do_stuff"
    data-room="12345">
 ```
+
+{% hint style="danger" %}
+**Setting `room` in the DOM's `body` may pose a security risk.** Consider assigning `room` when registering the Stimulus controller instead.
+{% endhint %}
 
 ## Stimulus Controllers
 
@@ -104,7 +124,7 @@ class ExampleReflex < StimulusReflex::Reflex
     element[:label]              # => "Example"
     element["data-reflex"]       # => "ExampleReflex#work"
     element.dataset[:reflex]     # => "ExampleReflex#work"
-    element["data-value"]        # => "123"    
+    element["data-value"]        # => "123"
     element.dataset[:value]      # => "123"
   end
 end
