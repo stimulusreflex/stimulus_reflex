@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  prettier:
-    name: Test Action
+  javascript_test:
+    name: JavaScript Test Action
     runs-on: ubuntu-latest
     strategy:
       matrix:
