@@ -28,16 +28,16 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, xpath: xpath)
+      reflex = reflex_class.new(self, url: url, element: element)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
-      logger.error "\e[31mStimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}\e[0m"
+      return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}", data)
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex, xpath
+      render_page_and_broadcast_morph url, reflex, xpath, data
     rescue => render_error
-      logger.error "\e[31mStimulusReflex::Channel Failed to rerender #{url} #{render_error}\e[0m"
+      broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{render_error}", data
     end
   end
 
@@ -61,9 +61,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex, xpath)
+  def render_page_and_broadcast_morph(url, reflex, xpath, data = {})
     html = render_page(url, reflex)
-    broadcast_morph url, xpath, html if html.present?
+    broadcast_morph url, xpath, data, html if html.present?
   end
 
   def render_page(url, reflex)
@@ -97,14 +97,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, xpath, html)
-    html = extract_html(html, xpath)
-    cable_ready[stream_name].morph selector: xpath, html: html, children_only: false, xpath: true
+  def broadcast_morph(url, xpath, data = {}, html)
+    html = Nokogiri::HTML(html).xpath(xpath).to_s
+    cable_ready[stream_name].morph selector: xpath, html: html, children_only: true, xpath: true, stimulus_reflex: data
     cable_ready.broadcast
   end
 
-  def extract_html(html, xpath)
-    doc = Nokogiri::HTML(html)
-    doc.xpath(xpath).to_s
+  def broadcast_error(message, data = {})
+    logger.error "\e[31m#{message}\e[0m"
+    cable_ready[stream_name].dispatch_event name: "stimulus-reflex:500", detail: {stimulus_reflex: data.merge(error: message)}
+    cable_ready.broadcast
   end
 end

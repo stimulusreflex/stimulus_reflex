@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
-  attr_reader :channel, :url, :element, :xpath
+  attr_reader :channel, :url, :element
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, xpath: nil)
+  def initialize(channel, url: nil, element: nil)
     @channel = channel
     @url = url
     @element = element
-    @xpath = xpath
   end
 
   def request
