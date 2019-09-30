@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (2.0.1)
+    stimulus_reflex (2.0.2)
       cable_ready (>= 4.0.3)
       nokogiri
       rack
@@ -78,7 +78,7 @@ GEM
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.3)
-    loofah (2.2.3)
+    loofah (2.3.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -89,7 +89,7 @@ GEM
     mimemagic (0.3.3)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.12.1)
+    minitest (5.12.2)
     nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
