@@ -2,6 +2,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability)](https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability)
 ![Prettier](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
+![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
 
 # StimulusReflex
 
