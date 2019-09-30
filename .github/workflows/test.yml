@@ -1,4 +1,4 @@
-name: Prettier
+name: Test
 
 on:
   pull_request:
@@ -10,15 +10,18 @@ on:
 
 jobs:
   prettier:
-    name: Prettier Check Action
+    name: Test Action
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10, 12]
     steps:
     - uses: actions/checkout@master
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
-        version: '12.x'
+        node-version: ${{ matrix.node }}
     - run: yarn
       working-directory: javascript/
-    - run: yarn run prettier-check
+    - run: yarn run test
       working-directory: javascript/
