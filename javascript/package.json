@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "main": "./stimulus_reflex.js",
   "scripts": {
+    "test": "yarn run mocha --require @babel/register",
     "prettier-check": "yarn run prettier-standard --check ./stimulus_reflex.js"
   },
   "repository": {
@@ -18,6 +19,11 @@
     "stimulus": ">= 1.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/register": "^7.6.2",
+    "better-assert": "^1.0.2",
+    "mocha": "^6.2.1",
     "prettier-standard": "^15.0.1"
   }
 }

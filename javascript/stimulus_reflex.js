@@ -2,6 +2,7 @@ import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
 import { camelize, dasherize, underscore } from 'inflected'
 import CableReady from 'cable_ready'
+import { matchingControllerName } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -68,16 +69,6 @@ const findElement = attributes => {
 
   const element = elements.length === 1 ? elements[0] : null
   return element
-}
-
-// Returns the expected matching controller name for the passed reflex.
-//
-// Example
-//
-//   matchingControllerName('click->ExampleReflex#do_stuff') // -> 'example'
-//
-const matchingControllerName = reflex => {
-  return dasherize(underscore(reflex.split(/\#|-\>/)[1].replace(/Reflex$/, '')))
 }
 
 // Finds the registered StimulusReflex controller for the passed element that matches the reflex.
@@ -248,7 +239,7 @@ const setupDeclarativeReflexes = () => {
     const reflexes = (element.dataset.reflex || '').split(' ')
     const actions = (element.dataset.action || '').split(' ')
     reflexes.forEach(reflex => {
-      const controller = findReflexController(element, reflex)
+      const controller = findReflexController(element, reflex.split('->')[1])
       let action
       if (controller) {
         action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
@@ -287,9 +278,13 @@ app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
-  window.addEventListener('load', setupDeclarativeReflexes)
-  document.addEventListener('turbolinks:load', setupDeclarativeReflexes)
-  document.addEventListener('cable-ready:after-morph', setupDeclarativeReflexes)
+  window.addEventListener('load', () => setTimeout(setupDeclarativeReflexes, 1))
+  document.addEventListener('turbolinks:load', () =>
+    setTimeout(setupDeclarativeReflexes, 1)
+  )
+  document.addEventListener('cable-ready:after-morph', () =>
+    setTimeout(setupDeclarativeReflexes, 1)
+  )
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
