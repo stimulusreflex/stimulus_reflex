@@ -42,7 +42,7 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-2. Setting the `data-room` attribute on the StimulusController element.
+1. Setting the `data-room` attribute on the StimulusController element.
 
 ```markup
 <a href="#"
