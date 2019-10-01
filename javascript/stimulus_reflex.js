@@ -255,12 +255,19 @@ const setupDeclarativeReflexes = () => {
         if (!actions.includes(action)) actions.push(action)
       }
     })
+<<<<<<< HEAD
     if (controllers.length > 0) {
       element.setAttribute('data-controller', controllers.join(' '))
     }
     if (actions.length > 0) {
       element.setAttribute('data-action', actions.join(' '))
     }
+=======
+    if (controllers.length > 0)
+      element.setAttribute('data-controller', controllers.join(' ').trim())
+    if (actions.length > 0)
+      element.setAttribute('data-action', actions.join(' ').trim())
+>>>>>>> master
   })
 }
 
