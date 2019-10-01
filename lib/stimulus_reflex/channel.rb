@@ -18,7 +18,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     url = data["url"].to_s
-    xpath = data["xpath"].to_s
+    selectors = data["selectors"].to_s
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
@@ -28,14 +28,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, xpath: xpath)
+      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}", data)
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex, xpath, data
+      render_page_and_broadcast_morph url, reflex, selectors, data
     rescue => render_error
       broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{render_error}", data
     end
@@ -61,9 +61,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex, xpath, data = {})
+  def render_page_and_broadcast_morph(url, reflex, selectors, data = {})
     html = render_page(url, reflex)
-    broadcast_morph url, xpath, data, html if html.present?
+    broadcast_morph url, selectors, data, html if html.present?
   end
 
   def render_page(url, reflex)
@@ -97,9 +97,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, xpath, data, html)
-    html = Nokogiri::HTML(html).xpath(xpath).to_s
-    cable_ready[stream_name].morph selector: xpath, html: html, children_only: true, xpath: true, stimulus_reflex: data
+  def broadcast_morph(url, selectors, data, html)
+    document = Nokogiri::HTML(html)
+    selectors.split(",").each do |selector|
+      html = document.css(selector).to_s
+      cable_ready[stream_name].morph selector: selector, html: html, children_only: true, stimulus_reflex: data
+    end
     cable_ready.broadcast
   end
 

@@ -180,8 +180,8 @@ const extendStimulusController = controller => {
           ? args.shift()
           : this.element
       const attrs = extractElementAttributes(element)
-      const xpath = getXPath(element, target)
-      const data = { target, args, url, attrs, xpath }
+      const selectors = getReflexRoots(element, target)
+      const data = { target, args, url, attrs, selectors }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
     },
@@ -255,71 +255,36 @@ const setupDeclarativeReflexes = () => {
         if (!actions.includes(action)) actions.push(action)
       }
     })
-<<<<<<< HEAD
     if (controllers.length > 0) {
-      element.setAttribute('data-controller', controllers.join(' '))
+      element.setAttribute('data-controller', controllers.join(' ').trim())
     }
     if (actions.length > 0) {
-      element.setAttribute('data-action', actions.join(' '))
-    }
-=======
-    if (controllers.length > 0)
-      element.setAttribute('data-controller', controllers.join(' ').trim())
-    if (actions.length > 0)
       element.setAttribute('data-action', actions.join(' ').trim())
->>>>>>> master
+    }
   })
 }
 
-// compute the DOM element which will be the morph root
+// compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
-// optional value is a CSS selector; omit selector to indicate self
+// optional value is a CSS selector(s); comma-separated list
 // order of preference is data-reflex, data-controller, document body (default)
-const getXPath = (element, target) => {
+const getReflexRoots = (element, target) => {
   let reflexRoot = element.dataset.reflexRoot
-  if (reflexRoot !== undefined) {
-    reflexRoot = reflexRoot.length
-      ? document.querySelector(reflexRoot) || element
-      : element
+  if (reflexRoot !== undefined && reflexRoot.length) {
+    return reflexRoot
+      .split(',')
+      .filter(f => document.querySelector)
+      .join(',')
   } else {
     const controllerElement = findReflexController(element, target).element
     reflexRoot = controllerElement.dataset.reflexRoot
-    if (reflexRoot !== undefined) {
-      reflexRoot = reflexRoot.length
-        ? document.querySelector(reflexRoot) || controllerElement
-        : controllerElement
+    if (reflexRoot !== undefined && reflexRoot.length) {
+      return reflexRoot
+        .split(',')
+        .filter(f => document.querySelector)
+        .join(',')
     } else {
-      reflexRoot = document.body
-    }
-  }
-  const xpath = getPathTo(reflexRoot)
-  console.log(xpath)
-  return xpath.startsWith('//*') ? xpath : '/html/' + xpath
-}
-
-// construct a valid xPath for an element in the DOM
-const getPathTo = element => {
-  if (element.id !== '') return "//*[@id='" + element.id + "']"
-  if (element === document.body) return 'body'
-
-  let ix = 0
-  const siblings = element.parentNode.childNodes
-
-  for (var i = 0; i < siblings.length; i++) {
-    const sibling = siblings[i]
-    if (sibling === element) {
-      return (
-        getPathTo(element.parentNode) +
-        '/' +
-        element.tagName.toLowerCase() +
-        '[' +
-        (ix + 1) +
-        ']'
-      )
-    }
-
-    if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
-      ix++
+      return 'body'
     }
   }
 }
