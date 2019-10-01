@@ -4,6 +4,10 @@ description: The life of a stimulus reflex
 
 # Lifecycle
 
+[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex)
+[![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex)
+[![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+
 StimulusReflex supports 4 lifecycle events.
 
 1. **`before`** - prior to sending a stimulate request over the web socket
