@@ -110,6 +110,6 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def extract_body_html(html)
     doc = Nokogiri::HTML(html)
-    doc.css("body").to_s
+    doc.css("body").inner_html
   end
 end
