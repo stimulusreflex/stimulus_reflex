@@ -18,7 +18,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     url = data["url"].to_s
-    selectors = data["selectors"].to_s
+    selectors = data["selectors"].to_s.split(",")
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
@@ -99,7 +99,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def broadcast_morph(url, selectors, data, html)
     document = Nokogiri::HTML(html)
-    selectors.split(",").each do |selector|
+    selectors.each do |selector|
       html = document.css(selector).inner_html
       cable_ready[stream_name].morph selector: selector, html: html, children_only: true, stimulus_reflex: data
     end
