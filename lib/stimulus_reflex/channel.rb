@@ -100,7 +100,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   def broadcast_morph(url, selectors, data, html)
     document = Nokogiri::HTML(html)
     selectors.split(",").each do |selector|
-      html = document.css(selector).to_s
+      html = document.css(selector).inner_html
       cable_ready[stream_name].morph selector: selector, html: html, children_only: true, stimulus_reflex: data
     end
     cable_ready.broadcast
