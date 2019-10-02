@@ -275,18 +275,18 @@ const getReflexRoots = (element, target) => {
       .split(',')
       .filter(f => document.querySelector)
       .join(',')
-  } else {
-    const controllerElement = findReflexController(element, target).element
-    reflexRoot = controllerElement.dataset.reflexRoot
-    if (reflexRoot !== undefined && reflexRoot.length) {
-      return reflexRoot
-        .split(',')
-        .filter(f => document.querySelector)
-        .join(',')
-    } else {
-      return 'body'
-    }
   }
+
+  const controllerElement = findReflexController(element, target).element
+  reflexRoot = controllerElement.dataset.reflexRoot
+  if (reflexRoot !== undefined && reflexRoot.length) {
+    return reflexRoot
+      .split(',')
+      .filter(f => document.querySelector)
+      .join(',')
+  }
+
+  return 'body'
 }
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
