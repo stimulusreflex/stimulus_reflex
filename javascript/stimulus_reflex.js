@@ -270,21 +270,19 @@ const setupDeclarativeReflexes = () => {
 // order of preference is data-reflex, data-controller, document body (default)
 const getReflexRoots = (element, target) => {
   let reflexRoot = element.dataset.reflexRoot
-  if (reflexRoot !== undefined && reflexRoot.length) {
+  if (reflexRoot !== undefined && reflexRoot.length)
     return reflexRoot
       .split(',')
       .filter(f => document.querySelector)
       .join(',')
-  }
 
   const controllerElement = findReflexController(element, target).element
   reflexRoot = controllerElement.dataset.reflexRoot
-  if (reflexRoot !== undefined && reflexRoot.length) {
+  if (reflexRoot !== undefined && reflexRoot.length)
     return reflexRoot
       .split(',')
       .filter(f => document.querySelector)
       .join(',')
-  }
 
   return 'body'
 }
