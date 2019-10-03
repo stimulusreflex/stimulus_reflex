@@ -891,12 +891,12 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
-"cable_ready@>= 4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.5.tgz#52d094de0d272f1dd8aff6bc22afeb29fa5e73d4"
-  integrity sha512-8khNOYGHfXXNeXtDp00Odk2c21iWDu7cawYxYKuqBXn99TRlh+9jBvnJwXGfgabalesSjvEKKnAyeGLOjNmNtw==
+"cable_ready@>= 4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.0.6.tgz#882fb291f0df70aeef2a1a8bae6e87d20bcbc2bd"
+  integrity sha512-gf+yFVnfHr9EjCioPN18osMe5mJ+t26feFkHSBBkSTfQXMJap7RaiSZqYJcY+Hk4xlSnbKcJgWoPBYjdUuPBAQ==
   dependencies:
-    morphdom "^2.5.6"
+    morphdom "^2.5.9"
 
 caller-callsite@^2.0.0:
   version "2.0.0"
@@ -2047,10 +2047,10 @@ mocha@^6.2.1:
     yargs-parser "13.1.1"
     yargs-unparser "1.6.0"
 
-morphdom@^2.5.6:
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.5.6.tgz#85c59b36597a014d7107b09e0b836b3292086185"
-  integrity sha512-uw+fgVRCV7DK9EWJ87NeiFXTDdLklajJQNLHCAJStqTY/uwFpK5ormeU2PYSX5DDk+cI9dtFli/MHKd2wP/KGg==
+morphdom@^2.5.9:
+  version "2.5.9"
+  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.5.9.tgz#f4a0916af9e73dd7aa0fca9119b924c4c08990c6"
+  integrity sha512-dRsv6iD9XP9Ysz9qaJFhOO5cS8rwgOJXqSdIQOvh6/yWl69S7mKndouzDsQn7bSCs1fkNe/dtfy0nMUjGVcjnw==
 
 mri@^1.1.4:
   version "1.1.4"
