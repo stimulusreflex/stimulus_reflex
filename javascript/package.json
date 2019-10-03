@@ -4,7 +4,7 @@
   "main": "./stimulus_reflex.js",
   "scripts": {
     "test": "yarn run mocha --require @babel/register",
-    "prettier-check": "yarn run prettier-standard --check ./stimulus_reflex.js"
+    "prettier-check": "yarn run prettier-standard --check ./**/*.js"
   },
   "repository": {
     "type": "git",
