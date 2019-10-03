@@ -85,6 +85,10 @@ export default class extends Controller {
 
 Server side reflexes inherit from `StimulusReflex::Reflex` and hold logic responsible for performing operations like writing to your backend data stores. Reflexes are not concerned with rendering because rendering is delegated to the Rails controller and action that originally rendered the page.
 
+{% hint style="danger" %}
+Do not create server side reflex methods named `reflex` as this is a reserved word.
+{% endhint %}
+
 ### Properties
 
 * `connection` - the ActionCable connection
