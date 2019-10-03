@@ -98,13 +98,22 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def broadcast_morph(url, html, data = {})
     html = extract_body_html(html)
-    cable_ready[stream_name].morph selector: "body", html: html, children_only: true, stimulus_reflex: data
+    cable_ready[stream_name].morph(
+      selector: "body",
+      html: html,
+      children_only: true,
+      permanent_attribute_name: "data-reflex-permanent",
+      stimulus_reflex: data
+    )
     cable_ready.broadcast
   end
 
   def broadcast_error(message, data = {})
     logger.error "\e[31m#{message}\e[0m"
-    cable_ready[stream_name].dispatch_event name: "stimulus-reflex:500", detail: {stimulus_reflex: data.merge(error: message)}
+    cable_ready[stream_name].dispatch_event(
+      name: "stimulus-reflex:500",
+      detail: {stimulus_reflex: data.merge(error: message)}
+    )
     cable_ready.broadcast
   end
 
