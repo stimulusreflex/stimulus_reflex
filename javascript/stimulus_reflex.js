@@ -2,7 +2,11 @@ import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
 import { camelize, dasherize, underscore } from 'inflected'
 import CableReady from 'cable_ready'
-import { matchingControllerName } from './attributes'
+import {
+  attributeValue,
+  attributeValues,
+  matchingControllerName
+} from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -78,7 +82,7 @@ const findReflexController = (element, reflex) => {
   const name = matchingControllerName(reflex)
   let controller
   while (element && !controller) {
-    const controllers = (element.dataset.controller || '').split(' ')
+    const controllers = attributeValues(element.dataset.controller)
     if (controllers.includes(name)) {
       const candidate = stimulusApplication.getControllerForElementAndIdentifier(
         element,
@@ -194,12 +198,12 @@ const extendStimulusController = controller => {
 
       while (element && !reflex) {
         reflex = element.dataset.reflex
-        if (!reflex) element = element.parentElement
+        if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
-      reflex
-        .split(' ')
-        .forEach(reflex => this.stimulate(reflex.split('->')[1], element))
+      attributeValues(reflex).forEach(reflex =>
+        this.stimulate(reflex.split('->')[1], element)
+      )
     }
   })
 }
@@ -235,9 +239,9 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document.querySelectorAll('[data-reflex]').forEach(element => {
-    const controllers = (element.dataset.controller || '').split(' ')
-    const reflexes = (element.dataset.reflex || '').split(' ')
-    const actions = (element.dataset.action || '').split(' ')
+    const controllers = attributeValues(element.dataset.controller)
+    const reflexes = attributeValues(element.dataset.reflex)
+    const actions = attributeValues(element.dataset.action)
     reflexes.forEach(reflex => {
       const controller = findReflexController(element, reflex.split('->')[1])
       let action
@@ -251,10 +255,11 @@ const setupDeclarativeReflexes = () => {
         if (!actions.includes(action)) actions.push(action)
       }
     })
-    if (controllers.length > 0)
-      element.setAttribute('data-controller', controllers.join(' ').trim())
-    if (actions.length > 0)
-      element.setAttribute('data-action', actions.join(' ').trim())
+    const controllerValue = attributeValue(controllers)
+    const actionValue = attributeValue(actions)
+    if (controllerValue)
+      element.setAttribute('data-controller', controllerValue)
+    if (actionValue) element.setAttribute('data-action', actionValue)
   })
 }
 
