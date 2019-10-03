@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cloc --exclude-dir=node_modules,test --include-ext=rb,js .

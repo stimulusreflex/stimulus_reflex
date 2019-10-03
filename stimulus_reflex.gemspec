@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rack"
   gem.add_dependency "nokogiri"
   gem.add_dependency "rails", ">= 5.2"
-  gem.add_dependency "cable_ready", ">= 4.0.3"
+  gem.add_dependency "cable_ready", ">= 4.0.6"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "rake"

@@ -63,7 +63,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def render_page_and_broadcast_morph(url, reflex, selectors, data = {})
     html = render_page(url, reflex)
-    broadcast_morph url, selectors, data, html if html.present?
+    broadcast_morphs selectors, data, html if html.present?
   end
 
   def render_page(url, reflex)
@@ -97,18 +97,21 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morph(url, selectors, data, html)
+  def broadcast_morphs(selectors, data, html)
     document = Nokogiri::HTML(html)
     selectors.each do |selector|
       html = document.css(selector).inner_html
-      cable_ready[stream_name].morph selector: selector, html: html, children_only: true, stimulus_reflex: data
+      cable_ready[stream_name].morph selector: selector, html: html, children_only: true, permanent_attribute_name: "data-reflex-permanent", stimulus_reflex: data
     end
     cable_ready.broadcast
   end
 
   def broadcast_error(message, data = {})
     logger.error "\e[31m#{message}\e[0m"
-    cable_ready[stream_name].dispatch_event name: "stimulus-reflex:500", detail: {stimulus_reflex: data.merge(error: message)}
+    cable_ready[stream_name].dispatch_event(
+      name: "stimulus-reflex:500",
+      detail: {stimulus_reflex: data.merge(error: message)}
+    )
     cable_ready.broadcast
   end
 end
