@@ -100,8 +100,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   def broadcast_morphs(selectors, data, html)
     document = Nokogiri::HTML(html)
     selectors.each do |selector|
+      binding.pry
       html = document.css(selector).inner_html
-      cable_ready[stream_name].morph selector: selector, html: html, children_only: true, permanent_attribute_name: "data-reflex-permanent", stimulus_reflex: data
+      cable_ready[stream_name].morph(
+        selector: selector,
+        html: html,
+        children_only: true,
+        permanent_attribute_name: "data-reflex-permanent",
+        stimulus_reflex: data
+      )
     end
     cable_ready.broadcast
   end

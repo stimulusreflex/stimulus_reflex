@@ -293,7 +293,7 @@ const getReflexRoots = (element, reflex) => {
     }
   }
   if (list.length === 0) list.push('body')
-  return list
+  return list.join(',')
 }
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
