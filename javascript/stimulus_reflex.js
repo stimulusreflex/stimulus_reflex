@@ -2,7 +2,7 @@ import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
 import { camelize, dasherize, underscore } from 'inflected'
 import CableReady from 'cable_ready'
-import { matchingControllerName } from './attributes'
+import { attributeValue, matchingControllerName } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -251,10 +251,11 @@ const setupDeclarativeReflexes = () => {
         if (!actions.includes(action)) actions.push(action)
       }
     })
-    if (controllers.length > 0)
-      element.setAttribute('data-controller', controllers.join(' ').trim())
-    if (actions.length > 0)
-      element.setAttribute('data-action', actions.join(' ').trim())
+    const controllerValue = attributeValue(controllers)
+    const actionValue = attributeValue(actions)
+    if (controllerValue)
+      element.setAttribute('data-controller', controllerValue)
+    if (actionValue) element.setAttribute('data-action', actionValue)
   })
 }
 
