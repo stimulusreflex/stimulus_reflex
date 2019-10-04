@@ -26,7 +26,8 @@ Everyone interacting with StimulusReflex is expected to follow the [Code of Cond
 ### Coding Standards
 
 This project uses [Standard](https://github.com/testdouble/standard)
-and [Prettier](https://github.com/prettier/prettier) to minimize bike shedding related to code formatting.
+and [prettier-standard](https://github.com/sheerun/prettier-standard) to minimize bike shedding related to code formatting.
+
 Please run `./bin/standardize` prior submitting pull requests.
 
 View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
