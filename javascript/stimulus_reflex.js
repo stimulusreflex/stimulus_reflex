@@ -11,7 +11,6 @@ import {
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
 let stimulusApplication
-let debug = false
 
 // Extracts attributes from a DOM element.
 //
@@ -120,11 +119,9 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
     : `reflex${camelize(stage)}`
   const genericLifecycleMethod = controller[genericLifecycleMethodName]
 
-  if (typeof specificLifecycleMethod === 'function')
-    setTimeout(() => specificLifecycleMethod(element, element.reflexError), 1)
+  if (typeof specificLifecycleMethod === 'function') { setTimeout(() => specificLifecycleMethod(element, element.reflexError), 1) }
 
-  if (typeof genericLifecycleMethod === 'function')
-    setTimeout(() => genericLifecycleMethod(element, element.reflexError), 1)
+  if (typeof genericLifecycleMethod === 'function') { setTimeout(() => genericLifecycleMethod(element, element.reflexError), 1) }
 }
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -249,15 +246,13 @@ const setupDeclarativeReflexes = () => {
         if (!actions.includes(action)) actions.push(action)
       } else {
         action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-        if (!controllers.includes('stimulus-reflex'))
-          controllers.push('stimulus-reflex')
+        if (!controllers.includes('stimulus-reflex')) { controllers.push('stimulus-reflex') }
         if (!actions.includes(action)) actions.push(action)
       }
     })
     const controllerValue = attributeValue(controllers)
     const actionValue = attributeValue(actions)
-    if (controllerValue)
-      element.setAttribute('data-controller', controllerValue)
+    if (controllerValue) { element.setAttribute('data-controller', controllerValue) }
     if (actionValue) element.setAttribute('data-action', actionValue)
   })
 }
