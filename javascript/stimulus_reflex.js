@@ -1,99 +1,19 @@
 import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
-import { camelize, dasherize, underscore } from 'inflected'
+import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
 import {
   attributeValue,
   attributeValues,
-  matchingControllerName
+  matchingControllerName,
+  extractElementAttributes,
+  findElement,
+  findReflexController
 } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
 let stimulusApplication
-
-// Extracts attributes from a DOM element.
-//
-const extractElementAttributes = element => {
-  let attrs = Array.prototype.slice
-    .call(element.attributes)
-    .reduce((memo, attr) => {
-      memo[attr.name] = attr.value
-      return memo
-    }, {})
-
-  attrs.value = element.value
-  attrs.checked = !!element.checked
-  attrs.selected = !!element.selected
-  if (element.tagName.match(/select/i)) {
-    if (element.multiple) {
-      const checkedOptions = Array.prototype.slice.call(
-        element.querySelectorAll('option:checked')
-      )
-      attrs.values = checkedOptions.map(o => o.value)
-    } else if (element.selectedIndex > -1) {
-      attrs.value = element.options[element.selectedIndex].value
-    }
-  }
-  return attrs
-}
-
-// Finds an element based on the passed represention the DOM element's attributes.
-//
-// NOTE: This is the same set of attributes extrated via extractElementAttributes and forwarded to the server side reflex.
-// SEE: stimulute()
-// SEE: StimulusReflex::Channel#broadcast_morph
-// SEE: StimulusReflex::Channel#broadcast_error
-//
-const findElement = attributes => {
-  attributes = attributes || {}
-  let elements = []
-  if (attributes.id) {
-    elements = document.querySelectorAll(`#${attributes.id}`)
-  } else {
-    let selectors = []
-    for (const key in attributes) {
-      if (key.includes('.')) continue
-      if (key === 'value') continue
-      if (key === 'checked') continue
-      if (key === 'selected') continue
-      if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue
-      selectors.push(`[${key}="${attributes[key]}"]`)
-    }
-    try {
-      elements = document.querySelectorAll(selectors.join(''))
-    } catch (error) {
-      console.log(
-        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
-        error,
-        attributes
-      )
-    }
-  }
-
-  const element = elements.length === 1 ? elements[0] : null
-  return element
-}
-
-// Finds the registered StimulusReflex controller for the passed element that matches the reflex.
-// Traverses DOM ancestors starting with element until a match is found.
-//
-const findReflexController = (element, reflex) => {
-  const name = matchingControllerName(reflex)
-  let controller
-  while (element && !controller) {
-    const controllers = attributeValues(element.dataset.controller)
-    if (controllers.includes(name)) {
-      const candidate = stimulusApplication.getControllerForElementAndIdentifier(
-        element,
-        name
-      )
-      if (candidate && candidate.StimulusReflex) controller = candidate
-    }
-    element = element.parentElement
-  }
-  return controller
-}
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -104,7 +24,7 @@ const findReflexController = (element, reflex) => {
 //
 const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
-  const controller = findReflexController(element, reflex)
+  const controller = findReflexController(stimulusApplication, element, reflex)
   if (!controller) return
 
   const reflexMethodName = reflex.split('#')[1]
@@ -115,18 +35,20 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
     ? `${stage}${camelize(reflexMethodName)}`
     : `${camelize(reflexMethodName, false)}${camelize(stage)}`
 
-  if (typeof controller[specificLifecycleMethodName] === 'function')
+  if (typeof controller[specificLifecycleMethodName] === 'function') {
     setTimeout(
       () =>
         controller[specificLifecycleMethodName](element, element.reflexError),
       1
     )
-  if (typeof controller[genericLifecycleMethodName] === 'function')
+  }
+  if (typeof controller[genericLifecycleMethodName] === 'function') {
     setTimeout(
       () =>
         controller[genericLifecycleMethodName](element, element.reflexError),
       1
     )
+  }
 }
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -243,22 +165,28 @@ const setupDeclarativeReflexes = () => {
     const reflexes = attributeValues(element.dataset.reflex)
     const actions = attributeValues(element.dataset.action)
     reflexes.forEach(reflex => {
-      const controller = findReflexController(element, reflex.split('->')[1])
+      const controller = findReflexController(
+        stimulusApplication,
+        element,
+        reflex.split('->')[1]
+      )
       let action
       if (controller) {
         action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
         if (!actions.includes(action)) actions.push(action)
       } else {
         action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-        if (!controllers.includes('stimulus-reflex'))
+        if (!controllers.includes('stimulus-reflex')) {
           controllers.push('stimulus-reflex')
+        }
         if (!actions.includes(action)) actions.push(action)
       }
     })
     const controllerValue = attributeValue(controllers)
     const actionValue = attributeValue(actions)
-    if (controllerValue)
+    if (controllerValue) {
       element.setAttribute('data-controller', controllerValue)
+    }
     if (actionValue) element.setAttribute('data-action', actionValue)
   })
 }
