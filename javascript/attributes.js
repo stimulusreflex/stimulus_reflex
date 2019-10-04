@@ -90,7 +90,7 @@ export const findElement = attributes => {
 //
 //   matchingControllerName('ExampleReflex#do_stuff') // 'example'
 //
-const matchingControllerName = reflex => {
+export const matchingControllerName = reflex => {
   return dasherize(underscore(reflex.split('#')[0].replace(/Reflex$/, '')))
 }
 
