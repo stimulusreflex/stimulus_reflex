@@ -120,11 +120,19 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
   const genericLifecycleMethod = controller[genericLifecycleMethodName]
 
   if (typeof specificLifecycleMethod === 'function') {
-    setTimeout(() => specificLifecycleMethod(element, element.reflexError), 1)
+    setTimeout(
+      () =>
+        specificLifecycleMethod.call(controller, element, element.reflexError),
+      1
+    )
   }
 
   if (typeof genericLifecycleMethod === 'function') {
-    setTimeout(() => genericLifecycleMethod(element, element.reflexError), 1)
+    setTimeout(
+      () =>
+        genericLifecycleMethod.call(controller, element, element.reflexError),
+      1
+    )
   }
 }
 
