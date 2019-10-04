@@ -18,7 +18,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     url = data["url"].to_s
-    selectors = data["selectors"] || ["body"]
+    selectors = data["selectors"].present? ? data["selectors"] : ["body"]
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify

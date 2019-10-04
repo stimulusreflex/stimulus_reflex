@@ -256,9 +256,8 @@ const setupDeclarativeReflexes = () => {
     })
     const controllerValue = attributeValue(controllers)
     const actionValue = attributeValue(actions)
-    if (controllerValue) {
+    if (controllerValue)
       element.setAttribute('data-controller', controllerValue)
-    }
     if (actionValue) element.setAttribute('data-action', actionValue)
   })
 }
@@ -292,7 +291,6 @@ const getReflexRoots = (element, reflex) => {
       )
     }
   }
-  if (list.length === 0) list.push('body')
   return list
 }
 
