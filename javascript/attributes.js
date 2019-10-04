@@ -23,14 +23,6 @@ export const attributeValues = value => {
   return value.split(' ').filter(v => v.trim().length)
 }
 
-// Returns the expected matching controller name for the passed reflex.
-//
-//   matchingControllerName('ExampleReflex#do_stuff') // 'example'
-//
-export const matchingControllerName = reflex => {
-  return dasherize(underscore(reflex.split('#')[0].replace(/Reflex$/, '')))
-}
-
 // Extracts attributes from a DOM element.
 //
 export const extractElementAttributes = element => {
@@ -92,6 +84,14 @@ export const findElement = attributes => {
 
   const element = elements.length === 1 ? elements[0] : null
   return element
+}
+
+// Returns the expected matching controller name for the passed reflex.
+//
+//   matchingControllerName('ExampleReflex#do_stuff') // 'example'
+//
+const matchingControllerName = reflex => {
+  return dasherize(underscore(reflex.split('#')[0].replace(/Reflex$/, '')))
 }
 
 // Finds the registered StimulusReflex controller for the passed element that matches the reflex.

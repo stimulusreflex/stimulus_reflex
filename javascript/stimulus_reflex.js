@@ -5,7 +5,6 @@ import CableReady from 'cable_ready'
 import {
   attributeValue,
   attributeValues,
-  matchingControllerName,
   extractElementAttributes,
   findElement,
   findReflexController
