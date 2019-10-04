@@ -95,6 +95,19 @@ const findReflexController = (element, reflex) => {
   return controller
 }
 
+// Returns all StimulsReflex controllers for the passed element based on the data-controller attribute.
+//
+const reflexControllers = element => {
+  return attributeValues(element.dataset.controller).reduce((memo, name) => {
+    const controller = stimulusApplication.getControllerForElementAndIdentifier(
+      element,
+      name
+    )
+    if (controller && controller.StimulusReflex) memo.push(controller)
+    return memo
+  }, [])
+}
+
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
 // - before
@@ -189,7 +202,7 @@ const extendStimulusController = controller => {
           ? args.shift()
           : this.element
       const attrs = extractElementAttributes(element)
-      const selectors = getReflexRoots(element, target)
+      const selectors = getReflexRoots(element)
       const data = { target, args, url, attrs, selectors }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
@@ -277,25 +290,25 @@ const setupDeclarativeReflexes = () => {
 // use the data-reflex-root attribute on the reflex or the controller
 // optional value is a CSS selector(s); comma-separated list
 // order of preference is data-reflex, data-controller, document body (default)
-const getReflexRoots = (element, reflex) => {
+const getReflexRoots = element => {
   let list = []
   element = element.closest('[data-controller][data-reflex-root]')
   while (element) {
-    if (findReflexController(element, reflex)) {
+    if (reflexControllers(element).length > 0) {
       const selectors = element.dataset.reflexRoot
         .split(',')
         .filter(s => s.trim().length)
       if (selectors.length === 0 && element.id) {
         selectors.push(`#${element.id}`)
       } else if (selectors.length === 0) {
-        console.log(
+        console.error(
           'No value found for data-reflex-root. Add an #id to the element or provide a value for data-reflex-root.',
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     } else {
-      console.log(
+      console.error(
         'Stimulus controller not found for the data-reflex-root element.',
         element
       )
