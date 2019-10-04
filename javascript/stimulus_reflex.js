@@ -283,13 +283,13 @@ const getReflexRoots = (element, reflex) => {
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
-      element = element.closest('data-reflex-root')
     } else {
       console.log(
         'Stimulus controller not found for the data-reflex-root element.',
         element
       )
     }
+    element = element.closest('data-reflex-root')
   }
   return list
 }
