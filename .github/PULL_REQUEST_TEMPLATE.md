@@ -13,4 +13,4 @@ Explain value.
 ## Checklist
 
 - [ ] My code follows the style guidelines of this project
-- [ ] Checks (StandardRB & Prettier) are passing
+- [ ] Checks (StandardRB & Prettier-Standard) are passing

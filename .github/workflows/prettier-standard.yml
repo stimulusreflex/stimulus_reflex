@@ -1,4 +1,4 @@
-name: Prettier
+name: Prettier-Standard
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   prettier:
-    name: Prettier Check Action
+    name: Prettier-Standard Check Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -20,5 +20,5 @@ jobs:
         version: '12.x'
     - run: yarn
       working-directory: javascript/
-    - run: yarn run prettier-check
+    - run: yarn run prettier-standard-check
       working-directory: javascript/
