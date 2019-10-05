@@ -1,66 +1,31 @@
 ---
-description: The life of a stimulus reflex
+description: AKA callbacks AKA keeping the magic after the honeymoon is over
 ---
 
 # Lifecycle
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
-StimulusReflex supports 4 lifecycle events.
+StimulusReflex gives you the ability to run custom code at four distinct moments __around__ sending an event to the server and updating your DOM. Most of the time, these moments are best spent thinking about what really happened to Oceanic Air Flight 815. Still, there are occasions where we absolutely need to handle an edge case. For those situations, we offer **lifecycle callback methods**:
 
-1. **`before`** - prior to sending a stimulate request over the web socket
-2. **`success`** - after the server side reflex succeeds and the DOM has been updated
-3. **`error`** - whenever the server side reflex raises an error
+1. **`before`** - prior to sending a request over the web socket
+2. **`success`** - after the server side Reflex succeeds and the DOM has been updated
+3. **`error`** - whenever the server side Reflex raises an error
 4. **`after`** - after both `success` and `error`
 
 {% hint style="info" %}
-**Using the lifecycle is not a requirement.** Think of it as a power tool that will help you build more sophisticated applications.
+**Using the lifecycle callback methods is not a requirement.** Think of it as a power tool that will help you build more sophisticated applications.
 {% endhint %}
 
-## Quick Start
+The idea is that if and when you define a method with a specific name that matches what the library searches for, it will run at just the right moment. __If there's no function, nothing happens.__ StimulusReflex only knows to look for these methods inside of Stimulus controllers that have called `StimulusReflex.register(this)` in their `connect()` function.
 
-Simply declare lifecycle methods in your StimulusReflex controller.
+There are two kinds of callback methods that you can use: **generic** and **custom**. Generic callback methods fire for every Reflex action on a controller, while custom callback methods are __created dynamically on a 1:1 basis__ for each of your Reflex actions.
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/examples/show.html.erb" %}
-```text
-<a href="#"
-   data-controller="example"
-   data-reflex="click->ExampleReflex#update">
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
-```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
-
-export default class extends Controller {
-  connect () {
-    StimulusReflex.register(this)
-  }
-
-  beforeUpdate() {
-    // show spinner
-  }
-
-  afterUpdate() {
-    // hide spinner
-  }
-}
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-{% hint style="danger" %}
-The methods `beforeUpdate` and `afterUpdate` use a naming convention that matches their suffix to the reflex method name `ExampleReflex#update`
-{% endhint %}
+When designing your application logic, think of it like taking medicine: it's preferable to take a pill that solves a specific problem, but sometimes you just need to make all of your problems go away at once.
 
 ## Generic Lifecycle Methods
 
-StimulusReflex controllers can define 4 generic lifecycle methods which provide a simple way to hook into descendant reflexes.
+StimulusReflex controllers can define up to four generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -99,9 +64,11 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+In this example, we update the correct anchor link to change its text before sending the action to the server.
+
 ## Custom Lifecycle Methods
 
-StimulusReflex controllers can define 4 custom lifecycle methods for each descendant reflex. These methods use a naming convention based on the reflex. For example, the reflex `ExampleReflex#update` will produce the following lifecycle methods.
+StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex action. These methods use a naming convention __based on the name of the reflex action__. For example, the Reflex `ExampleReflex#update` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforeUpdate`
 2. `updateSuccess`
@@ -142,15 +109,17 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+Adapting from the Generic example, we have refactored our controller to capture the `before` callback events for each anchor individually.
+
 {% hint style="info" %}
-**It's not required to implement all lifecycle methods.** Pick and choose which lifecycle methods makes sense for your application.
+**It's not required to implement all lifecycle methods.** Pick and choose which lifecycle callback methods make sense for your application. The answer is frequently __none__.
 {% endhint %}
 
 ## Conventions
 
 ### Method Names
 
-Lifecycle methods apply a naming convention based on the reflex. For example, the reflex `ExampleReflex#do_stuff` will produce the following lifecycle methods.
+Lifecycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will produce the following camel-cased lifecycle callback methods.
 
 1. `beforeDoStuff`
 2. `doStuffSuccess`
@@ -159,7 +128,7 @@ Lifecycle methods apply a naming convention based on the reflex. For example, th
 
 ### Method Signatures
 
-Both generic and custom lifecycle methods share the same function arguments.
+Both generic and custom lifecycle callback methods share the same function arguments.
 
 * `beforeReflex(element)`  **element** - the element that triggered the reflex
 * `reflexSuccess(element)` **element** - the element that triggered the reflex
