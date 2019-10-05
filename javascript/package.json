@@ -22,7 +22,8 @@
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "better-assert": "^1.0.2",
+    "assert": "^2.0.0",
+    "jsdom": "^15.1.1",
     "mocha": "^6.2.1",
     "prettier-standard": "^15.0.1"
   }
