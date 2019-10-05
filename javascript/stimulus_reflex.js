@@ -95,9 +95,9 @@ const findReflexController = (element, reflex) => {
   return controller
 }
 
-// Returns all StimulsReflex controllers for the passed element based on the data-controller attribute.
+// Returns StimulsReflex controllers local to the passed element based on the data-controller attribute.
 //
-const reflexControllers = element => {
+const localReflexControllers = element => {
   return attributeValues(element.dataset.controller).reduce((memo, name) => {
     const controller = stimulusApplication.getControllerForElementAndIdentifier(
       element,
@@ -106,6 +106,18 @@ const reflexControllers = element => {
     if (controller && controller.StimulusReflex) memo.push(controller)
     return memo
   }, [])
+}
+
+// Returns all StimulsReflex controllers for the passed element.
+// Traverses DOM ancestors starting with element.
+//
+const allReflexControllers = element => {
+  let controllers = []
+  while (element) {
+    controllers = controllers.concat(localReflexControllers(element))
+    element = element.parentElement
+  }
+  return controllers
 }
 
 // Invokes a lifecycle method on a StimulusReflex controller.
@@ -117,36 +129,49 @@ const reflexControllers = element => {
 //
 const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
-  const controller = findReflexController(element, reflex)
-  if (!controller) return
 
-  const reflexMethodName = reflex.split('#')[1]
+  // traverse the DOM for a matching reflex controller
+  const reflexController = findReflexController(element, reflex)
 
-  const specificLifecycleMethodName = ['before', 'after'].includes(stage)
-    ? `${stage}${camelize(reflexMethodName)}`
-    : `${camelize(reflexMethodName, false)}${camelize(stage)}`
-  const specificLifecycleMethod = controller[specificLifecycleMethodName]
+  // find reflex controllers wired on this element
+  const controllers = localReflexControllers(element)
 
-  const genericLifecycleMethodName = ['before', 'after'].includes(stage)
-    ? `${stage}Reflex`
-    : `reflex${camelize(stage)}`
-  const genericLifecycleMethod = controller[genericLifecycleMethodName]
+  if (reflexController) controllers.push(reflexController)
+  if (controllers.length === 0) return
 
-  if (typeof specificLifecycleMethod === 'function') {
-    setTimeout(
-      () =>
-        specificLifecycleMethod.call(controller, element, element.reflexError),
-      1
-    )
-  }
+  controllers.forEach(controller => {
+    const reflexMethodName = reflex.split('#')[1]
 
-  if (typeof genericLifecycleMethod === 'function') {
-    setTimeout(
-      () =>
-        genericLifecycleMethod.call(controller, element, element.reflexError),
-      1
-    )
-  }
+    const specificLifecycleMethodName = ['before', 'after'].includes(stage)
+      ? `${stage}${camelize(reflexMethodName)}`
+      : `${camelize(reflexMethodName, false)}${camelize(stage)}`
+    const specificLifecycleMethod = controller[specificLifecycleMethodName]
+
+    const genericLifecycleMethodName = ['before', 'after'].includes(stage)
+      ? `${stage}Reflex`
+      : `reflex${camelize(stage)}`
+    const genericLifecycleMethod = controller[genericLifecycleMethodName]
+
+    if (typeof specificLifecycleMethod === 'function') {
+      setTimeout(
+        () =>
+          specificLifecycleMethod.call(
+            controller,
+            element,
+            element.reflexError
+          ),
+        1
+      )
+    }
+
+    if (typeof genericLifecycleMethod === 'function') {
+      setTimeout(
+        () =>
+          genericLifecycleMethod.call(controller, element, element.reflexError),
+        1
+      )
+    }
+  })
 }
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -264,7 +289,7 @@ const setupDeclarativeReflexes = () => {
     const reflexes = attributeValues(element.dataset.reflex)
     const actions = attributeValues(element.dataset.action)
     reflexes.forEach(reflex => {
-      const controller = findReflexController(element, reflex.split('->')[1])
+      const controller = allReflexControllers(element)[0]
       let action
       if (controller) {
         action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
@@ -294,7 +319,7 @@ const getReflexRoots = element => {
   let list = []
   element = element.closest('[data-controller][data-reflex-root]')
   while (element) {
-    if (reflexControllers(element).length > 0) {
+    if (localReflexControllers(element).length > 0) {
       const selectors = element.dataset.reflexRoot
         .split(',')
         .filter(s => s.trim().length)
