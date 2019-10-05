@@ -1,4 +1,5 @@
 import { dasherize, underscore } from 'inflected'
+import { attributeValues } from './attributes'
 
 // Returns the expected matching controller name for the passed reflex.
 //
@@ -30,9 +31,9 @@ export const findReflexController = (application, element, reflex) => {
 
 // Returns StimulsReflex controllers local to the passed element based on the data-controller attribute.
 //
-export const localReflexControllers = element => {
+export const localReflexControllers = (application, element) => {
   return attributeValues(element.dataset.controller).reduce((memo, name) => {
-    const controller = stimulusApplication.getControllerForElementAndIdentifier(
+    const controller = application.getControllerForElementAndIdentifier(
       element,
       name
     )
@@ -44,10 +45,12 @@ export const localReflexControllers = element => {
 // Returns all StimulsReflex controllers for the passed element.
 // Traverses DOM ancestors starting with element.
 //
-export const allReflexControllers = element => {
+export const allReflexControllers = (application, element) => {
   let controllers = []
   while (element) {
-    controllers = controllers.concat(localReflexControllers(element))
+    controllers = controllers.concat(
+      localReflexControllers(application, element)
+    )
     element = element.parentElement
   }
   return controllers

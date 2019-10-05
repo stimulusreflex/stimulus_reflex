@@ -11,13 +11,12 @@ import {
 import {
   allReflexControllers,
   findReflexController,
-  localReflexControllers,
-  matchingControllerName
+  localReflexControllers
 } from './controllers'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
-let stimulusApplication
+let application
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -30,10 +29,10 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
 
   // traverse the DOM for a matching reflex controller
-  const reflexController = findReflexController(element, reflex)
+  const reflexController = findReflexController(application, element, reflex)
 
   // find reflex controllers wired on this element
-  const controllers = new Set(localReflexControllers(element))
+  const controllers = new Set(localReflexControllers(application, element))
 
   if (reflexController) controllers.add(reflexController)
   if (controllers.length === 0) return
@@ -188,7 +187,7 @@ const setupDeclarativeReflexes = () => {
     const reflexes = attributeValues(element.dataset.reflex)
     const actions = attributeValues(element.dataset.action)
     reflexes.forEach(reflex => {
-      const controller = allReflexControllers(element)[0]
+      const controller = allReflexControllers(application, element)[0]
       let action
       if (controller) {
         action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
@@ -218,7 +217,7 @@ const getReflexRoots = element => {
   let list = []
   element = element.closest('[data-controller][data-reflex-root]')
   while (element) {
-    if (localReflexControllers(element).length > 0) {
+    if (localReflexControllers(application, element).length > 0) {
       const selectors = element.dataset.reflexRoot
         .split(',')
         .filter(s => s.trim().length)
@@ -247,9 +246,12 @@ const getReflexRoots = element => {
 // - application - the Stimulus application
 // - controller - [optional] the default StimulusReflexController
 //
-const initialize = (application, controller = StimulusReflexController) => {
-  stimulusApplication = application
-  stimulusApplication.register('stimulus-reflex', controller)
+const initialize = (
+  stimulusApplication,
+  controller = StimulusReflexController
+) => {
+  application = stimulusApplication
+  application.register('stimulus-reflex', controller)
 }
 
 // Wire everything up
