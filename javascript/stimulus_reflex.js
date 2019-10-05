@@ -109,7 +109,7 @@ const localReflexControllers = element => {
 }
 
 // Returns all StimulsReflex controllers for the passed element.
-// Traverses DOM ancestors starting with element until a match is found.
+// Traverses DOM ancestors starting with element.
 //
 const allReflexControllers = element => {
   let controllers = []
