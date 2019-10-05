@@ -56,8 +56,8 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
           specificLifecycleMethod.call(
             controller,
             element,
-            element.reflexError,
-            reflex
+            reflex,
+            element.reflexError
           ),
         1
       )
@@ -69,8 +69,8 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
           genericLifecycleMethod.call(
             controller,
             element,
-            element.reflexError,
-            reflex
+            reflex,
+            element.reflexError
           ),
         1
       )
