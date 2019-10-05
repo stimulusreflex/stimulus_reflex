@@ -95,6 +95,31 @@ const findReflexController = (element, reflex) => {
   return controller
 }
 
+// Returns StimulsReflex controllers local to the passed element based on the data-controller attribute.
+//
+const localReflexControllers = element => {
+  return attributeValues(element.dataset.controller).reduce((memo, name) => {
+    const controller = stimulusApplication.getControllerForElementAndIdentifier(
+      element,
+      name
+    )
+    if (controller && controller.StimulusReflex) memo.push(controller)
+    return memo
+  }, [])
+}
+
+// Returns all StimulsReflex controllers for the passed element.
+// Traverses DOM ancestors starting with element.
+//
+const allReflexControllers = element => {
+  let controllers = []
+  while (element) {
+    controllers = controllers.concat(localReflexControllers(element))
+    element = element.parentElement
+  }
+  return controllers
+}
+
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
 // - before
@@ -104,29 +129,49 @@ const findReflexController = (element, reflex) => {
 //
 const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
-  const controller = findReflexController(element, reflex)
-  if (!controller) return
 
-  const reflexMethodName = reflex.split('#')[1]
-  const genericLifecycleMethodName = ['before', 'after'].includes(stage)
-    ? `${stage}Reflex`
-    : `reflex${camelize(stage)}`
-  const specificLifecycleMethodName = ['before', 'after'].includes(stage)
-    ? `${stage}${camelize(reflexMethodName)}`
-    : `${camelize(reflexMethodName, false)}${camelize(stage)}`
+  // traverse the DOM for a matching reflex controller
+  const reflexController = findReflexController(element, reflex)
 
-  if (typeof controller[specificLifecycleMethodName] === 'function')
-    setTimeout(
-      () =>
-        controller[specificLifecycleMethodName](element, element.reflexError),
-      1
-    )
-  if (typeof controller[genericLifecycleMethodName] === 'function')
-    setTimeout(
-      () =>
-        controller[genericLifecycleMethodName](element, element.reflexError),
-      1
-    )
+  // find reflex controllers wired on this element
+  const controllers = new Set(localReflexControllers(element))
+
+  if (reflexController) controllers.add(reflexController)
+  if (controllers.length === 0) return
+
+  controllers.forEach(controller => {
+    const reflexMethodName = reflex.split('#')[1]
+
+    const specificLifecycleMethodName = ['before', 'after'].includes(stage)
+      ? `${stage}${camelize(reflexMethodName)}`
+      : `${camelize(reflexMethodName, false)}${camelize(stage)}`
+    const specificLifecycleMethod = controller[specificLifecycleMethodName]
+
+    const genericLifecycleMethodName = ['before', 'after'].includes(stage)
+      ? `${stage}Reflex`
+      : `reflex${camelize(stage)}`
+    const genericLifecycleMethod = controller[genericLifecycleMethodName]
+
+    if (typeof specificLifecycleMethod === 'function') {
+      setTimeout(
+        () =>
+          specificLifecycleMethod.call(
+            controller,
+            element,
+            element.reflexError
+          ),
+        1
+      )
+    }
+
+    if (typeof genericLifecycleMethod === 'function') {
+      setTimeout(
+        () =>
+          genericLifecycleMethod.call(controller, element, element.reflexError),
+        1
+      )
+    }
+  })
 }
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -182,7 +227,8 @@ const extendStimulusController = controller => {
           ? args.shift()
           : this.element
       const attrs = extractElementAttributes(element)
-      const data = { target, args, url, attrs }
+      const selectors = getReflexRoots(element)
+      const data = { target, args, url, attrs, selectors }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
     },
@@ -243,24 +289,58 @@ const setupDeclarativeReflexes = () => {
     const reflexes = attributeValues(element.dataset.reflex)
     const actions = attributeValues(element.dataset.action)
     reflexes.forEach(reflex => {
-      const controller = findReflexController(element, reflex.split('->')[1])
+      const controller = allReflexControllers(element)[0]
       let action
       if (controller) {
         action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
         if (!actions.includes(action)) actions.push(action)
       } else {
         action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-        if (!controllers.includes('stimulus-reflex'))
+        if (!controllers.includes('stimulus-reflex')) {
           controllers.push('stimulus-reflex')
+        }
         if (!actions.includes(action)) actions.push(action)
       }
     })
     const controllerValue = attributeValue(controllers)
     const actionValue = attributeValue(actions)
-    if (controllerValue)
+    if (controllerValue) {
       element.setAttribute('data-controller', controllerValue)
+    }
     if (actionValue) element.setAttribute('data-action', actionValue)
   })
+}
+
+// compute the DOM element(s) which will be the morph root
+// use the data-reflex-root attribute on the reflex or the controller
+// optional value is a CSS selector(s); comma-separated list
+// order of preference is data-reflex, data-controller, document body (default)
+const getReflexRoots = element => {
+  let list = []
+  element = element.closest('[data-controller][data-reflex-root]')
+  while (element) {
+    if (localReflexControllers(element).length > 0) {
+      const selectors = element.dataset.reflexRoot
+        .split(',')
+        .filter(s => s.trim().length)
+      if (selectors.length === 0 && element.id) {
+        selectors.push(`#${element.id}`)
+      } else if (selectors.length === 0) {
+        console.error(
+          'No value found for data-reflex-root. Add an #id to the element or provide a value for data-reflex-root.',
+          element
+        )
+      }
+      list = list.concat(selectors.filter(s => document.querySelector(s)))
+    } else {
+      console.error(
+        'Stimulus controller not found for the data-reflex-root element.',
+        element
+      )
+    }
+    element = element.closest('data-reflex-root')
+  }
+  return list
 }
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
