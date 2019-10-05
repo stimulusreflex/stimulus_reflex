@@ -134,9 +134,9 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
   const reflexController = findReflexController(element, reflex)
 
   // find reflex controllers wired on this element
-  const controllers = localReflexControllers(element)
+  const controllers = new Set(localReflexControllers(element))
 
-  if (reflexController) controllers.push(reflexController)
+  if (reflexController) controllers.add(reflexController)
   if (controllers.length === 0) return
 
   controllers.forEach(controller => {
