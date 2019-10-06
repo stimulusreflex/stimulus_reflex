@@ -18,7 +18,7 @@ And yet, __little by little__, things came undone as web apps got more ambitious
 
 ### Phoenix LiveView
 
-[Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a new technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
+[Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
 
 Phoenix is awesome. Elixir is awesome. They were made by former Rails core team members. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions baked into a functional language running on the Erlang VM. But realistically, the Elixir and Phoenix communities are much much smaller than the Ruby and Rails communities.
 
@@ -31,6 +31,8 @@ StimulusReflex is inspired by LiveView, but we're charting our own course. We ai
 StimulusReflex is designed to work perfectly with the Rails technologies you already know: [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). We strive to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/). We believe that we can help show the industry a better way forward.
 
 StimulusReflex welcomes everyone, from junior programmers to those with decades of industry experience. We hope all will discover the joy of employing simple architectural patterns that allow you to focus on product rather than periphery.
+
+### Steps Involved
 
 1. Build a typical Rails app with the elegant simplicity of server rendered HTML.
 1. Then create small server side objects that update data.
