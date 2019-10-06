@@ -16,7 +16,9 @@ And yet, __little by little__, things came undone as web apps got more ambitious
 
 ## Alternatives
 
-We're glad you asked! [Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a new technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
+### Phoenix LiveView
+
+[Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a new technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
 
 Phoenix is awesome. Elixir is awesome. They were made by former Rails core team members. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions baked into a functional language running on the Erlang VM. But realistically, the Elixir and Phoenix communities are much much smaller than the Ruby and Rails communities.
 
