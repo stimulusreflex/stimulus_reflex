@@ -234,6 +234,7 @@ Now, let's revisit our `ExampleReflex` class. When the user clicks the button, i
   private
 
   def wait_for_it(target)
+    return unless self.respond_to? target
     if block_given?
       Thread.new do
         @channel.receive({
