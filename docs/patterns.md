@@ -1,16 +1,14 @@
 # Useful patterns and best practices
 
-In the course of creating StimulusReflex and using it to build production applications, we have learned a lot of useful tricks. While it's always tempting to add cool features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
+In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
-That said, if you're building applications with StimulusReflex, you're going to want to bookmark this page. If you come up with patterns that you think would be helpful, please drop us a line at [natehop@gmail.com](mailto:natehop@gmail.com).
-
-Nate: info@stimulusreflex.com ?
+That said, if you're building applications with StimulusReflex, you're going to want to bookmark this page. If you discover useful patterns not documented here, please open an issue or submit a pull request.
 
 ## Client Side
 
 ### Application Controller
 
-You can make use of JavaScript's class inheritance to set up an "Application Controller" that will serve as the foundation for all of your StimulusReflex controllers to build upon. Not only will this reduce boilerplate code, but it's a convenient way to set up lifecycle callback methods for your entire application.
+You can make use of JavaScript's class inheritance to set up an "Application Controller" that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
 
 {% code-tabs %}
 {% code-tabs-item title="application_controller.js" %}
@@ -23,32 +21,32 @@ export default class extends Controller {
     StimulusReflex.register(this)
   }
 
-  tomSmykowski (args) {
-    console.log(`I deal with the damn customers so the engineers don't have to.`)
+  sayHi () {
+    console.log('Hello from the Application controller.')
   }
 }
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-Then, all you have to do to create a StimulusReflex controller is inherit from the ApplicationController:
+Then, all that's required to create a StimulusReflex controller is inherit from ApplicationController:
 
 {% code-tabs %}
-{% code-tabs-item title="initech_controller.js" %}
+{% code-tabs-item title="custom_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
-  tomSmykowski (args) {
-    super(...args)
-    console.log('I have people skills. I am good at dealing with people.')
+  sayHi () {
+    super()
+    console.log('Hello from a Custom controller')
   }
 }
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-If you need to override any methods on your ApplicationController, you can redefine them. Optionally call `super(...args)` to pass along your arguments to the original function before or after your custom method.
+If you need to override any methods on your ApplicationController, you can redefine them. Optionally call `super(...Array.from(arguments))` to invoke the method on the parent super class.
 
 ### Benchmarking your Reflex actions
 
@@ -133,7 +131,7 @@ If we wanted to check the whole page for an `autofocus` element, we can just do 
 
 ### Chained Reflexes for long-running actions
 
-Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can take charge and optimize our queries, make use of Russian Doll caching strategies and all sorts of other tricks for our code... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we __wait for it__:
+Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we __wait for it__:
 
 {% code-tabs %}
 {% code-tabs-item title="example_reflex.rb" %}
@@ -161,7 +159,7 @@ Let's explore this with a contrived example. When the page first loads, we see a
 
 {% code-tabs %}
 {% code-tabs-item title="index.html.erb" %}
-```html
+```text
 <div data-controller="example">
   <% case @api_status %>
   <% when :loading %>
@@ -255,7 +253,7 @@ Now, let's revisit our `ExampleReflex` class. When the user clicks the button, i
 As you can see, we're only pretending to call an API for this example. **Do not call `sleep` in a production Ruby web application**. `sleep` tells your web server to stop dreaming of new possibilities. __However__, assuming that you're the only person on your __development__ machine, you'll see that after three seconds, a second Reflex action is triggered and delivered to the browser over the websocket connection.
 
 {% hint style="success" %}
-This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. Coming from Ajax and HTTP, we have to free our minds from the shackles of conformity.
+This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
 {% endhint %}
 
 ### Coming Soon: Notifications with ActiveJob / Sidekiq

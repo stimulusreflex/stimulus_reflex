@@ -18,7 +18,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 
 {% code-tabs %}
 {% code-tabs-item title="index.html.erb" %}
-```html
+```text
 <div data-controller="example">
   <input type="text" value="<%= @words %>" data-reflex-root="[forward],[backward]" data-reflex="keyup->ExampleReflex#words">
   <div forward><%= @words || rand(1000) %></div>
@@ -36,14 +36,14 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% endcode-tabs %}
 
 {% hint style="info" %}
-One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to __not__ update the text input itself, which makes sense since we're busy typing into it.
+One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to __not__ update the text input itself. This prevents resetting the input value while the user is typing.
 {% endhint %}
 
 ## Ignoring parts of your DOM
 
 Perhaps you just don't want a section of your DOM to be updated by StimulusReflex, even if you're using the full document body default.
 
-Just add `data-reflex-permanent` to any element in your DOM, and it will be left undisturbed.
+Just add `data-reflex-permanent` to any element in your DOM, and it will be left unchanged.
 
 {% code-tabs %}
 {% code-tabs-item title="index.html.erb" %}

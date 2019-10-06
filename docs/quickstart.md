@@ -2,7 +2,7 @@
 
 ## Before you begin...
 
-A great user experience can be created with Rails alone. Tools like [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements) , [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Try building your application using these tools before introducing StimulusReflex.
+A great user experience can be created with Rails alone. Tools like [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Try building your application using these tools before introducing StimulusReflex.
 
 {% hint style="info" %}
 See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example application if you are unsure how to do this.
@@ -10,7 +10,7 @@ See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example 
 
 ## Hello, Reflex
 
-Bringing your first Reflex action to life couldn't be simpler:
+Bringing your first Reflex to life couldn't be simpler:
 
 1. Declare the appropriate data attributes in HTML.
 2. Create a server side reflex object with Ruby.
@@ -21,7 +21,7 @@ This example will automatically update the page with the latest count whenever t
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/pages/example.html.erb" %}
-```ruby
+```text
 <head></head>
   <body>
     <a href="#"
@@ -36,7 +36,7 @@ This example will automatically update the page with the latest count whenever t
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-We use data attributes to declaratively command StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. Think of them as arguments.
+We use data attributes to declaratively command StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
 {% code-tabs %}
 {% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
@@ -55,12 +55,12 @@ StimulusReflex maps your requests to Reflex classes that live in your `app/refle
 Yes, it really is that simple.
 
 {% hint style="success" %}
-**Concerns like managing state and template rendering are handled server side.** This technique works regardless of how complex the UI becomes. For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
+**Concerns like managing state and rendering views are handled server side.** This technique works regardless of how complex the UI becomes. For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 {% endhint %}
 
 ### Automatic transmission vs manual transmission
 
-Real world applications will benefit from additional structure and granular control. Building on the solid foundation that Stimulus provides, we can use Controllers to build complex functionality and respond to events.
+Real world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can use Controllers to build complex functionality and respond to events.
 
 Let's build on our increment counter example by adding a Controller and manually calling a Reflex action.
 
@@ -71,7 +71,7 @@ Let's build on our increment counter example by adding a Controller and manually
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/pages/example.html.erb" %}
-```html
+```text
 <head></head>
   <body>
     <a href="#"
@@ -104,7 +104,7 @@ export default class extends Controller {
 
 The Controller connects during the page load process and we tell StimulusReflex that this Controller is going to be calling server-side Reflex actions. The `register` method has an optional 2nd argument that accepts options, but we'll cover that later.
 
-When the user clicks the anchor, Stimulus calls the `increment` method. All StimulusReflex Controllers have access to the `stimulate` method. The first parameter is the `[ServerSideClass]#[action]` syntax, which tells the server which Reflex class and method to call. The second parameter is an optional argument which is passed to the Reflex method. If you need to pass multiple arguments, consider using a JavaScript object `{}` to do so. 
+When the user clicks the anchor, Stimulus calls the `increment` method. All StimulusReflex Controllers have access to the `stimulate` method. The first parameter is the `[ServerSideClass]#[action]` syntax, which tells the server which Reflex class and method to call. The second parameter is an optional argument which is passed to the Reflex method. If you need to pass multiple arguments, consider using a JavaScript object `{}` to do so.
 
 {% code-tabs %}
 {% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
