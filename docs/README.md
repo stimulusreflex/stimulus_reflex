@@ -12,11 +12,9 @@ description: Build reactive applications with the Rails tooling you already know
 
 It didn't seem possible that web development could be that easy. It was so productive that it was __fun__. Rails delivered [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and showed us a better way. Almost every modern framework in use today has borrowed ideas, patterns, and features from Rails.
 
-And yet, __little by little__, things came undone as web apps got more ambitious. The pursuit of "native" UI speeds led to a new breed of increasingly complex technologies. This shift resulted in moving many of the server's responsibilities to the client. It feels like the industry traded "fun and productive" for collosal complexity and marginal gains. But, the "Modern JavaScript" mindset is pervasive. Unfortunately many developers aren't even aware of the tradeoffs they've made.
+And yet, __little by little__, things came undone as web apps got more ambitious. The pursuit of "native" UI speeds led to a new breed of increasingly complex technologies. This shift resulted in moving many of the server's responsibilities to the client. It feels like the industry traded "fun and productive" for collosal complexity and marginal gains. But, the "Modern JavaScript" mindset is pervasive. Unfortunately, many developers aren't even aware of the tradeoffs they've made.
 
-## Alternatives
-
-### Phoenix LiveView
+## Phoenix LiveView: a New Hope
 
 [Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
 
@@ -35,9 +33,9 @@ StimulusReflex welcomes everyone, from junior programmers to those with decades 
 ### Steps Involved
 
 1. Build a typical Rails app with the elegant simplicity of server rendered HTML.
-1. Then create small server side objects that update data.
-1. Next wire up interactive behavior to your HTML via data attributes.
-1. Finally, enhance the user experience with Stimulus controllers as desired.
+2. Then create small server side objects that update data.
+3. Next wire up interactive behavior to your HTML via data attributes.
+4. Finally, enhance the user experience with Stimulus controllers as desired.
 
 ## Demo Applications
 
