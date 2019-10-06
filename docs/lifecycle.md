@@ -77,7 +77,7 @@ StimulusReflex controllers can define up to four custom lifecycle callback metho
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```text
+```html
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
@@ -128,10 +128,13 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 
 ### Method Signatures
 
-Both generic and custom lifecycle callback methods share the same function arguments.
+Both generic and custom lifecycle callback methods share the same arguments:
 
-* `beforeReflex(element)`  **element** - the element that triggered the reflex
-* `reflexSuccess(element)` **element** - the element that triggered the reflex
-* `reflexError(element, error)` **element** - the element that triggered the reflex **error** - the error message
-* `afterReflex(element, error)` **element** - the element that triggered the reflex **error** - the error message if an error occurred, otherwise `null`
+* `beforeReflex(element, reflex)`  
+* `reflexSuccess(element, reflex)`
+* `reflexError(element, reflex, error)`
+* `afterReflex(element, reflex, error)`
 
+**element** - the DOM element that triggered the Reflex
+**reflex** - the name of the Reflex action
+**error** - the error message if an error occurred, otherwise `null`

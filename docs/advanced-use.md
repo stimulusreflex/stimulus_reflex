@@ -155,6 +155,7 @@ class ImprovedReflexController extends Controller {
     super(...args)
     register(this)
   }
+  ... { do things that are useful here} ...
 }
 ```
 {% endcode-tabs-item %}

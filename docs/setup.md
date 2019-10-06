@@ -25,9 +25,6 @@ application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application)
 ```
 {% endcode-tabs-item %}
-{% endcode-tabs %}
-
-{% code-tabs %}
 {% code-tabs-item title="Gemfile" %}
 ```ruby
 gem "stimulus_reflex"
