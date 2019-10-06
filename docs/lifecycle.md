@@ -32,7 +32,7 @@ StimulusReflex controllers can define up to four generic lifecycle callback meth
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```text
+```html
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
@@ -75,7 +75,7 @@ StimulusReflex controllers can define up to four custom lifecycle callback metho
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```text
+```html
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>

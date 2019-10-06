@@ -110,7 +110,7 @@ Here's an example that outlines how you can interact with the `element` property
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```text
+```html
 <checkbox id="example" label="Example" checked
   data-reflex="ExampleReflex#work" data-value="123" />
 ```
@@ -137,46 +137,3 @@ end
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
-
-## Roll your own StimulusReflexController
-
-Nate: I don't know any current use cases for this functionality, but I figure we should at least try to explain it. Can you add some words?
-
-First, setup is easy: just create an alternative class.
-
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/improved_reflex_controller.js" %}
-```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
-
-class ImprovedReflexController extends Controller {
-  constructor (...args) {
-    super(...args)
-    register(this)
-  }
-  ... { do things that are useful here} ...
-}
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-Then pass it as the 2nd parameter to the `initialize` method in your index.js:
-
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/index.js" %}
-```javascript
-import { Application } from 'stimulus'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
-import StimulusReflex from 'stimulus_reflex'
-impoty ImprovedReflexController from './improved_reflex_controller'
-
-const application = Application.start()
-const context = require.context('controllers', true, /_controller\.js$/)
-application.load(definitionsFromContext(context))
-StimulusReflex.initialize(application, ImprovedReflexController)
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-And then... stuff Nate will describe becomes possible.
