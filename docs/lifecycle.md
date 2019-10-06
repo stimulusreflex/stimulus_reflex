@@ -1,12 +1,12 @@
 ---
-description: AKA callbacks AKA keeping the magic after the honeymoon is over
+description: The life of a stimulus reflex... aka callbacks
 ---
 
 # Lifecycle
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
-StimulusReflex gives you the ability to run custom code at four distinct moments __around__ sending an event to the server and updating your DOM. Most of the time, these moments are best spent thinking about what really happened to Oceanic Air Flight 815. Still, there are occasions where we absolutely need to handle an edge case. For those situations, we offer **lifecycle callback methods**:
+StimulusReflex gives you the ability to run custom code at four distinct moments __around__ sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
 
 1. **`before`** - prior to sending a request over the web socket
 2. **`success`** - after the server side Reflex succeeds and the DOM has been updated
@@ -17,11 +17,9 @@ StimulusReflex gives you the ability to run custom code at four distinct moments
 **Using the lifecycle callback methods is not a requirement.** Think of it as a power tool that will help you build more sophisticated applications.
 {% endhint %}
 
-The idea is that if and when you define a method with a specific name that matches what the library searches for, it will run at just the right moment. __If there's no function, nothing happens.__ StimulusReflex only knows to look for these methods inside of Stimulus controllers that have called `StimulusReflex.register(this)` in their `connect()` function.
+If you define a method with a name that matches what the library searches for, it will run at just the right moment. __If there's no method defined, nothing happens.__ StimulusReflex will only look for these methods in Stimulus controllers that have called `StimulusReflex.register(this)` in their `connect()` function.
 
-There are two kinds of callback methods that you can use: **generic** and **custom**. Generic callback methods fire for every Reflex action on a controller, while custom callback methods are __created dynamically on a 1:1 basis__ for each of your Reflex actions.
-
-When designing your application logic, think of it like taking medicine: it's preferable to take a pill that solves a specific problem, but sometimes you just need to make all of your problems go away at once.
+There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
 
 ## Generic Lifecycle Methods
 
@@ -64,11 +62,11 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-In this example, we update the correct anchor link to change its text before sending the action to the server.
+In this example, we update each anchor's text before invoking the server side Reflex.
 
 ## Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex action. These methods use a naming convention __based on the name of the reflex action__. For example, the Reflex `ExampleReflex#update` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex. These methods use a naming convention __based on the name of the Reflex__. For example, the Reflex `ExampleReflex#update` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforeUpdate`
 2. `updateSuccess`
@@ -77,7 +75,7 @@ StimulusReflex controllers can define up to four custom lifecycle callback metho
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```html
+```text
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
@@ -109,7 +107,7 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-Adapting from the Generic example, we have refactored our controller to capture the `before` callback events for each anchor individually.
+Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
 
 {% hint style="info" %}
 **It's not required to implement all lifecycle methods.** Pick and choose which lifecycle callback methods make sense for your application. The answer is frequently __none__.
@@ -130,11 +128,11 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 
 Both generic and custom lifecycle callback methods share the same arguments:
 
-* `beforeReflex(element, reflex)`  
+* `beforeReflex(element, reflex)`
 * `reflexSuccess(element, reflex)`
 * `reflexError(element, reflex, error)`
 * `afterReflex(element, reflex, error)`
 
-**element** - the DOM element that triggered the Reflex
-**reflex** - the name of the Reflex action
+**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_
+**reflex** - the name of the server side Reflex
 **error** - the error message if an error occurred, otherwise `null`
