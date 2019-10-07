@@ -18,9 +18,11 @@ The landscape has changed a lot since those early days. Applications have become
 
 In his 2018 ElixirConf keynote, [Chris McCord](https://twitter.com/chris_mccord) _\(creator of the_ [_Phoenix_](http://www.phoenixframework.org/) _framework for_ [_Elixir_](https://elixir-lang.org/)_\)_ introduced a technology called [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [presentation](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures some of the same promise and excitement that Rails had in the early days.
 
-We love Elixir and Phoenix. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions in a functional language that runs on the Erlang VM. This community is awesome but it's also much smaller than the Ruby and Rails ecosystem. And... we still **love Ruby and Rails**. 
+We love Elixir and Phoenix. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions in a functional language that runs on the Erlang VM. The Elixir and Phoenix community is terrific, but it's still small and somewhat niche.
 
-StimulusReflex was originally inspired by LiveView, but we are charting our own course now. We hope to make building interactive real-time apps with Rails the most productive and enjoyable option available.
+Also, we still **love Ruby and Rails**. 
+
+StimulusReflex was originally inspired by LiveView, but we are charting our own course. We hope to make building real-time apps with Rails and StimulusReflex the most productive and enjoyable option available.
 
 ## StimulusReflex: Real-Time Benefits
 
