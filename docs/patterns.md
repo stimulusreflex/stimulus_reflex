@@ -1,4 +1,4 @@
-# Useful patterns and best practices
+# Useful Patterns
 
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
@@ -11,7 +11,7 @@ That said, if you're building applications with StimulusReflex, you're going to 
 You can make use of JavaScript's class inheritance to set up an "Application Controller" that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
 
 {% code-tabs %}
-{% code-tabs-item title="application_controller.js" %}
+{% code-tabs-item title="application\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -32,7 +32,7 @@ export default class extends Controller {
 Then, all that's required to create a StimulusReflex controller is inherit from ApplicationController:
 
 {% code-tabs %}
-{% code-tabs-item title="custom_controller.js" %}
+{% code-tabs-item title="custom\_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller'
 
@@ -52,12 +52,12 @@ If you need to override any methods on your ApplicationController, you can redef
 
 You might want to see how long your Reflex actions are taking to complete a round-trip, and without Ajax calls to monitor getting reliable metrics requires new approaches.
 
-We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "__native__" by your users.
+We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "**native**" by your users.
 
 You can add this code to your desired Reflex controller. If you're making use of the Application Controller pattern described above, all of your Reflexes will log their round-trip execution times.
 
 {% code-tabs %}
-{% code-tabs-item title="application_controller.js" %}
+{% code-tabs-item title="application\_controller.js" %}
 ```javascript
   beforeReflex () {
     this.benchmark = performance.now()
@@ -72,10 +72,10 @@ You can add this code to your desired Reflex controller. If you're making use of
 
 ### Spinners for long-running actions
 
-You can use `beforeReflex` and `afterReflex` to create UI "spinners" for anything that might take more than a heartbeat to complete. In addition to providing helpful visual feedback, research has demonstrated that acknowledging a slight delay will result in the user __perceiving__ the delay as being shorter than they would if you did not acknowledge the delay. This is likely because we've been trained by good UI design to understand that this convention means we're waiting on the system. A sluggish UI otherwise forces people to wonder if they have done something wrong, and you don't want that.
+You can use `beforeReflex` and `afterReflex` to create UI "spinners" for anything that might take more than a heartbeat to complete. In addition to providing helpful visual feedback, research has demonstrated that acknowledging a slight delay will result in the user **perceiving** the delay as being shorter than they would if you did not acknowledge the delay. This is likely because we've been trained by good UI design to understand that this convention means we're waiting on the system. A sluggish UI otherwise forces people to wonder if they have done something wrong, and you don't want that.
 
 {% code-tabs %}
-{% code-tabs-item title="application_controller.js" %}
+{% code-tabs-item title="application\_controller.js" %}
 ```javascript
   beforeReflex () {
     document.body.classList.add('wait')
@@ -86,6 +86,7 @@ You can use `beforeReflex` and `afterReflex` to create UI "spinners" for anythin
   }
 ```
 {% endcode-tabs-item %}
+
 {% code-tabs-item title="application.css" %}
 ```css
 body.wait, body.wait * {
@@ -102,7 +103,7 @@ If you are working with input elements in your application, you will quickly rea
 Handling this problem for every action would be extremely tedious. Luckily we can make use of the `afterReflex` callback to inspect the element to see if it has the `autofocus` attribute and, if so, correctly set the focus on that element.
 
 {% code-tabs %}
-{% code-tabs-item title="application_controller.js" %}
+{% code-tabs-item title="application\_controller.js" %}
 ```javascript
   afterReflex () {
     const focusElement = this.element.querySelector('[autofocus]')
@@ -131,10 +132,10 @@ If we wanted to check the whole page for an `autofocus` element, we can just do 
 
 ### Chained Reflexes for long-running actions
 
-Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we __wait for it__:
+Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:
 
 {% code-tabs %}
-{% code-tabs-item title="example_reflex.rb" %}
+{% code-tabs-item title="example\_reflex.rb" %}
 ```ruby
   def wait_for_it(target)
     if block_given?
@@ -182,7 +183,7 @@ Since there is no `@api_status` instance variable during the initial page load, 
 If you really want to ditch the `else` you can define an initial state in your Rails controller:
 
 {% code-tabs %}
-{% code-tabs-item title="example_controller.rb" %}
+{% code-tabs-item title="example\_controller.rb" %}
 ```ruby
   def index
     @api_status ||= :default
@@ -216,7 +217,7 @@ We've got your back.
 Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asyncronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
 
 {% code-tabs %}
-{% code-tabs-item title="example_reflex.rb" %}
+{% code-tabs-item title="example\_reflex.rb" %}
 ```ruby
   def api
     @api_status = :loading
@@ -251,10 +252,11 @@ Now, let's revisit our `ExampleReflex` class. When the user clicks the button, i
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-As you can see, we're only pretending to call an API for this example. **Do not call `sleep` in a production Ruby web application**. `sleep` tells your web server to stop dreaming of new possibilities. __However__, assuming that you're the only person on your __development__ machine, you'll see that after three seconds, a second Reflex action is triggered and delivered to the browser over the websocket connection.
+As you can see, we're only pretending to call an API for this example. **Do not call `sleep` in a production Ruby web application**. `sleep` tells your web server to stop dreaming of new possibilities. **However**, assuming that you're the only person on your **development** machine, you'll see that after three seconds, a second Reflex action is triggered and delivered to the browser over the websocket connection.
 
 {% hint style="success" %}
 This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
 {% endhint %}
 
 ### Coming Soon: Notifications with ActiveJob / Sidekiq
+

@@ -2,7 +2,7 @@
 description: Build reactive applications with the Rails tooling you already know and love.
 ---
 
-# StimulusReflex
+# Welcome
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
@@ -10,9 +10,9 @@ description: Build reactive applications with the Rails tooling you already know
 
 **The traditional Rails request/response cycle is a thing of beauty.** Many verteran Rails programmers remember the awe and disbelief they felt after watching David Heinemeier-Hansson's [original Rails promo video](https://www.youtube.com/watch?v=Gzj723LkRJY).
 
-It didn't seem possible that web development could be that easy. It was so productive that it was __fun__. Rails delivered [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and showed us a better way. Almost every modern framework in use today has borrowed ideas, patterns, and features from Rails.
+It didn't seem possible that web development could be that easy. It was so productive that it was **fun**. Rails delivered [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and showed us a better way. Almost every modern framework in use today has borrowed ideas, patterns, and features from Rails.
 
-And yet, __little by little__, things came undone as web apps got more ambitious. The pursuit of "native" UI speeds led to a new breed of increasingly complex technologies. This shift resulted in moving many of the server's responsibilities to the client. It feels like the industry traded "fun and productive" for collosal complexity and marginal gains. But, the "Modern JavaScript" mindset is pervasive. Unfortunately, many developers aren't even aware of the tradeoffs they've made.
+And yet, **little by little**, things came undone as web apps got more ambitious. The pursuit of "native" UI speeds led to a new breed of increasingly complex technologies. This shift resulted in moving many of the server's responsibilities to the client. It feels like the industry traded "fun and productive" for collosal complexity and marginal gains. But, the "Modern JavaScript" mindset is pervasive. Unfortunately, many developers aren't even aware of the tradeoffs they've made.
 
 ## Phoenix LiveView: a New Hope
 
@@ -41,4 +41,5 @@ StimulusReflex welcomes everyone, from junior programmers to those with decades 
 
 A list of demo applications built with StimulusReflex.
 
-* [TodoMVC](https://stimulus-reflex-todomvc.herokuapp.com) - An implementation of [TodoMVC](http://todomvc.com/) using [Ruby on Rails](https://rubyonrails.org/), [StimulusJS](https://stimulusjs.org/), and [StimulusReflex](https://github.com/hopsoft/stimulus_reflex)
+* [TodoMVC](https://stimulus-reflex-todomvc.herokuapp.com) - An implementation of [TodoMVC](http://todomvc.com/) using [Ruby on Rails](https://rubyonrails.org/), [StimulusJS](https://stimulusjs.org/), and [StimulusReflex](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex_todomvc?style=social)](https://github.com/hopsoft/stimulus_reflex_todomvc)
+

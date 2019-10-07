@@ -44,7 +44,7 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-2. Setting the `data-room` attribute on the StimulusController element.
+1. Setting the `data-room` attribute on the StimulusController element.
 
 ```markup
 <a href="#"
@@ -86,7 +86,7 @@ Here's an example that outlines how you can interact with the `element` property
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/examples/show.html.erb" %}
-```html
+```markup
 <checkbox id="example" label="Example" checked
   data-reflex="ExampleReflex#work" data-value="123" />
 ```
@@ -113,3 +113,4 @@ end
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
+

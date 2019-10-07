@@ -68,7 +68,6 @@ Let's build on our increment counter example by adding a Controller and manually
 2. Create a client side StimulusReflex controller with JavaScript.
 3. Create a server side Reflex object with Ruby.
 
-
 {% code-tabs %}
 {% code-tabs-item title="app/views/pages/example.html.erb" %}
 ```text
@@ -124,3 +123,4 @@ Here, you can see how we accept an optional argument to our `increment` Reflex a
 {% hint style="success" %}
 In a typical Rails app, we would set the value of `@count` after fetching it from a persistent data store such as Postgres or Redis. To keep this example simple, we use Rails' `session` to store our counter value.
 {% endhint %}
+
