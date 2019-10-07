@@ -61,3 +61,6 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 This is especially important for 3rd-party elements such as ad tracking scripts, Google Analytics, and any other widget that renders itself such as a React component or legacy jQuery plugin.
 {% endhint %}
 
+{% hint style="danger" %}
+Beware of dependencies that inject HTML into the DOM without you specifically adding it in your views. Since you cannot wrap this HTML with `data-reflex-permanent`, the injected HTML will be removed from the DOM once you execute a reflex. An example of this is the [intercom-rails gem](https://github.com/intercom/intercom-rails), which automatically injects the Intercom chat bubble into your HTML. Many libraries, like `intercom-rails`, will include [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for how to manually insert the HTML, which we recommend you do.
+{% endhint %}
