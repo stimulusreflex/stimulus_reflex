@@ -33,5 +33,13 @@ gem "stimulus_reflex"
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+{% code-tabs %}
+{% code-tabs-item title="Gemfile" %}
+```ruby
+gem "stimulus_reflex"
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
 At this point your project isn't making use of StimulusReflex, but you are ready to roll.
 
