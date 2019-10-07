@@ -6,8 +6,6 @@ description: Build reactive applications with the Rails tooling you already know
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
-There's a **better way** to build modern web applications. _Skip the complex full stack frontend and build something awesome in less time... and with less headache._
-
 ## What is StimulusReflex?
 
 **StimulusReflex is an alternative for full stack frontend frameworks like React, Vue, Angular, Ember etc...**
