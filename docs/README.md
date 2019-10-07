@@ -6,11 +6,15 @@ description: Build reactive applications with the Rails tooling you already know
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
+There's a **better way** to build modern web applications. _Skip the complex full stack frontend and build something awesome in less time... and with less headache._
+
 ## What is StimulusReflex?
 
-StimulusReflex makes building real-time apps as fun and easy as building a traditional Rails application. It's designed to work with the technologies you're already using like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
+StimulusReflex makes building real-time apps as fun and easy as building a traditional Rails application. It's designed to work with the technologies you're already using like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA).
 
-There's a **better way** to build modern web applications... and it's called **StimulusReflex**. _Skip the complex full stack frontend and build something awesome in less time... and with less headache._
+* [x] Developer happiness
+* [x] Simple and clear code
+* [x] Speed to market
 
 ## Rails: A Little History
 
