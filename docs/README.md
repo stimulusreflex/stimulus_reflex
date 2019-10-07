@@ -6,6 +6,12 @@ description: Build reactive applications with the Rails tooling you already know
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 
+## What is StimulusReflex?
+
+StimulusReflex makes building real-time apps as fun and easy as building a traditional Rails application. It's designed to work with the technologies you're already using like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
+
+There's a **better way** to build modern web applications... and it's called **StimulusReflex**. _Skip the complex full stack frontend and build something awesome in less time... and with less headache._
+
 ## Rails: A Little History
 
 **We love Rails.** Most Rails veterans remember the feeling of awe and disbelief after watching David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has been so successful that almost every modern framework in use today has borrowed ideas, patterns, and features from it.
@@ -26,11 +32,7 @@ StimulusReflex was originally inspired by LiveView, but we are charting our own 
 
 ## StimulusReflex: Real-Time Benefits
 
-**You will ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.
-
-StimulusReflex is designed to work perfectly with the Rails technologies you already know... like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). We strive to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/) and hope to show a better way of building modern web applications.
-
-We welcome everyone... from junior to gray beard. Come with us and learn how StimulusReflex can help you **focus on product** instead of periphery.
+**You will ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from junior to gray beard. Come with us and learn how StimulusReflex can help you focus on **product over periphery**.
 
 ### Overview: How it's Done
 
