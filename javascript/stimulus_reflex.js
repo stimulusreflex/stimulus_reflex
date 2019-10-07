@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
-import { camelize, dasherize, underscore } from 'inflected'
+import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
 import {
   attributeValue,
@@ -85,7 +85,6 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
 const createSubscription = controller => {
   const { channel, room } = controller.StimulusReflex
   const id = `${channel}${room}`
-  const renderDelay = controller.StimulusReflex.renderDelay || 25
 
   const subscription =
     app.StimulusReflex.subscriptions[id] ||
@@ -93,12 +92,12 @@ const createSubscription = controller => {
       { channel, room },
       {
         received: data => {
-          if (data.cableReady) {
-            clearTimeout(controller.StimulusReflex.timeout)
-            controller.StimulusReflex.timeout = setTimeout(() => {
-              CableReady.perform(data.operations)
-            }, renderDelay)
-          }
+          if (!data.cableReady) return
+          const urls = [
+            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          ]
+          if (urls.length !== 1 || urls[0] !== location.href) return
+          CableReady.perform(data.operations)
         }
       }
     )
@@ -163,7 +162,6 @@ const extendStimulusController = controller => {
 // controller - the Stimulus controller
 // options - [optional] configuration
 //   * room - the ActionCable room to subscribe to
-//   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
