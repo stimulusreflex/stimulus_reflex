@@ -18,7 +18,7 @@ And yet, **little by little**, things came undone as web apps got more ambitious
 
 [Chris McCord](https://twitter.com/chris_mccord), creator of the [Phoenix](http://www.phoenixframework.org/) framework for [Elixir](https://elixir-lang.org/), recently introduced a technology named [LiveView](https://github.com/phoenixframework/phoenix_live_view). His [intro video](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same feeling of promise and excitement that Rails had in the early days.
 
-Phoenix is awesome. Elixir is awesome. They were made by former Rails core team members. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions baked into a functional language running on the Erlang VM. But realistically, the Elixir and Phoenix communities are much much smaller than the Ruby and Rails communities.
+Phoenix is awesome. Elixir is awesome. They were made by former Rails core team members. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions baked into a functional language running on the Erlang VM. But realistically, the Elixir and Phoenix communities are much smaller than the Ruby and Rails communities.
 
 StimulusReflex is inspired by LiveView, but we're charting our own course. We aim to make the experience of building interactive real-time apps with Rails the most productive and enjoyable choice available.
 
@@ -39,7 +39,7 @@ StimulusReflex welcomes everyone, from junior programmers to those with decades 
 
 ## Demo Applications
 
-A list of demo applications built with StimulusReflex.
+A list of demo applications built with StimulusReflex that you can try live right now.
 
-* [TodoMVC](https://stimulus-reflex-todomvc.herokuapp.com) - An implementation of [TodoMVC](http://todomvc.com/) using [Ruby on Rails](https://rubyonrails.org/), [StimulusJS](https://stimulusjs.org/), and [StimulusReflex](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex_todomvc?style=social)](https://github.com/hopsoft/stimulus_reflex_todomvc)
+* [StimulusReflex TodoMVC](https://stimulus-reflex-todomvc.herokuapp.com) on Heroku - An implementation of [TodoMVC](http://todomvc.com/) using [Ruby on Rails](https://rubyonrails.org/), [StimulusJS](https://stimulusjs.org/), and [StimulusReflex](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex_todomvc?style=social)](https://github.com/hopsoft/stimulus_reflex_todomvc)
 
