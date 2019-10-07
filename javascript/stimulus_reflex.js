@@ -85,7 +85,6 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
 const createSubscription = controller => {
   const { channel, room } = controller.StimulusReflex
   const id = `${channel}${room}`
-  const renderDelay = controller.StimulusReflex.renderDelay || 25
 
   const subscription =
     app.StimulusReflex.subscriptions[id] ||
@@ -98,10 +97,7 @@ const createSubscription = controller => {
             ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
           ]
           if (urls.length !== 1 || urls[0] !== location.href) return
-          clearTimeout(controller.StimulusReflex.timeout)
-          controller.StimulusReflex.timeout = setTimeout(() => {
-            CableReady.perform(data.operations)
-          }, renderDelay)
+          CableReady.perform(data.operations)
         }
       }
     )
@@ -166,7 +162,6 @@ const extendStimulusController = controller => {
 // controller - the Stimulus controller
 // options - [optional] configuration
 //   * room - the ActionCable room to subscribe to
-//   * renderDelay - amount of time to delay before mutating the DOM (adds latency but reduces jitter)
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
