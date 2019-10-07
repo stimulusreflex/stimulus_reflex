@@ -57,30 +57,6 @@ export default class extends Controller {
 **Setting room in the body with a data attribute can pose a security risk.** Consider assigning room when registering the Stimulus controller instead.
 {% endhint %}
 
-## Stimulus Controllers
-
-### Render Delay
-
-An attempt is made to reduce repaint jitter when users trigger several updates in succession.
-
-You can control how long to wait prior to updating the DOM - _think debounce_. Simply set the `renderDelay` option in milliseconds when registering the controller.
-
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
-```javascript
-export default class extends Controller {
-  connect() {
-    StimulusReflex.register(this, { renderDelay: 200 });
-  }
-}
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-{% hint style="info" %}
-`renderDelay` defaults to`25`milliseconds.
-{% endhint %}
-
 ## Reflexes
 
 Server side reflexes inherit from `StimulusReflex::Reflex` and hold logic responsible for performing operations like writing to your backend data stores. Reflexes are not concerned with rendering because rendering is delegated to the Rails controller and action that originally rendered the page.
