@@ -20,7 +20,7 @@ In his 2018 ElixirConf keynote, [Chris McCord](https://twitter.com/chris_mccord)
 
 We love Elixir and Phoenix. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions in a functional language that runs on the Erlang VM. The Elixir and Phoenix community is terrific, but it's still small and somewhat niche.
 
-Also, we still **love Ruby and Rails**. 
+Also, we just really enjoy using **Ruby and Rails**. 
 
 StimulusReflex was originally inspired by LiveView, but we are charting our own course. We hope to make building real-time apps with Rails and StimulusReflex the most productive and enjoyable option available.
 
