@@ -32,7 +32,7 @@ StimulusReflex was originally inspired by LiveView, but we are charting our own 
 
 ## StimulusReflex: Real-Time Benefits
 
-**You will ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from junior to gray beard. Come with us and learn how StimulusReflex can help you focus on **product over periphery**.
+You will **ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from junior to gray beard. Come with us and learn how StimulusReflex can help you focus on **product over periphery**.
 
 ### Overview: How it's Done
 
