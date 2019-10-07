@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
-import { camelize, dasherize, underscore } from 'inflected'
+import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
 import {
   attributeValue,
@@ -93,12 +93,15 @@ const createSubscription = controller => {
       { channel, room },
       {
         received: data => {
-          if (data.cableReady) {
-            clearTimeout(controller.StimulusReflex.timeout)
-            controller.StimulusReflex.timeout = setTimeout(() => {
-              CableReady.perform(data.operations)
-            }, renderDelay)
-          }
+          if (!data.cableReady) return
+          const urls = [
+            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          ]
+          if (urls.length !== 1 || urls[0] !== location.href) return
+          clearTimeout(controller.StimulusReflex.timeout)
+          controller.StimulusReflex.timeout = setTimeout(() => {
+            CableReady.perform(data.operations)
+          }, renderDelay)
         }
       }
     )
