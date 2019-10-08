@@ -121,7 +121,6 @@ const extendStimulusController = controller => {
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
-      clearTimeout(controller.StimulusReflex.timeout)
       const url = location.href
       const args = Array.from(arguments)
       const target = args.shift()
