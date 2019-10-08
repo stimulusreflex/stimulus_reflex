@@ -222,7 +222,6 @@ const getReflexRoots = element => {
   while (list.length === 0 && element) {
     if (Object.prototype.hasOwnProperty.call(element.dataset, 'reflexRoot')) {
       let { reflexRoot } = element.dataset
-      reflexRoot = reflexRoot || ''
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
