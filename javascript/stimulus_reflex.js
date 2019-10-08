@@ -219,28 +219,23 @@ const setupDeclarativeReflexes = () => {
 // order of preference is data-reflex, data-controller, document body (default)
 const getReflexRoots = element => {
   let list = []
-  element = element.closest('[data-controller][data-reflex-root]')
-  while (element) {
-    if (localReflexControllers(application, element).length > 0) {
-      const selectors = element.dataset.reflexRoot
-        .split(',')
-        .filter(s => s.trim().length)
-      if (selectors.length === 0 && element.id) {
-        selectors.push(`#${element.id}`)
-      } else if (selectors.length === 0) {
+  while (list.length === 0 && element) {
+    if (Object.prototype.hasOwnProperty.call(element.dataset, 'reflexRoot')) {
+      let { reflexRoot } = element.dataset
+      reflexRoot = reflexRoot || ''
+      if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
+      const selectors = reflexRoot.split(',').filter(s => s.trim().length)
+      if (selectors.length === 0) {
         console.error(
           'No value found for data-reflex-root. Add an #id to the element or provide a value for data-reflex-root.',
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
-    } else {
-      console.error(
-        'Stimulus controller not found for the data-reflex-root element.',
-        element
-      )
     }
-    element = element.closest('data-reflex-root')
+    element = element.parentElement
+      ? element.parentElement.closest('[data-reflex-root]')
+      : null
   }
   return list
 }
