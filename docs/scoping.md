@@ -40,7 +40,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
 {% endhint %}
 
-## Ignoring parts of your DOM
+## Persisting Elements
 
 Perhaps you just don't want a section of your DOM to be updated by StimulusReflex, even if you're using the full document body default.
 
@@ -62,5 +62,6 @@ This is especially important for 3rd-party elements such as ad tracking scripts,
 {% endhint %}
 
 {% hint style="danger" %}
-Beware of dependencies that inject HTML into the DOM without you specifically adding it in your views. Since you cannot wrap this HTML with `data-reflex-permanent`, the injected HTML will be removed from the DOM once you execute a reflex. An example of this is the [intercom-rails gem](https://github.com/intercom/intercom-rails), which automatically injects the Intercom chat bubble into your HTML. Many libraries, like `intercom-rails`, will include [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for how to manually insert the HTML, which we recommend you do.
+Beware of GEMs that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. GEMs like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible so you can wrap the content with `data-reflex-permanent`.
 {% endhint %}
+
