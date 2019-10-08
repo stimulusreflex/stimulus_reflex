@@ -12,7 +12,7 @@ _We aim to improve the ergonomics of developing real-time apps without compromis
 
 ### Project Goals
 
-* [x] Support simple, concise, and clear code
+* [x] Facilitate simple, concise, and clear code
 * [x] Increase developer happiness
 * [x] Help teams ship faster and more frequently
 
@@ -26,7 +26,7 @@ _We aim to improve the ergonomics of developing real-time apps without compromis
 
 The landscape has changed a lot since those early days. Applications have become more ambitious. The pursuit of native UI speeds has spawned a new breed of increasingly complex technologies. The introduction of **Single Page Apps** has delegated many of the server's responsibilities to the client. But it's starting to feel like we've traded **fun and productive** for massive complexity and marginal gains. Many developers aren't even aware of the tradeoffs involved.
 
-**There has to be a better way.**
+**There must be a better way.**
 
 ## The revolution begins
 
@@ -36,7 +36,7 @@ We love Elixir and Phoenix. There's no question that Elixir hits a sweet spot fo
 
 Also, we just really enjoy using **Ruby and Rails**. 
 
-StimulusReflex was originally inspired by LiveView, but we are charting our own course. We hope to make building real-time apps with Rails and StimulusReflex the most productive and enjoyable option available.
+StimulusReflex was inspired by LiveView, but we are charting our own course. We hope to make building real-time apps with Rails the most productive and enjoyable option available.
 
 ## Why should I use StimulusReflex?
 
