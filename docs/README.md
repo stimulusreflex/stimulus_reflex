@@ -6,7 +6,7 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex is an alternative for full stack frontend frameworks like React, Vue, Angular, Ember etc...** It makes building real-time apps simple and fun... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
+**StimulusReflex is an entirely new way to build reactive, modern real-time apps** that eliminates the hassle of maintaining state on the client. It's a new way of thinking... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
 
 _We aim to improve the ergonomics of developing real-time apps without compromising user experience._
 
