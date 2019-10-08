@@ -12,21 +12,27 @@ Great news: we have you covered.
 
 ## Partial DOM updates
 
-You can add the following attribute to any element in your DOM that has a `data-reflex` attribute:
+Instead of updating your entire document body, you can specify exactly which parts of the DOM will be updated using the `data-reflex-root` attribute.
 
 `data-reflex-root=".class, #id, [attribute]"`
 
-In this case, instead of updating the entire DOM, we can pass a comma-delimited list of CSS selectors. Each selector will retrieve one DOM element; if there are no elements that match, the selector will be ignored.
+Simply pass a comma-delimited list of CSS selectors. Each selector will retrieve one DOM element; if there are no elements that match, the selector will be ignored.
+
+StimulusReflex will decide which element's children to replace by evaluating three criteria in order:
+
+1. Is there a `data-reflex-root` on the element with the `data-reflex`?
+2. Is there a `data-reflex-root` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
+3. Just use the `body` element.
 
 Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
 
 {% code-tabs %}
 {% code-tabs-item title="index.html.erb" %}
 ```text
-<div data-controller="example">
-  <input type="text" value="<%= @words %>" data-reflex-root="[forward],[backward]" data-reflex="keyup->ExampleReflex#words">
-  <div forward><%= @words || rand(1000) %></div>
-  <div backward><%= @words&.reverse || rand(1000) %></div>
+<div data-controller="example" data-reflex-root="[forward],[backward]">
+  <input type="text" value="<%= @words %>" data-reflex="keyup->ExampleReflex#words">
+  <div forward><%= @words %></div>
+  <div backward><%= @words&.reverse %></div>
 </div>
 ```
 {% endcode-tabs-item %}
