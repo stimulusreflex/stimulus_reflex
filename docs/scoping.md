@@ -1,3 +1,7 @@
+---
+description: How to restrict DOM updates
+---
+
 # Scoping
 
 By default, StimulusReflex updates your entire page. It uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution and they can stop reading here.

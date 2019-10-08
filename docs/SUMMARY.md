@@ -5,7 +5,7 @@
 * [Quick Start](quickstart.md)
 * [Lifecycle](lifecycle.md)
 * [Scoping](scoping.md)
-* [Advanced Use](advanced-use.md)
 * [Useful Patterns](patterns.md)
+* [Advanced Use](advanced-use.md)
 * [Security](security.md)
 

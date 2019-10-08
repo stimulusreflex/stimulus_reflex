@@ -1,3 +1,7 @@
+---
+description: How to use StimulusReflex in your app
+---
+
 # Quick Start
 
 ## Before you begin...

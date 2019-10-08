@@ -4,8 +4,6 @@ description: Build reactive applications with the Rails tooling you already know
 
 # Welcome
 
-[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
-
 ## What is StimulusReflex?
 
 **StimulusReflex is an alternative for full stack frontend frameworks like React, Vue, Angular, Ember etc...** It makes building real-time apps simple and fun... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
@@ -17,6 +15,10 @@ _We aim to improve the ergonomics of developing real-time apps without compromis
 * [x] Support simple, concise, and clear code
 * [x] Increase developer happiness
 * [x] Help teams ship faster and more frequently
+
+{% hint style="success" %}
+**Get Involved.** We'd love to hear from you. ****[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+{% endhint %}
 
 ## How we got here
 
@@ -52,4 +54,6 @@ You will **ship projects faster, with smaller teams** and re-discover the joy of
 A list of demo applications built with StimulusReflex that you can try live right now.
 
 * [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) - An implementation of [TodoMVC](http://todomvc.com/) using Ruby on Rails and StimulusReflex.
+
+
 

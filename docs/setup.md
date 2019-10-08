@@ -1,3 +1,7 @@
+---
+description: How to prepare your app to use StimulusReflex
+---
+
 # Setup
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library by the creators of Rails. You can install Stimulus when you create your Rails project:

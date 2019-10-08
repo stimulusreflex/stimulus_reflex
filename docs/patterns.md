@@ -1,3 +1,7 @@
+---
+description: How to build a great StimulusReflex application
+---
+
 # Useful Patterns
 
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
