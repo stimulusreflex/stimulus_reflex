@@ -9,18 +9,18 @@ describe('attributeValues', () => {
   it('returns expected attribute values for single value', () => {
     const actual = attributeValues('one')
     const expected = ['one']
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attribute values for multiple values', () => {
     const actual = attributeValues('one two three')
     const expected = ['one', 'two', 'three']
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attribute values for multiple values with whitespace padding', () => {
     const actual = attributeValues(' one two   three ')
     const expected = ['one', 'two', 'three']
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 })

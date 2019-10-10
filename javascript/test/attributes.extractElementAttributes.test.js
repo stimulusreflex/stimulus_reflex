@@ -8,7 +8,7 @@ describe('extractElementAttributes', () => {
     const element = dom.window.document.querySelector('a')
     const actual = extractElementAttributes(element)
     const expected = { value: undefined, checked: false, selected: false }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attributes for anchor', () => {
@@ -26,7 +26,7 @@ describe('extractElementAttributes', () => {
       checked: false,
       selected: false
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attributes for textarea', () => {
@@ -39,7 +39,7 @@ describe('extractElementAttributes', () => {
       checked: false,
       selected: false
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attributes for textbox', () => {
@@ -55,7 +55,7 @@ describe('extractElementAttributes', () => {
       checked: false,
       selected: false
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attributes for unchecked checkbox', () => {
@@ -69,7 +69,7 @@ describe('extractElementAttributes', () => {
       checked: false,
       selected: false
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('returns expected attributes for checked checkbox', () => {
@@ -83,6 +83,6 @@ describe('extractElementAttributes', () => {
       checked: true,
       selected: false
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 })
