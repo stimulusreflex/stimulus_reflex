@@ -1,5 +1,5 @@
 ---
-description: Build reactive applications with the Rails tooling you already know and love.
+description: Build reactive applications with the Rails tooling you already know and love
 ---
 
 # Welcome
@@ -8,17 +8,11 @@ description: Build reactive applications with the Rails tooling you already know
 
 **StimulusReflex is an entirely new way to build reactive, modern real-time apps** that eliminates the hassle of maintaining state on the client. It's a new way of thinking... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
 
-_We aim to improve the ergonomics of developing real-time apps without compromising user experience._
+### Goals
 
-### Project Goals
-
-* [x] Facilitate simple, concise, and clear code
 * [x] Increase developer happiness
-* [x] Help teams ship faster and more frequently
-
-{% hint style="success" %}
-**Get Involved.** We'd love to hear from you. ****[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
-{% endhint %}
+* [x] Facilitate simple, concise, and clear code
+* [x] Help small teams ship faster and more frequently
 
 ## How we got here
 
@@ -48,6 +42,10 @@ You will **ship projects faster, with smaller teams** and re-discover the joy of
 2. Then create small server side Reflex objects to update data.
 3. Next, wire up interactive behavior to your HTML via data attributes.
 4. Finally, optionally enhance the user experience with Stimulus controllers as desired.
+
+{% hint style="success" %}
+**Get Involved.** We'd love to hear from you. ****[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+{% endhint %}
 
 ## Example apps
 
