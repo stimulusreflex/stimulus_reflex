@@ -1,0 +1,28 @@
+Description:
+    Generate boilerplate files to get you up and running with stimulus_reflex
+
+Example:
+    rails generate stimulus_reflex:install demo
+
+    # TODO: tie into railties to support bundle exec rails stimulus_reflex:install
+    This will create:
+        app/javascript/controllers/application_controller.js
+        app/javascript/controllers/example_controller.js
+        app/reflexes/application_reflex.rb
+        app/javascript/controllers/example_reflex.rb
+
+    rails generate stimulus_reflex demo
+
+    This will create:
+        app/javascript/controllers/demo_controller.js
+        app/reflexes/demo_reflex.rb
+
+    rails generate stimulus_reflex:controller demo
+
+    This will create:
+        app/javascript/controllers/demo_controller.js
+
+    rails generate stimulus_reflex:reflex demo
+
+    This will create:
+        app/reflexes/demo_reflex.rb
