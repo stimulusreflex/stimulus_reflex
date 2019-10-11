@@ -1,10 +1,14 @@
+require_relative "./application_generator"
+
 module StimulusReflex
   module Generators
     class ControllerGenerator < Rails::Generators::NamedBase
+      include ApplicationGenerator
+
       source_root File.expand_path('templates', __dir__)
 
-      def copy_controller_file
-        copy_file "example_controller.js", "app/javascript/controllers/#{file_name}_controller.js"
+      def initialize_controllers
+        copy_controller_files
       end
     end
   end

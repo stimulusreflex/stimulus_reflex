@@ -1,2 +1,0 @@
-class ExampleReflex < ApplicationReflex
-end

@@ -1,11 +1,19 @@
-class StimulusReflexGenerator < Rails::Generators::NamedBase
-  source_root File.expand_path('templates', __dir__)
+require_relative './application_generator'
 
-  def copy_reflex_files
-    copy_file "example_reflex.rb", "app/reflexes/#{file_name}_reflex.rb"
-  end
+module StimulusReflex
+  module Generators
+    class StimulusReflexGenerator < Rails::Generators::NamedBase
+      include ApplicationGenerator
 
-  def copy_controller_files
-    copy_file "example_controller.js", "app/javascript/controllers/#{file_name}_controller.js"
+      source_root File.expand_path('templates', __dir__)
+
+      def initialize_reflexes
+        copy_reflex_files
+      end
+
+      def initialize_controllers
+        copy_controller_files
+      end
+    end
   end
 end
