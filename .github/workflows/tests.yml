@@ -25,3 +25,12 @@ jobs:
       working-directory: javascript/
     - run: yarn run test
       working-directory: javascript/
+  ruby_test:
+    name: Ruby Action
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Standard
+      uses: CultureHQ/actions-bundler@master
+      with:
+        args: install && bin/ruby_test
