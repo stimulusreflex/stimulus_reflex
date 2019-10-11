@@ -29,9 +29,10 @@ jobs:
       working-directory: javascript/
 
   ruby_test:
+    name: Ruby Test Action
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@vmaster
+    - uses: actions/checkout@master
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
