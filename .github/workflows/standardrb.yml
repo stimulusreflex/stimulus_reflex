@@ -13,8 +13,14 @@ jobs:
     name: StandardRB Check Action
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Standard
-      uses: CultureHQ/actions-bundler@master
+    - uses: actions/checkout@vmaster
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
       with:
-        args: install && bundle exec standardrb --format progress
+        ruby-version: 2.6.x
+    - name: Bundle
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    - name: Run StandardRB
+        bundle exec standardrb --format progress
