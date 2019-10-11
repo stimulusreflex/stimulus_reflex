@@ -13,7 +13,6 @@ class ReflexGeneratorTest < Rails::Generators::TestCase
 
   test "will not create files unless name is passed" do
     run_generator
-    assert_no_file "app/reflexes/application_reflex.rb"
-    assert_no_file "app/reflexes/example_reflex.rb"
+    assert_no_file "app/reflexes/"
   end
 end

@@ -15,9 +15,7 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
 
   test "will not create files unless name is passed" do
     run_generator
-    assert_no_file "app/javascript/controllers/application_controller.js"
-    assert_no_file "app/javascript/controllers/test_controller.js"
-    assert_no_file "app/reflexes/application_reflex.rb"
-    assert_no_file "app/reflexes/example_reflex.rb"
+    assert_no_file "app/javascript/controllers/"
+    assert_no_file "app/reflexes/"
   end
 end

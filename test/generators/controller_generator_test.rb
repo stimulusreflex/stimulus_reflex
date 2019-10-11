@@ -13,7 +13,6 @@ class ControllerGeneratorTest < Rails::Generators::TestCase
 
   test "will not create files unless name is passed" do
     run_generator
-    assert_no_file "app/javascript/controllers/application_controller.js"
-    assert_no_file "app/javascript/controllers/test_controller.js"
+    assert_no_file "app/javascript/controllers/"
   end
 end
