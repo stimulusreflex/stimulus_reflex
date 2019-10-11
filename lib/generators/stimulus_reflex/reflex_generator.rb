@@ -5,7 +5,7 @@ module StimulusReflex
     class ReflexGenerator < Rails::Generators::NamedBase
       include ApplicationGenerator
 
-      source_root File.expand_path('templates', __dir__)
+      source_root File.expand_path("templates", __dir__)
 
       def initialize_reflexes
         copy_reflex_files

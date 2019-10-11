@@ -18,7 +18,7 @@ module StimulusReflex
         unless File.exist?(APPLICATION_CONTROLLER_FILE_PATH)
           copy_file "application_controller.js", APPLICATION_CONTROLLER_FILE_PATH
         end
-        template "example_controller.js.erb", "#{CONTROLLER_BASE_PATH}/#{file_name}_controller.js"
+        copy_file "example_controller.js", "#{CONTROLLER_BASE_PATH}/#{file_name}_controller.js"
       end
     end
   end
