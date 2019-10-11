@@ -41,4 +41,4 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
     - name: Run ruby tests
-        bin/ruby_test
+      run: bin/ruby_test
