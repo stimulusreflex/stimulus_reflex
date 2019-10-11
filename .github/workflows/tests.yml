@@ -21,7 +21,25 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }}
-    - run: yarn
+    - name: Yarn
+      run: yarn
       working-directory: javascript/
-    - run: yarn run test
+    - name: Run JavaScript Tests
+      run: yarn run test
       working-directory: javascript/
+
+  ruby_test:
+    name: Ruby Test Action
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Bundle
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    - name: Run ruby tests
+      run: bin/ruby_test

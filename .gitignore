@@ -5,6 +5,6 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
+tmp/
 node_modules
 .vscode

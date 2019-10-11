@@ -17,7 +17,7 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
-        version: '12.x'
+        node-version: '12.x'
     - run: yarn
       working-directory: javascript/
     - run: yarn run prettier-standard-check
