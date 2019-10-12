@@ -9,3 +9,7 @@ task :test do |task|
   return 1 unless system("cd javascript && yarn run test")
   Rails::TestUnit::Runner.run
 end
+
+task :test_ruby do |task|
+  Rails::TestUnit::Runner.run
+end
