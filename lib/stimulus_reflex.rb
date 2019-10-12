@@ -12,6 +12,7 @@ require "stimulus_reflex/version"
 require "stimulus_reflex/reflex"
 require "stimulus_reflex/element"
 require "stimulus_reflex/channel"
+require "generators/stimulus_reflex_generator"
 
 module StimulusReflex
   class Engine < Rails::Engine

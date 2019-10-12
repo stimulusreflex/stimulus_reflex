@@ -1,21 +1,16 @@
-require "test_helper"
+require "rails/generators/test_case"
+require_relative "../test_helper"
 
 class StimulusReflexGeneratorTest < Rails::Generators::TestCase
-  tests StimulusReflex::Generators::StimulusReflexGenerator
+  tests StimulusReflexGenerator
   destination File.expand_path("../../tmp", __FILE__)
   setup :prepare_destination
 
   test "creates named controller and reflex files" do
-    run_generator %w[test]
+    run_generator %w[demo]
     assert_file "app/javascript/controllers/application_controller.js"
-    assert_file "app/javascript/controllers/test_controller.js"
+    assert_file "app/javascript/controllers/demo_controller.js", /DemoReflex/
     assert_file "app/reflexes/application_reflex.rb"
-    assert_file "app/reflexes/test_reflex.rb", /TestReflex/
-  end
-
-  test "will not create files unless name is passed" do
-    run_generator
-    assert_no_file "app/javascript/controllers/"
-    assert_no_file "app/reflexes/"
+    assert_file "app/reflexes/demo_reflex.rb", /DemoReflex/
   end
 end

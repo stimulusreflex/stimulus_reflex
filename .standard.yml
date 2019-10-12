@@ -1,0 +1,6 @@
+ignore:
+  - 'lib/generators/templates/**/*'
+  - 'db/schema.rb'
+  - 'vendor/**/*'
+  - 'test/**/*':
+    - Layout/AlignHash

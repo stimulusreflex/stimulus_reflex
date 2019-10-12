@@ -1,7 +1,7 @@
 class <%= @name.classify %>Reflex < ApplicationReflex
   # Add Reflex methods in this file.
   #
-  #   All Reflex instances expose the following properties.
+  # All Reflex instances expose the following properties:
   #
   #   - connection - the ActionCable connection
   #   - channel - the ActionCable channel
@@ -16,4 +16,6 @@ class <%= @name.classify %>Reflex < ApplicationReflex
   #     # Your logic here...
   #     # Any declared instance variables will be made available to the Rails controller and view.
   #   end
+  #
+  # Learn more at: https://docs.stimulusreflex.com
 end
