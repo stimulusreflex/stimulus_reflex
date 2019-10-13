@@ -66,9 +66,9 @@ bundle exec rails generate stimulus_reflex my_demo
 
 This command will generate:
 
-1. `app/javascript/controllers/application_controller.js` (If the file does not already exist)
+1. `app/javascript/controllers/application_controller.js` \(If the file does not already exist\)
 2. `app/javascript/controllers/my_demo_controller.js`
-3. `app/reflexes/application_reflex.rb` (If the file does not already exist)
+3. `app/reflexes/application_reflex.rb` \(If the file does not already exist\)
 4. `app/reflexes/my_demo_reflex.rb`
 
 ```bash
@@ -77,7 +77,7 @@ bundle exec rails generate stimulus_reflex:controller my_demo
 
 This command will generate:
 
-1. `app/javascript/controllers/application_controller.js` (If the file does not already exist)
+1. `app/javascript/controllers/application_controller.js` \(If the file does not already exist\)
 2. `app/javascript/controllers/my_demo_controller.js`
 
 ```bash
@@ -86,5 +86,6 @@ bundle exec rails generate stimulus_reflex:reflex my_demo
 
 This command will generate:
 
-1. `app/reflexes/application_reflex.rb` (If the file does not already exist)
+1. `app/reflexes/application_reflex.rb` \(If the file does not already exist\)
 2. `app/reflexes/my_demo_reflex.rb`
+

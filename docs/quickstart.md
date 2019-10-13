@@ -26,21 +26,16 @@ This example will automatically update the page with the latest count whenever t
 {% code-tabs %}
 {% code-tabs-item title="app/views/pages/example.html.erb" %}
 ```text
-<head></head>
-  <body>
-    <a href="#"
-       data-reflex="click->ExampleReflex#increment"
-       data-step="1"
-       data-count="<%= @count.to_i %>">
-      Increment <%= @count.to_i %>
-    </a>
-  </body>
-</html>
+<a href="#"
+  data-reflex="click->ExampleReflex#increment"
+  data-step="1" 
+  data-count="<%= @count.to_i %>"
+>Increment <%= @count.to_i %></a>
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-We use data attributes to declaratively command StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
+We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
 {% code-tabs %}
 {% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
@@ -75,15 +70,10 @@ Let's build on our increment counter example by adding a Controller and manually
 {% code-tabs %}
 {% code-tabs-item title="app/views/pages/example.html.erb" %}
 ```text
-<head></head>
-  <body>
-    <a href="#"
-       data-controller="example"
-       data-action="click->example#increment">
-      Increment <%= @count.to_i %>
-    </a>
-  </body>
-</html>
+<a href="#"
+  data-controller="example"
+  data-action="click->example#increment"
+>Increment <%= @count.to_i %></a>
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
