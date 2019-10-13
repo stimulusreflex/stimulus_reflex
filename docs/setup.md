@@ -45,7 +45,7 @@ gem "stimulus_reflex"
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can tell your users apart:
+You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
 {% code-tabs %}
 {% code-tabs-item title="app/views/layouts/application.html.erb" %}
