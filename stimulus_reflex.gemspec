@@ -4,12 +4,12 @@ Gem::Specification.new do |gem|
   gem.name = "stimulus_reflex"
   gem.license = "MIT"
   gem.version = StimulusReflex::VERSION
-  gem.authors = ["Nathan Hopkins", "Ron Cooke"]
-  gem.email = ["natehop@gmail.com", "brasco@thebrascode.com"]
+  gem.authors = ["Nathan Hopkins"]
+  gem.email = ["natehop@gmail.com"]
   gem.homepage = "https://github.com/hopsoft/stimulus_reflex"
-  gem.summary = "Build reactive Single Page Applications (SPAs) with Rails and Stimulus"
+  gem.summary = "Build reactive applications with the Rails tooling you already know and love."
 
-  gem.files = Dir["lib/**/*.rb", "app/assets/javascripts/stimulus_reflex.js", "bin/*", "[A-Z]*"]
+  gem.files = Dir["lib/**/*", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
 
   gem.add_dependency "rack"

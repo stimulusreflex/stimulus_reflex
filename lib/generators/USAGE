@@ -1,0 +1,14 @@
+Description:
+    Generate boilerplate files to help get you up and running with StimulusReflex
+
+Example:
+    rails generate stimulus_reflex User
+
+    This will create, but not overwrite the following files:
+
+        app/javascript/controllers/application_controller.js
+        app/javascript/controllers/user_controller.js
+        app/reflexes/application_reflex.rb
+        app/reflexes/user_reflex.rb
+
+    Don't forget to setup the application: https://docs.stimulusreflex.com/setup
