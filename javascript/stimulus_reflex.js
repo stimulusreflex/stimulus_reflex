@@ -272,13 +272,15 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { target, attrs } = event.detail.stimulusReflex || {}
+    const { target, attrs, last } = event.detail.stimulusReflex || {}
+    if (!last) return
     const element = findElement(attrs)
     invokeLifecycleMethod('success', target, element)
     invokeLifecycleMethod('after', target, element)
   })
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs, error } = event.detail.stimulusReflex || {}
+    const { target, attrs, error, last } = event.detail.stimulusReflex || {}
+    if (!last) return
     const element = findElement(attrs)
     element.reflexError = error
     invokeLifecycleMethod('error', target, element)

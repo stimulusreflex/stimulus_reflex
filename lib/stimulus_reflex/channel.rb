@@ -19,7 +19,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   def receive(data)
     url = data["url"].to_s
     selectors = (data["selectors"] || []).select(&:present?)
-    selectors = ["body"] if selectors.blank?
+    selectors = data["selectors"] = ["body"] if selectors.blank?
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
@@ -100,6 +100,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def broadcast_morphs(selectors, data, html)
     document = Nokogiri::HTML(html)
+    selectors = selectors.select { |s| document.css(s).present? }
     selectors.each do |selector|
       match = document.css(selector)
       next if match.blank?
@@ -108,7 +109,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         html: match.inner_html,
         children_only: true,
         permanent_attribute_name: "data-reflex-permanent",
-        stimulus_reflex: data
+        stimulus_reflex: data.merge(last: selector == selectors.last)
       )
     end
     cable_ready.broadcast
