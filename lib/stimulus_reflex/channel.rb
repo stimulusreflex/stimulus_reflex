@@ -102,11 +102,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     document = Nokogiri::HTML(html)
     selectors = selectors.select { |s| document.css(s).present? }
     selectors.each do |selector|
-      match = document.css(selector)
-      next if match.blank?
       cable_ready[stream_name].morph(
         selector: selector,
-        html: match.inner_html,
+        html: document.css(selector).inner_html,
         children_only: true,
         permanent_attribute_name: "data-reflex-permanent",
         stimulus_reflex: data.merge(last: selector == selectors.last)
