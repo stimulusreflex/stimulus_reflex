@@ -130,35 +130,22 @@ This command will generate:
 You can also use StimulusReflex generators, which is like scaffolding for StimulusReflex.
 
 ```bash
-bundle exec rails generate stimulus_reflex my_demo
+bundle exec rails generate stimulus_reflex user
 ```
 
-This command will generate:
+This will create, but not overwrite the following files:
 
-1. `app/javascript/controllers/application_controller.js` \(If the file does not already exist\)
-2. `app/javascript/controllers/my_demo_controller.js`
-3. `app/reflexes/application_reflex.rb` \(If the file does not already exist\)
-4. `app/reflexes/my_demo_reflex.rb`
+1. `app/javascript/controllers/application_controller.js`
+2. `app/javascript/controllers/user_controller.js`
+3. `app/reflexes/application_reflex.rb`
+4. `app/reflexes/user_reflex.rb`
 
-If you want just the client-side files:
+{% hint style="info" %}
+If __something__ goes wrong, it's often because of the `spring` gem. You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
 
-```bash
-bundle exec rails generate stimulus_reflex:controller my_demo
-```
+To remove `spring` forever, here is the process we recommend:
 
-This command will generate:
-
-1. `app/javascript/controllers/application_controller.js` \(If the file does not already exist\)
-2. `app/javascript/controllers/my_demo_controller.js`
-
-If you want just the server-side files:
-
-```bash
-bundle exec rails generate stimulus_reflex:reflex my_demo
-```
-
-This command will generate:
-
-1. `app/reflexes/application_reflex.rb` \(If the file does not already exist\)
-2. `app/reflexes/my_demo_reflex.rb`
-
+1. `pkill -f spring`
+2. Edit your Gemfile and comment out `spring` and `spring-watcher-listen`
+3. `bin/spring binstub –remove –all`
+{% endhint %}

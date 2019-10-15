@@ -55,7 +55,7 @@ export default class extends Controller {
     this.scroll = debounce(this.scroll, 1000)
   }
 
-  scroll (event) {
+  scroll () {
     this.stimulate('EventReflex#scroll', window.scrollY)
   }
 }
@@ -181,4 +181,155 @@ You might also consider checking out [Trix](https://trix-editor.org/), the edito
 
 ## Real-world examples
 
-First, let's tackle a creative use of `throttle`. We're going to allow the user to hold down a button without spamming the server with updates. However, we only want to throttle if they are pressing the same key.
+### keydown throttle
+
+First, let's tackle a creative use of `throttle`. We're going to allow the user to mash their keyboard without spamming the server with Reflex updates. However, **we only want to throttle if they are holding down a single key**:
+
+{% code-tabs %}
+{% code-tabs-item title="event\_controller.js" %}
+```javascript
+import { Controller } from 'stimulus'
+import StimulusReflex from 'stimulus_reflex'
+import { throttle } from 'lodash-es'
+
+export default class extends Controller {
+  connect () {
+    StimulusReflex.register(this)
+    this.throttleKeydown = throttle(this.throttleKeydown, 1000)
+  }
+
+  keydown (event) {
+    event.repeat
+      ? this.throttleKeydown(event)
+      : this.stimulate('EventReflex#keydown', event.key)
+  }
+
+  throttleKeydown (event) {
+    this.stimulate('EventReflex#keydown', event.key)
+  }
+}
+```
+{% endcode-tabs-item %}
+{% code-tabs-item title="event\_reflex.rb" %}
+```rb
+class EventReflex < StimulusReflex::Reflex
+  def keydown(key)
+    puts key
+  end
+end
+```
+{% endcode-tabs-item %}
+{% code-tabs-item title="index.html.erb" %}
+```text
+<div data-controller="event">
+  <input type="text" data-action="keydown->event#keydown">
+</div>
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+### debounced auto-suggest search
+
+Let's dial things up a notch and connect to an external API. To accomplish this, we'll bring in our `wait_for_it` function and we'll also make use of debounce to restrict lookups to happen if we stop typing for 500ms. We're also going to use some simple before/after callbacks to perfect our search experience.
+
+In order to build this example, you'll need to be on a Unix-based OS. You must install the CLI dictionary utility:
+
+```bash
+sudo apt install dict
+```
+
+{% code-tabs %}
+{% code-tabs-item title="app/javascript/controllers/search\_controller.js" %}
+```javascript
+import { Controller } from 'stimulus'
+import StimulusReflex from 'stimulus_reflex'
+import { debounce } from 'lodash-es'
+
+export default class extends Controller {
+  connect () {
+    StimulusReflex.register(this)
+    this.suggest = debounce(this.suggest, 500)
+  }
+
+  suggest (event) {
+    this.stimulate('SearchReflex#suggest', event.target)
+  }
+
+  beforeSearch () {
+    document.querySelector('input').blur()
+  }
+
+  afterSearch () {
+    document.querySelector('input').focus()
+  }
+}
+```
+{% endcode-tabs-item %}
+{% code-tabs-item title="app/reflexes/search\_reflex.rb" %}
+```rb
+class SearchReflex < StimulusReflex::Reflex
+  def suggest
+    @query = element[:value]
+    @matches = `grep -v \\'s$ /usr/share/dict/words | grep ^#{ @query&.gsub("'") { "\\'" } }.* -m 5`.split("\n")
+  end
+
+  def search
+    @query = element["data-value"]
+    @result = "Searching..."
+    @loading = true
+    wait_for_it(:dict) do
+      [@query, `dict #{@query&.gsub("'") { "\\'" }}`]
+    end
+  end
+
+  def dict(args)
+    @query, @result = args
+  end
+
+  def wait_for_it(target)
+    if block_given?
+      Thread.new do
+        @channel.receive({
+          "target" => "#{self.class}##{target}",
+          "args" => [yield],
+          "url" => url,
+          "attrs" => element.attributes.to_s,
+          "selectors" => selectors,
+        })
+      end
+    end
+  end
+end
+```
+{% endcode-tabs-item %}
+{% code-tabs-item title="app/controllers/search\_controller.rb" %}
+```rb
+class SearchController < ApplicationController
+  def index
+    @query ||= nil
+    @result ||= nil
+    @loading ||= false
+    @matches ||= []
+  end
+end
+```
+{% endcode-tabs-item %}
+{% code-tabs-item title="app/views/search/index.html.erb" %}
+```text
+<form autofocus data-controller="search" data-reflex="submit->SearchReflex#search" data-value="<%= @query %>">
+  <input type="text" data-action="input->search#suggest" value="<%= @query %>" list="matches" placeholder="Search..." <%= "readonly" if @loading %>/>
+  <datalist id="matches">
+    <% @matches.each do |match| %>
+      <option value="<%= match %>"><%= match %></option>
+    <% end %>
+  </datalist>
+  <% if @result %><pre><%= @result %></pre><% end %>
+</form>
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+{% hint style="success" %}
+Full credit to [Chris McCord](https://twitter.com/chris_mccord) for the structure and idea behind this example, which is directly based on his presentation.
+{% endhint %}
