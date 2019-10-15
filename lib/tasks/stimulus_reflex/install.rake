@@ -5,14 +5,15 @@ require "fileutils"
 namespace :stimulus_reflex do
   desc "Install StimulusReflex in this application"
   task install: :environment do
-    system "yarn add stimulus stimulus_reflex"
+    system "bundle exec rails webpacker:install:stimulus"
+    system "yarn add stimulus_reflex"
 
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
 
     filepath = Rails.root.join("app/javascript/controllers/index.js")
-    FileUtils.touch filepath
-    lines = File.open(filepath, "r").readlines
+    puts "Updating #{filepath}"
+    lines = File.open(filepath, "r") { |f| f.readlines }
     import_line = lines.find { |line| line.start_with?("import StimulusReflex") }
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
     unless import_line
@@ -21,7 +22,6 @@ namespace :stimulus_reflex do
     end
     lines << "StimulusReflex.initialize(application)\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
-    puts "Updating #{filepath}"
 
     system "bundle exec rails generate stimulus_reflex example"
   end
