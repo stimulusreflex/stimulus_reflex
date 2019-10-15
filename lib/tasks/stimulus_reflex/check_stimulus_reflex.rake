@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :stimulus_reflex do
   desc "Verifies StimulusReflex is installed"
   task :check_stimulus_reflex do

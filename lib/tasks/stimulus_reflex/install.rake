@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 bin_path = ENV["BUNDLE_BIN"] || "./bin"
 
 namespace :stimulus_reflex do

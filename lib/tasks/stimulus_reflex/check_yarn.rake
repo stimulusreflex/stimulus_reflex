@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :stimulus_reflex do
   desc "Verifies Yarn is installed"
   task :check_yarn do
