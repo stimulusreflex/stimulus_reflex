@@ -12,7 +12,7 @@ StimulusReflex gives you the ability to run custom code at four distinct moments
 4. **`after`** - after both `success` and `error`
 
 {% hint style="info" %}
-**Using the lifecycle callback methods is not a requirement.** Think of it as a power tool that will help you build more sophisticated applications.
+**Using lifecycle callback methods is not a requirement.** Think of them as power tools that can help you build more sophisticated results.
 {% endhint %}
 
 If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that have called `StimulusReflex.register(this)` in their `connect()` function.
