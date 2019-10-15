@@ -6,7 +6,6 @@
 * [Reflexes](reflexes.md)
 * [Lifecycle](lifecycle.md)
 * [Scoping](scoping.md)
+* [Security](security.md)
 * [Useful Patterns](patterns.md)
 * [Working with Events](events.md)
-* [Security](security.md)
-

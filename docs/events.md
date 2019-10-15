@@ -330,6 +330,10 @@ end
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+To conclude, it's worth noting that if you have called `StimulusReflex.register(this)` at least once on your page and you can live without fancy debouncing and input blurring, you could actually delete `search_controller.js` and the example would continue to work perfectly.
+
+That you could conceivably implement a stateful, API-driven autosuggest that requires zero client-side JavaScript is a great metaphor for why we are so proud of our work on StimulusReflex.
+
 {% hint style="success" %}
 Full credit to [Chris McCord](https://twitter.com/chris_mccord) for the structure and idea behind this example, which is directly based on his presentation.
 {% endhint %}
