@@ -141,12 +141,12 @@ This will create, but not overwrite the following files:
 4. `app/reflexes/user_reflex.rb`
 
 {% hint style="info" %}
-If **something** goes wrong, it's often because of the `spring` gem. You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
+If _something_ goes wrong, it's often because of the **spring** gem. You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
 
-To remove `spring` forever, here is the process we recommend:
+To remove **spring** forever, here is the process we recommend:
 
 1. `pkill -f spring`
-2. Edit your Gemfile and comment out `spring` and `spring-watcher-listen`
+2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub –remove –all`
 {% endhint %}
 
