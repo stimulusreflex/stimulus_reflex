@@ -279,8 +279,7 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('after', target, element)
   })
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs, error, last } = event.detail.stimulusReflex || {}
-    if (!last) return
+    const { target, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     element.reflexError = error
     invokeLifecycleMethod('error', target, element)
