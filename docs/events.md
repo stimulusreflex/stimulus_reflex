@@ -4,13 +4,13 @@ description: StimulusReflex rocks because it stands on the shoulders of Stimulus
 
 # Working with Events
 
-It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David proud, but compared to the bad old days of IE6 - long a "nevergreen" browser default on Windows - there's usually a correct answer to most problems.
+It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David proud, but compared to the bad old days of IE6 - long a _nevergreen_ browser default on Windows - there's usually a correct answer to most problems.
 
 The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-key-events).
 
 A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulusjs.org), a lightweight library that provides powerful event handling.
 
-There are other libraries such as [Lodash](https://lodash.com) that we draw upon frequently as well to craft flexible solutions to common projects.
+We draw upon libraries such as [Lodash](https://lodash.com) frequently to craft flexible solutions to common problems.
 
 ## Throttle, Debounce and requestAnimationFrame
 
@@ -27,7 +27,7 @@ For these use cases, use use a technique known as a **debounce**. The classic me
 Debounce functions are generally quite flexible. In addition to specifying a delay, you can usually also indicate whether the first or `leading` event is fired, whether the last or `trailing` event is fired, and - much like an angry, beeping elevator - whether there is a `maxWait` it will wait before an interim event is fired, even if new events are still arriving.
 
 {% hint style="info" %}
-**debounce** is so flexible that **the Lodash implementation of throttle is actually implemented using debounce**.
+**debounce** is so flexible that the Lodash implementation of throttle is actually implemented using debounce.
 {% endhint %}
 
 {% hint style="success" %}
