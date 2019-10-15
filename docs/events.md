@@ -36,7 +36,7 @@ LiveView's **debounce** implementation accepts **blur** as a delay value, effect
 With Stimulus, we can just define a handler for the **blur** event and keep the concepts separate.
 {% endhint %}
 
-While you can find many implementations of throttle and debounce on the web, we strongly recommend that you use the functions found in the Lodash library. Not only are they are flexible, well-tested and optimised, but they actually return new functions that you can assign to replace your existing functions with. Once you wrap your head around the power this provides, other approaches will feel like dirty hacks.
+While you can find many implementations of throttle and debounce on the web, we strongly recommend that you use the functions found in the Lodash library. Not only are they are flexible, well-tested and optimised, but _they actually return new functions that you can assign to replace your existing functions_. Once you wrap your head around the power this provides, other approaches will feel like dirty hacks.
 
 If you `yarn add lodash-es` you will be able to use a version of the library that supports **tree shaking**. This means that Webpack will only grab the minimum code required, keeping your production JS bundle size tiny.
 
