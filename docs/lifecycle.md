@@ -133,5 +133,9 @@ Both generic and custom lifecycle callback methods share the same arguments:
 * `reflexError(element, reflex, error)`
 * `afterReflex(element, reflex, error)`
 
-**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_ **reflex** - the name of the server side Reflex **error** - the error message if an error occurred, otherwise `null`
+**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_ 
+
+**reflex** - the name of the server side Reflex 
+
+**error** - the error message if an error occurred, otherwise `null`
 
