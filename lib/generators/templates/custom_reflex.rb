@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class <%= @name.classify %>Reflex < ApplicationReflex
   # Add Reflex methods in this file.
   #

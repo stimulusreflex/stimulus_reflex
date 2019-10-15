@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails/generators/test_case"
 require_relative "../test_helper"
 
