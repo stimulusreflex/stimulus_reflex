@@ -4,7 +4,7 @@ description: StimulusReflex rocks because it stands on the shoulders of Stimulus
 
 # Working with Events
 
-It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David proud, but compared to the bad old days of IE6 - long a _nevergreen_ browser default on Windows - there's usually a correct answer to most problems.
+It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David squirm, but compared to the bad old days of IE6 - long a _nevergreen_ browser default on Windows - there's usually a correct answer to most problems.
 
 The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-key-events).
 
