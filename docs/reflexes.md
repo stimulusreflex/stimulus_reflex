@@ -12,17 +12,17 @@ Do not create server side reflex methods named `reflex` as this is a reserved wo
 
 ## Calling a Reflex
 
-Regardless of whether you use declarative Reflex calls via `data-reflex` attributes in your HTML or if you are using JavaScript, ultimately the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the __Quick Start__ chapter; now we are going to document the function signature so that you fully understand what's happening behind the scenes.
+Regardless of whether you use declarative Reflex calls via `data-reflex` attributes in your HTML or if you are using JavaScript, ultimately the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the **Quick Start** chapter; now we are going to document the function signature so that you fully understand what's happening behind the scenes.
 
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
-```
+```text
 this.stimulate(string target, [DOMElement element], [JSONObject argument])
 ```
 
-**target**, required: a string containing the server Reflex class and method, in the form "ExampleReflex#increment".
+**target**, required: a string containing the server Reflex class and method, in the form "ExampleReflex\#increment".
 
-**element**, optional: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. __Defaults to the DOM element of the controller in scope__.
+**element**, optional: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
 
 **argument**, optional: any JSON-compliant Javascript datatype including an array, object, string, numeric or boolean that is received by the server Reflex method as an argument. Defaults to no argument.
 
