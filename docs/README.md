@@ -10,7 +10,7 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## Why should I use StimulusReflex?
 
-You will **ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from junior to graybeard. StimulusReflex helps you focus on **product over periphery**.
+You will **ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from beginners to seasoned programmers with decades of experience. StimulusReflex will empower you to focus on your **product instead of technical periphery**.
 
 ### Goals
 
