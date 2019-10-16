@@ -246,7 +246,7 @@ Now, let's revisit our `ExampleReflex` class. When the user clicks the button, i
           "target" => "#{self.class}##{target}",
           "args" => [yield],
           "url" => url,
-          "attrs" => element.attributes.to_s,
+          "attrs" => element.attributes.to_h,
           "selectors" => selectors,
         })
       end

@@ -288,7 +288,7 @@ class SearchReflex < StimulusReflex::Reflex
           "target" => "#{self.class}##{target}",
           "args" => [yield],
           "url" => url,
-          "attrs" => element.attributes.to_s,
+          "attrs" => element.attributes.to_h,
           "selectors" => selectors,
         })
       end
