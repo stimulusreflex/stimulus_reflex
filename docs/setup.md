@@ -4,24 +4,17 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library by the creators of Rails. You can install Stimulus when you create your Rails project:
+StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails projects.
 
 ```bash
 rails new myproject --webpack=stimulus
+cd myproject
+bundle add stimulus_reflex
+bundle exec rails stimulus_reflex:install
 ```
-
-You can add Stimulus and StimulusReflex to your existing Rails 5.1+ project:
-
-```bash
-yarn add stimulus stimulus_reflex
-```
-
-## ActionCable
-
-StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
 
 {% hint style="info" %}
-The ActionCable defaults of `window.App` and `App.cable` are used if they exist. **A new socket connection will be established if these do not exist.**
+The example above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below.
 {% endhint %}
 
 ## Configuration
@@ -69,6 +62,14 @@ You should add the `action_cable_meta_tag`helper to your application template so
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+## ActionCable
+
+StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
+
+{% hint style="info" %}
+The ActionCable defaults of `window.App` and `App.cable` are used if they exist. **A new socket connection will be established if these do not exist.**
+{% endhint %}
+
 ### Performance
 
 ActionCable emits verbose log messages. Disabling ActionCable logs _may_ improve performance.
@@ -114,20 +115,7 @@ export default class extends Controller {
 
 ## Generators
 
-At this point, you can run the following command to bootstrap your project with some example files:
-
-```bash
-bundle exec rails stimulus_reflex:install
-```
-
-This command will generate:
-
-1. `app/javascript/controllers/application_controller.js`
-2. `app/javascript/controllers/example_controller.js`
-3. `app/reflexes/application_reflex.rb`
-4. `app/javascript/controllers/example_reflex.rb`
-
-You can also use StimulusReflex generators, which is like scaffolding for StimulusReflex.
+The StimulusReflex generator is like scaffolding for StimulusReflex.
 
 ```bash
 bundle exec rails generate stimulus_reflex user
