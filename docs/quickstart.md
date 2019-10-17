@@ -9,7 +9,7 @@ description: How to use StimulusReflex in your app
 A great user experience can be created with Rails alone. Tools like [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Try building your application using these tools before introducing StimulusReflex.
 
 {% hint style="info" %}
-See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example application if you are unsure how to do this.
+See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_reflex_todomvc) example application if you are unsure how to do this.
 {% endhint %}
 
 ## Hello, Reflex
