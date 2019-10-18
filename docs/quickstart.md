@@ -16,9 +16,9 @@ We are only alive for a short while and learning any new technology is a sacrifi
 Every framework you learn is a lost opportunity to build something that could really matter to the world. **Please choose responsibly.**
 {% endhint %}
 
-It might strike you as odd that we would start by questioning whether you need this library at all.
+It might strike you as odd that we would start by questioning whether you need this library at all. Our motivations are an extension of the question we hope more people will ask.
 
-Please understand that our intellectual integrity and motivations are an extension of the question we wished people would ask: instead of "Which SPA should we use?" we hope StimulusReflex will remind people to instead wonder "Do we need React at all, given what we now know is possible?"
+Instead of "_Which Single Page App framework should I use?_" we believe that StimulusReflex can empower people to wonder "Do we need React at all, given what we now know is possible?"
 
 ## Hello, Reflex
 
