@@ -6,11 +6,19 @@ description: How to use StimulusReflex in your app
 
 ## Before you begin...
 
-A great user experience can be created with Rails alone. Tools like [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Try building your application using these tools before introducing StimulusReflex.
+**A great user experience can be created with Rails alone.** Tools such as [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
 
-{% hint style="info" %}
-See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example application if you are unsure how to do this.
+{% hint style="warning" %}
+See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example application if you are unsure how to do this. **Important note**: this link _does not make use of StimulusReflex_. It is presented for technical comparison and soulful reflection.
+
+We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods.
+
+Every framework you learn is a lost opportunity to build something that could really matter to the world. **Please choose responsibly.**
 {% endhint %}
+
+It might strike you as odd that we would start by questioning whether you need this library at all.
+
+Please understand that our intellectual integrity and motivations are an extension of the question we wished people would ask: instead of "Which SPA should we use?" we hope StimulusReflex will remind people to instead wonder "Do we need React at all, given what we now know is possible?"
 
 ## Hello, Reflex
 
