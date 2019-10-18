@@ -18,7 +18,7 @@ Every framework you learn is a lost opportunity to build something that could re
 
 It might strike you as odd that we would start by questioning whether you need this library at all. Our motivations are an extension of the question we hope more people will ask.
 
-Instead of "_Which Single Page App framework should I use?_" we believe that StimulusReflex can empower people to wonder "Do we still need React, given what we now know is possible?"
+Instead of "_Which Single Page App framework should I use?_" we believe that StimulusReflex can empower people to wonder "**Do we still need React, given what we now know is possible?**"
 
 ## Hello, Reflex
 
