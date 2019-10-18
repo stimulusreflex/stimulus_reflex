@@ -12,7 +12,7 @@ Great news: we have you covered.
 
 ## Partial DOM updates
 
-Instead of updating your entire document body, you can specify exactly which parts of the DOM will be updated using the `data-reflex-root` attribute.
+Instead of updating your entire page, you can specify exactly which parts of the DOM will be updated using the `data-reflex-root` attribute.
 
 `data-reflex-root=".class, #id, [attribute]"`
 
@@ -48,6 +48,18 @@ Here is a simple example: the user is presented with a text box. Anything they t
 
 {% hint style="info" %}
 One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
+{% endhint %}
+
+{% hint style="warning" %}
+In StimulusReflex, morphdom is called with the **childrenOnly** flag set to _true_.
+
+This means that &lt;body&gt; or the custom parent selector\(s\) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
+
+If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an &lt;a&gt;.
+{% endhint %}
+
+{% hint style="info" %}
+It's completely valid to for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
 {% endhint %}
 
 ## Persisting Elements
