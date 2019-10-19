@@ -7,7 +7,6 @@ import {
   attributeValues,
   extractElementAttributes,
   findElement,
-  isTextInput,
   receivedFocus,
   lostFocus
 } from './attributes'

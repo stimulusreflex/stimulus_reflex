@@ -84,7 +84,7 @@ export const findElement = attributes => {
   return element
 }
 
-export const isTextInput = element => {
+const isTextInput = element => {
   return (
     [
       'email',
