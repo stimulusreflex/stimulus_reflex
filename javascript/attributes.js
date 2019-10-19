@@ -83,3 +83,33 @@ export const findElement = attributes => {
   const element = elements.length === 1 ? elements[0] : null
   return element
 }
+
+export const isTextInput = element => {
+  return (
+    [
+      'email',
+      'number',
+      'password',
+      'search',
+      'tel',
+      'text',
+      'textarea',
+      'url'
+    ].indexOf(element.type) >= 0
+  )
+}
+
+export const receivedFocus = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  element.reflexPermanent = element.hasAttribute('data-reflex-permanent')
+  element.setAttribute('data-reflex-permanent', '')
+}
+
+export const lostFocus = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
+    element.removeAttribute('data-reflex-permanent')
+  }
+}

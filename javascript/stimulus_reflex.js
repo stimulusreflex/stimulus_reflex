@@ -6,7 +6,10 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement
+  findElement,
+  isTextInput,
+  receivedFocus,
+  lostFocus
 } from './attributes'
 import {
   allReflexControllers,
@@ -285,6 +288,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
+  document.addEventListener('focus', receivedFocus, true)
+  document.addEventListener('blur', lostFocus, true)
 }
 
 export default { initialize, register }
