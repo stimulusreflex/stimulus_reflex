@@ -84,9 +84,9 @@ ActionCable.server.config.logger = Logger.new(nil)
 
 ### Rooms
 
-You might find the need to restrict communication to a specific room. This can be accomplished in 2 ways.
+By default, everyone looking at a page will see the same Reflex updates. You can restrict updates  to one or several users by specifying a "room". This can be accomplished in one of two ways:
 
- 1. Passing the room name as an option to `register`.
+1. Passing the room name as an option to `register`, which defines a default room for every Reflex on your page.
 
 {% code-tabs %}
 {% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
@@ -100,7 +100,7 @@ export default class extends Controller {
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-2. Setting the `data-room` attribute on the StimulusController element.
+2. Optionally, you can set the `data-room` attribute on individual StimulusController elements.
 
 ```markup
 <a href="#"
