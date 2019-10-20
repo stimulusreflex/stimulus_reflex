@@ -86,7 +86,7 @@ ActionCable.server.config.logger = Logger.new(nil)
 
 You might find the need to restrict communication to a specific room. This can be accomplished in 2 ways.
 
-1. Passing the room name as an option to `register`.
+ 1. Passing the room name as an option to `register`.
 
 {% code-tabs %}
 {% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
