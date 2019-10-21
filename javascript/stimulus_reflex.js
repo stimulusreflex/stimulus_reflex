@@ -25,7 +25,7 @@ let application
 // - error
 // - after
 //
-const invokeLifecycleMethod = (stage, reflex, element) => {
+const invokeLifecycleMethod = (stage, reflex, element, returnValue) => {
   if (!element) return
 
   // traverse the DOM for a matching reflex controller
@@ -57,6 +57,7 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
             controller,
             element,
             reflex,
+            returnValue,
             element.reflexError
           ),
         1
@@ -70,6 +71,7 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
             controller,
             element,
             reflex,
+            returnValue,
             element.reflexError
           ),
         1
@@ -272,11 +274,12 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { target, attrs, last } = event.detail.stimulusReflex || {}
+    const { target, attrs, last, returnValue } =
+      event.detail.stimulusReflex || {}
     if (!last) return
     const element = findElement(attrs)
-    invokeLifecycleMethod('success', target, element)
-    invokeLifecycleMethod('after', target, element)
+    invokeLifecycleMethod('success', target, element, returnValue)
+    invokeLifecycleMethod('after', target, element, returnValue)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { target, attrs, error } = event.detail.stimulusReflex || {}
