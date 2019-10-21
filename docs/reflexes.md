@@ -10,6 +10,14 @@ Server side reflexes inherit from `StimulusReflex::Reflex` and hold logic respon
 Do not create server side reflex methods named `reflex` as this is a reserved word.
 {% endhint %}
 
+## ActionCable
+
+StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
+
+{% hint style="info" %}
+The ActionCable defaults of `window.App` and `App.cable` are used if they exist. **A new socket connection will be established if these do not exist.**
+{% endhint %}
+
 ## Calling a Reflex
 
 Regardless of whether you use declarative Reflex calls via `data-reflex` attributes in your HTML or if you are using JavaScript, ultimately the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the **Quick Start** chapter; now we are going to document the function signature so that you fully understand what's happening behind the scenes.

@@ -62,15 +62,7 @@ You should add the `action_cable_meta_tag`helper to your application template so
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-## ActionCable
-
-StimulusReflex leverages [Rails ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Understanding what Rails provides out of the box will help you get the most value from this library.
-
-{% hint style="info" %}
-The ActionCable defaults of `window.App` and `App.cable` are used if they exist. **A new socket connection will be established if these do not exist.**
-{% endhint %}
-
-### Performance
+### Disabling Logging
 
 ActionCable emits verbose log messages. Disabling ActionCable logs _may_ improve performance.
 
