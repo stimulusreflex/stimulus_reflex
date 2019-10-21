@@ -85,3 +85,9 @@ end
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+{% hint style="success" %}
+When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
+
+You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
+{% endhint %}
+
