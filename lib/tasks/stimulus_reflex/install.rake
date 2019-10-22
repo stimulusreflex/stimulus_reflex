@@ -12,10 +12,10 @@ namespace :stimulus_reflex do
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
 
     filepath = if File.exist? Rails.root.join("app/javascript/controllers/index.js")
-                 Rails.root.join("app/javascript/controllers/index.js")
-               else
-                 Rails.root.join("app/javascript/packs/application.js")
-               end
+      Rails.root.join("app/javascript/controllers/index.js")
+    else
+      Rails.root.join("app/javascript/packs/application.js")
+    end
     puts "Updating #{filepath}"
     lines = File.open(filepath, "r") { |f| f.readlines }
     import_line = lines.find { |line| line.start_with?("import StimulusReflex") }
