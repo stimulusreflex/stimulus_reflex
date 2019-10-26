@@ -86,15 +86,24 @@ export const findElement = attributes => {
 
 const isTextInput = element => {
   return (
+    ['input', 'textarea'].indexOf(element.tagName) >= 0 &&
     [
+      'color',
+      'date',
+      'datetime',
+      'datetime-local',
       'email',
+      'month',
       'number',
       'password',
+      'range',
       'search',
       'tel',
       'text',
       'textarea',
-      'url'
+      'time',
+      'url',
+      'week'
     ].indexOf(element.type) >= 0
   )
 }
@@ -109,7 +118,7 @@ export const receivedFocus = event => {
 export const lostFocus = event => {
   const element = event.target
   if (!isTextInput(element)) return
-  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
+  if (element.reflexPermanent && !element.reflexPermanent) {
     element.removeAttribute('data-reflex-permanent')
   }
 }
