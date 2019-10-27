@@ -51,6 +51,7 @@ StimulusReflex was inspired by LiveView, but we are charting our own course. We 
 
 You can try a live StimulusReflex powered app right now:
 
+* [StimulusReflex Expo](http://expo.stimulusreflex.com) - A growing collection of live examples showing different use cases alongside the source code required. **Start here!**
 * [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) - An implementation of [TodoMVC](http://todomvc.com/) using Ruby on Rails and StimulusReflex.
 
 
