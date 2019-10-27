@@ -133,6 +133,11 @@ const extendStimulusController = controller => {
       const attrs = extractElementAttributes(element)
       const selectors = getReflexRoots(element)
       const data = { target, args, url, attrs, selectors }
+      if (
+        element.type === 'number' &&
+        element.validity &&
+        element.validity.badInput
+      ) { return }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
     },
