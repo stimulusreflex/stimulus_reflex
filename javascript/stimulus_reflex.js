@@ -85,12 +85,21 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
 const createSubscription = controller => {
   const { channel, room } = controller.StimulusReflex
   const id = `${channel}${room}`
-
   const subscription =
     app.StimulusReflex.subscriptions[id] ||
     app.StimulusReflex.consumer.subscriptions.create(
       { channel, room },
       {
+        connected: () =>
+          document.body.classList.replace(
+            'reflex-disconnected',
+            'reflex-connected'
+          ),
+        disconnected: () =>
+          document.body.classList.replace(
+            'reflex-connected',
+            'reflex-disconnected'
+          ),
         received: data => {
           if (!data.cableReady) return
           const urls = [
@@ -261,6 +270,7 @@ app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
+  setTimeout(() => document.body.classList.add('reflex-disconnected'), 1)
   window.addEventListener('load', () => setTimeout(setupDeclarativeReflexes, 1))
   document.addEventListener('turbolinks:load', () =>
     setTimeout(setupDeclarativeReflexes, 1)
