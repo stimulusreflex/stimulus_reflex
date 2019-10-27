@@ -10,6 +10,8 @@
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
 ![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
 
+![Logo](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true)
+
 # StimulusReflex
 
 _reflex_ - an action that is performed as a response to a stimulus
@@ -21,12 +23,10 @@ _Inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 ## Docs
 
 - [Official Documentation](https://docs.stimulusreflex.com)
-- [Documentation Source Code](https://github.com/hopsoft/stimulus_reflex/tree/master/docs)
 
 ## Demos
 
 - http://expo.stimulusreflex.com
-- http://todomvc.stimulusreflex.com
 
 ## Contributing
 
@@ -36,8 +36,8 @@ Everyone interacting with StimulusReflex is expected to follow the [Code of Cond
 
 ### Coding Standards
 
-This project uses [Standard](https://github.com/testdouble/standard)
-and [Prettier-Standard](https://github.com/sheerun/prettier-standard) to minimize bike shedding related to code formatting.
+This project uses [Standard](https://github.com/testdouble/standard) for Ruby code
+and [Prettier-Standard](https://github.com/sheerun/prettier-standard) for JavaScript code to minimize bike shedding related to source formatting.
 
 Please run `./bin/standardize` prior submitting pull requests.
 
