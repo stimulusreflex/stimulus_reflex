@@ -107,6 +107,8 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         html: document.css(selector).inner_html,
         children_only: true,
         permanent_attribute_name: "data-reflex-permanent",
+        append_attribute_name: "data-reflex-append",
+        prepend_attribute_name: "data-reflex-prepend",
         stimulus_reflex: data.merge(last: selector == selectors.last)
       )
     end
