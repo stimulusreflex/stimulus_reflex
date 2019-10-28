@@ -10,7 +10,7 @@ The best way to start thinking about how interfaces are designed in a StimulusRe
 
 Once the page is displayed in your browser, the magic begins. StimulusReflex opens an ActionCable (websockets) connection back to the server and keeps it open, waiting for events. It then scans your document for `data-reflex` attributes so that it can wire up those events to Stimulus controllers that are responsible for mapping events in your browser to methods in your Reflex classes on the server.
 
-When Reflex method is called, it is able to access ActiveRecord, Redis, the session object and Rails cache. After the Reflex method is complete the Rails controller's action method is called and any instance variables set are passed on to the Rails controller's action method. In this way, it's similar to a `before_action` filter. However, this is also where a lot of people new to StimulusReflex get confused. The order of operations can seem fuzzy.
+When Reflex method is called, it is able to access ActiveRecord, Redis, the session object and Rails cache. After the Reflex method is complete the Rails controller's action method is called and any instance variables set are passed on to the Rails controller's action method. In this way, it's similar to a `before_action` filter. However, this is also where people new to StimulusReflex could get confused. The order of operations can seem fuzzy.
 
 This document is here to get you back on track.
 
