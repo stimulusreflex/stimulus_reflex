@@ -6,7 +6,7 @@ class ApplicationReflex < StimulusReflex::Reflex
   # Example:
   #
   #   # If your ActionCable connection is: `identified_by :current_user`
-  #   delegate :current_user, to: :channel
+  #   delegate :current_user, to: :connection
   #
   # Learn more at: https://docs.stimulusreflex.com
 end
