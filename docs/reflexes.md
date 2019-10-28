@@ -96,4 +96,4 @@ One Rails mechanism that you might use less in a StimulusReflex application is t
 
 You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
 
-You can also look into using client-side StimulusReflex callbacks along with the `data-reflex-permanent` attribute for a solution remenescent of the classic flash message format.
+You can also look into using client-side StimulusReflex callbacks along with the `data-reflex-permanent` attribute for a solution reminiscent of the classic flash message format.
