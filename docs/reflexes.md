@@ -91,3 +91,9 @@ When StimulusReflex is rendering your template, an instance variable named **@st
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
 {% endhint %}
 
+## Flash messages
+One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
+
+You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
+
+You can also look into using client-side StimulusReflex callbacks along with the `data-reflex-permanent` attribute for a solution reminiscent of the classic flash message format.
