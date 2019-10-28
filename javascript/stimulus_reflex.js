@@ -6,7 +6,9 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement
+  findElement,
+  receivedFocus,
+  lostFocus
 } from './attributes'
 import {
   allReflexControllers,
@@ -131,6 +133,13 @@ const extendStimulusController = controller => {
       const attrs = extractElementAttributes(element)
       const selectors = getReflexRoots(element)
       const data = { target, args, url, attrs, selectors }
+      if (
+        element.type === 'number' &&
+        element.validity &&
+        element.validity.badInput
+      ) {
+        return
+      }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
     },
@@ -285,6 +294,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
+  document.addEventListener('focusin', receivedFocus)
+  document.addEventListener('focusout', lostFocus)
 }
 
 export default { initialize, register }
