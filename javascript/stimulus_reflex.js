@@ -137,7 +137,9 @@ const extendStimulusController = controller => {
         element.type === 'number' &&
         element.validity &&
         element.validity.badInput
-      ) { return }
+      ) {
+        return
+      }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
     },
@@ -292,8 +294,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
-  document.addEventListener('focus', receivedFocus, true)
-  document.addEventListener('blur', lostFocus, true)
+  document.addEventListener('focusin', receivedFocus)
+  document.addEventListener('focusout', lostFocus)
 }
 
 export default { initialize, register }
