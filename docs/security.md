@@ -92,7 +92,7 @@ end
 {% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
-  delegate :current_user, to: :channel
+  delegate :current_user, to: :connection
 
   def do_suff
     current_user.first_name
