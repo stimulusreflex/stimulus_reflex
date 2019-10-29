@@ -1,5 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true" height="100" />
+</p>
+<p align="center">
   <a href="https://codefund.io/properties/525/visit-sponsor">
     <img src="https://codefund.io/properties/525/sponsor" />
   </a>
