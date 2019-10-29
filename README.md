@@ -10,7 +10,7 @@
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
 ![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
 
-![Logo](https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true)
+<img src="https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true" style="height:100px" />
 
 # StimulusReflex
 
