@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true" height="100" />
   <a href="https://codefund.io/properties/525/visit-sponsor">
     <img src="https://codefund.io/properties/525/sponsor" />
   </a>
@@ -9,8 +10,6 @@
 ![Prettier-Standard](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
 ![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
-
-<img src="https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo.svg?sanitize=true" height="100" />
 
 # StimulusReflex
 
