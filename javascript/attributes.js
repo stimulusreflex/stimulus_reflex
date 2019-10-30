@@ -113,6 +113,7 @@ const isTextInput = element => {
 export const receivedFocus = event => {
   const element = event.target
   if (!isTextInput(element)) return
+  if (element.hasAttribute('data-reflex-allow')) return
   element.reflexPermanent = element.hasAttribute('data-reflex-permanent')
   element.setAttribute('data-reflex-permanent', '')
 }
