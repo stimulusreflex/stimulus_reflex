@@ -144,7 +144,7 @@ const extendStimulusController = controller => {
       controller.StimulusReflex.subscription.send(data)
     },
 
-    // Wraps the call to stimuluate for any data-reflex elements.
+    // Wraps the call to stimulate for any data-reflex elements.
     // This is internal and should not be invoked directly.
     __perform (event) {
       event.preventDefault()
