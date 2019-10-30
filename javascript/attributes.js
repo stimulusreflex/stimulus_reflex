@@ -47,10 +47,10 @@ export const extractElementAttributes = element => {
   return attrs
 }
 
-// Finds an element based on the passed represention the DOM element's attributes.
+// Finds an element based on the passed represention of the DOM element's attributes.
 //
 // NOTE: This is the same set of attributes extrated via extractElementAttributes and forwarded to the server side reflex.
-// SEE: stimulute()
+// SEE: stimulate()
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
 //

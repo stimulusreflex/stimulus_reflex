@@ -29,7 +29,7 @@ export const findReflexController = (application, element, reflex) => {
   return controller
 }
 
-// Returns StimulsReflex controllers local to the passed element based on the data-controller attribute.
+// Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
 export const localReflexControllers = (application, element) => {
   return attributeValues(element.dataset.controller).reduce((memo, name) => {
@@ -42,7 +42,7 @@ export const localReflexControllers = (application, element) => {
   }, [])
 }
 
-// Returns all StimulsReflex controllers for the passed element.
+// Returns all StimulusReflex controllers for the passed element.
 // Traverses DOM ancestors starting with element.
 //
 export const allReflexControllers = (application, element) => {
