@@ -7,9 +7,7 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement,
-  receivedFocus,
-  lostFocus
+  findElement
 } from './attributes'
 import {
   allReflexControllers,
@@ -20,6 +18,27 @@ import {
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
 let app
+
+// Initializes implicit data-reflex-permanent for text inputs.
+//
+const initializeImplicitReflexPermanent = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  element.reflexPermanent = element.hasAttribute(
+    app.schema.reflexPermanentAttribute
+  )
+  element.setAttribute(app.schema.reflexPermanentAttribute, '')
+}
+
+// Resets implicit data-reflex-permanent for text inputs.
+//
+const resetImplicitReflexPermanent = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
+    element.removeAttribute(app.schema.reflexPermanentAttribute)
+  }
+}
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -314,8 +333,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
-  document.addEventListener('focusin', receivedFocus)
-  document.addEventListener('focusout', lostFocus)
+  document.addEventListener('focusin', initializeImplicitReflexPermanent)
+  document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
 export default { initialize, register }
