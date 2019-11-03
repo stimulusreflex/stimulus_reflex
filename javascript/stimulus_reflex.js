@@ -2,6 +2,7 @@ import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
 import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
+import { defaultSchema } from './schema'
 import {
   attributeValue,
   attributeValues,
@@ -194,31 +195,36 @@ class StimulusReflexController extends Controller {
 // Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
-  document.querySelectorAll(application.schema.reflexAttribute || '[data-reflex]').forEach(element => {
-    const controllers = attributeValues(element.dataset.controller)
-    const reflexes = attributeValues(element.dataset.reflex)
-    const actions = attributeValues(element.dataset.action)
-    reflexes.forEach(reflex => {
-      const controller = allReflexControllers(application, element)[0]
-      let action
-      if (controller) {
-        action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
-        if (!actions.includes(action)) actions.push(action)
-      } else {
-        action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-        if (!controllers.includes('stimulus-reflex')) {
-          controllers.push('stimulus-reflex')
+  document
+    .querySelectorAll(application.schema.reflexAttribute || '[data-reflex]')
+    .forEach(element => {
+      const controllers = attributeValues(element.dataset.controller)
+      const reflexes = attributeValues(element.dataset.reflex)
+      const actions = attributeValues(element.dataset.action)
+      reflexes.forEach(reflex => {
+        const controller = allReflexControllers(application, element)[0]
+        let action
+        if (controller) {
+          action = `${reflex.split('->')[0]}->${
+            controller.identifier
+          }#__perform`
+          if (!actions.includes(action)) actions.push(action)
+        } else {
+          action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
+          if (!controllers.includes('stimulus-reflex')) {
+            controllers.push('stimulus-reflex')
+          }
+          if (!actions.includes(action)) actions.push(action)
         }
-        if (!actions.includes(action)) actions.push(action)
+      })
+      const controllerValue = attributeValue(controllers)
+      const actionValue = attributeValue(actions)
+      if (controllerValue) {
+        element.setAttribute('data-controller', controllerValue)
       }
+      if (actionValue)
+        element.setAttribute(application.schema.actionAttribute, actionValue)
     })
-    const controllerValue = attributeValue(controllers)
-    const actionValue = attributeValue(actions)
-    if (controllerValue) {
-      element.setAttribute('data-controller', controllerValue)
-    }
-    if (actionValue) element.setAttribute(application.schema.actionAttribute, actionValue)
-  })
 }
 
 // compute the DOM element(s) which will be the morph root
@@ -234,14 +240,20 @@ const getReflexRoots = element => {
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          'No value found for data-reflex-root. Add an #id to the element or provide a value for data-reflex-root.',
+          `No value found for ${
+            application.schema.reflexRootAttribute
+          }. Add an #id to the element or provide a value for ${
+            application.schema.reflexRootAttribute
+          }.`,
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     }
     element = element.parentElement
-      ? element.parentElement.closest('[data-reflex-root]')
+      ? element.parentElement.closest(
+          `[${application.schema.reflexRootAttribute}]`
+        )
       : null
   }
   return list
@@ -257,6 +269,7 @@ const initialize = (
   controller = StimulusReflexController
 ) => {
   application = stimulusApplication
+  application.schema = { ...defaultSchema, ...application.schema }
   application.register('stimulus-reflex', controller)
 }
 
