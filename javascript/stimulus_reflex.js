@@ -194,7 +194,7 @@ class StimulusReflexController extends Controller {
 // Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
-  document.querySelectorAll('[data-reflex]').forEach(element => {
+  document.querySelectorAll(application.schema.reflexAttribute || '[data-reflex]').forEach(element => {
     const controllers = attributeValues(element.dataset.controller)
     const reflexes = attributeValues(element.dataset.reflex)
     const actions = attributeValues(element.dataset.action)
@@ -217,7 +217,7 @@ const setupDeclarativeReflexes = () => {
     if (controllerValue) {
       element.setAttribute('data-controller', controllerValue)
     }
-    if (actionValue) element.setAttribute('data-action', actionValue)
+    if (actionValue) element.setAttribute(application.schema.actionAttribute, actionValue)
   })
 }
 
