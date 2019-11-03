@@ -19,7 +19,7 @@ import {
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
-let application
+let app
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -32,10 +32,10 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
 
   // traverse the DOM for a matching reflex controller
-  const reflexController = findReflexController(application, element, reflex)
+  const reflexController = findReflexController(app, element, reflex)
 
   // find reflex controllers wired on this element
-  const controllers = new Set(localReflexControllers(application, element))
+  const controllers = new Set(localReflexControllers(app, element))
 
   if (reflexController) controllers.add(reflexController)
   if (controllers.length === 0) return
@@ -152,10 +152,10 @@ const extendStimulusController = controller => {
       event.stopPropagation()
 
       let element = event.target
-      let reflex = element.dataset.reflex
+      let reflex
 
       while (element && !reflex) {
-        reflex = element.dataset.reflex
+        reflex = element.getAttribute(app.schema.reflexAttribute)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
@@ -174,7 +174,10 @@ const extendStimulusController = controller => {
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
-  const room = options.room || controller.element.dataset.room || ''
+  const room =
+    options.room ||
+    controller.element.getAttribute(app.schema.roomAttribute) ||
+    ''
   controller.StimulusReflex = { ...options, channel, room }
   extendStimulusController(controller)
   createSubscription(controller)
@@ -196,13 +199,17 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document
-    .querySelectorAll(application.schema.reflexAttribute || '[data-reflex]')
+    .querySelectorAll(`[${app.schema.reflexAttribute}]`)
     .forEach(element => {
-      const controllers = attributeValues(element.dataset.controller)
-      const reflexes = attributeValues(element.dataset.reflex)
-      const actions = attributeValues(element.dataset.action)
+      const controllers = attributeValues(
+        element.getAttribute(app.schema.controllerAttribute)
+      )
+      const reflexes = attributeValues(
+        element.getAttribute(app.schema.reflexAttribute)
+      )
+      const actions = attributeValues(element.getAttribute(app.schema.actionAttribute)
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(application, element)[0]
+        const controller = allReflexControllers(app, element)[0]
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -220,10 +227,10 @@ const setupDeclarativeReflexes = () => {
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
       if (controllerValue) {
-        element.setAttribute('data-controller', controllerValue)
+        element.setAttribute(app.schema.controllerAttribute, controllerValue)
       }
       if (actionValue)
-        element.setAttribute(application.schema.actionAttribute, actionValue)
+        element.setAttribute(app.schema.actionAttribute, actionValue)
     })
 }
 
@@ -234,16 +241,16 @@ const setupDeclarativeReflexes = () => {
 const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
-    if (Object.prototype.hasOwnProperty.call(element.dataset, 'reflexRoot')) {
-      let { reflexRoot } = element.dataset
+    const reflexRoot = element.getAttribute(app.schema.reflexRootAttribute)
+    if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
           `No value found for ${
-            application.schema.reflexRootAttribute
+            app.schema.reflexRootAttribute
           }. Add an #id to the element or provide a value for ${
-            application.schema.reflexRootAttribute
+            app.schema.reflexRootAttribute
           }.`,
           element
         )
@@ -252,7 +259,7 @@ const getReflexRoots = element => {
     }
     element = element.parentElement
       ? element.parentElement.closest(
-          `[${application.schema.reflexRootAttribute}]`
+          `[${app.schema.reflexRootAttribute}]`
         )
       : null
   }
@@ -268,9 +275,9 @@ const initialize = (
   stimulusApplication,
   controller = StimulusReflexController
 ) => {
-  application = stimulusApplication
-  application.schema = { ...defaultSchema, ...application.schema }
-  application.register('stimulus-reflex', controller)
+  app = stimulusApplication
+  app.schema = { ...defaultSchema, ...app.schema }
+  app.register('stimulus-reflex', controller)
 }
 
 // Wire everything up
