@@ -207,7 +207,9 @@ const setupDeclarativeReflexes = () => {
       const reflexes = attributeValues(
         element.getAttribute(app.schema.reflexAttribute)
       )
-      const actions = attributeValues(element.getAttribute(app.schema.actionAttribute)
+      const actions = attributeValues(
+        element.getAttribute(app.schema.actionAttribute)
+      )
       reflexes.forEach(reflex => {
         const controller = allReflexControllers(app, element)[0]
         let action
@@ -258,9 +260,7 @@ const getReflexRoots = element => {
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     }
     element = element.parentElement
-      ? element.parentElement.closest(
-          `[${app.schema.reflexRootAttribute}]`
-        )
+      ? element.parentElement.closest(`[${app.schema.reflexRootAttribute}]`)
       : null
   }
   return list
