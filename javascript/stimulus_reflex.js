@@ -109,8 +109,8 @@ const createSubscription = controller => {
   const id = `${channel}${room}`
 
   const subscription =
-    app.StimulusReflex.subscriptions[id] ||
-    app.StimulusReflex.consumer.subscriptions.create(
+    SR.subscriptions[id] ||
+    SR.consumer.subscriptions.create(
       { channel, room },
       {
         received: data => {
@@ -124,7 +124,7 @@ const createSubscription = controller => {
       }
     )
 
-  app.StimulusReflex.subscriptions[id] = subscription
+  SR.subscriptions[id] = subscription
   controller.StimulusReflex.subscription = subscription
 }
 
@@ -308,11 +308,9 @@ const initialize = (
 
 // Wire everything up
 //
-const app = window.App || {}
-app.StimulusReflex = app.StimulusReflex || {}
-app.StimulusReflex.consumer =
-  app.StimulusReflex.consumer || ActionCable.createConsumer()
-app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
+const SR = window.StimulusReflex || {}
+SR.consumer = SR.consumer || ActionCable.createConsumer()
+SR.subscriptions = SR.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
