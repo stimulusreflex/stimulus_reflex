@@ -84,9 +84,11 @@ export const findElement = attributes => {
   return element
 }
 
-const isTextInput = element => {
+// Indicates if the passed element is considered a text input.
+//
+export const isTextInput = element => {
   return (
-    ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) >= 0 &&
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) &&
     [
       'color',
       'date',
@@ -106,21 +108,6 @@ const isTextInput = element => {
       'time',
       'url',
       'week'
-    ].indexOf(element.type) >= 0
+    ].includes(element.type)
   )
-}
-
-export const receivedFocus = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.reflexPermanent = element.hasAttribute('data-reflex-permanent')
-  element.setAttribute('data-reflex-permanent', '')
-}
-
-export const lostFocus = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute('data-reflex-permanent')
-  }
 }

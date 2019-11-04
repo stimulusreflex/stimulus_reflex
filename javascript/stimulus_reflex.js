@@ -2,13 +2,13 @@ import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
 import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
+import { defaultSchema } from './schema'
 import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
   findElement,
-  receivedFocus,
-  lostFocus
+  isTextInput
 } from './attributes'
 import {
   allReflexControllers,
@@ -18,7 +18,28 @@ import {
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
-let application
+let app
+
+// Initializes implicit data-reflex-permanent for text inputs.
+//
+const initializeImplicitReflexPermanent = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  element.reflexPermanent = element.hasAttribute(
+    app.schema.reflexPermanentAttribute
+  )
+  element.setAttribute(app.schema.reflexPermanentAttribute, '')
+}
+
+// Resets implicit data-reflex-permanent for text inputs.
+//
+const resetImplicitReflexPermanent = event => {
+  const element = event.target
+  if (!isTextInput(element)) return
+  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
+    element.removeAttribute(app.schema.reflexPermanentAttribute)
+  }
+}
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -31,10 +52,10 @@ const invokeLifecycleMethod = (stage, reflex, element) => {
   if (!element) return
 
   // traverse the DOM for a matching reflex controller
-  const reflexController = findReflexController(application, element, reflex)
+  const reflexController = findReflexController(app, element, reflex)
 
   // find reflex controllers wired on this element
-  const controllers = new Set(localReflexControllers(application, element))
+  const controllers = new Set(localReflexControllers(app, element))
 
   if (reflexController) controllers.add(reflexController)
   if (controllers.length === 0) return
@@ -89,8 +110,8 @@ const createSubscription = controller => {
   const id = `${channel}${room}`
 
   const subscription =
-    app.StimulusReflex.subscriptions[id] ||
-    app.StimulusReflex.consumer.subscriptions.create(
+    SR.subscriptions[id] ||
+    SR.consumer.subscriptions.create(
       { channel, room },
       {
         received: data => {
@@ -104,7 +125,7 @@ const createSubscription = controller => {
       }
     )
 
-  app.StimulusReflex.subscriptions[id] = subscription
+  SR.subscriptions[id] = subscription
   controller.StimulusReflex.subscription = subscription
 }
 
@@ -130,15 +151,22 @@ const extendStimulusController = controller => {
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
           : this.element
-      const attrs = extractElementAttributes(element)
-      const selectors = getReflexRoots(element)
-      const data = { target, args, url, attrs, selectors }
       if (
         element.type === 'number' &&
         element.validity &&
         element.validity.badInput
       ) {
         return
+      }
+      const attrs = extractElementAttributes(element)
+      const selectors = getReflexRoots(element)
+      const data = {
+        target,
+        args,
+        url,
+        attrs,
+        selectors,
+        permanent_attribute_name: app.schema.reflexPermanentAttribute
       }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
@@ -151,10 +179,10 @@ const extendStimulusController = controller => {
       event.stopPropagation()
 
       let element = event.target
-      let reflex = element.dataset.reflex
+      let reflex
 
       while (element && !reflex) {
-        reflex = element.dataset.reflex
+        reflex = element.getAttribute(app.schema.reflexAttribute)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
@@ -173,7 +201,10 @@ const extendStimulusController = controller => {
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
-  const room = options.room || controller.element.dataset.room || ''
+  const room =
+    options.room ||
+    controller.element.getAttribute(app.schema.roomAttribute) ||
+    ''
   controller.StimulusReflex = { ...options, channel, room }
   extendStimulusController(controller)
   createSubscription(controller)
@@ -194,31 +225,42 @@ class StimulusReflexController extends Controller {
 // Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
-  document.querySelectorAll(application.schema.reflexAttribute || '[data-reflex]').forEach(element => {
-    const controllers = attributeValues(element.dataset.controller)
-    const reflexes = attributeValues(element.dataset.reflex)
-    const actions = attributeValues(element.dataset.action)
-    reflexes.forEach(reflex => {
-      const controller = allReflexControllers(application, element)[0]
-      let action
-      if (controller) {
-        action = `${reflex.split('->')[0]}->${controller.identifier}#__perform`
-        if (!actions.includes(action)) actions.push(action)
-      } else {
-        action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-        if (!controllers.includes('stimulus-reflex')) {
-          controllers.push('stimulus-reflex')
+  document
+    .querySelectorAll(`[${app.schema.reflexAttribute}]`)
+    .forEach(element => {
+      const controllers = attributeValues(
+        element.getAttribute(app.schema.controllerAttribute)
+      )
+      const reflexes = attributeValues(
+        element.getAttribute(app.schema.reflexAttribute)
+      )
+      const actions = attributeValues(
+        element.getAttribute(app.schema.actionAttribute)
+      )
+      reflexes.forEach(reflex => {
+        const controller = allReflexControllers(app, element)[0]
+        let action
+        if (controller) {
+          action = `${reflex.split('->')[0]}->${
+            controller.identifier
+          }#__perform`
+          if (!actions.includes(action)) actions.push(action)
+        } else {
+          action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
+          if (!controllers.includes('stimulus-reflex')) {
+            controllers.push('stimulus-reflex')
+          }
+          if (!actions.includes(action)) actions.push(action)
         }
-        if (!actions.includes(action)) actions.push(action)
+      })
+      const controllerValue = attributeValue(controllers)
+      const actionValue = attributeValue(actions)
+      if (controllerValue) {
+        element.setAttribute(app.schema.controllerAttribute, controllerValue)
       }
+      if (actionValue)
+        element.setAttribute(app.schema.actionAttribute, actionValue)
     })
-    const controllerValue = attributeValue(controllers)
-    const actionValue = attributeValue(actions)
-    if (controllerValue) {
-      element.setAttribute('data-controller', controllerValue)
-    }
-    if (actionValue) element.setAttribute(application.schema.actionAttribute, actionValue)
-  })
 }
 
 // compute the DOM element(s) which will be the morph root
@@ -228,20 +270,24 @@ const setupDeclarativeReflexes = () => {
 const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
-    if (Object.prototype.hasOwnProperty.call(element.dataset, 'reflexRoot')) {
-      let { reflexRoot } = element.dataset
+    const reflexRoot = element.getAttribute(app.schema.reflexRootAttribute)
+    if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          'No value found for data-reflex-root. Add an #id to the element or provide a value for data-reflex-root.',
+          `No value found for ${
+            app.schema.reflexRootAttribute
+          }. Add an #id to the element or provide a value for ${
+            app.schema.reflexRootAttribute
+          }.`,
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     }
     element = element.parentElement
-      ? element.parentElement.closest('[data-reflex-root]')
+      ? element.parentElement.closest(`[${app.schema.reflexRootAttribute}]`)
       : null
   }
   return list
@@ -256,17 +302,16 @@ const initialize = (
   stimulusApplication,
   controller = StimulusReflexController
 ) => {
-  application = stimulusApplication
-  application.register('stimulus-reflex', controller)
+  app = stimulusApplication
+  app.schema = { ...defaultSchema, ...app.schema }
+  app.register('stimulus-reflex', controller)
 }
 
 // Wire everything up
 //
-const app = window.App || {}
-app.StimulusReflex = app.StimulusReflex || {}
-app.StimulusReflex.consumer =
-  app.StimulusReflex.consumer || ActionCable.createConsumer()
-app.StimulusReflex.subscriptions = app.StimulusReflex.subscriptions || {}
+const SR = window.StimulusReflex || {}
+SR.consumer = SR.consumer || ActionCable.createConsumer()
+SR.subscriptions = SR.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
@@ -294,8 +339,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
-  document.addEventListener('focusin', receivedFocus)
-  document.addEventListener('focusout', lostFocus)
+  document.addEventListener('focusin', initializeImplicitReflexPermanent)
+  document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
 export default { initialize, register }
