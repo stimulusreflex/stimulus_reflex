@@ -106,7 +106,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         selector: selector,
         html: document.css(selector).inner_html,
         children_only: true,
-        permanent_attribute_name: "data-reflex-permanent",
+        permanent_attribute_name: data["permanent_attribute_name"],
         stimulus_reflex: data.merge(last: selector == selectors.last)
       )
     end

@@ -150,15 +150,22 @@ const extendStimulusController = controller => {
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
           : this.element
-      const attrs = extractElementAttributes(element)
-      const selectors = getReflexRoots(element)
-      const data = { target, args, url, attrs, selectors }
       if (
         element.type === 'number' &&
         element.validity &&
         element.validity.badInput
       ) {
         return
+      }
+      const attrs = extractElementAttributes(element)
+      const selectors = getReflexRoots(element)
+      const data = {
+        target,
+        args,
+        url,
+        attrs,
+        selectors,
+        permanent_attribute_name: app.schema.reflexPermanentAttribute
       }
       invokeLifecycleMethod('before', target, element)
       controller.StimulusReflex.subscription.send(data)
