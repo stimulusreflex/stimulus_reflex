@@ -84,7 +84,9 @@ export const findElement = attributes => {
   return element
 }
 
-const isTextInput = element => {
+// Indicates if the passed element is considered a text input.
+//
+export const isTextInput = element => {
   return (
     ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) &&
     [

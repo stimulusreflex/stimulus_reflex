@@ -7,7 +7,8 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement
+  findElement,
+  isTextInput
 } from './attributes'
 import {
   allReflexControllers,
