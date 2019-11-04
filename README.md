@@ -12,6 +12,7 @@
 ![Prettier-Standard](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
 ![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
+[![Discourse](https://img.shields.io/badge/Forum-Discourse-blue.svg?style=flat)](https://stimulus-reflex.discourse.group)
 
 # StimulusReflex
 
