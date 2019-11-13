@@ -30,19 +30,19 @@ StimulusReflex controllers can define up to four generic lifecycle callback meth
 3. `reflexError`
 4. `afterReflex`
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/examples/show.html.erb" %}
+{% tabs %}
+{% tab title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
 </div>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
+{% tabs %}
+{% tab title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -59,8 +59,8 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 In this example, we update each anchor's text before invoking the server side Reflex.
 
@@ -73,19 +73,19 @@ StimulusReflex controllers can define up to four custom lifecycle callback metho
 3. `updateError`
 4. `afterUpdate`
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/examples/show.html.erb" %}
+{% tabs %}
+{% tab title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
 </div>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
+{% tabs %}
+{% tab title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -104,8 +104,8 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
 

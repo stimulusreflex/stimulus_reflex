@@ -42,8 +42,8 @@ If you `yarn add lodash-es` you will be able to use a version of the library tha
 
 Let's set up a simple example: we will debounce your page scroll events while keeping your server up-to-date on how far down your user is.
 
-{% code-tabs %}
-{% code-tabs-item title="event\_controller.js" %}
+{% tabs %}
+{% tab title="event\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -60,9 +60,9 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="event\_reflex.rb" %}
+{% tab title="event\_reflex.rb" %}
 ```ruby
 class EventReflex < StimulusReflex::Reflex
   def scroll(value)
@@ -70,9 +70,9 @@ class EventReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="index.html.erb" %}
+{% tab title="index.html.erb" %}
 ```text
 <div
   data-controller="event"
@@ -80,8 +80,8 @@ end
   style="height: 5000px"
 ></div>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can use the [Stimulus Global Events](https://stimulusjs.org/reference/actions#global-events) syntax to map window scroll events to the `scroll` function on a Stimulus controller named `event`. When the controller is attached to the `div` at page load, `connect` is fired, StimulusReflex is instantiated and we use the Lodash `debounce` [function](https://lodash.com/docs/4.17.15#debounce) to return a new event handler that will execute when the page is scrolled _but then stops scrolling for at least a second_. We could set a `maxWait` option if we were worried about users who just won't stop scrolling, but that's as weird as it sounds and qualifies as premature optimisation.
 
@@ -185,8 +185,8 @@ You might also consider checking out [Trix](https://trix-editor.org/), the edito
 
 First, let's tackle a creative use of `throttle`. We're going to allow the user to mash their keyboard without spamming the server with Reflex updates. However, **we only want to throttle if they are holding down a single key**:
 
-{% code-tabs %}
-{% code-tabs-item title="event\_controller.js" %}
+{% tabs %}
+{% tab title="event\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -209,9 +209,9 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="event\_reflex.rb" %}
+{% tab title="event\_reflex.rb" %}
 ```ruby
 class EventReflex < StimulusReflex::Reflex
   def keydown(key)
@@ -219,16 +219,16 @@ class EventReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="index.html.erb" %}
+{% tab title="index.html.erb" %}
 ```text
 <div data-controller="event">
   <input type="text" data-action="keydown->event#keydown">
 </div>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ### debounced auto-suggest search
 
@@ -245,8 +245,8 @@ sudo apt install dict # Linux
 sudo brew install dict # MacOS
 ```
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/search/index.html.erb" %}
+{% tabs %}
+{% tab title="app/views/search/index.html.erb" %}
 ```text
 <form data-controller="search" data-reflex="submit->SearchReflex#search" data-value="<%= @query %>">
   <input type="text" data-action="input->search#suggest" value="<%= @query %>" list="matches" placeholder="Search..." <%= "readonly" if @loading %>/>
@@ -258,9 +258,9 @@ sudo brew install dict # MacOS
   <% if @result %><pre><%= @result %></pre><% end %>
 </form>
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="app/reflexes/search\_reflex.rb" %}
+{% tab title="app/reflexes/search\_reflex.rb" %}
 ```ruby
 class SearchReflex < StimulusReflex::Reflex
   def suggest
@@ -296,9 +296,9 @@ class SearchReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="app/javascript/controllers/search\_controller.js" %}
+{% tab title="app/javascript/controllers/search\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -323,9 +323,9 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="app/controllers/search\_controller.rb" %}
+{% tab title="app/controllers/search\_controller.rb" %}
 ```ruby
 class SearchController < ApplicationController
   def index
@@ -336,8 +336,8 @@ class SearchController < ApplicationController
   end
 end
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 It's worth noting that if you have called `StimulusReflex.register()` at least once on your page and you can live without fancy debouncing and input blurring, _you could actually delete_ `search_controller.js` _and the example would continue to work **perfectly**_.
 

@@ -31,8 +31,8 @@ Bringing your first Reflex to life couldn't be simpler:
 
 This example will automatically update the page with the latest count whenever the anchor is clicked.
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/pages/example.html.erb" %}
+{% tabs %}
+{% tab title="app/views/pages/example.html.erb" %}
 ```text
 <a href="#"
   data-reflex="click->ExampleReflex#increment"
@@ -40,13 +40,13 @@ This example will automatically update the page with the latest count whenever t
   data-count="<%= @count.to_i %>"
 >Increment <%= @count.to_i %></a>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
-{% code-tabs %}
-{% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
+{% tabs %}
+{% tab title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def increment
@@ -54,8 +54,8 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 StimulusReflex maps your requests to Reflex classes that live in your `app/reflexes` folder. In this example, the increment method is executed and the count is incremented by 1. The `@count` instance variable is passed to the template when it is re-rendered.
 
@@ -75,16 +75,16 @@ Let's build on our increment counter example by adding a Controller and manually
 2. Create a client side StimulusReflex controller with JavaScript.
 3. Create a server side Reflex object with Ruby.
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/pages/example.html.erb" %}
+{% tabs %}
+{% tab title="app/views/pages/example.html.erb" %}
 ```text
 <a href="#"
   data-controller="example"
   data-action="click->example#increment"
 >Increment <%= @count.to_i %></a>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Here, we rely on the standard Stimulus `data-controller` and `data-action` attributes. There's no StimulusReflex-specific markup required.
 
@@ -107,8 +107,8 @@ The Controller connects during the page load process and we tell StimulusReflex 
 
 When the user clicks the anchor, Stimulus calls the `increment` method. All StimulusReflex Controllers have access to the `stimulate` method. The first parameter is the `[ServerSideClass]#[action]` syntax, which tells the server which Reflex class and method to call. The second parameter is an optional argument which is passed to the Reflex method. If you need to pass multiple arguments, consider using a JavaScript object `{}` to do so.
 
-{% code-tabs %}
-{% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
+{% tabs %}
+{% tab title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def increment(step = 1)
@@ -117,8 +117,8 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Here, you can see how we accept an optional argument to our `increment` Reflex action.
 

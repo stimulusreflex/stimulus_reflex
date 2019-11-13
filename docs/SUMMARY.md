@@ -4,10 +4,10 @@
 * [Setup](setup.md)
 * [Quick Start](quickstart.md)
 * [Reflexes](reflexes.md)
-* [Persistence](persistence.md)
 * [Lifecycle](lifecycle.md)
 * [Scoping](scoping.md)
 * [Security](security.md)
+* [Persistence](persistence.md)
 * [Useful Patterns](patterns.md)
 * [Working with Events](events.md)
 

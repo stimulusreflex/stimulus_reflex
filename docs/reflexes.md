@@ -55,17 +55,17 @@ The `element` property contains all of the Stimulus controller's [DOM element at
 
 Here's an example that outlines how you can interact with the `element` property in your reflexes.
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/examples/show.html.erb" %}
+{% tabs %}
+{% tab title="app/views/examples/show.html.erb" %}
 ```markup
 <checkbox id="example" label="Example" checked
   data-reflex="ExampleReflex#work" data-value="123" />
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="app/reflexes/example\_reflex.rb" %}
+{% tabs %}
+{% tab title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def work()
@@ -82,8 +82,8 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="success" %}
 When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
@@ -92,8 +92,10 @@ You can use this flag to create branching logic to control how the template migh
 {% endhint %}
 
 ## Flash messages
+
 One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
 
 You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
 
 You can also look into using client-side StimulusReflex callbacks along with the `data-reflex-permanent` attribute for a solution reminiscent of the classic flash message format.
+

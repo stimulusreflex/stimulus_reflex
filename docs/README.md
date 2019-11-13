@@ -6,11 +6,11 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex is an exciting new way to build reactive, modern real-time apps.** It eliminates the hassle of maintaining state on the client. It's a new way of thinking... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA). 
+**StimulusReflex is an exciting new way to build reactive, modern real-time apps.** It eliminates the hassle of maintaining state on the client. It's a new way of thinking... and it works with technologies that Rails developers already use, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA).
 
 ## Why should I use StimulusReflex?
 
-You will **ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real.  We welcome everyone... from beginners to seasoned programmers with decades of experience. StimulusReflex will empower you to focus on your **product instead of technical periphery**.
+You will **ship projects faster, with smaller teams** and re-discover the joy of programming. It's a big deal and it's real. We welcome everyone... from beginners to seasoned programmers with decades of experience. StimulusReflex will empower you to focus on your **product instead of technical periphery**.
 
 ### Goals
 
@@ -32,7 +32,7 @@ In his 2018 ElixirConf keynote, [Chris McCord](https://twitter.com/chris_mccord)
 
 We love Elixir and Phoenix. There's no question that Elixir hits a sweet spot for people who want Rails-like conventions in a functional language that runs on the Erlang VM. The Elixir and Phoenix community is terrific, but it's still small and comparatively niche.
 
-Also, we just really enjoy using **Ruby and Rails**. 
+Also, we just really enjoy using **Ruby and Rails**.
 
 StimulusReflex was inspired by LiveView, but we are charting our own course. We hope to make building real-time apps with Rails the most productive and enjoyable option available.
 
@@ -44,7 +44,7 @@ StimulusReflex was inspired by LiveView, but we are charting our own course. We 
 4. Enhance the user experience with Stimulus controllers as desired.
 
 {% hint style="success" %}
-**Get Involved.** We'd love to hear from you. ****[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+**Get Involved.** We'd love to hear from you. _\*\*_[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
 ## Example apps
@@ -53,6 +53,4 @@ You can try a live StimulusReflex powered app right now:
 
 * [StimulusReflex Expo](http://expo.stimulusreflex.com) - A growing collection of live examples showing different use cases alongside the source code required. **Start here!**
 * [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) - An implementation of [TodoMVC](http://todomvc.com/) using Ruby on Rails and StimulusReflex.
-
-
 

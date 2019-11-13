@@ -19,8 +19,8 @@ The example above will ensure that both Stimulus and StimulusReflex are installe
 
 ## Configuration
 
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/index.js" %}
+{% tabs %}
+{% tab title="app/javascript/controllers/index.js" %}
 ```javascript
 import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
@@ -31,27 +31,27 @@ const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application)
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="Gemfile" %}
+{% tab title="Gemfile" %}
 ```ruby
 gem "stimulus_reflex"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="Gemfile" %}
+{% tabs %}
+{% tab title="Gemfile" %}
 ```ruby
 gem "stimulus_reflex"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
-{% code-tabs %}
-{% code-tabs-item title="app/views/layouts/application.html.erb" %}
+{% tabs %}
+{% tab title="app/views/layouts/application.html.erb" %}
 ```markup
   <head>
     <%= csrf_meta_tags %>
@@ -59,20 +59,20 @@ You should add the `action_cable_meta_tag`helper to your application template so
     <%= action_cable_meta_tag %>
   </head>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ### Disabling Logging
 
 ActionCable emits verbose log messages. Disabling ActionCable logs _may_ improve performance.
 
-{% code-tabs %}
-{% code-tabs-item title="config/initializers/action\_cable.rb" %}
+{% tabs %}
+{% tab title="config/initializers/action\_cable.rb" %}
 ```ruby
 ActionCable.server.config.logger = Logger.new(nil)
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ### Rooms
 
@@ -80,8 +80,8 @@ By default, everyone looking at a page will see the same Reflex updates. You can
 
 1. Passing the room name as an option to `register`, which defines a default room for every Reflex on your page.
 
-{% code-tabs %}
-{% code-tabs-item title="app/javascript/controllers/example\_controller.js" %}
+{% tabs %}
+{% tab title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 export default class extends Controller {
   connect() {
@@ -89,8 +89,8 @@ export default class extends Controller {
   }
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 2. Optionally, you can set the `data-room` attribute on individual StimulusController elements.
 
