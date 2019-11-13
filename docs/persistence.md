@@ -28,7 +28,7 @@ We find that people learn StimulusReflex quickly when they are pushed in the rig
 
 This document is here to get you to the light bulb moment quickly.
 
-### Instance Variables
+## Instance Variables
 
 One of the most common patterns in StimulusReflex is to pass instance variables from the Reflex method through the controller and into the view template. Ruby's `||=` \(pronounced "**or equals**"\) operator helps us manage this hand-off:
 
@@ -100,7 +100,7 @@ This also means that `session[:balls_left]` will be set to 3 before the initial 
 **The first time the controller action executes is your opportunity to set up the state that StimulusReflex will later modify.**
 {% endhint %}
 
-### The Rails session object
+## The Rails session object
 
 The `session` object will persist across multiple requests; indeed, you can open multiple browser tabs and they will all share the same `session.id` value on the server. See for yourself: you can create a new session using Incognito Mode or using a 2nd web browser.
 
@@ -142,7 +142,7 @@ In general, you should be careful not to abuse the session object in a productio
 
 The Rails session object is perfect for prototyping during development, before potentially moving to the Rails cache, Redis or your database to store anything important. You have the power and flexibility to decide which data is ephemeral and which needs to survive the loss of a data centre, coast or continent. 🦖 👾 🌪 
 
-### The Rails cache store
+## The Rails cache store
 
 One of the most under-appreciated modules in Rails is `ActiveSupport::Cache` which provides the underlying infrastructure for [Russian doll](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) caching. It can be called directly and that it has [a solid offering of utility methods](https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) such as `increment` and `decrement` for numeric values.
 
