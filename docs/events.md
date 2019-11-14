@@ -101,7 +101,7 @@ What might come as a surprise is that clever use of **StimulusReflex is theoreti
 
 ## The Four Horsemen aka Key Events
 
-We're going to quickly cover the four primary key-capture events available to the modern JavaScript developer. While they all have their uses, it's quite likely that you're going to stick one or two of them.
+We're going to quickly cover the four primary key-capture events available to the modern JavaScript developer. While they all have their uses, it's quite likely that you're going to stick to one or two of them.
 
 The _key_ thing to remember is that `keydown` and `keyup` indicate which key is **pressed**, while `keypress` indicates which **character was entered**. A lowercase "a" will be reported as 65 by `keydown` and `keyup`, but as 97 by `keypress`. An uppercase "A" is reported as 65 by all events.
 
