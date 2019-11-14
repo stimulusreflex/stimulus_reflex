@@ -22,7 +22,7 @@ You will **ship projects faster, with smaller teams** and re-discover the joy of
 
 **We love Rails.** Most Rails veterans remember the feeling of awe and disbelief after watching David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has been so successful that almost every modern framework in use today has borrowed ideas, patterns, and features from it.
 
-The landscape has changed a lot since those early days. Applications have become more ambitious. The pursuit of native UI speeds has spawned a new breed of increasingly complex technologies. The introduction of **Single Page Apps** has delegated many of the server's responsibilities to the client. But it's starting to feel like we've traded **fun and productive** for massive complexity and marginal gains. Many developers aren't even aware of the tradeoffs involved.
+The landscape has changed a lot since those early days. Applications have become more ambitious. The pursuit of native UI speeds has spawned a new breed of increasingly complex technologies. The introduction of **Single Page Apps** has delegated many of the server's responsibilities to the client. But it's starting to feel like we've traded **fun and productivity** for massive complexity and marginal gains. Many developers aren't even aware of the tradeoffs involved.
 
 **There must be a better way.**
 
