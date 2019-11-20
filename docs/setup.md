@@ -40,18 +40,15 @@ gem "stimulus_reflex"
 {% endtab %}
 {% endtabs %}
 
-{% tabs %}
-{% tab title="Gemfile" %}
+{% code title="Gemfile" %}
 ```ruby
 gem "stimulus_reflex"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
-{% tabs %}
-{% tab title="app/views/layouts/application.html.erb" %}
+{% code title="app/views/layouts/application.html.erb" %}
 ```markup
   <head>
     <%= csrf_meta_tags %>
@@ -59,20 +56,17 @@ You should add the `action_cable_meta_tag`helper to your application template so
     <%= action_cable_meta_tag %>
   </head>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### Disabling Logging
 
 ActionCable emits verbose log messages. Disabling ActionCable logs _may_ improve performance.
 
-{% tabs %}
-{% tab title="config/initializers/action\_cable.rb" %}
+{% code title="config/initializers/action\_cable.rb" %}
 ```ruby
 ActionCable.server.config.logger = Logger.new(nil)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### Rooms
 
@@ -80,8 +74,7 @@ By default, everyone looking at a page will see the same Reflex updates. You can
 
 1. Passing the room name as an option to `register`, which defines a default room for every Reflex on your page.
 
-{% tabs %}
-{% tab title="app/javascript/controllers/example\_controller.js" %}
+{% code title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 export default class extends Controller {
   connect() {
@@ -89,8 +82,7 @@ export default class extends Controller {
   }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 2. Optionally, you can set the `data-room` attribute on individual StimulusController elements.
 

@@ -12,8 +12,7 @@ If you're just trying to bootstrap a proof-of-concept application on your local 
 
 You can use your default Rails encrypted cookie-based sessions to isolate your users into their own sessions:
 
-{% tabs %}
-{% tab title="app/controllers/application\_controller.rb" %}
+{% code title="app/controllers/application\_controller.rb" %}
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :set_action_cable_identifier
@@ -25,11 +24,9 @@ class ApplicationController < ActionController::Base
   end
 end	end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/channels/application\_cable/connection.rb" %}
+{% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
@@ -41,8 +38,7 @@ module ApplicationCable
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### User-based Authentication
 
@@ -52,8 +48,7 @@ Most Rails apps use the current\_user convention to provide a session context. T
 This should work with authentication solutions like [Devise](https://github.com/plataformatec/devise).
 {% endhint %}
 
-{% tabs %}
-{% tab title="app/controllers/application\_controller.rb  " %}
+{% code title="app/controllers/application\_controller.rb  " %}
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :set_action_cable_identifier
@@ -65,11 +60,9 @@ class ApplicationController < ActionController::Base
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/channels/application\_cable/connection.rb " %}
+{% code title="app/channels/application\_cable/connection.rb " %}
 ```ruby
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
@@ -85,11 +78,9 @@ module ApplicationCable
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
@@ -99,6 +90,5 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 

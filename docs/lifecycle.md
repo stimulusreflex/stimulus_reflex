@@ -30,19 +30,16 @@ StimulusReflex controllers can define up to four generic lifecycle callback meth
 3. `reflexError`
 4. `afterReflex`
 
-{% tabs %}
-{% tab title="app/views/examples/show.html.erb" %}
+{% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/javascript/controllers/example\_controller.js" %}
+{% code title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -59,8 +56,7 @@ export default class extends Controller {
   }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 In this example, we update each anchor's text before invoking the server side Reflex.
 
@@ -73,19 +69,16 @@ StimulusReflex controllers can define up to four custom lifecycle callback metho
 3. `updateError`
 4. `afterUpdate`
 
-{% tabs %}
-{% tab title="app/views/examples/show.html.erb" %}
+{% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
   <a href="#" data-reflex="ExampleReflex#update">Update</a>
   <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/javascript/controllers/example\_controller.js" %}
+{% code title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -104,8 +97,7 @@ export default class extends Controller {
   }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
 

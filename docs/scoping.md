@@ -68,16 +68,14 @@ Perhaps you just don't want a section of your DOM to be updated by StimulusRefle
 
 Just add `data-reflex-permanent` to any element in your DOM, and it will be left unchanged.
 
-{% tabs %}
-{% tab title="index.html.erb" %}
+{% code title="index.html.erb" %}
 ```markup
 <div data-reflex-permanent>
   <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
   <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% hint style="warning" %}
 This is especially important for 3rd-party elements such as ad tracking scripts, Google Analytics, and any other widget that renders itself such as a React component or legacy jQuery plugin.

@@ -55,17 +55,14 @@ The `element` property contains all of the Stimulus controller's [DOM element at
 
 Here's an example that outlines how you can interact with the `element` property in your reflexes.
 
-{% tabs %}
-{% tab title="app/views/examples/show.html.erb" %}
+{% code title="app/views/examples/show.html.erb" %}
 ```markup
 <checkbox id="example" label="Example" checked
   data-reflex="ExampleReflex#work" data-value="123" />
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def work()
@@ -82,8 +79,7 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% hint style="success" %}
 When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
