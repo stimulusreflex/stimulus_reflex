@@ -6,7 +6,7 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex is a library that offers an exciting new way to build reactive, modern real-time apps with Ruby on Rails.** It eliminates the complexity of maintaining state on the client and introduces a new strategy for modern web app development. It is designed to work with the technologies that Rails developers are already familiar with, like [server rendered HTML](https://guides.rubyonrails.org/action_view_overview.html), [Russian Doll caching](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching), [Stimulus](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA).
+**StimulusReflex is a library that offers an exciting new way to build reactive, modern real-time apps with Ruby on Rails.** We place a high value on developer time and aim to help you build apps faster than ever.  We accomplish this goal via a new strategy for moden web development that integrates seamlessly with Ruby on Rails. It eliminates the complexity introduced by today's _full-stack frontends_ without abandoning the reactive experience that users have come to expect. We welcome you to a fresh, yet familiar, alternative to the single page app \(SPA\).
 
 ## Why should I use StimulusReflex?
 
@@ -22,7 +22,7 @@ You will **ship projects faster, with smaller teams** and re-discover the joy of
 
 **We love Rails.** Most Rails veterans remember the feeling of awe and disbelief after watching David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has been so successful that almost every modern framework in use today has borrowed ideas, patterns, and features from it.
 
-The landscape has changed a lot since those early days. Applications have become more ambitious. The pursuit of native UI speeds has spawned a new breed of increasingly complex technologies. The introduction of **Single Page Apps** has delegated many of the server's responsibilities to the client. But it's starting to feel like we've traded **fun and productive** for massive complexity and marginal gains. Many developers aren't even aware of the tradeoffs involved.
+The landscape has changed a lot since those early days. Applications have become more ambitious. The pursuit of native UI speeds has spawned a new breed of increasingly complex technologies. The introduction of **Single Page Apps** has delegated many of the server's responsibilities to the client. But it's starting to feel like we've traded a developer experience that was once **fun and productive** for an alternative of vast complexity with insufficient gains to justify the switch. Many developers aren't even aware of the tradeoffs involved.
 
 **There must be a better way.**
 
