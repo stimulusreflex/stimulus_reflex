@@ -63,7 +63,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   def render_page_and_broadcast_morph(url, reflex, selectors, data = {})
-    html = render_page(url, reflex)
+    html = render_page(url, reflex)&.squish
     broadcast_morphs selectors, data, html if html.present?
   end
 
