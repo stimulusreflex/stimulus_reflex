@@ -32,13 +32,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       reflex = reflex_class.new(self, url: url, element: element, selectors: selectors)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
-      return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{invoke_error}", data)
+      message = exception_message_with_backtrace(invoke_error)
+      return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data)
     end
 
     begin
       render_page_and_broadcast_morph url, reflex, selectors, data
     rescue => render_error
-      broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{render_error}", data
+      message = exception_message_with_backtrace(render_error)
+      broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
     end
   end
 
@@ -120,5 +122,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       detail: {stimulus_reflex: data.merge(error: message)}
     )
     cable_ready.broadcast
+  end
+
+  def exception_message_with_backtrace(exception)
+    "#{exception} #{exception.backtrace.first}"
   end
 end
