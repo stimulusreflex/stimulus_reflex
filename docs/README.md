@@ -6,7 +6,7 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex is a library that offers an exciting new way to build reactive, modern real-time apps with Ruby on Rails.** We place a high value on developer time and aim to help you build apps faster than ever.  We accomplish this goal via a new strategy for moden web development that integrates seamlessly with Ruby on Rails. It eliminates the complexity introduced by today's _full-stack frontends_ without abandoning the reactive experience that users have come to expect. We welcome you to a fresh, yet familiar, alternative to the single page app \(SPA\).
+**StimulusReflex is a library that offers an exciting new way to build reactive, modern real-time apps with Ruby on Rails.** We place a high value on developer time and aim to help you build apps faster than ever.  We accomplish this goal via a new strategy for moden web development that integrates seamlessly with Ruby on Rails. It eliminates the complexity introduced by today's _full-stack frontends_ without abandoning the reactive experience that users have come to expect. We welcome you to a fresh alternative to the single page app \(SPA\).
 
 ## Why should I use StimulusReflex?
 
