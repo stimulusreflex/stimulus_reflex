@@ -25,6 +25,6 @@
     "assert": "^2.0.0",
     "jsdom": "^15.1.1",
     "mocha": "^6.2.1",
-    "prettier-standard": "^15.0.1"
+    "prettier-standard": "^16.1.0"
   }
 }
