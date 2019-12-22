@@ -122,3 +122,11 @@ To remove **spring** forever, here is the process we recommend:
 3. `bin/spring binstub –remove –all`
 {% endhint %}
 
+## Troubleshooting
+
+### Devise
+
+Do you use authenticated routes? You might see:`Failed to re-render URL undefined method 'authenticate' for nil:NilClass` 
+
+The problem is due to an obscure [quirk in Rails](https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-%28and-RSpec%29#authenticated-routes-in-rails-3). At this time, the only solution is to not use authenticated routes with StimulusReflex.
+
