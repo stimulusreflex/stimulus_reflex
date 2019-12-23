@@ -71,10 +71,16 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def render_page(url, reflex)
     uri = URI.parse(url)
+    query_hash = Rack::Utils.parse_nested_query(uri.query)
     request = ActionDispatch::Request.new(
       connection.env.merge(
-        Rack::MockRequest.env_for(url).merge(
+        Rack::MockRequest.env_for(uri.to_s).merge(
+          "rack.request.query_hash" => query_hash,
+          "rack.request.query_string" => uri.query,
+          "ORIGINAL_SCRIPT_NAME" => "",
           "ORIGINAL_FULLPATH" => uri.path,
+          Rack::SCRIPT_NAME => "",
+          Rack::PATH_INFO => uri.path,
           Rack::REQUEST_PATH => uri.path,
           Rack::QUERY_STRING => uri.query,
         )
