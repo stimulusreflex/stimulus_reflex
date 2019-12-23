@@ -87,8 +87,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       )
     )
     url_params = Rails.application.routes.recognize_path_with_request(request, url, request.env[:extras] || {})
-    controller_class = "#{url_params[:controller]}_controller".classify.constantize
-    controller = controller_class.new
+    controller = request.controller_class.new
     controller.instance_variable_set :"@stimulus_reflex", true
     reflex.instance_variables.each do |name|
       controller.instance_variable_set name, reflex.instance_variable_get(name)
