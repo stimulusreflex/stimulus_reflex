@@ -156,7 +156,13 @@ This is ugly, verbose and potentially impossible outside of another Stimulus con
 this.element[this.identifier] = this
 ```
 
-This creates a document-scoped variable with the same name as your controller \(or controllers!\) on the element itself, so you can now call element.controllerName.method\(\) without any Pilates required.
+This creates a document-scoped variable with the same name as your controller \(or controllers!\) on the element itself, so you can now call **element.controllerName.method\(\)** without any Pilates required.
+
+{% hint style="warning" %}
+If your controller's identifier doesn't obey the rules of JavaScript variable naming conventions, you will need to specify a viable name for your instance.
+
+For example, if your controller is named _list-item_ you might consider **this.element.listItem = this** for that controller**.**
+{% endhint %}
 
 ## Server Side
 
