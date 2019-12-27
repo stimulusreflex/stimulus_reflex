@@ -142,6 +142,22 @@ Stimulus provides a really powerful event routing syntax that includes custom ev
 
 By capturing the **cable-ready:after-morph** event, we can run code after every update from the server. In this example, the scroll method on our Chat controller is being called to scroll the content window to the bottom, displaying new messages.
 
+### Access Stimulus controller instances
+
+Stimulus doesn't provide an easy way to access a controller instance; you have to have access to your Stimulus application object, the element, the name of the controller and be willing to call an undocumented API.
+
+```javascript
+this.application.getControllerForElementAndIdentifier(document.getElementById('users'), 'users')
+```
+
+This is ugly, verbose and potentially impossible outside of another Stimulus controller. Wouldn't it be nice to access your controller's methods and local variables from a legacy jQuery component? Just add this line to the **initialize\(\)** method of your Stimulus controllers:
+
+```javascript
+this.element[this.identifier] = this
+```
+
+This creates a document-scoped variable with the same name as your controller \(or controllers!\) on the element itself, so you can now call element.controllerName.method\(\) without any Pilates required.
+
 ## Server Side
 
 ### Chained Reflexes for long-running actions
