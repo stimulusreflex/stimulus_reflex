@@ -4,7 +4,8 @@
   "main": "./stimulus_reflex.js",
   "scripts": {
     "test": "yarn run mocha --require @babel/register",
-    "prettier-standard-check": "yarn run prettier-standard --check ./**/*.js"
+    "prettier-standard-check": "yarn run prettier-standard --check ./**/*.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,12 @@
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
     "assert": "^2.0.0",
+    "babel-loader": "^8.0.6",
     "jsdom": "^15.1.1",
     "mocha": "^6.2.1",
-    "prettier-standard": "^16.1.0"
+    "prettier-standard": "^16.1.0",
+    "terser-webpack-plugin": "^2.3.1",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
   }
 }
