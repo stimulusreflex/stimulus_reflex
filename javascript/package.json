@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "main": "./stimulus_reflex.js",
   "scripts": {
     "test": "yarn run mocha --require @babel/register",
