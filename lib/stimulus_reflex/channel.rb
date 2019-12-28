@@ -71,29 +71,28 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def render_page(url, reflex)
     uri = URI.parse(url)
-    url_params = Rails.application.routes.recognize_path(url)
-    controller_class = "#{url_params[:controller]}_controller".classify.constantize
-    controller = controller_class.new
+    query_hash = Rack::Utils.parse_nested_query(uri.query)
+    request = ActionDispatch::Request.new(
+      connection.env.merge(
+        Rack::MockRequest.env_for(uri.to_s).merge(
+          "rack.request.query_hash" => query_hash,
+          "rack.request.query_string" => uri.query,
+          "ORIGINAL_SCRIPT_NAME" => "",
+          "ORIGINAL_FULLPATH" => uri.path,
+          Rack::SCRIPT_NAME => "",
+          Rack::PATH_INFO => uri.path,
+          Rack::REQUEST_PATH => uri.path,
+          Rack::QUERY_STRING => uri.query,
+        )
+      )
+    )
+    url_params = Rails.application.routes.recognize_path_with_request(request, url, request.env[:extras] || {})
+    controller = request.controller_class.new
     controller.instance_variable_set :"@stimulus_reflex", true
     reflex.instance_variables.each do |name|
       controller.instance_variable_set name, reflex.instance_variable_get(name)
     end
 
-    query_hash = Rack::Utils.parse_nested_query(uri.query)
-    env = {
-      "action_dispatch.request.path_parameters" => url_params,
-      "action_dispatch.request.query_parameters" => query_hash,
-      "rack.request.query_hash" => query_hash,
-      "rack.request.query_string" => uri.query,
-      "ORIGINAL_SCRIPT_NAME" => "",
-      "ORIGINAL_FULLPATH" => uri.path,
-      Rack::SCRIPT_NAME => "",
-      Rack::PATH_INFO => uri.path,
-      Rack::REQUEST_PATH => uri.path,
-      Rack::QUERY_STRING => uri.query,
-    }
-
-    request = ActionDispatch::Request.new(connection.env.merge(env))
     controller.request = request
     controller.response = ActionDispatch::Response.new
     controller.process url_params[:action]
