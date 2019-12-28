@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (2.1.6)
+    stimulus_reflex (2.1.7)
       cable_ready (>= 4.0)
       nokogiri
       rack
@@ -94,7 +94,7 @@ GEM
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
     parallel (1.19.1)
-    parser (2.6.5.0)
+    parser (2.7.0.0)
       ast (~> 2.4.0)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -139,7 +139,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
-    rubocop-performance (1.5.1)
+    rubocop-performance (1.5.2)
       rubocop (>= 0.71.0)
     ruby-progressbar (1.10.1)
     sprockets (4.0.0)
@@ -156,7 +156,7 @@ GEM
       standard
     thor (1.0.1)
     thread_safe (0.3.6)
-    tzinfo (1.2.5)
+    tzinfo (1.2.6)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.0)
     websocket-driver (0.7.1)
