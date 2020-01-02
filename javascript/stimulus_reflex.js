@@ -116,6 +116,7 @@ const createSubscription = controller => {
       {
         received: data => {
           if (!data.cableReady) return
+          if (!data.operations.morph || !data.operations.morph.length) return
           const urls = [
             ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
           ]
@@ -276,11 +277,7 @@ const getReflexRoots = element => {
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          `No value found for ${
-            app.schema.reflexRootAttribute
-          }. Add an #id to the element or provide a value for ${
-            app.schema.reflexRootAttribute
-          }.`,
+          `No value found for ${app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${app.schema.reflexRootAttribute}.`,
           element
         )
       }
