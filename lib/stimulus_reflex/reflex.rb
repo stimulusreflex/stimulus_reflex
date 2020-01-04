@@ -5,6 +5,7 @@ class StimulusReflex::Reflex
 
   delegate :connection, to: :channel
   delegate :session, to: :request
+  delegate :current_user, to: :connection
 
   def initialize(channel, url: nil, element: nil, selectors: [])
     @channel = channel
