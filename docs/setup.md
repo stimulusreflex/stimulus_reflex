@@ -54,7 +54,7 @@ You should add the `action_cable_meta_tag`helper to your application template so
 ```
 {% endcode %}
 
-### Authorization
+### Authentication
 
 {% hint style="info" %}
 If you're just experimenting with StimulusReflex or trying to bootstrap a proof-of-concept application on your local workstation, you can actually skip this section until you're planning to deploy.
