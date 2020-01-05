@@ -14,7 +14,7 @@ bundle exec rails stimulus_reflex:install
 ```
 
 {% hint style="info" %}
-The example above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below.
+The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below.
 {% endhint %}
 
 ## Configuration

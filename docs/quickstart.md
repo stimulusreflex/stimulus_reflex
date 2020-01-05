@@ -27,7 +27,7 @@ Bringing your first Reflex to life couldn't be simpler:
 1. Declare the appropriate data attributes in HTML.
 2. Create a server side reflex object with Ruby.
 
-### Call Reflex methods on the server without any Javascript
+### Look mom... no JavaScript!
 
 This example will automatically update the page with the latest count whenever the anchor is clicked.
 
@@ -61,7 +61,7 @@ Yes, it really is that simple.
 **Concerns like managing state and rendering views are handled server side.** This technique works regardless of how complex the UI becomes. For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
 {% endhint %}
 
-### Manually call a Reflex from a Stimulus controller
+### Automatic transmission vs manual transmission
 
 Real world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can use Controllers to build complex functionality and respond to events.
 
@@ -117,19 +117,4 @@ Here, you can see how we accept an optional argument to our `increment` Reflex a
 {% hint style="success" %}
 In a typical Rails app, we would set the value of `@count` after fetching it from a persistent data store such as Postgres or Redis. To keep this example simple, we use Rails' `session` to store our counter value.
 {% endhint %}
-
-## StimulusReflex Generator
-
-The StimulusReflex generator is like scaffolding for StimulusReflex:
-
-```bash
-bundle exec rails generate stimulus_reflex user
-```
-
-This will create but not overwrite the following files:
-
-1. `app/javascript/controllers/application_controller.js`
-2. `app/javascript/controllers/user_controller.js`
-3. `app/reflexes/application_reflex.rb`
-4. `app/reflexes/user_reflex.rb`
 
