@@ -19,6 +19,8 @@ The example above will ensure that both Stimulus and StimulusReflex are installe
 
 ## Configuration
 
+Update your Stimulus configuration and make sure that stimulus\_reflex is in your Gemfile:
+
 {% tabs %}
 {% tab title="app/javascript/controllers/index.js" %}
 ```javascript
@@ -40,12 +42,6 @@ gem "stimulus_reflex"
 {% endtab %}
 {% endtabs %}
 
-{% code title="Gemfile" %}
-```ruby
-gem "stimulus_reflex"
-```
-{% endcode %}
-
 You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
 {% code title="app/views/layouts/application.html.erb" %}
@@ -58,46 +54,21 @@ You should add the `action_cable_meta_tag`helper to your application template so
 ```
 {% endcode %}
 
-### Disabling Logging
+### Authorization
 
-ActionCable emits verbose log messages. Disabling ActionCable logs _may_ improve performance.
-
-{% code title="config/initializers/action\_cable.rb" %}
-```ruby
-ActionCable.server.config.logger = Logger.new(nil)
-```
-{% endcode %}
-
-### Rooms
-
-By default, everyone looking at a page will see the same Reflex updates. You can restrict updates  to one or several users by specifying a "room". This can be accomplished in one of two ways:
-
-1. Passing the room name as an option to `register`, which defines a default room for every Reflex on your page.
-
-{% code title="app/javascript/controllers/example\_controller.js" %}
-```javascript
-export default class extends Controller {
-  connect() {
-    StimulusReflex.register(this, { room: 'ExampleRoom12345' });
-  }
-}
-```
-{% endcode %}
-
-2. Optionally, you can set the `data-room` attribute on individual StimulusController elements.
-
-```markup
-<a href="#"
-   data-controller="example"
-   data-reflex="click->ExampleReflex#do_stuff"
-   data-room="12345">
-```
-
-{% hint style="danger" %}
-**Setting room in the body with a data attribute can pose a security risk.** Consider assigning room when registering the Stimulus controller instead.
+{% hint style="info" %}
+If you're just experimenting with StimulusReflex or trying to bootstrap a proof-of-concept application on your local workstation, you can actually skip this section until you're planning to deploy.
 {% endhint %}
 
-## Generators
+Out of the box, ActionCable doesn't give StimulusReflex the ability to distinguish between multiple concurrent users looking at the same page.
+
+ However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind!
+
+When the time comes, it's easy to configure your application to support authenticating users by their Rails session or current\_user scope. Just check out the Authentication page and choose your own adventure.
+
+{% page-ref page="authentication.md" %}
+
+## Generator
 
 The StimulusReflex generator is like scaffolding for StimulusReflex.
 
@@ -111,6 +82,27 @@ This will create, but not overwrite the following files:
 2. `app/javascript/controllers/user_controller.js`
 3. `app/reflexes/application_reflex.rb`
 4. `app/reflexes/user_reflex.rb`
+
+## Logging
+
+In the _default_ debug log level, ActionCable emits particularly verbose log messages. You can **optionally** discard everything but exceptions by switching to the _warn_ log level, as is common in development environments:
+
+{% code title="config/environments/development.rb" %}
+```ruby
+# :debug, :info, :warn, :error, :fatal, :unknown
+config.log_level = :warn
+```
+{% endcode %}
+
+Alternatively, disabling just ActionCable logs _may_ improve performance.
+
+{% code title="config/initializers/action\_cable.rb" %}
+```ruby
+ActionCable.server.config.logger = Logger.new(nil)
+```
+{% endcode %}
+
+## Troubleshooting
 
 {% hint style="info" %}
 If _something_ goes wrong, it's often because of the **spring** gem. You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
