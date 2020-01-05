@@ -68,21 +68,6 @@ When the time comes, it's easy to configure your application to support authenti
 
 {% page-ref page="authentication.md" %}
 
-## Generator
-
-The StimulusReflex generator is like scaffolding for StimulusReflex.
-
-```bash
-bundle exec rails generate stimulus_reflex user
-```
-
-This will create, but not overwrite the following files:
-
-1. `app/javascript/controllers/application_controller.js`
-2. `app/javascript/controllers/user_controller.js`
-3. `app/reflexes/application_reflex.rb`
-4. `app/reflexes/user_reflex.rb`
-
 ## Logging
 
 In the _default_ debug log level, ActionCable emits particularly verbose log messages. You can **optionally** discard everything but exceptions by switching to the _warn_ log level, as is common in development environments:
