@@ -22,7 +22,7 @@ let app
 
 // Initializes implicit data-reflex-permanent for text inputs.
 //
-const initializeImplicitReflexPermanent = event => {
+const initializeTextInputReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   element.reflexPermanent = element.hasAttribute(
@@ -33,12 +33,29 @@ const initializeImplicitReflexPermanent = event => {
 
 // Resets implicit data-reflex-permanent for text inputs.
 //
-const resetImplicitReflexPermanent = event => {
+const resetTextInputReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
     element.removeAttribute(app.schema.reflexPermanentAttribute)
   }
+}
+
+// Initializes implicit data-reflex-permanents.
+//
+const initializeImplicitReflexPermanents = event => {
+  initializeTextInputReflexPermanent(event)
+  app.schema.reflexPermanentSelectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(element => {
+      element.setAttribute(app.schema.reflexPermanentAttribute, '')
+    })
+  })
+}
+
+// Resets implicit data-reflex-permanents.
+//
+const resetImplicitReflexPermanents = event => {
+  resetTextInputReflexPermanent(event)
 }
 
 // Invokes a lifecycle method on a StimulusReflex controller.
@@ -336,8 +353,8 @@ if (!document.stimulusReflexInitialized) {
     invokeLifecycleMethod('error', target, element)
     invokeLifecycleMethod('after', target, element)
   })
-  document.addEventListener('focusin', initializeImplicitReflexPermanent)
-  document.addEventListener('focusout', resetImplicitReflexPermanent)
+  document.addEventListener('focusin', initializeImplicitReflexPermanents, true)
+  document.addEventListener('focusout', resetImplicitReflexPermanents, true)
 }
 
 export default { initialize, register }
