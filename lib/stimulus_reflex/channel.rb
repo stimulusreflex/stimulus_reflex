@@ -71,6 +71,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def render_page(url, reflex)
     uri = URI.parse(url)
+    path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
     query_hash = Rack::Utils.parse_nested_query(uri.query)
     request = ActionDispatch::Request.new(
       connection.env.merge(
@@ -78,15 +79,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
           "rack.request.query_hash" => query_hash,
           "rack.request.query_string" => uri.query,
           "ORIGINAL_SCRIPT_NAME" => "",
-          "ORIGINAL_FULLPATH" => uri.path,
+          "ORIGINAL_FULLPATH" => path,
           Rack::SCRIPT_NAME => "",
-          Rack::PATH_INFO => uri.path,
-          Rack::REQUEST_PATH => uri.path,
+          Rack::PATH_INFO => path,
+          Rack::REQUEST_PATH => path,
           Rack::QUERY_STRING => uri.query,
         )
       )
     )
-    url_params = Rails.application.routes.recognize_path_with_request(request, url, request.env[:extras] || {})
+    url_params = Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
     controller = request.controller_class.new
     controller.instance_variable_set :"@stimulus_reflex", true
     reflex.instance_variables.each do |name|
