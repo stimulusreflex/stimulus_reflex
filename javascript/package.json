@@ -23,8 +23,8 @@
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
     "assert": "^2.0.0",
-    "jsdom": "^15.1.1",
-    "mocha": "^6.2.1",
+    "jsdom": "^16.0.1",
+    "mocha": "^7.0.1",
     "prettier-standard": "^16.1.0"
   }
 }
