@@ -99,7 +99,11 @@ export const dispatchLifecycleEvent = (stage, element) => {
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
       bubbles: true,
-      cancelable: false
+      cancelable: false,
+      detail: {
+        reflex: element.reflexData.target,
+        controller: element.reflexController
+      }
     })
   )
 }
