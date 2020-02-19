@@ -1,8 +1,9 @@
 import { Controller } from 'stimulus'
 import ActionCable from 'actioncable'
-import { camelize } from 'inflected'
 import CableReady from 'cable_ready'
 import { defaultSchema } from './schema'
+import { dispatchLifecycleEvent } from './lifecycle'
+import { allReflexControllers } from './controllers'
 import {
   attributeValue,
   attributeValues,
@@ -10,11 +11,6 @@ import {
   findElement,
   isTextInput
 } from './attributes'
-import {
-  allReflexControllers,
-  findReflexController,
-  localReflexControllers
-} from './controllers'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -39,66 +35,6 @@ const resetImplicitReflexPermanent = event => {
   if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
     element.removeAttribute(app.schema.reflexPermanentAttribute)
   }
-}
-
-// Invokes a lifecycle method on a StimulusReflex controller.
-//
-// - before
-// - success
-// - error
-// - after
-//
-const invokeLifecycleMethod = (stage, reflex, element) => {
-  if (!element) return
-
-  // traverse the DOM for a matching reflex controller
-  const reflexController = findReflexController(app, element, reflex)
-
-  // find reflex controllers wired on this element
-  const controllers = new Set(localReflexControllers(app, element))
-
-  if (reflexController) controllers.add(reflexController)
-  if (controllers.length === 0) return
-
-  controllers.forEach(controller => {
-    const reflexMethodName = reflex.split('#')[1]
-
-    const specificLifecycleMethodName = ['before', 'after'].includes(stage)
-      ? `${stage}${camelize(reflexMethodName)}`
-      : `${camelize(reflexMethodName, false)}${camelize(stage)}`
-    const specificLifecycleMethod = controller[specificLifecycleMethodName]
-
-    const genericLifecycleMethodName = ['before', 'after'].includes(stage)
-      ? `${stage}Reflex`
-      : `reflex${camelize(stage)}`
-    const genericLifecycleMethod = controller[genericLifecycleMethodName]
-
-    if (typeof specificLifecycleMethod === 'function') {
-      setTimeout(
-        () =>
-          specificLifecycleMethod.call(
-            controller,
-            element,
-            reflex,
-            element.reflexError
-          ),
-        1
-      )
-    }
-
-    if (typeof genericLifecycleMethod === 'function') {
-      setTimeout(
-        () =>
-          genericLifecycleMethod.call(
-            controller,
-            element,
-            reflex,
-            element.reflexError
-          ),
-        1
-      )
-    }
-  })
 }
 
 // Subscribes a StimulusReflex controller to an ActionCable channel and room.
@@ -141,7 +77,7 @@ const extendStimulusController = controller => {
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
-    // - element - [optional] the triggering element, defaults to this.element
+    // - element - [optional] the element that triggered the reflex, defaults to this.element
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -169,7 +105,12 @@ const extendStimulusController = controller => {
         selectors,
         permanent_attribute_name: app.schema.reflexPermanentAttribute
       }
-      invokeLifecycleMethod('before', target, element)
+
+      // lifecycle setup
+      element.reflexController = controller
+      element.reflexData = data
+
+      dispatchLifecycleEvent('before', element)
       controller.StimulusReflex.subscription.send(data)
     },
 
@@ -326,15 +267,13 @@ if (!document.stimulusReflexInitialized) {
     const { target, attrs, last } = event.detail.stimulusReflex || {}
     if (!last) return
     const element = findElement(attrs)
-    invokeLifecycleMethod('success', target, element)
-    invokeLifecycleMethod('after', target, element)
+    dispatchLifecycleEvent('success', element, element.stimulusReflexController)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { target, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     element.reflexError = error
-    invokeLifecycleMethod('error', target, element)
-    invokeLifecycleMethod('after', target, element)
+    dispatchLifecycleEvent('error', element, element.stimulusReflexController)
   })
   document.addEventListener('focusin', initializeImplicitReflexPermanent)
   document.addEventListener('focusout', resetImplicitReflexPermanent)
