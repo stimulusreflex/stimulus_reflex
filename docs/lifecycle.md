@@ -160,10 +160,10 @@ document.addEventListener('stimulus-reflex:before', event => {
 })
 ```
 
-While `event.target` is a reference to the element that triggered the Reflex, all of the values in the detail object are strings. This does mean that if you have multiple instances of a controller on the page, you cannot determine which instance emitted the event.
+`event.target` is a reference to the element that triggered the Reflex, and `event.detail.controller` is a reference to the instance of the controller that called the `stimulate` method. This is especially handy if you have multiple instances of a controller on your page.
 
 {% hint style="info" %}
-Knowing which element to attach an event listener to might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
+Knowing which element dispatched the event might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
 
 If you're calling the `stimulate` method inside of a Stimulus controller, the event will be emitted by the element the `data-controller` attribute is declared on.
 {% endhint %}
