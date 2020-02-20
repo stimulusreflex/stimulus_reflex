@@ -3,15 +3,13 @@
 ![Prettier-Standard](https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg)
 ![StandardRB](https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg)
 ![Tests](https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg)
-[![Discourse](https://img.shields.io/badge/Forum-Discourse-blue.svg?style=flat)](https://stimulus-reflex.discourse.group)
-[![Discord](https://img.shields.io/badge/Chat-Discord-blue.svg?style=flat)](https://discord.gg/XveN625)
 
 # StimulusReflex
 
 **You just discovered an exciting new way to build modern, reactive, real-time apps with Ruby on Rails.**
 
 StimulusReflex eliminates the complexity imposed by full-stack frontend frameworks.
-And, it's fast. _**Fast to develop and fast to execute.**_
+And, it's fast.
 
 It works with seamlessly with the Rails tooling you already know and love.
 
@@ -22,10 +20,9 @@ It works with seamlessly with the Rails tooling you already know and love.
 - [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
 - etc...
 
-This project strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
+**The goal is to help small teams do big things with familiar tools.**
 
-**The goal is to help small teams do big things.**
-We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
+>  This project strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
 
 _Originally inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
 
