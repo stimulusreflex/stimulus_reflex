@@ -21,6 +21,8 @@ If you define a method with a name that matches what the library searches for, i
 
 There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
 
+StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, jQuery plugins or even the console.
+
 ## Generic Lifecycle Methods
 
 StimulusReflex controllers can define up to four generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
@@ -130,4 +132,39 @@ Both generic and custom lifecycle callback methods share the same arguments:
 **reflex** - the name of the server side Reflex 
 
 **error** - the error message if an error occurred, otherwise `null`
+
+## Lifecycle Events
+
+If you need to know when a Reflex method is called, but you're working outside of the Stimulus controller that initiated it, you can subscribe to receive DOM events.
+
+DOM events are limited to the generic lifecycle; developers can obtain information about which Reflex methods were called by inspecting the detail object when the event is captured.
+
+Events are dispatched on the same element that triggered the Reflex. Events bubble but cannot be cancelled.
+
+### Event Names
+
+* `stimulus-reflex:before`
+* `stimulus-reflex:success`
+* `stimulus-reflex:error`
+* `stimulus-reflex:after`
+
+### Event Metadata
+
+When an event is captured, you can obtain all of the data required to respond to a Reflex action:
+
+```javascript
+document.addEventListener('stimulus-reflex:before', event => {
+  event.target // the element that triggered the Reflex (may not be the same as controller.element)
+  event.detail.reflex // the name of the invoked Reflex
+  event.detail.controller // the controller that invoked the stimuluate method
+})
+```
+
+While `event.target` is a reference to the element that triggered the Reflex, all of the values in the detail object are strings. This does mean that if you have multiple instances of a controller on the page, you cannot determine which instance emitted the event.
+
+{% hint style="info" %}
+Knowing which element to attach an event listener to might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
+
+If you're calling the `stimulate` method inside of a Stimulus controller, the event will be emitted by the element the `data-controller` attribute is declared on.
+{% endhint %}
 
