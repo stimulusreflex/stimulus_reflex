@@ -22,9 +22,7 @@ It works with seamlessly with the Rails tooling you already know and love.
 
 **The goal is to help small teams do big things with familiar tools.**
 
->  This project strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
-
-_Originally inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
+This project strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
 
 ## Docs
 
@@ -65,3 +63,7 @@ View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configura
 ## License
 
 StimulusReflex is released under the [MIT License](LICENSE.txt).
+
+---
+
+_Originally inspired by [Phoenix LiveView](https://youtu.be/Z2DU0qLfPIY?t=670)._ 🙌
