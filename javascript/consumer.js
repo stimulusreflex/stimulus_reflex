@@ -3,28 +3,26 @@ import { createConsumer } from '@rails/actioncable'
 let consumer
 
 function isConsumer (object) {
-  try {
-    return (
-      object.constructor.name === 'Consumer' &&
-      object.connect &&
-      object.disconnect &&
-      object.send
-    )
-  } catch {
-    return false
+  if (object) {
+    try {
+      return (
+        object.constructor.name === 'Consumer' &&
+        object.connect &&
+        object.disconnect &&
+        object.send
+      )
+    } catch {}
   }
+  return false
 }
 
-function findConsumer (a) {
-  let hit
-  if (isConsumer(a)) hit = a
-  if (!consumer && a) hit = Object.values(a).find(b => isConsumer(b))
-  if (!consumer && a) {
-    Object.values(a).forEach(b => {
-      if (b) hit = hit || Object.values(b).find(c => isConsumer(c))
-    })
-  }
-  return hit
+function findConsumer (object, depth = 0) {
+  if (!object) return null
+  if (depth > 3) return null
+  if (isConsumer(object)) return object
+  return Object.values(object)
+    .map(o => findConsumer(o, depth + 1))
+    .find(o => o)
 }
 
 export function getConsumer () {
