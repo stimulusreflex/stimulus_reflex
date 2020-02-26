@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus'
-import ActionCable from 'actioncable'
 import CableReady from 'cable_ready'
 import { defaultSchema } from './schema'
+import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import {
@@ -42,12 +42,13 @@ const resetImplicitReflexPermanent = event => {
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
+  const consumer = getConsumer()
   const { channel, room } = controller.StimulusReflex
-  const id = `${channel}${room}`
+  const identifier = JSON.stringify({ channel, room })
 
-  const subscription =
-    SR.subscriptions[id] ||
-    SR.consumer.subscriptions.create(
+  controller.StimulusReflex.subscription =
+    consumer.subscriptions.findAll(identifier)[0] ||
+    consumer.subscriptions.create(
       { channel, room },
       {
         received: data => {
@@ -61,9 +62,6 @@ const createSubscription = controller => {
         }
       }
     )
-
-  SR.subscriptions[id] = subscription
-  controller.StimulusReflex.subscription = subscription
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -244,12 +242,6 @@ const initialize = (
   app.schema = { ...defaultSchema, ...app.schema }
   app.register('stimulus-reflex', controller)
 }
-
-// Wire everything up
-//
-const SR = window.StimulusReflex || {}
-SR.consumer = SR.consumer || ActionCable.createConsumer()
-SR.subscriptions = SR.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
