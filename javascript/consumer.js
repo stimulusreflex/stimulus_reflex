@@ -1,7 +1,5 @@
 import { createConsumer } from '@rails/actioncable'
 
-let consumer
-
 function isConsumer (object) {
   if (object) {
     try {
@@ -26,5 +24,5 @@ function findConsumer (object, depth = 0) {
 }
 
 export function getConsumer () {
-  return (consumer = consumer || findConsumer(window) || createConsumer())
+  return findConsumer(window) || createConsumer()
 }

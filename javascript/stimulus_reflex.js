@@ -14,7 +14,11 @@ import {
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
-let app
+let stimulusApplication
+
+// A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
+//
+let actionCableConsumer
 
 // Initializes implicit data-reflex-permanent for text inputs.
 //
@@ -22,9 +26,9 @@ const initializeImplicitReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   element.reflexPermanent = element.hasAttribute(
-    app.schema.reflexPermanentAttribute
+    stimulusApplication.schema.reflexPermanentAttribute
   )
-  element.setAttribute(app.schema.reflexPermanentAttribute, '')
+  element.setAttribute(stimulusApplication.schema.reflexPermanentAttribute, '')
 }
 
 // Resets implicit data-reflex-permanent for text inputs.
@@ -33,7 +37,7 @@ const resetImplicitReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute(app.schema.reflexPermanentAttribute)
+    element.removeAttribute(stimulusApplication.schema.reflexPermanentAttribute)
   }
 }
 
@@ -42,13 +46,13 @@ const resetImplicitReflexPermanent = event => {
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  const consumer = getConsumer()
+  actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel, room } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel, room })
 
   controller.StimulusReflex.subscription =
-    consumer.subscriptions.findAll(identifier)[0] ||
-    consumer.subscriptions.create(
+    actionCableConsumer.subscriptions.findAll(identifier)[0] ||
+    actionCableConsumer.subscriptions.create(
       { channel, room },
       {
         received: data => {
@@ -101,7 +105,8 @@ const extendStimulusController = controller => {
         url,
         attrs,
         selectors,
-        permanent_attribute_name: app.schema.reflexPermanentAttribute
+        permanent_attribute_name:
+          stimulusApplication.schema.reflexPermanentAttribute
       }
 
       // lifecycle setup
@@ -122,7 +127,9 @@ const extendStimulusController = controller => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(app.schema.reflexAttribute)
+        reflex = element.getAttribute(
+          stimulusApplication.schema.reflexAttribute
+        )
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
@@ -143,7 +150,7 @@ const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   const room =
     options.room ||
-    controller.element.getAttribute(app.schema.roomAttribute) ||
+    controller.element.getAttribute(stimulusApplication.schema.roomAttribute) ||
     ''
   controller.StimulusReflex = { ...options, channel, room }
   extendStimulusController(controller)
@@ -166,19 +173,19 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document
-    .querySelectorAll(`[${app.schema.reflexAttribute}]`)
+    .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
     .forEach(element => {
       const controllers = attributeValues(
-        element.getAttribute(app.schema.controllerAttribute)
+        element.getAttribute(stimulusApplication.schema.controllerAttribute)
       )
       const reflexes = attributeValues(
-        element.getAttribute(app.schema.reflexAttribute)
+        element.getAttribute(stimulusApplication.schema.reflexAttribute)
       )
       const actions = attributeValues(
-        element.getAttribute(app.schema.actionAttribute)
+        element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(app, element)[0]
+        const controller = allReflexControllers(stimulusApplication, element)[0]
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -196,10 +203,16 @@ const setupDeclarativeReflexes = () => {
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
       if (controllerValue) {
-        element.setAttribute(app.schema.controllerAttribute, controllerValue)
+        element.setAttribute(
+          stimulusApplication.schema.controllerAttribute,
+          controllerValue
+        )
       }
       if (actionValue)
-        element.setAttribute(app.schema.actionAttribute, actionValue)
+        element.setAttribute(
+          stimulusApplication.schema.actionAttribute,
+          actionValue
+        )
     })
 }
 
@@ -210,20 +223,24 @@ const setupDeclarativeReflexes = () => {
 const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
-    const reflexRoot = element.getAttribute(app.schema.reflexRootAttribute)
+    const reflexRoot = element.getAttribute(
+      stimulusApplication.schema.reflexRootAttribute
+    )
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          `No value found for ${app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${app.schema.reflexRootAttribute}.`,
+          `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     }
     element = element.parentElement
-      ? element.parentElement.closest(`[${app.schema.reflexRootAttribute}]`)
+      ? element.parentElement.closest(
+          `[${stimulusApplication.schema.reflexRootAttribute}]`
+        )
       : null
   }
   return list
@@ -232,15 +249,19 @@ const getReflexRoots = element => {
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
 // - application - the Stimulus application
-// - controller - [optional] the default StimulusReflexController
+// - options
+//   * controller - [optional] the default StimulusReflexController
+//   * consumer - [optional] the ActionCable consumer
 //
-const initialize = (
-  stimulusApplication,
-  controller = StimulusReflexController
-) => {
-  app = stimulusApplication
-  app.schema = { ...defaultSchema, ...app.schema }
-  app.register('stimulus-reflex', controller)
+const initialize = (application, options = {}) => {
+  const { controller, consumer } = options
+  actionCableConsumer = consumer
+  stimulusApplication = application
+  stimulusApplication.schema = { ...defaultSchema, ...application.schema }
+  stimulusApplication.register(
+    'stimulus-reflex',
+    controller || StimulusReflexController
+  )
 }
 
 if (!document.stimulusReflexInitialized) {
