@@ -13,7 +13,7 @@
     "prettier-standard-check": "yarn run prettier-standard --check ./**/*.js"
   },
   "dependencies": {
-    "@rails/actioncable": ">= 6.0",
+    "actioncable": ">= 5.2",
     "cable_ready": ">= 4.0",
     "inflected": ">= 2.0",
     "stimulus": ">= 1.1"
