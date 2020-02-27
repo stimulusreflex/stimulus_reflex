@@ -9,7 +9,7 @@ function isConsumer (object) {
         object.disconnect &&
         object.send
       )
-    } catch {}
+    } catch (e) {}
   }
   return false
 }
