@@ -41,31 +41,28 @@ const resetImplicitReflexPermanent = event => {
   }
 }
 
-// Subscribes a StimulusReflex controller to an ActionCable channel and room.
+// Subscribes a StimulusReflex controller to an ActionCable channel.
 //
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
-  const { channel, room } = controller.StimulusReflex
-  const identifier = JSON.stringify({ channel, room })
+  const { channel } = controller.StimulusReflex
+  const identifier = JSON.stringify({ channel })
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(
-      { channel, room },
-      {
-        received: data => {
-          if (!data.cableReady) return
-          if (!data.operations.morph || !data.operations.morph.length) return
-          const urls = [
-            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          ]
-          if (urls.length !== 1 || urls[0] !== location.href) return
-          CableReady.perform(data.operations)
-        }
+    actionCableConsumer.subscriptions.create(channel, {
+      received: data => {
+        if (!data.cableReady) return
+        if (!data.operations.morph || !data.operations.morph.length) return
+        const urls = [
+          ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+        ]
+        if (urls.length !== 1 || urls[0] !== location.href) return
+        CableReady.perform(data.operations)
       }
-    )
+    })
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -144,15 +141,10 @@ const extendStimulusController = controller => {
 //
 // controller - the Stimulus controller
 // options - [optional] configuration
-//   * room - the ActionCable room to subscribe to
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
-  const room =
-    options.room ||
-    controller.element.getAttribute(stimulusApplication.schema.roomAttribute) ||
-    ''
-  controller.StimulusReflex = { ...options, channel, room }
+  controller.StimulusReflex = { ...options, channel }
   extendStimulusController(controller)
   createSubscription(controller)
 }
