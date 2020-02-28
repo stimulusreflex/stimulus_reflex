@@ -81,7 +81,7 @@ Note that without intervention, your Reflex classes will **not** be able to see 
 class ExampleReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
 
-  def do_suff
+  def do_stuff
     current_user.first_name
   end
 end
