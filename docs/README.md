@@ -8,6 +8,10 @@ description: Build reactive applications with the Rails tooling you already know
 
 **StimulusReflex offers an exciting new way to build modern, reactive, real-time apps with Ruby on Rails.** It eliminates the complexity imposed by full-stack frontend frameworks without abandoning a high performance reactive user experience. The goal is to help small teams do big things, faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
 
+{% hint style="success" %}
+**Get Involved.** We'd love to hear from you. [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+{% endhint %}
+
 ## Why should I use StimulusReflex?
 
 Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
@@ -36,10 +40,6 @@ We love Elixir and Phoenix. Elixir hits a sweet spot for people who want Rails-l
 Also, we just really enjoy using **Ruby and Rails**.
 
 StimulusReflex was originally inspired by LiveView, but we are charting our own course. We hope to make building modern apps with Rails the most productive and enjoyable option available.
-
-{% hint style="success" %}
-**Get Involved.** We'd love to hear from you. _\*\*_[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
-{% endhint %}
 
 ## Example apps
 
