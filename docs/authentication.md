@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_action_cable_identifier
-    cookies.encrypted[:session_id] = session.id
+    cookies.encrypted[:session_id] = session.id.to_s
   end
 end
 ```
