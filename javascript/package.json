@@ -2,7 +2,7 @@
   "name": "stimulus_reflex",
   "author": "Nathan Hopkins",
   "license": "MIT",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "main": "./stimulus_reflex.js",
   "repository": {
     "type": "git",
