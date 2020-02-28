@@ -42,7 +42,24 @@ gem "stimulus_reflex"
 {% endtab %}
 {% endtabs %}
 
-You should add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
+{% hint style="info" %}
+StimulusReflex attempts to locate the existing ActionCable consumer but will establish a new web socket connection if the consumer isn't found.
+{% endhint %}
+
+Rails 6+ applications should explicitly register the ActionCable consumer:
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+//...
+import StimulusReflex from 'stimulus_reflex'
+import consumer from '../channels/consumer'
+
+//...
+StimulusReflex.initialize(application, { consumer })
+```
+{% endcode %}
+
+You should also add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
 {% code title="app/views/layouts/application.html.erb" %}
 ```markup
