@@ -7,7 +7,6 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
       params[:channel],
-      params[:room],
       ids.select(&:present?).join(";"),
     ].select(&:present?).join(":")
   end

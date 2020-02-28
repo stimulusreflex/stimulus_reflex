@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus'
-import ActionCable from 'actioncable'
 import CableReady from 'cable_ready'
 import { defaultSchema } from './schema'
+import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import {
@@ -14,7 +14,11 @@ import {
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
-let app
+let stimulusApplication
+
+// A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
+//
+let actionCableConsumer
 
 // Initializes implicit data-reflex-permanent for text inputs.
 //
@@ -22,9 +26,9 @@ const initializeImplicitReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   element.reflexPermanent = element.hasAttribute(
-    app.schema.reflexPermanentAttribute
+    stimulusApplication.schema.reflexPermanentAttribute
   )
-  element.setAttribute(app.schema.reflexPermanentAttribute, '')
+  element.setAttribute(stimulusApplication.schema.reflexPermanentAttribute, '')
 }
 
 // Resets implicit data-reflex-permanent for text inputs.
@@ -33,37 +37,32 @@ const resetImplicitReflexPermanent = event => {
   const element = event.target
   if (!isTextInput(element)) return
   if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute(app.schema.reflexPermanentAttribute)
+    element.removeAttribute(stimulusApplication.schema.reflexPermanentAttribute)
   }
 }
 
-// Subscribes a StimulusReflex controller to an ActionCable channel and room.
+// Subscribes a StimulusReflex controller to an ActionCable channel.
 //
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  const { channel, room } = controller.StimulusReflex
-  const id = `${channel}${room}`
+  actionCableConsumer = actionCableConsumer || getConsumer()
+  const { channel } = controller.StimulusReflex
+  const identifier = JSON.stringify({ channel })
 
-  const subscription =
-    SR.subscriptions[id] ||
-    SR.consumer.subscriptions.create(
-      { channel, room },
-      {
-        received: data => {
-          if (!data.cableReady) return
-          if (!data.operations.morph || !data.operations.morph.length) return
-          const urls = [
-            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          ]
-          if (urls.length !== 1 || urls[0] !== location.href) return
-          CableReady.perform(data.operations)
-        }
+  controller.StimulusReflex.subscription =
+    actionCableConsumer.subscriptions.findAll(identifier)[0] ||
+    actionCableConsumer.subscriptions.create(channel, {
+      received: data => {
+        if (!data.cableReady) return
+        if (!data.operations.morph || !data.operations.morph.length) return
+        const urls = [
+          ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+        ]
+        if (urls.length !== 1 || urls[0] !== location.href) return
+        CableReady.perform(data.operations)
       }
-    )
-
-  SR.subscriptions[id] = subscription
-  controller.StimulusReflex.subscription = subscription
+    })
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -103,7 +102,8 @@ const extendStimulusController = controller => {
         url,
         attrs,
         selectors,
-        permanent_attribute_name: app.schema.reflexPermanentAttribute
+        permanent_attribute_name:
+          stimulusApplication.schema.reflexPermanentAttribute
       }
 
       // lifecycle setup
@@ -124,7 +124,9 @@ const extendStimulusController = controller => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(app.schema.reflexAttribute)
+        reflex = element.getAttribute(
+          stimulusApplication.schema.reflexAttribute
+        )
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
@@ -139,15 +141,10 @@ const extendStimulusController = controller => {
 //
 // controller - the Stimulus controller
 // options - [optional] configuration
-//   * room - the ActionCable room to subscribe to
 //
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
-  const room =
-    options.room ||
-    controller.element.getAttribute(app.schema.roomAttribute) ||
-    ''
-  controller.StimulusReflex = { ...options, channel, room }
+  controller.StimulusReflex = { ...options, channel }
   extendStimulusController(controller)
   createSubscription(controller)
 }
@@ -168,19 +165,19 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = () => {
   document
-    .querySelectorAll(`[${app.schema.reflexAttribute}]`)
+    .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
     .forEach(element => {
       const controllers = attributeValues(
-        element.getAttribute(app.schema.controllerAttribute)
+        element.getAttribute(stimulusApplication.schema.controllerAttribute)
       )
       const reflexes = attributeValues(
-        element.getAttribute(app.schema.reflexAttribute)
+        element.getAttribute(stimulusApplication.schema.reflexAttribute)
       )
       const actions = attributeValues(
-        element.getAttribute(app.schema.actionAttribute)
+        element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(app, element)[0]
+        const controller = allReflexControllers(stimulusApplication, element)[0]
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -198,10 +195,16 @@ const setupDeclarativeReflexes = () => {
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
       if (controllerValue) {
-        element.setAttribute(app.schema.controllerAttribute, controllerValue)
+        element.setAttribute(
+          stimulusApplication.schema.controllerAttribute,
+          controllerValue
+        )
       }
       if (actionValue)
-        element.setAttribute(app.schema.actionAttribute, actionValue)
+        element.setAttribute(
+          stimulusApplication.schema.actionAttribute,
+          actionValue
+        )
     })
 }
 
@@ -212,20 +215,24 @@ const setupDeclarativeReflexes = () => {
 const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
-    const reflexRoot = element.getAttribute(app.schema.reflexRootAttribute)
+    const reflexRoot = element.getAttribute(
+      stimulusApplication.schema.reflexRootAttribute
+    )
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          `No value found for ${app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${app.schema.reflexRootAttribute}.`,
+          `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
           element
         )
       }
       list = list.concat(selectors.filter(s => document.querySelector(s)))
     }
     element = element.parentElement
-      ? element.parentElement.closest(`[${app.schema.reflexRootAttribute}]`)
+      ? element.parentElement.closest(
+          `[${stimulusApplication.schema.reflexRootAttribute}]`
+        )
       : null
   }
   return list
@@ -234,22 +241,20 @@ const getReflexRoots = element => {
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
 // - application - the Stimulus application
-// - controller - [optional] the default StimulusReflexController
+// - options
+//   * controller - [optional] the default StimulusReflexController
+//   * consumer - [optional] the ActionCable consumer
 //
-const initialize = (
-  stimulusApplication,
-  controller = StimulusReflexController
-) => {
-  app = stimulusApplication
-  app.schema = { ...defaultSchema, ...app.schema }
-  app.register('stimulus-reflex', controller)
+const initialize = (application, options = {}) => {
+  const { controller, consumer } = options
+  actionCableConsumer = consumer
+  stimulusApplication = application
+  stimulusApplication.schema = { ...defaultSchema, ...application.schema }
+  stimulusApplication.register(
+    'stimulus-reflex',
+    controller || StimulusReflexController
+  )
 }
-
-// Wire everything up
-//
-const SR = window.StimulusReflex || {}
-SR.consumer = SR.consumer || ActionCable.createConsumer()
-SR.subscriptions = SR.subscriptions || {}
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
