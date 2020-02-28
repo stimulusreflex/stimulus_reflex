@@ -96,12 +96,13 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element) => {
+  const { target } = element.reflexData || {}
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
       bubbles: true,
       cancelable: false,
       detail: {
-        reflex: element.reflexData.target,
+        reflex: target,
         controller: element.reflexController
       }
     })

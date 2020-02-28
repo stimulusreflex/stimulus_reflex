@@ -272,13 +272,13 @@ if (!document.stimulusReflexInitialized) {
     const { target, attrs, last } = event.detail.stimulusReflex || {}
     if (!last) return
     const element = findElement(attrs)
-    dispatchLifecycleEvent('success', element, element.stimulusReflexController)
+    dispatchLifecycleEvent('success', element)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { target, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     element.reflexError = error
-    dispatchLifecycleEvent('error', element, element.stimulusReflexController)
+    dispatchLifecycleEvent('error', element)
   })
   document.addEventListener('focusin', initializeImplicitReflexPermanent)
   document.addEventListener('focusout', resetImplicitReflexPermanent)
