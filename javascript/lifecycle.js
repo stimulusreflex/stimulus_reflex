@@ -11,6 +11,7 @@ import { camelize } from 'inflected'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element) => {
+  if (!element || !element.reflexData) return
   const controller = element.reflexController
   const reflex = element.reflexData.target
   const reflexMethodName = reflex.split('#')[1]
@@ -96,13 +97,13 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element) => {
-  const { target } = element.reflexData || {}
+  if (!element || !element.reflexData) return
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
       bubbles: true,
       cancelable: false,
       detail: {
-        reflex: target,
+        reflex: element.reflexData.target,
         controller: element.reflexController
       }
     })
