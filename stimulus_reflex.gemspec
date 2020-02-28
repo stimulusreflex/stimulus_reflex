@@ -8,6 +8,12 @@ Gem::Specification.new do |gem|
   gem.email = ["natehop@gmail.com"]
   gem.homepage = "https://github.com/hopsoft/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
+  gem.post_install_message = <<~MESSAGE
+    Friendly reminder: When updating the stimulus_reflex gem,
+    don't forget to update your npm package as well.
+
+    See https://www.npmjs.com/package/stimulus_reflex
+  MESSAGE
 
   gem.files = Dir["lib/**/*", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
