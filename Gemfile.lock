@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (2.1.9)
+    stimulus_reflex (2.2.0)
       cable_ready (>= 4.0)
       nokogiri
       rack
