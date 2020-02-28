@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def set_action_cable_identifier
     cookies.encrypted[:session_id] = session.id
   end
-end	end
+end
 ```
 {% endcode %}
 
