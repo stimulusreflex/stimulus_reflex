@@ -7,7 +7,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
       params[:channel],
-      ids.select(&:present?).join(";"),
+      ids.select(&:present?).join(";")
     ].select(&:present?).join(":")
   end
 
@@ -68,6 +68,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     broadcast_morphs selectors, data, html if html.present?
   end
 
+  def commit_session(request, response)
+    store = request.session.instance_variable_get("@by")
+    store.commit_session request, response
+  rescue => e
+    message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
+    logger.error "\e[31m#{message}\e[0m"
+  end
+
   def render_page(url, reflex)
     uri = URI.parse(url)
     path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
@@ -96,6 +104,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.request = request
     controller.response = ActionDispatch::Response.new
     controller.process url_params[:action]
+    commit_session request, controller.response
     controller.response.body
   end
 
