@@ -20,5 +20,5 @@ jobs:
         node-version: '12.x'
     - run: yarn
       working-directory: javascript/
-    - run: yarn run prettier-standard-check
+    - run: yarn run prettier-standard:check
       working-directory: javascript/
