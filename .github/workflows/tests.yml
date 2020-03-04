@@ -31,7 +31,7 @@ jobs:
         key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-${{ matrix.node }}-yarn-
-    - name: Yarn
+    - name: Yarn install
       run: yarn
       working-directory: javascript/
     - name: Run JavaScript Tests
@@ -53,7 +53,7 @@ jobs:
         key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-
-    - name: Bundle
+    - name: Bundle install
       run: |
         gem install bundler
         bundle config path vendor/bundle

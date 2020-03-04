@@ -28,7 +28,9 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - run: yarn
+    - name: Yarn install
+      run: yarn
       working-directory: javascript/
-    - run: yarn run prettier-standard:check
+    - name: Run prettier-standard check
+      run: yarn run prettier-standard:check
       working-directory: javascript/
