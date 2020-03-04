@@ -142,6 +142,10 @@ In general, you should be careful not to abuse the session object in a productio
 
 The Rails session object is perfect for prototyping during development, before potentially moving to the Rails cache, Redis or your database to store anything important. You have the power and flexibility to decide which data is ephemeral and which needs to survive the loss of a data centre, coast or continent. 🦖 👾 🌪 
 
+{% hint style="danger" %}
+Cookie based sessions are not yet supported. Be sure to use a backed session store like [ActionDispatch::Session::CacheStore](https://api.rubyonrails.org/classes/ActionDispatch/Session/CacheStore.html)
+{% endhint %}
+
 ## The Rails cache store
 
 One of the most under-appreciated modules in Rails is `ActiveSupport::Cache` which provides the underlying infrastructure for [Russian doll](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) caching. It can be called directly and that it has [a solid offering of utility methods](https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) such as `increment` and `decrement` for numeric values.
