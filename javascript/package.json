@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "yarn run mocha --require @babel/register",
-    "prettier-standard-check": "yarn run prettier-standard --check ./**/*.js",
+    "prettier-standard:check": "yarn run prettier-standard --check ./**/*.js",
+    "prettier-standard:format": "yarn run prettier-standard ./**/*.js",
     "postinstall": "node scripts/post_install.js"
   },
   "dependencies": {
