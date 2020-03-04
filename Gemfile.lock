@@ -149,7 +149,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    standard (0.2.0)
+    standard (0.2.1)
       rubocop (~> 0.79.0)
       rubocop-performance (~> 1.5.1)
     standardrb (1.0.0)
@@ -162,7 +162,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby

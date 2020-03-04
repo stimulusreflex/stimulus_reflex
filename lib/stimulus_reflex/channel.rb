@@ -90,7 +90,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
           Rack::SCRIPT_NAME => "",
           Rack::PATH_INFO => path,
           Rack::REQUEST_PATH => path,
-          Rack::QUERY_STRING => uri.query,
+          Rack::QUERY_STRING => uri.query
         )
       )
     )
