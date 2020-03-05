@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
-  attr_reader :channel, :url, :element, :selectors
+  attr_reader :channel, :request, :element, :selectors
 
   delegate :connection, to: :channel
-  delegate :session, to: :request
+  delegate :session, :url, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [])
+  def initialize(channel, request: nil, element: nil, selectors: [])
     @channel = channel
-    @url = url
+    @request = request
     @element = element
     @selectors = selectors
   end
 
-  def request
-    @request ||= ActionDispatch::Request.new(connection.env)
+  def cookies
+    @cookies ||= ActionDispatch::Cookies::CookieJar.new(request)
   end
 end

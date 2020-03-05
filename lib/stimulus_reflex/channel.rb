@@ -28,7 +28,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors)
+      reflex = reflex_class.new(self, request: request_for(url), element: element, selectors: selectors)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       message = exception_message_with_backtrace(invoke_error)
@@ -36,7 +36,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex, selectors, data
+      render_page_and_broadcast_morph reflex, selectors, data
     rescue => render_error
       message = exception_message_with_backtrace(render_error)
       broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
@@ -63,8 +63,8 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex, selectors, data = {})
-    html = render_page(url, reflex)
+  def render_page_and_broadcast_morph(reflex, selectors, data = {})
+    html = render_page(reflex)
     broadcast_morphs selectors, data, html if html.present?
   end
 
@@ -76,7 +76,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     logger.error "\e[31m#{message}\e[0m"
   end
 
-  def render_page(url, reflex)
+  def request_for(url)
     uri = URI.parse(url)
     path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
     query_hash = Rack::Utils.parse_nested_query(uri.query)
@@ -94,18 +94,32 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         )
       )
     )
-    url_params = Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
-    controller = request.controller_class.new
+
+    request
+  end
+
+  def render_page(reflex)
+    url_params = Rails.application.routes.recognize_path_with_request(reflex.request, reflex.request.path, reflex.request.env[:extras] || {})
+    controller = reflex.request.controller_class.new
     controller.instance_variable_set :"@stimulus_reflex", true
     reflex.instance_variables.each do |name|
       controller.instance_variable_set name, reflex.instance_variable_get(name)
     end
 
-    controller.request = request
+    controller.request = reflex.request
     controller.response = ActionDispatch::Response.new
     controller.process url_params[:action]
-    commit_session request, controller.response
+    commit_session reflex.request, controller.response
+    broadcast_cookies reflex
     controller.response.body
+  end
+
+  # TODO: verify that cookie changes are persisted on connection.env
+  def broadcast_cookies(reflex)
+    cookies = reflex.cookies.instance_variable_get("@set_cookies")
+    cookies.each do |key, value|
+      cable_ready[stream_name].set_cookie Rack::Utils.add_cookie_to_header(nil, key, value)
+    end
   end
 
   def broadcast_morphs(selectors, data, html)
