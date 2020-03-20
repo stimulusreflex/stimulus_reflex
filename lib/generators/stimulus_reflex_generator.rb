@@ -15,7 +15,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   private
 
-  CONTROLLER_BASE_PATH = "app/javascript/controllers"
+  CONTROLLER_BASE_PATH = Webpacker.config.source_entry_path.to_s + '/controllers/'
   REFLEX_BASE_PATH = "app/reflexes"
 
   def copy_reflex_files
