@@ -15,6 +15,8 @@ bundle exec rails stimulus_reflex:install
 
 {% hint style="info" %}
 The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below.
+
+If you already have an existing Rails project or don't want to run a generator, you can add Stimulus to your project with `bundle exec rails webpacker:install:stimulus` and `yarn add stimulus_reflex` to install the Stimulus Reflex client library.
 {% endhint %}
 
 ## Configuration
