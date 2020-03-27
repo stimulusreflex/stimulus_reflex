@@ -17,8 +17,9 @@ class StimulusReflex::Reflex
     @request ||= begin
       uri = URI.parse(url)
       path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
+      path_params = Rails.application.routes.recognize_path(path)
       query_hash = Rack::Utils.parse_nested_query(uri.query)
-      request = ActionDispatch::Request.new(
+      ActionDispatch::Request.new(
         connection.env.merge(
           Rack::MockRequest.env_for(uri.to_s).merge(
             "rack.request.query_hash" => query_hash,
@@ -29,12 +30,10 @@ class StimulusReflex::Reflex
             Rack::PATH_INFO => path,
             Rack::REQUEST_PATH => path,
             Rack::QUERY_STRING => uri.query,
-            ActionDispatch::Http::Parameters::PARAMETERS_KEY => url_params.symbolize_keys
+            ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params
           )
         )
-      )
-      request.session.send :load!
-      request
+      ).tap { |req| req.session.send :load! }
     end
   end
 
