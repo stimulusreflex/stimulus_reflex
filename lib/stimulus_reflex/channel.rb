@@ -36,7 +36,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
 
     begin
-      render_page_and_broadcast_morph url, reflex, selectors, data
+      render_page_and_broadcast_morph reflex, selectors, data
     rescue => render_error
       message = exception_message_with_backtrace(render_error)
       broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
@@ -63,8 +63,8 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(url, reflex, selectors, data = {})
-    html = render_page(url, reflex)
+  def render_page_and_broadcast_morph(reflex, selectors, data = {})
+    html = render_page(reflex)
     broadcast_morphs selectors, data, html if html.present?
   end
 
@@ -76,35 +76,17 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     logger.error "\e[31m#{message}\e[0m"
   end
 
-  def render_page(url, reflex)
-    uri = URI.parse(url)
-    path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
-    query_hash = Rack::Utils.parse_nested_query(uri.query)
-    request = ActionDispatch::Request.new(
-      connection.env.merge(
-        Rack::MockRequest.env_for(uri.to_s).merge(
-          "rack.request.query_hash" => query_hash,
-          "rack.request.query_string" => uri.query,
-          "ORIGINAL_SCRIPT_NAME" => "",
-          "ORIGINAL_FULLPATH" => path,
-          Rack::SCRIPT_NAME => "",
-          Rack::PATH_INFO => path,
-          Rack::REQUEST_PATH => path,
-          Rack::QUERY_STRING => uri.query
-        )
-      )
-    )
-    url_params = Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
-    controller = request.controller_class.new
+  def render_page(reflex)
+    controller = reflex.request.controller_class.new
     controller.instance_variable_set :"@stimulus_reflex", true
     reflex.instance_variables.each do |name|
       controller.instance_variable_set name, reflex.instance_variable_get(name)
     end
 
-    controller.request = request
+    controller.request = reflex.request
     controller.response = ActionDispatch::Response.new
-    controller.process url_params[:action]
-    commit_session request, controller.response
+    controller.process reflex.url_params[:action]
+    commit_session reflex.request, controller.response
     controller.response.body
   end
 
