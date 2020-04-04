@@ -27,6 +27,15 @@ namespace :stimulus_reflex do
     lines << "StimulusReflex.initialize(application)\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
+    filepath = Rails.root.join("config/environments/development.rb")
+    lines = File.open(filepath, "r") { |f| f.readlines }
+    unless lines.find { |line| line.include?("config.session_store") }
+      lines.insert 3, "  config.session_store :cache_store\n\n"
+      File.open(filepath, "w") { |f| f.write lines.join }
+    end
+
     system "bundle exec rails generate stimulus_reflex example"
+    
+    system "rails dev:cache" unless Rails.root.join('tmp', 'caching-dev.txt').exist?
   end
 end
