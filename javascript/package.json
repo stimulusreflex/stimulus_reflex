@@ -1,18 +1,37 @@
 {
   "name": "stimulus_reflex",
-  "author": "Nathan Hopkins",
-  "license": "MIT",
   "version": "2.2.3",
-  "main": "./stimulus_reflex.js",
+  "description": "Build reactive applications with the Rails tooling you already know and love.",
+  "keywords": [
+    "ruby",
+    "rails",
+    "websockets",
+    "actioncable",
+    "turbolinks",
+    "reactive",
+    "cable",
+    "ujs",
+    "ssr",
+    "stimulus",
+    "reflex",
+    "stimulus_reflex"
+  ],
+  "homepage": "https://docs.stimulusreflex.com/",
+  "bugs": {
+    "url": "https://github.com/hopsoft/stimulus_reflex/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
   },
+  "license": "MIT",
+  "author": "Nathan Hopkins <natehop@gmail.com>",
+  "main": "./stimulus_reflex.js",
   "scripts": {
-    "test": "yarn run mocha --require @babel/register",
+    "postinstall": "node scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check ./**/*.js",
     "prettier-standard:format": "yarn run prettier-standard ./**/*.js",
-    "postinstall": "node scripts/post_install.js"
+    "test": "yarn run mocha --require @babel/register"
   },
   "dependencies": {
     "actioncable": ">= 5.2",
