@@ -36,6 +36,6 @@ namespace :stimulus_reflex do
 
     system "bundle exec rails generate stimulus_reflex example"
     
-    system "rails dev:cache" unless Rails.root.join('tmp', 'caching-dev.txt').exist?
+    system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
   end
 end
