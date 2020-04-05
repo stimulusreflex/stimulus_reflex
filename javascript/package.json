@@ -34,7 +34,7 @@
     "test": "yarn run mocha --require @babel/register"
   },
   "dependencies": {
-    "actioncable": ">= 5.2",
+    "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.0",
     "inflected": ">= 2.0",
     "stimulus": ">= 1.1"
