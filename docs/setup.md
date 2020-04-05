@@ -25,6 +25,8 @@ Starting with v2.2.2 of StimulusReflex, support for the Rails default session st
 
 And that's it! **You can start using StimulusReflex in your application.**
 
+{% page-ref page="quickstart.md" %}
+
 ## Manual Configuration
 
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project.
