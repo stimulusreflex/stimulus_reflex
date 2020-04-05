@@ -1,4 +1,4 @@
-import { createConsumer } from 'actioncable'
+import { createConsumer } from '@rails/actioncable'
 
 function isConsumer (object) {
   if (object) {
