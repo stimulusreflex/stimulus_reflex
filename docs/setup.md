@@ -101,13 +101,13 @@ This puts us in the awkward position of forcing an infrastructure change for som
 
 We decided to default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared. If you set a different session store in an initializer, please make sure that we're not clobbering your preferred store with our good intentions. The Rails default cache store is `:memory_store` which will get the job done in development but is not suitable or appropriate for production.
 
-Our preferred solution is to use Redis as our cache store, and `:cache_store` as our session store. Memcache is also an excellent cache store; we prefer Redis because it offers a far broader range of data structures and querying mechanisms. If you're not using Redis' advanced features, both tools are equally well-suited to key:value string caching.
+The recommended solution is to use Redis as your cache store, and `:cache_store` as your session store. Memcache is also an excellent cache store; we prefer Redis because it offers a far broader range of data structures and querying mechanisms. If you're not using Redis' advanced features, both tools are equally well-suited to key:value string caching.
 
 {% hint style="warning" %}
 Make sure that your Redis instance is configured to use the `lru-volatile` expiration strategy with expiring session keys.
 {% endhint %}
 
-Many Rails projects are already using Redis for ActiveJob queues and Russian doll caching, making the decision to use it for session storage easy and incremental. Just add the `redis` and `hiredis` gems to your Gemfile:
+Many Rails projects are already using Redis for ActiveJob queues and Russian doll caching, making the decision to use it for session storage easy and incremental. Add the `redis` and `hiredis` gems to your Gemfile:
 
 ```ruby
 gem "redis", ">= 4.0", :require => ["redis", "redis/connection/hiredis"]
@@ -127,7 +127,7 @@ config.session_store :cache_store,
 
 Another powerful option for session storage is to use the [activerecord-session\_store](https://github.com/rails/activerecord-session_store) gem and keep your sessions in the database. This technique requires some additional setup in the form of a migration that will create a `sessions` table in your database.
 
-Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weight this against the additional strain this will put on your database server, especially in high-traffic scenarios.
+Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weigh this against the additional strain this will put on your database server, especially in high-traffic scenarios.
 
 Regardless of which option you choose, keep an eye on your connection pools and memory usage.
 
@@ -141,9 +141,9 @@ Regardless of which option you choose, keep an eye on your connection pools and 
 **Yes.**
 {% endhint %}
 
-We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scaleability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
+We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
 
-Getting to this point required significant effort and commitment between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today.
+Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today.
 
 First, add `gem "anycable-rails", "1.0.0.preview1"` to your Gemfile.
 
@@ -157,7 +157,7 @@ If you notice any issues with AnyCable support, please tell us about it [here](h
 
 ## Rails 5.2+ Support
 
-When the Rails core team renamed the ActionCable JS npm package from `actioncable` to `@rails/actioncable` it made it very difficult to reliably import ActionCable. After evaluating our options, we made the difficult decision of updating to the new package name and freezing Rails 5.2 support on the 2.2.x branch of StimulusReflex.
+When the Rails core team renamed the ActionCable JS npm package from `actioncable` to `@rails/actioncable` it made it very difficult to reliably import ActionCable. After evaluating our options, we made the difficult decision of updating to the new package name and freezing _official_ Rails 5.2 support on the 2.2.x branch of StimulusReflex.
 
 ```ruby
 bundle add stimulus_reflex --version "~> 2.2.3"
