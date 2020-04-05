@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     stimulus_reflex (2.2.3)
-      cable_ready (>= 4.0)
+      cable_ready (>= 4.1)
       nokogiri
       rack
-      rails (>= 5.2)
+      rails (>= 6.0)
 
 GEM
   remote: https://rubygems.org/
@@ -67,7 +67,7 @@ GEM
       zeitwerk (~> 2.2)
     ast (2.4.0)
     builder (3.2.4)
-    cable_ready (4.0.9)
+    cable_ready (4.1.0)
       rails (>= 5.2)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
