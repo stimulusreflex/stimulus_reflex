@@ -12,6 +12,10 @@ description: Build reactive applications with the Rails tooling you already know
 **Get Involved.** We'd love to hear from you. [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
+{% hint style="warning" %}
+StimulusReflex v3 has been released, and there are some big changes. **Rails 6+ and server-side session storage are now required.** See the Setup page for more information.
+{% endhint %}
+
 ## Why should I use StimulusReflex?
 
 Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
