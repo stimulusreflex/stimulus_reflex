@@ -49,7 +49,7 @@
 StimulusReflex eliminates the complexity imposed by full-stack frontend frameworks.
 And, it's fast.
 
-It works with seamlessly with the Rails tooling you already know and love.
+It works seamlessly with the Rails tooling you already know and love.
 
 - [Server rendered HTML over the wire](https://guides.rubyonrails.org/action_view_overview.html)
 - [ERB, or your favorite templating engine](https://www.ruby-toolbox.com/categories/template_engines)
