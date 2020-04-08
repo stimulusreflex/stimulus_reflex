@@ -1,5 +1,6 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
+import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
@@ -19,6 +20,8 @@ let stimulusApplication
 // A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
 //
 let actionCableConsumer
+
+const promises = {}
 
 // Initializes implicit data-reflex-permanent for text inputs.
 //
@@ -96,6 +99,7 @@ const extendStimulusController = controller => {
       }
       const attrs = extractElementAttributes(element)
       const selectors = getReflexRoots(element)
+      const reflexId = uuidv4()
       const data = {
         target,
         args,
@@ -103,7 +107,8 @@ const extendStimulusController = controller => {
         attrs,
         selectors,
         permanent_attribute_name:
-          stimulusApplication.schema.reflexPermanentAttribute
+          stimulusApplication.schema.reflexPermanentAttribute,
+        reflexId: reflexId
       }
 
       // lifecycle setup
@@ -112,6 +117,10 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
       controller.StimulusReflex.subscription.send(data)
+
+      return new Promise((resolve, reject) => {
+        promises[reflexId] = { resolve, reject, data }
+      })
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -272,12 +281,27 @@ if (!document.stimulusReflexInitialized) {
     const { target, attrs, last } = event.detail.stimulusReflex || {}
     if (!last) return
     const element = findElement(attrs)
+    const promise = promises[event.detail.stimulusReflex.reflexId]
+
+    if (promise) {
+      delete promises[event.detail.stimulusReflex.reflexId]
+      promise.resolve({ data: promise.data, element, event })
+    }
+
     dispatchLifecycleEvent('success', element)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { target, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
+    const promise = promises[event.detail.stimulusReflex.reflexId]
+
     element.reflexError = error
+
+    if (promise) {
+      delete promises[event.detail.stimulusReflex.reflexId]
+      promise.reject({ data: promise.data, element, event })
+    }
+
     dispatchLifecycleEvent('error', element)
   })
   document.addEventListener('focusin', initializeImplicitReflexPermanent)
