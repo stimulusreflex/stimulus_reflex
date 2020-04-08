@@ -55,12 +55,15 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(channel, {
       received: data => {
         if (!data.cableReady) return
-        if (!data.operations.morph || !data.operations.morph.length) return
-        const urls = [
-          ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-        ]
-        if (urls.length !== 1 || urls[0] !== location.href) return
-        CableReady.perform(data.operations)
+        if (data.operations.dispatchEvent && data.operations.dispatchEvent.length)
+          CableReady.perform({ dispatchEvent: data.operations.dispatchEvent })
+        if (data.operations.morph && data.operations.morph.length) {
+          const urls = [
+            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          ]
+          if (urls.length == 1 && urls[0] == location.href)
+            CableReady.perform({ morph: data.operations.morph })
+        }
       }
     })
 }
@@ -79,7 +82,7 @@ const extendStimulusController = controller => {
     // - element - [optional] the element that triggered the reflex, defaults to this.element
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
-    stimulate () {
+    stimulate() {
       const url = location.href
       const args = Array.from(arguments)
       const target = args.shift()
@@ -116,7 +119,7 @@ const extendStimulusController = controller => {
 
     // Wraps the call to stimulate for any data-reflex elements.
     // This is internal and should not be invoked directly.
-    __perform (event) {
+    __perform(event) {
       event.preventDefault()
       event.stopPropagation()
 
@@ -154,7 +157,7 @@ const register = (controller, options = {}) => {
 // i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController);
 //
 class StimulusReflexController extends Controller {
-  constructor (...args) {
+  constructor(...args) {
     super(...args)
     register(this)
   }
@@ -182,7 +185,7 @@ const setupDeclarativeReflexes = () => {
         if (controller) {
           action = `${reflex.split('->')[0]}->${
             controller.identifier
-          }#__perform`
+            }#__perform`
           if (!actions.includes(action)) actions.push(action)
         } else {
           action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
@@ -231,8 +234,8 @@ const getReflexRoots = element => {
     }
     element = element.parentElement
       ? element.parentElement.closest(
-          `[${stimulusApplication.schema.reflexRootAttribute}]`
-        )
+        `[${stimulusApplication.schema.reflexRootAttribute}]`
+      )
       : null
   }
   return list
