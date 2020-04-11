@@ -15,6 +15,14 @@ Gem::Specification.new do |gem|
     See https://www.npmjs.com/package/stimulus_reflex
   MESSAGE
 
+  gem.metadata = {
+    "bug_tracker_uri" => "https://github.com/hopsoft/stimulus_reflex/issues",
+    "changelog_uri" => "https://github.com/hopsoft/stimulus_reflex/CHANGELOG.md",
+    "documentation_uri" => "https://docs.stimulusreflex.com",
+    "homepage_uri" => gem.homepage,
+    "source_code_uri" => gem.homepage
+  }
+
   gem.files = Dir["lib/**/*", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
 
