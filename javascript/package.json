@@ -37,7 +37,8 @@
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.1",
     "inflected": ">= 2.0",
-    "stimulus": ">= 1.1"
+    "stimulus": ">= 1.1",
+    "uuid": ">= 7.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
