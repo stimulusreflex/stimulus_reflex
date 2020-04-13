@@ -7,7 +7,12 @@ describe('extractElementAttributes', () => {
     const dom = new JSDOM('<a>Test</a>')
     const element = dom.window.document.querySelector('a')
     const actual = extractElementAttributes(element)
-    const expected = { value: undefined, checked: false, selected: false }
+    const expected = {
+      value: undefined,
+      checked: false,
+      selected: false,
+      tag_name: 'A'
+    }
     assert.deepStrictEqual(actual, expected)
   })
 
@@ -23,6 +28,7 @@ describe('extractElementAttributes', () => {
       'data-reflex': 'bar',
       'data-info': '12345',
       value: undefined,
+      tag_name: 'A',
       checked: false,
       selected: false
     }
@@ -36,6 +42,7 @@ describe('extractElementAttributes', () => {
     const expected = {
       id: 'example',
       value: 'StimulusReflex',
+      tag_name: 'TEXTAREA',
       checked: false,
       selected: false
     }
@@ -52,6 +59,7 @@ describe('extractElementAttributes', () => {
       type: 'text',
       id: 'example',
       value: 'StimulusReflex',
+      tag_name: 'INPUT',
       checked: false,
       selected: false
     }
@@ -66,6 +74,7 @@ describe('extractElementAttributes', () => {
       type: 'checkbox',
       id: 'example',
       value: 'on',
+      tag_name: 'INPUT',
       checked: false,
       selected: false
     }
@@ -80,6 +89,7 @@ describe('extractElementAttributes', () => {
       type: 'checkbox',
       id: 'example',
       value: 'on',
+      tag_name: 'INPUT',
       checked: true,
       selected: false
     }
