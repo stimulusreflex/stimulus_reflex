@@ -47,7 +47,7 @@ StimulusReflex makes the following properties available to the developer in the 
 
 ### `element`
 
-The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `checked` and `value`.
+The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like, `tagName`, `checked` and `value`.
 
 {% hint style="info" %}
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
@@ -70,6 +70,7 @@ class ExampleReflex < StimulusReflex::Reflex
     element.dataset # => a Hash that represents the HTML element's dataset
 
     element[:id]                 # => "example"
+    element[:tag_name]           # => "CHECKBOX"
     element[:checked]            # => true
     element[:label]              # => "Example"
     element["data-reflex"]       # => "ExampleReflex#work"

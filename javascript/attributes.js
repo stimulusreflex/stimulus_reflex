@@ -34,6 +34,7 @@ export const extractElementAttributes = element => {
   attrs.value = element.value
   attrs.checked = !!element.checked
   attrs.selected = !!element.selected
+  attrs.tag_name = element.tagName
   if (element.tagName.match(/select/i)) {
     if (element.multiple) {
       const checkedOptions = Array.prototype.slice.call(
