@@ -58,11 +58,12 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(channel, {
       received: data => {
         if (!data.cableReady) return
-        if (!data.operations.morph || !data.operations.morph.length) return
-        const urls = [
-          ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-        ]
-        if (urls.length !== 1 || urls[0] !== location.href) return
+        if (data.operations.morph && data.operations.morph.length) {
+          const urls = [
+            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          ]
+          if (urls.length !== 1 || urls[0] !== location.href) return
+        }
         CableReady.perform(data.operations)
       }
     })
