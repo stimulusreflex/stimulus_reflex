@@ -64,6 +64,7 @@ export const findElement = attributes => {
     let selectors = []
     for (const key in attributes) {
       if (key.includes('.')) continue
+      if (key === 'tagName') continue
       if (key === 'value') continue
       if (key === 'checked') continue
       if (key === 'selected') continue

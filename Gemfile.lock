@@ -75,10 +75,10 @@ GEM
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     erubi (1.9.0)
-    faraday (0.17.3)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    faraday-http-cache (2.1.0)
-      faraday (~> 0.8)
+    faraday-http-cache (2.2.0)
+      faraday (>= 0.8)
     github_changelog_generator (1.15.2)
       activesupport
       faraday-http-cache

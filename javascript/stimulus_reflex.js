@@ -77,6 +77,13 @@ const createSubscription = controller => {
 //
 const extendStimulusController = controller => {
   Object.assign(controller, {
+    // Indicates if the ActionCable web socket connection is open.
+    // The connection must be open before calling stimulate.
+    //
+    isActionCableConnectionOpen () {
+      return this.StimulusReflex.subscription.consumer.connection.isOpen()
+    },
+
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
@@ -111,13 +118,18 @@ const extendStimulusController = controller => {
           stimulusApplication.schema.reflexPermanentAttribute,
         reflexId: reflexId
       }
+      const { subscription } = this.StimulusReflex
+      const { connection } = subscription.consumer
+
+      if (!this.isActionCableConnectionOpen())
+        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
       // lifecycle setup
-      element.reflexController = controller
+      element.reflexController = this
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
-      controller.StimulusReflex.subscription.send(data)
+      subscription.send(data)
 
       return new Promise((resolve, reject) => {
         promises[reflexId] = { resolve, reject, data }
