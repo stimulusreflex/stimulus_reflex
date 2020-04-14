@@ -2,7 +2,7 @@ import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
-import { getConsumer } from './consumer'
+import { getConsumer, registerConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import {
@@ -50,6 +50,8 @@ const resetImplicitReflexPermanent = event => {
 //
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
+  registerConsumer(actionCableConsumer)
+
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
 
@@ -167,8 +169,8 @@ const extendStimulusController = controller => {
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  extendStimulusController(controller)
   createSubscription(controller)
+  extendStimulusController(controller)
 }
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
