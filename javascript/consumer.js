@@ -42,7 +42,7 @@ export function registerConsumer (consumer) {
   socket.addEventListener('close', connectionClosed)
   socket.removeEventListener('error', connectionClosed)
   socket.addEventListener('error', connectionClosed)
-  if (connection.isOpen()) connectionOpened()
+  connection.isOpen() ? connectionOpened() : connectionClosed()
 }
 
 export function getConsumer () {
