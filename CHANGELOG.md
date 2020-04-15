@@ -24,7 +24,6 @@
 **Merged pull requests:**
 
 - Allow \#stimulate to use promises [\#142](https://github.com/hopsoft/stimulus_reflex/pull/142) ([dark-panda](https://github.com/dark-panda))
-- Update readme [\#138](https://github.com/hopsoft/stimulus_reflex/pull/138) ([thomashalljr](https://github.com/thomashalljr))
 
 ## [v3.0.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.0.0) (2020-04-06)
 
@@ -52,14 +51,13 @@
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
+**Dependencies:**
+
+- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 **Closed issues:**
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/hopsoft/stimulus_reflex/issues/127)
-
-**Merged pull requests:**
-
-- Fix docs spring binstub command [\#130](https://github.com/hopsoft/stimulus_reflex/pull/130) ([seb1441](https://github.com/seb1441))
-- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v2.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.2) (2020-03-04)
 
@@ -85,12 +83,6 @@
 **Implemented enhancements:**
 
 - Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
-
-**Merged pull requests:**
-
-- authentication.md: Suggest storing only the session ID string [\#120](https://github.com/hopsoft/stimulus_reflex/pull/120) ([henrik](https://github.com/henrik))
-- authentication.md: Remove extra "end" in code example [\#119](https://github.com/hopsoft/stimulus_reflex/pull/119) ([henrik](https://github.com/henrik))
-- authentication.md: Typo [\#117](https://github.com/hopsoft/stimulus_reflex/pull/117) ([henrik](https://github.com/henrik))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
@@ -138,12 +130,6 @@
 
 - Demo appears to be broken [\#101](https://github.com/hopsoft/stimulus_reflex/issues/101)
 
-**Merged pull requests:**
-
-- Docs - grammar [\#98](https://github.com/hopsoft/stimulus_reflex/pull/98) ([szTheory](https://github.com/szTheory))
-- update the readme regarding the scope of the CoC [\#96](https://github.com/hopsoft/stimulus_reflex/pull/96) ([andrewmcodes](https://github.com/andrewmcodes))
-- add discord badge to readme [\#95](https://github.com/hopsoft/stimulus_reflex/pull/95) ([andrewmcodes](https://github.com/andrewmcodes))
-
 ## [v2.1.5](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.5) (2019-11-04)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.4...v2.1.5)
@@ -165,12 +151,6 @@
 - Installer fails on fresh Rails 5.2.3 app w/ webpacker 3.6 [\#81](https://github.com/hopsoft/stimulus_reflex/issues/81)
 - Correct List Order in setup.md under Rooms Section [\#78](https://github.com/hopsoft/stimulus_reflex/issues/78)
 - Scoped onClick event [\#73](https://github.com/hopsoft/stimulus_reflex/issues/73)
-
-**Merged pull requests:**
-
-- Various documentation fixes [\#88](https://github.com/hopsoft/stimulus_reflex/pull/88) ([BakiVernes](https://github.com/BakiVernes))
-- persistence doc, first pass [\#85](https://github.com/hopsoft/stimulus_reflex/pull/85) ([leastbad](https://github.com/leastbad))
-- Correct number list order in setup.md under Rooms section [\#79](https://github.com/hopsoft/stimulus_reflex/pull/79) ([aliahmed922](https://github.com/aliahmed922))
 
 ## [v2.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.4) (2019-10-19)
 
@@ -200,10 +180,6 @@
 - too many afterReflex/reflexSuccess callbacks [\#68](https://github.com/hopsoft/stimulus_reflex/issues/68)
 - Prevent redundant `after` lifecycle callbacks [\#70](https://github.com/hopsoft/stimulus_reflex/pull/70) ([hopsoft](https://github.com/hopsoft))
 
-**Merged pull requests:**
-
-- Docs work [\#72](https://github.com/hopsoft/stimulus_reflex/pull/72) ([leastbad](https://github.com/leastbad))
-
 ## [v2.1.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.2) (2019-10-09)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.1...v2.1.2)
@@ -215,10 +191,6 @@
 **Fixed bugs:**
 
 - Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
-
-**Merged pull requests:**
-
-- add warning about dependency injected html to the docs [\#65](https://github.com/hopsoft/stimulus_reflex/pull/65) ([andrewmcodes](https://github.com/andrewmcodes))
 
 ## [v2.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.0) (2019-10-07)
 
@@ -244,10 +216,6 @@
 
 - Install StandardJS linter [\#40](https://github.com/hopsoft/stimulus_reflex/issues/40)
 
-**Merged pull requests:**
-
-- update readme to indicate use of prettier-standard [\#60](https://github.com/hopsoft/stimulus_reflex/pull/60) ([andrewmcodes](https://github.com/andrewmcodes))
-
 ## [v2.0.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.0.2) (2019-09-30)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.0.1...v2.0.2)
@@ -260,10 +228,6 @@
 **Closed issues:**
 
 - Formatting issues on README [\#48](https://github.com/hopsoft/stimulus_reflex/issues/48)
-
-**Merged pull requests:**
-
-- Update readme to point to docs [\#50](https://github.com/hopsoft/stimulus_reflex/pull/50) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.0.1) (2019-09-28)
 
@@ -283,15 +247,10 @@
 **Fixed bugs:**
 
 - Reflex is a reflex [\#38](https://github.com/hopsoft/stimulus_reflex/pull/38) ([leastbad](https://github.com/leastbad))
-- fix merge issue for GitHub actions [\#27](https://github.com/hopsoft/stimulus_reflex/pull/27) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
 - Add GH templates [\#30](https://github.com/hopsoft/stimulus_reflex/issues/30)
-
-**Merged pull requests:**
-
-- update readme  [\#44](https://github.com/hopsoft/stimulus_reflex/pull/44) ([andrewmcodes](https://github.com/andrewmcodes))
 
 ## [v2.0.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.0.0) (2019-09-11)
 
@@ -301,6 +260,10 @@
 
 - update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
+
+**Fixed bugs:**
+
+- fix merge issue for GitHub actions [\#27](https://github.com/hopsoft/stimulus_reflex/pull/27) ([andrewmcodes](https://github.com/andrewmcodes))
 
 ## [v1.1.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.1.1) (2019-09-09)
 
@@ -327,10 +290,6 @@
 **Implemented enhancements:**
 
 - Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
-
-**Merged pull requests:**
-
-- look better with color :sunglasses: [\#15](https://github.com/hopsoft/stimulus_reflex/pull/15) ([cprodhomme](https://github.com/cprodhomme))
 
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
