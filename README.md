@@ -1,5 +1,6 @@
 <p align="center">
-  <h2 align="center">Welcome to StimulusReflex 👋</h2>
+  <img src="assets/stimulus-reflex-logo-with-copy.svg" width="360" />
+  <h1 align="center">Welcome to StimulusReflex 👋</h1>
   <p align="center">
     <img src="https://img.shields.io/gem/v/stimulus_reflex.svg?color=red" />
     <img src="https://img.shields.io/npm/v/stimulus_reflex.svg?color=blue" />
@@ -38,7 +39,6 @@
     <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg">
       <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
     </a>
-    <img src="assets/stimulus-reflex-logo-with-copy.svg" width="360" />
   </p>
 </p>
 <br />
