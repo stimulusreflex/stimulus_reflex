@@ -2,7 +2,7 @@ import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
-import { getConsumer } from './consumer'
+import { getConsumer, registerConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import {
@@ -50,6 +50,8 @@ const resetImplicitReflexPermanent = event => {
 //
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
+  registerConsumer(actionCableConsumer)
+
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
 
@@ -77,6 +79,13 @@ const createSubscription = controller => {
 //
 const extendStimulusController = controller => {
   Object.assign(controller, {
+    // Indicates if the ActionCable web socket connection is open.
+    // The connection must be open before calling stimulate.
+    //
+    isActionCableConnectionOpen () {
+      return this.StimulusReflex.subscription.consumer.connection.isOpen()
+    },
+
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
@@ -111,13 +120,18 @@ const extendStimulusController = controller => {
           stimulusApplication.schema.reflexPermanentAttribute,
         reflexId: reflexId
       }
+      const { subscription } = this.StimulusReflex
+      const { connection } = subscription.consumer
+
+      if (!this.isActionCableConnectionOpen())
+        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
       // lifecycle setup
-      element.reflexController = controller
+      element.reflexController = this
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
-      controller.StimulusReflex.subscription.send(data)
+      subscription.send(data)
 
       return new Promise((resolve, reject) => {
         promises[reflexId] = { resolve, reject, data }
@@ -155,8 +169,8 @@ const extendStimulusController = controller => {
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  extendStimulusController(controller)
   createSubscription(controller)
+  extendStimulusController(controller)
 }
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
