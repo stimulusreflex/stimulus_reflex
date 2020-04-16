@@ -34,9 +34,9 @@ function findConsumer (object, depth = 0) {
 }
 
 export function registerConsumer (consumer) {
+  const connection = consumer ? consumer.connection : null
+  const socket = connection ? connection.webSocket : null
   try {
-    const connection = consumer ? consumer.connection : null
-    const socket = connection ? connection.webSocket : null
     socket.removeEventListener('open', connectionOpened)
     socket.addEventListener('open', connectionOpened)
     socket.removeEventListener('close', connectionClosed)
