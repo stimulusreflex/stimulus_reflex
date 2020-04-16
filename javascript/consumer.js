@@ -34,15 +34,24 @@ function findConsumer (object, depth = 0) {
 }
 
 export function registerConsumer (consumer) {
-  const connection = consumer.connection
-  const socket = connection.webSocket
-  socket.removeEventListener('open', connectionOpened)
-  socket.addEventListener('open', connectionOpened)
-  socket.removeEventListener('close', connectionClosed)
-  socket.addEventListener('close', connectionClosed)
-  socket.removeEventListener('error', connectionClosed)
-  socket.addEventListener('error', connectionClosed)
-  connection.isOpen() ? connectionOpened() : connectionClosed()
+  try {
+    const connection = consumer ? consumer.connection : null
+    const socket = connection ? connection.webSocket : null
+    socket.removeEventListener('open', connectionOpened)
+    socket.addEventListener('open', connectionOpened)
+    socket.removeEventListener('close', connectionClosed)
+    socket.addEventListener('close', connectionClosed)
+    socket.removeEventListener('error', connectionClosed)
+    socket.addEventListener('error', connectionClosed)
+    connection.isOpen() ? connectionOpened() : connectionClosed()
+  } catch (error) {
+    console.error(
+      "StimulusReflex was unable to register the ActionCable consumer. Don't worry, everything should still work.",
+      consumer,
+      connection,
+      socket
+    )
+  }
 }
 
 export function getConsumer () {

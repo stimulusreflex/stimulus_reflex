@@ -74,7 +74,7 @@ export const findElement = attributes => {
     try {
       elements = document.querySelectorAll(selectors.join(''))
     } catch (error) {
-      console.log(
+      console.error(
         'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
         attributes
