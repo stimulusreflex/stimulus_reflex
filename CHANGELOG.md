@@ -6,7 +6,16 @@
 
 **Fixed bugs:**
 
+- Cannot read property 'removeEventListener' of undefined after updating to 3.1.0 [\#151](https://github.com/hopsoft/stimulus_reflex/issues/151)
 - remove changelog rake task [\#150](https://github.com/hopsoft/stimulus_reflex/pull/150) ([andrewmcodes](https://github.com/andrewmcodes))
+
+**Closed issues:**
+
+- Setup & Quick Start guide from scratch results in showstopping error [\#153](https://github.com/hopsoft/stimulus_reflex/issues/153)
+
+**Merged pull requests:**
+
+- Trap errors in registerConsumer [\#154](https://github.com/hopsoft/stimulus_reflex/pull/154) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.0) (2020-04-15)
 
@@ -17,6 +26,7 @@
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
+- add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -55,7 +65,6 @@
 
 **Implemented enhancements:**
 
-- add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
