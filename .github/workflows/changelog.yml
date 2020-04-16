@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,14 +24,12 @@ jobs:
           ${{ runner.os }}-gem-
     - name: Create local changes
       run: |
-        gem install bundler
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
-        bundle exec rake generate_changelog
+        gem install github_changelog_generator
+        github_changelog_generator -u hopsoft -p stimulus_reflex --token ${{ secrets.GITHUB_TOKEN }} --exclude-labels duplicate,question,invalid,wontfix,nodoc
     - name: Commit files
       run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "github-actions@example.com"
+        git config --local user.name "GitHub Actions"
         git commit -m "[nodoc] update changelog" -a
     - name: Push changes
       uses: ad-m/github-push-action@master
