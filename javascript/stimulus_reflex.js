@@ -23,22 +23,6 @@ let actionCableConsumer
 
 const promises = {}
 
-// Initializes implicit data-reflex-protect-value for text inputs.
-//
-const initializeImplicitReflexProtectValue = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.skipMorph = true
-}
-
-// Resets implicit data-reflex-protect-value for text inputs.
-//
-const resetImplicitReflexProtectValue = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.skipMorph = false
-}
-
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
 // controller - the StimulusReflex controller to subscribe
@@ -314,8 +298,16 @@ if (!document.stimulusReflexInitialized) {
 
     dispatchLifecycleEvent('error', element)
   })
-  document.addEventListener('focusin', initializeImplicitReflexProtectValue)
-  document.addEventListener('focusout', resetImplicitReflexProtectValue)
+  document.addEventListener('focusin', event => {
+    const element = event.target
+    if (!isTextInput(element)) return
+    element.skipMorph = true
+  })
+  document.addEventListener('focusout', event => {
+    const element = event.target
+    if (!isTextInput(element)) return
+    element.skipMorph = false
+  })
 }
 
 export default { initialize, register }
