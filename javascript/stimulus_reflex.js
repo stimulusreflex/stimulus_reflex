@@ -2,7 +2,7 @@ import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
-import { getConsumer, registerConsumer } from './consumer'
+import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import {
@@ -50,8 +50,6 @@ const resetImplicitReflexPermanent = event => {
 //
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
-  registerConsumer(actionCableConsumer)
-
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
 

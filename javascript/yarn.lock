@@ -1209,9 +1209,9 @@ buffer-from@^1.0.0:
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
 "cable_ready@>= 4.1":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.1.0.tgz#ddf15d341326058b412964716e7d58de4e223cc8"
-  integrity sha512-qNjcOoGbYiVITyfxTIk9AHDkdinbDAMvQ1U4vQgmojZN1n6qeZiMJsqLaqC78BaXPphcDgZVQu83O6FKVf8Cgg==
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.1.1.tgz#fd73b5135f078d83ed6e6788222a031efd8328b3"
+  integrity sha512-MqCvG6ebXbZDQSI6EcjHEg6IV1lcbGC4We84TAJC6T2MYJAtT6VGEnvT4251qkiLtCyd8A6UpQupsgTjQkxwyA==
   dependencies:
     morphdom "^2.5.12"
 
