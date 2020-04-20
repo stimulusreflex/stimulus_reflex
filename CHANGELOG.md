@@ -108,7 +108,6 @@
 **Implemented enhancements:**
 
 - Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
-- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
@@ -166,6 +165,7 @@
 
 **Implemented enhancements:**
 
+- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 - StimulusReflex::Channel - Error messages include stack trace info [\#100](https://github.com/hopsoft/stimulus_reflex/pull/100) ([szTheory](https://github.com/szTheory))
 
 **Closed issues:**
@@ -182,6 +182,7 @@
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
+- Update installer [\#71](https://github.com/hopsoft/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -213,7 +214,6 @@
 **Implemented enhancements:**
 
 - Create Rails generators [\#3](https://github.com/hopsoft/stimulus_reflex/issues/3)
-- Update installer [\#71](https://github.com/hopsoft/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 - Tweak generators [\#69](https://github.com/hopsoft/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
 - add generators [\#67](https://github.com/hopsoft/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 
