@@ -1,5 +1,26 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.2...HEAD)
+
+**Implemented enhancements:**
+
+- Server initiated redirects [\#25](https://github.com/hopsoft/stimulus_reflex/issues/25)
+
+**Fixed bugs:**
+
+- Unable to register the ActionCable Consumer [\#156](https://github.com/hopsoft/stimulus_reflex/issues/156)
+- Remove unneeded registerConsumer logic [\#158](https://github.com/hopsoft/stimulus_reflex/pull/158) ([hopsoft](https://github.com/hopsoft))
+
+**Closed issues:**
+
+- Scoping when using Stimulus does not work as expected [\#144](https://github.com/hopsoft/stimulus_reflex/issues/144)
+- Shared connections to reduce websocket connections? [\#136](https://github.com/hopsoft/stimulus_reflex/issues/136)
+- routing reflexes to controllers [\#97](https://github.com/hopsoft/stimulus_reflex/issues/97)
+- Time for introducing a develop branch? [\#84](https://github.com/hopsoft/stimulus_reflex/issues/84)
+- out-of-band Reflex updates [\#64](https://github.com/hopsoft/stimulus_reflex/issues/64)
+
 ## [v3.1.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.2) (2020-04-16)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.1...v3.1.2)
