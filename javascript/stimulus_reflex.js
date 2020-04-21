@@ -5,6 +5,7 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
+import { logReflex } from './log'
 import {
   attributeValue,
   attributeValues,
@@ -129,6 +130,9 @@ const extendStimulusController = controller => {
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
+
+      logReflex(reflexId, this.context.scope.identifier, target, element, args[0])
+
       subscription.send(data)
 
       return new Promise((resolve, reject) => {
