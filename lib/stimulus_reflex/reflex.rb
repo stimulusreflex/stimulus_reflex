@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
+  include ActiveSupport::Callbacks
+
   attr_reader :channel, :url, :element, :selectors
 
   delegate :connection, to: :channel
   delegate :session, to: :request
+
+  define_callbacks :process_action
 
   def initialize(channel, url: nil, element: nil, selectors: [])
     @channel = channel
@@ -40,5 +44,21 @@ class StimulusReflex::Reflex
 
   def url_params
     @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
+  end
+
+  def process_action(name, *args)
+    run_callbacks(:process_action) do
+      public_send(name, *args)
+    end
+  end
+
+  class << self
+    [:before, :after].each do |callback|
+      define_method "#{callback}_action" do |*methods|
+        methods.each do |method|
+          set_callback :process_action, callback, method
+        end
+      end
+    end
   end
 end

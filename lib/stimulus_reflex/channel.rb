@@ -55,9 +55,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
 
     if arguments.size == 0 && required_params.size == 0
-      reflex.public_send method_name
+      reflex.process_action(method_name)
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
-      reflex.public_send method_name, *arguments
+      reflex.process_action(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end
