@@ -28,7 +28,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors)
+      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, reflex_name: method_name)
       delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       message = exception_message_with_backtrace(invoke_error)
@@ -55,9 +55,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
 
     if arguments.size == 0 && required_params.size == 0
-      reflex.process_action(method_name)
+      reflex.process_reflex(method_name)
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
-      reflex.process_action(method_name, *arguments)
+      reflex.process_reflex(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end

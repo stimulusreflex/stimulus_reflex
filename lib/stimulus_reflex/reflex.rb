@@ -3,18 +3,19 @@
 class StimulusReflex::Reflex
   include ActiveSupport::Callbacks
 
-  attr_reader :channel, :url, :element, :selectors
+  attr_reader :channel, :url, :element, :selectors, :reflex_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  define_callbacks :process_action
+  define_callbacks :process_reflex
 
-  def initialize(channel, url: nil, element: nil, selectors: [])
+  def initialize(channel, url: nil, element: nil, selectors: [], reflex_name: nil)
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
+    @reflex_name = reflex_name
   end
 
   def request
@@ -46,18 +47,43 @@ class StimulusReflex::Reflex
     @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
   end
 
-  def process_action(name, *args)
-    run_callbacks(:process_action) do
+  def process_reflex(name, *args)
+    run_callbacks(:process_reflex) do
       public_send(name, *args)
     end
   end
 
   class << self
-    [:before, :after].each do |callback|
-      define_method "#{callback}_action" do |*methods|
-        methods.each do |method|
-          set_callback :process_action, callback, method
+    [:before, :after, :around].each do |callback|
+      define_method "#{callback}_reflex" do |*method_names, &block|
+        insert_callbacks(method_names, block) do |method_name, options|
+          set_callback(:process_reflex, callback, method_name, options)
         end
+      end
+    end
+
+    private
+
+    def insert_callbacks(method_names, block = nil)
+      options = method_names.extract_options!
+      normalize_callback_options(options)
+
+      method_names.push(block) if block
+      method_names.each do |method_name|
+        yield method_name, options
+      end
+    end
+
+    def normalize_callback_options(options)
+      normalize_callback_option(options, :only, :if)
+      normalize_callback_option(options, :except, :unless)
+    end
+
+    def normalize_callback_option(options, from, to)
+      if (from = options.delete(from))
+        from_set = Array(from).map(&:to_s).to_set
+        from = proc { |reflex| from_set.include? reflex.reflex_name }
+        options[to] = Array(options[to]).unshift(from)
       end
     end
   end
