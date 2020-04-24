@@ -2,6 +2,7 @@ import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
+import { defaultOptions } from './options'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
@@ -131,7 +132,9 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      logReflex(reflexId, this.context.scope.identifier, target, element, args[0])
+      if (stimulusApplication.options.logging) {
+        logReflex(reflexId, this.context.scope.identifier, target, element, args[0])
+      }
 
       subscription.send(data)
 
@@ -270,16 +273,26 @@ const getReflexRoots = element => {
 // - options
 //   * controller - [optional] the default StimulusReflexController
 //   * consumer - [optional] the ActionCable consumer
+//   * logging - [optional] option wheter reflex logging should be enabled or not
 //
 const initialize = (application, options = {}) => {
   const { controller, consumer } = options
   actionCableConsumer = consumer
   stimulusApplication = application
+  stimulusApplication.options = { ...defaultOptions, ...options }
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
+}
+
+const enableLogging = () => {
+  stimulusApplication.options.logging = true
+}
+
+const disableLogging = () => {
+  stimulusApplication.options.logging = false
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -325,4 +338,9 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
-export default { initialize, register }
+export default {
+  initialize,
+  register,
+  enableLogging,
+  disableLogging
+}
