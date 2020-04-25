@@ -287,6 +287,9 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('cable-ready:after-morph', () =>
     setTimeout(setupDeclarativeReflexes, 1)
   )
+  document.addEventListener('ajax:complete', () =>
+    setTimeout(setupDeclarativeReflexes, 1)
+  )
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
@@ -321,4 +324,4 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
-export default { initialize, register }
+export default { initialize, register, setupDeclarativeReflexes }
