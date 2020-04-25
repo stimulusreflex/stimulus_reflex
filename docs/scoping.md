@@ -37,11 +37,35 @@ Here is a simple example: the user is presented with a text box. Anything they t
 ```
 {% endtab %}
 
+{% tab title="index.html" %}
+```text
+<div data-controller="example" data-reflex-root="[forward],[backward]">
+  <input type="text" value="{{ words }}>" data-reflex="keyup->ExampleReflex#words">
+  <div forward>{{ words }}</div>
+  <div backward>{{ reversed }}</div>
+</div>
+```
+{% endtab %}
+{% endtabs %}
+
+
+{% tabs %}
 {% tab title="example\_reflex.rb" %}
 ```ruby
+class ExampleReflex < StimulusReflex::Reflex
   def words
     @words = element[:value]
   end
+end
+```
+{% endtab %}
+
+{% tab title="example\_reflex.py" %}
+```python
+class ExampleReflex(Reflex):
+  def words():
+    self.words = element['value']
+    self.reversed = element['value'][::-1]
 ```
 {% endtab %}
 {% endtabs %}
