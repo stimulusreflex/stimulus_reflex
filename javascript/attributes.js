@@ -41,6 +41,7 @@ export const extractElementAttributes = element => {
         element.querySelectorAll('option:checked')
       )
       attrs.values = checkedOptions.map(o => o.value)
+      delete attrs.value
     } else if (element.selectedIndex > -1) {
       attrs.value = element.options[element.selectedIndex].value
     }
