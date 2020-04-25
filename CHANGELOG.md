@@ -1,5 +1,28 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.3...HEAD)
+
+**Implemented enhancements:**
+
+- TypeScript typing support [\#152](https://github.com/hopsoft/stimulus_reflex/issues/152)
+
+**Fixed bugs:**
+
+- Possible bug when about to perform cableready operations [\#166](https://github.com/hopsoft/stimulus_reflex/issues/166)
+
+**Closed issues:**
+
+- CableReady detected an error in morph! Event is not a constructor [\#165](https://github.com/hopsoft/stimulus_reflex/issues/165)
+- Testing Integrations [\#164](https://github.com/hopsoft/stimulus_reflex/issues/164)
+- Error during install: "File unchanged! The supplied flag value not found!  app/javascript/packs/application.js" [\#118](https://github.com/hopsoft/stimulus_reflex/issues/118)
+- Make the javascript in stimulus-reflex websocket agnostic [\#113](https://github.com/hopsoft/stimulus_reflex/issues/113)
+
+**Merged pull requests:**
+
+- Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
+
 ## [v3.1.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.3) (2020-04-20)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.2...v3.1.3)
@@ -134,6 +157,7 @@
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
 - Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
+- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -181,7 +205,6 @@
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
-- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
@@ -320,7 +343,6 @@
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -337,6 +359,10 @@
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
+
+**Implemented enhancements:**
+
+- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
