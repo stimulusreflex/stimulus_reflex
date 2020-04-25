@@ -37,10 +37,10 @@ Let's dig into it!
 This example will automatically update the page with the latest count whenever the anchor is clicked:
 
 {% code title="app/views/pages/index.html.erb" %}
-```text
+```html
 <a href="#"
   data-reflex="click->CounterReflex#increment"
-  data-step="1" 
+  data-step="1"
   data-count="<%= @count.to_i %>"
 >Increment <%= @count.to_i %></a>
 ```
@@ -80,7 +80,7 @@ Let's build on our increment counter example by adding a Stimulus controller and
 4. Create a server side Example controller with Ruby.
 
 {% code title="app/views/pages/index.html.erb" %}
-```text
+```html
 <a href="#"
   data-controller="counter"
   data-action="click->counter#increment"
