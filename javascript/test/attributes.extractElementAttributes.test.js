@@ -95,4 +95,42 @@ describe('extractElementAttributes', () => {
     }
     assert.deepStrictEqual(actual, expected)
   })
+
+  it('returns multiple values for a multiple select', () => {
+    const dom = new JSDOM(
+      '<select name="my-select" id="my-select" multiple><option value="one" selected>One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'
+    )
+    const element = dom.window.document.querySelector('select')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      id: 'my-select',
+      values: ['one', 'two'],
+      // value: "one",
+      name: 'my-select',
+      tag_name: 'SELECT',
+      checked: false,
+      selected: false,
+      multiple: ''
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
+
+  it('returns multiple values for a multiple select', () => {
+    const dom = new JSDOM(
+      '<input type="checkbox" checked>'
+    )
+    const element = dom.window.document.querySelector('select')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      id: 'my-select',
+      values: ['one', 'two'],
+      // value: "one",
+      name: 'my-select',
+      tag_name: 'SELECT',
+      checked: false,
+      selected: false,
+      multiple: ''
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
 })
