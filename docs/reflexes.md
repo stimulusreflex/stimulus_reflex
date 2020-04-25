@@ -4,9 +4,7 @@ description: "Reflex classes are full of Reflex actions. Reflex actions? Full of
 
 # Reflexes
 
-What is a Reflex, really? Is it a transactional UI update that takes place over a persistent open connection to the server? Is it a new tool on your belt that operates adjacent to and in tandem with concepts like REST and Ajax? Is it the smug feelings associated with successfully achieving a massive productivity arbitrage? Is it the boundless potential for unironic good in every child?
-
-A thousand times, _yes_.
+Server side reflexes inherit from `StimulusReflex::Reflex` or `sockpuppet.Reflex` in the case of Django. They hold logic responsible for performing operations like writing to your backend data stores. Reflexes are not concerned with rendering because rendering is delegated to the Rails controller or Django view and action that originally rendered the page.
 
 ## Glossary
 
@@ -25,7 +23,11 @@ Regardless of whether you use declarative Reflex calls via `data-reflex` attribu
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
+<<<<<<< HEAD
 this.stimulate(string target, [DOMElement element], ...[JSONObject argument])
+=======
+this.stimulate(string target, [DOMElement element], [JSONObject argument])
+>>>>>>> Include code examples for django in reflexes.md
 ```
 
 **target**, required \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "ExampleReflex\#increment".
@@ -75,12 +77,24 @@ If you need to re-scan the DOM after a jQuery operation, you'll need to use the 
 
 StimulusReflex makes the following properties available to the developer inside Reflex actions:
 
+{% tabs %}
+{% tab title="Ruby" %}
 * `connection` - the ActionCable connection
 * `channel` - the ActionCable channel
 * `request` - an `ActionDispatch::Request` proxy for the socket connection
 * `session` - the `ActionDispatch::Session` store for the current visitor
 * `url` - the URL of the page that triggered the reflex
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
+{% endtab %}
+
+{% tab title="Python" %}
+* `consumer` - the websocket connection from django channels.
+* `request` - a django request object
+* `session` - the django session store for the current visitor
+* `url` - the URL of the page that triggered the reflex
+* `element` - a dictionary like object that represents the HTML element that triggered the reflex
+{% endtab %}
+{% endtabs %}
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
@@ -99,13 +113,14 @@ Elements that support **multiple values** (like `<select multiple>`, or a collec
 Here's an example that outlines how you can interact with the `element` property in your reflexes.
 
 {% code title="app/views/examples/show.html.erb" %}
-```markup
+```html
 <checkbox id="example" label="Example" checked
   data-reflex="ExampleReflex#work" data-value="123" />
 ```
 {% endcode %}
 
-{% code title="app/reflexes/example\_reflex.rb" %}
+{% tabs %}
+{% tab title=app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def work()
@@ -123,7 +138,27 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode %}
+{% endtab %}
+{% tab %}
+```python
+from sockpuppet.reflex import Reflex
+
+class ExampleReflex(Reflex):
+    def work(self):
+        self.element['id']               # the HTML element's id attribute value
+        self.element.dataset             # a dictionary that represents the HTML element's dataset
+
+        self.element['id']               # => 'example'
+        self.element['tag_name']         # => 'CHECKBOX'
+        self.element['checked']          # => 'true'
+        self.element['label']            # => 'Example'
+        self.element['data-reflex']      # => 'ExampleReflex#work'
+        self.element.dataset['reflex']   # => 'ExampleReflex#work'
+        self.element['data-value']       # => '123'
+        self.element.dataset['value']    # => '123'
+```
+{% endtab %}
+{% endtabs %}
 
 {% hint style="success" %}
 When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
