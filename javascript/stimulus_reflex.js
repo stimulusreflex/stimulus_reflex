@@ -321,7 +321,7 @@ if (!document.stimulusReflexInitialized) {
 
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
-    const response = { data: promise?.data, element, event }
+    const response = { data: (promise && promise.data), element, event }
 
     if (options.logging) {
       Log.response(response)

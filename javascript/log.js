@@ -31,12 +31,12 @@ function request (id, target, controller, element, argument) {
   ]
 
   console.groupCollapsed(title, ...styles)
-  console.log('%c id', styleFor('default'), id)
-  console.log('%c date', styleFor('gray'), triggerdAt)
-  console.log('%c target', styleFor('blue'), target)
-  console.log('%c controller', styleFor('purple'), controller)
-  console.log('%c element', styleFor('green'), element)
-  console.log('%c argument', styleFor('magenta'), argument)
+  console.log('%c id', style('inherit', 'bold'), id)
+  console.log('%c date', style(colors.gray, 'bold'), triggerdAt)
+  console.log('%c target', style(colors.blue, 'bold'), target)
+  console.log('%c controller', style(colors.purple, 'bold'), controller)
+  console.log('%c element', style(colors.green, 'bold'), element)
+  console.log('%c argument', style(colors.magenta, 'bold'), argument)
   console.groupEnd()
 
   logs[id] = { color, triggerdAt, count: 1 }
