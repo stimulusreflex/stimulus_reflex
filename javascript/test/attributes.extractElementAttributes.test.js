@@ -5,6 +5,7 @@ import { extractElementAttributes } from '../attributes'
 describe('extractElementAttributes', () => {
   it('returns expected attributes for empty anchor', () => {
     const dom = new JSDOM('<a>Test</a>')
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -20,6 +21,7 @@ describe('extractElementAttributes', () => {
     const dom = new JSDOM(
       '<a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>'
     )
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -37,6 +39,7 @@ describe('extractElementAttributes', () => {
 
   it('returns expected attributes for textarea', () => {
     const dom = new JSDOM('<textarea id="example">StimulusReflex</textarea>')
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('textarea')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -53,6 +56,7 @@ describe('extractElementAttributes', () => {
     const dom = new JSDOM(
       '<input type="text" id="example" value="StimulusReflex" />'
     )
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('input')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -68,6 +72,7 @@ describe('extractElementAttributes', () => {
 
   it('returns expected attributes for unchecked checkbox', () => {
     const dom = new JSDOM('<input type="checkbox" id="example" />')
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('input')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -83,6 +88,7 @@ describe('extractElementAttributes', () => {
 
   it('returns expected attributes for checked checkbox', () => {
     const dom = new JSDOM('<input type="checkbox" id="example" checked />')
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('input')
     const actual = extractElementAttributes(element)
     const expected = {
@@ -100,12 +106,12 @@ describe('extractElementAttributes', () => {
     const dom = new JSDOM(
       '<select name="my-select" id="my-select" multiple><option value="one" selected>One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'
     )
+    global.document = dom.window.document
     const element = dom.window.document.querySelector('select')
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'my-select',
       values: ['one', 'two'],
-      // value: "one",
       name: 'my-select',
       tag_name: 'SELECT',
       checked: false,
@@ -117,19 +123,21 @@ describe('extractElementAttributes', () => {
 
   it('returns multiple values for a multiple select', () => {
     const dom = new JSDOM(
-      '<input type="checkbox" checked>'
+      '<input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3 value="three">'
     )
-    const element = dom.window.document.querySelector('select')
+    global.document = dom.window.document
+    const element = dom.window.document.querySelector(
+      '#my-checkbox-collection-1'
+    )
     const actual = extractElementAttributes(element)
     const expected = {
-      id: 'my-select',
+      id: 'my-checkbox-collection-1',
       values: ['one', 'two'],
-      // value: "one",
-      name: 'my-select',
-      tag_name: 'SELECT',
-      checked: false,
-      selected: false,
-      multiple: ''
+      type: 'checkbox',
+      name: 'my-checkbox-collection',
+      tag_name: 'INPUT',
+      checked: true,
+      selected: false
     }
     assert.deepStrictEqual(actual, expected)
   })

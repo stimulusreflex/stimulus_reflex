@@ -1,3 +1,5 @@
+import { $$asyncIterator } from 'iterall'
+
 // Returns a string value for the passed array.
 //
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
@@ -31,22 +33,50 @@ export const extractElementAttributes = element => {
       return memo
     }, {})
 
-  attrs.value = element.value
   attrs.checked = !!element.checked
   attrs.selected = !!element.selected
   attrs.tag_name = element.tagName
-  if (element.tagName.match(/select/i)) {
-    if (element.multiple) {
-      const checkedOptions = Array.prototype.slice.call(
-        element.querySelectorAll('option:checked')
-      )
-      attrs.values = checkedOptions.map(o => o.value)
-      delete attrs.value
-    } else if (element.selectedIndex > -1) {
-      attrs.value = element.options[element.selectedIndex].value
+
+  if (hasMultipleOptions(element)) {
+    attrs.values = collectCheckedOptions(element)
+    delete attrs.value
+  } else {
+    attrs.value = element.value
+    if (element.tagName.match(/select/i)) {
+      if (element.selectedIndex > -1) {
+        attrs.value = element.options[element.selectedIndex].value
+      }
     }
   }
+
   return attrs
+}
+
+const hasMultipleOptions = element => {
+  const multipleElementCount = document.querySelectorAll(
+    `input[type="${element.type}"][name="${element.name}"]`
+  ).length
+
+  return (
+    (element.tagName.match(/select/i) && element.multiple) ||
+    multipleElementCount > 1
+  )
+}
+
+const collectCheckedOptions = element => {
+  const checkedOptions = Array.prototype.slice
+    .call(element.querySelectorAll('option:checked'))
+    .concat(
+      Array.prototype.slice
+        .call(
+          document.querySelectorAll(
+            `input[type="${element.type}"][name="${element.name}"]`
+          )
+        )
+        .filter(elem => elem.checked)
+    )
+
+  return checkedOptions.map(o => o.value)
 }
 
 // Finds an element based on the passed represention of the DOM element's attributes.
