@@ -2,11 +2,10 @@ import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultSchema } from './schema'
-import { defaultOptions } from './options'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { logReflex } from './log'
+import Log from './log'
 import {
   attributeValue,
   attributeValues,
@@ -24,6 +23,12 @@ let stimulusApplication
 let actionCableConsumer
 
 const promises = {}
+
+// This object holds the options for StimulusReflex
+//
+let options = {
+  logging: false
+}
 
 // Initializes implicit data-reflex-permanent for text inputs.
 //
@@ -132,15 +137,19 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      if (stimulusApplication.options.logging) {
-        logReflex(reflexId, this.context.scope.identifier, target, element, args[0])
-      }
-
       subscription.send(data)
 
-      return new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         promises[reflexId] = { resolve, reject, data }
-      })
+      });
+
+      if (options.logging) {
+        Log.request(reflexId, target, this.context.scope.identifier, element, args[0])
+        // promise.then(response => Log.response(response));
+        promise.catch(response => Log.error(response));
+      }
+
+      return promise;
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -275,11 +284,11 @@ const getReflexRoots = element => {
 //   * consumer - [optional] the ActionCable consumer
 //   * logging - [optional] option wheter reflex logging should be enabled or not
 //
-const initialize = (application, options = {}) => {
-  const { controller, consumer } = options
+const initialize = (application, initializeOptions = {}) => {
+  const { controller, consumer } = initializeOptions
   actionCableConsumer = consumer
   stimulusApplication = application
-  stimulusApplication.options = { ...defaultOptions, ...options }
+  options = { ...options, ...initializeOptions }
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
     'stimulus-reflex',
@@ -288,11 +297,11 @@ const initialize = (application, options = {}) => {
 }
 
 const enableLogging = () => {
-  stimulusApplication.options.logging = true
+  options.logging = true
 }
 
 const disableLogging = () => {
-  stimulusApplication.options.logging = false
+  options.logging = false
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -309,13 +318,20 @@ if (!document.stimulusReflexInitialized) {
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
     const { target, attrs, last } = event.detail.stimulusReflex || {}
-    if (!last) return
+
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
+    const response = { data: promise?.data, element, event }
+
+    if (options.logging) {
+      Log.response(response)
+    }
+
+    if (!last) return
 
     if (promise) {
       delete promises[event.detail.stimulusReflex.reflexId]
-      promise.resolve({ data: promise.data, element, event })
+      promise.resolve(response)
     }
 
     dispatchLifecycleEvent('success', element)
@@ -325,11 +341,13 @@ if (!document.stimulusReflexInitialized) {
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
 
-    element.reflexError = error
+    if (element) {
+      element.reflexError = error
+    }
 
     if (promise) {
       delete promises[event.detail.stimulusReflex.reflexId]
-      promise.reject({ data: promise.data, element, event })
+      promise.reject({ data: promise.data, element, event, toString: () => error })
     }
 
     dispatchLifecycleEvent('error', element)
