@@ -43,13 +43,15 @@ function request (id, target, controller, element, argument) {
 }
 
 function response (response) {
-  const { reflexId, target, url, last } = response.event.detail.stimulusReflex || {}
+  const { reflexId, target, url, last } =
+    response.event.detail.stimulusReflex || {}
   const { html, selector } = response.event.detail || {}
   const { color, triggerdAt, count } = logs[reflexId] || {}
   const receivedAt = new Date()
-  const responseCount = (!last || count > 1) ? `[${count}]` : ''
+  const responseCount = !last || count > 1 ? `[${count}]` : ''
 
-  const title = `%cstimulate <== %c${target} %c- %c${reflexId} %c(${receivedAt - triggerdAt}ms) ${responseCount}`
+  const title = `%cstimulate <== %c${target} %c- %c${reflexId} %c(${receivedAt -
+    triggerdAt}ms) ${responseCount}`
   const styles = [
     style('gray'),
     style('inherit', 'bold'),
@@ -76,11 +78,13 @@ function response (response) {
 }
 
 function error (response) {
-  const { reflexId, target, selectors, error, url } = response.event.detail.stimulusReflex || {}
+  const { reflexId, target, selectors, error, url } =
+    response.event.detail.stimulusReflex || {}
   const { color, triggerdAt } = logs[reflexId] || {}
   const receivedAt = new Date()
 
-  const title = `%cstimulate <== %c${target} %c- %c${reflexId} %c(${receivedAt - triggerdAt}ms) [error]`
+  const title = `%cstimulate <== %c${target} %c- %c${reflexId} %c(${receivedAt -
+    triggerdAt}ms) [error]`
   const styles = [
     style('gray', 'normal', '#fceceb'),
     style('inherit', 'bold', '#fceceb'),

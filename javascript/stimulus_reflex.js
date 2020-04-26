@@ -141,15 +141,21 @@ const extendStimulusController = controller => {
 
       const promise = new Promise((resolve, reject) => {
         promises[reflexId] = { resolve, reject, data }
-      });
+      })
 
       if (options.logging) {
-        Log.request(reflexId, target, this.context.scope.identifier, element, args[0])
+        Log.request(
+          reflexId,
+          target,
+          this.context.scope.identifier,
+          element,
+          args[0]
+        )
         // promise.then(response => Log.response(response));
-        promise.catch(response => Log.error(response));
+        promise.catch(response => Log.error(response))
       }
 
-      return promise;
+      return promise
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -321,7 +327,7 @@ if (!document.stimulusReflexInitialized) {
 
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
-    const response = { data: (promise && promise.data), element, event }
+    const response = { data: promise && promise.data, element, event }
 
     if (options.logging) {
       Log.response(response)
@@ -347,7 +353,12 @@ if (!document.stimulusReflexInitialized) {
 
     if (promise) {
       delete promises[event.detail.stimulusReflex.reflexId]
-      promise.reject({ data: promise.data, element, event, toString: () => error })
+      promise.reject({
+        data: promise.data,
+        element,
+        event,
+        toString: () => error
+      })
     }
 
     dispatchLifecycleEvent('error', element)
