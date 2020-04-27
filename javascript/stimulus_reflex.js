@@ -9,8 +9,7 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement,
-  isTextInput
+  findElement
 } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -22,27 +21,6 @@ let stimulusApplication
 let actionCableConsumer
 
 const promises = {}
-
-// Initializes implicit data-reflex-permanent for text inputs.
-//
-const initializeImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.reflexPermanent = element.hasAttribute(
-    stimulusApplication.schema.reflexPermanentAttribute
-  )
-  element.setAttribute(stimulusApplication.schema.reflexPermanentAttribute, '')
-}
-
-// Resets implicit data-reflex-permanent for text inputs.
-//
-const resetImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute(stimulusApplication.schema.reflexPermanentAttribute)
-  }
-}
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
@@ -320,8 +298,6 @@ if (!document.stimulusReflexInitialized) {
 
     dispatchLifecycleEvent('error', element)
   })
-  document.addEventListener('focusin', initializeImplicitReflexPermanent)
-  document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
 export default { initialize, register, setupDeclarativeReflexes }
