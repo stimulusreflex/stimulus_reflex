@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.1",
+    "cable_ready": ">= 4.1.2",
     "inflected": ">= 2.0",
     "stimulus": ">= 1.1",
     "uuid": ">= 7.0.3"
