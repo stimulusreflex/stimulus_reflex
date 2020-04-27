@@ -8,17 +8,26 @@ Sockpuppet is ultimately a port of rails' library StimulusReflex and thus also r
 
 You can easily install Sockpuppet to new and existing Django projects.
 
-TODO start up for django.
 ```bash
-rails new myproject --webpack=stimulus
-cd myproject
-bundle add stimulus_reflex
-bundle exec rails stimulus_reflex:install
+pip install django-sockpuppet
+
+# Add these into INSTALLED_APPS in settings.py
+INSTALLED_APPS = [
+    'channels',
+    'sockpuppet'
+]
+
+# generates scaffolding for webpack.config.js and installs required js dependencies
+# if you prefer to do that manually read on below.
+python manage.py initial_sockpuppet
+
+# scaffolds a new reflex with everything that's needed.
+python manage.py generate_reflex app_name name_of_reflex
 ```
 
 The terminal commands above will ensure that Sockpuppet is installed. It creates an example to get you started.
 
-However you will need to make some further configuration in `settings.py` and you need some way to build the javascript. Examples of how a such a setup can look like will be provided below.
+However you will need to make some further configurations in `settings.py` and you need some way to build the javascript. We will detail what `initial_sockpuppet` does behind the scenes below.
 
 ## Configuration
 
@@ -83,28 +92,30 @@ The last part is the configuration for webpack itself.
 {% tab title="webpack.config.js" %}
 ```javascript
 const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
+const glob = require('glob');
 
 
-const rootPath = __dirname;
-const entryPath = 'frontend/src/js/';
-const entryFiles = fs.readdirSync(path.join(rootPath,entryPath));
+let globOptions = {
+    ignore: ['node_modules/**', 'venv/**']
+}
+
+let entryFiles = glob.sync("**/javascript/*.js", globOptions)
+
 let entryObj = {};
-
 entryFiles.forEach(function(file){
     if (file.includes('.')) {
-        let fileName = file.split('.')[0];
-        entryObj[fileName] = `./${entryPath}${file}`;
+        let parts = file.split('/')
+        let path = parts.pop()
+        let fileName = path.split('.')[0];
+        entryObj[fileName] = `./${file}`;
     }
 });
-console.log(entryObj)
 
 const config = {
     mode: process.env.NODE_ENV,
     entry: entryObj,
     output: {
-        path: __dirname + '/frontend/dist/js',
+        path: __dirname + '/dist/js',
         filename: '[name].js'
     },
     optimization: {
@@ -117,13 +128,13 @@ module.exports = config
 {% endtab %}
 {% endtabs %}
 
-The configuration above will look for javascript files in the folder `frontend/src/js`, compile them and place the output in the folder `frontend/dist/js/`.
+The configuration above will look for javascript files in the folder `your_app/javascript`, compile them and place the output in the folder `dist/js/`.
 
 If you add that folder to `STATICFILES_DIRS` in settings it will pick that compiled javascript and you can use it in templates.
 
 ```
 STATICFILES_DIRS = [
-    ("js", "/frontend/dist/js"),
+    ("js", "/dist/js"),
 ]
 ```
 
