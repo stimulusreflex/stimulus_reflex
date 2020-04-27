@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -29,13 +29,13 @@
   "main": "./stimulus_reflex.js",
   "scripts": {
     "postinstall": "node scripts/post_install.js",
-    "prettier-standard:check": "yarn run prettier-standard --check ./**/*.js",
-    "prettier-standard:format": "yarn run prettier-standard ./**/*.js",
+    "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
+    "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
     "test": "yarn run mocha --require @babel/register"
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.1",
+    "cable_ready": ">= 4.1.2",
     "inflected": ">= 2.0",
     "stimulus": ">= 1.1",
     "uuid": ">= 7.0.3"

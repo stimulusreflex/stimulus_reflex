@@ -10,8 +10,7 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement,
-  isTextInput
+  findElement
 } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -30,27 +29,6 @@ let options = {
   logging: false
 }
 
-// Initializes implicit data-reflex-permanent for text inputs.
-//
-const initializeImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.reflexPermanent = element.hasAttribute(
-    stimulusApplication.schema.reflexPermanentAttribute
-  )
-  element.setAttribute(stimulusApplication.schema.reflexPermanentAttribute, '')
-}
-
-// Resets implicit data-reflex-permanent for text inputs.
-//
-const resetImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute(stimulusApplication.schema.reflexPermanentAttribute)
-  }
-}
-
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
 // controller - the StimulusReflex controller to subscribe
@@ -66,9 +44,9 @@ const createSubscription = controller => {
       received: data => {
         if (!data.cableReady) return
         if (data.operations.morph && data.operations.morph.length) {
-          const urls = [
-            ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          ]
+          const urls = Array.from(
+            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          )
           if (urls.length !== 1 || urls[0] !== location.href) return
         }
         CableReady.perform(data.operations)
@@ -319,6 +297,9 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('cable-ready:after-morph', () =>
     setTimeout(setupDeclarativeReflexes, 1)
   )
+  document.addEventListener('ajax:complete', () =>
+    setTimeout(setupDeclarativeReflexes, 1)
+  )
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
@@ -363,13 +344,12 @@ if (!document.stimulusReflexInitialized) {
 
     dispatchLifecycleEvent('error', element)
   })
-  document.addEventListener('focusin', initializeImplicitReflexPermanent)
-  document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
 export default {
   initialize,
   register,
+  setupDeclarativeReflexes,
   enableLogging,
   disableLogging
 }

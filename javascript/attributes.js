@@ -85,31 +85,3 @@ export const findElement = attributes => {
   const element = elements.length === 1 ? elements[0] : null
   return element
 }
-
-// Indicates if the passed element is considered a text input.
-//
-export const isTextInput = element => {
-  return (
-    ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) &&
-    [
-      'color',
-      'date',
-      'datetime',
-      'datetime-local',
-      'email',
-      'month',
-      'number',
-      'password',
-      'range',
-      'search',
-      'select-one',
-      'select-multiple',
-      'tel',
-      'text',
-      'textarea',
-      'time',
-      'url',
-      'week'
-    ].includes(element.type)
-  )
-}
