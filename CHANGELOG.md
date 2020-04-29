@@ -122,15 +122,10 @@
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
-- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 
 **Closed issues:**
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/hopsoft/stimulus_reflex/issues/127)
-
-**Merged pull requests:**
-
-- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v2.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.2) (2020-03-04)
 
@@ -139,6 +134,7 @@
 **Implemented enhancements:**
 
 - Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
+- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
@@ -176,6 +172,10 @@
 **Fixed bugs:**
 
 - Fix bug related to trailing slash in URL path [\#111](https://github.com/hopsoft/stimulus_reflex/pull/111) ([hopsoft](https://github.com/hopsoft))
+
+**Merged pull requests:**
+
+- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v2.1.7](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.7) (2019-12-28)
 
