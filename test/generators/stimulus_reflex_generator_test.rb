@@ -13,6 +13,6 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
     assert_file "app/javascript/controllers/application_controller.js"
     assert_file "app/javascript/controllers/demo_controller.js", /DemoReflex/
     assert_file "app/reflexes/application_reflex.rb"
-    assert_file "app/reflexes/demo_reflex.rb", /DemoReflex/
+    assert_file "app/reflexes/demo_reflex.rb", /DemosReflex/
   end
 end
