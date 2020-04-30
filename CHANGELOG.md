@@ -121,6 +121,8 @@
 **Implemented enhancements:**
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
+- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
+- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -162,8 +164,6 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
-- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
-- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -359,10 +359,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.1...v1.0.2)
 
-**Implemented enhancements:**
-
-- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
-
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
@@ -430,6 +426,10 @@
 ## [v0.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v0.1.8) (2018-10-22)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.1.7...v0.1.8)
+
+**Implemented enhancements:**
+
+- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
