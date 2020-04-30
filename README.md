@@ -68,6 +68,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## ✨ Demos
 
+- https://youtu.be/F5hA79vKE_E
 - http://expo.stimulusreflex.com
 
 ## 💙 Community
