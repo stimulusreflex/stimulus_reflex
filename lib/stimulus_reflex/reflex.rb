@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
+  include ActiveSupport::Rescuable
+
   attr_reader :channel, :url, :element, :selectors
 
   delegate :connection, to: :channel
