@@ -6,6 +6,7 @@ import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import { uuidv4 } from './utils'
 import Log from './log'
+import { ActionCableAdapter } from './adapter'
 import {
   attributeValue,
   attributeValues,
@@ -19,7 +20,7 @@ let stimulusApplication
 
 // A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
 //
-let actionCableConsumer
+let adaptedConsumer
 
 // A dictionary of promise data
 //
@@ -34,24 +35,15 @@ let debugging = false
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  actionCableConsumer = actionCableConsumer || getConsumer()
+  adaptedConsumer = adaptedConsumer || new ActionCableAdapter(getConsumer())
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
 
-  controller.StimulusReflex.subscription =
-    actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(channel, {
-      received: data => {
-        if (!data.cableReady) return
-        if (data.operations.morph && data.operations.morph.length) {
-          const urls = Array.from(
-            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          )
-          if (urls.length !== 1 || urls[0] !== location.href) return
-        }
-        CableReady.perform(data.operations)
-      }
-    })
+  let subscription =
+    adaptedConsumer.find_subscription(identifier) ||
+    adaptedConsumer.create_subscription(channel)
+
+  controller.StimulusReflex.subscription = subscription
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -83,6 +75,7 @@ const extendStimulusController = controller => {
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
           : this.element
+      const stimulateOptions = args.shift()
       if (
         element.type === 'number' &&
         element.validity &&
@@ -103,8 +96,8 @@ const extendStimulusController = controller => {
           stimulusApplication.schema.reflexPermanentAttribute,
         reflexId: reflexId
       }
-      const { subscription } = this.StimulusReflex
-      const { connection } = subscription.consumer
+
+      const { channel } = this.StimulusReflex
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
@@ -115,6 +108,7 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
+      adaptedConsumer.send(JSON.stringify({ channel }, data, stimulateOptions))
       subscription.send(data)
 
       if (debugging) {
@@ -272,7 +266,8 @@ const getReflexRoots = element => {
 //
 const initialize = (application, initializeOptions = {}) => {
   const { controller, consumer, debug } = initializeOptions
-  actionCableConsumer = consumer
+
+  adaptedConsumer = consumer
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
