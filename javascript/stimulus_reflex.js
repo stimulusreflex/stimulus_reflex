@@ -296,17 +296,18 @@ if (!document.stimulusReflexInitialized) {
     const { attrs, last } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
+    const response = { data: promise && promise.data, element, event }
+
+    if (debugging) Log.success(response)
 
     if (!last) return
 
-    const response = { data: promise && promise.data, element, event }
     if (promise) {
       delete promises[event.detail.stimulusReflex.reflexId]
       promise.resolve(response)
     }
 
     dispatchLifecycleEvent('success', element)
-    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
