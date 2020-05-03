@@ -19,12 +19,14 @@ function request (
 function success (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
+  const { html } = detail || {}
   const { reflexId, target, last } = detail.stimulusReflex || {}
   console.log(`\u2B05 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     payload: event.detail.stimulusReflex,
-    element
+    element,
+    html
   })
   if (last) delete logs[reflexId]
 }
