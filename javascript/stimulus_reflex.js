@@ -21,13 +21,13 @@ let stimulusApplication
 //
 let actionCableConsumer
 
+// A dictionary of promise data
+//
 const promises = {}
 
-// This object holds the options for StimulusReflex
+// Indicates if we should log calls to stimulate, etc...
 //
-let options = {
-  logging: false
-}
+let debugging = false
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
@@ -117,22 +117,20 @@ const extendStimulusController = controller => {
 
       subscription.send(data)
 
-      const promise = new Promise((resolve, reject) => {
-        promises[reflexId] = { resolve, reject, data }
-      })
-
-      if (options.logging) {
+      if (debugging) {
         Log.request(
           reflexId,
           target,
+          args,
           this.context.scope.identifier,
-          element,
-          args[0]
+          element
         )
-        // promise.then(response => Log.response(response));
-        promise.catch(response => Log.error(response))
       }
 
+      const promise = new Promise(
+        (resolve, reject) => (promises[reflexId] = { resolve, reject, data })
+      )
+      promise.catch(() => {}) // noop default catch
       return promise
     },
 
@@ -266,26 +264,17 @@ const getReflexRoots = element => {
 // - options
 //   * controller - [optional] the default StimulusReflexController
 //   * consumer - [optional] the ActionCable consumer
-//   * logging - [optional] option wheter reflex logging should be enabled or not
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer } = initializeOptions
+  const { controller, consumer, debug } = initializeOptions
   actionCableConsumer = consumer
   stimulusApplication = application
-  options = { ...options, ...initializeOptions }
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
-}
-
-const enableLogging = () => {
-  options.logging = true
-}
-
-const disableLogging = () => {
-  options.logging = false
+  debugging = !!debug
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -304,45 +293,42 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { target, attrs, last } = event.detail.stimulusReflex || {}
-
+    const { attrs, last } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
-    const response = { data: promise && promise.data, element, event }
-
-    if (options.logging) {
-      Log.response(response)
-    }
 
     if (!last) return
 
+    const response = { data: promise && promise.data, element, event }
     if (promise) {
       delete promises[event.detail.stimulusReflex.reflexId]
       promise.resolve(response)
     }
 
     dispatchLifecycleEvent('success', element)
+    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs, error } = event.detail.stimulusReflex || {}
+    const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
     const promise = promises[event.detail.stimulusReflex.reflexId]
 
-    if (element) {
-      element.reflexError = error
+    if (element) element.reflexError = error
+
+    const response = {
+      data: promise && promise.data,
+      element,
+      event,
+      toString: () => error
     }
 
     if (promise) {
-      delete promises[event.detail.stimulusReflex.reflexId]
-      promise.reject({
-        data: promise.data,
-        element,
-        event,
-        toString: () => error
-      })
+      delete promises[reflexId]
+      promise.reject(response)
     }
 
     dispatchLifecycleEvent('error', element)
+    if (debugging) Log.error(response)
   })
 }
 
@@ -350,6 +336,10 @@ export default {
   initialize,
   register,
   setupDeclarativeReflexes,
-  enableLogging,
-  disableLogging
+  get debug () {
+    return debugging
+  },
+  set debug (value) {
+    debugging = !!value
+  }
 }
