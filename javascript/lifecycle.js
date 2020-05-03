@@ -1,4 +1,19 @@
-import { camelize } from 'inflected'
+const camelize = (value, uppercaseFirstLetter = true) => {
+  if (typeof value !== 'string') return ''
+  str = str
+    .replace(/[\s_](.)/g, $1 => {
+      return $1.toUpperCase()
+    })
+    .replace(/[\s_]/g, '')
+    .replace(/^(.)/, $1 => {
+      return $1.toLowerCase()
+    })
+
+  if (uppercaseFirstLetter) {
+    str = str.substr(0, 1).toUpperCase() + str.substr(1)
+  }
+  return str
+}
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
