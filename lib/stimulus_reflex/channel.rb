@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < ActionCable::Channel::Base
-  include CableReady::Broadcaster
+  def initialize(connection, identifier, params = {})
+    super
+
+    @transport_adapter = StimulusReflex::Transport::CableReadyAdapter.new(self)
+  end
 
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
@@ -93,27 +97,11 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   def broadcast_morphs(selectors, data, html)
-    document = Nokogiri::HTML(html)
-    selectors = selectors.select { |s| document.css(s).present? }
-    selectors.each do |selector|
-      cable_ready[stream_name].morph(
-        selector: selector,
-        html: document.css(selector).inner_html,
-        children_only: true,
-        permanent_attribute_name: data["permanent_attribute_name"],
-        stimulus_reflex: data.merge(last: selector == selectors.last)
-      )
-    end
-    cable_ready.broadcast
+    @transport_adapter.transmit_morphs(selectors, data, html)
   end
 
   def broadcast_error(message, data = {})
-    logger.error "\e[31m#{message}\e[0m"
-    cable_ready[stream_name].dispatch_event(
-      name: "stimulus-reflex:500",
-      detail: {stimulus_reflex: data.merge(error: message)}
-    )
-    cable_ready.broadcast
+    @transport_adapter.transmit_errors(message, data)
   end
 
   def exception_message_with_backtrace(exception)
