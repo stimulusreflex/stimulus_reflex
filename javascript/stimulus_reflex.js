@@ -130,7 +130,7 @@ const extendStimulusController = controller => {
       const promise = new Promise(
         (resolve, reject) => (promises[reflexId] = { resolve, reject, data })
       )
-      promise.catch(() => {}) // noop default catch
+      if (debugging) promise.catch(() => {}) // noop default catch
       return promise
     },
 
