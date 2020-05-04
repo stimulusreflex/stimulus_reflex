@@ -127,9 +127,14 @@ const extendStimulusController = controller => {
         )
       }
 
-      const promise = new Promise(
-        (resolve, reject) => (promises[reflexId] = { resolve, reject, data })
-      )
+      const promise = new Promise((resolve, reject) => {
+        promises[reflexId] = {
+          resolve,
+          reject,
+          data,
+          events: {}
+        }
+      })
       if (debugging) promise.catch(() => {}) // noop default catch
       return promise
     },
@@ -293,26 +298,34 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { attrs, last } = event.detail.stimulusReflex || {}
+    const { selector } = event.detail || {}
+    const { reflexId, attrs, last } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
-    const promise = promises[event.detail.stimulusReflex.reflexId]
-    const response = { data: promise && promise.data, element, event }
+    const promise = promises[reflexId]
 
-    if (debugging) Log.success(response)
+    if (promise) promise.events[selector] = event
 
     if (!last) return
 
+    const response = {
+      element,
+      event,
+      data: promise && promise.data,
+      events: promise && promise.events
+    }
+
     if (promise) {
-      delete promises[event.detail.stimulusReflex.reflexId]
+      delete promises[reflexId]
       promise.resolve(response)
     }
 
     dispatchLifecycleEvent('success', element)
+    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:500', event => {
     const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
-    const promise = promises[event.detail.stimulusReflex.reflexId]
+    const promise = promises[reflexId]
 
     if (element) element.reflexError = error
 

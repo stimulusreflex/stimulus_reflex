@@ -17,7 +17,7 @@ function request (
 }
 
 function success (response) {
-  const { event, element } = response || {}
+  const { event, events, element } = response || {}
   const { detail } = event || {}
   const { html } = detail || {}
   const { reflexId, target, last } = detail.stimulusReflex || {}
@@ -26,7 +26,8 @@ function success (response) {
     duration: `${new Date() - logs[reflexId]}ms`,
     payload: event.detail.stimulusReflex,
     element,
-    html
+    html,
+    events
   })
   if (last) delete logs[reflexId]
 }
