@@ -17,17 +17,24 @@ function request (
 }
 
 function success (response) {
-  const { event, events, element } = response || {}
-  const { detail } = event || {}
-  const { html } = detail || {}
-  const { reflexId, target, last } = detail.stimulusReflex || {}
+  const html = {}
+  const payloads = {}
+  const elements = {}
+  const { event, events } = response
+  const { reflexId, target, last } = event.detail.stimulusReflex || {}
+
+  Object.keys(events).map(selector => {
+    elements[selector] = events[selector].detail.element
+    html[selector] = events[selector].detail.html
+    payloads[selector] = events[selector].detail.stimulusReflex
+  })
+
   console.log(`\u2B05 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
-    payload: event.detail.stimulusReflex,
-    element,
-    html,
-    events
+    elements,
+    payloads,
+    html
   })
   if (last) delete logs[reflexId]
 }
