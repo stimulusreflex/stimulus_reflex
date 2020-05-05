@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.4...HEAD)
+
+**Implemented enhancements:**
+
+- add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
+
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.3...v3.1.4)
@@ -122,7 +130,6 @@
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
-- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -164,6 +171,7 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
+- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -350,6 +358,7 @@
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
+- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -359,13 +368,13 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.1...v1.0.2)
 
+**Implemented enhancements:**
+
+- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
+
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
-
-**Implemented enhancements:**
-
-- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -378,6 +387,10 @@
 **Implemented enhancements:**
 
 - Ruby function splat args return arity of -1 [\#9](https://github.com/hopsoft/stimulus_reflex/pull/9) ([leastbad](https://github.com/leastbad))
+
+**Fixed bugs:**
+
+- Update env so url helpers work [\#2](https://github.com/hopsoft/stimulus_reflex/pull/2) ([hopsoft](https://github.com/hopsoft))
 
 ## [v0.3.3](https://github.com/hopsoft/stimulus_reflex/tree/v0.3.3) (2019-05-13)
 
@@ -426,14 +439,6 @@
 ## [v0.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v0.1.8) (2018-10-22)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.1.7...v0.1.8)
-
-**Implemented enhancements:**
-
-- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
-
-**Fixed bugs:**
-
-- Update env so url helpers work [\#2](https://github.com/hopsoft/stimulus_reflex/pull/2) ([hopsoft](https://github.com/hopsoft))
 
 ## [v0.1.7](https://github.com/hopsoft/stimulus_reflex/tree/v0.1.7) (2018-10-21)
 
