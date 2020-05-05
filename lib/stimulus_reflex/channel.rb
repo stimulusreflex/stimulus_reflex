@@ -36,7 +36,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
 
     begin
-      render_page_and_broadcast_morph reflex, selectors, data
+      render_page_and_broadcast_morph reflex, selectors, data unless reflex.halted?
     rescue => render_error
       message = exception_message_with_backtrace(render_error)
       broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
@@ -55,9 +55,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
 
     if arguments.size == 0 && required_params.size == 0
-      reflex.process_reflex(method_name)
+      reflex.process(method_name)
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
-      reflex.process_reflex(method_name, *arguments)
+      reflex.process(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end
