@@ -6,7 +6,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
 
   def initialize_application_reflexes
-    copy_application_files if self.behavior == :invoke
+    copy_application_files if behavior == :invoke
   end
 
   def initialize_reflexes
@@ -31,7 +31,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
   end
 
   def copy_application_files
-    template "application_reflex.rb", File.join(REFLEX_BASE_PATH, "application_reflex.rb") 
-    template "application_controller.js", File.join(CONTROLLER_BASE_PATH, "application_controller.js") 
+    template "application_reflex.rb", File.join(REFLEX_BASE_PATH, "application_reflex.rb")
+    template "application_controller.js", File.join(CONTROLLER_BASE_PATH, "application_controller.js")
   end
 end
