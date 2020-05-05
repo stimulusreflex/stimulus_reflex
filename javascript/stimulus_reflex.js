@@ -5,6 +5,7 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
+import Log from './log'
 import {
   attributeValue,
   attributeValues,
@@ -20,7 +21,13 @@ let stimulusApplication
 //
 let actionCableConsumer
 
+// A dictionary of promise data
+//
 const promises = {}
+
+// Indicates if we should log calls to stimulate, etc...
+//
+let debugging = false
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
@@ -107,11 +114,29 @@ const extendStimulusController = controller => {
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
+
       subscription.send(data)
 
-      return new Promise((resolve, reject) => {
-        promises[reflexId] = { resolve, reject, data }
+      if (debugging) {
+        Log.request(
+          reflexId,
+          target,
+          args,
+          this.context.scope.identifier,
+          element
+        )
+      }
+
+      const promise = new Promise((resolve, reject) => {
+        promises[reflexId] = {
+          resolve,
+          reject,
+          data,
+          events: {}
+        }
       })
+      if (debugging) promise.catch(() => {}) // noop default catch
+      return promise
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -245,8 +270,8 @@ const getReflexRoots = element => {
 //   * controller - [optional] the default StimulusReflexController
 //   * consumer - [optional] the ActionCable consumer
 //
-const initialize = (application, options = {}) => {
-  const { controller, consumer } = options
+const initialize = (application, initializeOptions = {}) => {
+  const { controller, consumer, debug } = initializeOptions
   actionCableConsumer = consumer
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
@@ -254,6 +279,7 @@ const initialize = (application, options = {}) => {
     'stimulus-reflex',
     controller || StimulusReflexController
   )
+  debugging = !!debug
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -272,32 +298,62 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { target, attrs, last } = event.detail.stimulusReflex || {}
-    if (!last) return
+    const { selector } = event.detail || {}
+    const { reflexId, attrs, last } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
-    const promise = promises[event.detail.stimulusReflex.reflexId]
+    const promise = promises[reflexId]
+
+    if (promise) promise.events[selector] = event
+
+    if (!last) return
+
+    const response = {
+      element,
+      event,
+      data: promise && promise.data,
+      events: promise && promise.events
+    }
 
     if (promise) {
-      delete promises[event.detail.stimulusReflex.reflexId]
-      promise.resolve({ data: promise.data, element, event })
+      delete promises[reflexId]
+      promise.resolve(response)
     }
 
     dispatchLifecycleEvent('success', element)
+    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs, error } = event.detail.stimulusReflex || {}
+    const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
-    const promise = promises[event.detail.stimulusReflex.reflexId]
+    const promise = promises[reflexId]
 
-    element.reflexError = error
+    if (element) element.reflexError = error
+
+    const response = {
+      data: promise && promise.data,
+      element,
+      event,
+      toString: () => error
+    }
 
     if (promise) {
-      delete promises[event.detail.stimulusReflex.reflexId]
-      promise.reject({ data: promise.data, element, event })
+      delete promises[reflexId]
+      promise.reject(response)
     }
 
     dispatchLifecycleEvent('error', element)
+    if (debugging) Log.error(response)
   })
 }
 
-export default { initialize, register, setupDeclarativeReflexes }
+export default {
+  initialize,
+  register,
+  setupDeclarativeReflexes,
+  get debug () {
+    return debugging
+  },
+  set debug (value) {
+    debugging = !!value
+  }
+}
