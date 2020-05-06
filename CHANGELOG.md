@@ -7,6 +7,7 @@
 **Implemented enhancements:**
 
 - Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
+- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
@@ -123,7 +124,6 @@
 **Implemented enhancements:**
 
 - update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
-- update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -152,16 +152,13 @@
 
 **Implemented enhancements:**
 
+- update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 - Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
 - Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
-
-**Implemented enhancements:**
-
-- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -170,10 +167,6 @@
 ## [v2.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.9...v2.2.0)
-
-**Implemented enhancements:**
-
-- Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
@@ -200,6 +193,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.6...v2.1.7)
 
+**Implemented enhancements:**
+
+- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
+
 **Closed issues:**
 
 - SR cannot re-render authenticated devise routes [\#104](https://github.com/hopsoft/stimulus_reflex/issues/104)
@@ -211,6 +208,7 @@
 
 **Implemented enhancements:**
 
+- Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
 - StimulusReflex::Channel - Error messages include stack trace info [\#100](https://github.com/hopsoft/stimulus_reflex/pull/100) ([szTheory](https://github.com/szTheory))
 
 **Closed issues:**
