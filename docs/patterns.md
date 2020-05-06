@@ -42,7 +42,7 @@ import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
   sayHi () {
-    super()
+    super.sayHi()
     console.log('Hello from a Custom controller')
   }
 }
@@ -50,7 +50,7 @@ export default class extends ApplicationController {
 {% endtab %}
 {% endtabs %}
 
-If you need to override any methods on your ApplicationController, you can redefine them. Optionally call `super(...Array.from(arguments))` to invoke the method on the parent super class.
+If you need to override any methods on your ApplicationController, you can redefine them. Optionally call `super.AnyMethod(...Array.from(arguments))` to invoke the method on the parent super class.
 
 ### Benchmarking your Reflex actions
 
