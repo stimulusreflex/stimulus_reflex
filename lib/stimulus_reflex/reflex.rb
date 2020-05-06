@@ -96,4 +96,8 @@ class StimulusReflex::Reflex
   def halted?
     !!@halted
   end
+
+  def default_reflex
+    # noop default reflex to force page reloads
+  end
 end
