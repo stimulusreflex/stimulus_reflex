@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
+  include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
