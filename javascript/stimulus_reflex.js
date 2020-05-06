@@ -88,7 +88,7 @@ const extendStimulusController = controller => {
     stimulate () {
       const url = location.href
       const args = Array.from(arguments)
-      const target = args.shift()
+      const target = args.shift() || 'StimulusReflex::Reflex#default_reflex'
       const element =
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
