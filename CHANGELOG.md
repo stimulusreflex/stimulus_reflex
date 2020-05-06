@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.4...HEAD)
+
+**Implemented enhancements:**
+
+- Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
+- Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
+- add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
+- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
+
+**Closed issues:**
+
+- Promises just resolve with last Partial DOM update [\#171](https://github.com/hopsoft/stimulus_reflex/issues/171)
+
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.3...v3.1.4)
@@ -122,7 +137,6 @@
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
-- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -145,6 +159,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
 
+**Implemented enhancements:**
+
+- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
+
 **Fixed bugs:**
 
 - Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
@@ -164,6 +182,7 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
+- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -180,10 +199,6 @@
 ## [v2.1.7](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.7) (2019-12-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.6...v2.1.7)
-
-**Implemented enhancements:**
-
-- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -359,6 +374,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.1...v1.0.2)
 
+**Implemented enhancements:**
+
+- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
+
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
@@ -426,10 +445,6 @@
 ## [v0.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v0.1.8) (2018-10-22)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.1.7...v0.1.8)
-
-**Implemented enhancements:**
-
-- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
