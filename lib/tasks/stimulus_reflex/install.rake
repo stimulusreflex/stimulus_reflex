@@ -19,20 +19,17 @@ namespace :stimulus_reflex do
     puts "Updating #{filepath}"
     lines = File.open(filepath, "r") { |f| f.readlines }
 
-    import_stimulus_refelx_line = lines.find { |line| line.start_with?("import StimulusReflex") }
-    unless import_stimulus_refelx_line
+    unless lines.find { |line| line.start_with?("import StimulusReflex") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
       lines.insert lines.index(matches.last).to_i + 1, "import StimulusReflex from 'stimulus_reflex'\n"
     end
 
-    import_consumer_line = lines.find { |line| line.start_with?("import consumer") }
-    unless import_consumer_line
+    unless lines.find { |line| line.start_with?("import consumer") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
       lines.insert lines.index(matches.last).to_i + 1, "import consumer from '../channels/consumer'\n"
     end
 
-    import_controller_line = lines.find { |line| line.start_with?("import controller") }
-    unless import_controller_line
+    unless lines.find { |line| line.start_with?("import controller") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
       lines.insert lines.index(matches.last).to_i + 1, "import controller from './application_controller'\n"
     end
