@@ -16,6 +16,10 @@
 
 - Promises just resolve with last Partial DOM update [\#171](https://github.com/hopsoft/stimulus_reflex/issues/171)
 
+**Closed issues:**
+
+- Promises just resolve with last Partial DOM update [\#171](https://github.com/hopsoft/stimulus_reflex/issues/171)
+
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.3...v3.1.4)
