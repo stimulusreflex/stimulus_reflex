@@ -18,13 +18,27 @@ namespace :stimulus_reflex do
     end
     puts "Updating #{filepath}"
     lines = File.open(filepath, "r") { |f| f.readlines }
-    import_line = lines.find { |line| line.start_with?("import StimulusReflex") }
-    initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    unless import_line
+
+    import_stimulus_refelx_line = lines.find { |line| line.start_with?("import StimulusReflex") }
+    unless import_stimulus_refelx_line
       matches = lines.select { |line| line =~ /\A(require|import)/ }
       lines.insert lines.index(matches.last).to_i + 1, "import StimulusReflex from 'stimulus_reflex'\n"
     end
-    lines << "StimulusReflex.initialize(application)\n" unless initialize_line
+
+    import_consumer_line = lines.find { |line| line.start_with?("import consumer") }
+    unless import_consumer_line
+      matches = lines.select { |line| line =~ /\A(require|import)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "import consumer from '../channels/consumer'\n"
+    end
+
+    import_controller_line = lines.find { |line| line.start_with?("import controller") }
+    unless import_controller_line
+      matches = lines.select { |line| line =~ /\A(require|import)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "import controller from './application_controller'\n"
+    end
+
+    initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
+    lines << "StimulusReflex.initialize(application, { consumer, controller, debug: false })\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
     filepath = Rails.root.join("config/environments/development.rb")
