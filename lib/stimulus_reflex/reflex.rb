@@ -36,23 +36,23 @@ class StimulusReflex::Reflex
     def normalize_callback_option!(options, from, to)
       if (from = options.delete(from))
         from_set = Array(from).map(&:to_s).to_set
-        from = proc { |reflex| from_set.include? reflex.reflex_name }
+        from = proc { |reflex| from_set.include? reflex.method_name }
         options[to] = Array(options[to]).unshift(from)
       end
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :reflex_name
+  attr_reader :channel, :url, :element, :selectors, :method_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [], reflex_name: nil)
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil)
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
-    @reflex_name = reflex_name
+    @method_name = method_name
   end
 
   def request

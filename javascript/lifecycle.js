@@ -1,15 +1,4 @@
-const camelize = (value, uppercaseFirstLetter = true) => {
-  if (typeof value !== 'string') return ''
-  value = value
-    .replace(/[\s_](.)/g, $1 => $1.toUpperCase())
-    .replace(/[\s_]/g, '')
-    .replace(/^(.)/, $1 => $1.toLowerCase())
-
-  if (uppercaseFirstLetter)
-    value = value.substr(0, 1).toUpperCase() + value.substr(1)
-
-  return value
-}
+import { camelize } from './utils'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
