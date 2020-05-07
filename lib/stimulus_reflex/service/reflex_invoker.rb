@@ -27,15 +27,15 @@ module StimulusReflex
         rescue => invoke_error
           reflex.rescue_with_handler(invoke_error)
           message = exception_message_with_backtrace(invoke_error)
-          return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data)
+          return transport_adapter.transmit_errors("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data)
         end
 
         begin
-          render_page_and_broadcast_morph reflex, selectors, data unless reflex.halted?
+          render_page_and_transmit_morph reflex, selectors, data unless reflex.halted?
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
-          broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
+          transport_adapter.transmit_errors "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
         end
       end
 
@@ -59,9 +59,9 @@ module StimulusReflex
         end
       end
 
-      def render_page_and_broadcast_morph(reflex, selectors, data = {})
+      def render_page_and_transmit_morph(reflex, selectors, data = {})
         html = render_page(reflex)
-        broadcast_morphs selectors, data, html if html.present?
+        transport_adapter.transmit_morphs selectors, data, html if html.present?
       end
 
       def render_page(reflex)
@@ -84,14 +84,6 @@ module StimulusReflex
       rescue => e
         message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
         Rails.logger.error "\e[31m#{message}\e[0m"
-      end
-
-      def broadcast_morphs(selectors, data, html)
-        transport_adapter.transmit_morphs(selectors, data, html)
-      end
-
-      def broadcast_error(message, data = {})
-        transport_adapter.transmit_errors(message, data)
       end
 
       def exception_message_with_backtrace(exception)
