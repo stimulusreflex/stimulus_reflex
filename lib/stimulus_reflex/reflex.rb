@@ -42,9 +42,8 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name
+  attr_reader :transport_adapter, :url, :element, :selectors, :method_name
 
-  delegate :connection, to: :channel
   delegate :session, to: :request
 
   def initialize(transport_adapter, url: nil, element: nil, selectors: [], method_name: nil)
@@ -61,7 +60,7 @@ class StimulusReflex::Reflex
       path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
       query_hash = Rack::Utils.parse_nested_query(uri.query)
       req = ActionDispatch::Request.new(
-        connection.env.merge(
+        transport_adapter.env.merge(
           Rack::MockRequest.env_for(uri.to_s).merge(
             "rack.request.query_hash" => query_hash,
             "rack.request.query_string" => uri.query,

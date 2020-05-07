@@ -33,6 +33,10 @@ module StimulusReflex
         )
         cable_ready.broadcast
       end
+
+      def env
+        @channel.connection.env
+      end
     end
   end
 end

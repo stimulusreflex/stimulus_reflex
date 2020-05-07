@@ -11,6 +11,10 @@ module StimulusReflex
       def transmit_errors(message, data = {})
         Rails.logger.error "\e[31m#{message}\e[0m"
       end
+
+      def env
+        {}
+      end
     end
   end
 end
