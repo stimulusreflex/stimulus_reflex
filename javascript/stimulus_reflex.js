@@ -4,6 +4,7 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
+import { uuidv4 } from './utils'
 import Log from './log'
 import {
   attributeValue,
@@ -27,17 +28,6 @@ const promises = {}
 // Indicates if we should log calls to stimulate, etc...
 //
 let debugging = false
-
-const uuidv4 = () => {
-  // uuid4 function taken from stackoverflow
-  // https://stackoverflow.com/a/2117523/554903
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
-  )
-}
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
