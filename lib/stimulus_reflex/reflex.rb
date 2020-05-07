@@ -47,8 +47,8 @@ class StimulusReflex::Reflex
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil)
-    @channel = channel
+  def initialize(transport_adapter, url: nil, element: nil, selectors: [], method_name: nil)
+    @channel = transport_adapter.channel
     @url = url
     @element = element
     @selectors = selectors

@@ -9,7 +9,7 @@ module StimulusReflex
       end
 
       def transmit_errors(message, data = {})
-        logger.error "\e[31m#{message}\e[0m"
+        Rails.logger.error "\e[31m#{message}\e[0m"
       end
     end
   end

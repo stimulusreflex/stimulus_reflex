@@ -3,6 +3,8 @@ module StimulusReflex
     class CableReadyAdapter < BaseAdapter
       include CableReady::Broadcaster
 
+      attr_reader :channel
+
       def initialize(channel)
         @channel = channel
       end
