@@ -6,13 +6,11 @@ description: How to build a great StimulusReflex application
 
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
-That said, if you're building applications with StimulusReflex, you're going to want to bookmark this page. If you discover useful patterns not documented here, please open an issue or submit a pull request.
-
 ## Client Side
 
-### Application Controller
+### Application controller
 
-You can make use of JavaScript's class inheritance to set up an "Application Controller" that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
+You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
 
 {% tabs %}
 {% tab title="application\_controller.js" %}
@@ -50,15 +48,15 @@ export default class extends ApplicationController {
 {% endtab %}
 {% endtabs %}
 
-If you need to override any methods on your ApplicationController, you can redefine them. Optionally call `super.AnyMethod(...Array.from(arguments))` to invoke the method on the parent super class.
+If you need to override any methods on your Application controller, you can redefine them. Optionally call `super.sayHi(...Array.from(arguments))` to invoke the method on the parent super class.
 
 ### Benchmarking your Reflex actions
 
 You might want to see how long your Reflex actions are taking to complete a round-trip, and without Ajax calls to monitor getting reliable metrics requires new approaches.
 
-We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "**native**" by your users.
+We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
 
-You can add this code to your desired Reflex controller. If you're making use of the Application Controller pattern described above, all of your Reflexes will log their round-trip execution times.
+You can add this code to your desired Reflex controller. If you're making use of the ApplicationController pattern described above, all of your Reflexes will log their round-trip execution times.
 
 {% tabs %}
 {% tab title="application\_controller.js" %}
@@ -76,7 +74,7 @@ You can add this code to your desired Reflex controller. If you're making use of
 
 ### Spinners for long-running actions
 
-You can use `beforeReflex` and `afterReflex` to create UI "spinners" for anything that might take more than a heartbeat to complete. In addition to providing helpful visual feedback, research has demonstrated that acknowledging a slight delay will result in the user **perceiving** the delay as being shorter than they would if you did not acknowledge the delay. This is likely because we've been trained by good UI design to understand that this convention means we're waiting on the system. A sluggish UI otherwise forces people to wonder if they have done something wrong, and you don't want that.
+You can use `beforeReflex` and `afterReflex` to create UI spinners for anything that might take more than a heartbeat to complete. In addition to providing helpful visual feedback, research has demonstrated that acknowledging a slight delay will result in the user _perceiving_ the delay as being shorter than they would if you did not acknowledge the delay. This is likely because we've been trained by good UI design to understand that this convention means we're waiting on the system. A sluggish UI otherwise forces people to wonder if they have done something wrong, and you don't want that.
 
 {% tabs %}
 {% tab title="application\_controller.js" %}
@@ -132,6 +130,12 @@ If we wanted to only check the element that triggered the Reflex action, we woul
 If we wanted to check the whole page for an **autofocus** attribute, we can just use **document.querySelector\('\[autofocus\]'\)** as usual. The square-bracket notation just tells your browser to look for an attribute called **autofocus**, regardless of whether it has a value or not.
 {% endhint %}
 
+### Offering visual feedback
+
+We recommend [Velocity](https://github.com/julianshapiro/velocity/wiki) for light, tweening animations that alert the user to UI state changes.
+
+You can see Velocity in action on the StimulusReflex Expo [Todos demo](https://expo.stimulusreflex.com/demos/todo).
+
 ### Capture all DOM update events
 
 Stimulus provides a really powerful event routing syntax that includes custom events, specifying multiple events and capturing events on **document** and **window**.
@@ -141,6 +145,14 @@ Stimulus provides a really powerful event routing syntax that includes custom ev
 ```
 
 By capturing the **cable-ready:after-morph** event, we can run code after every update from the server. In this example, the scroll method on our Chat controller is being called to scroll the content window to the bottom, displaying new messages.
+
+### Capture jQuery events with DOM event listeners
+
+Don't hate jQuery: it was a life-saver 12 years ago, and many of its best ideas are now part of the Javascript language. However, one of the uglier realities of jQuery in a contemporary context is that it has its' own entirely proprietary system for managing events, and it's not compatible with the now-standard DOM events API.
+
+Sometimes you still need to be able to interface with legacy components, but you don't want to have to write two event handling systems.
+
+[jquery-events-to-dom-events](https://www.npmjs.com/package/jquery-events-to-dom-events) is an npm package that lets you easily access and respond to jQuery events.
 
 ### Access Stimulus controller instances
 
@@ -156,7 +168,7 @@ This is ugly, verbose and potentially impossible outside of another Stimulus con
 this.element[this.identifier] = this
 ```
 
-This creates a document-scoped variable with the same name as your controller \(or controllers!\) on the element itself, so you can now call **element.controllerName.method\(\)** without any Pilates required.
+This creates a document-scoped variable with the same name as your controller \(or controllers!\) on the element itself, so you can now call **element.controllerName.method\(\)** without any Pilates required. You can read more about this technique [here](https://leastbad.com/stimulus-power-move).
 
 {% hint style="warning" %}
 If your controller's identifier doesn't obey the rules of JavaScript variable naming conventions, you will need to specify a viable name for your instance.
@@ -286,6 +298,32 @@ As you can see, we're only pretending to call an API for this example. **Do not 
 This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
 {% endhint %}
 
+### Rendering views inside of an ActiveRecord model or ActiveJob class
+
+If you plan to initiate a CableReady broadcast inside of a model callback or job, you might find yourself trying to render templates and wondering why it seems to return nil.
+
+The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController.renderer` class.
+
+**The following isn't a complete working example**, but it should set you on the right path.
+
+```ruby
+class Notification < ApplicationRecord
+  include CableReady::Broadcaster
+  after_save do
+    html = ApplicationController.renderer.render(
+      partial: "layouts/navbar/notification",
+      locals: { notification: self }
+    )
+    cable_ready["notification_feed:#{self.recipient.id}"].insert_adjacent_html(
+      selector: "#notification_dropdown",
+      position: "afterbegin",
+      html: html
+    )
+    cable_ready.broadcast
+  end
+end
+```
+
 ### Triggering custom events and forcing DOM updates
 
 CableReady, one of StimulusReflex's dependencies, has [many handy methods](https://cableready.stimulusreflex.com/usage/dom-operations/event-dispatch) that you can call from controllers, ActionJob tasks and Reflex classes. One of those methods is dispatch\_event, which allows you to trigger any event in the client, including custom events and jQuery events.
@@ -336,7 +374,7 @@ export default class extends Controller {
     lastId = Math.random()
     this.stimulate("NotificationReflex#force_update", lastId)
   }
-  
+
   reload (event) {
     const { id } = event.detail
     if (id === lastId) return
@@ -349,5 +387,9 @@ export default class extends Controller {
 
 By passing a randomized number to the Reflex as an argument, we allow ourselves to return before triggering a reload if we were the ones that initiated the operation.
 
-### Coming Soon: Notifications with ActiveJob / Sidekiq
+#### Coming Soon: Notifications with ActiveJob / Sidekiq
+
+## Anti-Patterns
+
+#### Coming Soon: How to change the URL rendered by a reflex
 

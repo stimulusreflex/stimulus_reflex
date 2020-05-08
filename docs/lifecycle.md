@@ -4,7 +4,78 @@ description: How to hook into Reflex activity... aka callbacks
 
 # Lifecycle
 
-StimulusReflex gives you the ability to run custom code at four distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
+## Server-Side Reflex Callbacks
+
+StimulusReflex gives you a set of callback events to control how your Reflex actions function. These usual suspects will be familiar to Rails developers:
+
+* `before_reflex`, `around_reflex` , `after_reflex`
+* All callbacks can receive multiple symbols representing Reflex actions, an optional block and the following options: `only`, `except`, `if`, `unless`
+* Can halt a Reflex via `throw :abort` in a `before_reflex` callback, which is the perfect place to implement authorization logic for destructive _state mutations_ aka database updates
+
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  # will run only if the element has the step attribute, can use "unless" instead of "if" for opposite condition
+  before_reflex :do_stuff, if: proc { |reflex| reflex.element.dataset[:step] }
+
+  # will run only if the reflex instance has a url attribute, can use "unless" instead of "if" for opposite condition
+  before_reflex :do_stuff, if: :url
+
+  # will run before all reflexes
+  before_reflex :do_stuff
+
+  # will run before increment reflex, can use "except" instead of "only" for opposite condition
+  before_reflex :do_stuff, only: [:increment]
+
+  # will run around all reflexes, must have a yield in the callback
+  around_reflex :do_stuff_around
+
+ # will run after all reflexes
+  after_reflex :do_stuff
+
+  # Example with a block
+  before_reflex do 
+    # callback logic
+  end
+
+  # Example with multiple method names
+  before_reflex :do_stuff, :do_stuff2
+
+  # Example with halt
+  before_reflex :run_checks
+
+  def increment
+    # reflex logic
+  end
+
+  def decrement
+    # reflex logic
+  end
+
+  private
+
+  def run_checks
+    throw :abort # this will prevent the reflex from re-rendering the page
+  end
+
+  def do_stuff
+    # callback logic
+  end
+
+  def do_stuff2
+    # callback logic
+  end
+
+  def do_stuff_around
+    # before
+    yield
+    # after
+  end
+end
+```
+
+## Client-Side Reflex Callbacks
+
+StimulusReflex gives you the ability to inject custom Javascript at four distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
 
 1. **`before`** - prior to sending a request over the web socket
 2. **`success`** - after the server side Reflex succeeds and the DOM has been updated
@@ -14,7 +85,7 @@ StimulusReflex gives you the ability to run custom code at four distinct moments
 {% hint style="info" %}
 **Using lifecycle callback methods is not a requirement.**
 
-Think of them as power tools that can help you build more sophisticated results.
+Think of them as power tools that can help you build more sophisticated results. 👷
 {% endhint %}
 
 If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that have called `StimulusReflex.register(this)` in their `connect()` function.
@@ -23,7 +94,7 @@ There are two kinds of callback methods: **generic** and **custom**. Generic cal
 
 StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, jQuery plugins or even the console.
 
-## Generic Lifecycle Methods
+### Generic Lifecycle Methods
 
 StimulusReflex controllers can define up to four generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
 
@@ -62,7 +133,7 @@ export default class extends Controller {
 
 In this example, we update each anchor's text before invoking the server side Reflex.
 
-## Custom Lifecycle Methods
+### Custom Lifecycle Methods
 
 StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#update` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
@@ -107,9 +178,9 @@ Adapting the Generic example, we've refactored our controller to capture the `be
 **It's not required to implement all lifecycle methods.** Pick and choose which lifecycle callback methods make sense for your application. The answer is frequently **none**.
 {% endhint %}
 
-## Conventions
+### Conventions
 
-### Method Names
+#### Method Names
 
 Lifecycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will produce the following camel-cased lifecycle callback methods.
 
@@ -118,7 +189,7 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 3. `doStuffError`
 4. `afterDoStuff`
 
-### Method Signatures
+#### Method Signatures
 
 Both generic and custom lifecycle callback methods share the same arguments:
 
@@ -133,7 +204,7 @@ Both generic and custom lifecycle callback methods share the same arguments:
 
 **error** - the error message if an error occurred, otherwise `null`
 
-## Lifecycle Events
+### Lifecycle Events
 
 If you need to know when a Reflex method is called, but you're working outside of the Stimulus controller that initiated it, you can subscribe to receive DOM events.
 
@@ -141,14 +212,14 @@ DOM events are limited to the generic lifecycle; developers can obtain informati
 
 Events are dispatched on the same element that triggered the Reflex. Events bubble but cannot be cancelled.
 
-### Event Names
+#### Event Names
 
 * `stimulus-reflex:before`
 * `stimulus-reflex:success`
 * `stimulus-reflex:error`
 * `stimulus-reflex:after`
 
-### Event Metadata
+#### Event Metadata
 
 When an event is captured, you can obtain all of the data required to respond to a Reflex action:
 
@@ -167,4 +238,40 @@ Knowing which element dispatched the event might appear daunting, but the key is
 
 If you're calling the `stimulate` method inside of a Stimulus controller, the event will be emitted by the element the `data-controller` attribute is declared on.
 {% endhint %}
+
+### Promises
+
+Are you a hardcore Javascript developer? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
+
+```javascript
+this.stimulate('MyReflex#action')
+  .then(() => this.doSomething())
+  .catch(() => this.handleError())
+```
+
+You can get a sense of the possibilities:
+
+```javascript
+this.stimulate('MyReflex#example')
+  .then(payload => {
+    const { data, element, event } = payload
+    const { attrs, reflexId } = data
+    // * attrs - an object that represents the attributes of the element that triggered the reflex
+    // * data - the data sent from the client to the server over the web socket to invoke the reflex
+    // * element - the element that triggered the reflex
+    // * event - the source event
+    // * reflexId - a unique identifier for this specific reflex invocation
+  })
+  .catch(payload => {
+    const { data, element, event } = payload
+    const { attrs, reflexId } = data
+    const { error } = event.detail.stimulusReflex
+    // * attrs - an object that represents the attributes of the element that triggered the reflex
+    // * data - the data sent from the client to the server over the web socket to invoke the reflex
+    // * element - the element that triggered the reflex
+    // * error - the error message from the server
+    // * event - the source event
+    // * reflexId - a unique identifier for this specific reflex invocation
+  })
+```
 

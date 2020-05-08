@@ -10,4 +10,5 @@
 * [Persistence](persistence.md)
 * [Useful Patterns](patterns.md)
 * [Working with Events](events.md)
+* [Deployment](deployment.md)
 

@@ -6,14 +6,16 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex offers an exciting new way to build modern, reactive, real-time apps with Ruby on Rails.** It eliminates the complexity imposed by full-stack frontend frameworks without abandoning a high performance reactive user experience. The goal is to help small teams do big things, faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
+**StimulusReflex is a new way to craft modern, reactive web interfaces with Ruby on Rails.**
+
+Building on the [Stimulus ](https://stimulusjs.org)JS framework, user interactions can be captured and passed to Rails over real-time websockets. Requests are processed by _Reflex actions_ that can filter data and change application state before the view template is quickly re-rendered, returned to the client with [CableReady ](https://cableready.stimulusreflex.com)and [morphed ](https://github.com/patrick-steele-idem/morphdom)into the current DOM. This entire round-trip allows us to update the UI in 20-30ms without flicker or expensive page loads.
+
+We succeed at eliminating the complexity imposed by full-stack frontend frameworks without abandoning the need for [high-performance reactive user experiences](https://www.youtube.com/watch?v=SWEts0rlezA&t=214s). With StimulusReflex, small teams can do big things faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
 
 {% hint style="success" %}
-**Get Involved.** We'd love to hear from you. [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
-{% endhint %}
+**Get Involved.** We are stronger together! Please join us on [Discord](https://discord.gg/XveN625).
 
-{% hint style="warning" %}
-StimulusReflex v3 has been released, and there are some big changes. **Rails 6+ and server-side session storage are now required.** See the Setup page for more information.
+ [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
 ## Why should I use StimulusReflex?
@@ -22,10 +24,23 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ### Goals
 
-* [x] Help small teams do big things... faster
-* [x] Increase developer happiness
-* [x] Facilitate simple, concise, and clear code
-* [x] Integrate seamlessly with Ruby on Rails
+* [x] Enable small teams to do big things, faster 🏃🏽‍♀️
+* [x] Increase developer happiness ❤️❤️❤️
+* [x] Facilitate simple, concise, and clear code 🤸
+* [x] Integrate seamlessly with Ruby on Rails 🚝
+
+## Live demo
+
+[StimulusReflex Expo](http://expo.stimulusreflex.com/) is a growing collection of like examples showing different use-cases alongside the [source code](https://github.com/hopsoft/stimulus_reflex_expo) behind them.
+
+Some of our favorite demos include:
+
+* [Tabular](https://expo.stimulusreflex.com/demos/tabular): filtering, sorting and pagination without any client JavaScript
+* [Todo](https://expo.stimulusreflex.com/demos/todo): our take on the classic, with a wire size 2-15x smaller than every other solution
+
+## Build the next Twitter in just 9 minutes \(or less\) 😉
+
+{% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" %}
 
 ## How we got here
 
@@ -43,12 +58,9 @@ We love Elixir and Phoenix. Elixir hits a sweet spot for people who want Rails-l
 
 Also, we just really enjoy using **Ruby and Rails**.
 
-StimulusReflex was originally inspired by LiveView, but we are charting our own course. We hope to make building modern apps with Rails the most productive and enjoyable option available.
+StimulusReflex was originally inspired by LiveView, but we are charting our own course. Our goal has always been to make building modern apps with Rails the most productive and enjoyable option available. We want to inspire our friends working with other tools and technologies to evaluate how concepts like StimulusReflex could work in their ecosystems and communities.
 
-## Example apps
+So far, it's working! Not only do we now have 20+ developers actively contributing to StimulusReflex, but we've inspired projects like [SockPuppet](https://github.com/jonathan-s/django-sockpuppet) for **Django**.
 
-You can try a live StimulusReflex powered app right now:
-
-* [StimulusReflex Expo](http://expo.stimulusreflex.com) - A growing collection of live examples showing different use cases alongside the source code required. **Start here!**
-* [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) - An implementation of [TodoMVC](http://todomvc.com/) using Ruby on Rails and StimulusReflex.
+We are truly stronger together.
 

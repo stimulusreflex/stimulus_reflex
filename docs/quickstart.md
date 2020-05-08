@@ -6,30 +6,33 @@ description: How to use StimulusReflex in your app
 
 ## Before you begin...
 
-**A great user experience can be created with Rails alone.** Tools such as [UJS remote elements](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
+**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
 
 {% hint style="warning" %}
-See the [Stimulus TodoMVC](https://github.com/hopsoft/stimulus_todomvc) example application if you are unsure how to do this. **Important note**: this link _does not make use of StimulusReflex_. It is presented for technical comparison and soulful reflection.
+We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods. 👨‍👨‍👧‍👧🎨🌲
 
-We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods.
-
-Every framework you learn is a lost opportunity to build something that could really matter to the world. **Please choose responsibly.**
+Every framework you learn is a lost opportunity to build something that could really matter to the world. **Please choose responsibly.** ⏳
 {% endhint %}
 
 It might strike you as odd that we would start by questioning whether you need this library at all. Our motivations are an extension of the question we hope more people will ask.
 
-Instead of "_Which Single Page App framework should I use?_" we believe that StimulusReflex can empower people to wonder "**Do we still need React, given what we now know is possible?**"
+Instead of _"Which Single Page App framework should I use?"_ we believe that StimulusReflex can empower people to wonder "**Do we still need React, given what we now know is possible?**" 🤯
 
-## Hello, Reflex
+## Video Tutorial: Introduction to StimulusReflex
 
-Bringing your first Reflex to life couldn't be simpler:
+[Chris ](https://twitter.com/excid3)from [GoRails ](https://gorails.com)has released the first of hopefully many tutorial videos demonstrating how to get up and running with StimulusReflex in about ten minutes: ⏱️👍
 
-1. Declare the appropriate data attributes in HTML.
-2. Create a server side reflex object with Ruby.
+[https://gorails.com/episodes/stimulus-reflex-basics](https://gorails.com/episodes/stimulus-reflex-basics)
 
-### Call Reflex methods on the server without any Javascript
+## Hello, Reflex World!
 
-This example will automatically update the page with the latest count whenever the anchor is clicked.
+There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
+
+Let's dig into it!
+
+### Trigger Reflex actions with data-reflex attributes
+
+This example will automatically update the page with the latest count whenever the anchor is clicked:
 
 {% code title="app/views/pages/index.html.erb" %}
 ```text
@@ -53,19 +56,21 @@ end
 ```
 {% endcode %}
 
-StimulusReflex maps your requests to Reflex classes that live in your `app/reflexes` folder. In this example, the increment method is executed and the count is incremented by 1. The `@count` instance variable is passed to the template when it is re-rendered.
-
-Yes, it really is that simple.
+StimulusReflex maps your requests to Reflex classes that live in your `app/reflexes` folder. In this example, the `increment` action is called and the count is incremented by 1. The `@count` instance variable is passed to the template when it is re-rendered.
 
 {% hint style="success" %}
-**Concerns like managing state and rendering views are handled server side.** This technique works regardless of how complex the UI becomes. For example, we could render multiple instances of `@count` in unrelated sections of the page and they will all update.
+**Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecrd to modify the UI.
+
+_The magic is that there is no magic_. What the user sees is the exact same thing they would see if the refresh their page.
+
+StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state syncronization.
 {% endhint %}
 
-### Manually call a Reflex from a Stimulus controller
+### Trigger Reflex actions inside Stimulus controllers
 
-Real world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can use Controllers to build complex functionality and respond to events.
+Real-world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can import StimulusReflex into our Stimulus controllers and build complex functionality.
 
-Let's build on our increment counter example by adding a Stimulus Controller and manually calling a Reflex action.
+Let's build on our increment counter example by adding a Stimulus controller and manually triggering a Reflex action by calling the `stimulate` method.
 
 1. Declare the appropriate data attributes in HTML.
 2. Create a client side StimulusReflex controller with JavaScript.
@@ -101,12 +106,12 @@ export default class extends Controller {
 ```
 {% endcode %}
 
-The Controller connects during the page load process and we tell StimulusReflex that this Controller is going to be calling server-side Reflex actions. The `register` method has an optional 2nd argument that accepts options, but we'll cover that later.
+The controller's `connect` lifecycle method fires during both the initial browser page load and after Turbolinks visits that refresh content. We tell StimulusReflex that this controller is going to be calling server-side Reflex actions by passing the Stimulus Controller instance to the `register` method. This gives the controller a `stimulate` method that we can call.
 
-When the user clicks the anchor, Stimulus calls the `increment` method. All StimulusReflex Controllers have access to the `stimulate` method. The first parameter is the `[ServerSideClass]#[action]` syntax, which tells the server which Reflex class and method to call. The second parameter is an optional argument which is passed to the Reflex method. If you need to pass multiple arguments, consider using a JavaScript object `{}` to do so.
+When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ServerSideClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
 
 {% hint style="warning" %}
-If you're responding to an event like click on an element that would have a default action \(such as an `a` or a `button` element\) it's very important that you call preventDefault\(\) on that event, or else you will experience undesirable side effects such as page navigation.
+If you're responding to an event like click on an element that would have a default action \(such as an `a` or a `button` element\) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
 {% endhint %}
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
@@ -119,7 +124,7 @@ end
 ```
 {% endcode %}
 
-Here, you can see how we accept an optional `step` argument to our `increment` Reflex action. We're also now switching to using the Rails session object to persist our values across multiple page load operations.
+Here, you can see how we accept a `step` argument to our `increment` Reflex action. We're also now switching to using the Rails session object to persist our values across multiple page load operations. Note that you can only provide parameters to Reflex actions by calling the `stimulate` method with arguments; there is no equivalent for Reflexes declared with data attributes.
 
 {% code title="app/controllers/pages\_controller.rb" %}
 ```ruby
@@ -131,7 +136,7 @@ end
 ```
 {% endcode %}
 
-Finally, we set the value of the @count instance variable in the controller action. When the page is first loaded, there will be no session\[:count\] value and @count will be nil. nil converts to an integer as 0, our starting value.
+Finally, we set the value of the `@count` instance variable in the controller action. When the page is first loaded, there will be no `session[:count]` value and `@count` will be `nil`, which converts to an integer as 0... our initial value.
 
 {% hint style="success" %}
 In a typical Rails app, we would set the value of `@count` after fetching it from a persistent data store such as Postgres or Redis. To keep this example simple, we use Rails' `session` to store our counter value.
@@ -139,7 +144,7 @@ In a typical Rails app, we would set the value of `@count` after fetching it fro
 
 ## StimulusReflex Generator
 
-The StimulusReflex generator is like scaffolding for StimulusReflex:
+We provide a generator that performs a scaffold-like functionality for StimulusReflex. It will generate files and classes appropriate to whether you specify a singular or pluralized name for your reflex class. For example, `user` and `users` are both valid and useful in different situations.
 
 ```bash
 bundle exec rails generate stimulus_reflex user
@@ -151,4 +156,8 @@ This will create but not overwrite the following files:
 2. `app/javascript/controllers/user_controller.js`
 3. `app/reflexes/application_reflex.rb`
 4. `app/reflexes/user_reflex.rb`
+
+{% hint style="info" %}
+If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
+{% endhint %}
 
