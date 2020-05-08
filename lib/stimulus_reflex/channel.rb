@@ -36,12 +36,16 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data)
     end
 
-    begin
-      render_page_and_broadcast_morph reflex, selectors, data unless reflex.halted?
-    rescue => render_error
-      reflex.rescue_with_handler(render_error)
-      message = exception_message_with_backtrace(render_error)
-      broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
+    if reflex.halted?
+      broadcast_halted data
+    else
+      begin
+        render_page_and_broadcast_morph reflex, selectors, data
+      rescue => render_error
+        reflex.rescue_with_handler(render_error)
+        message = exception_message_with_backtrace(render_error)
+        broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
+      end
     end
   end
 
@@ -112,6 +116,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     cable_ready[stream_name].dispatch_event(
       name: "stimulus-reflex:500",
       detail: {stimulus_reflex: data.merge(error: message)}
+    )
+    cable_ready.broadcast
+  end
+
+  def broadcast_halted(data = {})
+    cable_ready[stream_name].dispatch_event(
+      name: "stimulus-reflex:abort",
+      detail: {stimulus_reflex: data}
     )
     cable_ready.broadcast
   end

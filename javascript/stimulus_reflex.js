@@ -345,6 +345,25 @@ if (!document.stimulusReflexInitialized) {
     dispatchLifecycleEvent('error', element)
     if (debugging) Log.error(response)
   })
+  document.addEventListener('stimulus-reflex:abort', event => {
+    const { reflexId, attrs } = event.detail.stimulusReflex || {}
+    const element = findElement(attrs)
+    const promise = promises[reflexId]
+
+    const response = {
+      data: promise && promise.data,
+      element,
+      event
+    }
+
+    if (promise) {
+      delete promises[reflexId]
+      promise.resolve(response)
+    }
+
+    dispatchLifecycleEvent('halted', element)
+    if (debugging) Log.success(response)
+  })
 }
 
 export default {
