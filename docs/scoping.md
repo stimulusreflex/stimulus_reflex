@@ -82,6 +82,20 @@ This is especially important for 3rd-party elements such as ad tracking scripts,
 {% endhint %}
 
 {% hint style="danger" %}
-Beware of GEMs that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. GEMs like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible so you can wrap the content with `data-reflex-permanent`.
+Beware of Ruby gems that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. Gems like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible, so that you can wrap the content with `data-reflex-permanent`.
 {% endhint %}
+
+## Single Source of Truth
+
+While stateless form submissions have technically always suffered from the "last update wins" problem, it's only in recent years that developers have created interfaces that need to respond to changing application state in real-time.
+
+There are a few guiding principles that we adhere to when building a technology that can change the page you're on, even while you busy working on something important. The most important consideration is that even though StimulusReflex applications persist state on the server, the client should be the single source of truth for the text input element that has active focus.
+
+Put differently: **the server should never update the value of a text box while you're typing into it**.
+
+We've worked really hard to make sure that developers can update other aspects of the active text input element. For example, it's possible to change the background color or even mark the element as disables while you're typing into it. However, all attempts to overwrite the input element's value will be silently suppressed.
+
+If you need to filter or constrain the contents of a text input, consider using a client-side library such as [Cleave.js](https://nosir.github.io/cleave.js/) instead of trying to circumvent the Single Source of Truth mechanisms, which are there to protect your users from their fellow collaborators.
+
+Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be morphed in any way.
 
