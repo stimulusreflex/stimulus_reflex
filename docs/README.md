@@ -8,14 +8,14 @@ description: Build reactive applications with the Rails tooling you already know
 
 **StimulusReflex is a new way to craft modern, reactive web interfaces with Ruby on Rails.**
 
-Building on the [Stimulus ](https://stimulusjs.org)JS framework, user interactions can be captured and passed to Rails over real-time websockets. Requests are processed by _Reflex actions_ that can filter data and change application state before the view template is quickly re-rendered, returned to the client with [CableReady ](https://cableready.stimulusreflex.com)and [morphed ](https://github.com/patrick-steele-idem/morphdom)into the current DOM. This entire round-trip allows us to update the UI in 20-30ms without flicker or expensive page loads.
+We extend the capabilities of both [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org) by intercepting user interactions and passing them to Rails over real-time websockets. These interactions are processed by _Reflex actions_ that change application state. The current page is quickly re-rendered and the changes are sent to the client using [CableReady](https://cableready.stimulusreflex.com). The page is then [morphed](https://github.com/patrick-steele-idem/morphdom) to reflect the new application state. This entire round-trip allows us to update the UI in 20-30ms without flicker or expensive page loads.
 
 We succeed at eliminating the complexity imposed by full-stack frontend frameworks without abandoning the need for [high-performance reactive user experiences](https://www.youtube.com/watch?v=SWEts0rlezA&t=214s). With StimulusReflex, small teams can do big things faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
 
 {% hint style="success" %}
 **Get Involved.** We are stronger together! Please join us on [Discord](https://discord.gg/XveN625).
 
- [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+ [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)![](https://img.shields.io/discord/629472241427415060)
 {% endhint %}
 
 ## Why should I use StimulusReflex?
