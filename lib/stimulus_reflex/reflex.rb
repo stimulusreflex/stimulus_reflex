@@ -85,8 +85,11 @@ class StimulusReflex::Reflex
   end
 
   def process(name, *args)
-    result = run_callbacks(:process) { public_send(name, *args) }
-    @halted ||= result == false
+    reflex_invoked = false
+    result = run_callbacks(:process) {
+      public_send(name, *args).tap { reflex_invoked = true }
+    }
+    @halted ||= result == false && !reflex_invoked
     result
   end
 
