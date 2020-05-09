@@ -22,7 +22,7 @@ module StimulusReflex
         begin
           reflex_class = reflex_name.constantize
           raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-          reflex = reflex_class.new(transport_adapter, url: url, element: element, selectors: selectors, reflex_name: method_name)
+          reflex = reflex_class.new(transport_adapter, url: url, element: element, selectors: selectors, method_name: method_name)
           delegate_call_to_reflex reflex, method_name, arguments
         rescue => invoke_error
           reflex.rescue_with_handler(invoke_error)
