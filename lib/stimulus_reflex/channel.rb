@@ -33,18 +33,18 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     rescue => invoke_error
       reflex.rescue_with_handler(invoke_error)
       message = exception_message_with_backtrace(invoke_error)
-      return broadcast_error("StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data)
+      return broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
     end
 
     if reflex.halted?
-      broadcast_halted data
+      broadcast_message subject: "halted", data: data
     else
       begin
         render_page_and_broadcast_morph reflex, selectors, data
       rescue => render_error
         reflex.rescue_with_handler(render_error)
         message = exception_message_with_backtrace(render_error)
-        broadcast_error "StimulusReflex::Channel Failed to re-render #{url} #{message}", data
+        broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
       end
     end
   end
@@ -111,19 +111,17 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     cable_ready.broadcast
   end
 
-  def broadcast_error(message, data = {})
-    logger.error "\e[31m#{message}\e[0m"
-    cable_ready[stream_name].dispatch_event(
-      name: "stimulus-reflex:500",
-      detail: {stimulus_reflex: data.merge(error: message)}
-    )
-    cable_ready.broadcast
-  end
+  def broadcast_message(subject:, body: nil, data: {})
+    message = {
+      subject: subject,
+      body: body
+    }
 
-  def broadcast_halted(data = {})
+    logger.error "\e[31m#{body}\e[0m" if subject == "error"
+
     cable_ready[stream_name].dispatch_event(
-      name: "stimulus-reflex:abort",
-      detail: {stimulus_reflex: data}
+      name: "stimulus-reflex:server-message",
+      detail: {stimulus_reflex: data.merge(server_message: message)}
     )
     cable_ready.broadcast
   end

@@ -323,46 +323,40 @@ if (!document.stimulusReflexInitialized) {
     dispatchLifecycleEvent('success', element)
     if (debugging) Log.success(response)
   })
-  document.addEventListener('stimulus-reflex:500', event => {
-    const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
+  document.addEventListener('stimulus-reflex:server-message', event => {
+    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
+    const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
 
-    if (element) element.reflexError = error
+    if (element && subject == 'error') element.reflexError = body
 
-    const response = {
+    let response = {
       data: promise && promise.data,
       element,
       event,
-      toString: () => error
+      events: promise && promise.events,
+      toString: () => body
     }
 
     if (promise) {
       delete promises[reflexId]
-      promise.reject(response)
+
+      if (subject == 'error') {
+        promise.reject(response)
+      } else {
+        promise.resolve(response)
+      }
     }
 
-    dispatchLifecycleEvent('error', element)
-    if (debugging) Log.error(response)
-  })
-  document.addEventListener('stimulus-reflex:abort', event => {
-    const { reflexId, attrs } = event.detail.stimulusReflex || {}
-    const element = findElement(attrs)
-    const promise = promises[reflexId]
+    if (element && ['error', 'halted'].includes(subject))
+      dispatchLifecycleEvent(subject, element)
 
-    const response = {
-      data: promise && promise.data,
-      element,
-      event
+    if (debugging && subject == 'error') {
+      Log.error(response)
+    } else if (debugging) {
+      Log.success(response)
     }
-
-    if (promise) {
-      delete promises[reflexId]
-      promise.resolve(response)
-    }
-
-    dispatchLifecycleEvent('halted', element)
-    if (debugging) Log.success(response)
   })
 }
 
