@@ -109,6 +109,12 @@ You can learn more about session storage on the Deployment page.
 
 {% page-ref page="deployment.md" %}
 
+## Logging
+
+StimulusReflex supports both client and server logging of Reflexes.
+
+{% page-ref page="troubleshooting.md" %}
+
 ## Rails 5.2+ Support
 
 When the Rails core team renamed the ActionCable JS npm package from `actioncable` to `@rails/actioncable` it made it very difficult to reliably import ActionCable. After evaluating our options, we made the difficult decision of updating to the new package name and freezing _official_ Rails 5.2 support on the 2.2.x branch of StimulusReflex.
@@ -122,88 +128,5 @@ While we don't have the resources to maintain two distinct package versions, we'
 
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
-{% endhint %}
-
-## Client-Side Logging
-
-StimulusReflex supports optional logging to the Console Inspector:
-
-![](.gitbook/assets/80296434-7f054380-877b-11ea-8334-b1bd33198733.png)
-
-Here is a redux of the Stimulus controllers index, illustrating several different logging configurations:
-
-{% code title="app/javascript/controllers/index.js" %}
-```javascript
-import { Application } from 'stimulus'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
-import StimulusReflex from 'stimulus_reflex'
-import consumer from '../channels/consumer'
-
-const application = Application.start()
-const context = require.context('controllers', true, /_controller\.js$/)
-application.load(definitionsFromContext(context))
-
-// Default behavior - no logging - as is
-StimulusReflex.initialize(application, { consumer })
-
-// Option 1 - Pass logging option with initialize
-StimulusReflex.initialize(application, { consumer, logging: true })
-
-// Option 2 - Enable logging by calling the enableLogging() method
-StimulusReflex.initialize(application, { consumer })
-StimulusReflex.enableLogging()
-
-// For completeness there is also a disableLogging() method
-StimulusReflex.disableLogging()
-```
-{% endcode %}
-
-## Server-Side Logging
-
-By default, ActionCable emits particularly verbose Rails logger messages. You can **optionally** discard everything but exceptions by switching to the `warn` log level, as is common in development environments:
-
-{% code title="config/environments/development.rb" %}
-```ruby
-# :debug, :info, :warn, :error, :fatal, :unknown
-config.log_level = :warn
-```
-{% endcode %}
-
-Alternatively, disabling ActionCable logs _may_ improve performance.
-
-{% code title="config/initializers/action\_cable.rb" %}
-```ruby
-ActionCable.server.config.logger = Logger.new(nil)
-```
-{% endcode %}
-
-## Troubleshooting
-
-{% hint style="info" %}
-If you're collaborating with a team during development, **make sure that they have caching turned on**. They just need to run `rails dev:cache` one time.
-{% endhint %}
-
-{% hint style="info" %}
-Getting weird Console Inspector errors? Make sure that your stimulus\_reflex npm package version is identical to your Ruby gem version.
-{% endhint %}
-
-{% hint style="info" %}
-For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible for Rails to automatically hot reload Reflex classes in development mode. You must restart your web server for changes to be picked up.
-{% endhint %}
-
-{% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? You might need to [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
-{% endhint %}
-
-{% hint style="info" %}
-If _something_ goes wrong, it's often because of the **spring** gem. 💣👎
-
-You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
-
-To remove **spring** forever, here is the process we recommend:
-
-1. `pkill -f spring`
-2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
-3. `bin/spring binstub –-remove –-all`
 {% endhint %}
 

@@ -11,4 +11,5 @@
 * [Useful Patterns](patterns.md)
 * [Working with Events](events.md)
 * [Deployment](deployment.md)
+* [Troubleshooting](troubleshooting.md)
 
