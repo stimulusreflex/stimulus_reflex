@@ -34,6 +34,7 @@ export const extractElementAttributes = element => {
   attrs.value = element.value
   attrs.checked = !!element.checked
   attrs.selected = !!element.selected
+  attrs.tag_name = element.tagName
   if (element.tagName.match(/select/i)) {
     if (element.multiple) {
       const checkedOptions = Array.prototype.slice.call(
@@ -63,6 +64,7 @@ export const findElement = attributes => {
     let selectors = []
     for (const key in attributes) {
       if (key.includes('.')) continue
+      if (key === 'tagName') continue
       if (key === 'value') continue
       if (key === 'checked') continue
       if (key === 'selected') continue
@@ -72,7 +74,7 @@ export const findElement = attributes => {
     try {
       elements = document.querySelectorAll(selectors.join(''))
     } catch (error) {
-      console.log(
+      console.error(
         'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
         attributes
@@ -82,32 +84,4 @@ export const findElement = attributes => {
 
   const element = elements.length === 1 ? elements[0] : null
   return element
-}
-
-// Indicates if the passed element is considered a text input.
-//
-export const isTextInput = element => {
-  return (
-    ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) &&
-    [
-      'color',
-      'date',
-      'datetime',
-      'datetime-local',
-      'email',
-      'month',
-      'number',
-      'password',
-      'range',
-      'search',
-      'select-one',
-      'select-multiple',
-      'tel',
-      'text',
-      'textarea',
-      'time',
-      'url',
-      'week'
-    ].includes(element.type)
-  )
 }

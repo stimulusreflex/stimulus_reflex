@@ -15,17 +15,25 @@ Gem::Specification.new do |gem|
     See https://www.npmjs.com/package/stimulus_reflex
   MESSAGE
 
+  gem.metadata = {
+    "bug_tracker_uri" => "https://github.com/hopsoft/stimulus_reflex/issues",
+    "changelog_uri" => "https://github.com/hopsoft/stimulus_reflex/CHANGELOG.md",
+    "documentation_uri" => "https://docs.stimulusreflex.com",
+    "homepage_uri" => gem.homepage,
+    "source_code_uri" => gem.homepage
+  }
+
   gem.files = Dir["lib/**/*", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
 
   gem.add_dependency "rack"
   gem.add_dependency "nokogiri"
-  gem.add_dependency "rails", ">= 5.2"
-  gem.add_dependency "cable_ready", ">= 4.0"
+  gem.add_dependency "rails", ">= 6.0"
+  gem.add_dependency "cable_ready", ">= 4.1.2"
 
   gem.add_development_dependency "bundler", "~> 2.0"
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "pry"
   gem.add_development_dependency "pry-nav"
+  gem.add_development_dependency "pry"
+  gem.add_development_dependency "rake"
   gem.add_development_dependency "standardrb"
 end

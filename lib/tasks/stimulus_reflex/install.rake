@@ -18,15 +18,34 @@ namespace :stimulus_reflex do
     end
     puts "Updating #{filepath}"
     lines = File.open(filepath, "r") { |f| f.readlines }
-    import_line = lines.find { |line| line.start_with?("import StimulusReflex") }
-    initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    unless import_line
+
+    unless lines.find { |line| line.start_with?("import StimulusReflex") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
       lines.insert lines.index(matches.last).to_i + 1, "import StimulusReflex from 'stimulus_reflex'\n"
     end
-    lines << "StimulusReflex.initialize(application)\n" unless initialize_line
+
+    unless lines.find { |line| line.start_with?("import consumer") }
+      matches = lines.select { |line| line =~ /\A(require|import)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "import consumer from '../channels/consumer'\n"
+    end
+
+    unless lines.find { |line| line.start_with?("import controller") }
+      matches = lines.select { |line| line =~ /\A(require|import)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "import controller from './application_controller'\n"
+    end
+
+    initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
+    lines << "StimulusReflex.initialize(application, { consumer, controller, debug: false })\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
+    filepath = Rails.root.join("config/environments/development.rb")
+    lines = File.open(filepath, "r") { |f| f.readlines }
+    unless lines.find { |line| line.include?("config.session_store") }
+      lines.insert 3, "  config.session_store :cache_store\n\n"
+      File.open(filepath, "w") { |f| f.write lines.join }
+    end
+
     system "bundle exec rails generate stimulus_reflex example"
+    system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
   end
 end

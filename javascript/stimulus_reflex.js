@@ -4,12 +4,13 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
+import { uuidv4 } from './utils'
+import Log from './log'
 import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  findElement,
-  isTextInput
+  findElement
 } from './attributes'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
@@ -20,26 +21,13 @@ let stimulusApplication
 //
 let actionCableConsumer
 
-// Initializes implicit data-reflex-permanent for text inputs.
+// A dictionary of promise data
 //
-const initializeImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  element.reflexPermanent = element.hasAttribute(
-    stimulusApplication.schema.reflexPermanentAttribute
-  )
-  element.setAttribute(stimulusApplication.schema.reflexPermanentAttribute, '')
-}
+const promises = {}
 
-// Resets implicit data-reflex-permanent for text inputs.
+// Indicates if we should log calls to stimulate, etc...
 //
-const resetImplicitReflexPermanent = event => {
-  const element = event.target
-  if (!isTextInput(element)) return
-  if (element.reflexPermanent !== undefined && !element.reflexPermanent) {
-    element.removeAttribute(stimulusApplication.schema.reflexPermanentAttribute)
-  }
-}
+let debugging = false
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 //
@@ -55,11 +43,12 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(channel, {
       received: data => {
         if (!data.cableReady) return
-        if (!data.operations.morph || !data.operations.morph.length) return
-        const urls = [
-          ...new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-        ]
-        if (urls.length !== 1 || urls[0] !== location.href) return
+        if (data.operations.morph && data.operations.morph.length) {
+          const urls = Array.from(
+            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+          )
+          if (urls.length !== 1 || urls[0] !== location.href) return
+        }
         CableReady.perform(data.operations)
       }
     })
@@ -73,6 +62,13 @@ const createSubscription = controller => {
 //
 const extendStimulusController = controller => {
   Object.assign(controller, {
+    // Indicates if the ActionCable web socket connection is open.
+    // The connection must be open before calling stimulate.
+    //
+    isActionCableConnectionOpen () {
+      return this.StimulusReflex.subscription.consumer.connection.isOpen()
+    },
+
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
@@ -82,7 +78,7 @@ const extendStimulusController = controller => {
     stimulate () {
       const url = location.href
       const args = Array.from(arguments)
-      const target = args.shift()
+      const target = args.shift() || 'StimulusReflex::Reflex#default_reflex'
       const element =
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
@@ -96,6 +92,7 @@ const extendStimulusController = controller => {
       }
       const attrs = extractElementAttributes(element)
       const selectors = getReflexRoots(element)
+      const reflexId = uuidv4()
       const data = {
         target,
         args,
@@ -103,15 +100,43 @@ const extendStimulusController = controller => {
         attrs,
         selectors,
         permanent_attribute_name:
-          stimulusApplication.schema.reflexPermanentAttribute
+          stimulusApplication.schema.reflexPermanentAttribute,
+        reflexId: reflexId
       }
+      const { subscription } = this.StimulusReflex
+      const { connection } = subscription.consumer
+
+      if (!this.isActionCableConnectionOpen())
+        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
       // lifecycle setup
-      element.reflexController = controller
+      element.reflexController = this
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
-      controller.StimulusReflex.subscription.send(data)
+
+      subscription.send(data)
+
+      if (debugging) {
+        Log.request(
+          reflexId,
+          target,
+          args,
+          this.context.scope.identifier,
+          element
+        )
+      }
+
+      const promise = new Promise((resolve, reject) => {
+        promises[reflexId] = {
+          resolve,
+          reject,
+          data,
+          events: {}
+        }
+      })
+      if (debugging) promise.catch(() => {}) // noop default catch
+      return promise
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -145,8 +170,8 @@ const extendStimulusController = controller => {
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  extendStimulusController(controller)
   createSubscription(controller)
+  extendStimulusController(controller)
 }
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
@@ -245,8 +270,8 @@ const getReflexRoots = element => {
 //   * controller - [optional] the default StimulusReflexController
 //   * consumer - [optional] the ActionCable consumer
 //
-const initialize = (application, options = {}) => {
-  const { controller, consumer } = options
+const initialize = (application, initializeOptions = {}) => {
+  const { controller, consumer, debug } = initializeOptions
   actionCableConsumer = consumer
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
@@ -254,6 +279,7 @@ const initialize = (application, options = {}) => {
     'stimulus-reflex',
     controller || StimulusReflexController
   )
+  debugging = !!debug
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -265,23 +291,70 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('cable-ready:after-morph', () =>
     setTimeout(setupDeclarativeReflexes, 1)
   )
+  document.addEventListener('ajax:complete', () =>
+    setTimeout(setupDeclarativeReflexes, 1)
+  )
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   document.addEventListener('cable-ready:before-morph', event => {
-    const { target, attrs, last } = event.detail.stimulusReflex || {}
-    if (!last) return
+    const { selector, stimulusReflex } = event.detail || {}
+    if (!stimulusReflex) return
+    const { reflexId, attrs, last } = stimulusReflex
     const element = findElement(attrs)
+    const promise = promises[reflexId]
+
+    if (promise) promise.events[selector] = event
+
+    if (!last) return
+
+    const response = {
+      element,
+      event,
+      data: promise && promise.data,
+      events: promise && promise.events
+    }
+
+    if (promise) {
+      delete promises[reflexId]
+      promise.resolve(response)
+    }
+
     dispatchLifecycleEvent('success', element)
+    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:500', event => {
-    const { target, attrs, error } = event.detail.stimulusReflex || {}
+    const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
     const element = findElement(attrs)
-    element.reflexError = error
+    const promise = promises[reflexId]
+
+    if (element) element.reflexError = error
+
+    const response = {
+      data: promise && promise.data,
+      element,
+      event,
+      toString: () => error
+    }
+
+    if (promise) {
+      delete promises[reflexId]
+      promise.reject(response)
+    }
+
     dispatchLifecycleEvent('error', element)
+    if (debugging) Log.error(response)
   })
-  document.addEventListener('focusin', initializeImplicitReflexPermanent)
-  document.addEventListener('focusout', resetImplicitReflexPermanent)
 }
 
-export default { initialize, register }
+export default {
+  initialize,
+  register,
+  setupDeclarativeReflexes,
+  get debug () {
+    return debugging
+  },
+  set debug (value) {
+    debugging = !!value
+  }
+}

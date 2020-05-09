@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class <%= @name.classify %>Reflex < ApplicationReflex
+class <%= class_name %>Reflex < ApplicationReflex
   # Add Reflex methods in this file.
   #
   # All Reflex instances expose the following properties:
