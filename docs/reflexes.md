@@ -44,10 +44,10 @@ this.stimulate()
 
 Calling `stimulate` with no parameters invokes a special global Reflex that allows you to force a re-render of the current state of your application UI. This is the same thing that the user would see if they hit their browser's Refresh button, except without the painfully slow round-trip cycle.
 
-It's also possible to trigger this global Reflex by passing nothing but a browser event to the `data-reflex` attribute. For example, the following text input element will refresh the page content every time the user releases a key:
+It's also possible to trigger this global Reflex by passing nothing but a browser event to the `data-reflex` attribute. For example, the following button element will refresh the page content every time the user presses it:
 
 ```markup
-<input type="text" data-reflex="keyup">
+<button data-reflex="click">Refresh</button>
 ```
 
 ### Scanning for new data-reflex attributes
