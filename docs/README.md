@@ -13,9 +13,9 @@ We extend the capabilities of both [Rails](https://rubyonrails.org) and [Stimulu
 We succeed at eliminating the complexity imposed by full-stack frontend frameworks without abandoning the need for [high-performance reactive user experiences](https://www.youtube.com/watch?v=SWEts0rlezA&t=214s). With StimulusReflex, small teams can do big things faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
 
 {% hint style="success" %}
-**Get Involved.** We are stronger together! Please join us on [Discord](https://discord.gg/XveN625).
+**Get Involved.** We are stronger together! Please join us on [Discord. ![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/XveN625)
 
- [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)![](https://img.shields.io/discord/629472241427415060)
+ [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
 ## Why should I use StimulusReflex?
