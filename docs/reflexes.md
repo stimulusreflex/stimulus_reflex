@@ -15,7 +15,7 @@ A thousand times, _yes_.
 * "a Reflex": used to describe the full, round-trip life-cycle of a StimulusReflex operation, from client to server and back again
 * Reflex class: a Ruby class that inherits from `StimulusReflex::Reflex` and lives in your `app/reflexes` folder, this is where your Reflex actions are implemented
 * Reflex action: a method in a Reflex class, called in response to activity in the browser. It has access to several special accessors containing all of the Reflex controller element's attributes
-* Reflex controller: an Stimulus controller that imports the StimulusReflex client library, it has a stimulate method for triggering Reflexes and like all Stimulus Controllers is aware of the element it is attached to, as well as any Stimulus targets in its DOM hierarchy
+* Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
 
 ## Calling a Reflex
