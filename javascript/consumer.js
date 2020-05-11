@@ -4,7 +4,7 @@ function isConsumer (object) {
   if (object) {
     try {
       return (
-        object.constructor.name === 'Consumer' &&
+        object.isConnected &&
         object.connect &&
         object.disconnect &&
         object.send
