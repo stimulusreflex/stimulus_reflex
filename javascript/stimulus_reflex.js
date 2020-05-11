@@ -6,7 +6,7 @@ import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import { uuidv4 } from './utils'
 import Log from './log'
-import { ActionCableAdapter } from './adapter'
+import { MessageBusAdapter } from './adapter'
 import {
   attributeValue,
   attributeValues,
@@ -35,7 +35,7 @@ let debugging = false
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  adaptedConsumer = adaptedConsumer || new ActionCableAdapter(getConsumer())
+  adaptedConsumer = adaptedConsumer || new MessageBusAdapter(getConsumer())
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
 
@@ -44,6 +44,7 @@ const createSubscription = controller => {
     adaptedConsumer.create_subscription(channel)
 
   controller.StimulusReflex.subscription = subscription
+  controller.StimulusReflex.consumer = adaptedConsumer
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -58,7 +59,7 @@ const extendStimulusController = controller => {
     // The connection must be open before calling stimulate.
     //
     isActionCableConnectionOpen () {
-      return this.StimulusReflex.subscription.consumer.connection.isOpen()
+      return this.StimulusReflex.consumer.isConnected()
     },
 
     // Invokes a server side reflex method.
@@ -108,8 +109,7 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      adaptedConsumer.send(JSON.stringify({ channel }, data, stimulateOptions))
-      subscription.send(data)
+      adaptedConsumer.send(JSON.stringify({ channel }), data, stimulateOptions)
 
       if (debugging) {
         Log.request(

@@ -1,11 +1,11 @@
 import CableReady from 'cable_ready'
+import './vendor/message-bus'
+import './vendor/message-bus-ajax'
 
 class ConsumerAdapter {
-  constructor (consumer) {
-    this.consumer = consumer
-  }
+  constructor () {}
 
-  find_subscriptions (identifier) {
+  find_subscription (identifier) {
     throw Error('Not implemented')
   }
 
@@ -30,8 +30,57 @@ class ConsumerAdapter {
   }
 }
 
+class MessageBusAdapter extends ConsumerAdapter {
+  constructor () {
+    super()
+
+    this.subscriptions = {}
+  }
+
+  find_subscription (identifier) {
+    this.subscriptions[identifier]
+  }
+
+  create_subscription (channel) {
+    MessageBus.subscribe('/channel', function (data) {
+      data = JSON.parse(data)
+      if (data.operations.morph && data.operations.morph.length) {
+        const urls = Array.from(
+          new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+        )
+        if (urls.length !== 1 || urls[0] !== location.href) return
+      }
+      CableReady.perform(data.operations)
+    })
+  }
+
+  isConnected () {
+    return MessageBus.status() === 'started'
+  }
+
+  send (identifier, data, options = {}) {
+    fetch('/stimulus_reflex/receive', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-StimulusReflex-Identifier': identifier
+      },
+      body: JSON.stringify(data)
+    })
+  }
+
+  connect () {
+    MessageBus.start()
+  }
+
+  disconnect () {
+    MessageBus.stop()
+  }
+}
+
 class ActionCableAdapter extends ConsumerAdapter {
   constructor (consumer) {
+    super()
     this.consumer = consumer
   }
 
@@ -72,4 +121,4 @@ class ActionCableAdapter extends ConsumerAdapter {
   }
 }
 
-export { ActionCableAdapter, ConsumerAdapter }
+export { MessageBusAdapter, ConsumerAdapter, ActionCableAdapter }
