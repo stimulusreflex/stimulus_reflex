@@ -25,8 +25,11 @@ class AbstractConsumerAdapter {
   }
 }
 
-class ActionCableAdapter extends AbstractConsumerAdapter {
+const getAbstractClass = () => {
+  return AbstractConsumerAdapter
+}
 
+class ActionCableAdapter extends AbstractConsumerAdapter {
   find_subscription (identifier) {
     return this.consumer.subscriptions.findAll(identifier)[0]
   }
@@ -64,4 +67,4 @@ class ActionCableAdapter extends AbstractConsumerAdapter {
   }
 }
 
-export { ActionCableAdapter, AbstractConsumerAdapter }
+export { ActionCableAdapter, getAbstractClass }

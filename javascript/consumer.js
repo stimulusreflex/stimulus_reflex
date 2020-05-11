@@ -4,7 +4,7 @@ function isConsumer (object) {
   if (object) {
     try {
       return (
-        object.isConnected &&
+        object.constructor.name == 'ActionCableAdapter' &&
         object.connect &&
         object.disconnect &&
         object.send

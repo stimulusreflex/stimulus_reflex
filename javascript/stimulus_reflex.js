@@ -1,12 +1,11 @@
 import { Controller } from 'stimulus'
-import CableReady from 'cable_ready'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import { uuidv4 } from './utils'
 import Log from './log'
-import { ActionCableAdapter } from './adapter'
+import { ActionCableAdapter, getAbstractClass } from './adapter'
 import {
   attributeValue,
   attributeValues,
@@ -58,7 +57,7 @@ const extendStimulusController = controller => {
     // Indicates if the consumer connection is open.
     // The connection must be open before calling stimulate.
     //
-    isConsumerConnectionOpen() {
+    isConsumerConnectionOpen () {
       return this.StimulusReflex.consumer.isConnected()
     },
 
@@ -108,9 +107,7 @@ const extendStimulusController = controller => {
       element.reflexData = data
 
       dispatchLifecycleEvent('before', element)
-
       adaptedConsumer.send(JSON.stringify({ channel }), data, stimulateOptions)
-      subscription.send(data)
 
       if (debugging) {
         Log.request(
@@ -346,6 +343,7 @@ if (!document.stimulusReflexInitialized) {
 export default {
   initialize,
   register,
+  getAbstractClass,
   setupDeclarativeReflexes,
   get debug () {
     return debugging
