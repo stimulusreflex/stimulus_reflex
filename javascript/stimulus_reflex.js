@@ -44,6 +44,7 @@ const createSubscription = controller => {
     adaptedConsumer.create_subscription(channel)
 
   controller.StimulusReflex.subscription = subscription
+  controller.StimulusReflex.consumer = adaptedConsumer
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -54,11 +55,11 @@ const createSubscription = controller => {
 //
 const extendStimulusController = controller => {
   Object.assign(controller, {
-    // Indicates if the ActionCable web socket connection is open.
+    // Indicates if the consumer connection is open.
     // The connection must be open before calling stimulate.
     //
-    isActionCableConnectionOpen () {
-      return this.StimulusReflex.subscription.consumer.connection.isOpen()
+    isConsumerConnectionOpen() {
+      return this.StimulusReflex.consumer.isConnected()
     },
 
     // Invokes a server side reflex method.
@@ -99,8 +100,8 @@ const extendStimulusController = controller => {
 
       const { channel } = this.StimulusReflex
 
-      if (!this.isActionCableConnectionOpen())
-        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
+      if (!this.isConsumerConnectionOpen())
+        throw 'The consumer connection is not open! `this.isConsumerConnectionOpen()` must return true before calling `this.stimulate()`'
 
       // lifecycle setup
       element.reflexController = this
@@ -108,7 +109,7 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      adaptedConsumer.send(JSON.stringify({ channel }, data, stimulateOptions))
+      adaptedConsumer.send(JSON.stringify({ channel }), data, stimulateOptions)
       subscription.send(data)
 
       if (debugging) {

@@ -1,39 +1,31 @@
 import CableReady from 'cable_ready'
 
-class ConsumerAdapter {
+class AbstractConsumerAdapter {
   constructor (consumer) {
     this.consumer = consumer
-  }
-
-  find_subscriptions (identifier) {
-    throw Error('Not implemented')
-  }
-
-  create_subscription (channel) {
-    throw Error('Not implemented')
-  }
-
-  isConnected () {
-    throw Error('Not implemented')
-  }
-
-  send (identifier, data, options = {}) {
-    throw Error('Not implemented')
-  }
-
-  connect () {
-    throw Error('Not implemented')
-  }
-
-  disconnect () {
-    throw Error('Not implemented')
+    if (new.target === AbstractConsumerAdapter) {
+      throw new TypeError('Cannot construct an abstract instance directly')
+    }
+    const methods = [
+      // takes an argument identifier
+      'find_subscription',
+      // takes an argument channel
+      'create_subscription',
+      'isConnected',
+      // takes arguments identifier, data, options
+      'send',
+      'connect',
+      'disconnect'
+    ]
+    for (const method of methods) {
+      if (typeof this[method] === undefined) {
+        throw new TypeError(`Must override the method ${method}`)
+      }
+    }
   }
 }
 
-class ActionCableAdapter extends ConsumerAdapter {
-  constructor (consumer) {
-    this.consumer = consumer
-  }
+class ActionCableAdapter extends AbstractConsumerAdapter {
 
   find_subscription (identifier) {
     return this.consumer.subscriptions.findAll(identifier)[0]
@@ -72,4 +64,4 @@ class ActionCableAdapter extends ConsumerAdapter {
   }
 }
 
-export { ActionCableAdapter, ConsumerAdapter }
+export { ActionCableAdapter, AbstractConsumerAdapter }
