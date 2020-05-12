@@ -4,7 +4,7 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4 } from './utils'
+import { uuidv4, debounce } from './utils'
 import Log from './log'
 import {
   attributeValue,
@@ -185,53 +185,69 @@ class StimulusReflexController extends Controller {
   }
 }
 
+let settingUpDeclarativeReflexes = false
+
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
-const setupDeclarativeReflexes = () => {
-  document
-    .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
-    .forEach(element => {
-      const controllers = attributeValues(
-        element.getAttribute(stimulusApplication.schema.controllerAttribute)
-      )
-      const reflexes = attributeValues(
-        element.getAttribute(stimulusApplication.schema.reflexAttribute)
-      )
-      const actions = attributeValues(
-        element.getAttribute(stimulusApplication.schema.actionAttribute)
-      )
-      reflexes.forEach(reflex => {
-        const controller = allReflexControllers(stimulusApplication, element)[0]
-        let action
-        if (controller) {
-          action = `${reflex.split('->')[0]}->${
-            controller.identifier
-          }#__perform`
-          if (!actions.includes(action)) actions.push(action)
-        } else {
-          action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-          if (!controllers.includes('stimulus-reflex')) {
-            controllers.push('stimulus-reflex')
+const internalSetupDeclarativeReflexes = ok => {
+  if (!ok) return setTimeout(() => setupDeclarativeReflexes(true), 1)
+  if (settingUpDeclarativeReflexes) return
+
+  try {
+    settingUpDeclarativeReflexes = true
+
+    document
+      .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
+      .forEach(element => {
+        const controllers = attributeValues(
+          element.getAttribute(stimulusApplication.schema.controllerAttribute)
+        )
+        const reflexes = attributeValues(
+          element.getAttribute(stimulusApplication.schema.reflexAttribute)
+        )
+        const actions = attributeValues(
+          element.getAttribute(stimulusApplication.schema.actionAttribute)
+        )
+        reflexes.forEach(reflex => {
+          const controller = allReflexControllers(
+            stimulusApplication,
+            element
+          )[0]
+          let action
+          if (controller) {
+            action = `${reflex.split('->')[0]}->${
+              controller.identifier
+            }#__perform`
+            if (!actions.includes(action)) actions.push(action)
+          } else {
+            action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
+            if (!controllers.includes('stimulus-reflex')) {
+              controllers.push('stimulus-reflex')
+            }
+            if (!actions.includes(action)) actions.push(action)
           }
-          if (!actions.includes(action)) actions.push(action)
+        })
+        const controllerValue = attributeValue(controllers)
+        const actionValue = attributeValue(actions)
+        if (controllerValue) {
+          element.setAttribute(
+            stimulusApplication.schema.controllerAttribute,
+            controllerValue
+          )
         }
+        if (actionValue)
+          element.setAttribute(
+            stimulusApplication.schema.actionAttribute,
+            actionValue
+          )
       })
-      const controllerValue = attributeValue(controllers)
-      const actionValue = attributeValue(actions)
-      if (controllerValue) {
-        element.setAttribute(
-          stimulusApplication.schema.controllerAttribute,
-          controllerValue
-        )
-      }
-      if (actionValue)
-        element.setAttribute(
-          stimulusApplication.schema.actionAttribute,
-          actionValue
-        )
-    })
+  } finally {
+    settingUpDeclarativeReflexes = false
+  }
 }
+
+const setupDeclarativeReflexes = debounce(internalSetupDeclarativeReflexes, 50)
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
@@ -284,16 +300,17 @@ const initialize = (application, initializeOptions = {}) => {
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
-  window.addEventListener('load', () => setTimeout(setupDeclarativeReflexes, 1))
-  document.addEventListener('turbolinks:load', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
-  document.addEventListener('cable-ready:after-morph', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
-  document.addEventListener('ajax:complete', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
+
+  window.addEventListener('load', () => {
+    setupDeclarativeReflexes()
+    const observer = new MutationObserver(setupDeclarativeReflexes)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    })
+  })
+
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
@@ -382,3 +399,5 @@ export default {
     debugging = !!value
   }
 }
+
+console.log('hop was here')
