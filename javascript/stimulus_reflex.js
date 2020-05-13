@@ -186,7 +186,7 @@ class StimulusReflexController extends Controller {
 }
 
 // Sets up declarative reflex behavior.
-// Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
+// Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
   document
@@ -331,7 +331,7 @@ if (!document.stimulusReflexInitialized) {
 
     if (element && subject == 'error') element.reflexError = body
 
-    let response = {
+    const response = {
       data: promise && promise.data,
       element,
       event,
