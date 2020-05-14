@@ -26,12 +26,10 @@ export const attributeValues = value => {
 // Extracts attributes from a DOM element.
 //
 export const extractElementAttributes = element => {
-  let attrs = Array.prototype.slice
-    .call(element.attributes)
-    .reduce((memo, attr) => {
-      memo[attr.name] = attr.value
-      return memo
-    }, {})
+  let attrs = Array.from(element.attributes).reduce((memo, attr) => {
+    memo[attr.name] = attr.value
+    return memo
+  }, {})
 
   attrs.checked = !!element.checked
   attrs.selected = !!element.selected
@@ -65,17 +63,15 @@ const hasMultipleOptions = element => {
 }
 
 const collectCheckedOptions = element => {
-  const checkedOptions = Array.prototype.slice
-    .call(element.querySelectorAll('option:checked'))
-    .concat(
-      Array.prototype.slice
-        .call(
-          document.querySelectorAll(
-            `input[type="${element.type}"][name="${element.name}"]`
-          )
-        )
-        .filter(elem => elem.checked)
-    )
+  const checkedOptions = Array.from(
+    element.querySelectorAll('option:checked')
+  ).concat(
+    Array.from(
+      document.querySelectorAll(
+        `input[type="${element.type}"][name="${element.name}"]`
+      )
+    ).filter(elem => elem.checked)
+  )
 
   return checkedOptions.map(o => o.value)
 }
