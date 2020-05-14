@@ -111,6 +111,7 @@ describe('extractElementAttributes', () => {
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'my-select',
+      value: 'one,two',
       values: ['one', 'two'],
       name: 'my-select',
       tag_name: 'SELECT',
@@ -121,7 +122,7 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns multiple values for a multiple select', () => {
+  it('returns multiple values for a checkbox list', () => {
     const dom = new JSDOM(
       '<input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3 value="three">'
     )
@@ -132,6 +133,7 @@ describe('extractElementAttributes', () => {
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'my-checkbox-collection-1',
+      value: 'one,two',
       values: ['one', 'two'],
       type: 'checkbox',
       name: 'my-checkbox-collection',

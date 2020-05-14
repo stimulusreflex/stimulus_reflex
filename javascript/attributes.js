@@ -38,8 +38,9 @@ export const extractElementAttributes = element => {
   attrs.tag_name = element.tagName
 
   if (hasMultipleOptions(element)) {
-    attrs.values = collectCheckedOptions(element)
-    delete attrs.value
+    const collectedOptions = collectCheckedOptions(element)
+    attrs.values = collectedOptions
+    attrs.value = collectedOptions.join(',')
   } else {
     attrs.value = element.value
     if (element.tagName.match(/select/i)) {
