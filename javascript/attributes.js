@@ -1,5 +1,22 @@
 import { $$asyncIterator } from 'iterall'
 
+const multipleInstances = element =>
+  document.querySelectorAll(
+    `input[type="${element.type}"][name="${element.name}"]`
+  ).length > 0
+
+const collectCheckedOptions = element => {
+  return Array.from(element.querySelectorAll('option:checked'))
+    .concat(
+      Array.from(
+        document.querySelectorAll(
+          `input[type="${element.type}"][name="${element.name}"]`
+        )
+      ).filter(elem => elem.checked)
+    )
+    .map(o => o.value)
+}
+
 // Returns a string value for the passed array.
 //
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
@@ -35,7 +52,7 @@ export const extractElementAttributes = element => {
   attrs.selected = !!element.selected
   attrs.tag_name = element.tagName
 
-  if (hasMultipleOptions(element)) {
+  if (element.tagName.match(/select/i) || multipleInstances(element)) {
     const collectedOptions = collectCheckedOptions(element)
     attrs.values = collectedOptions
     attrs.value = collectedOptions.join(',')
@@ -49,31 +66,6 @@ export const extractElementAttributes = element => {
   }
 
   return attrs
-}
-
-const hasMultipleOptions = element => {
-  const multipleElementCount = document.querySelectorAll(
-    `input[type="${element.type}"][name="${element.name}"]`
-  ).length
-
-  return (
-    (element.tagName.match(/select/i) && element.multiple) ||
-    multipleElementCount > 1
-  )
-}
-
-const collectCheckedOptions = element => {
-  const checkedOptions = Array.from(
-    element.querySelectorAll('option:checked')
-  ).concat(
-    Array.from(
-      document.querySelectorAll(
-        `input[type="${element.type}"][name="${element.name}"]`
-      )
-    ).filter(elem => elem.checked)
-  )
-
-  return checkedOptions.map(o => o.value)
 }
 
 // Finds an element based on the passed represention of the DOM element's attributes.
@@ -94,6 +86,7 @@ export const findElement = attributes => {
       if (key.includes('.')) continue
       if (key === 'tagName') continue
       if (key === 'value') continue
+      if (key === 'values') continue
       if (key === 'checked') continue
       if (key === 'selected') continue
       if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue
