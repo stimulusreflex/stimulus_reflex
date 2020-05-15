@@ -1,5 +1,88 @@
 # Changelog
 
+## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0...v3.2.1)
+
+**Merged pull requests:**
+
+- Prevent halting if reflex returns false [\#194](https://github.com/hopsoft/stimulus_reflex/pull/194) ([hopsoft](https://github.com/hopsoft))
+
+## [v3.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0) (2020-05-09)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0.pre1...v3.2.0)
+
+## [v3.2.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0.pre1) (2020-05-08)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0-pre0...v3.2.0.pre1)
+
+**Fixed bugs:**
+
+- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
+
+## [v3.2.0-pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0-pre0) (2020-05-07)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0.pre0...v3.2.0-pre0)
+
+## [v3.2.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0.pre0) (2020-05-07)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.4...v3.2.0.pre0)
+
+**Implemented enhancements:**
+
+- Stimulate without a reflex target [\#179](https://github.com/hopsoft/stimulus_reflex/issues/179)
+- Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
+- Replace camelize with homegrown version [\#184](https://github.com/hopsoft/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
+- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
+- Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
+- add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
+- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
+
+**Fixed bugs:**
+
+-  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
+
+**Closed issues:**
+
+-  The ActionCable connection is not open! `this.isActionCableConnectionOpen\(\)` must return true before calling `this.stimulate\(\)` [\#187](https://github.com/hopsoft/stimulus_reflex/issues/187)
+- Promises just resolve with last Partial DOM update [\#171](https://github.com/hopsoft/stimulus_reflex/issues/171)
+
+**Merged pull requests:**
+
+- Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
+- Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
+
+## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.3...v3.1.4)
+
+**Implemented enhancements:**
+
+- TypeScript typing support [\#152](https://github.com/hopsoft/stimulus_reflex/issues/152)
+
+**Fixed bugs:**
+
+- Possible bug when about to perform cableready operations [\#166](https://github.com/hopsoft/stimulus_reflex/issues/166)
+- Reflex not binding to ajax loaded content [\#161](https://github.com/hopsoft/stimulus_reflex/issues/161)
+- Input field values sometimes remain [\#159](https://github.com/hopsoft/stimulus_reflex/issues/159)
+
+**Closed issues:**
+
+- Devise authenticated routes not supported anymore [\#173](https://github.com/hopsoft/stimulus_reflex/issues/173)
+- CableReady detected an error in morph! Event is not a constructor [\#165](https://github.com/hopsoft/stimulus_reflex/issues/165)
+- Testing Integrations [\#164](https://github.com/hopsoft/stimulus_reflex/issues/164)
+- Error during install: "File unchanged! The supplied flag value not found!  app/javascript/packs/application.js" [\#118](https://github.com/hopsoft/stimulus_reflex/issues/118)
+- Make the javascript in stimulus-reflex websocket agnostic [\#113](https://github.com/hopsoft/stimulus_reflex/issues/113)
+
+**Merged pull requests:**
+
+- prettier-standard: include all js files in the project [\#177](https://github.com/hopsoft/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
+- Remove implicit permanent for text inputs [\#176](https://github.com/hopsoft/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
+- Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
+- setupDeclarativeReflexes export with UJS support [\#169](https://github.com/hopsoft/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
+- Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
+
 ## [v3.1.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.3) (2020-04-20)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.2...v3.1.3)
@@ -320,7 +403,6 @@
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -337,6 +419,10 @@
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
+
+**Implemented enhancements:**
+
+- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 

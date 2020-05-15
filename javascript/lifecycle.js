@@ -1,4 +1,4 @@
-import { camelize } from 'inflected'
+import { camelize } from './utils'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //

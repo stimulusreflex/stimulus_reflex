@@ -102,6 +102,25 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
+  it('returns multiple values for a select', () => {
+    const dom = new JSDOM(
+      '<select name="my-select" id="my-select"><option value="one">One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'
+    )
+    global.document = dom.window.document
+    const element = dom.window.document.querySelector('select')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      id: 'my-select',
+      value: 'two',
+      values: ['two'],
+      name: 'my-select',
+      tag_name: 'SELECT',
+      checked: false,
+      selected: false
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
+
   it('returns multiple values for a multiple select', () => {
     const dom = new JSDOM(
       '<select name="my-select" id="my-select" multiple><option value="one" selected>One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'

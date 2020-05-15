@@ -10,7 +10,7 @@ The team behind StimulusReflex works hard to make sure that the library has ever
 
 A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulusjs.org), a lightweight library that provides powerful event handling.
 
-We also draw upon libraries such as [Lodash](https://lodash.com) frequently to craft flexible solutions to common problems.
+We also draw upon proven libraries such as [Lodash](https://lodash.com) when necessary to craft flexible solutions to common problems.
 
 ## Throttle, Debounce and requestAnimationFrame
 

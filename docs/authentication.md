@@ -6,6 +6,12 @@ description: How to secure your StimulusReflex application
 
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
+## Authentication != Authorization
+
+Libraries like Pundit, CanCanCan and Authz don't work on reflexes and might justify keeping state mutations with destructive outcomes in the controller.
+
+Another valid approach to authorization is to make use of the `before_reflex` callbacks, where you could potentially call `throw :abort` if the user is acting out above their pay grade.
+
 ## Encrypted Session Cookies
 
 You can use your default Rails encrypted cookie-based sessions to isolate your users into their own sessions. This works great even if your application doesn't have a login system.
@@ -40,7 +46,7 @@ end
 
 ## User-based Authentication
 
-Many Rails apps use the current\_user convention or more recently, the  [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
+Many Rails apps use the current\_user convention or more recently, the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
 
 {% code title="app/controllers/application\_controller.rb  " %}
 ```ruby
@@ -101,7 +107,7 @@ module ApplicationCable
     def connect
       self.current_user = find_verified_user
     end
-    
+
     protected
 
     def find_verified_user
@@ -125,6 +131,4 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 {% endcode %}
-
-
 
