@@ -1,3 +1,20 @@
+const multipleInstances = element =>
+  document.querySelectorAll(
+    `input[type="${element.type}"][name="${element.name}"]`
+  ).length > 0
+
+const collectCheckedOptions = element => {
+  return Array.from(element.querySelectorAll('option:checked'))
+    .concat(
+      Array.from(
+        document.querySelectorAll(
+          `input[type="${element.type}"][name="${element.name}"]`
+        )
+      ).filter(elem => elem.checked)
+    )
+    .map(o => o.value)
+}
+
 // Returns a string value for the passed array.
 //
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
@@ -24,27 +41,28 @@ export const attributeValues = value => {
 // Extracts attributes from a DOM element.
 //
 export const extractElementAttributes = element => {
-  let attrs = Array.prototype.slice
-    .call(element.attributes)
-    .reduce((memo, attr) => {
-      memo[attr.name] = attr.value
-      return memo
-    }, {})
+  let attrs = Array.from(element.attributes).reduce((memo, attr) => {
+    memo[attr.name] = attr.value
+    return memo
+  }, {})
 
-  attrs.value = element.value
   attrs.checked = !!element.checked
   attrs.selected = !!element.selected
   attrs.tag_name = element.tagName
-  if (element.tagName.match(/select/i)) {
-    if (element.multiple) {
-      const checkedOptions = Array.prototype.slice.call(
-        element.querySelectorAll('option:checked')
-      )
-      attrs.values = checkedOptions.map(o => o.value)
-    } else if (element.selectedIndex > -1) {
-      attrs.value = element.options[element.selectedIndex].value
+
+  if (element.tagName.match(/select/i) || multipleInstances(element)) {
+    const collectedOptions = collectCheckedOptions(element)
+    attrs.values = collectedOptions
+    attrs.value = collectedOptions.join(',')
+  } else {
+    attrs.value = element.value
+    if (element.tagName.match(/select/i)) {
+      if (element.selectedIndex > -1) {
+        attrs.value = element.options[element.selectedIndex].value
+      }
     }
   }
+
   return attrs
 }
 
@@ -66,6 +84,7 @@ export const findElement = attributes => {
       if (key.includes('.')) continue
       if (key === 'tagName') continue
       if (key === 'value') continue
+      if (key === 'values') continue
       if (key === 'checked') continue
       if (key === 'selected') continue
       if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue
