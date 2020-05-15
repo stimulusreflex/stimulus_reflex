@@ -1,5 +1,3 @@
-import { $$asyncIterator } from 'iterall'
-
 const multipleInstances = element =>
   document.querySelectorAll(
     `input[type="${element.type}"][name="${element.name}"]`
