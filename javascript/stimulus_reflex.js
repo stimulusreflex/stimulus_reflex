@@ -328,6 +328,10 @@ if (!document.stimulusReflexInitialized) {
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
+    const subjects = {
+      error: true,
+      halted: true
+    }
 
     if (element && subject == 'error') element.reflexError = body
 
@@ -349,13 +353,20 @@ if (!document.stimulusReflexInitialized) {
       }
     }
 
-    if (element && ['error', 'halted'].includes(subject))
-      dispatchLifecycleEvent(subject, element)
+    if (element && subjects[subject]) dispatchLifecycleEvent(subject, element)
 
-    if (debugging && subject == 'error') {
-      Log.error(response)
-    } else if (debugging) {
-      Log.success(response)
+    if (debugging) {
+      switch (subject) {
+        case 'error':
+          Log.error(response)
+          break
+        case 'halted':
+          Log.success(response, { halted: true })
+          break
+        default:
+          Log.success(response)
+          break
+      }
     }
   })
 }
