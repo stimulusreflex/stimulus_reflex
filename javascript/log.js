@@ -23,11 +23,13 @@ function success (response) {
   const { event, events } = response
   const { reflexId, target, last } = event.detail.stimulusReflex || {}
 
-  Object.keys(events).map(selector => {
-    elements[selector] = events[selector].detail.element
-    html[selector] = events[selector].detail.html
-    payloads[selector] = events[selector].detail.stimulusReflex
-  })
+  if (events) {
+    Object.keys(events).map(selector => {
+      elements[selector] = events[selector].detail.element
+      html[selector] = events[selector].detail.html
+      payloads[selector] = events[selector].detail.stimulusReflex
+    })
+  }
 
   console.log(`\u2B05 ${target}`, {
     reflexId,
