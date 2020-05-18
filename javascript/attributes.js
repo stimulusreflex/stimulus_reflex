@@ -63,6 +63,27 @@ export const extractElementAttributes = element => {
     }
   }
 
+  let parent = element.parentElement
+
+  while (parent) {
+    attrs = { ...extractDataAttributes(parent), ...attrs }
+    parent = parent.parentElement
+  }
+
+  return attrs
+}
+
+// Extracts all data attributes from a DOM element.
+//
+export const extractDataAttributes = element => {
+  let attrs = {}
+
+  Array.from(element.attributes).forEach(attr => {
+    if (attr.name.startsWith('data-')) {
+      attrs[attr.name] = attr.value
+    }
+  })
+
   return attrs
 }
 
