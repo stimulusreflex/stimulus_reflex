@@ -186,7 +186,7 @@ class StimulusReflexController extends Controller {
 }
 
 // Sets up declarative reflex behavior.
-// Any elements that define data-reflex will automatcially be wired up with the default StimulusReflexController.
+// Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = () => {
   document
@@ -323,27 +323,51 @@ if (!document.stimulusReflexInitialized) {
     dispatchLifecycleEvent('success', element)
     if (debugging) Log.success(response)
   })
-  document.addEventListener('stimulus-reflex:500', event => {
-    const { reflexId, attrs, error } = event.detail.stimulusReflex || {}
+  document.addEventListener('stimulus-reflex:server-message', event => {
+    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
+    const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
+    const subjects = {
+      error: true,
+      halted: true
+    }
 
-    if (element) element.reflexError = error
+    if (element && subject == 'error') element.reflexError = body
 
     const response = {
       data: promise && promise.data,
       element,
       event,
-      toString: () => error
+      events: promise && promise.events,
+      toString: () => body
     }
 
     if (promise) {
       delete promises[reflexId]
-      promise.reject(response)
+
+      if (subject == 'error') {
+        promise.reject(response)
+      } else {
+        promise.resolve(response)
+      }
     }
 
-    dispatchLifecycleEvent('error', element)
-    if (debugging) Log.error(response)
+    if (element && subjects[subject]) dispatchLifecycleEvent(subject, element)
+
+    if (debugging) {
+      switch (subject) {
+        case 'error':
+          Log.error(response)
+          break
+        case 'halted':
+          Log.success(response, { halted: true })
+          break
+        default:
+          Log.success(response)
+          break
+      }
+    }
   })
 }
 

@@ -16,7 +16,7 @@ function request (
   })
 }
 
-function success (response) {
+function success (response, options = { halted: false }) {
   const html = {}
   const payloads = {}
   const elements = {}
@@ -32,6 +32,7 @@ function success (response) {
   console.log(`\u2B05 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
+    halted: options.halted,
     elements,
     payloads,
     html
