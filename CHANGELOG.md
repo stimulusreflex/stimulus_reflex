@@ -6,10 +6,12 @@
 
 **Implemented enhancements:**
 
+- Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
 
 **Merged pull requests:**
 
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -27,6 +29,10 @@
 ## [v3.2.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0.pre1) (2020-05-08)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0-pre0...v3.2.0.pre1)
+
+**Fixed bugs:**
+
+- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.0-pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0-pre0) (2020-05-07)
 
@@ -48,7 +54,6 @@
 
 **Fixed bugs:**
 
-- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 -  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
 
 **Closed issues:**
