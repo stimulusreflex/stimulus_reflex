@@ -399,5 +399,3 @@ export default {
     debugging = !!value
   }
 }
-
-console.log('hop was here')
