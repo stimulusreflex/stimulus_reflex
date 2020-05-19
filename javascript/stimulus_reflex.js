@@ -247,7 +247,7 @@ const internalSetupDeclarativeReflexes = ok => {
   }
 }
 
-const setupDeclarativeReflexes = debounce(internalSetupDeclarativeReflexes, 50)
+const setupDeclarativeReflexes = debounce(internalSetupDeclarativeReflexes, 20)
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
