@@ -204,4 +204,36 @@ describe('extractElementAttributes', () => {
     }
     assert.deepStrictEqual(actual, expected)
   })
+
+  it('returns expected attributes with parent attributes only for elements with data-reflex-inherit', () => {
+    const dom = new JSDOM(
+      '<div data-parent-id="123"><button id="button1" data-reflex-inherit>Something</button><button id="button2">Another thing</button></div>'
+    )
+    global.document = dom.window.document
+
+    const button1 = dom.window.document.querySelector('#button1')
+    const actual_button1 = extractElementAttributes(button1)
+    const expected_button1 = {
+      id: 'button1',
+      'data-parent-id': '123',
+      'data-reflex-inherit': '',
+      value: '',
+      tag_name: 'BUTTON',
+      checked: false,
+      selected: false
+    }
+
+    const button2 = dom.window.document.querySelector('#button2')
+    const actual_button2 = extractElementAttributes(button2)
+    const expected_button2 = {
+      id: 'button2',
+      value: '',
+      tag_name: 'BUTTON',
+      checked: false,
+      selected: false
+    }
+
+    assert.deepStrictEqual(actual_button1, expected_button1)
+    assert.deepStrictEqual(actual_button2, expected_button2)
+  })
 })
