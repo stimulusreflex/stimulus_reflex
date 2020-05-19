@@ -1,3 +1,5 @@
+import { defaultSchema } from './schema'
+
 const multipleInstances = element =>
   document.querySelectorAll(
     `input[type="${element.type}"][name="${element.name}"]`
@@ -63,11 +65,13 @@ export const extractElementAttributes = element => {
     }
   }
 
-  let parent = element.parentElement
+  if (element.attributes[defaultSchema.reflexInheritAttribute]) {
+    let parent = element.parentElement
 
-  while (parent) {
-    attrs = { ...extractDataAttributes(parent), ...attrs }
-    parent = parent.parentElement
+    while (parent) {
+      attrs = { ...extractDataAttributes(parent), ...attrs }
+      parent = parent.parentElement
+    }
   }
 
   return attrs
@@ -78,11 +82,13 @@ export const extractElementAttributes = element => {
 export const extractDataAttributes = element => {
   let attrs = {}
 
-  Array.from(element.attributes).forEach(attr => {
-    if (attr.name.startsWith('data-')) {
-      attrs[attr.name] = attr.value
-    }
-  })
+  if (element && element.attributes) {
+    Array.from(element.attributes).forEach(attr => {
+      if (attr.name.startsWith('data-')) {
+        attrs[attr.name] = attr.value
+      }
+    })
+  }
 
   return attrs
 }
