@@ -162,4 +162,46 @@ describe('extractElementAttributes', () => {
     }
     assert.deepStrictEqual(actual, expected)
   })
+
+  it('returns expected attributes for element with data-reflex-inherit', () => {
+    const dom = new JSDOM(
+      '<body data-body-id="body"><div data-grandparent-id="456"><div data-parent-id="123"><a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-inherit>Test</a></div></div></body>'
+    )
+    global.document = dom.window.document
+    const element = dom.window.document.querySelector('a')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      id: 'example',
+      'data-controller': 'foo',
+      'data-reflex': 'bar',
+      'data-info': '12345',
+      'data-grandparent-id': '456',
+      'data-parent-id': '123',
+      'data-body-id': 'body',
+      'data-reflex-inherit': '',
+      value: undefined,
+      tag_name: 'A',
+      checked: false,
+      selected: false
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
+
+  it('returns expected attributes for element with overloaded data attributes with data-reflex-inherit', () => {
+    const dom = new JSDOM(
+      '<div data-info="this_is_the_wrong_data-info"><a data-info="this_is_the_right_data-info" data-reflex-inherit>Test</a></div>'
+    )
+    global.document = dom.window.document
+    const element = dom.window.document.querySelector('a')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      'data-info': 'this_is_the_right_data-info',
+      'data-reflex-inherit': '',
+      value: undefined,
+      tag_name: 'A',
+      checked: false,
+      selected: false
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
 })
