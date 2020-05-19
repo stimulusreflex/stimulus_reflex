@@ -185,69 +185,53 @@ class StimulusReflexController extends Controller {
   }
 }
 
-let settingUpDeclarativeReflexes = false
-
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
-const internalSetupDeclarativeReflexes = ok => {
-  if (!ok) return setTimeout(() => setupDeclarativeReflexes(true), 1)
-  if (settingUpDeclarativeReflexes) return
-
-  try {
-    settingUpDeclarativeReflexes = true
-
-    document
-      .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
-      .forEach(element => {
-        const controllers = attributeValues(
-          element.getAttribute(stimulusApplication.schema.controllerAttribute)
-        )
-        const reflexes = attributeValues(
-          element.getAttribute(stimulusApplication.schema.reflexAttribute)
-        )
-        const actions = attributeValues(
-          element.getAttribute(stimulusApplication.schema.actionAttribute)
-        )
-        reflexes.forEach(reflex => {
-          const controller = allReflexControllers(
-            stimulusApplication,
-            element
-          )[0]
-          let action
-          if (controller) {
-            action = `${reflex.split('->')[0]}->${
-              controller.identifier
-            }#__perform`
-            if (!actions.includes(action)) actions.push(action)
-          } else {
-            action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
-            if (!controllers.includes('stimulus-reflex')) {
-              controllers.push('stimulus-reflex')
-            }
-            if (!actions.includes(action)) actions.push(action)
+const setupDeclarativeReflexes = debounce(() => {
+  document
+    .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
+    .forEach(element => {
+      const controllers = attributeValues(
+        element.getAttribute(stimulusApplication.schema.controllerAttribute)
+      )
+      const reflexes = attributeValues(
+        element.getAttribute(stimulusApplication.schema.reflexAttribute)
+      )
+      const actions = attributeValues(
+        element.getAttribute(stimulusApplication.schema.actionAttribute)
+      )
+      reflexes.forEach(reflex => {
+        const controller = allReflexControllers(stimulusApplication, element)[0]
+        let action
+        if (controller) {
+          action = `${reflex.split('->')[0]}->${
+            controller.identifier
+          }#__perform`
+          if (!actions.includes(action)) actions.push(action)
+        } else {
+          action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
+          if (!controllers.includes('stimulus-reflex')) {
+            controllers.push('stimulus-reflex')
           }
-        })
-        const controllerValue = attributeValue(controllers)
-        const actionValue = attributeValue(actions)
-        if (controllerValue) {
-          element.setAttribute(
-            stimulusApplication.schema.controllerAttribute,
-            controllerValue
-          )
+          if (!actions.includes(action)) actions.push(action)
         }
-        if (actionValue)
-          element.setAttribute(
-            stimulusApplication.schema.actionAttribute,
-            actionValue
-          )
       })
-  } finally {
-    settingUpDeclarativeReflexes = false
-  }
-}
-
-const setupDeclarativeReflexes = debounce(internalSetupDeclarativeReflexes, 20)
+      const controllerValue = attributeValue(controllers)
+      const actionValue = attributeValue(actions)
+      if (controllerValue) {
+        element.setAttribute(
+          stimulusApplication.schema.controllerAttribute,
+          controllerValue
+        )
+      }
+      if (actionValue)
+        element.setAttribute(
+          stimulusApplication.schema.actionAttribute,
+          actionValue
+        )
+    })
+}, 20)
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
@@ -391,7 +375,6 @@ if (!document.stimulusReflexInitialized) {
 export default {
   initialize,
   register,
-  setupDeclarativeReflexes,
   get debug () {
     return debugging
   },
