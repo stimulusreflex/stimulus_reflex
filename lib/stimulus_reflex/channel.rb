@@ -23,6 +23,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
+    arguments.map! { |argument| map_hashes_in(argument) }
     element = StimulusReflex::Element.new(data["attrs"])
 
     begin
@@ -50,6 +51,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   private
+
+  def map_hashes_in(argument)
+    return argument.with_indifferent_access if argument.is_a?(Hash)
+
+    argument.map! { |nested_argument| map_hashes_in(nested_argument) } if argument.is_a?(Array)
+    argument
+  end
 
   def is_reflex?(reflex_class)
     reflex_class.ancestors.include? StimulusReflex::Reflex
