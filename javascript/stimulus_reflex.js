@@ -103,7 +103,10 @@ const extendStimulusController = controller => {
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute,
         reflexId: reflexId,
-        params: serializeForm(element.closest("form"), { hash: true, empty: true })
+        params: serializeForm(element.closest('form'), {
+          hash: true,
+          empty: true
+        })
       }
       const { subscription } = this.StimulusReflex
       const { connection } = subscription.consumer
