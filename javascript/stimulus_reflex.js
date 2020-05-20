@@ -1,5 +1,6 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
+import serializeForm from 'form-serialize'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
@@ -101,7 +102,8 @@ const extendStimulusController = controller => {
         selectors,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId
+        reflexId: reflexId,
+        params: serializeForm(element.closest("form"), { hash: true, empty: true })
       }
       const { subscription } = this.StimulusReflex
       const { connection } = subscription.consumer

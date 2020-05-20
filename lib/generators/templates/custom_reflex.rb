@@ -11,6 +11,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #   - session - the ActionDispatch::Session store for the current visitor
   #   - url - the URL of the page that triggered the reflex
   #   - element - a Hash like object that represents the HTML element that triggered the reflex
+  #   - params - parameters from the element's closest form (if any)
   #
   # Example:
   #
