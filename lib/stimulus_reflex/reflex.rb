@@ -78,7 +78,7 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env.merge!("action_dispatch.request.parameters" => @params)
+      req.env["action_dispatch.request.parameters"] = @params
       req.tap { |r| r.session.send :load! }
     end
   end
