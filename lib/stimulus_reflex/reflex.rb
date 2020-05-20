@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
+  include ActionController::StrongParameters
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
 
@@ -42,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :params
+  attr_reader :channel, :url, :element, :selectors, :method_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
@@ -53,7 +54,7 @@ class StimulusReflex::Reflex
     @element = element
     @selectors = selectors
     @method_name = method_name
-    @params = ActionController::Parameters.new(params)
+    @params = params
   end
 
   def request
@@ -77,6 +78,7 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
+      req.env.merge!("action_dispatch.request.parameters" => @params)
       req.tap { |r| r.session.send :load! }
     end
   end
