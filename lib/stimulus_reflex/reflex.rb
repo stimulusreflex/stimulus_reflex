@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Reflex
-  include ActionController::StrongParameters
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
 
@@ -105,5 +104,9 @@ class StimulusReflex::Reflex
 
   def default_reflex
     # noop default reflex to force page reloads
+  end
+
+  def params
+    @_params ||= ActionController::Parameters.new(request.parameters)
   end
 end
