@@ -5,7 +5,7 @@ description: How to prepare your app to use StimulusReflex
 # Setup
 
 {% hint style="warning" %}
-StimulusReflex v3 has been released, and there are some big changes. **Rails 6+ and server-side session storage are now required.**
+StimulusReflex v3 has been released, and there are some big changes. **Server-side session storage is now required.**
 
 You can find additional information for supporting Rails 5.2+ below.
 {% endhint %}
@@ -117,16 +117,16 @@ StimulusReflex supports both client and server logging of Reflexes.
 
 ## Rails 5.2+ Support
 
-When the Rails core team renamed the ActionCable JS npm package from `actioncable` to `@rails/actioncable` it made it very difficult to reliably import ActionCable. After evaluating our options, we made the difficult decision of updating to the new package name and freezing _official_ Rails 5.2 support on the 2.2.x branch of StimulusReflex.
+To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable package from npm: `@rails/actioncable`
 
-```ruby
-bundle add stimulus_reflex --version "~> 2.2.3"
-yarn add stimulus_reflex@2.2.3
-```
-
-While we don't have the resources to maintain two distinct package versions, we're proud of 2.2.x and consider it stable. In the unfortunate case of a critical security issue, we will make every attempt to backport hotfixes.
+1. Replace `actioncable` with `@rails/actioncable` in `package.json`
+  * `yarn remove actioncable`
+  * `yarn add @rails/actioncable`
+2. Replace any instance of `import Actioncable from "actioncable"` with `import { createConsumer } from "@rails/actioncable"`
+  * This imports the `createConsumer` function directly
+  * Previously, you might call `createConsumer()` on the `Actioncable` import: `Actioncable.createConsumer()`
+  * Now, you can reference `createConsumer()` directly
 
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 {% endhint %}
-
