@@ -47,12 +47,13 @@ class StimulusReflex::Reflex
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil)
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {})
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
+    @params = params
   end
 
   def request
@@ -76,6 +77,7 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
+      req.env["action_dispatch.request.parameters"] = @params
       req.tap { |r| r.session.send :load! }
     end
   end
@@ -102,5 +104,9 @@ class StimulusReflex::Reflex
 
   def default_reflex
     # noop default reflex to force page reloads
+  end
+
+  def params
+    @_params ||= ActionController::Parameters.new(request.parameters)
   end
 end
