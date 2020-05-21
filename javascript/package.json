@@ -36,7 +36,7 @@
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.1.2",
-    "form-serialize": "^0.7.2",
+    "form-serialize": ">= 0.7.2",
     "stimulus": ">= 1.1"
   },
   "devDependencies": {
