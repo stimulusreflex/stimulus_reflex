@@ -8,7 +8,13 @@
 
 - Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
+- Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
+
+**Closed issues:**
+
+- Spurious console error using data-reflex-root and CSS attribute selector [\#207](https://github.com/hopsoft/stimulus_reflex/issues/207)
+- ActionController Parameters [\#199](https://github.com/hopsoft/stimulus_reflex/issues/199)
 
 **Merged pull requests:**
 
