@@ -102,7 +102,7 @@ const extendStimulusController = controller => {
         selectors,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId,
+        reflexId: reflexId
       }
       const { subscription } = this.StimulusReflex
       const { connection } = subscription.consumer
