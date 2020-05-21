@@ -94,7 +94,16 @@ const extendStimulusController = controller => {
       const attrs = extractElementAttributes(element)
       const selectors = getReflexRoots(element)
       const reflexId = uuidv4()
-      const data = { target }
+      const data = {
+        target,
+        args,
+        url,
+        attrs,
+        selectors,
+        permanent_attribute_name:
+          stimulusApplication.schema.reflexPermanentAttribute,
+        reflexId: reflexId,
+      }
       const { subscription } = this.StimulusReflex
       const { connection } = subscription.consumer
 
@@ -108,19 +117,16 @@ const extendStimulusController = controller => {
       dispatchLifecycleEvent('before', element)
 
       setTimeout(() => {
+        const { params } = element.reflexData || {}
         element.reflexData = {
           ...data,
-          args,
-          url,
-          attrs,
-          selectors,
-          permanent_attribute_name:
-            stimulusApplication.schema.reflexPermanentAttribute,
-          reflexId: reflexId,
-          params: serializeForm(element.closest('form'), {
-            hash: true,
-            empty: true
-          })
+          params: {
+            ...params,
+            ...serializeForm(element.closest('form'), {
+              hash: true,
+              empty: true
+            })
+          }
         }
 
         subscription.send(element.reflexData)
