@@ -102,11 +102,7 @@ const extendStimulusController = controller => {
         selectors,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId,
-        params: serializeForm(element.closest('form'), {
-          hash: true,
-          empty: true
-        })
+        reflexId: reflexId
       }
       const { subscription } = this.StimulusReflex
       const { connection } = subscription.consumer
@@ -120,7 +116,21 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      subscription.send(data)
+      setTimeout(() => {
+        const { params } = element.reflexData || {}
+        element.reflexData = {
+          ...data,
+          params: {
+            ...params,
+            ...serializeForm(element.closest('form'), {
+              hash: true,
+              empty: true
+            })
+          }
+        }
+
+        subscription.send(element.reflexData)
+      })
 
       if (debugging) {
         Log.request(
