@@ -302,7 +302,8 @@ const getReflexMode = element => {
     const reflexMode = element.getAttribute(
       stimulusApplication.schema.reflexModeAttribute
     )
-    if (reflexMode) return reflexMode
+    if (reflexMode && ['refresh', 'launch', 'update'].includes(reflexMode))
+      return reflexMode
     element = element.parentElement
       ? element.parentElement.closest(
           `[${stimulusApplication.schema.reflexModeAttribute}]`
@@ -361,6 +362,7 @@ if (!document.stimulusReflexInitialized) {
     const response = {
       element,
       event,
+      mode: promise && promise.mode,
       data: promise && promise.data,
       events: promise && promise.events
     }
@@ -390,6 +392,7 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
+      mode: promise && promise.mode,
       events: promise && promise.events,
       toString: () => body
     }
