@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
-class StimulusReflex::Element
-  attr_reader :attributes
-
-  delegate :[], to: :"@attributes"
+class StimulusReflex::Element < OpenStruct
+  attr_reader :attributes, :dataset
 
   def initialize(attrs = {})
-    @attributes = HashWithIndifferentAccess.new(attrs || {}).freeze
-  end
-
-  def dataset
-    @dataset ||= attributes.each_with_object(HashWithIndifferentAccess.new) { |(key, value), memo|
-      next unless key.start_with?("data-")
-      memo[key.delete_prefix("data-")] = value
-    }.freeze
+    @attributes = HashWithIndifferentAccess.new(attrs || {})
+    data_attributes = @attributes.select { |key, _| key.start_with? "data-" }
+    data_attributes.transform_keys! { |key| key.delete_prefix("data-").underscore }
+    @dataset = OpenStruct.new(data_attributes.freeze)
+    super @attributes.merge(@attributes.transform_keys(&:underscore)).freeze
   end
 end
