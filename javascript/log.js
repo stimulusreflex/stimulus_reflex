@@ -16,22 +16,25 @@ function request (
   })
 }
 
-function success (response) {
+function success (response, options = { halted: false }) {
   const html = {}
   const payloads = {}
   const elements = {}
   const { event, events } = response
   const { reflexId, target, last } = event.detail.stimulusReflex || {}
 
-  Object.keys(events).map(selector => {
-    elements[selector] = events[selector].detail.element
-    html[selector] = events[selector].detail.html
-    payloads[selector] = events[selector].detail.stimulusReflex
-  })
+  if (events) {
+    Object.keys(events).map(selector => {
+      elements[selector] = events[selector].detail.element
+      html[selector] = events[selector].detail.html
+      payloads[selector] = events[selector].detail.stimulusReflex
+    })
+  }
 
   console.log(`\u2B05 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
+    halted: options.halted,
     elements,
     payloads,
     html

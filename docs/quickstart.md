@@ -24,7 +24,7 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 ![](https://gblobscdn.gitbook.com/assets%2F-Lpnm81iPOBUa9lAmLxg%2F-M6sksqaSV7fV1MX_89U%2F-M6slxV1wY8azS1XCRxn%2Fgorails.jpg)
 
-{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" %}
+{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" caption="" %}
 
 ## Hello, Reflex World!
 
@@ -63,7 +63,7 @@ StimulusReflex maps your requests to Reflex classes that live in your `app/refle
 {% hint style="success" %}
 **Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecrd to modify the UI.
 
-_The magic is that there is no magic_. What the user sees is the exact same thing they would see if the refresh their page.
+_The magic is that there is no magic_. What the user sees is exactly what they will see if they refresh the page in their browser.
 
 StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state syncronization.
 {% endhint %}

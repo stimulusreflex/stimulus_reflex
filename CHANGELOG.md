@@ -6,10 +6,28 @@
 
 **Implemented enhancements:**
 
+- Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
+- Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
+- Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
+- Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
+
+**Fixed bugs:**
+
+-  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
+
+**Closed issues:**
+
+- Spurious console error using data-reflex-root and CSS attribute selector [\#207](https://github.com/hopsoft/stimulus_reflex/issues/207)
+- ActionController Parameters [\#199](https://github.com/hopsoft/stimulus_reflex/issues/199)
 
 **Merged pull requests:**
 
+- Stimulus reflexData assignment after callback  [\#208](https://github.com/hopsoft/stimulus_reflex/pull/208) ([jasoncharnes](https://github.com/jasoncharnes))
+- Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
+- Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
+- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -49,10 +67,6 @@
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
-
-**Fixed bugs:**
-
--  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
 
 **Closed issues:**
 

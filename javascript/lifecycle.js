@@ -6,6 +6,7 @@ import { camelize } from './utils'
 //   * before
 //   * success
 //   * error
+//   * halted
 //   * after
 //
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
@@ -81,6 +82,12 @@ document.addEventListener(
 )
 
 document.addEventListener(
+  'stimulus-reflex:halted',
+  event => invokeLifecycleMethod('halted', event.target),
+  true
+)
+
+document.addEventListener(
   'stimulus-reflex:after',
   event => invokeLifecycleMethod('after', event.target),
   true
@@ -92,6 +99,7 @@ document.addEventListener(
 //   * before
 //   * success
 //   * error
+//   * halted
 //   * after
 //
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
