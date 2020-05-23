@@ -105,7 +105,6 @@ const extendStimulusController = controller => {
         reflexId: reflexId
       }
       const { subscription } = this.StimulusReflex
-      const { connection } = subscription.consumer
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
