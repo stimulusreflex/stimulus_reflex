@@ -23,7 +23,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
-    element = StimulusReflex::Element.new(data["attrs"])
+    element = StimulusReflex::Element.new(data)
 
     begin
       reflex_class = reflex_name.constantize

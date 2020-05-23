@@ -64,6 +64,13 @@ export const extractElementAttributes = element => {
       }
     }
   }
+  return attrs
+}
+
+// Extracts dataset of an element and includes inherited data attributes from parents if requested.
+//
+export const extractElementDataset = element => {
+  let attrs = extractDataAttributes(element) || {}
 
   if (element.attributes[defaultSchema.reflexInheritAttribute]) {
     let parent = element.parentElement
