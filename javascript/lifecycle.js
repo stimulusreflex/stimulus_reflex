@@ -73,6 +73,15 @@ document.addEventListener(
 )
 
 document.addEventListener(
+  'stimulus-reflex:launched',
+  event => {
+    invokeLifecycleMethod('success', event.target)
+    dispatchLifecycleEvent('after', event.target)
+  },
+  true
+)
+
+document.addEventListener(
   'stimulus-reflex:error',
   event => {
     invokeLifecycleMethod('error', event.target)

@@ -4,19 +4,21 @@ function request (
   reflexId,
   target,
   args,
+  mode,
   stimulusControllerIdentifier,
   element
 ) {
   logs[reflexId] = new Date()
-  console.log(`\u2B95 ${target}`, {
+  console.log(`\u2B9C ${target}`, {
     reflexId,
     args,
+    mode,
     stimulusControllerIdentifier,
     element
   })
 }
 
-function success (response, options = { halted: false }) {
+function success (response, options = { halted: false, launched: false }) {
   const html = {}
   const payloads = {}
   const elements = {}
@@ -31,10 +33,11 @@ function success (response, options = { halted: false }) {
     })
   }
 
-  console.log(`\u2B05 ${target}`, {
+  console.log(`\u2B9E ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
+    launched: options.launched,
     elements,
     payloads,
     html
@@ -46,7 +49,7 @@ function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
   const { reflexId, target, error } = detail.stimulusReflex || {}
-  console.error(`\u2B05 ${target}`, {
+  console.error(`\u2B9E ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,

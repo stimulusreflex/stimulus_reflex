@@ -42,17 +42,18 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :mode
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, mode: nil, params: {})
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
+    @mode = mode
     @params = params
   end
 

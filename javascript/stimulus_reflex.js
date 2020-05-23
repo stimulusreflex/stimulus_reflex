@@ -74,6 +74,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
+    // - options - [optional] an object that contains at least one of attrs, mode, reflexId, selectors
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -91,21 +92,33 @@ const extendStimulusController = controller => {
       ) {
         return
       }
-      const attrs = extractElementAttributes(element)
-      const selectors = getReflexRoots(element)
-      const reflexId = uuidv4()
+      const options = {}
+      if (
+        args[0] &&
+        typeof args[0] == 'object' &&
+        Object.keys(args[0]).filter(key =>
+          ['attrs', 'selectors', 'mode', 'reflexId'].includes(key)
+        )
+      ) {
+        const opts = args.shift()
+        Object.keys(opts).forEach(o => (options[o] = opts[o]))
+      }
+      const attrs = options['attrs'] || extractElementAttributes(element)
+      const mode = options['mode'] || getReflexMode(element)
+      const reflexId = options['reflexId'] || uuidv4()
+      let selectors = options['selectors'] || getReflexRoots(element)
+      if (typeof selectors == 'string') selectors = [selectors]
       const data = {
         target,
         args,
         url,
         attrs,
         selectors,
+        reflexId,
         permanent_attribute_name:
-          stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId
+          stimulusApplication.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
-      const { connection } = subscription.consumer
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
@@ -120,6 +133,7 @@ const extendStimulusController = controller => {
         const { params } = element.reflexData || {}
         element.reflexData = {
           ...data,
+          mode,
           params: {
             ...params,
             ...serializeForm(element.closest('form'), {
@@ -137,6 +151,7 @@ const extendStimulusController = controller => {
           reflexId,
           target,
           args,
+          mode,
           this.context.scope.identifier,
           element
         )
@@ -147,6 +162,7 @@ const extendStimulusController = controller => {
           resolve,
           reject,
           data,
+          mode,
           events: {}
         }
       })
@@ -278,6 +294,24 @@ const getReflexRoots = element => {
   return list
 }
 
+// compute whether this operation will be refresh (default), launch or update
+// will start at data-reflex and then travel up the DOM before defaulting to refresh
+const getReflexMode = element => {
+  let list = []
+  while (list.length === 0 && element) {
+    const reflexMode = element.getAttribute(
+      stimulusApplication.schema.reflexModeAttribute
+    )
+    if (reflexMode) return reflexMode
+    element = element.parentElement
+      ? element.parentElement.closest(
+          `[${stimulusApplication.schema.reflexModeAttribute}]`
+        )
+      : null
+  }
+  return 'refresh'
+}
+
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
 // - application - the Stimulus application
@@ -346,7 +380,8 @@ if (!document.stimulusReflexInitialized) {
     const promise = promises[reflexId]
     const subjects = {
       error: true,
-      halted: true
+      halted: true,
+      launched: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -376,8 +411,11 @@ if (!document.stimulusReflexInitialized) {
         case 'error':
           Log.error(response)
           break
+        case 'launched':
+          Log.success(response, { halted: false, launched: true })
+          break
         case 'halted':
-          Log.success(response, { halted: true })
+          Log.success(response, { halted: true, launched: false })
           break
         default:
           Log.success(response)

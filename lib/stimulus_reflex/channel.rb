@@ -23,14 +23,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
+    mode = data["mode"].to_sym || :refresh
     element = StimulusReflex::Element.new(data["attrs"])
     params = data["params"] || {}
 
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, params: params)
-      delegate_call_to_reflex reflex, method_name, arguments
+      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, mode: mode, params: params)
+      stream = delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       reflex.rescue_with_handler(invoke_error)
       message = exception_message_with_backtrace(invoke_error)
@@ -41,7 +42,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       broadcast_message subject: "halted", data: data
     else
       begin
-        render_page_and_broadcast_morph reflex, selectors, data
+        case mode
+        when :refresh
+          render_page_and_broadcast_morph reflex, selectors, data
+        when :launch
+          broadcast_message subject: "launched", data: data
+        when :update
+          broadcast_updates selectors, data, stream
+        end
       rescue => render_error
         reflex.rescue_with_handler(render_error)
         message = exception_message_with_backtrace(render_error)
@@ -62,12 +70,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
 
     if arguments.size == 0 && required_params.size == 0
-      reflex.process(method_name)
+      stream = reflex.process(method_name)
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
-      reflex.process(method_name, *arguments)
+      stream = reflex.process(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end
+    stream
   end
 
   def render_page_and_broadcast_morph(reflex, selectors, data = {})
@@ -104,6 +113,19 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       cable_ready[stream_name].morph(
         selector: selector,
         html: document.css(selector).inner_html,
+        children_only: true,
+        permanent_attribute_name: data["permanent_attribute_name"],
+        stimulus_reflex: data.merge(last: selector == selectors.last)
+      )
+    end
+    cable_ready.broadcast
+  end
+
+  def broadcast_updates(selectors, data, html)
+    selectors.each do |selector|
+      cable_ready[stream_name].morph(
+        selector: selector,
+        html: html,
         children_only: true,
         permanent_attribute_name: data["permanent_attribute_name"],
         stimulus_reflex: data.merge(last: selector == selectors.last)
