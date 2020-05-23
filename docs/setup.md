@@ -120,13 +120,14 @@ StimulusReflex supports both client and server logging of Reflexes.
 To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable package from npm: `@rails/actioncable`
 
 1. Replace `actioncable` with `@rails/actioncable` in `package.json`
-  * `yarn remove actioncable`
-  * `yarn add @rails/actioncable`
+   * `yarn remove actioncable`
+   * `yarn add @rails/actioncable`
 2. Replace any instance of `import Actioncable from "actioncable"` with `import { createConsumer } from "@rails/actioncable"`
-  * This imports the `createConsumer` function directly
-  * Previously, you might call `createConsumer()` on the `Actioncable` import: `Actioncable.createConsumer()`
-  * Now, you can reference `createConsumer()` directly
+   * This imports the `createConsumer` function directly
+   * Previously, you might call `createConsumer()` on the `Actioncable` import: `Actioncable.createConsumer()`
+   * Now, you can reference `createConsumer()` directly
 
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 {% endhint %}
+

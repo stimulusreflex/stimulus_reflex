@@ -2,6 +2,45 @@
 
 ![](https://cdn.vox-cdn.com/thumbor/2q97YCXcLOlkoR2jKKEMQ-wkG9k=/0x0:900x500/1200x800/filters:focal%28378x178:522x322%29/cdn.vox-cdn.com/uploads/chorus_image/image/49493993/this-is-fine.0.jpg)
 
+## Verify ActionCable
+
+If ActionCable isn't working properly in your environment, StimulusReflex cannot function.
+
+Step one to any troubleshooting process should be "is it plugged in?"
+
+{% code title="app/channels/test\_channel.rb" %}
+```ruby
+class TestChannel < ApplicationCable::Channel
+  def subscribed
+    stream_from "test"
+  end
+
+  def receive(data)
+    puts data["message"]
+    ActionCable.server.broadcast("test", "ActionCable is connected")
+  end
+end
+```
+{% endcode %}
+
+{% code title="app/javascript/channels/test\_channel.js" %}
+```javascript
+import consumer from './consumer'
+
+consumer.subscriptions.create('TestChannel', {
+  connected () {
+    this.send({ message: 'Client is live' })
+  },
+
+  received (data) {
+    console.log(data)
+  }
+})
+```
+{% endcode %}
+
+Temporarily install these files into your Rails application. If ActionCable is running properly, you should see `ActionCable is connected` in your browser's Console Inspector and `Client is live` in your server's STDOUT log stream.
+
 ## Logging
 
 ### Client-Side

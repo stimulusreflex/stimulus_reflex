@@ -24,7 +24,7 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 ![](https://gblobscdn.gitbook.com/assets%2F-Lpnm81iPOBUa9lAmLxg%2F-M6sksqaSV7fV1MX_89U%2F-M6slxV1wY8azS1XCRxn%2Fgorails.jpg)
 
-{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" %}
+{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" caption="" %}
 
 ## Hello, Reflex World!
 
