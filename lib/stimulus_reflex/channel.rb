@@ -57,7 +57,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     begin
       return "#{reflex_name}Reflex" unless is_reflex?(reflex_name.constantize)
       reflex_name
-    rescue => e
+    rescue
       "#{reflex_name}Reflex"
     end
   end
