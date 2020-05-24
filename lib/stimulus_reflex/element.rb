@@ -3,9 +3,9 @@
 class StimulusReflex::Element < OpenStruct
   attr_reader :attributes, :data_attributes
 
-  def initialize(attrs = {})
-    @attributes = HashWithIndifferentAccess.new(attrs.to_h["attrs"] || {})
-    @data_attributes = (attrs.to_h["dataset"] || {}).each_with_object(HashWithIndifferentAccess.new) { |(key, value), memo|
+  def initialize(data = {})
+    @attributes = HashWithIndifferentAccess.new(data["attrs"] || {})
+    @data_attributes = (data["dataset"] || {}).each_with_object(HashWithIndifferentAccess.new) { |(key, value), memo|
       memo[key.delete_prefix("data-")] = value
     }.freeze
 
