@@ -54,7 +54,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   private
 
   def compute_reflex_name(reflex_name)
-    return "#{reflex_name}Reflex" unless is_reflex?(reflex_name.constantize)
+    raise unless is_reflex?(reflex_name.constantize)
     reflex_name
   rescue
     "#{reflex_name}Reflex"
