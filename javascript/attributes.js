@@ -67,12 +67,13 @@ export const extractElementAttributes = element => {
   return attrs
 }
 
-// Extracts dataset of an element and includes inherited data attributes from parents if requested.
+// Extracts the dataset of an element and combines it with the data attributes from all parents if requested.
 //
-export const extractElementDataset = element => {
+export const extractElementDataset = (element, datasetAttribute = null) => {
   let attrs = extractDataAttributes(element) || {}
+  const dataset = datasetAttribute && element.attributes[datasetAttribute]
 
-  if (element.attributes[defaultSchema.reflexInheritAttribute]) {
+  if (dataset && dataset.value === 'combined') {
     let parent = element.parentElement
 
     while (parent) {
