@@ -22,6 +22,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
+    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : compute_reflex_name(reflex_name)
     arguments = data["args"] || []
     element = StimulusReflex::Element.new(data["attrs"])
     params = data["params"] || {}
@@ -51,6 +52,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   private
+
+  def compute_reflex_name(reflex_name)
+    begin
+      reflex_name.constantize
+      return reflex_name
+    rescue => e
+      "#{reflex_name}Reflex"
+    end
+  end
 
   def is_reflex?(reflex_class)
     reflex_class.ancestors.include? StimulusReflex::Reflex
