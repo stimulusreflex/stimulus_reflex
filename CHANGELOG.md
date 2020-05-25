@@ -8,13 +8,14 @@
 
 - Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
+- reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
 - Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
 - Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
--  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
+- Text area values are lost if re-sized [\#195](https://github.com/hopsoft/stimulus_reflex/issues/195)
 
 **Closed issues:**
 
@@ -67,6 +68,10 @@
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
+
+**Fixed bugs:**
+
+-  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
 
 **Closed issues:**
 
