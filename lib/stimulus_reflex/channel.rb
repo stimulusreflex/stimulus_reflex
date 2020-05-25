@@ -24,7 +24,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name = reflex_name.classify
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = data["args"] || []
-    element = StimulusReflex::Element.new(data["attrs"])
+    element = StimulusReflex::Element.new(data)
     params = data["params"] || {}
 
     begin
