@@ -11,6 +11,7 @@
 - reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
 - Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
 - Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
+- Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/hopsoft/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
 - Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
@@ -414,7 +415,6 @@
 
 **Implemented enhancements:**
 
-- update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
@@ -431,6 +431,7 @@
 
 **Implemented enhancements:**
 
+- update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
