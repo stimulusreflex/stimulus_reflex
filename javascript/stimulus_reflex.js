@@ -26,6 +26,10 @@ let actionCableConsumer
 //
 const promises = {}
 
+// A dictionary to store debounces
+//
+const debounces = {}
+
 // Indicates if we should log calls to stimulate, etc...
 //
 let debugging = false
@@ -128,7 +132,17 @@ const extendStimulusController = controller => {
           }
         }
 
-        subscription.send(element.reflexData)
+        const debounceAttribute =
+          element.attributes[stimulusApplication.schema.reflexDebounceAttribute]
+        const debounceValue =
+          (debounceAttribute && debounceAttribute.value) || 0
+
+        clearTimeout(debounces[element])
+
+        debounces[element] = setTimeout(function () {
+          delete debounces[element]
+          subscription.send(element.reflexData)
+        }, debounceValue)
       })
 
       if (debugging) {
