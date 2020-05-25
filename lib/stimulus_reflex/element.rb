@@ -9,7 +9,7 @@ class StimulusReflex::Element < OpenStruct
       memo[key.delete_prefix("data-")] = value
     }.freeze
 
-    super attributes.merge(attributes.transform_keys(&:underscore))
+    super attributes.merge(data_attributes).transform_keys(&:underscore)
   end
 
   def dataset
