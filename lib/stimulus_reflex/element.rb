@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StimulusReflex::Element < OpenStruct
+class StimulusReflex::Element < StimulusReflex::PermissiveOpenStruct
   attr_reader :attributes, :data_attributes
 
   def initialize(data = {})
@@ -12,6 +12,8 @@ class StimulusReflex::Element < OpenStruct
   end
 
   def dataset
-    @dataset ||= OpenStruct.new(data_attributes.merge(data_attributes.transform_keys(&:underscore)))
+    @dataset ||= begin
+     StimulusReflex::PermissiveOpenStruct.new(data_attributes.merge(data_attributes.transform_keys(&:underscore)))
+   end
   end
 end
