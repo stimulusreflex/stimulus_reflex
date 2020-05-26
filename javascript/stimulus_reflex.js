@@ -1,15 +1,17 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
+import serializeForm from 'form-serialize'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4 } from './utils'
+import { uuidv4, debounce } from './utils'
 import Log from './log'
 import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
+  extractElementDataset,
   findElement
 } from './attributes'
 
@@ -91,6 +93,8 @@ const extendStimulusController = controller => {
         return
       }
       const attrs = extractElementAttributes(element)
+      const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
+      const dataset = extractElementDataset(element, datasetAttribute)
       const selectors = getReflexRoots(element)
       const reflexId = uuidv4()
       const data = {
@@ -98,13 +102,13 @@ const extendStimulusController = controller => {
         args,
         url,
         attrs,
+        dataset,
         selectors,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute,
         reflexId: reflexId
       }
       const { subscription } = this.StimulusReflex
-      const { connection } = subscription.consumer
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
@@ -115,7 +119,21 @@ const extendStimulusController = controller => {
 
       dispatchLifecycleEvent('before', element)
 
-      subscription.send(data)
+      setTimeout(() => {
+        const { params } = element.reflexData || {}
+        element.reflexData = {
+          ...data,
+          params: {
+            ...params,
+            ...serializeForm(element.closest('form'), {
+              hash: true,
+              empty: true
+            })
+          }
+        }
+
+        subscription.send(element.reflexData)
+      })
 
       if (debugging) {
         Log.request(
@@ -188,7 +206,7 @@ class StimulusReflexController extends Controller {
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
-const setupDeclarativeReflexes = () => {
+const setupDeclarativeReflexes = debounce(() => {
   document
     .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
     .forEach(element => {
@@ -231,7 +249,7 @@ const setupDeclarativeReflexes = () => {
           actionValue
         )
     })
-}
+}, 20)
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
@@ -284,16 +302,17 @@ const initialize = (application, initializeOptions = {}) => {
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
-  window.addEventListener('load', () => setTimeout(setupDeclarativeReflexes, 1))
-  document.addEventListener('turbolinks:load', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
-  document.addEventListener('cable-ready:after-morph', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
-  document.addEventListener('ajax:complete', () =>
-    setTimeout(setupDeclarativeReflexes, 1)
-  )
+
+  window.addEventListener('load', () => {
+    setupDeclarativeReflexes()
+    const observer = new MutationObserver(setupDeclarativeReflexes)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    })
+  })
+
   // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
@@ -374,7 +393,6 @@ if (!document.stimulusReflexInitialized) {
 export default {
   initialize,
   register,
-  setupDeclarativeReflexes,
   get debug () {
     return debugging
   },

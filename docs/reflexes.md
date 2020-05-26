@@ -50,27 +50,6 @@ It's also possible to trigger this global Reflex by passing nothing but a browse
 <button data-reflex="click">Refresh</button>
 ```
 
-### Scanning for new data-reflex attributes
-
-StimulusReflex scans the DOM looking for instances of the `data-reflex` attribute. When it finds one, it attaches a `stimulus-reflex` Stimulus controller to that element.
-
-By default, scans happen in response to four events:
-
-| Object | Event |
-| :--- | :--- |
-| window | load |
-| document | turbolinks:load |
-| document | cable-ready:after-morph |
-| document | ajax:complete |
-
-While those should cover the vast majority of cases, there are scenarios such as client JSX or Handlebars template rendering which require a re-scan of the DOM to pick up new `data-reflex` instances. You can manually request a re-scan in any Stimulus controller that has **already called** `StimulusReflex.register(this)`.
-
-```javascript
-StimulusReflex.setupDeclarativeReflexes()
-```
-
-If you need to re-scan the DOM after a jQuery operation, you'll need to use the [jquery-events-to-dom-events](https://www.npmjs.com/package/jquery-events-to-dom-events) npm package. This library lets you delegate the events you need so that you can write a DOM event handler for it. In that event handler, call StimulusReflex.setupDeclarativeReflexes\(\) to pick up any new data-reflex attributes.
-
 ## Reflex Classes
 
 StimulusReflex makes the following properties available to the developer inside Reflex actions:
@@ -93,7 +72,7 @@ The `element` property contains all of the Stimulus controller's [DOM element at
 {% hint style="info" %}
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
 
-Elements that support **multiple values** (like `<select multiple>`, or a collection of checkboxes with equal `name`), will emit an additional **`values` property.** The `value` property will contain a comma-separated string of the checked options.
+Elements that support **multiple values** \(like `<select multiple>`, or a collection of checkboxes with equal `name`\), will emit an additional **`values` property.** The `value` property will contain a comma-separated string of the checked options.
 {% endhint %}
 
 Here's an example that outlines how you can interact with the `element` property in your reflexes.

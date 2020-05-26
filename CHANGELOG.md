@@ -8,10 +8,27 @@
 
 - Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
+- reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
+- Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
+- Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
+- Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/hopsoft/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
+- Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
+
+**Fixed bugs:**
+
+- Text area values are lost if re-sized [\#195](https://github.com/hopsoft/stimulus_reflex/issues/195)
+
+**Closed issues:**
+
+- Spurious console error using data-reflex-root and CSS attribute selector [\#207](https://github.com/hopsoft/stimulus_reflex/issues/207)
+- ActionController Parameters [\#199](https://github.com/hopsoft/stimulus_reflex/issues/199)
 
 **Merged pull requests:**
 
+- Stimulus reflexData assignment after callback  [\#208](https://github.com/hopsoft/stimulus_reflex/pull/208) ([jasoncharnes](https://github.com/jasoncharnes))
+- Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
+- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
@@ -398,7 +415,6 @@
 
 **Implemented enhancements:**
 
-- update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
@@ -415,6 +431,7 @@
 
 **Implemented enhancements:**
 
+- update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))

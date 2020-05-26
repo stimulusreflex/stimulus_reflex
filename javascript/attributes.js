@@ -1,3 +1,5 @@
+import { defaultSchema } from './schema'
+
 const multipleInstances = element =>
   document.querySelectorAll(
     `input[type="${element.type}"][name="${element.name}"]`
@@ -61,6 +63,39 @@ export const extractElementAttributes = element => {
         attrs.value = element.options[element.selectedIndex].value
       }
     }
+  }
+  return attrs
+}
+
+// Extracts the dataset of an element and combines it with the data attributes from all parents if requested.
+//
+export const extractElementDataset = (element, datasetAttribute = null) => {
+  let attrs = extractDataAttributes(element) || {}
+  const dataset = datasetAttribute && element.attributes[datasetAttribute]
+
+  if (dataset && dataset.value === 'combined') {
+    let parent = element.parentElement
+
+    while (parent) {
+      attrs = { ...extractDataAttributes(parent), ...attrs }
+      parent = parent.parentElement
+    }
+  }
+
+  return attrs
+}
+
+// Extracts all data attributes from a DOM element.
+//
+export const extractDataAttributes = element => {
+  let attrs = {}
+
+  if (element && element.attributes) {
+    Array.from(element.attributes).forEach(attr => {
+      if (attr.name.startsWith('data-')) {
+        attrs[attr.name] = attr.value
+      }
+    })
   }
 
   return attrs
