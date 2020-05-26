@@ -5,8 +5,9 @@ class StimulusReflex::Element < OpenStruct
 
   def initialize(data = {})
     @attributes = HashWithIndifferentAccess.new(data["attrs"] || {})
-    @data_attributes = (data["dataset"] || {}).select { |key, _| key.start_with? "data-" }
-    super @attributes.merge(@data_attributes).transform_keys(&:underscore)
+    @data_attributes = data["dataset"] || {}
+    all_attributes = @attributes.merge(@data_attributes)
+    super all_attributes.merge(all_attributes.transform_keys(&:underscore))
     @data_attributes.transform_keys! { |key| key.delete_prefix "data-" }
   end
 
