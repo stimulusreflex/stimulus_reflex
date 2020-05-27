@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...v3.2.2.pre0)
 
 **Implemented enhancements:**
 
