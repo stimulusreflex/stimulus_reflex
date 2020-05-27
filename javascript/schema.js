@@ -3,5 +3,6 @@ export const defaultSchema = {
   reflexPermanentAttribute: 'data-reflex-permanent',
   reflexRootAttribute: 'data-reflex-root',
   reflexTargetAttribute: 'data-reflex-target',
-  reflexRenderAttribute: 'data-reflex-render'
+  reflexRenderAttribute: 'data-reflex-render',
+  reflexDatasetAttribute: 'data-reflex-dataset'
 }

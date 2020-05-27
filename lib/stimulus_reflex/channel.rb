@@ -22,14 +22,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
-    arguments = data["args"] || []
+    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
+    arguments = (data["args"] || []).map { |argument| map_hashes_in(argument) }
     render_mode = data["renderMode"].to_sym || :page
-    element = StimulusReflex::Element.new(data["attrs"])
+    element = StimulusReflex::Element.new(data)
     params = data["params"] || {}
 
     begin
-      reflex_class = reflex_name.constantize
-      raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
+      reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
       reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, render_mode: render_mode, params: params)
       stream = delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
@@ -59,6 +59,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   private
+
+  def map_hashes_in(argument)
+    return argument.with_indifferent_access if argument.is_a?(Hash)
+
+    argument.map! { |nested_argument| map_hashes_in(nested_argument) } if argument.is_a?(Array)
+    argument
+  end
 
   def is_reflex?(reflex_class)
     reflex_class.ancestors.include? StimulusReflex::Reflex

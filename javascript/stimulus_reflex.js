@@ -11,6 +11,7 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
+  extractElementDataset,
   findElement
 } from './attributes'
 
@@ -108,11 +109,14 @@ const extendStimulusController = controller => {
       const reflexId = options['reflexId'] || uuidv4()
       let selectors = options['selectors'] || getReflexRoots(element)
       if (typeof selectors == 'string') selectors = [selectors]
+      const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
+      const dataset = extractElementDataset(element, datasetAttribute)
       const data = {
         target,
         args,
         url,
         attrs,
+        dataset,
         selectors,
         reflexId,
         permanent_attribute_name:
