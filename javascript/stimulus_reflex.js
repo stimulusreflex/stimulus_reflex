@@ -75,7 +75,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, renderMode, reflexId, selectors
+    // - options - [optional] an object that contains at least one of attrs, renderMode, reflexId, morphTarget
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -98,7 +98,7 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'renderMode', 'reflexId'].includes(key)
+          ['attrs', 'morphTarget', 'renderMode', 'reflexId'].includes(key)
         )
       ) {
         const opts = args.shift()
@@ -107,8 +107,8 @@ const extendStimulusController = controller => {
       const attrs = options['attrs'] || extractElementAttributes(element)
       const renderMode = options['renderMode'] || getRenderMode(element)
       const reflexId = options['reflexId'] || uuidv4()
-      let selectors = options['selectors'] || getReflexRoots(element)
-      if (typeof selectors == 'string') selectors = [selectors]
+      let morphTarget = options['morphTarget'] || getReflexMorphTarget(element)
+      if (typeof morphTarget == 'string') morphTarget = [morphTarget]
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
       const data = {
@@ -117,7 +117,7 @@ const extendStimulusController = controller => {
         url,
         attrs,
         dataset,
-        selectors,
+        morphTarget,
         reflexId,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute
@@ -272,16 +272,17 @@ const setupDeclarativeReflexes = debounce(() => {
 // use the data-reflex-root attribute on the reflex or the controller
 // optional value is a CSS selector(s); comma-separated list
 // order of preference is data-reflex, data-controller, document body (default)
-const getReflexRoots = element => {
+const getReflexMorphTarget = element => {
   let list = []
-  while (list.length === 0 && element) {
+  const memoizedElement = element
+  while (!list.length && element) {
     const reflexRoot = element.getAttribute(
       stimulusApplication.schema.reflexRootAttribute
     )
     if (reflexRoot) {
-      if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
+      if (!reflexRoot.length && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (selectors.length === 0) {
+      if (!selectors.length) {
         console.error(
           `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
           element
@@ -295,7 +296,38 @@ const getReflexRoots = element => {
         )
       : null
   }
-  return list
+  if (list.length) {
+    console.warn(
+      `DEPRECATION WARNING: ${stimulusApplication.schema.reflexRootAttribute} will be removed in the next version of StimulusReflex. Please update your code to use ${stimulusApplication.schema.reflexTargetAttribute} instead.`
+    )
+    return list
+  }
+  let morphTarget = []
+  element = memoizedElement
+  while (!morphTarget.length && element) {
+    const reflexRoot = element.getAttribute(
+      stimulusApplication.schema.reflexMorphTargetAttribute
+    )
+    if (reflexRoot) {
+      if (!reflexRoot.length && element.id) reflexRoot = `#${element.id}`
+      const selectors = reflexRoot.split(',').filter(s => s.trim().length)
+      if (!selectors.length) {
+        console.error(
+          `No value found for ${stimulusApplication.schema.reflexMorphTargetAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexMorphTargetAttribute}.`,
+          element
+        )
+      }
+      morphTarget = morphTarget.concat(
+        selectors.filter(s => document.querySelector(s))
+      )
+    }
+    element = element.parentElement
+      ? element.parentElement.closest(
+          `[${stimulusApplication.schema.reflexMorphTargetAttribute}]`
+        )
+      : null
+  }
+  return morphTarget
 }
 
 // compute whether this operation will be page (default), partial or none

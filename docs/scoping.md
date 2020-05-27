@@ -12,26 +12,25 @@ Great news: we have you covered.
 
 ## Partial DOM updates
 
-Instead of updating your entire page, you can specify exactly which parts of the DOM will be updated using the `data-reflex-root` attribute.
+Instead of updating your entire page, you can specify exactly which parts of the DOM will be updated using the `data-reflex-morph-target` attribute.
 
-`data-reflex-root=".class, #id, [attribute]"`
+`data-reflex-morph-target=".class, #id, [attribute]"`
 
-Simply pass a comma-delimited list of CSS selectors. Each selector will retrieve one DOM element; if there are no elements that match, the selector will be ignored.
+Simply pass a CSS selector. The selector will retrieve the first DOM element that matches; if there are no elements that match, the selector will be ignored and it will default to `body`.
 
 StimulusReflex will decide which element's children to replace by evaluating three criteria in order:
 
-1. Is there a `data-reflex-root` on the element with the `data-reflex`?
-2. Is there a `data-reflex-root` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
+1. Is there a `data-reflex-morph-target` on the element with the `data-reflex`?
+2. Is there a `data-reflex-morph-target` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
 3. Just use the `body` element.
 
-Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
+Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back into a DIV element backwards.
 
 {% tabs %}
 {% tab title="index.html.erb" %}
 ```text
-<div data-controller="example" data-reflex-root="[forward],[backward]">
+<div data-controller="example" data-reflex-morph-target="[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->ExampleReflex#words">
-  <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
 </div>
 ```
@@ -47,7 +46,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% endtabs %}
 
 {% hint style="info" %}
-One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
+One interesting detail of this example is that by assigning the morph target to `[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -59,7 +58,7 @@ If you're stuck with an element that just won't update, make sure that you're no
 {% endhint %}
 
 {% hint style="info" %}
-It's completely valid to for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
+It's completely valid to for an element with a data-reflex-morph-target attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
 {% endhint %}
 
 ## Persisting Elements

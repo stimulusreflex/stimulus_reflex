@@ -17,8 +17,8 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   def receive(data)
     url = data["url"].to_s
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
+    morph_target = (data["morphTarget"] || []).select(&:present?)
+    morph_target = data["morphTarget"] = ["body"] if morph_target.blank?
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
@@ -30,7 +30,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
     begin
       reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, render_mode: render_mode, params: params)
+      reflex = reflex_class.new(self, url: url, element: element, morph_target: morph_target, method_name: method_name, render_mode: render_mode, params: params)
       stream = delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       reflex.rescue_with_handler(invoke_error)
@@ -44,9 +44,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       begin
         case render_mode
         when :page
-          render_page_and_broadcast_morph reflex, selectors, data
+          puts "DEPRECATION WARNING: Morph target selectors will be ignored for full-page refreshes starting with the next version of StimulusReflex" if morph_target != ["body"]
+          render_page_and_broadcast_morph reflex, morph_target, data
         when :partial
-          broadcast_partial selectors, data, stream
+          broadcast_partial morph_target, data, stream
         when :none
           broadcast_message subject: "none", data: data
         end
@@ -86,9 +87,9 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     stream
   end
 
-  def render_page_and_broadcast_morph(reflex, selectors, data = {})
+  def render_page_and_broadcast_morph(reflex, morph_target, data = {})
     html = render_page(reflex)
-    broadcast_morphs selectors, data, html if html.present?
+    broadcast_morphs morph_target, data, html if html.present?
   end
 
   def commit_session(request, response)
@@ -113,29 +114,29 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     controller.response.body
   end
 
-  def broadcast_morphs(selectors, data, html)
+  def broadcast_morphs(morph_target, data, html)
     document = Nokogiri::HTML(html)
-    selectors = selectors.select { |s| document.css(s).present? }
-    selectors.each do |selector|
+    morph_target = morph_target.select { |s| document.css(s).present? }
+    morph_target.each do |selector|
       cable_ready[stream_name].morph(
         selector: selector,
         html: document.css(selector).inner_html,
         children_only: true,
         permanent_attribute_name: data["permanent_attribute_name"],
-        stimulus_reflex: data.merge(last: selector == selectors.last)
+        stimulus_reflex: data.merge(last: selector == morph_target.last)
       )
     end
     cable_ready.broadcast
   end
 
-  def broadcast_partial(selectors, data, html)
-    selectors.each do |selector|
+  def broadcast_partial(morph_target, data, html)
+    morph_target.each do |selector|
       cable_ready[stream_name].morph(
         selector: selector,
         html: html,
         children_only: true,
         permanent_attribute_name: data["permanent_attribute_name"],
-        stimulus_reflex: data.merge(last: selector == selectors.last)
+        stimulus_reflex: data.merge(last: selector == morph_target.last)
       )
     end
     cable_ready.broadcast
