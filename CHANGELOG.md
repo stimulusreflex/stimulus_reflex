@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...v3.2.2.pre0)
 
 **Implemented enhancements:**
 
@@ -30,6 +30,7 @@
 - Bump activesupport from 6.0.3 to 6.0.3.1 [\#217](https://github.com/hopsoft/stimulus_reflex/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump activestorage from 6.0.3 to 6.0.3.1 [\#216](https://github.com/hopsoft/stimulus_reflex/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actionpack from 6.0.3 to 6.0.3.1 [\#215](https://github.com/hopsoft/stimulus_reflex/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update dataset handling and some minor refactoring to better naming [\#214](https://github.com/hopsoft/stimulus_reflex/pull/214) ([hopsoft](https://github.com/hopsoft))
 - Stimulus reflexData assignment after callback  [\#208](https://github.com/hopsoft/stimulus_reflex/pull/208) ([jasoncharnes](https://github.com/jasoncharnes))
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
@@ -374,10 +375,6 @@
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
 - Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 
-**Fixed bugs:**
-
-- Reflex is a reflex [\#38](https://github.com/hopsoft/stimulus_reflex/pull/38) ([leastbad](https://github.com/leastbad))
-
 **Closed issues:**
 
 - Install StandardJS linter [\#40](https://github.com/hopsoft/stimulus_reflex/issues/40)
@@ -409,6 +406,10 @@
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
 - update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
+
+**Fixed bugs:**
+
+- Reflex is a reflex [\#38](https://github.com/hopsoft/stimulus_reflex/pull/38) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 

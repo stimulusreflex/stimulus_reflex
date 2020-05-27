@@ -23,7 +23,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
-    arguments = (data["args"] || []).map { |argument| map_hashes_in(argument) }
+    arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     render_mode = data["renderMode"].to_sym || :page
     element = StimulusReflex::Element.new(data)
     params = data["params"] || {}
@@ -61,11 +61,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
   private
 
-  def map_hashes_in(argument)
-    return argument.with_indifferent_access if argument.is_a?(Hash)
-
-    argument.map! { |nested_argument| map_hashes_in(nested_argument) } if argument.is_a?(Array)
-    argument
+  def object_with_indifferent_access(object)
+    return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
+    object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
+    object
   end
 
   def is_reflex?(reflex_class)
