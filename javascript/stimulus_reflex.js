@@ -74,7 +74,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, mode, reflexId, selectors
+    // - options - [optional] an object that contains at least one of attrs, renderMode, reflexId, selectors
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -97,14 +97,14 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'mode', 'reflexId'].includes(key)
+          ['attrs', 'selectors', 'renderMode', 'reflexId'].includes(key)
         )
       ) {
         const opts = args.shift()
         Object.keys(opts).forEach(o => (options[o] = opts[o]))
       }
       const attrs = options['attrs'] || extractElementAttributes(element)
-      const mode = options['mode'] || getReflexMode(element)
+      const renderMode = options['renderMode'] || getRenderMode(element)
       const reflexId = options['reflexId'] || uuidv4()
       let selectors = options['selectors'] || getReflexRoots(element)
       if (typeof selectors == 'string') selectors = [selectors]
@@ -133,7 +133,7 @@ const extendStimulusController = controller => {
         const { params } = element.reflexData || {}
         element.reflexData = {
           ...data,
-          mode,
+          renderMode,
           params: {
             ...params,
             ...serializeForm(element.closest('form'), {
@@ -151,7 +151,7 @@ const extendStimulusController = controller => {
           reflexId,
           target,
           args,
-          mode,
+          renderMode,
           this.context.scope.identifier,
           element
         )
@@ -162,7 +162,7 @@ const extendStimulusController = controller => {
           resolve,
           reject,
           data,
-          mode,
+          renderMode,
           events: {}
         }
       })
@@ -294,23 +294,23 @@ const getReflexRoots = element => {
   return list
 }
 
-// compute whether this operation will be refresh (default), launch or update
+// compute whether this operation will be page (default), partial or none
 // will start at data-reflex and then travel up the DOM before defaulting to refresh
-const getReflexMode = element => {
+const getRenderMode = element => {
   let list = []
   while (list.length === 0 && element) {
-    const reflexMode = element.getAttribute(
-      stimulusApplication.schema.reflexModeAttribute
+    const renderMode = element.getAttribute(
+      stimulusApplication.schema.reflexRenderAttribute
     )
-    if (reflexMode && ['refresh', 'launch', 'update'].includes(reflexMode))
-      return reflexMode
+    if (renderMode && ['page', 'partial', 'none'].includes(renderMode))
+      return renderMode
     element = element.parentElement
       ? element.parentElement.closest(
-          `[${stimulusApplication.schema.reflexModeAttribute}]`
+          `[${stimulusApplication.schema.reflexRenderAttribute}]`
         )
       : null
   }
-  return 'refresh'
+  return 'page'
 }
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
@@ -362,7 +362,7 @@ if (!document.stimulusReflexInitialized) {
     const response = {
       element,
       event,
-      mode: promise && promise.mode,
+      renderMode: promise && promise.renderMode,
       data: promise && promise.data,
       events: promise && promise.events
     }
@@ -383,7 +383,7 @@ if (!document.stimulusReflexInitialized) {
     const subjects = {
       error: true,
       halted: true,
-      launched: true
+      none: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -392,7 +392,7 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      mode: promise && promise.mode,
+      renderMode: promise && promise.renderMode,
       events: promise && promise.events,
       toString: () => body
     }
@@ -414,11 +414,11 @@ if (!document.stimulusReflexInitialized) {
         case 'error':
           Log.error(response)
           break
-        case 'launched':
-          Log.success(response, { halted: false, launched: true })
+        case 'none':
+          Log.success(response, { halted: false, none: true })
           break
         case 'halted':
-          Log.success(response, { halted: true, launched: false })
+          Log.success(response, { halted: true, none: false })
           break
         default:
           Log.success(response)

@@ -4,7 +4,7 @@ function request (
   reflexId,
   target,
   args,
-  mode,
+  renderMode,
   stimulusControllerIdentifier,
   element
 ) {
@@ -12,13 +12,13 @@ function request (
   console.log(`\u2B9C ${target}`, {
     reflexId,
     args,
-    mode,
+    renderMode,
     stimulusControllerIdentifier,
     element
   })
 }
 
-function success (response, options = { halted: false, launched: false }) {
+function success (response, options = { halted: false, none: false }) {
   const html = {}
   const payloads = {}
   const elements = {}
@@ -37,7 +37,7 @@ function success (response, options = { halted: false, launched: false }) {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
-    launched: options.launched,
+    none: options.none,
     elements,
     payloads,
     html

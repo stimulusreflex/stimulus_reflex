@@ -23,14 +23,14 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
     arguments = data["args"] || []
-    mode = data["mode"].to_sym || :refresh
+    render_mode = data["renderMode"].to_sym || :page
     element = StimulusReflex::Element.new(data["attrs"])
     params = data["params"] || {}
 
     begin
       reflex_class = reflex_name.constantize
       raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(reflex_class)
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, mode: mode, params: params)
+      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, render_mode: render_mode, params: params)
       stream = delegate_call_to_reflex reflex, method_name, arguments
     rescue => invoke_error
       reflex.rescue_with_handler(invoke_error)
@@ -42,13 +42,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       broadcast_message subject: "halted", data: data
     else
       begin
-        case mode
-        when :refresh
+        case render_mode
+        when :page
           render_page_and_broadcast_morph reflex, selectors, data
-        when :launch
-          broadcast_message subject: "launched", data: data
-        when :update
-          broadcast_updates selectors, data, stream
+        when :partial
+          broadcast_partial selectors, data, stream
+        when :none
+          broadcast_message subject: "none", data: data
         end
       rescue => render_error
         reflex.rescue_with_handler(render_error)
@@ -121,7 +121,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     cable_ready.broadcast
   end
 
-  def broadcast_updates(selectors, data, html)
+  def broadcast_partial(selectors, data, html)
     selectors.each do |selector|
       cable_ready[stream_name].morph(
         selector: selector,
