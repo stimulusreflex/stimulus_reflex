@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre0...HEAD)
+
+**Fixed bugs:**
+
+- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
+
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...v3.2.2.pre0)
