@@ -3,7 +3,7 @@ import { defaultSchema } from './schema'
 const multipleInstances = element =>
   document.querySelectorAll(
     `input[type="${element.type}"][name="${element.name}"]`
-  ).length > 0
+  ).length > 1
 
 const collectCheckedOptions = element => {
   return Array.from(element.querySelectorAll('option:checked'))
