@@ -28,25 +28,29 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     params = data["params"] || {}
 
     begin
-      reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-      reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, params: params)
-      delegate_call_to_reflex reflex, method_name, arguments
-    rescue => invoke_error
-      reflex.rescue_with_handler(invoke_error)
-      message = exception_message_with_backtrace(invoke_error)
-      return broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
-    end
-
-    if reflex.halted?
-      broadcast_message subject: "halted", data: data
-    else
       begin
-        render_page_and_broadcast_morph reflex, selectors, data
-      rescue => render_error
-        reflex.rescue_with_handler(render_error)
-        message = exception_message_with_backtrace(render_error)
-        broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
+        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
+        reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, params: params)
+        delegate_call_to_reflex reflex, method_name, arguments
+      rescue => invoke_error
+        reflex.rescue_with_handler(invoke_error)
+        message = exception_message_with_backtrace(invoke_error)
+        return broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
       end
+
+      if reflex.halted?
+        broadcast_message subject: "halted", data: data
+      else
+        begin
+          render_page_and_broadcast_morph reflex, selectors, data
+        rescue => render_error
+          reflex.rescue_with_handler(render_error)
+          message = exception_message_with_backtrace(render_error)
+          broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
+        end
+      end
+    ensure
+      commit_session reflex if reflex
     end
   end
 
@@ -81,26 +85,17 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     broadcast_morphs selectors, data, html if html.present?
   end
 
-  def commit_session(request, response)
-    store = request.session.instance_variable_get("@by")
-    store.commit_session request, response
+  def commit_session(reflex)
+    store = reflex.request.session.instance_variable_get("@by")
+    store.commit_session reflex.request, reflex.controller.response
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
     logger.error "\e[31m#{message}\e[0m"
   end
 
   def render_page(reflex)
-    controller = reflex.request.controller_class.new
-    controller.instance_variable_set :"@stimulus_reflex", true
-    reflex.instance_variables.each do |name|
-      controller.instance_variable_set name, reflex.instance_variable_get(name)
-    end
-
-    controller.request = reflex.request
-    controller.response = ActionDispatch::Response.new
-    controller.process reflex.url_params[:action]
-    commit_session reflex.request, controller.response
-    controller.response.body
+    reflex.controller.process reflex.url_params[:action]
+    reflex.controller.response.body
   end
 
   def broadcast_morphs(selectors, data, html)
