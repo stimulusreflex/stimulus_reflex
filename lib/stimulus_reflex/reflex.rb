@@ -82,6 +82,17 @@ class StimulusReflex::Reflex
     end
   end
 
+  def controller
+    @controller ||= begin
+      request.controller_class.new.tap do |c|
+        c.instance_variable_set :"@stimulus_reflex", true
+        instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
+        c.request = request
+        c.response = ActionDispatch::Response.new
+      end
+    end
+  end
+
   def url_params
     @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
   end
