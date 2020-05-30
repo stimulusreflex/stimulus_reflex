@@ -6,7 +6,12 @@
 
 **Fixed bugs:**
 
+- Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
 - Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
+
+**Merged pull requests:**
+
+- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
