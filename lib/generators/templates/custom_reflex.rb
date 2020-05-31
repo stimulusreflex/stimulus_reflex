@@ -21,4 +21,10 @@ class <%= class_name %>Reflex < ApplicationReflex
   #   end
   #
   # Learn more at: https://docs.stimulusreflex.com
+
+<% actions.each do |action| -%>
+  def <%= action %>
+  end
+<%= "\n" unless action == actions.last -%>
+<% end -%>
 end

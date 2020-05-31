@@ -5,6 +5,13 @@ require "rails/generators"
 class StimulusReflexGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
 
+  argument :name, type: :string, required: true, banner: "NAME"
+  argument :actions, type: :array, default: [], banner: "action action"
+
+  def set_actions_names
+    actions.map!(&:underscore)
+  end
+
   def initialize_application_reflexes
     copy_application_files if behavior == :invoke
   end

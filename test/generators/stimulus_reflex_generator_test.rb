@@ -23,4 +23,13 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
     assert_file "app/reflexes/application_reflex.rb"
     assert_file "app/reflexes/posts_reflex.rb", /PostsReflex/
   end
+
+  test "creates reflex with given reflex actions" do
+    run_generator %w[User update do_stuff DoMoreStuff]
+    assert_file "app/reflexes/user_reflex.rb" do |reflex|
+      assert_instance_method :update, reflex
+      assert_instance_method :do_stuff, reflex
+      assert_instance_method :do_more_stuff, reflex
+    end
+  end
 end
