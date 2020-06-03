@@ -8,6 +8,10 @@ If ActionCable isn't working properly in your environment, StimulusReflex cannot
 
 Step one to any troubleshooting process should be "is it plugged in?"
 
+First, run `rails generate channel test` in your Rails project folder. This will ensure that your ActionCable setup has been initialized, although you should verify that in your `app/javascript/packs/application.js` you have `import 'channels'` present.
+
+Next, **copy and paste** the following into the two specified files, replacing their contents.
+
 {% code title="app/channels/test\_channel.rb" %}
 ```ruby
 class TestChannel < ApplicationCable::Channel
@@ -39,7 +43,9 @@ consumer.subscriptions.create('TestChannel', {
 ```
 {% endcode %}
 
-Temporarily install these files into your Rails application. If ActionCable is running properly, you should see `ActionCable is connected` in your browser's Console Inspector and `Client is live` in your server's STDOUT log stream.
+If ActionCable is running properly, you should see `ActionCable is connected` in your browser's Console Inspector and `Client is live` in your server's STDOUT log stream.
+
+You can feel free to remove both of these files after you're done, but leave `app/javascript/channels/consumer.js` where it is so that you can pass it to `StimulusReflex.initialize()` and share one ActionCable connection.
 
 ## Logging
 
