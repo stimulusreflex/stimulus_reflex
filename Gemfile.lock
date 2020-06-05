@@ -161,7 +161,7 @@ GEM
     unicode-display_width (1.7.0)
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     zeitwerk (2.3.0)
 
 PLATFORMS
