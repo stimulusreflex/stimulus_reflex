@@ -89,7 +89,7 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 
 While stateless form submissions have technically always suffered from the "last update wins" problem, it's only in recent years that developers have created interfaces that need to respond to changing application state in real-time.
 
-There are a few guiding principles that we adhere to when building a technology that can change the page you're on, even while you busy working on something important. The most important consideration is that even though StimulusReflex applications persist state on the server, the client should be the single source of truth for the text input element that has active focus.
+There are a few guiding principles that we adhere to when building a technology that can change the page you're on, even while you're busy working on something important. The most important consideration is that even though StimulusReflex applications persist state on the server, the client should be the single source of truth for the text input element that has active focus.
 
 Put differently: **the server should never update the value of a text box while you're typing into it**.
 
