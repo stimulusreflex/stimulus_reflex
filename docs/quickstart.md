@@ -28,7 +28,7 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 ## Hello, Reflex World!
 
-There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
+There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangeably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
 
 Let's dig into it!
 
@@ -61,11 +61,11 @@ end
 StimulusReflex maps your requests to Reflex classes that live in your `app/reflexes` folder. In this example, the `increment` action is called and the count is incremented by 1. The `@count` instance variable is passed to the template when it is re-rendered.
 
 {% hint style="success" %}
-**Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecrd to modify the UI.
+**Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecord to modify the UI.
 
 _The magic is that there is no magic_. What the user sees is exactly what they will see if they refresh the page in their browser.
 
-StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state syncronization.
+StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state synchronization.
 {% endhint %}
 
 ### Trigger Reflex actions inside Stimulus controllers
