@@ -27,6 +27,30 @@ const invokeLifecycleMethod = (stage, element) => {
     : `reflex${camelize(stage)}`
   const genericLifecycleMethod = controller[genericLifecycleMethodName]
 
+  if (stage === 'before') {
+    if (element.hasAttribute('data-reflex-disable')) {
+      element.disabled = true
+    }
+
+    if (element.hasAttribute('data-reflex-disable-with')) {
+      element.disabled = true
+      element.dataset.enableWith = element.innerHTML
+      element.innerHTML = element.dataset.reflexDisableWith
+    }
+  }
+
+  if (stage === 'after') {
+    if (element.hasAttribute('data-reflex-disable')) {
+      element.disabled = false
+    }
+
+    if (element.hasAttribute('data-reflex-disable-with')) {
+      element.innerHTML = element.dataset.enableWith
+      element.removeAttribute('data-enable-with')
+      element.disabled = false
+    }
+  }
+
   if (typeof specificLifecycleMethod === 'function') {
     setTimeout(() =>
       specificLifecycleMethod.call(
