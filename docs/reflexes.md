@@ -60,6 +60,7 @@ StimulusReflex makes the following properties available to the developer inside 
 * `session` - the `ActionDispatch::Session` store for the current visitor
 * `url` - the URL of the page that triggered the reflex
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
+* `params` - form parameters, if the reflex originated from within a form
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
@@ -109,6 +110,22 @@ When StimulusReflex is rendering your template, an instance variable named **@st
 
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
 {% endhint %}
+
+### Params
+
+Provides serialization for form params as `ActionController::Parameters` of the parent form element. 
+You can access the params directly in your reflex and use exaclty as you do in ActionControllers, useful for validations and updating multiple attributes of models.
+
+To modify `params` before sending them you can use `beforeReflex` lifecycle event using `element.refelexData`, for example:
+
+```javascript
+export default class extends ApplicationController {
+  beforeReflex(element) {
+    const { params } = element.reflexData
+    element.reflexData.params = { ...params, foo: true, bar: false }
+  }
+}
+```
 
 ### Reflex exceptions are rescuable
 
