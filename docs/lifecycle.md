@@ -135,18 +135,18 @@ In this example, we update each anchor's text before invoking the server side Re
 
 ### Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#update` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
-1. `beforeUpdate`
-2. `updateSuccess`
-3. `updateError`
-4. `afterUpdate`
+1. `beforePoke`
+2. `pokeSuccess`
+3. `pokeError`
+4. `afterPoke`
 
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="ExampleReflex#update">Update</a>
-  <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
+  <a href="#" data-reflex="ExampleReflex#poke">Poke</a>
+  <a href="#" data-reflex="ExampleReflex#purge">Purge</a>
 </div>
 ```
 {% endcode %}
@@ -161,12 +161,12 @@ export default class extends Controller {
     StimulusReflex.register(this)
   }
 
-  beforeUpdate(anchorElement) {
-    anchorElement.innerText = 'Updating...'
+  beforePoke(anchorElement) {
+    anchorElement.innerText = 'Poking...'
   }
 
-  beforeDelete(anchorElement) {
-    anchorElement.innerText = 'Deleting...'
+  beforePurge(anchorElement) {
+    anchorElement.innerText = 'Purging...'
   }
 }
 ```
