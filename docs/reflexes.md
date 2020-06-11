@@ -60,7 +60,7 @@ StimulusReflex makes the following properties available to the developer inside 
 * `session` - the `ActionDispatch::Session` store for the current visitor
 * `url` - the URL of the page that triggered the reflex
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
-* `params` - form parameters, if the reflex originated from within a form
+* `params` - query and path params for the page that triggered the reflex and serialized params of the closest form
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
