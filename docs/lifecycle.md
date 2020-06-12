@@ -10,7 +10,7 @@ StimulusReflex gives you a set of callback events to control how your Reflex act
 
 * `before_reflex`, `around_reflex` , `after_reflex`
 * All callbacks can receive multiple symbols representing Reflex actions, an optional block and the following options: `only`, `except`, `if`, `unless`
-* Can halt a Reflex via `throw :abort` in a `before_reflex` callback, which is the perfect place to implement authorization logic for destructive _state mutations_ aka database updates
+* You can halt a Reflex - prevent it from executing - by placing `throw :abort` in a `before_reflex` callback. This callback fires before the code in your Reflex action method is called, making it a logical place to implement authorization logic for destructive _state mutations_ aka database updates:
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
@@ -75,12 +75,13 @@ end
 
 ## Client-Side Reflex Callbacks
 
-StimulusReflex gives you the ability to inject custom Javascript at four distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
+StimulusReflex gives you the ability to inject custom Javascript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
 
-1. **`before`** - prior to sending a request over the web socket
-2. **`success`** - after the server side Reflex succeeds and the DOM has been updated
-3. **`error`** - whenever the server side Reflex raises an error
-4. **`after`** - after both `success` and `error`
+1. **`before`** prior to sending a request over the web socket
+2. **`success`** after the server side Reflex succeeds and the DOM has been updated
+3. **`error`** whenever the server side Reflex raises an error
+4. **`halted`** Reflex canceled with `throw :abort` in the `before_reflex` callback
+5. **`after`** after both `success` and `error`
 
 {% hint style="info" %}
 **Using lifecycle callback methods is not a requirement.**
@@ -96,12 +97,13 @@ StimulusReflex also emits lifecycle events which can be captured in other Stimul
 
 ### Generic Lifecycle Methods
 
-StimulusReflex controllers can define up to four generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
+StimulusReflex controllers can define up to five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
 3. `reflexError`
-4. `afterReflex`
+4. `reflexHalted`
+5. `afterReflex`
 
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
@@ -135,12 +137,13 @@ In this example, we update each anchor's text before invoking the server side Re
 
 ### Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to four custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforePoke`
 2. `pokeSuccess`
 3. `pokeError`
-4. `afterPoke`
+4. `pokeHalted`
+5. `afterPoke`
 
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
@@ -187,7 +190,8 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 1. `beforeDoStuff`
 2. `doStuffSuccess`
 3. `doStuffError`
-4. `afterDoStuff`
+4. `doStuffHalted`
+5. `afterDoStuff`
 
 #### Method Signatures
 
@@ -196,6 +200,7 @@ Both generic and custom lifecycle callback methods share the same arguments:
 * `beforeReflex(element, reflex)`
 * `reflexSuccess(element, reflex)`
 * `reflexError(element, reflex, error)`
+* `reflexHalted(element, reflex)`
 * `afterReflex(element, reflex, error)`
 
 **element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_ 
@@ -217,6 +222,7 @@ Events are dispatched on the same element that triggered the Reflex. Events bubb
 * `stimulus-reflex:before`
 * `stimulus-reflex:success`
 * `stimulus-reflex:error`
+* `stimulus-reflex:halted`
 * `stimulus-reflex:after`
 
 #### Event Metadata
