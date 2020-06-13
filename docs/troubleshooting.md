@@ -109,7 +109,7 @@ import StimulusReflex from 'stimulus_reflex'
 import consumer from '../channels/consumer'
 
 const application = Application.start(document.documentElement, {
-  reflexAttribute: 'data-
+  reflexAttribute: 'data-avenger'
 })
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
