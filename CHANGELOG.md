@@ -199,7 +199,6 @@
 **Implemented enhancements:**
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
-- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -227,6 +226,7 @@
 
 **Implemented enhancements:**
 
+- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -451,7 +451,7 @@
 **Implemented enhancements:**
 
 - update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
+- Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -467,7 +467,6 @@
 
 **Implemented enhancements:**
 
-- Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -499,10 +498,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.3.3...v1.0.0)
 
-**Implemented enhancements:**
-
-- Ruby function splat args return arity of -1 [\#9](https://github.com/hopsoft/stimulus_reflex/pull/9) ([leastbad](https://github.com/leastbad))
-
 ## [v0.3.3](https://github.com/hopsoft/stimulus_reflex/tree/v0.3.3) (2019-05-13)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.3.2...v0.3.3)
@@ -522,6 +517,10 @@
 **Breaking changes:**
 
 - Update naming conventions [\#7](https://github.com/hopsoft/stimulus_reflex/pull/7) ([hopsoft](https://github.com/hopsoft))
+
+**Implemented enhancements:**
+
+- Ruby function splat args return arity of -1 [\#9](https://github.com/hopsoft/stimulus_reflex/pull/9) ([leastbad](https://github.com/leastbad))
 
 ## [v0.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v0.2.0) (2018-11-16)
 
