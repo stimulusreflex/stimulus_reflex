@@ -56,17 +56,19 @@ We're excited to announce that StimulusReflex now works with [AnyCable](https://
 
 Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today. 
 
-First, add `gem "anycable-rails", "1.0.0.rc1"` to your `Gemfile`. 
+1. Add `gem "anycable-rails", "1.0.0.rc1"` to your `Gemfile`. 
 
-Next, install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\). 
+2. Install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\). 
 
-Finally, if you use `session` in your Reflex classes, add `persistent_session_enabled: true` to `anycable.yml`.
+3. If you use `session` in your Reflex classes, add `persistent_session_enabled: true` to `anycable.yml`. \(This might no longer be necessary with SR v3+\)
+
+4. If you are using the session object, you must select a cache store that is not MemoryStore, which is not compatible with AnyCable.
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
 
-If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/hopsoft/stimulus_reflex/issues/46).
+Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/hopsoft/stimulus_reflex/issues/46).
 
 {% hint style="info" %}
-If you're looking to authenticate AnyCable connections with Devise, there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
+If you're looking to authenticate AnyCable connections with Devise, the documentation for that process is [here](https://docs.anycable.io/v1/#/ruby/authentication), and there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
 {% endhint %}
 

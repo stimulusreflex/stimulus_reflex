@@ -93,6 +93,12 @@ ActionCable.server.config.logger = Logger.new(nil)
 ```
 {% endcode %}
 
+{% hint style="warning" %}
+We have received reports that for some developers, silencing their ActionCable logs resulted in a dramatic performance increase. If your Reflex action round-trip times are inexplicably sluggish, please do experiment with disabling logs.
+
+Unfortunately, this is difficult to triage because it has yet to impact the StimulusReflex team members; if you have any insights, don't be shy.
+{% endhint %}
+
 ## Modifying the default data attribute schema
 
 If you're stuck working with legacy applications that impose constraints on your data attribute naming scheme, Stimulus and StimulusReflex give you a mechanism to provide an alternative schema.
