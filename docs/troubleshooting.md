@@ -93,6 +93,31 @@ ActionCable.server.config.logger = Logger.new(nil)
 ```
 {% endcode %}
 
+## Modifying the default data attribute schema
+
+If you're stuck working with legacy applications that impose constraints on your data attribute naming scheme, Stimulus and StimulusReflex give you a mechanism to provide an alternative schema.
+
+In addition to **controllerAttribute**, **actionAttribute** and **targetAttribute** as defined by Stimulus, StimulusReflex adds the following: **reflexAttribute**, **reflexPermanentAttribute**, **reflexRootAttribute** and **reflexDatasetAttribute**.
+
+You can update these values by providing your own schema to `Application.start()`
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+import { Application } from 'stimulus'
+import { definitionsFromContext } from 'stimulus/webpack-helpers'
+import StimulusReflex from 'stimulus_reflex'
+import consumer from '../channels/consumer'
+
+const application = Application.start(document.documentElement, {
+  reflexAttribute: 'data-
+})
+const context = require.context('controllers', true, /_controller\.js$/)
+application.load(definitionsFromContext(context))
+StimulusReflex.initialize(application, { consumer })
+if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+```
+{% endcode %}
+
 ## Flight Safety Card
 
 {% hint style="info" %}
