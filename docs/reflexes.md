@@ -18,11 +18,15 @@ A thousand times, _yes_.
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
 
-## Calling a Reflex
+## Declaring a Reflex in HTML with data attributes
 
-Regardless of whether you use declarative Reflex calls via `data-reflex` attributes in your HTML or if you are using JavaScript, ultimately the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the **Quick Start** chapter; now we are going to document the function signature so that you fully understand what's happening behind the scenes.
+It is frequently fastest to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 
-{% hint style="info" %}
+```markup
+<button data-reflex="click->Comment#create">Create</button>
+```
+
+{% hint style="success" %}
 The syntax for `data-reflex` was recently loosened; you can now safely omit the string fragment "Reflex" from the Reflex class identifier.
 
 Previously: &lt;div data-reflex="click-&gt;UserReflex\#poke"&gt;  
@@ -31,23 +35,98 @@ Now: &lt;div data-reflex="click-&gt;User\#poke"&gt;
 Server-side Reflex classes still follow the UserReflex / user\_reflex.rb naming.
 {% endhint %}
 
+You can use additional data attributes to pass variables as part of your Reflex payload.
+
+```markup
+<button 
+  data-reflex="click->Comment#create" 
+  data-post-id="<%= @post.id %>"
+>Create</button>
+```
+
+{% hint style="info" %}
+Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
+
+This means that if you parse a client-side markup format that has declarative Reflexes contained within, they will be connected to StimulusReflex in less than a millisecond.
+{% endhint %}
+
+### Inheriting data-attributes from parent elements
+
+You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-attributes="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
+
+```markup
+<div data-post-id="<%= @post.id %>">
+  <div data-category-id="<%= @category.id %>">
+    <button data-reflex="click->Comment#create" data-reflex-attributes="combined">Create</button>
+  </div>
+</div>
+```
+
+This Reflex would come with `post-id` and `category-id` accessible:
+
+```ruby
+class CommentReflex < ApplicationReflex
+  def create
+    puts element.dataset["post-id"]
+    puts element.dataset["category-id"]
+  end
+end
+```
+
+If a data attribute appears several times, the deepest one in the DOM tree is taken. In the following example, `data-id` would be **2**.
+
+```markup
+<div data-id="1">
+  <button data-id="2" data-reflex="Example#whatever" data-reflex-dataset="combined">Click me</button>
+</div>
+```
+
+## Calling a Reflex in a Stimulus controller
+
+Behind the scenes, when you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the **Quick Start** chapter; here is the function signature.
+
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
 this.stimulate(string target, [DOMElement element], ...[JSONObject argument])
 ```
 
-**target**, required \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "ExampleReflex\#increment".
+**target**, required \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "Example\#increment".
 
 **element**, optional: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
 
 **argument**, optional: a **splat** of JSON-compliant Javascript datatypes - array, object, string, numeric or boolean - can be received by the server Reflex action as one or many ordered arguments. Defaults to no argument\(s\). **Note: the method signature has to match.** If the Reflex action is expecting two arguments and doesn't receive two arguments, it will raise an exception.
 
+#### `data-reflex-dataset="combined"` with `stimulate()`
+
+```markup
+<div data-folder-id="<%= folder.id %>" data-controller="folders">
+  <button data-action="click->folders#edit" data-reflex-dataset="combined">Edit</button>
+</div>
+```
+
+By default, `stimulate` treats the DOM element that the controller is placed on as the **element**. We can simply swap to using `event.target` as the **element**.
+
+```javascript
+import { Controller } from 'stimulus'
+import StimulusReflex from 'stimulus_reflex'
+
+export default class extends ApplicationController {
+  connect() {
+    StimulusReflex.register(this)
+  }
+
+  edit(event) {
+    this.stimulate("Folder#edit", event.target)
+  }
+}
+```
+
 ### Aborting a Reflex
 
 It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
 
-We'll go into much deeper detail on lifecycle callbacks on the [Lifecycle](https://docs.stimulusreflex.com/lifecycle) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute. Instead, the client will receive a **halted** event and execute the **reflexHalted** callback if it's defined.
+We'll go into much deeper detail on lifecycle callbacks on the [Lifecycle](https://docs.stimulusreflex.com/lifecycle) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
 
 {% hint style="warning" %}
 Halted Reflexes do not execute afterReflex callbacks on the server or client.

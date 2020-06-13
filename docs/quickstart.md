@@ -34,7 +34,7 @@ Let's dig into it!
 
 ### Trigger Reflex actions with data-reflex attributes
 
-This example will automatically update the page with the latest count whenever the anchor is clicked:
+This example updates the page with the latest count when the link is clicked:
 
 {% code title="app/views/pages/index.html.erb" %}
 ```text
@@ -46,12 +46,16 @@ This example will automatically update the page with the latest count whenever t
 ```
 {% endcode %}
 
-We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
+We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. The `data-reflex` attribute allows us to map an action on the client to code that will be executed on the server.
+
+The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
+
+The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
 {% hint style="info" %}
 The syntax requirement for `data-reflex` was recently loosened to make specifying "Reflex" optional. In the example above, you could now opt to use a shorter form: `data-reflex="click->Counter#increment"`
 
-If you're watching a video or following a tutorial and see the long-form usage, know that **there is no functional difference** between the two - it's just shorter!
+If you're watching a video or following a tutorial and see the long-form usage, **there is no functional difference** between the two - it's just shorter!
 {% endhint %}
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
