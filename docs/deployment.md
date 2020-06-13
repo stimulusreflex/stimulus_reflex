@@ -56,13 +56,17 @@ We're excited to announce that StimulusReflex now works with [AnyCable](https://
 
 Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today. 
 
-First, add `gem "anycable-rails", "1.0.0.preview1"` to your `Gemfile`. 
+First, add `gem "anycable-rails", "1.0.0.rc1"` to your `Gemfile`. 
 
-Next, install `anycable-go` v1.0.0.preview \([binaries](https://github.com/anycable/anycable-go/releases/tag/v1.0.0.preview1) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\). 
+Next, install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\). 
 
 Finally, if you use `session` in your Reflex classes, add `persistent_session_enabled: true` to `anycable.yml`.
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
 
 If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/hopsoft/stimulus_reflex/issues/46).
+
+{% hint style="info" %}
+If you're looking to authenticate AnyCable connections with Devise, there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
+{% endhint %}
 

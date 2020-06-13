@@ -108,8 +108,8 @@ StimulusReflex controllers can define up to five generic lifecycle callback meth
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="ExampleReflex#update">Update</a>
-  <a href="#" data-reflex="ExampleReflex#delete">Delete</a>
+  <a href="#" data-reflex="Example#update">Update</a>
+  <a href="#" data-reflex="Example#delete">Delete</a>
 </div>
 ```
 {% endcode %}
@@ -137,7 +137,7 @@ In this example, we update each anchor's text before invoking the server side Re
 
 ### Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `ExampleReflex#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforePoke`
 2. `pokeSuccess`
@@ -148,8 +148,8 @@ StimulusReflex controllers can define up to five custom lifecycle callback metho
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="ExampleReflex#poke">Poke</a>
-  <a href="#" data-reflex="ExampleReflex#purge">Purge</a>
+  <a href="#" data-reflex="Example#poke">Poke</a>
+  <a href="#" data-reflex="Example#purge">Purge</a>
 </div>
 ```
 {% endcode %}
@@ -250,7 +250,7 @@ If you're calling the `stimulate` method inside of a Stimulus controller, the ev
 Are you a hardcore Javascript developer? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
 
 ```javascript
-this.stimulate('MyReflex#action')
+this.stimulate('Comments#create')
   .then(() => this.doSomething())
   .catch(() => this.handleError())
 ```
@@ -258,7 +258,7 @@ this.stimulate('MyReflex#action')
 You can get a sense of the possibilities:
 
 ```javascript
-this.stimulate('MyReflex#example')
+this.stimulate('Post#publish')
   .then(payload => {
     const { data, element, event } = payload
     const { attrs, reflexId } = data

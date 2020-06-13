@@ -43,7 +43,7 @@ If you `yarn add lodash-es` you will be able to use a version of the library tha
 Let's set up a simple example: we will debounce your page scroll events while keeping your server up-to-date on how far down your user is.
 
 {% tabs %}
-{% tab title="event\_controller.js" %}
+{% tab title="scroll\_controller.js" %}
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
@@ -53,10 +53,15 @@ export default class extends Controller {
   connect () {
     StimulusReflex.register(this)
     this.scroll = debounce(this.scroll, 1000)
+    window.addEventListener('scroll', this.scroll, { passive: true })
+  }
+  
+  disconnect () {
+    window.removeEventListener('scroll', this.scroll, { passive: true })
   }
 
   scroll () {
-    this.stimulate('EventReflex#scroll', window.scrollY)
+    this.stimulate('Event#scroll', window.scrollY)
   }
 }
 ```
@@ -74,11 +79,7 @@ end
 
 {% tab title="index.html.erb" %}
 ```text
-<div
-  data-controller="event"
-  data-action="scroll@window->event#scroll"
-  style="height: 5000px"
-></div>
+<div data-controller="scroll" style="height: 5000px"></div>
 ```
 {% endtab %}
 {% endtabs %}
@@ -201,11 +202,11 @@ export default class extends Controller {
   keydown (event) {
     event.repeat
       ? this.throttleKeydown(event)
-      : this.stimulate('EventReflex#keydown', event.key)
+      : this.stimulate('Event#keydown', event.key)
   }
 
   throttleKeydown (event) {
-    this.stimulate('EventReflex#keydown', event.key)
+    this.stimulate('Event#keydown', event.key)
   }
 }
 ```
@@ -248,7 +249,7 @@ sudo brew install dict # MacOS
 {% tabs %}
 {% tab title="app/views/search/index.html.erb" %}
 ```text
-<form data-controller="search" data-reflex="submit->SearchReflex#search" data-value="<%= @query %>">
+<form data-controller="search" data-reflex="submit->Search#search" data-value="<%= @query %>">
   <input type="text" data-action="input->search#suggest" value="<%= @query %>" list="matches" placeholder="Search..." <%= "readonly" if @loading %>/>
   <datalist id="matches">
     <% @matches.each do |match| %>
@@ -311,7 +312,7 @@ export default class extends Controller {
   }
 
   suggest (event) {
-    this.stimulate('SearchReflex#suggest', event.target)
+    this.stimulate('Search#suggest', event.target)
   }
 
   beforeSearch () {

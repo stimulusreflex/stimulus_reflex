@@ -180,6 +180,12 @@ For example, if your controller is named _list-item_ you might consider **this.e
 
 ### Chained Reflexes for long-running actions
 
+{% hint style="danger" %}
+This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
+
+If you need to respond to long-running actions, your best strategy is to use ActionCable jobs to emit CableReady broadcasts. 
+{% endhint %}
+
 Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:
 
 {% tabs %}
@@ -216,7 +222,7 @@ Let's explore this with a contrived example. When the page first loads, we see a
   <% when :ready %>
     <strong>@api_response</strong>
   <% else %>
-    <button data-reflex="click->ExampleReflex#api">Call API</button>
+    <button data-reflex="click->Example#api">Call API</button>
   <% end %>
 </div>
 ```
@@ -242,7 +248,7 @@ Now, you can refactor your view template like this:
 <div data-controller="example">
   <% case @api_status %>
   <% when :default %>
-    <button data-reflex="click->ExampleReflex#api">Call API</button>
+    <button data-reflex="click->Example#api">Call API</button>
   <% when :loading %>
     <em>Waiting...</em>
   <% when :ready %>
@@ -302,7 +308,7 @@ This is one of the coolest things about websockets; you can respond many times t
 
 If you plan to initiate a CableReady broadcast inside of a model callback or job, you might find yourself trying to render templates and wondering why it seems to return nil.
 
-The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController.renderer` class.
+The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController` class.
 
 **The following isn't a complete working example**, but it should set you on the right path.
 
@@ -310,7 +316,7 @@ The secret to an efficient and successful template render operation is to call t
 class Notification < ApplicationRecord
   include CableReady::Broadcaster
   after_save do
-    html = ApplicationController.renderer.render(
+    html = ApplicationController.render(
       partial: "layouts/navbar/notification",
       locals: { notification: self }
     )
@@ -323,6 +329,10 @@ class Notification < ApplicationRecord
   end
 end
 ```
+
+{% hint style="success" %}
+CableReady provides a slightly improved version of Rails' [dom\_id](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id) method to any class that includes it. Intended to be used to populate a DOM selector string, the CableReady version prefixes outfit with a `#` character.
+{% endhint %}
 
 ### Triggering custom events and forcing DOM updates
 

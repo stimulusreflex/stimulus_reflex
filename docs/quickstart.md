@@ -48,6 +48,12 @@ This example will automatically update the page with the latest count whenever t
 
 We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
+{% hint style="info" %}
+The syntax requirement for `data-reflex` was recently loosened to make specifying "Reflex" optional. In the example above, you could now opt to use a shorter form: `data-reflex="click->Counter#increment"`
+
+If you're watching a video or following a tutorial and see the long-form usage, know that **there is no functional difference** between the two - it's just shorter!
+{% endhint %}
+
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
 class CounterReflex < StimulusReflex::Reflex
@@ -102,7 +108,7 @@ export default class extends Controller {
 
   increment(event) {
     event.preventDefault()
-    this.stimulate('CounterReflex#increment', 1)
+    this.stimulate('Counter#increment', 1)
   }
 }
 ```

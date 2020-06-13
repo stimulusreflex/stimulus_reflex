@@ -30,7 +30,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% tab title="index.html.erb" %}
 ```text
 <div data-controller="example" data-reflex-root="[forward],[backward]">
-  <input type="text" value="<%= @words %>" data-reflex="keyup->ExampleReflex#words">
+  <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
 </div>

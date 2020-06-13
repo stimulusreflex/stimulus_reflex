@@ -22,6 +22,15 @@ A thousand times, _yes_.
 
 Regardless of whether you use declarative Reflex calls via `data-reflex` attributes in your HTML or if you are using JavaScript, ultimately the `stimulate` method on your Stimulus controller is being called. We touched on this briefly in the **Quick Start** chapter; now we are going to document the function signature so that you fully understand what's happening behind the scenes.
 
+{% hint style="info" %}
+The syntax for `data-reflex` was recently loosened; you can now safely omit the string fragment "Reflex" from the Reflex class identifier.
+
+Previously: &lt;div data-reflex="click-&gt;UserReflex\#poke"&gt;  
+Now: &lt;div data-reflex="click-&gt;User\#poke"&gt;
+
+Server-side Reflex classes still follow the UserReflex / user\_reflex.rb naming.
+{% endhint %}
+
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
@@ -80,7 +89,7 @@ Here's an example that outlines how you can interact with the `element` property
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <checkbox id="example" label="Example" checked
-  data-reflex="ExampleReflex#work" data-value="123" />
+  data-reflex="Example#work" data-value="123" />
 ```
 {% endcode %}
 
