@@ -189,7 +189,7 @@ StimulusReflex makes the following properties available to the developer inside 
 * `session` - the `ActionDispatch::Session` store for the current visitor
 * `url` - the URL of the page that triggered the reflex
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
-* `params` - query and path params for the page that triggered the reflex and serialized params of the closest form
+* `params` - an `ActionController::Parameters` of the closest form
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
@@ -218,7 +218,7 @@ Here's an example that outlines how you can interact with the `element` property
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   def work()
-  
+
     element.id      # => the HTML element's id in dot notation
     element[:id]    # => the HTML element's id w/ symbol accessor
     element["id"]   # => the HTML element's id w/ string accessor
@@ -230,14 +230,14 @@ class ExampleReflex < StimulusReflex::Reflex
     element[:tag_name]           # => "CHECKBOX"
     element[:checked]            # => true
     element.label                # => "Example"
-    
+
     element["data-reflex"]       # => "ExampleReflex#work"
     element.dataset[:reflex]     # => "ExampleReflex#work"
-    
+
     element.value                # => "123"
     element["data-value"]        # => "123"
     element.dataset[:value]      # => "123"
-    
+
   end
 end
 ```
@@ -248,22 +248,6 @@ When StimulusReflex is rendering your template, an instance variable named **@st
 
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
 {% endhint %}
-
-### Params
-
-Provides serialization for form params as `ActionController::Parameters` of the parent form element. 
-You can access the params directly in your reflex and use exaclty as you do in ActionControllers, useful for validations and updating multiple attributes of models.
-
-To modify `params` before sending them you can use `beforeReflex` lifecycle event using `element.refelexData`, for example:
-
-```javascript
-export default class extends ApplicationController {
-  beforeReflex(element) {
-    const { params } = element.reflexData
-    element.reflexData.params = { ...params, foo: true, bar: false }
-  }
-}
-```
 
 ### Reflex exceptions are rescuable
 
@@ -278,11 +262,33 @@ class MyTestReflex < StimulusReflex::Reflex
 end
 ```
 
-## Flash messages
+### Form parameters
 
-One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
+If the Reflex element is contained inside of a form element, `params` serializes the values of all input elements as an instance of `ActionController::Parameters` 
 
-You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
+You can access `params` directly in your Reflex action method and use it exactly as you do in a normal Rails controller. This is useful for model validations and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
-Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
+You can modify `params` in your `beforeReflex` callback using `element.reflexData` 
+
+```javascript
+export default class extends ApplicationController {
+  beforeReflex(element) {
+    const { params } = element.reflexData
+    element.reflexData.params = { ...params, foo: true, bar: false }
+  }
+}
+```
+
+Or, if you prefer working with events:
+
+```javascript
+document.addEventListener('stimulus-reflex:before', event => {
+  const { params } = event.target.reflexData
+  event.target.reflexData.params = { ...params, foo: true, bar: false }
+})
+```
+
+You can find a full example for working with HTML forms on the Useful Patterns page.
+
+{% page-ref page="working-with-forms.md" %}
 

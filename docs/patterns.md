@@ -178,6 +178,14 @@ For example, if your controller is named _list-item_ you might consider **this.e
 
 ## Server Side
 
+### Flash messages
+
+One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
+
+You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
+
+Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
+
 ### Chained Reflexes for long-running actions
 
 {% hint style="danger" %}
@@ -396,8 +404,6 @@ export default class extends Controller {
 {% endtabs %}
 
 By passing a randomized number to the Reflex as an argument, we allow ourselves to return before triggering a reload if we were the ones that initiated the operation.
-
-#### Coming Soon: Notifications with ActiveJob / Sidekiq
 
 ## Anti-Patterns
 
