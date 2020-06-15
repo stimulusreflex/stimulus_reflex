@@ -160,9 +160,6 @@ const extendStimulusController = controller => {
     // Wraps the call to stimulate for any data-reflex elements.
     // This is internal and should not be invoked directly.
     __perform (event) {
-      event.preventDefault()
-      event.stopPropagation()
-
       let element = event.target
       let reflex
 
@@ -173,12 +170,15 @@ const extendStimulusController = controller => {
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
-      this.stimulate(
-        attributeValues(reflex)
-          .find(reflex => reflex.split('->')[0] === event.type)
-          .split('->')[1],
-        element
+      const match = attributeValues(reflex).find(
+        reflex => reflex.split('->')[0] === event.type
       )
+
+      if (match) {
+        event.preventDefault()
+        event.stopPropagation()
+        this.stimulate(match.split('->')[1], element)
+      }
     }
   })
 }
