@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...HEAD)
+
+**Merged pull requests:**
+
+- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
+
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2...v3.2.3)
