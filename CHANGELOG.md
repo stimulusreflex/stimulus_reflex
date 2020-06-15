@@ -4,6 +4,15 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2...HEAD)
 
+**Fixed bugs:**
+
+- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
+- merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/hopsoft/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
+
+**Closed issues:**
+
+- "Uncaught \(in promise\)" error after failed declarative reflex [\#170](https://github.com/hopsoft/stimulus_reflex/issues/170)
+
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
