@@ -34,6 +34,10 @@ let actionCableSubscriptionActive = false
 // A dictionary of promise data
 const promises = {}
 
+// A queue we can use during initialization to make sure the ActionCable
+// connection is ready to go before we start sending `#stimulate` calls.
+const stimulateQueue = []
+
 // Indicates if we should log calls to stimulate, etc...
 let debugging = false
 
@@ -51,6 +55,12 @@ const createSubscription = controller => {
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
     actionCableConsumer.subscriptions.create(subscription, {
+      connected: () => {
+        let callback
+
+        while ((callback = stimulateQueue.shift())) callback()
+      },
+
       received: data => {
         if (!data.cableReady) return
         totalOperations = 0
@@ -157,43 +167,48 @@ const extendStimulusController = controller => {
       }
       const { subscription } = this.StimulusReflex
 
-      if (!this.isActionCableConnectionOpen())
-        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
-
-      if (!actionCableSubscriptionActive)
-        throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
-
       // lifecycle setup
       element.reflexController = this
       element.reflexData = data
 
-      dispatchLifecycleEvent('before', element, reflexId)
+      const callback = () => {
+        if (!this.isActionCableConnectionOpen())
+          throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
-      setTimeout(() => {
-        const { params } = element.reflexData || {}
-        element.reflexData = {
-          ...data,
-          params: {
-            ...params,
-            ...serializeForm(element.closest('form'), {
-              hash: true,
-              empty: true
-            })
+        if (!actionCableSubscriptionActive)
+          throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
+
+        dispatchLifecycleEvent('before', element, reflexId)
+
+        setTimeout(() => {
+          const { params } = element.reflexData || {}
+          element.reflexData = {
+            ...data,
+            params: {
+              ...params,
+              ...serializeForm(element.closest('form'), {
+                hash: true,
+                empty: true
+              })
+            }
           }
+
+          subscription.send(element.reflexData)
+        })
+
+        if (debugging) {
+          Log.request(
+            reflexId,
+            target,
+            args,
+            this.context.scope.identifier,
+            element
+          )
         }
-
-        subscription.send(element.reflexData)
-      })
-
-      if (debugging) {
-        Log.request(
-          reflexId,
-          target,
-          args,
-          this.context.scope.identifier,
-          element
-        )
       }
+
+      if (this.isActionCableConnectionOpen()) callback()
+      else stimulateQueue.push(callback)
 
       const promise = new Promise((resolve, reject) => {
         promises[reflexId] = {
