@@ -173,8 +173,11 @@ const extendStimulusController = controller => {
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
-      attributeValues(reflex).forEach(reflex =>
-        this.stimulate(reflex.split('->')[1], element)
+      this.stimulate(
+        attributeValues(reflex)
+          .find(reflex => reflex.split('->')[0] === event.type)
+          .split('->')[1],
+        element
       )
     }
   })
