@@ -285,7 +285,6 @@
 **Implemented enhancements:**
 
 - Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
-- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
@@ -340,6 +339,7 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
+- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
