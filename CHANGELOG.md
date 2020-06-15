@@ -6,6 +6,7 @@
 
 **Fixed bugs:**
 
+- Add more smarts to \_\_perform [\#235](https://github.com/hopsoft/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
 - \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 - merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/hopsoft/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
 
@@ -284,6 +285,7 @@
 **Implemented enhancements:**
 
 - Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
+- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
@@ -338,7 +340,6 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
-- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
