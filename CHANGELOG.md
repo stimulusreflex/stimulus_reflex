@@ -275,8 +275,8 @@
 
 **Implemented enhancements:**
 
-- Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
 - Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
+- More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
@@ -307,10 +307,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.7...v2.1.8)
 
-**Implemented enhancements:**
-
-- More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
-
 **Fixed bugs:**
 
 - Fix bug related to trailing slash in URL path [\#111](https://github.com/hopsoft/stimulus_reflex/pull/111) ([hopsoft](https://github.com/hopsoft))
@@ -321,6 +317,7 @@
 
 **Implemented enhancements:**
 
+- Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
 - Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
