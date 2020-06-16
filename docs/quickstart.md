@@ -78,6 +78,10 @@ _The magic is that there is no magic_. What the user sees is exactly what they w
 StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state synchronization.
 {% endhint %}
 
+{% hint style="warning" %}
+If you change the code in a Reflex class, you must refresh the page in your browser to interact with the new version of your code.
+{% endhint %}
+
 ### Trigger Reflex actions inside Stimulus controllers
 
 Real-world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can import StimulusReflex into our Stimulus controllers and build complex functionality.

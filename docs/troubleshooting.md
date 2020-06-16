@@ -99,6 +99,12 @@ We have received reports that for some developers, silencing their ActionCable l
 Unfortunately, this is difficult to triage because it has yet to impact the StimulusReflex team members; if you have any insights, don't be shy.
 {% endhint %}
 
+## Anti-Patterns
+
+### \[Don't\] change the URL rendered by a reflex
+
+### \[Don't\] call `stimulate()` in `connect()`
+
 ## Modifying the default data attribute schema
 
 If you're stuck working with legacy applications that impose constraints on your data attribute naming scheme, Stimulus and StimulusReflex give you a mechanism to provide an alternative schema.
@@ -125,6 +131,10 @@ if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
 {% endcode %}
 
 ## Flight Safety Card
+
+{% hint style="info" %}
+If you change the code in a Reflex class in development, you will have to refresh the page in your browser to access the new version.
+{% endhint %}
 
 {% hint style="info" %}
 If you're collaborating with a team during development, **make sure that they have caching turned on**. They just need to run `rails dev:cache` one time.

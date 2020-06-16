@@ -18,6 +18,20 @@ A thousand times, _yes_.
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
 
+## What's the deal with CableReady?
+
+[CableReady](https://cableready.stimulusreflex.com/) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1&ck_subscriber_id=646293602)?
+
+|  |  |
+| :--- | :--- |
+| StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**. |
+| CableReady | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
+
+⬆️ StimulusReflex is for sending commands. 📡  
+⬇️ CableReady is for receiving updates. 👽
+
+CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+
 ## Declaring a Reflex in HTML with data attributes
 
 It is frequently fastest to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`

@@ -8,7 +8,7 @@ In the course of creating StimulusReflex and using it to build production applic
 
 ## Client Side
 
-### Application controller
+### Application controller pattern
 
 You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
 
@@ -31,7 +31,7 @@ export default class extends Controller {
 {% endtab %}
 {% endtabs %}
 
-Then, all that's required to create a StimulusReflex controller is inherit from ApplicationController:
+You can then create a Reflex-enabled controller by extending ApplicationController:
 
 {% tabs %}
 {% tab title="custom\_controller.js" %}
@@ -341,71 +341,4 @@ end
 {% hint style="success" %}
 CableReady provides a slightly improved version of Rails' [dom\_id](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id) method to any class that includes it. Intended to be used to populate a DOM selector string, the CableReady version prefixes outfit with a `#` character.
 {% endhint %}
-
-### Triggering custom events and forcing DOM updates
-
-CableReady, one of StimulusReflex's dependencies, has [many handy methods](https://cableready.stimulusreflex.com/usage/dom-operations/event-dispatch) that you can call from controllers, ActionJob tasks and Reflex classes. One of those methods is dispatch\_event, which allows you to trigger any event in the client, including custom events and jQuery events.
-
-In this example, we send out an event to everyone connected to ActionCable suggesting that update is required:
-
-{% tabs %}
-{% tab title="Ruby" %}
-```ruby
-class NotificationReflex < StimulusReflex::Reflex
-  include CableReady::Broadcaster
-
-  def force_update(id)
-    cable_ready["StimulusReflex::Channel"].dispatch_event {
-      name: "force:update",
-      detail: {id: id},
-    }
-    cable_ready.broadcast
-  end
-
-  def reload
-    # noop: this method exists so we can refresh the DOM
-  end
-end
-```
-{% endtab %}
-{% endtabs %}
-
-{% tabs %}
-{% tab title="index.html.erb" %}
-```markup
-<div data-action="force:update@document->notification#reload">
-  <button data-action="notification#forceUpdate">
-</div>
-```
-{% endtab %}
-{% endtabs %}
-
-We use the Stimulus event mapper to call our controller's reload method whenever a force:update event is received:
-
-{% tabs %}
-{% tab title="notification\_controller.js" %}
-```javascript
-let lastId
-
-export default class extends Controller {
-  forceUpdate () {
-    lastId = Math.random()
-    this.stimulate("NotificationReflex#force_update", lastId)
-  }
-
-  reload (event) {
-    const { id } = event.detail
-    if (id === lastId) return
-    this.stimulate("NotificationReflex#reload")
-  }
-}
-```
-{% endtab %}
-{% endtabs %}
-
-By passing a randomized number to the Reflex as an argument, we allow ourselves to return before triggering a reload if we were the ones that initiated the operation.
-
-## Anti-Patterns
-
-#### Coming Soon: How to change the URL rendered by a reflex
 
