@@ -220,6 +220,7 @@
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
+- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -259,7 +260,6 @@
 **Implemented enhancements:**
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
-- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -275,8 +275,8 @@
 
 **Implemented enhancements:**
 
+- Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
 - Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
-- More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
@@ -307,6 +307,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.7...v2.1.8)
 
+**Implemented enhancements:**
+
+- More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
+
 **Fixed bugs:**
 
 - Fix bug related to trailing slash in URL path [\#111](https://github.com/hopsoft/stimulus_reflex/pull/111) ([hopsoft](https://github.com/hopsoft))
@@ -317,7 +321,6 @@
 
 **Implemented enhancements:**
 
-- Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
 - Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
@@ -431,6 +434,7 @@
 
 - Add support to configure room via register option [\#52](https://github.com/hopsoft/stimulus_reflex/pull/52) ([hopsoft](https://github.com/hopsoft))
 - Move gitbook files to docs [\#49](https://github.com/hopsoft/stimulus_reflex/pull/49) ([hopsoft](https://github.com/hopsoft))
+- Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -449,7 +453,6 @@
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
 - update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
-- Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
