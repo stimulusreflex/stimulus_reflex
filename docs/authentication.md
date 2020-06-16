@@ -8,9 +8,13 @@ If you're just trying to bootstrap a proof-of-concept application on your local 
 
 ## Authentication != Authorization
 
-Libraries like Pundit, CanCanCan and Authz don't work on reflexes and might justify keeping state mutations with destructive outcomes in the controller.
+Libraries like Pundit, CanCanCan and Authz don't directly work on Reflexes because Reflexes action methods run before the controller action is called.
 
-Another valid approach to authorization is to make use of the `before_reflex` callbacks, where you could potentially call `throw :abort` if the user is acting out above their pay grade.
+If your application makes use of role-based authorization to different resources, and that authorization usually happens in the controller, you should design your application such that state mutations and database updates with destructive outcomes happen in the controller.
+
+You could use `before_reflex` callbacks to validate that the current user is authorized to take this action and call `throw :abort` to prevent the Reflex if the user is making decisions above their pay grade.
+
+If you come up with a clever generalized approach, please let us know about it.
 
 ## Encrypted Session Cookies
 

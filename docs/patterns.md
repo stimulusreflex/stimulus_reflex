@@ -4,6 +4,18 @@ description: How to build a great StimulusReflex application
 
 # Useful Patterns
 
+```ruby
+<% cache([current_user, "todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
+  <ul>
+    <% @todos.each do |todo| %>
+      <% cache(todo) do %>
+        <li class="todo"><%= todo.description %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+```
+
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
 ## Client Side
@@ -178,6 +190,35 @@ For example, if your controller is named _list-item_ you might consider **this.e
 
 ## Server Side
 
+### Russian Doll caching 🪆
+
+Caching is the secret to getting your application responding in 30-50ms after a database query. Some developers are intimidated by application-level caching, but you can ease into it.
+
+You might be surprised how easy it can be to stash frequently accessed resources that are expensive to generate. This is known as a **fragment cache**. In this contrived example, the cached block will be expired and replaced if the current user or the todo is changed:
+
+```ruby
+<% todo = Todo.first %>
+<% cache([current_user, todo]) do %>
+  ... a whole lot of work here ...
+<% end %>
+```
+
+Russian Doll caching is just stacking cache fragments inside each other, and then configuring your ActiveRecord model callbacks to expire any keys that they are cached in when updated by setting the `touch: true` option on your `belongs_to` associations.
+
+```ruby
+<% cache(["todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
+  <ul>
+    <% @todos.each do |todo| %>
+      <% cache(todo) do %>
+        <li class="todo"><%= todo.description %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+```
+
+Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html)" is one of the best resources on the topic - and the source of the above examples. It's a half-hour incredibly well-spent.
+
 ### Flash messages
 
 One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
@@ -191,7 +232,7 @@ Clever use of CableReady broadcasts when ActiveJobs complete or models update is
 {% hint style="danger" %}
 This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
 
-If you need to respond to long-running actions, your best strategy is to use ActionCable jobs to emit CableReady broadcasts. 
+If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**. 
 {% endhint %}
 
 Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:

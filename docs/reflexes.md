@@ -22,13 +22,13 @@ A thousand times, _yes_.
 
 [CableReady](https://cableready.stimulusreflex.com/) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1&ck_subscriber_id=646293602)?
 
-|  |  |
+| Library | Responsibility |
 | :--- | :--- |
 | StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**. |
 | CableReady | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
 
-⬆️ StimulusReflex is for sending commands. 📡  
-⬇️ CableReady is for receiving updates. 👽
+⬆️ StimulusReflex is for **sending** commands. 📡  
+⬇️ CableReady is for **receiving** updates. 👽
 
 CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 

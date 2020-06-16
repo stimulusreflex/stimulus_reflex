@@ -130,6 +130,8 @@ if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
 ```
 {% endcode %}
 
+In the above example, you have now configured your application to parse your DOM for `data-avenger` attributes instead of `data-reflex` attributes. 🦸
+
 ## Flight Safety Card
 
 {% hint style="info" %}
@@ -145,6 +147,18 @@ There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 
 {% endhint %}
 
 {% hint style="info" %}
+Make sure that your [Allowed Request Origins](https://guides.rubyonrails.org/action_cable_overview.html#allowed-request-origins) is properly configured for your environment, or else ActionCable won't be able to connect.
+{% endhint %}
+
+{% hint style="info" %}
+If your ActionCable is not connecting, make sure that you do not have an overly-restrictive [Content Security Policy](https://content-security-policy.com/connect-src/) in place on your application. You can learn more in [this excellent article](https://bauland42.com/ruby-on-rails-content-security-policy-csp/).
+{% endhint %}
+
+{% hint style="info" %}
+Working with subdomains? Make sure your application layout view calls `action_cable_meta_tag` in your `HEAD`.
+{% endhint %}
+
+{% hint style="info" %}
 Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **npm** package version is **identical** to your Ruby **gem** version.
 {% endhint %}
 
@@ -154,6 +168,10 @@ For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible fo
 
 {% hint style="info" %}
 Do you have your `config/cable.yml` set up properly? You might need to [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
+{% endhint %}
+
+{% hint style="info" %}
+If you're supporting an older application that is using Webpacker v3, we have had some reports of issues. Is it possible to upgrade to v4?
 {% endhint %}
 
 {% hint style="info" %}
