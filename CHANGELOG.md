@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...HEAD)
 
+**Closed issues:**
+
+- Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
+
 **Merged pull requests:**
 
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
@@ -218,6 +222,7 @@
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
+- Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
@@ -244,7 +249,6 @@
 
 **Implemented enhancements:**
 
-- Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
