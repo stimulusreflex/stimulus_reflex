@@ -126,10 +126,19 @@ end
 ```
 {% endcode %}
 
+Delegate `current_user` to the ActionCable `connection` and be home by lunch:
 
-### Sorcery-based Authentication (user id is in session storage)
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+end
+```
+{% endcode %}
 
-If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user id out of the session store.
+## Sorcery-based Authentication
+
+If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user's `id` out of the session store.
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
@@ -145,7 +154,7 @@ module ApplicationCable
 
     def find_verified_user
       user_id = request.session.fetch("user_id", nil)
-      
+
       if verified_user = User.find_by(id: user_id)
         verified_user
       else
@@ -157,7 +166,7 @@ end
 ```
 {% endcode %}
 
-Now you're free to delegate current\_user. Be home by lunch:
+Now you're free to delegate `current_user` to the ActionCable `connection`.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
@@ -166,6 +175,8 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 {% endcode %}
+
+
 
 ## Token-based Authentication
 
