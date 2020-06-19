@@ -156,7 +156,7 @@ end
 ```
 {% endcode %}
 
-We create the current\_user accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a subscribed method in ApplicationCable, which all of your channels inherit from.
+We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from.
 
 {% code title="app/channels/application\_cable/channel.rb" %}
 ```ruby
@@ -174,7 +174,7 @@ module ApplicationCable
       @current_user ||= decode_user params[:token]
       reject unless @current_user
     end
-    
+
     def decode_user(token)
       Warden::JWTAuth::UserDecoder.new.call token, :user, nil if token
     rescue JWT::DecodeError
@@ -185,15 +185,15 @@ end
 ```
 {% endcode %}
 
-Now, we can create a channel class that inherits from ApplicationChannel, as well as a client-side ActionCable channel to initiate the subscription.
+Now, we can create a channel class that inherits from `ApplicationChannel`, as well as a client-side ActionCable channel to initiate the subscription.
 
 {% code title="app/channels/test\_channel.rb" %}
 ```ruby
 class TestChannel < ApplicationCable::Channel
-  def subscribed
+  def subscribed
     super
     stream_from "test" if current_user
-  end
+  end
 end
 ```
 {% endcode %}
@@ -215,7 +215,7 @@ consumer.subscriptions.create(
 ```
 {% endcode %}
 
-Finally, let's set a JWT token for the current user in your layout template. Note that in this example we do assume `warden-jwt_auth` is in your project and that there is a valid `current_user` accessor in scope.
+Finally, let's set a JWT token for the current user in your layout template. Note that in this example we do assume that the `warden-jwt_auth` gem is in your project \(possibly through `devise-jwt`\) and that there is a valid `current_user` accessor in scope.
 
 {% code title="app/controllers/application\_controller.rb" %}
 ```ruby
@@ -252,6 +252,4 @@ module ApplicationCable
 end
 ```
 {% endcode %}
-
-
 
