@@ -76,7 +76,7 @@ You can specify multiple Reflex operations by separating them with a space:
 
 ### Inheriting data-attributes from parent elements
 
-You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-attributes="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
+You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
 
 ```markup
 <div data-post-id="<%= @post.id %>">
@@ -195,7 +195,48 @@ It's also possible to trigger this global Reflex by passing nothing but a browse
 
 ## Reflex Classes
 
-StimulusReflex makes the following properties available to the developer inside Reflex actions:
+Regardless of whether you use declared Reflexes in your HTML markup or call `stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `StimulusReflex::Reflex`.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+end
+```
+{% endcode %}
+
+Setting a declarative data-reflex="click-&gt;Example\#increment" will call the increment Reflex action in the Example Reflex class, before passing any instance variables along to your controller action and re-rendering your page. You can do anything you like in a Reflex action, including database updates, launching ActiveJobs and even initiating CableReady broadcasts.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def increment
+    @counter += 1 # @counter will be available inside your controller action
+  end
+end
+```
+{% endcode %}
+
+{% hint style="warning" %}
+Note that there's no correlation between the Reflex class or Reflex action and the page \(or its controller\) that you're on. Your `users#show` page can call `Example#increment`.
+{% endhint %}
+
+It's very common to want to be able to access the current\_user or equivalent accessor inside your Reflex actions. The best way to achieve this is to delegate it from the ActionCable connection.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+  
+  def increment
+    current_user.counter.increment!
+  end
+end
+```
+{% endcode %}
+
+### Building your Reflex action
+
+The following properties available to the developer inside Reflex actions:
 
 * `connection` - the ActionCable connection
 * `channel` - the ActionCable channel
