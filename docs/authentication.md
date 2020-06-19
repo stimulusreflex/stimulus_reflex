@@ -144,7 +144,7 @@ This section is a Work In Progress that is not yet functional in the current ver
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.
 
-Your first instinct might be to authenticate in `connection.rb` using ugly hacks where you pass a token as part of your ActionCable connection URL. While this seems to make sense - after all, this is close to how the other techniques above work - **putting your token into the URL is a real security vulnerability** and there's a better way: _pass the responsibility for authentication from to the ActionCable connection to the channels themselves_. Let's consider a potential solution that uses the [Warden::JWTAuth](https://github.com/waiting-for-dev/warden-jwt_auth) module:
+Your first instinct might be to authenticate in `connection.rb` using ugly hacks where you pass a token as part of your ActionCable connection URL. While this seems to make sense - after all, this is close to how the other techniques above work - **putting your token into the URL is a real security vulnerability** and there's a better way: _move the responsibility for authentication from the ActionCable connection down to the channels themselves_. Let's consider a potential solution that uses the [Warden::JWTAuth](https://github.com/waiting-for-dev/warden-jwt_auth) module:
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
@@ -156,7 +156,7 @@ end
 ```
 {% endcode %}
 
-We create the current\_user accessor as usual, but we don't need to know what it is until someone attempts to create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a subscribed method in ApplicationCable, which all of your channels inherit from.
+We create the current\_user accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a subscribed method in ApplicationCable, which all of your channels inherit from.
 
 {% code title="app/channels/application\_cable/channel.rb" %}
 ```ruby
