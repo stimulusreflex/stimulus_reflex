@@ -126,37 +126,6 @@ end
 ```
 {% endcode %}
 
-
-### Sorcery-based Authentication (user id is in session storage)
-
-If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user id out of the session store.
-
-{% code title="app/channels/application\_cable/connection.rb" %}
-```ruby
-module ApplicationCable
-  class Connection < ActionCable::Connection::Base
-    identified_by :current_user
-
-    def connect
-      self.current_user = find_verified_user
-    end
-
-    protected
-
-    def find_verified_user
-      user_id = request.session.fetch("user_id", nil)
-      
-      if verified_user = User.find_by(id: user_id)
-        verified_user
-      else
-        reject_unauthorized_connection
-      end
-    end
-  end
-end
-```
-{% endcode %}
-
 Now you're free to delegate current\_user. Be home by lunch:
 
 {% code title="app/reflexes/example\_reflex.rb" %}
