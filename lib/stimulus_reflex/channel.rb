@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module StimulusReflexCable
+  extend ActionCable
+
   class Channel < ActionCable::Channel::Base
     def subscribed
       puts "INSIDE GEM"
