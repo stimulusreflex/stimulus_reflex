@@ -23,6 +23,10 @@ let stimulusApplication
 //
 let actionCableConsumer
 
+// A reference to an optional object called params defined in the StimulusReflex.initialize and passed to channels
+//
+let actionCableParams
+
 // A dictionary of promise data
 //
 const promises = {}
@@ -39,21 +43,23 @@ const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
-
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(channel, {
-      received: data => {
-        if (!data.cableReady) return
-        if (data.operations.morph && data.operations.morph.length) {
-          const urls = Array.from(
-            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          )
-          if (urls.length !== 1 || urls[0] !== location.href) return
+    actionCableConsumer.subscriptions.create(
+      { channel, ...actionCableParams },
+      {
+        received: data => {
+          if (!data.cableReady) return
+          if (data.operations.morph && data.operations.morph.length) {
+            const urls = Array.from(
+              new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+            )
+            if (urls.length !== 1 || urls[0] !== location.href) return
+          }
+          CableReady.perform(data.operations)
         }
-        CableReady.perform(data.operations)
       }
-    })
+    )
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
@@ -292,8 +298,9 @@ const getReflexRoots = element => {
 //   * consumer - [optional] the ActionCable consumer
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug } = initializeOptions
+  const { controller, consumer, debug, params } = initializeOptions
   actionCableConsumer = consumer
+  actionCableParams = params
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(

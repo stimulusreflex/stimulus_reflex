@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
-class StimulusReflex::Channel < ActionCable::Channel::Base
+module ApplicationCable
+  class Channel < ActionCable::Channel::Base
+    def subscribed
+      puts "INSIDE GEM"
+    end
+  end
+end
+
+class StimulusReflex::Channel < ApplicationCable::Channel
   include CableReady::Broadcaster
 
   def stream_name
@@ -12,6 +20,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   end
 
   def subscribed
+    super
     stream_from stream_name
   end
 
