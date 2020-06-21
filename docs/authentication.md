@@ -176,8 +176,6 @@ end
 ```
 {% endcode %}
 
-
-
 ## Token-based Authentication
 
 {% hint style="danger" %}
@@ -198,7 +196,7 @@ end
 ```
 {% endcode %}
 
-We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from.
+We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from. Notice how we manually set the `current_user` on the connection.
 
 {% code title="app/channels/application\_cable/channel.rb" %}
 ```ruby
@@ -215,6 +213,7 @@ module ApplicationCable
     def authenticate_user!
       @current_user ||= decode_user params[:token]
       reject unless @current_user
+      connection.current_user = @current_user
     end
 
     def decode_user(token)
@@ -227,14 +226,14 @@ end
 ```
 {% endcode %}
 
-Now, we can create a channel class that inherits from `ApplicationChannel`, as well as a client-side ActionCable channel to initiate the subscription.
+We now create a channel class that inherits from `ApplicationChannel`, as well as a client-side ActionCable channel to initiate the subscription.
 
 {% code title="app/channels/test\_channel.rb" %}
 ```ruby
 class TestChannel < ApplicationCable::Channel
   def subscribed
     super
-    stream_from "test" if current_user
+    stream_from "test"
   end
 end
 ```
@@ -257,7 +256,7 @@ consumer.subscriptions.create(
 ```
 {% endcode %}
 
-Finally, let's set a JWT token for the current user in your layout template. Note that in this example we do assume that the `warden-jwt_auth` gem is in your project \(possibly through `devise-jwt`\) and that there is a valid `current_user` accessor in scope.
+Set a JWT token for the current user in your layout template. Note that in this example we do assume that the `warden-jwt_auth` gem is in your project \(possibly through `devise-jwt`\) and that there is a valid `current_user` accessor in scope.
 
 {% code title="app/controllers/application\_controller.rb" %}
 ```ruby
@@ -274,6 +273,16 @@ end
 <head>
   <meta name="action-cable-auth-token" content="<%= @token %>"/>
 </head>
+```
+{% endcode %}
+
+Finally, delegate `current_user` to the ActionCable `connection`.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+end
 ```
 {% endcode %}
 
