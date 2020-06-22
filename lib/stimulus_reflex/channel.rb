@@ -2,8 +2,19 @@
 
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
+    def initialize(connection, identifier, params = {})
+      super
+      # You have to be inside of an instance method to get access to Rails.root
+      user_channel = Rails.root.join('app', 'channels',
+                                     'application_cable', 'channel.rb')
+
+      # This puts a user-defined ApplicationCable::Channel at the forefront
+      # to override any methods defined in the StimulusReflex::Channel.
+      require user_channel if File.exist?(user_channel)
+    end
+
     def subscribed
-      puts "INSIDE GEM"
+      puts 'INSIDE GEM'
     end
   end
 end
