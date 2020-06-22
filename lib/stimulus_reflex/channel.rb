@@ -26,8 +26,8 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
       params[:channel],
-      ids.select(&:present?).join(';')
-    ].select(&:present?).join(':')
+      ids.select(&:present?).join(";")
+    ].select(&:present?).join(":")
   end
 
   def subscribed
@@ -36,39 +36,37 @@ class StimulusReflex::Channel < ApplicationCable::Channel
   end
 
   def receive(data)
-    url = data['url'].to_s
-    selectors = (data['selectors'] || []).select(&:present?)
-    selectors = data['selectors'] = ['body'] if selectors.blank?
-    target = data['target'].to_s
-    reflex_name, method_name = target.split('#')
+    url = data["url"].to_s
+    selectors = (data["selectors"] || []).select(&:present?)
+    selectors = data["selectors"] = ["body"] if selectors.blank?
+    target = data["target"].to_s
+    reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.classify
-    reflex_name = reflex_name.end_with?('Reflex') ? reflex_name : "#{reflex_name}Reflex"
-    arguments = (data['args'] || []).map { |arg| object_with_indifferent_access arg }
+    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
+    arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
-    params = data['params'] || {}
+    params = data["params"] || {}
 
     begin
       begin
-        reflex_class = reflex_name.constantize.tap do |klass|
-          raise ArgumentError, "#{reflex_name} is not a StimulusReflex::Reflex" unless is_reflex?(klass)
-        end
+        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
         reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, params: params)
         delegate_call_to_reflex reflex, method_name, arguments
-      rescue StandardError => e
-        reflex.rescue_with_handler(e)
-        message = exception_message_with_backtrace(e)
-        return broadcast_message subject: 'error', body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
+      rescue => invoke_error
+        reflex.rescue_with_handler(invoke_error)
+        message = exception_message_with_backtrace(invoke_error)
+        return broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
       end
 
       if reflex.halted?
-        broadcast_message subject: 'halted', data: data
+        broadcast_message subject: "halted", data: data
       else
         begin
           render_page_and_broadcast_morph reflex, selectors, data
-        rescue StandardError => e
-          reflex.rescue_with_handler(e)
-          message = exception_message_with_backtrace(e)
-          broadcast_message subject: 'error', body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
+        rescue => render_error
+          reflex.rescue_with_handler(render_error)
+          message = exception_message_with_backtrace(render_error)
+          broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
         end
       end
     ensure
@@ -80,7 +78,6 @@ class StimulusReflex::Channel < ApplicationCable::Channel
 
   def object_with_indifferent_access(object)
     return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
-
     object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
     object
   end
@@ -94,12 +91,12 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     required_params = method.parameters.select { |(kind, _)| kind == :req }
     optional_params = method.parameters.select { |(kind, _)| kind == :opt }
 
-    if arguments.empty? && required_params.empty?
+    if arguments.size == 0 && required_params.size == 0
       reflex.process(method_name)
     elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
       reflex.process(method_name, *arguments)
     else
-      raise ArgumentError, "wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})"
+      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
     end
   end
 
@@ -109,9 +106,9 @@ class StimulusReflex::Channel < ApplicationCable::Channel
   end
 
   def commit_session(reflex)
-    store = reflex.request.session.instance_variable_get('@by')
+    store = reflex.request.session.instance_variable_get("@by")
     store.commit_session reflex.request, reflex.controller.response
-  rescue StandardError => e
+  rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
     logger.error "\e[31m#{message}\e[0m"
   end
@@ -129,7 +126,7 @@ class StimulusReflex::Channel < ApplicationCable::Channel
         selector: selector,
         html: document.css(selector).inner_html,
         children_only: true,
-        permanent_attribute_name: data['permanent_attribute_name'],
+        permanent_attribute_name: data["permanent_attribute_name"],
         stimulus_reflex: data.merge(last: selector == selectors.last)
       )
     end
@@ -142,11 +139,11 @@ class StimulusReflex::Channel < ApplicationCable::Channel
       body: body
     }
 
-    logger.error "\e[31m#{body}\e[0m" if subject == 'error'
+    logger.error "\e[31m#{body}\e[0m" if subject == "error"
 
     cable_ready[stream_name].dispatch_event(
-      name: 'stimulus-reflex:server-message',
-      detail: { stimulus_reflex: data.merge(server_message: message) }
+      name: "stimulus-reflex:server-message",
+      detail: {stimulus_reflex: data.merge(server_message: message)}
     )
     cable_ready.broadcast
   end
