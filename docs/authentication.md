@@ -196,7 +196,7 @@ end
 ```
 {% endcode %}
 
-We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from. Notice how we manually set the `current_user` on the connection.
+We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from.
 
 {% code title="app/channels/application\_cable/channel.rb" %}
 ```ruby
@@ -226,7 +226,9 @@ end
 ```
 {% endcode %}
 
-We now create a channel class that inherits from `ApplicationChannel`, as well as a client-side ActionCable channel to initiate the subscription.
+In this configuration, a failure to match a token with a Warden user results in a call to `reject`. This means that while they have successfully established an ActionCable connection, they do not have the credentials to subscribe to the individual channel. Notice how we manually set the `current_user` on the connection if the authentication is successful.
+
+In order for this scheme to work, all of your ActionCable channels - including StimulusReflex - must conform to the same validation mechanism. StimulusReflex itself will access the `ApplicationCable::Channel` definition in your application. You can set additional channels to authenticate in this manner by making sure that they inherit from `ApplicationCable::Channel` and that the `subscribed` method calls `super` before your `stream_from` or `stream_for` statement:
 
 {% code title="app/channels/test\_channel.rb" %}
 ```ruby
@@ -276,7 +278,24 @@ end
 ```
 {% endcode %}
 
-Finally, delegate `current_user` to the ActionCable `connection`.
+Now, make sure that StimulusReflex is able to access the JWT token from your DOM:
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+import { Application } from 'stimulus'
+import { definitionsFromContext } from 'stimulus/webpack-helpers'
+import StimulusReflex from 'stimulus_reflex'
+
+const application = Application.start()
+const context = require.context('controllers', true, /_controller\.js$/)
+const params = { token: document.head.querySelector('meta[name=action-cable-auth-token]').content }
+application.load(definitionsFromContext(context))
+
+StimulusReflex.initialize(application, { params })
+```
+{% endcode %}
+
+Finally, delegate `current_user` to the ActionCable `connection` as you would in any other Reflex class:
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
