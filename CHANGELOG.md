@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
 - Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
@@ -357,7 +358,6 @@
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
-- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
@@ -376,6 +376,7 @@
 
 **Implemented enhancements:**
 
+- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 - Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
@@ -476,6 +477,7 @@
 
 **Implemented enhancements:**
 
+- update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
