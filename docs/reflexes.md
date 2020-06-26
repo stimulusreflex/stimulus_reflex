@@ -81,7 +81,7 @@ You might design your interface such that you have a deeply nested structure of 
 ```markup
 <div data-post-id="<%= @post.id %>">
   <div data-category-id="<%= @category.id %>">
-    <button data-reflex="click->Comment#create" data-reflex-attributes="combined">Create</button>
+    <button data-reflex="click->Comment#create" data-reflex-dataset="combined">Create</button>
   </div>
 </div>
 ```
