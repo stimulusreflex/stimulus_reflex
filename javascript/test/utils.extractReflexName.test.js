@@ -14,6 +14,12 @@ describe('extractReflexName', () => {
     })
   })
 
+  describe("when it does not include 'Reflex'", () => {
+    it('returns a reflex name', () => {
+      assert(extractReflexName('Test#create') === 'Test')
+    })
+  })
+
   describe("when it can't extract the reflex name", () => {
     it('returns an empty string', () => {
       assert(extractReflexName('nope') === '')
