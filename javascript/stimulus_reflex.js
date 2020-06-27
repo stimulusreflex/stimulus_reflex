@@ -14,6 +14,7 @@ import {
   extractElementDataset,
   findElement
 } from './attributes'
+import { extractReflexName } from './utils'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -223,7 +224,10 @@ const setupDeclarativeReflexes = debounce(() => {
         element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(stimulusApplication, element)[0]
+        const controller = findControllerByReflexString(
+          reflex,
+          allReflexControllers(stimulusApplication, element)
+        )
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -253,6 +257,21 @@ const setupDeclarativeReflexes = debounce(() => {
         )
     })
 }, 20)
+
+// Given a reflex string such as 'click->TestReflex#create' and a list of
+// controllers. It will find the matching controller based on the controller's
+// identifier. e.g. Given these controller identifiers ['foo', 'bar', 'test'],
+// it would select the 'test' controller.
+const findControllerByReflexString = (reflexString, controllers) => {
+  return controllers.find(controller => {
+    if (!controller.identifier) return
+
+    return (
+      extractReflexName(reflexString).toLowerCase() ===
+      controller.identifier.toLowerCase()
+    )
+  })
+}
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
