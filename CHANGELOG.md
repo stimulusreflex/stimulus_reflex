@@ -4,9 +4,17 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...HEAD)
 
+**Implemented enhancements:**
+
+- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
+
 **Closed issues:**
 
+- data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
+- Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
+- Docs: Clarify forcing DOM update with authentication [\#123](https://github.com/hopsoft/stimulus_reflex/issues/123)
+- ActiveJob integration example [\#112](https://github.com/hopsoft/stimulus_reflex/issues/112)
 
 **Merged pull requests:**
 
@@ -77,6 +85,7 @@
 **Fixed bugs:**
 
 - Text area values are lost if re-sized [\#195](https://github.com/hopsoft/stimulus_reflex/issues/195)
+- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -112,10 +121,6 @@
 ## [v3.2.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0.pre1) (2020-05-08)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0-pre0...v3.2.0.pre1)
-
-**Fixed bugs:**
-
-- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.0-pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0-pre0) (2020-05-07)
 
@@ -314,7 +319,6 @@
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
 - Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
-- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -331,6 +335,10 @@
 ## [v2.1.7](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.7) (2019-12-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.6...v2.1.7)
+
+**Implemented enhancements:**
+
+- Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
