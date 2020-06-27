@@ -22,6 +22,7 @@ export default class extends ApplicationController {
    *   error - error message from the server
    */
 
+<% if actions.empty? -%>
   // beforeUpdate(element, reflex) {
   //  element.innerText = 'Updating...'
   // }
@@ -34,4 +35,23 @@ export default class extends ApplicationController {
   //   console.error('updateError', error);
   //   element.innerText = 'Update Failed!'
   // }
+<% end -%>
+<% actions.each do |action| -%>
+  // <%= "before_#{action}".camelize(:lower) %>(element, reflex) {
+  //  console.log("before <%= action %>", element, reflex)
+  // }
+
+  // <%= "#{action}_success".camelize(:lower) %>(element, reflex) {
+  //   console.log("<%= action %> success", element, reflex)
+  // }
+
+  // <%= "#{action}_error".camelize(:lower) %>(element, reflex, error) {
+  //   console.error("<%= action %> error", element, reflex, error)
+  // }
+
+  // <%= "after_#{action}".camelize(:lower) %>(element, reflex, error) {
+  //   console.log("after <%= action %>", element, reflex, error)
+  // }
+<%= "\n" unless action == actions.last -%>
+<% end -%>
 }
