@@ -13,6 +13,7 @@
 - data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
 - Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
+- Tweak the generator so we can specify reflex actions [\#219](https://github.com/hopsoft/stimulus_reflex/issues/219)
 - Docs: Clarify forcing DOM update with authentication [\#123](https://github.com/hopsoft/stimulus_reflex/issues/123)
 - ActiveJob integration example [\#112](https://github.com/hopsoft/stimulus_reflex/issues/112)
 
@@ -27,6 +28,7 @@
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
+- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
@@ -85,7 +87,6 @@
 **Fixed bugs:**
 
 - Text area values are lost if re-sized [\#195](https://github.com/hopsoft/stimulus_reflex/issues/195)
-- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -121,6 +122,10 @@
 ## [v3.2.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0.pre1) (2020-05-08)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0-pre0...v3.2.0.pre1)
+
+**Fixed bugs:**
+
+- Add guard to morph that checks stimulusReflex [\#191](https://github.com/hopsoft/stimulus_reflex/pull/191) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.0-pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0-pre0) (2020-05-07)
 
