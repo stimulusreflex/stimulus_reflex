@@ -136,6 +136,11 @@ export const findElement = attributes => {
     }
   }
 
+  if (elements.length > 1)
+    console.warn(
+      'StimulusReflex found multiple identical elements which match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
+    )
+
   const element = elements.length === 1 ? elements[0] : null
   return element
 }
