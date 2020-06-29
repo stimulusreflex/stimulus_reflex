@@ -84,7 +84,7 @@ end
 ```
 {% endcode %}
 
-Note that without intervention, your Reflex classes will **not** be able to see current\_user. This is easily fixed by setting `self.current_user = user` above and then delegating current\_user to your ActionCable Connection:
+Note that without intervention, your Reflex classes will **not** be able to see current\_user. This is easily fixed by setting `self.current_user = user` above and then delegating `current_user` to your ActionCable connection:
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
@@ -319,6 +319,16 @@ module ApplicationCable
       self.uuid = SecureRandom.urlsafe_base64
     end
   end
+end
+```
+{% endcode %}
+
+While there is no user concept in this scenario, you can still access the visitor's uuid:
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  delegate :uuid, to: :connection
 end
 ```
 {% endcode %}
