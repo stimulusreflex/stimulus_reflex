@@ -58,6 +58,12 @@ You can use additional data attributes to pass variables as part of your Reflex 
 >Create</button>
 ```
 
+{% hint style="warning" %}
+One important thing to keep in mind is that after a Reflex operation morphs your page, all of your DOM elements are new. It's a **recommended best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. If no `id` is available, make sure that there is something unique and identifying about each element which calls a Reflex, even if you resort to something like `data-key="<%= rand %>"`.
+
+If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run. 
+{% endhint %}
+
 {% hint style="info" %}
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
 
@@ -226,7 +232,7 @@ It's very common to want to be able to access the current\_user or equivalent ac
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
-  
+
   def increment
     current_user.counter.increment!
   end
@@ -319,11 +325,11 @@ end
 
 ### Form parameters
 
-If the Reflex element is contained inside of a form element, `params` serializes the values of all input elements as an instance of `ActionController::Parameters` 
+If the Reflex element is contained inside of a form element, `params` serializes the values of all input elements as an instance of `ActionController::Parameters`
 
 You can access `params` directly in your Reflex action method and use it exactly as you do in a normal Rails controller. This is useful for model validations and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
-You can modify `params` in your `beforeReflex` callback using `element.reflexData` 
+You can modify `params` in your `beforeReflex` callback using `element.reflexData`
 
 ```javascript
 export default class extends ApplicationController {

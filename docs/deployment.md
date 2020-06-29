@@ -56,12 +56,10 @@ We're excited to announce that StimulusReflex now works with [AnyCable](https://
 
 We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. Of course, the message delivery speed will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
 
-Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today. 
+Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today.
 
-1. Add `gem "anycable-rails", "1.0.0.rc2"` to your `Gemfile`. 
-
-2. Install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\). 
-
+1. Add `gem "anycable-rails", "1.0.0.rc2"` to your `Gemfile`.
+2. Install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\).
 3. If you are using the session object, you must select a cache store that is not MemoryStore, which is not compatible with AnyCable.
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
