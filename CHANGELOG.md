@@ -6,10 +6,12 @@
 
 **Implemented enhancements:**
 
+- Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
 - Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 
 **Closed issues:**
 
+- Error handling will fail if reflex is not defined [\#253](https://github.com/hopsoft/stimulus_reflex/issues/253)
 - data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
 - Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
@@ -169,6 +171,7 @@
 **Implemented enhancements:**
 
 - TypeScript typing support [\#152](https://github.com/hopsoft/stimulus_reflex/issues/152)
+- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 
 **Fixed bugs:**
 
@@ -213,6 +216,10 @@
 - Time for introducing a develop branch? [\#84](https://github.com/hopsoft/stimulus_reflex/issues/84)
 - out-of-band Reflex updates [\#64](https://github.com/hopsoft/stimulus_reflex/issues/64)
 
+**Merged pull requests:**
+
+- Trap errors in registerConsumer [\#154](https://github.com/hopsoft/stimulus_reflex/pull/154) ([hopsoft](https://github.com/hopsoft))
+
 ## [v3.1.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.2) (2020-04-16)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.1.1...v3.1.2)
@@ -230,10 +237,6 @@
 
 - Setup & Quick Start guide from scratch results in showstopping error [\#153](https://github.com/hopsoft/stimulus_reflex/issues/153)
 
-**Merged pull requests:**
-
-- Trap errors in registerConsumer [\#154](https://github.com/hopsoft/stimulus_reflex/pull/154) ([hopsoft](https://github.com/hopsoft))
-
 ## [v3.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.0) (2020-04-15)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.0.0...v3.1.0)
@@ -241,7 +244,6 @@
 **Implemented enhancements:**
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
-- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -493,7 +495,6 @@
 **Implemented enhancements:**
 
 - update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -509,6 +510,7 @@
 
 **Implemented enhancements:**
 
+- Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
