@@ -21,7 +21,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     selectors = data["selectors"] = ["body"] if selectors.blank?
     target = data["target"].to_s
     reflex_name, method_name = target.split("#")
-    reflex_name = reflex_name.classify
+    reflex_name = reflex_name.camelize
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
