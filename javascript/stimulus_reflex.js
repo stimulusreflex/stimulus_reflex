@@ -263,7 +263,7 @@ const setupDeclarativeReflexes = debounce(() => {
 // identifier. e.g. Given these controller identifiers ['foo', 'bar', 'test'],
 // it would select the 'test' controller.
 const findControllerByReflexString = (reflexString, controllers) => {
-  return controllers.find(controller => {
+  const controller = controllers.find(controller => {
     if (!controller.identifier) return
 
     return (
@@ -271,6 +271,8 @@ const findControllerByReflexString = (reflexString, controllers) => {
       controller.identifier.toLowerCase()
     )
   })
+
+  return controller || controllers[0]
 }
 
 // compute the DOM element(s) which will be the morph root
