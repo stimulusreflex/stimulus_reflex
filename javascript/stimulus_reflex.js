@@ -327,11 +327,23 @@ if (!document.stimulusReflexInitialized) {
 
   window.addEventListener('load', () => {
     setupDeclarativeReflexes()
-    const observer = new MutationObserver(setupDeclarativeReflexes)
+
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        const shouldMutate =
+          !mutation.oldValue ||
+          (mutation.oldValue != 'stimulus-reflex' &&
+            !mutation.oldValue.includes('__perform'))
+
+        if (shouldMutate) setupDeclarativeReflexes()
+      })
+    })
+
     observer.observe(document.documentElement, {
       attributes: true,
       childList: true,
-      subtree: true
+      subtree: true,
+      attributeOldValue: true
     })
   })
 
