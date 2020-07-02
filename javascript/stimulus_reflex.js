@@ -244,13 +244,21 @@ const setupDeclarativeReflexes = debounce(() => {
       })
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
-      if (controllerValue) {
+      if (
+        controllerValue &&
+        element.getAttribute(stimulusApplication.schema.controllerAttribute) !=
+          controllerValue
+      ) {
         element.setAttribute(
           stimulusApplication.schema.controllerAttribute,
           controllerValue
         )
       }
-      if (actionValue)
+      if (
+        actionValue &&
+        element.getAttribute(stimulusApplication.schema.actionAttribute) !=
+          actionValue
+      )
         element.setAttribute(
           stimulusApplication.schema.actionAttribute,
           actionValue
