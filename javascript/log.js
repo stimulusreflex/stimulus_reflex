@@ -4,7 +4,6 @@ function request (
   reflexId,
   target,
   args,
-  renderMode,
   stimulusControllerIdentifier,
   element
 ) {
@@ -12,18 +11,18 @@ function request (
   console.log(`\u2B9C ${target}`, {
     reflexId,
     args,
-    renderMode,
     stimulusControllerIdentifier,
     element
   })
 }
 
-function success (response, options = { halted: false, none: false }) {
+function success (response, options = { halted: false }) {
   const html = {}
   const payloads = {}
   const elements = {}
   const { event, events } = response
-  const { reflexId, target, last } = event.detail.stimulusReflex || {}
+  const { reflexId, target, last, morphMode } =
+    event.detail.stimulusReflex || {}
 
   if (events) {
     Object.keys(events).map(selector => {
@@ -37,7 +36,7 @@ function success (response, options = { halted: false, none: false }) {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
-    none: options.none,
+    morphMode,
     elements,
     payloads,
     html
@@ -48,11 +47,12 @@ function success (response, options = { halted: false, none: false }) {
 function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
-  const { reflexId, target, error } = detail.stimulusReflex || {}
+  const { reflexId, target, error, morphMode } = detail.stimulusReflex || {}
   console.error(`\u2B9E ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,
+    morphMode,
     payload: event.detail.stimulusReflex,
     element
   })

@@ -3,6 +3,7 @@
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
+  include CableReady::Broadcaster
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
 
@@ -42,19 +43,21 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :morph_target, :method_name, :render_mode
+  attr_reader :channel, :url, :element, :selectors, :method_name, :morph_mode, :stream_name, :permanent_attribute_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, morph_target: [], method_name: nil, render_mode: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, stream_name: nil, permanent_attribute_name: nil, params: {})
     @channel = channel
     @url = url
     @element = element
-    @morph_target = morph_target
+    @selectors = selectors
     @method_name = method_name
-    @render_mode = render_mode
     @params = params
+    @stream_name = stream_name
+    @permanent_attribute_name = permanent_attribute_name
+    @morph_mode = :page
   end
 
   def request
@@ -81,6 +84,30 @@ class StimulusReflex::Reflex
       req.env["action_dispatch.request.parameters"] = @params
       req.tap { |r| r.session.send :load! }
     end
+  end
+
+  def morph(selector, html = nil)
+    case selector
+    when :page
+      raise StandardError.new("Cannot call :page morph after :#{@morph_mode} morph") unless @morph_mode == :page
+    when :nothing
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if @morph_mode == :selector
+      @morph_mode = :nothing
+    else
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode == :nothing
+      @morph_mode = :selector
+      broadcast_selector selector, html
+    end
+  end
+
+  def broadcast_selector(selector, html)
+    cable_ready[stream_name].morph(
+      selector: selector,
+      html: html,
+      children_only: true,
+      permanent_attribute_name: permanent_attribute_name
+    )
+    cable_ready.broadcast
   end
 
   def url_params

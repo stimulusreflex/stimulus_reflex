@@ -46,10 +46,12 @@ const createSubscription = controller => {
       received: data => {
         if (!data.cableReady) return
         if (data.operations.morph && data.operations.morph.length) {
-          const urls = Array.from(
-            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          )
-          if (urls.length !== 1 || urls[0] !== location.href) return
+          if (data.operations.morph[0].stimulusReflex) {
+            const urls = Array.from(
+              new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+            )
+            if (urls.length !== 1 || urls[0] !== location.href) return
+          }
         }
         CableReady.perform(data.operations)
       }
@@ -75,7 +77,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, renderMode, reflexId, morphTarget
+    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -98,17 +100,16 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'morphTarget', 'renderMode', 'reflexId'].includes(key)
+          ['attrs', 'selectors', 'reflexId'].includes(key)
         )
       ) {
         const opts = args.shift()
         Object.keys(opts).forEach(o => (options[o] = opts[o]))
       }
       const attrs = options['attrs'] || extractElementAttributes(element)
-      const renderMode = options['renderMode'] || getRenderMode(element)
       const reflexId = options['reflexId'] || uuidv4()
-      let morphTarget = options['morphTarget'] || getReflexMorphTarget(element)
-      if (typeof morphTarget == 'string') morphTarget = [morphTarget]
+      let selectors = options['selectors'] || getReflexRoots(element)
+      if (typeof selectors == 'string') selectors = [selectors]
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
       const data = {
@@ -117,7 +118,7 @@ const extendStimulusController = controller => {
         url,
         attrs,
         dataset,
-        morphTarget,
+        selectors,
         reflexId,
         permanent_attribute_name:
           stimulusApplication.schema.reflexPermanentAttribute
@@ -137,7 +138,6 @@ const extendStimulusController = controller => {
         const { params } = element.reflexData || {}
         element.reflexData = {
           ...data,
-          renderMode,
           params: {
             ...params,
             ...serializeForm(element.closest('form'), {
@@ -155,7 +155,6 @@ const extendStimulusController = controller => {
           reflexId,
           target,
           args,
-          renderMode,
           this.context.scope.identifier,
           element
         )
@@ -166,7 +165,6 @@ const extendStimulusController = controller => {
           resolve,
           reject,
           data,
-          renderMode,
           events: {}
         }
       })
@@ -272,17 +270,16 @@ const setupDeclarativeReflexes = debounce(() => {
 // use the data-reflex-root attribute on the reflex or the controller
 // optional value is a CSS selector(s); comma-separated list
 // order of preference is data-reflex, data-controller, document body (default)
-const getReflexMorphTarget = element => {
+const getReflexRoots = element => {
   let list = []
-  const memoizedElement = element
-  while (!list.length && element) {
+  while (list.length === 0 && element) {
     const reflexRoot = element.getAttribute(
       stimulusApplication.schema.reflexRootAttribute
     )
     if (reflexRoot) {
-      if (!reflexRoot.length && element.id) reflexRoot = `#${element.id}`
+      if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (!selectors.length) {
+      if (selectors.length === 0) {
         console.error(
           `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
           element
@@ -296,57 +293,7 @@ const getReflexMorphTarget = element => {
         )
       : null
   }
-  if (list.length) {
-    console.warn(
-      `DEPRECATION WARNING: ${stimulusApplication.schema.reflexRootAttribute} will be removed in the next version of StimulusReflex. Please update your code to use ${stimulusApplication.schema.reflexTargetAttribute} instead.`
-    )
-    return list
-  }
-  let morphTarget = []
-  element = memoizedElement
-  while (!morphTarget.length && element) {
-    const reflexRoot = element.getAttribute(
-      stimulusApplication.schema.reflexMorphTargetAttribute
-    )
-    if (reflexRoot) {
-      if (!reflexRoot.length && element.id) reflexRoot = `#${element.id}`
-      const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (!selectors.length) {
-        console.error(
-          `No value found for ${stimulusApplication.schema.reflexMorphTargetAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexMorphTargetAttribute}.`,
-          element
-        )
-      }
-      morphTarget = morphTarget.concat(
-        selectors.filter(s => document.querySelector(s))
-      )
-    }
-    element = element.parentElement
-      ? element.parentElement.closest(
-          `[${stimulusApplication.schema.reflexMorphTargetAttribute}]`
-        )
-      : null
-  }
-  return morphTarget
-}
-
-// compute whether this operation will be page (default), partial or none
-// will start at data-reflex and then travel up the DOM before defaulting to refresh
-const getRenderMode = element => {
-  let list = []
-  while (list.length === 0 && element) {
-    const renderMode = element.getAttribute(
-      stimulusApplication.schema.reflexRenderAttribute
-    )
-    if (renderMode && ['page', 'partial', 'none'].includes(renderMode))
-      return renderMode
-    element = element.parentElement
-      ? element.parentElement.closest(
-          `[${stimulusApplication.schema.reflexRenderAttribute}]`
-        )
-      : null
-  }
-  return 'page'
+  return list
 }
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
@@ -398,7 +345,7 @@ if (!document.stimulusReflexInitialized) {
     const response = {
       element,
       event,
-      renderMode: promise && promise.renderMode,
+      morphMode: promise && promise.morphMode,
       data: promise && promise.data,
       events: promise && promise.events
     }
@@ -412,14 +359,16 @@ if (!document.stimulusReflexInitialized) {
     if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
+    const { reflexId, attrs, serverMessage, morphMode } =
+      event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
     const subjects = {
       error: true,
       halted: true,
-      none: true
+      selector: true,
+      nothing: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -428,7 +377,7 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      renderMode: promise && promise.renderMode,
+      morphMode,
       events: promise && promise.events,
       toString: () => body
     }
@@ -450,11 +399,20 @@ if (!document.stimulusReflexInitialized) {
         case 'error':
           Log.error(response)
           break
-        case 'none':
-          Log.success(response, { halted: false, none: true })
+        case 'selector':
+          Log.success(response, {
+            halted: false
+          })
+          break
+        case 'nothing':
+          Log.success(response, {
+            halted: false
+          })
           break
         case 'halted':
-          Log.success(response, { halted: true, none: false })
+          Log.success(response, {
+            halted: true
+          })
           break
         default:
           Log.success(response)
