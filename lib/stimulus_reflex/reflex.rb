@@ -86,8 +86,8 @@ class StimulusReflex::Reflex
     end
   end
 
-  def morph(selector, html = nil)
-    case selector
+  def morph(selectors, html = "")
+    case selectors
     when :page
       raise StandardError.new("Cannot call :page morph after :#{@morph_mode} morph") unless @morph_mode == :page
     when :nothing
@@ -96,18 +96,24 @@ class StimulusReflex::Reflex
     else
       raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode == :nothing
       @morph_mode = :selector
-      broadcast_selector selector, html
+      if selectors.is_a?(Hash)
+        selectors.each do |selector, html|
+          enqueue_selector_broadcast selector, html
+        end
+      else
+        enqueue_selector_broadcast selectors, html
+      end
+      cable_ready.broadcast
     end
   end
 
-  def broadcast_selector(selector, html)
+  def enqueue_selector_broadcast(selector, html)
     cable_ready[stream_name].morph(
       selector: selector,
       html: html,
       children_only: true,
       permanent_attribute_name: permanent_attribute_name
     )
-    cable_ready.broadcast
   end
 
   def url_params
