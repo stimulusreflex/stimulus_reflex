@@ -137,7 +137,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
     logger.error "\e[31m#{body}\e[0m" if subject == "error"
 
-    data.merge!(server_message: message)
+    data.merge!(morph_mode: "page", server_message: message)
     data.merge!(morph_mode: "selector") if subject == "selector"
     data.merge!(morph_mode: "nothing") if subject == "nothing"
 
