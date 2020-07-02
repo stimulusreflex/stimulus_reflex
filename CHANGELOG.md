@@ -9,10 +9,15 @@
 - Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
 - Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 
+**Fixed bugs:**
+
+- Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+
 **Closed issues:**
 
 - beforeUpdate/updateSuccess/updateError functions deprecated? [\#255](https://github.com/hopsoft/stimulus_reflex/issues/255)
 - Error handling will fail if reflex is not defined [\#253](https://github.com/hopsoft/stimulus_reflex/issues/253)
+- Select with data-reflex in Firefox flickers [\#251](https://github.com/hopsoft/stimulus_reflex/issues/251)
 - data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
 - Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
