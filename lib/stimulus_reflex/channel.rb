@@ -57,7 +57,6 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
           broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
         end
       end
-    
     ensure
       commit_session reflex if reflex
     end
@@ -133,9 +132,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
 
     logger.error "\e[31m#{body}\e[0m" if subject == "error"
 
-    data.merge!(morph_mode: "page", server_message: message)
-    data.merge!(morph_mode: "selector") if subject == "selector"
-    data.merge!(morph_mode: "nothing") if subject == "nothing"
+    data[:morph_mode] = "page"
+    data[:server_message] = message
+    data[:morph_mode] = "selector" if subject == "selector"
+    data[:morph_mode] = "nothing" if subject == "nothing"
 
     cable_ready[stream_name].dispatch_event(
       name: "stimulus-reflex:server-message",
