@@ -29,6 +29,22 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 * [x] Facilitate simple, concise, and clear code 🤸
 * [x] Integrate seamlessly with Ruby on Rails 🚝
 
+## Faster UIs, smaller downloads and longer battery life
+
+Our over-the-wire JavaScript payload size is a tiny **40kb** gzipped... and that _includes_ Stimulus, ActionCable, StimulusReflex and CableReady.
+
+While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
+
+| Tool | Wire Size |
+| :--- | :--- |
+| [StimulusReflex](http://expo.stimulusreflex.com/demos/todo/) | **54kb** |
+| [React](http://todomvc.com/examples/react/) | 268kb |
+| [Angular](http://todomvc.com/examples/angularjs/) | 290kb |
+| [Vue](http://todomvc.com/examples/vue/) | 78kb |
+| [Ember](http://todomvc.com/examples/emberjs/) | 169kb |
+
+Not everyone has the latest iPhone in their pocket. We're delivering HTML to the client, which every device can display without a framework rendering a UI from JSON. We reduce complexity for developers while making it easier for people with slower connections and less-powerful devices to access your site without draining their battery.
+
 ## Live demo
 
 [StimulusReflex Expo](http://expo.stimulusreflex.com/) is a growing collection of like examples showing different use-cases alongside the [source code](https://github.com/hopsoft/stimulus_reflex_expo) behind them.

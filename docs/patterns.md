@@ -4,11 +4,23 @@ description: How to build a great StimulusReflex application
 
 # Useful Patterns
 
+```ruby
+<% cache([current_user, "todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
+  <ul>
+    <% @todos.each do |todo| %>
+      <% cache(todo) do %>
+        <li class="todo"><%= todo.description %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+```
+
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
 ## Client Side
 
-### Application controller
+### Application controller pattern
 
 You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
 
@@ -31,7 +43,7 @@ export default class extends Controller {
 {% endtab %}
 {% endtabs %}
 
-Then, all that's required to create a StimulusReflex controller is inherit from ApplicationController:
+You can then create a Reflex-enabled controller by extending ApplicationController:
 
 {% tabs %}
 {% tab title="custom\_controller.js" %}
@@ -178,7 +190,50 @@ For example, if your controller is named _list-item_ you might consider **this.e
 
 ## Server Side
 
+### Russian Doll caching 🪆
+
+Caching is the secret to getting your application responding in 30-50ms after a database query. Some developers are intimidated by application-level caching, but you can ease into it.
+
+You might be surprised how easy it can be to stash frequently accessed resources that are expensive to generate. This is known as a **fragment cache**. In this contrived example, the cached block will be expired and replaced if the current user or the todo is changed:
+
+```ruby
+<% todo = Todo.first %>
+<% cache([current_user, todo]) do %>
+  ... a whole lot of work here ...
+<% end %>
+```
+
+Russian Doll caching is just stacking cache fragments inside each other, and then configuring your ActiveRecord model callbacks to expire any keys that they are cached in when updated by setting the `touch: true` option on your `belongs_to` associations.
+
+```ruby
+<% cache(["todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
+  <ul>
+    <% @todos.each do |todo| %>
+      <% cache(todo) do %>
+        <li class="todo"><%= todo.description %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+```
+
+Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html)" is one of the best resources on the topic - and the source of the above examples. It's a half-hour incredibly well-spent.
+
+### Flash messages
+
+One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
+
+You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
+
+Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
+
 ### Chained Reflexes for long-running actions
+
+{% hint style="danger" %}
+This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
+
+If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**. 
+{% endhint %}
 
 Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:
 
@@ -216,7 +271,7 @@ Let's explore this with a contrived example. When the page first loads, we see a
   <% when :ready %>
     <strong>@api_response</strong>
   <% else %>
-    <button data-reflex="click->ExampleReflex#api">Call API</button>
+    <button data-reflex="click->Example#api">Call API</button>
   <% end %>
 </div>
 ```
@@ -242,7 +297,7 @@ Now, you can refactor your view template like this:
 <div data-controller="example">
   <% case @api_status %>
   <% when :default %>
-    <button data-reflex="click->ExampleReflex#api">Call API</button>
+    <button data-reflex="click->Example#api">Call API</button>
   <% when :loading %>
     <em>Waiting...</em>
   <% when :ready %>
@@ -302,7 +357,7 @@ This is one of the coolest things about websockets; you can respond many times t
 
 If you plan to initiate a CableReady broadcast inside of a model callback or job, you might find yourself trying to render templates and wondering why it seems to return nil.
 
-The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController.renderer` class.
+The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController` class.
 
 **The following isn't a complete working example**, but it should set you on the right path.
 
@@ -310,7 +365,7 @@ The secret to an efficient and successful template render operation is to call t
 class Notification < ApplicationRecord
   include CableReady::Broadcaster
   after_save do
-    html = ApplicationController.renderer.render(
+    html = ApplicationController.render(
       partial: "layouts/navbar/notification",
       locals: { notification: self }
     )
@@ -324,72 +379,7 @@ class Notification < ApplicationRecord
 end
 ```
 
-### Triggering custom events and forcing DOM updates
-
-CableReady, one of StimulusReflex's dependencies, has [many handy methods](https://cableready.stimulusreflex.com/usage/dom-operations/event-dispatch) that you can call from controllers, ActionJob tasks and Reflex classes. One of those methods is dispatch\_event, which allows you to trigger any event in the client, including custom events and jQuery events.
-
-In this example, we send out an event to everyone connected to ActionCable suggesting that update is required:
-
-{% tabs %}
-{% tab title="Ruby" %}
-```ruby
-class NotificationReflex < StimulusReflex::Reflex
-  include CableReady::Broadcaster
-
-  def force_update(id)
-    cable_ready["StimulusReflex::Channel"].dispatch_event {
-      name: "force:update",
-      detail: {id: id},
-    }
-    cable_ready.broadcast
-  end
-
-  def reload
-    # noop: this method exists so we can refresh the DOM
-  end
-end
-```
-{% endtab %}
-{% endtabs %}
-
-{% tabs %}
-{% tab title="index.html.erb" %}
-```markup
-<div data-action="force:update@document->notification#reload">
-  <button data-action="notification#forceUpdate">
-</div>
-```
-{% endtab %}
-{% endtabs %}
-
-We use the Stimulus event mapper to call our controller's reload method whenever a force:update event is received:
-
-{% tabs %}
-{% tab title="notification\_controller.js" %}
-```javascript
-let lastId
-
-export default class extends Controller {
-  forceUpdate () {
-    lastId = Math.random()
-    this.stimulate("NotificationReflex#force_update", lastId)
-  }
-
-  reload (event) {
-    const { id } = event.detail
-    if (id === lastId) return
-    this.stimulate("NotificationReflex#reload")
-  }
-}
-```
-{% endtab %}
-{% endtabs %}
-
-By passing a randomized number to the Reflex as an argument, we allow ourselves to return before triggering a reload if we were the ones that initiated the operation.
-
-#### Coming Soon: Notifications with ActiveJob / Sidekiq
-
-## Anti-Patterns
-
-#### Coming Soon: How to change the URL rendered by a reflex
+{% hint style="success" %}
+CableReady provides a slightly improved version of Rails' [dom\_id](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id) method to any class that includes it. Intended to be used to populate a DOM selector string, the CableReady version prefixes outfit with a `#` character.
+{% endhint %}
 

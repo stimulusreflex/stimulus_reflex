@@ -1,5 +1,85 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...HEAD)
+
+**Implemented enhancements:**
+
+- Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
+- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
+
+**Fixed bugs:**
+
+- Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+
+**Closed issues:**
+
+- beforeUpdate/updateSuccess/updateError functions deprecated? [\#255](https://github.com/hopsoft/stimulus_reflex/issues/255)
+- Error handling will fail if reflex is not defined [\#253](https://github.com/hopsoft/stimulus_reflex/issues/253)
+- Select with data-reflex in Firefox flickers [\#251](https://github.com/hopsoft/stimulus_reflex/issues/251)
+- data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
+- Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
+- Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
+- Tweak the generator so we can specify reflex actions [\#219](https://github.com/hopsoft/stimulus_reflex/issues/219)
+- Docs: Clarify forcing DOM update with authentication [\#123](https://github.com/hopsoft/stimulus_reflex/issues/123)
+- ActiveJob integration example [\#112](https://github.com/hopsoft/stimulus_reflex/issues/112)
+
+**Merged pull requests:**
+
+- Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
+- Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
+- warn against collections of identical elements that trigger reflexes [\#250](https://github.com/hopsoft/stimulus_reflex/pull/250) ([leastbad](https://github.com/leastbad))
+- Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
+- Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
+- Bump actionpack from 6.0.3.1 to 6.0.3.2 [\#245](https://github.com/hopsoft/stimulus_reflex/pull/245) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rack from 2.2.2 to 2.2.3 [\#244](https://github.com/hopsoft/stimulus_reflex/pull/244) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
+- Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
+- Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
+- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
+- Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
+- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
+
+## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2...v3.2.3)
+
+**Fixed bugs:**
+
+- Add more smarts to \_\_perform [\#235](https://github.com/hopsoft/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
+- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
+- merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/hopsoft/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
+
+**Closed issues:**
+
+- "Uncaught \(in promise\)" error after failed declarative reflex [\#170](https://github.com/hopsoft/stimulus_reflex/issues/170)
+
+**Merged pull requests:**
+
+- Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+
+## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre1...v3.2.2)
+
+**Closed issues:**
+
+- Issue with doing a partial dom update [\#223](https://github.com/hopsoft/stimulus_reflex/issues/223)
+
+## [v3.2.2.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre1) (2020-05-30)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre0...v3.2.2.pre1)
+
+**Fixed bugs:**
+
+- Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
+- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
+
+**Merged pull requests:**
+
+- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
+
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.1...v3.2.2.pre0)

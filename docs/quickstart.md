@@ -28,13 +28,13 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 ## Hello, Reflex World!
 
-There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
+There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangeably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
 
 Let's dig into it!
 
 ### Trigger Reflex actions with data-reflex attributes
 
-This example will automatically update the page with the latest count whenever the anchor is clicked:
+This example updates the page with the latest count when the link is clicked:
 
 {% code title="app/views/pages/index.html.erb" %}
 ```text
@@ -46,7 +46,17 @@ This example will automatically update the page with the latest count whenever t
 ```
 {% endcode %}
 
-We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. `data-reflex` is the command you'll use on almost every action. The format follows the Stimulus convention of `[browser-event]->[ServerSideClass]#[action]`. The other two attributes, `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
+We use data attributes to declaratively tell StimulusReflex to pay special attention to this anchor link. The `data-reflex` attribute allows us to map an action on the client to code that will be executed on the server.
+
+The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
+
+The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
+
+{% hint style="info" %}
+The syntax requirement for `data-reflex` was recently loosened to make specifying "Reflex" optional. In the example above, you could now opt to use a shorter form: `data-reflex="click->Counter#increment"`
+
+If you're watching a video or following a tutorial and see the long-form usage, **there is no functional difference** between the two - it's just shorter!
+{% endhint %}
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
@@ -61,11 +71,15 @@ end
 StimulusReflex maps your requests to Reflex classes that live in your `app/reflexes` folder. In this example, the `increment` action is called and the count is incremented by 1. The `@count` instance variable is passed to the template when it is re-rendered.
 
 {% hint style="success" %}
-**Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecrd to modify the UI.
+**Concerns like managing state and rendering views are handled server side.** Instance variables set in the Reflex action can be combined with cached fragments and potentially updated data fetched from ActiveRecord to modify the UI.
 
 _The magic is that there is no magic_. What the user sees is exactly what they will see if they refresh the page in their browser.
 
-StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state syncronization.
+StimulusReflex keeps a 1:1 relationship between application state and what is visible in the browser so that you simply don't have to manage state on the client. This translates to a massive reduction in application complexity and frees you to spend your time on features instead of state synchronization.
+{% endhint %}
+
+{% hint style="warning" %}
+If you change the code in a Reflex class, you must refresh the page in your browser to interact with the new version of your code.
 {% endhint %}
 
 ### Trigger Reflex actions inside Stimulus controllers
@@ -102,7 +116,7 @@ export default class extends Controller {
 
   increment(event) {
     event.preventDefault()
-    this.stimulate('CounterReflex#increment', 1)
+    this.stimulate('Counter#increment', 1)
   }
 }
 ```

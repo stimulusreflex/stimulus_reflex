@@ -14,6 +14,7 @@ import {
   extractElementDataset,
   findElement
 } from './attributes'
+import { extractReflexName } from './utils'
 
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
 //
@@ -175,9 +176,6 @@ const extendStimulusController = controller => {
     // Wraps the call to stimulate for any data-reflex elements.
     // This is internal and should not be invoked directly.
     __perform (event) {
-      event.preventDefault()
-      event.stopPropagation()
-
       let element = event.target
       let reflex
 
@@ -188,9 +186,15 @@ const extendStimulusController = controller => {
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
-      attributeValues(reflex).forEach(reflex =>
-        this.stimulate(reflex.split('->')[1], element)
+      const match = attributeValues(reflex).find(
+        reflex => reflex.split('->')[0] === event.type
       )
+
+      if (match) {
+        event.preventDefault()
+        event.stopPropagation()
+        this.stimulate(match.split('->')[1], element)
+      }
     }
   })
 }
@@ -235,7 +239,10 @@ const setupDeclarativeReflexes = debounce(() => {
         element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(stimulusApplication, element)[0]
+        const controller = findControllerByReflexString(
+          reflex,
+          allReflexControllers(stimulusApplication, element)
+        )
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -252,19 +259,44 @@ const setupDeclarativeReflexes = debounce(() => {
       })
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
-      if (controllerValue) {
+      if (
+        controllerValue &&
+        element.getAttribute(stimulusApplication.schema.controllerAttribute) !=
+          controllerValue
+      ) {
         element.setAttribute(
           stimulusApplication.schema.controllerAttribute,
           controllerValue
         )
       }
-      if (actionValue)
+      if (
+        actionValue &&
+        element.getAttribute(stimulusApplication.schema.actionAttribute) !=
+          actionValue
+      )
         element.setAttribute(
           stimulusApplication.schema.actionAttribute,
           actionValue
         )
     })
 }, 20)
+
+// Given a reflex string such as 'click->TestReflex#create' and a list of
+// controllers. It will find the matching controller based on the controller's
+// identifier. e.g. Given these controller identifiers ['foo', 'bar', 'test'],
+// it would select the 'test' controller.
+const findControllerByReflexString = (reflexString, controllers) => {
+  const controller = controllers.find(controller => {
+    if (!controller.identifier) return
+
+    return (
+      extractReflexName(reflexString).toLowerCase() ===
+      controller.identifier.toLowerCase()
+    )
+  })
+
+  return controller || controllers[0]
+}
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller

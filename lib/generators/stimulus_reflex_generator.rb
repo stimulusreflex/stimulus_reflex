@@ -5,33 +5,22 @@ require "rails/generators"
 class StimulusReflexGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
 
-  def initialize_application_reflexes
+  argument :name, type: :string, required: true, banner: "NAME"
+  argument :actions, type: :array, default: [], banner: "action action"
+
+  def execute
+    actions.map!(&:underscore)
+
     copy_application_files if behavior == :invoke
-  end
 
-  def initialize_reflexes
-    copy_reflex_files
-  end
-
-  def initialize_controllers
-    copy_controller_files
+    template "app/reflexes/%file_name%_reflex.rb"
+    template "app/javascript/controllers/%file_name%_controller.js"
   end
 
   private
 
-  CONTROLLER_BASE_PATH = "app/javascript/controllers"
-  REFLEX_BASE_PATH = "app/reflexes"
-
-  def copy_reflex_files
-    template "custom_reflex.rb", File.join(REFLEX_BASE_PATH, "#{name.underscore}_reflex.rb")
-  end
-
-  def copy_controller_files
-    template "custom_controller.js", File.join(CONTROLLER_BASE_PATH, "#{name.underscore}_controller.js")
-  end
-
   def copy_application_files
-    template "application_reflex.rb", File.join(REFLEX_BASE_PATH, "application_reflex.rb")
-    template "application_controller.js", File.join(CONTROLLER_BASE_PATH, "application_controller.js")
+    template "app/reflexes/application_reflex.rb"
+    template "app/javascript/controllers/application_controller.js"
   end
 end

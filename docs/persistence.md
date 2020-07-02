@@ -57,7 +57,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->ExampleReflex#updateValue">
+    data-reflex="input->Example#updateValue">
   <p>The value is: <%= @value %>.</p>
 </div>
 ```
@@ -131,7 +131,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->ExampleReflex#updateValue">
+    data-reflex="input->Example#updateValue">
   <p>The value is: <%= session[:value] %>.</p>
 </div>
 ```

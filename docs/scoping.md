@@ -12,25 +12,26 @@ Great news: we have you covered.
 
 ## Partial DOM updates
 
-Instead of updating your entire page, you can specify exactly which parts of the DOM will be updated using the `data-reflex-morph-target` attribute.
+Instead of updating your entire page, you can specify exactly which parts of the DOM will be updated using the `data-reflex-root` attribute.
 
-`data-reflex-morph-target=".class, #id, [attribute]"`
+`data-reflex-root=".class, #id, [attribute]"`
 
-Simply pass a CSS selector. The selector will retrieve the first DOM element that matches; if there are no elements that match, the selector will be ignored and it will default to `body`.
+Simply pass a comma-delimited list of CSS selectors. Each selector will retrieve one DOM element; if there are no elements that match, the selector will be ignored.
 
 StimulusReflex will decide which element's children to replace by evaluating three criteria in order:
 
-1. Is there a `data-reflex-morph-target` on the element with the `data-reflex`?
-2. Is there a `data-reflex-morph-target` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
+1. Is there a `data-reflex-root` on the element with the `data-reflex`?
+2. Is there a `data-reflex-root` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
 3. Just use the `body` element.
 
-Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back into a DIV element backwards.
+Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
 
 {% tabs %}
 {% tab title="index.html.erb" %}
 ```text
-<div data-controller="example" data-reflex-morph-target="[backward]">
-  <input type="text" value="<%= @words %>" data-reflex="keyup->ExampleReflex#words">
+<div data-controller="example" data-reflex-root="[forward],[backward]">
+  <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
+  <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
 </div>
 ```
@@ -46,7 +47,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% endtabs %}
 
 {% hint style="info" %}
-One interesting detail of this example is that by assigning the morph target to `[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
+One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -58,7 +59,7 @@ If you're stuck with an element that just won't update, make sure that you're no
 {% endhint %}
 
 {% hint style="info" %}
-It's completely valid to for an element with a data-reflex-morph-target attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
+It's completely valid to for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
 {% endhint %}
 
 ## Persisting Elements
@@ -83,18 +84,3 @@ This is especially important for 3rd-party elements such as ad tracking scripts,
 {% hint style="danger" %}
 Beware of Ruby gems that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. Gems like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible, so that you can wrap the content with `data-reflex-permanent`.
 {% endhint %}
-
-## Single Source of Truth
-
-While stateless form submissions have technically always suffered from the "last update wins" problem, it's only in recent years that developers have created interfaces that need to respond to changing application state in real-time.
-
-There are a few guiding principles that we adhere to when building a technology that can change the page you're on, even while you busy working on something important. The most important consideration is that even though StimulusReflex applications persist state on the server, the client should be the single source of truth for the text input element that has active focus.
-
-Put differently: **the server should never update the value of a text box while you're typing into it**.
-
-We've worked really hard to make sure that developers can update other aspects of the active text input element. For example, it's possible to change the background color or even mark the element as disables while you're typing into it. However, all attempts to overwrite the input element's value will be silently suppressed.
-
-If you need to filter or constrain the contents of a text input, consider using a client-side library such as [Cleave.js](https://nosir.github.io/cleave.js/) instead of trying to circumvent the Single Source of Truth mechanisms, which are there to protect your users from their fellow collaborators.
-
-Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be morphed in any way.
-

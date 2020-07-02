@@ -2,7 +2,7 @@ Description:
     Generate boilerplate files to help get you up and running with StimulusReflex
 
 Example:
-    rails generate stimulus_reflex User
+    rails generate stimulus_reflex User update do_stuff [options]
 
     This will create, but not overwrite the following files:
 

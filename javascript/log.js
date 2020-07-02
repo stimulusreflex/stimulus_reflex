@@ -56,6 +56,8 @@ function error (response) {
     payload: event.detail.stimulusReflex,
     element
   })
+  if (detail.stimulusReflex.serverMessage.body)
+    console.error(`\u2B05 ${target}`, detail.stimulusReflex.serverMessage.body)
   delete logs[reflexId]
 }
 

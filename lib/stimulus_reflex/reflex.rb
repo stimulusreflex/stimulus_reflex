@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :morph_mode, :stream_name, :permanent_attribute_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :morph_mode, :permanent_attribute_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
@@ -55,7 +55,6 @@ class StimulusReflex::Reflex
     @selectors = selectors
     @method_name = method_name
     @params = params
-    @stream_name = stream_name
     @permanent_attribute_name = permanent_attribute_name
     @morph_mode = :page
   end
@@ -81,7 +80,7 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env["action_dispatch.request.parameters"] = @params
+      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
     end
   end
@@ -108,12 +107,23 @@ class StimulusReflex::Reflex
   end
 
   def enqueue_selector_broadcast(selector, html)
-    cable_ready[stream_name].morph(
+    cable_ready[channel.stream_name].morph(
       selector: selector,
       html: html,
       children_only: true,
       permanent_attribute_name: permanent_attribute_name
     )
+  end
+
+  def controller
+    @controller ||= begin
+      request.controller_class.new.tap do |c|
+        c.instance_variable_set :"@stimulus_reflex", true
+        instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
+        c.request = request
+        c.response = ActionDispatch::Response.new
+      end
+    end
   end
 
   def url_params
