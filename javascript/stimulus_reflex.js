@@ -400,19 +400,13 @@ if (!document.stimulusReflexInitialized) {
           Log.error(response)
           break
         case 'selector':
-          Log.success(response, {
-            halted: false
-          })
+          Log.success(response)
           break
         case 'nothing':
-          Log.success(response, {
-            halted: false
-          })
+          Log.success(response)
           break
         case 'halted':
-          Log.success(response, {
-            halted: true
-          })
+          Log.success(response, { halted: true })
           break
         default:
           Log.success(response)
