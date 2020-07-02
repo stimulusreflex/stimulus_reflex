@@ -244,13 +244,21 @@ const setupDeclarativeReflexes = debounce(() => {
       })
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
-      if (controllerValue) {
+      if (
+        controllerValue &&
+        element.getAttribute(stimulusApplication.schema.controllerAttribute) !=
+          controllerValue
+      ) {
         element.setAttribute(
           stimulusApplication.schema.controllerAttribute,
           controllerValue
         )
       }
-      if (actionValue)
+      if (
+        actionValue &&
+        element.getAttribute(stimulusApplication.schema.actionAttribute) !=
+          actionValue
+      )
         element.setAttribute(
           stimulusApplication.schema.actionAttribute,
           actionValue
@@ -327,23 +335,11 @@ if (!document.stimulusReflexInitialized) {
 
   window.addEventListener('load', () => {
     setupDeclarativeReflexes()
-
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        const shouldMutate =
-          !mutation.oldValue ||
-          (mutation.oldValue != 'stimulus-reflex' &&
-            !mutation.oldValue.includes('__perform'))
-
-        if (shouldMutate) setupDeclarativeReflexes()
-      })
-    })
-
+    const observer = new MutationObserver(setupDeclarativeReflexes)
     observer.observe(document.documentElement, {
       attributes: true,
       childList: true,
-      subtree: true,
-      attributeOldValue: true
+      subtree: true
     })
   })
 
