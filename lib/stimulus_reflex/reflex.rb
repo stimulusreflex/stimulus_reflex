@@ -56,7 +56,7 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @permanent_attribute_name = permanent_attribute_name
-    @morph_mode = :page
+    @morph_mode = PageMorphMode.new
   end
 
   def request
@@ -88,13 +88,13 @@ class StimulusReflex::Reflex
   def morph(selectors, html = "")
     case selectors
     when :page
-      raise StandardError.new("Cannot call :page morph after :#{@morph_mode} morph") unless @morph_mode == :page
+      raise StandardError.new("Cannot call :page morph after :#{@morph_mode.to_sym} morph") unless @morph_mode.page?
     when :nothing
-      raise StandardError.new("Cannot call :nothing morph after :selector morph") if @morph_mode == :selector
-      @morph_mode = :nothing
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if @morph_mode.selector?
+      @morph_mode = NothingMorphMode.new
     else
-      raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode == :nothing
-      @morph_mode = :selector
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode.nothing?
+      @morph_mode = SelectorMorphMode.new
       if selectors.is_a?(Hash)
         selectors.each do |selector, html|
           enqueue_selector_broadcast selector, html

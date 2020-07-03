@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < ActionCable::Channel::Base
-  include CableReady::Broadcaster
+  include StimulusReflex::Broadcaster
 
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
@@ -43,14 +43,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         broadcast_message subject: "halted", data: data
       else
         begin
-          case reflex.morph_mode
-          when :page
-            render_page_and_broadcast_morph reflex, selectors, data
-          when :selector
-            broadcast_message subject: "selector", data: data
-          when :nothing
-            broadcast_message subject: "nothing", data: data
-          end
+          reflex.morph_mode.broadcast
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
@@ -104,44 +97,6 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
   def render_page(reflex)
     reflex.controller.process reflex.url_params[:action]
     reflex.controller.response.body
-  end
-
-  def broadcast_morphs(selectors, data, html)
-    document = Nokogiri::HTML(html)
-    selectors = selectors.select { |s| document.css(s).present? }
-    selectors.each do |selector|
-      cable_ready[stream_name].morph(
-        selector: selector,
-        html: document.css(selector).inner_html,
-        children_only: true,
-        permanent_attribute_name: data["permanent_attribute_name"],
-        stimulus_reflex: data.merge({
-          last: selector == selectors.last,
-          morph_mode: "page"
-        })
-      )
-    end
-    cable_ready.broadcast
-  end
-
-  def broadcast_message(subject:, body: nil, data: {})
-    message = {
-      subject: subject,
-      body: body
-    }
-
-    logger.error "\e[31m#{body}\e[0m" if subject == "error"
-
-    data[:morph_mode] = "page"
-    data[:server_message] = message
-    data[:morph_mode] = "selector" if subject == "selector"
-    data[:morph_mode] = "nothing" if subject == "nothing"
-
-    cable_ready[stream_name].dispatch_event(
-      name: "stimulus-reflex:server-message",
-      detail: {stimulus_reflex: data}
-    )
-    cable_ready.broadcast
   end
 
   def exception_message_with_backtrace(exception)
