@@ -3,6 +3,14 @@
 class StimulusReflex::Channel < ActionCable::Channel::Base
   include StimulusReflex::Broadcaster
 
+  def stream_name
+    ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
+    [
+      params[:channel],
+      ids.select(&:present?).join(";")
+    ].select(&:present?).join(":")
+  end
+  
   def subscribed
     stream_from stream_name
   end
@@ -35,6 +43,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         broadcast_message subject: "halted", data: data
       else
         begin
+          reflex.morph_mode.stream_name = stream_name
           reflex.morph_mode.broadcast(reflex, selectors, data)
         rescue => render_error
           reflex.rescue_with_handler(render_error)

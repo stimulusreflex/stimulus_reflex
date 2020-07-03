@@ -6,14 +6,6 @@ module StimulusReflex
       end
     end
 
-    def stream_name
-      ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
-      [
-        params[:channel],
-        ids.select(&:present?).join(";")
-      ].select(&:present?).join(":")
-    end
-
     def render_page_and_broadcast_morph(reflex, selectors, data = {})
       html = render_page(reflex)
       broadcast_morphs selectors, data, html if html.present?
