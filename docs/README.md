@@ -58,6 +58,14 @@ Some of our favorite demos include:
 
 {% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" %}
 
+## First-class ViewComponent support
+
+When you have [ViewComponent ](https://github.com/github/view_component)installed in your project, you can use [componentized views](https://www.youtube.com/watch?v=YVYRus_2KZM) in your Reflexes **without any configuration required**. 💯
+
+If you install the amazing [ViewComponentReflex](https://github.com/joshleblanc/view_component_reflex) as well, you will be able to persist the state of your components into the user's session. Every instance of your components will maintain their own local state. This provides seamless continuity for your UI - even when doing full-page Reflex updates. _Hand, meet glove._ 🖐️+🧤
+
+Some things just have to be seen: check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh/) for live demos.
+
 ## How we got here
 
 **We love Rails.** Veterans of the framework remember the feeling of awe and disbelief after seeing David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has become so successful that nearly every framework since has borrowed ideas, patterns, and features from it.
