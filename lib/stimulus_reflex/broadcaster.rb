@@ -6,6 +6,16 @@ module StimulusReflex
       end
     end
 
+    def render_page_and_broadcast_morph(reflex, selectors, data = {})
+      html = render_page(reflex)
+      broadcast_morphs selectors, data, html if html.present?
+    end
+
+    def render_page(reflex)
+      reflex.controller.process reflex.url_params[:action]
+      reflex.controller.response.body
+    end
+
     def broadcast_morphs(selectors, data, html)
       document = Nokogiri::HTML(html)
       selectors = selectors.select { |s| document.css(s).present? }

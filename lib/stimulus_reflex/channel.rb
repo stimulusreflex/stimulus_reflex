@@ -81,22 +81,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(reflex, selectors, data = {})
-    html = render_page(reflex)
-    broadcast_morphs selectors, data, html if html.present?
-  end
-
   def commit_session(reflex)
     store = reflex.request.session.instance_variable_get("@by")
     store.commit_session reflex.request, reflex.controller.response
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
     logger.error "\e[31m#{message}\e[0m"
-  end
-
-  def render_page(reflex)
-    reflex.controller.process reflex.url_params[:action]
-    reflex.controller.response.body
   end
 
   def exception_message_with_backtrace(exception)
