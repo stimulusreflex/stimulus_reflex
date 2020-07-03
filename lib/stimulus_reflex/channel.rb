@@ -3,14 +3,6 @@
 class StimulusReflex::Channel < ActionCable::Channel::Base
   include StimulusReflex::Broadcaster
 
-  def stream_name
-    ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
-    [
-      params[:channel],
-      ids.select(&:present?).join(";")
-    ].select(&:present?).join(":")
-  end
-
   def subscribed
     stream_from stream_name
   end
