@@ -10,7 +10,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       ids.select(&:present?).join(";")
     ].select(&:present?).join(":")
   end
-  
+
   def subscribed
     stream_from stream_name
   end

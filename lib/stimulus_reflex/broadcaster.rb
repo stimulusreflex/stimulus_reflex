@@ -26,9 +26,9 @@ module StimulusReflex
           children_only: true,
           permanent_attribute_name: data["permanent_attribute_name"],
           stimulus_reflex: data.merge({
-                                        last: selector == selectors.last,
-                                        morph_mode: "page"
-                                      })
+            last: selector == selectors.last,
+            morph_mode: "page"
+          })
         )
       end
       cable_ready.broadcast
