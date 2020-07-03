@@ -1,6 +1,6 @@
 module StimulusReflex
   class SelectorMorphMode < MorphMode
-    def broadcast
+    def broadcast(reflex, selectors, data)
       broadcast_message subject: "selector", data: data
     end
 

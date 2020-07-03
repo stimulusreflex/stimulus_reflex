@@ -1,6 +1,6 @@
 module StimulusReflex
   class NothingMorphMode < MorphMode
-    def broadcast
+    def broadcast(reflex, selectors, data)
       broadcast_message subject: "nothing", data: data
     end
 

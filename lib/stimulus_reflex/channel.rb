@@ -43,7 +43,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         broadcast_message subject: "halted", data: data
       else
         begin
-          reflex.morph_mode.broadcast
+          reflex.morph_mode.broadcast(reflex, selectors, data)
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
