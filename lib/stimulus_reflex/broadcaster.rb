@@ -1,10 +1,6 @@
 module StimulusReflex
   module Broadcaster
-    def self.included klass
-      klass.class_eval do
-        include CableReady::Broadcaster
-      end
-    end
+    include CableReady::Broadcaster
 
     def render_page_and_broadcast_morph(reflex, selectors, data = {})
       html = render_page(reflex)
