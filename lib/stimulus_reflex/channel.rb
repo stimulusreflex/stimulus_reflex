@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < ActionCable::Channel::Base
-  include CableReady::Broadcaster
+  include StimulusReflex::Broadcaster
 
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
@@ -25,12 +25,13 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
+    permanent_attribute_name = data["permanent_attribute_name"]
     params = data["params"] || {}
 
     begin
       begin
         reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-        reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, params: params)
+        reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, permanent_attribute_name: permanent_attribute_name, params: params)
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         reflex&.rescue_with_handler(invoke_error)
@@ -42,9 +43,10 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         broadcast_message subject: "halted", data: data
       else
         begin
-          render_page_and_broadcast_morph reflex, selectors, data
+          reflex.morph_mode.stream_name = stream_name
+          reflex.morph_mode.broadcast(reflex, selectors, data)
         rescue => render_error
-          reflex&.rescue_with_handler(render_error)
+          reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
           broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
         end
@@ -80,52 +82,12 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
     end
   end
 
-  def render_page_and_broadcast_morph(reflex, selectors, data = {})
-    html = render_page(reflex)
-    broadcast_morphs selectors, data, html if html.present?
-  end
-
   def commit_session(reflex)
     store = reflex.request.session.instance_variable_get("@by")
     store.commit_session reflex.request, reflex.controller.response
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
     logger.error "\e[31m#{message}\e[0m"
-  end
-
-  def render_page(reflex)
-    reflex.controller.process reflex.url_params[:action]
-    reflex.controller.response.body
-  end
-
-  def broadcast_morphs(selectors, data, html)
-    document = Nokogiri::HTML(html)
-    selectors = selectors.select { |s| document.css(s).present? }
-    selectors.each do |selector|
-      cable_ready[stream_name].morph(
-        selector: selector,
-        html: document.css(selector).inner_html,
-        children_only: true,
-        permanent_attribute_name: data["permanent_attribute_name"],
-        stimulus_reflex: data.merge(last: selector == selectors.last)
-      )
-    end
-    cable_ready.broadcast
-  end
-
-  def broadcast_message(subject:, body: nil, data: {})
-    message = {
-      subject: subject,
-      body: body
-    }
-
-    logger.error "\e[31m#{body}\e[0m" if subject == "error"
-
-    cable_ready[stream_name].dispatch_event(
-      name: "stimulus-reflex:server-message",
-      detail: {stimulus_reflex: data.merge(server_message: message)}
-    )
-    cable_ready.broadcast
   end
 
   def exception_message_with_backtrace(exception)

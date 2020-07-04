@@ -3,6 +3,7 @@
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
+  include CableReady::Broadcaster
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
 
@@ -42,18 +43,20 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :morph_mode, :permanent_attribute_name
 
   delegate :connection, to: :channel
   delegate :session, to: :request
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, stream_name: nil, permanent_attribute_name: nil, params: {})
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
-    @form_params = params
+    @params = params
+    @permanent_attribute_name = permanent_attribute_name
+    @morph_mode = StimulusReflex::PageMorphMode.new
     self.params
   end
 
@@ -78,9 +81,39 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@form_params)
+      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
     end
+  end
+
+  def morph(selectors, html = "")
+    case selectors
+    when :page
+      raise StandardError.new("Cannot call :page morph after :#{@morph_mode.to_sym} morph") unless @morph_mode.page?
+    when :nothing
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if @morph_mode.selector?
+      @morph_mode = StimulusReflex::NothingMorphMode.new
+    else
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode.nothing?
+      @morph_mode = StimulusReflex::SelectorMorphMode.new
+      if selectors.is_a?(Hash)
+        selectors.each do |selector, html|
+          enqueue_selector_broadcast selector, html
+        end
+      else
+        enqueue_selector_broadcast selectors, html
+      end
+      cable_ready.broadcast
+    end
+  end
+
+  def enqueue_selector_broadcast(selector, html)
+    cable_ready[channel.stream_name].morph(
+      selector: selector,
+      html: html,
+      children_only: true,
+      permanent_attribute_name: permanent_attribute_name
+    )
   end
 
   def controller

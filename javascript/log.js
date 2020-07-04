@@ -8,7 +8,7 @@ function request (
   element
 ) {
   logs[reflexId] = new Date()
-  console.log(`\u2B95 ${target}`, {
+  console.log(`\u2B9C ${target}`, {
     reflexId,
     args,
     stimulusControllerIdentifier,
@@ -21,7 +21,8 @@ function success (response, options = { halted: false }) {
   const payloads = {}
   const elements = {}
   const { event, events } = response
-  const { reflexId, target, last } = event.detail.stimulusReflex || {}
+  const { reflexId, target, last, morphMode } =
+    event.detail.stimulusReflex || {}
 
   if (events) {
     Object.keys(events).map(selector => {
@@ -31,10 +32,11 @@ function success (response, options = { halted: false }) {
     })
   }
 
-  console.log(`\u2B05 ${target}`, {
+  console.log(`\u2B9E ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
+    morphMode,
     elements,
     payloads,
     html
@@ -45,11 +47,12 @@ function success (response, options = { halted: false }) {
 function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
-  const { reflexId, target, error } = detail.stimulusReflex || {}
-  console.error(`\u2B05 ${target}`, {
+  const { reflexId, target, error, morphMode } = detail.stimulusReflex || {}
+  console.error(`\u2B9E ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,
+    morphMode,
     payload: event.detail.stimulusReflex,
     element
   })

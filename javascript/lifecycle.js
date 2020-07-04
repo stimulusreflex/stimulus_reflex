@@ -73,6 +73,24 @@ document.addEventListener(
 )
 
 document.addEventListener(
+  'stimulus-reflex:selector',
+  event => {
+    invokeLifecycleMethod('success', event.target)
+    dispatchLifecycleEvent('after', event.target)
+  },
+  true
+)
+
+document.addEventListener(
+  'stimulus-reflex:nothing',
+  event => {
+    invokeLifecycleMethod('success', event.target)
+    dispatchLifecycleEvent('after', event.target)
+  },
+  true
+)
+
+document.addEventListener(
   'stimulus-reflex:error',
   event => {
     invokeLifecycleMethod('error', event.target)

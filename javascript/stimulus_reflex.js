@@ -47,10 +47,12 @@ const createSubscription = controller => {
       received: data => {
         if (!data.cableReady) return
         if (data.operations.morph && data.operations.morph.length) {
-          const urls = Array.from(
-            new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-          )
-          if (urls.length !== 1 || urls[0] !== location.href) return
+          if (data.operations.morph[0].stimulusReflex) {
+            const urls = Array.from(
+              new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+            )
+            if (urls.length !== 1 || urls[0] !== location.href) return
+          }
         }
         CableReady.perform(data.operations)
       }
@@ -76,6 +78,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
+    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -93,11 +96,23 @@ const extendStimulusController = controller => {
       ) {
         return
       }
-      const attrs = extractElementAttributes(element)
+      const options = {}
+      if (
+        args[0] &&
+        typeof args[0] == 'object' &&
+        Object.keys(args[0]).filter(key =>
+          ['attrs', 'selectors', 'reflexId'].includes(key)
+        )
+      ) {
+        const opts = args.shift()
+        Object.keys(opts).forEach(o => (options[o] = opts[o]))
+      }
+      const attrs = options['attrs'] || extractElementAttributes(element)
+      const reflexId = options['reflexId'] || uuidv4()
+      let selectors = options['selectors'] || getReflexRoots(element)
+      if (typeof selectors == 'string') selectors = [selectors]
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
-      const selectors = getReflexRoots(element)
-      const reflexId = uuidv4()
       const data = {
         target,
         args,
@@ -105,9 +120,9 @@ const extendStimulusController = controller => {
         attrs,
         dataset,
         selectors,
+        reflexId,
         permanent_attribute_name:
-          stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId
+          stimulusApplication.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
 
@@ -362,6 +377,7 @@ if (!document.stimulusReflexInitialized) {
     const response = {
       element,
       event,
+      morphMode: promise && promise.morphMode,
       data: promise && promise.data,
       events: promise && promise.events
     }
@@ -375,13 +391,16 @@ if (!document.stimulusReflexInitialized) {
     if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
+    const { reflexId, attrs, serverMessage, morphMode } =
+      event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
     const subjects = {
       error: true,
-      halted: true
+      halted: true,
+      selector: true,
+      nothing: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -390,6 +409,7 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
+      morphMode,
       events: promise && promise.events,
       toString: () => body
     }
@@ -410,6 +430,12 @@ if (!document.stimulusReflexInitialized) {
       switch (subject) {
         case 'error':
           Log.error(response)
+          break
+        case 'selector':
+          Log.success(response)
+          break
+        case 'nothing':
+          Log.success(response)
           break
         case 'halted':
           Log.success(response, { halted: true })
