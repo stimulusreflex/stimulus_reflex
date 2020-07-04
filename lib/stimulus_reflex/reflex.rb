@@ -57,6 +57,7 @@ class StimulusReflex::Reflex
     @params = params
     @permanent_attribute_name = permanent_attribute_name
     @morph_mode = StimulusReflex::PageMorphMode.new
+    self.params
   end
 
   def request

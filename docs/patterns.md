@@ -227,6 +227,12 @@ You'll want to experiment with other, more contemporary feedback mechanisms to p
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
 
+### ViewComponentReflex
+
+We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [view\_component\_reflex](https://github.com/joshleblanc/view_component_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
+
+Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh/) for inspiration and examples.
+
 ### Chained Reflexes for long-running actions
 
 {% hint style="danger" %}

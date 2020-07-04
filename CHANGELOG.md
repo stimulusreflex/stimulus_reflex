@@ -30,6 +30,7 @@
 - Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
 - warn against collections of identical elements that trigger reflexes [\#250](https://github.com/hopsoft/stimulus_reflex/pull/250) ([leastbad](https://github.com/leastbad))
+- always calls params to persist them into controller action [\#249](https://github.com/hopsoft/stimulus_reflex/pull/249) ([RolandStuder](https://github.com/RolandStuder))
 - Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
 - Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
 - Bump actionpack from 6.0.3.1 to 6.0.3.2 [\#245](https://github.com/hopsoft/stimulus_reflex/pull/245) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -116,7 +117,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
-- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
 
@@ -169,6 +169,7 @@
 
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
+- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
