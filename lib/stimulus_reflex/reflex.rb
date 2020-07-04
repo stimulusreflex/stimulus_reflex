@@ -53,7 +53,8 @@ class StimulusReflex::Reflex
     @element = element
     @selectors = selectors
     @method_name = method_name
-    @params = params
+    @form_params = params
+    self.params
   end
 
   def request
@@ -77,7 +78,7 @@ class StimulusReflex::Reflex
       )
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
+      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@form_params)
       req.tap { |r| r.session.send :load! }
     end
   end
