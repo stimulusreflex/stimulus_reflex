@@ -108,10 +108,11 @@ class StimulusReflex::Reflex
   end
 
   def enqueue_selector_broadcast(selector, html)
+    document = Nokogiri::HTML(html)
     cable_ready[channel.stream_name].morph(
       selector: selector,
       html: html,
-      children_only: true,
+      children_only: !document.css(selector).present?,
       permanent_attribute_name: permanent_attribute_name
     )
   end
