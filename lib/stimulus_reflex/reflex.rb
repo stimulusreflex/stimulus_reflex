@@ -108,9 +108,11 @@ class StimulusReflex::Reflex
   end
 
   def enqueue_selector_broadcast(selector, html)
+    fragment = Nokogiri::HTML(html)
+    parent = fragment.at_css(selector)
     cable_ready[channel.stream_name].morph(
       selector: selector,
-      html: html,
+      html: parent.present? ? parent.inner_html : fragment.to_html,
       children_only: true,
       permanent_attribute_name: permanent_attribute_name
     )
