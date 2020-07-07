@@ -114,7 +114,7 @@ class StimulusReflex::Reflex
       children_only: true,
       permanent_attribute_name: permanent_attribute_name
     }
-    operation = (html.empty? || html.start_with?("<") == false) ? :inner_html : :morph
+    operation = html.empty? || html.start_with?("<") == false ? :inner_html : :morph
     opts[:children_only] = false if operation == :morph && selector != "body" && Nokogiri::HTML(html).at_css(selector)
     cable_ready[channel.stream_name].send(operation, opts)
   end
