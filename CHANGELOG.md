@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre0...HEAD)
+
+**Merged pull requests:**
+
+- alternate solution [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
+
 ## [v3.3.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre0) (2020-07-04)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...v3.3.0.pre0)
