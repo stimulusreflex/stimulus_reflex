@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < ActionCable::Channel::Base
-  include StimulusReflex::Broadcaster
-
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
@@ -36,19 +34,18 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
       rescue => invoke_error
         reflex&.rescue_with_handler(invoke_error)
         message = exception_message_with_backtrace(invoke_error)
-        return broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
+        return reflex.broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
       end
 
       if reflex.halted?
-        broadcast_message subject: "halted", data: data
+        reflex.broadcast_message subject: "halted", data: data
       else
         begin
-          reflex.morph_mode.stream_name = stream_name
-          reflex.morph_mode.broadcast(reflex, selectors, data)
+          reflex.broadcast(selectors, data)
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
-          broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
+          reflex.broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
         end
       end
     ensure
