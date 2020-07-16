@@ -377,7 +377,7 @@ if (!document.stimulusReflexInitialized) {
     const response = {
       element,
       event,
-      morphMode: promise && promise.morphMode,
+      broadcaster: promise && promise.broadcaster,
       data: promise && promise.data,
       events: promise && promise.events
     }
@@ -388,10 +388,9 @@ if (!document.stimulusReflexInitialized) {
     }
 
     dispatchLifecycleEvent('success', element)
-    if (debugging) Log.success(response)
   })
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage, morphMode } =
+    const { reflexId, attrs, serverMessage, broadcaster } =
       event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
@@ -409,7 +408,7 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      morphMode,
+      broadcaster,
       events: promise && promise.events,
       toString: () => body
     }

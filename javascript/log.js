@@ -8,7 +8,7 @@ function request (
   element
 ) {
   logs[reflexId] = new Date()
-  console.log(`\u2B9C ${target}`, {
+  console.log(`\u2192 stimulus \u2192 ${target}`, {
     reflexId,
     args,
     stimulusControllerIdentifier,
@@ -21,7 +21,7 @@ function success (response, options = { halted: false }) {
   const payloads = {}
   const elements = {}
   const { event, events } = response
-  const { reflexId, target, last, morphMode } =
+  const { reflexId, target, last, broadcaster } =
     event.detail.stimulusReflex || {}
 
   if (events) {
@@ -32,11 +32,11 @@ function success (response, options = { halted: false }) {
     })
   }
 
-  console.log(`\u2B9E ${target}`, {
+  console.log(`\u2190 reflex \u2190 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
-    morphMode,
+    broadcaster,
     elements,
     payloads,
     html
@@ -47,17 +47,20 @@ function success (response, options = { halted: false }) {
 function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
-  const { reflexId, target, error, morphMode } = detail.stimulusReflex || {}
-  console.error(`\u2B9E ${target}`, {
+  const { reflexId, target, error, broadcaster } = detail.stimulusReflex || {}
+  console.error(`\u2190 reflex \u2190 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,
-    morphMode,
+    broadcaster,
     payload: event.detail.stimulusReflex,
     element
   })
   if (detail.stimulusReflex.serverMessage.body)
-    console.error(`\u2B05 ${target}`, detail.stimulusReflex.serverMessage.body)
+    console.error(
+      `\u2190 reflex \u2190 ${target}`,
+      detail.stimulusReflex.serverMessage.body
+    )
   delete logs[reflexId]
 }
 

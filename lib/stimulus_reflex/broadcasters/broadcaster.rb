@@ -24,23 +24,21 @@ module StimulusReflex
       false
     end
 
-    def broadcast_message(subject:, body: nil, data: {})
-      message = {
-        subject: subject,
-        body: body
-      }
-
+    def enqueue_message(subject:, body: nil, data: {})
       logger.error "\e[31m#{body}\e[0m" if subject == "error"
-
-      data[:morph_mode] = "page"
-      data[:server_message] = message
-      data[:morph_mode] = "selector" if subject == "selector"
-      data[:morph_mode] = "nothing" if subject == "nothing"
-
       cable_ready[stream_name].dispatch_event(
         name: "stimulus-reflex:server-message",
-        detail: {stimulus_reflex: data}
+        detail: {
+          stimulus_reflex: data.merge(
+            broadcaster: to_sym,
+            server_message: {subject: subject, body: body}
+          )
+        }
       )
+    end
+
+    def broadcast_message(subject:, body: nil, data: {})
+      enqueue_message subject: subject, body: body, data: data
       cable_ready.broadcast
     end
 

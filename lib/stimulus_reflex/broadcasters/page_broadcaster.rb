@@ -18,10 +18,12 @@ module StimulusReflex
           permanent_attribute_name: data["permanent_attribute_name"],
           stimulus_reflex: data.merge({
             last: selector == selectors.last,
-            morph_mode: "page"
+            broadast_type: "page"
           })
         )
       end
+
+      enqueue_message subject: "success", data: data
       cable_ready.broadcast
     end
 

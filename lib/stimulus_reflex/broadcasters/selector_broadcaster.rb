@@ -8,9 +8,33 @@ module StimulusReflex
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
         updates.each do |selector, html|
           last = morph == morphs.last && selector == updates.keys.last
-          enqueue_selector_broadcast selector, data, html, last
+          fragment = Nokogiri::HTML.fragment(html.to_s)
+          match = fragment.at_css(selector)
+          if match
+            cable_ready[stream_name].morph(
+              selector: selector,
+              html: element.inner_html,
+              children_only: true,
+              permanent_attribute_name: permanent_attribute_name,
+              stimulus_reflex: data.merge({
+                last: last,
+                broadast_type: "selector"
+              })
+            )
+          else
+            cable_ready[stream_name].inner_html(
+              selector: selector,
+              html: fragment.to_html,
+              stimulus_reflex: data.merge({
+                last: last,
+                broadast_type: "selector"
+              })
+            )
+          end
         end
       end
+
+      enqueue_message subject: "success", data: data
       cable_ready.broadcast
       morphs.clear
     end
@@ -25,25 +49,6 @@ module StimulusReflex
 
     def selector?
       true
-    end
-
-    private
-
-    def enqueue_selector_broadcast(selector, data, html, last)
-      html = html.to_s
-      html = "<span>#{html}</span>" unless html.include?("<")
-      fragment = Nokogiri::HTML(html)
-      parent = fragment.at_css(selector)
-      cable_ready[stream_name].morph(
-        selector: selector,
-        html: parent.present? ? parent.inner_html : fragment.to_html,
-        children_only: true,
-        permanent_attribute_name: permanent_attribute_name,
-        stimulus_reflex: data.merge({
-          last: last,
-          morph_mode: "selector"
-        })
-      )
     end
   end
 end
