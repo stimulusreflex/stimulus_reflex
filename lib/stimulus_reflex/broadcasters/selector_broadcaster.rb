@@ -7,10 +7,10 @@ module StimulusReflex
       morphs.each do |morph|
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
-        all_updates.merge! updates
         updates.each do |selector, html|
           last = morph == morphs.last && selector == updates.keys.last
-          fragment = Nokogiri::HTML.fragment(html.to_s)
+          html = html.to_s
+          fragment = Nokogiri::HTML.fragment(html)
           match = fragment.at_css(selector)
           if match
             cable_ready[stream_name].morph(
@@ -33,6 +33,7 @@ module StimulusReflex
               })
             )
           end
+          all_updates[selector] = html.truncate(80)
         end
       end
 

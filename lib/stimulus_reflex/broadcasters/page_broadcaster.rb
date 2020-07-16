@@ -22,7 +22,7 @@ module StimulusReflex
             broadast_type: to_sym
           })
         )
-        memo[selector] = html
+        memo[selector] = html.truncate(80)
       }
       cable_ready.broadcast
       broadcast_message subject: "success", data: data.merge(updates: updates)
