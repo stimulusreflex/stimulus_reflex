@@ -1,14 +1,14 @@
 ---
-description: How to restrict DOM updates
+description: "How to update everything, nothing or something in-between \U0001F9D8"
 ---
 
-# Scoping
+# Morph Modes
 
-By default, StimulusReflex updates your entire page. It uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution and they can stop reading here.
+By default, StimulusReflex updates your entire page. It uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever and they can stop reading here.
 
-Some applications are more sophisticated. You might want to think of your site in terms of components, or you might need to interact with legacy JavaScript plugins on your page that don't play nicely with modern techniques. Heck, you might just need to make sure we don't reload the same 3rd party ad tracker every time someone clicks a button.
+Most real-world applications are more sophisticated, though, and you think of your site in terms of sections, components and content areas. We reason about our functionality by with abstractions like _sidebar_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we just need to surgically swap out one of those containers with something new. We need to do it without disturbing the rest of the tree... _and we need it to happen in ~10ms_.
 
-Great news: we have you covered.
+Other times... we just need to hit a button that feeds a cat which may or may not still be in a box. 🐈
 
 ## Partial DOM updates
 

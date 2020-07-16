@@ -135,7 +135,7 @@ Finally, let's configure our Reflex class. Since the `@post` object is created f
 ```ruby
 class PostReflex < ApplicationReflex
   before_reflex do
-    @post = GlobalID::Locator.locate_signed(element.dataset.dig("signed-id")
+    @post = GlobalID::Locator.locate_signed(element.dataset.signed_id)
     @post.assign_attributes(post_params)
   end
 
