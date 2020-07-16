@@ -96,12 +96,9 @@ class StimulusReflex::Reflex
     else
       raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode.nothing?
       @morph_mode = StimulusReflex::SelectorMorphMode.new
-      if selectors.is_a?(Hash)
-        selectors.each do |selector, html|
-          enqueue_selector_broadcast selector, html
-        end
-      else
-        enqueue_selector_broadcast selectors, html
+      selectors = Hash[selectors, html] unless selectors.is_a?(Hash)
+      selectors.each do |selector, html|
+        enqueue_selector_broadcast selector, html.to_s
       end
       cable_ready.broadcast
     end
