@@ -98,7 +98,9 @@ class StimulusReflex::Reflex
       @morph_mode = StimulusReflex::SelectorMorphMode.new
       selectors = Hash[selectors, html] unless selectors.is_a?(Hash)
       selectors.each do |selector, html|
-        enqueue_selector_broadcast selector, html.to_s
+        html = html.to_s
+        html = "<span>#{html}</span>" unless html.include?("<")
+        enqueue_selector_broadcast selector, html
       end
       cable_ready.broadcast
     end
