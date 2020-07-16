@@ -46,7 +46,7 @@ params.require(:post).permit(:name, comments_attributes: [:id, :_destroy, :name]
 
 Your `@post` object is instantiated from `params` so if model validations fail, your Post model instance is still in scope when the page re-renders. The model's `errors` collection is available in the view. 🐛
 
-Working with `has_many` associations? No sweat! Building a new record for a nested model requires no JavaScript. Your Reflex calls `@post.comments.build` and because Rails knows about the association, any re-renders populate the empty form field as normal.
+Working with `has_many` associations? No sweat! Building a new record for a nested model requires **no JavaScript**. Your Reflex calls `@post.comments.build` and because Rails knows about the association, any re-renders populate the empty form field as normal.
 
 Reflex actions called outside of a form will still have a `params` accessor, pointing to an empty `ActionController::Parameters` instance.
 
