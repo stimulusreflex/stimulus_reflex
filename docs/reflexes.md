@@ -349,7 +349,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 })
 ```
 
-You can find a full example for working with HTML forms on the Useful Patterns page.
+You can find a full example of form submission via Reflex on the Working With HTML Forms page.
 
 {% page-ref page="working-with-forms.md" %}
 
