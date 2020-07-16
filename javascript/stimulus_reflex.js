@@ -165,8 +165,7 @@ const extendStimulusController = controller => {
         promises[reflexId] = {
           resolve,
           reject,
-          data,
-          events: {}
+          data
         }
       })
       if (debugging) promise.catch(() => {}) // noop default catch
@@ -361,8 +360,7 @@ if (!document.stimulusReflexInitialized) {
   })
 
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage, broadcaster } =
-      event.detail.stimulusReflex || {}
+    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
@@ -379,8 +377,6 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      broadcaster,
-      events: promise && promise.events,
       toString: () => body
     }
 

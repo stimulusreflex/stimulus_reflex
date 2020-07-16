@@ -3,9 +3,11 @@
 module StimulusReflex
   class SelectorBroadcaster < Broadcaster
     def broadcast(_, data = {})
+      all_updates = {}
       morphs.each do |morph|
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
+        all_updates.merge! updates
         updates.each do |selector, html|
           last = morph == morphs.last && selector == updates.keys.last
           fragment = Nokogiri::HTML.fragment(html.to_s)
@@ -35,7 +37,7 @@ module StimulusReflex
       end
 
       cable_ready.broadcast
-      broadcast_message subject: "success", data: data
+      broadcast_message subject: "success", data: data.merge(updates: all_updates)
       morphs.clear
     end
 
