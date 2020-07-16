@@ -34,7 +34,7 @@ You should **memoize** the `params` in your controller action so that the same f
 `@post ||= Post.find(params[:id])`
 {% endhint %}
 
-One of the most exciting benefits of this design is that autosaving the data in your form becomes as simple as adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all params are automatically serialized and sent to your Reflex class.
+One of the most exciting benefits of this design is that autosaving the data in your form becomes as simple as adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all inputs are automatically serialized and sent to your Reflex class.
 
 The `params` accessor is available to your `before_reflex` and `after_reflex` callbacks in your server-side Reflex class. You are also free to add additional business logic on the client using the Reflex [lifecycle callbacks](https://docs.stimulusreflex.com/lifecycle) in your Stimulus controllers.
 
