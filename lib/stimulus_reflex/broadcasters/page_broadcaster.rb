@@ -15,16 +15,16 @@ module StimulusReflex
           selector: selector,
           html: document.css(selector).inner_html,
           children_only: true,
-          permanent_attribute_name: data["permanent_attribute_name"],
+          permanent_attribute_name: permanent_attribute_name,
           stimulus_reflex: data.merge({
             last: selector == selectors.last,
-            broadast_type: "page"
+            broadast_type: to_sym
           })
         )
       end
 
-      enqueue_message subject: "success", data: data
       cable_ready.broadcast
+      broadcast_message subject: "success", data: data
     end
 
     def to_sym

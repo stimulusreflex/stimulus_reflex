@@ -18,7 +18,7 @@ module StimulusReflex
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge({
                 last: last,
-                broadast_type: "selector"
+                broadast_type: to_sym
               })
             )
           else
@@ -27,15 +27,15 @@ module StimulusReflex
               html: fragment.to_html,
               stimulus_reflex: data.merge({
                 last: last,
-                broadast_type: "selector"
+                broadast_type: to_sym
               })
             )
           end
         end
       end
 
-      enqueue_message subject: "success", data: data
       cable_ready.broadcast
+      broadcast_message subject: "success", data: data
       morphs.clear
     end
 
