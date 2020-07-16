@@ -4,11 +4,12 @@ module StimulusReflex
   class Broadcaster
     include CableReady::Broadcaster
 
-    attr_reader :reflex
-    delegate :stream_name, to: :reflex
+    attr_reader :reflex, :logger
+    delegate :permanent_attribute_name, :stream_name, to: :reflex
 
     def initialize(reflex)
       @reflex = reflex
+      @logger = Rails.logger
     end
 
     def nothing?

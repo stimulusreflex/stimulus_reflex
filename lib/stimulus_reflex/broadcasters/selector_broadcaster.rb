@@ -5,9 +5,9 @@ module StimulusReflex
     def broadcast(_, data = {})
       morphs.each do |morph|
         selectors, html = morph
-        selectors = Hash[selectors, html] unless selectors.is_a?(Hash)
-        selectors.each do |selector, html|
-          last = morph == morphs.last && selector == selectors.last
+        updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
+        updates.each do |selector, html|
+          last = morph == morphs.last && selector == updates.keys.last
           enqueue_selector_broadcast selector, data, html, last
         end
       end
