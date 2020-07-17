@@ -136,11 +136,15 @@ export const findElement = attributes => {
     }
   }
 
-  if (elements.length > 1)
+  if (elements.length === 0)
     console.warn(
-      'StimulusReflex found multiple identical elements which match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
+      'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
     )
 
-  const element = elements.length === 1 ? elements[0] : null
-  return element
+  if (elements.length > 1)
+    console.warn(
+      'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
+    )
+
+  return elements.length === 1 ? elements[0] : null
 }
