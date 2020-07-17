@@ -12,6 +12,7 @@
 
 **Merged pull requests:**
 
+- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 - Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
