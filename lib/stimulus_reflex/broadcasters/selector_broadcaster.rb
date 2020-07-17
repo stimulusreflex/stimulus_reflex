@@ -15,7 +15,7 @@ module StimulusReflex
           if match
             cable_ready[stream_name].morph(
               selector: selector,
-              html: element.inner_html,
+              html: match.inner_html,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge({
