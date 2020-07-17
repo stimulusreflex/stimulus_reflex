@@ -12,7 +12,7 @@ module StimulusReflex
           html = html.to_s
           fragment = Nokogiri::HTML.fragment(html)
           match = fragment.at_css(selector)
-          if match
+          if match.present?
             cable_ready[stream_name].morph(
               selector: selector,
               html: match.inner_html,
