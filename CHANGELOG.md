@@ -6,11 +6,13 @@
 
 **Closed issues:**
 
+- afterReflex not always firing on morph with selectors [\#269](https://github.com/hopsoft/stimulus_reflex/issues/269)
 - Lifecycle hooks [\#266](https://github.com/hopsoft/stimulus_reflex/issues/266)
 - Stimulus Reflex with Rspec not working [\#263](https://github.com/hopsoft/stimulus_reflex/issues/263)
 
 **Merged pull requests:**
 
+- Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
 - Update deployment docs after the official AnyCable 1.0 release [\#267](https://github.com/hopsoft/stimulus_reflex/pull/267) ([rmacklin](https://github.com/rmacklin))
@@ -320,10 +322,6 @@
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
-**Fixed bugs:**
-
-- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
-
 **Closed issues:**
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/hopsoft/stimulus_reflex/issues/127)
@@ -344,6 +342,10 @@
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
