@@ -145,12 +145,14 @@ export const findElement = attributes => {
 
   if (elements.length === 0)
     console.warn(
-      'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
+      'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
+      attributes
     )
 
   if (elements.length > 1)
     console.warn(
-      'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.'
+      'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
+      attributes
     )
 
   return elements.length === 1 ? elements[0] : null
