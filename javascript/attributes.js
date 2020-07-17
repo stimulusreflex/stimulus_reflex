@@ -122,6 +122,13 @@ export const findElement = attributes => {
       if (key === 'values') continue
       if (key === 'checked') continue
       if (key === 'selected') continue
+      if (key === 'data-controller' && attributes[key] === 'stimulus-reflex')
+        continue
+      if (
+        key === 'data-action' &&
+        attributes[key].includes('stimulus-reflex#__perform')
+      )
+        continue
       if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue
       selectors.push(`[${key}="${attributes[key]}"]`)
     }
