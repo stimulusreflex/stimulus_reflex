@@ -111,10 +111,10 @@ export const extractDataAttributes = element => {
 export const findElement = attributes => {
   attributes = attributes || {}
   let elements = []
+  let selectors = []
   if (attributes.id) {
     elements = document.querySelectorAll(`#${attributes.id}`)
   } else {
-    let selectors = []
     for (const key in attributes) {
       if (key.includes('.')) continue
       if (key === 'tagName') continue
@@ -133,11 +133,12 @@ export const findElement = attributes => {
       selectors.push(`[${key}="${attributes[key]}"]`)
     }
     try {
-      elements = document.querySelectorAll(selectors.join(''))
+      elements = document.querySelectorAll(selectors.join(','))
     } catch (error) {
       console.error(
         'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
+        `CSS selector used: ${selectors.join(',')}`,
         attributes
       )
     }
@@ -146,12 +147,14 @@ export const findElement = attributes => {
   if (elements.length === 0)
     console.warn(
       'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
+      `CSS selector used: ${selectors.join(',')}`,
       attributes
     )
 
   if (elements.length > 1)
     console.warn(
       'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
+      `CSS selector used: ${selectors.join(',')}`,
       attributes
     )
 
