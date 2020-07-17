@@ -8,7 +8,7 @@ function request (
   element
 ) {
   logs[reflexId] = new Date()
-  console.log(`\u2192 stimulus \u2192 ${target}`, {
+  console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
     stimulusControllerIdentifier,
@@ -21,7 +21,7 @@ function success (response, options = { halted: false }) {
   const { reflexId, target, last, broadcaster, updates } =
     event.detail.stimulusReflex || {}
 
-  console.log(`\u2190 reflex \u2190 ${target}`, {
+  console.log(`\u2193 reflex \u2193 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
@@ -35,7 +35,7 @@ function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
   const { reflexId, target, error, broadcaster } = detail.stimulusReflex || {}
-  console.error(`\u2190 reflex \u2190 ${target}`, {
+  console.error(`\u2193 reflex \u2193 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,
@@ -45,7 +45,7 @@ function error (response) {
   })
   if (detail.stimulusReflex.serverMessage.body)
     console.error(
-      `\u2190 reflex \u2190 ${target}`,
+      `\u2193 reflex \u2193 ${target}`,
       detail.stimulusReflex.serverMessage.body
     )
   delete logs[reflexId]
