@@ -10,7 +10,7 @@ module StimulusReflex
 
       document = Nokogiri::HTML(page_html)
       selectors = selectors.select { |s| document.css(s).present? }
-      updates = selectors.each_with_object({}) { |selector, memo|
+      selectors.each do |selector|
         html = document.css(selector).inner_html
         cable_ready[stream_name].morph(
           selector: selector,
@@ -22,10 +22,8 @@ module StimulusReflex
             broadast_type: to_sym
           })
         )
-        memo[selector] = html.truncate(80)
-      }
+      end
       cable_ready.broadcast
-      broadcast_message subject: "success", data: data.merge(updates: updates)
     end
 
     def to_sym

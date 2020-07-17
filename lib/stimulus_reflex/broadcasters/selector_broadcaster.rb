@@ -3,7 +3,6 @@
 module StimulusReflex
   class SelectorBroadcaster < Broadcaster
     def broadcast(_, data = {})
-      all_updates = {}
       morphs.each do |morph|
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
@@ -33,12 +32,10 @@ module StimulusReflex
               })
             )
           end
-          all_updates[selector] = html.truncate(80)
         end
       end
 
       cable_ready.broadcast
-      broadcast_message subject: "success", data: data.merge(updates: all_updates)
       morphs.clear
     end
 

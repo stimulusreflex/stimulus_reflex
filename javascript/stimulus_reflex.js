@@ -359,6 +359,38 @@ if (!document.stimulusReflexInitialized) {
     })
   })
 
+  // Trigger success and after lifecycle methods from before events (before-morph, before-inner-html) to ensure we can find a reference
+  // to the source element in case it gets removed from the DOM via morph.
+  // This is safe because the server side reflex completed successfully.
+  const beforeDOMUpdateHandler = event => {
+    const { selector, stimulusReflex } = event.detail || {}
+    if (!stimulusReflex) return
+    const { reflexId, attrs, last } = stimulusReflex
+    const element = findElement(attrs)
+    const promise = promises[reflexId]
+
+    if (!last) return
+
+    const response = {
+      element,
+      event,
+      morphMode: promise && promise.morphMode,
+      data: promise && promise.data
+    }
+
+    if (promise) {
+      delete promises[reflexId]
+      promise.resolve(response)
+    }
+
+    dispatchLifecycleEvent('success', element)
+    if (debugging) Log.success(response)
+  }
+  document.addEventListener(
+    'cable-ready:before-inner-html',
+    beforeDOMUpdateHandler
+  )
+  document.addEventListener('cable-ready:before-morph', beforeDOMUpdateHandler)
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
