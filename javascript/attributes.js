@@ -111,10 +111,10 @@ export const extractDataAttributes = element => {
 export const findElement = attributes => {
   attributes = attributes || {}
   let elements = []
+  let selectors = []
   if (attributes.id) {
     elements = document.querySelectorAll(`#${attributes.id}`)
   } else {
-    let selectors = []
     for (const key in attributes) {
       if (key.includes('.')) continue
       if (key === 'tagName') continue
@@ -124,10 +124,7 @@ export const findElement = attributes => {
       if (key === 'selected') continue
       if (key === 'data-controller' && attributes[key] === 'stimulus-reflex')
         continue
-      if (
-        key === 'data-action' &&
-        attributes[key].includes('stimulus-reflex#__perform')
-      )
+      if (key === 'data-action' && attributes[key].includes('#__perform'))
         continue
       if (!Object.prototype.hasOwnProperty.call(attributes, key)) continue
       selectors.push(`[${key}="${attributes[key]}"]`)
@@ -138,7 +135,7 @@ export const findElement = attributes => {
       console.error(
         'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
         error,
-        attributes
+        { 'CSS selector': selectors.join(''), attributes }
       )
     }
   }
@@ -146,13 +143,13 @@ export const findElement = attributes => {
   if (elements.length === 0)
     console.warn(
       'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
-      attributes
+      { 'CSS selector': selectors.join(''), attributes }
     )
 
   if (elements.length > 1)
     console.warn(
       'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
-      attributes
+      { 'CSS selector': selectors.join(''), attributes }
     )
 
   return elements.length === 1 ? elements[0] : null
