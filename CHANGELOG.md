@@ -11,6 +11,7 @@
 
 **Merged pull requests:**
 
+- Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
 - Update deployment docs after the official AnyCable 1.0 release [\#267](https://github.com/hopsoft/stimulus_reflex/pull/267) ([rmacklin](https://github.com/rmacklin))
 
@@ -319,6 +320,10 @@
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
+**Fixed bugs:**
+
+- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
+
 **Closed issues:**
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/hopsoft/stimulus_reflex/issues/127)
@@ -339,10 +344,6 @@
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
-
-**Fixed bugs:**
-
-- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
@@ -478,7 +479,6 @@
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
 - Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
-- Updated Minimal Javascript Example in README.md [\#47](https://github.com/hopsoft/stimulus_reflex/pull/47) ([kobaltz](https://github.com/kobaltz))
 - Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
@@ -505,6 +505,7 @@
 **Implemented enhancements:**
 
 - Provide before/after callbacks for calls delegated to server side Stimulus controllers [\#4](https://github.com/hopsoft/stimulus_reflex/issues/4)
+- Updated Minimal Javascript Example in README.md [\#47](https://github.com/hopsoft/stimulus_reflex/pull/47) ([kobaltz](https://github.com/kobaltz))
 - Setup StimulusReflex controller callbacks [\#45](https://github.com/hopsoft/stimulus_reflex/pull/45) ([hopsoft](https://github.com/hopsoft))
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
