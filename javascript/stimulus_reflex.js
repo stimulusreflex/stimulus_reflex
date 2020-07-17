@@ -165,8 +165,7 @@ const extendStimulusController = controller => {
         promises[reflexId] = {
           resolve,
           reject,
-          data,
-          events: {}
+          data
         }
       })
       if (debugging) promise.catch(() => {}) // noop default catch
@@ -360,47 +359,16 @@ if (!document.stimulusReflexInitialized) {
     })
   })
 
-  // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
-  // to the source element in case it gets removed from the DOM via morph.
-  // This is safe because the server side reflex completed successfully.
-  document.addEventListener('cable-ready:before-morph', event => {
-    const { selector, stimulusReflex } = event.detail || {}
-    if (!stimulusReflex) return
-    const { reflexId, attrs, last } = stimulusReflex
-    const element = findElement(attrs)
-    const promise = promises[reflexId]
-
-    if (promise) promise.events[selector] = event
-
-    if (!last) return
-
-    const response = {
-      element,
-      event,
-      morphMode: promise && promise.morphMode,
-      data: promise && promise.data,
-      events: promise && promise.events
-    }
-
-    if (promise) {
-      delete promises[reflexId]
-      promise.resolve(response)
-    }
-
-    dispatchLifecycleEvent('success', element)
-    if (debugging) Log.success(response)
-  })
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage, morphMode } =
-      event.detail.stimulusReflex || {}
+    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
     const subjects = {
       error: true,
       halted: true,
-      selector: true,
-      nothing: true
+      nothing: true,
+      success: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -409,8 +377,6 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      morphMode,
-      events: promise && promise.events,
       toString: () => body
     }
 

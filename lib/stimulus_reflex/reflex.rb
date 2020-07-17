@@ -43,12 +43,13 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :morph_mode, :permanent_attribute_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
-  delegate :connection, to: :channel
+  delegate :connection, :stream_name, to: :channel
   delegate :session, to: :request
+  delegate :broadcast, :broadcast_message, to: :broadcaster
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, stream_name: nil, permanent_attribute_name: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {})
     @channel = channel
     @url = url
     @element = element
@@ -56,7 +57,7 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @permanent_attribute_name = permanent_attribute_name
-    @morph_mode = StimulusReflex::PageMorphMode.new
+    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     self.params
   end
 
@@ -89,32 +90,15 @@ class StimulusReflex::Reflex
   def morph(selectors, html = "")
     case selectors
     when :page
-      raise StandardError.new("Cannot call :page morph after :#{@morph_mode.to_sym} morph") unless @morph_mode.page?
+      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
     when :nothing
-      raise StandardError.new("Cannot call :nothing morph after :selector morph") if @morph_mode.selector?
-      @morph_mode = StimulusReflex::NothingMorphMode.new
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
+      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
     else
-      raise StandardError.new("Cannot call :selector morph after :nothing morph") if @morph_mode.nothing?
-      @morph_mode = StimulusReflex::SelectorMorphMode.new
-      selectors = Hash[selectors, html] unless selectors.is_a?(Hash)
-      selectors.each do |selector, html|
-        html = html.to_s
-        html = "<span>#{html}</span>" unless html.include?("<")
-        enqueue_selector_broadcast selector, html
-      end
-      cable_ready.broadcast
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
+      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
+      broadcaster.morphs << [selectors, html]
     end
-  end
-
-  def enqueue_selector_broadcast(selector, html)
-    fragment = Nokogiri::HTML(html)
-    parent = fragment.at_css(selector)
-    cable_ready[channel.stream_name].morph(
-      selector: selector,
-      html: parent.present? ? parent.inner_html : fragment.to_html,
-      children_only: true,
-      permanent_attribute_name: permanent_attribute_name
-    )
   end
 
   def controller
