@@ -4,11 +4,11 @@ description: "How to update everything, nothing or something in-between \U0001F9
 
 # Morph Modes
 
-By default, StimulusReflex updates your entire page. After re-processing your controller action 🐢, rendering your view template 🐢, and sending the raw HTML to your browser 🐢, StimulusReflex uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
+By default, StimulusReflex updates your entire page. After re-processing your controller action, rendering your view template, and sending the raw HTML to your browser, StimulusReflex uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
 
 Most real-world applications are more sophisticated, though. You think of your site in terms of sections, components and content areas. We reason about our functionality with abstractions like _"sidebar"_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we need to surgically swap out one of those containers with something new. Sending the entire page to the client seems like massive overkill. We need to update just part of the DOM without disturbing the rest of the tree... _and we need it to happen in ~10ms_.
 
-Other times... we just need to hit a button that feeds a cat which may or may not still be in a box. 🐈
+Other times... we just need to hit a button which feeds a cat which may or may not still be alive in a steel box. 🐈
 
 It's _almost_ as if complex, real-world scenarios don't always fit the one-size-fits-all default full page Reflex.
 
@@ -117,7 +117,7 @@ This section describes functionality which will be available in StimulusReflex v
 You can try it out today if you install the v3.3.0.pre2 gem and npm package. 
 {% endhint %}
 
-This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, user `render` to regenerate a partial or even connect it to a ViewComponent.
+This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
 
 Updating a target element with a Selector morph does _not_ invoke ActionDispatch 🐇. There is no routing 🐇, your controller is not run 🐇, and the view template is not re-rendered 🐇. This means that if your content is properly fragment cached, you should see round-trip updates in **10-15ms**... which is a nice change from the before times.
 
