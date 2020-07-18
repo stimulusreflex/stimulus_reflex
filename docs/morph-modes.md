@@ -378,7 +378,7 @@ The key strategy when working with Nothing morphs is to **avoid blocking calls a
 
 In a sense, Nothing morphs are _yin_ to CableReady's _yang_. A Reflex conveys user intent to the server, and a broadcast is the vehicle for server intent to be realized on the client, completing the circle. ☯️
 
-#### I can't take the suspence. How can I capture this raw power for myself?
+#### I can't take the suspense. How can I capture this raw power for myself?
 
 It's wickedly hard... but with practice, you'll be able to do it, too:
 
