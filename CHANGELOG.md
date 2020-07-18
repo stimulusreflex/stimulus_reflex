@@ -200,6 +200,7 @@
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
+- Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
@@ -227,7 +228,6 @@
 
 - prettier-standard: include all js files in the project [\#177](https://github.com/hopsoft/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Remove implicit permanent for text inputs [\#176](https://github.com/hopsoft/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
-- Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/hopsoft/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
 - Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
 
