@@ -17,6 +17,11 @@ A thousand times, _yes_.
 * Reflex action: a method in a Reflex class, called in response to activity in the browser. It has access to several special accessors containing all of the Reflex controller element's attributes
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
+* Morph Modes: the three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morph Modes](https://docs.stimulusreflex.com/morph-modes) page for more
+
+#### Looking for the way to update just sections of the DOM?
+
+{% page-ref page="morph-modes.md" %}
 
 ## What's the deal with CableReady?
 
@@ -118,12 +123,14 @@ Behind the scenes, when you use declarative Reflex calls via `data-reflex` attri
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
-this.stimulate(string target, [DOMElement element], ...[JSONObject argument])
+this.stimulate(string target, [DOMElement element], [Object options], ...[JSONObject argument])
 ```
 
 **target** \[required\] \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "Example\#increment".
 
 **element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
+
+**options** \[optional\]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors** or **attrs**. Can be used to override the ID of a given Reflex or override the selector\(s\) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
 
 **argument** \[optional\]: a **splat** of JSON-compliant Javascript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
 

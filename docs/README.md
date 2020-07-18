@@ -18,6 +18,18 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
  [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
+{% hint style="info" %}
+Exciting news: the wait for two of the most requested features is almost over.  
+v3.3 will introduce the concept of **Morph Modes** to StimulusReflex:
+
+**Selector** morphs allow you to intelligently update target elements in your DOM.  
+**Nothing** morphs provide a lightning-fast, RPC mechanism to launch ActiveJobs.
+
+You can try for yourself **right now**. Just update to the preview v3.3.0.pre2 gem and npm package, and find all of the documentation and examples behind the link below.
+{% endhint %}
+
+{% page-ref page="morph-modes.md" %}
+
 ## Why should I use StimulusReflex?
 
 Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
