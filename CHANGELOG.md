@@ -181,6 +181,7 @@
 - Stimulate without a reflex target [\#179](https://github.com/hopsoft/stimulus_reflex/issues/179)
 - Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
 - Replace camelize with homegrown version [\#184](https://github.com/hopsoft/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
+- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
@@ -207,7 +208,6 @@
 **Implemented enhancements:**
 
 - TypeScript typing support [\#152](https://github.com/hopsoft/stimulus_reflex/issues/152)
-- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 
 **Fixed bugs:**
 
