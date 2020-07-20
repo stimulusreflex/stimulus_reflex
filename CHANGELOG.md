@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre2...HEAD)
+
+**Merged pull requests:**
+
+- Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre1...v3.3.0.pre2)
