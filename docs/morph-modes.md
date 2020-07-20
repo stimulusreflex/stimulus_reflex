@@ -138,7 +138,7 @@ Behold! For this is the `foo` partial. It is an example of perfection:
 {% code title="\_foo.html.erb" %}
 ```markup
 <div id="foo">
-  <span class="question"><%= message %></span>
+  <span class="spa"><%= message %></span>
 </div>
 ```
 {% endcode %}

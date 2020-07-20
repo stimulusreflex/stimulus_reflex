@@ -22,8 +22,9 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 Exciting news: the wait for two of the most requested features is almost over.  
 v3.3 will introduce the concept of **Morph Modes** to StimulusReflex:
 
-**Selector** morphs allow you to intelligently update target elements in your DOM.  
-**Nothing** morphs provide a lightning-fast, RPC mechanism to launch ActiveJobs.
+**Selector** morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials and ViewComponents.
+
+**Nothing** morphs provide a lightning-fast RPC mechanism to launch ActiveJobs and emit signals to external processes.
 
 You can try for yourself **right now**. Just update to the preview v3.3.0.pre2 gem and npm package, and find all of the documentation and examples behind the link below.
 {% endhint %}
