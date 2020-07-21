@@ -100,9 +100,9 @@ const extendStimulusController = controller => {
       if (
         args[0] &&
         typeof args[0] == 'object' &&
-        Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'reflexId'].includes(key)
-        )
+        Object.keys(args[0])
+          .filter(key => ['attrs', 'selectors', 'reflexId'].includes(key))
+          .includes(true)
       ) {
         const opts = args.shift()
         Object.keys(opts).forEach(o => (options[o] = opts[o]))
