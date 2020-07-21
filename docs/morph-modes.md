@@ -188,6 +188,12 @@ If ViewComponents are your thing, we have you covered:
 morph "#foo", ApplicationController.render(FooComponent.new(message: "React is making your muscles sore."))
 ```
 
+{% hint style="success" %}
+When you're using `morph` in a production application, it's a good habit to use the controller that is associated with the thing you're rendering, just as way to remind your future self which resource you're operating on.
+
+If you're rendering the `users/profile` partial, you might consider using `UsersController.render` instead of `ApplicationController.render` so that in six months, you really can feel smarter.
+{% endhint %}
+
 The `foo` partial is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
 
 * it has a **single** top-level container element with the same CSS selector as the target

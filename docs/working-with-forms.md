@@ -74,6 +74,10 @@ export default class extends Controller {
 }
 ```
 
+#### A note about &lt;input type="file"&gt; fields
+
+At the time of this writing, forms that upload files are unsupported by StimulusReflex. We suggest that you design your UI in such a way that files can be uploaded directly. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
+
 ### Example: Auto-saving Posts with nested Comments
 
 We're going to build an example of StimulusReflex form handling for an **edit** action, starting with the ActiveRecord models for a classic Post with Comments relationship:
