@@ -119,7 +119,7 @@ You can try it out today if you install the v3.3.0.pre2 gem and npm package.
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
 
-Updating a target element with a Selector morph does _not_ invoke ActionDispatch 🐇. There is no routing 🐇, your controller is not run 🐇, and the view template is not re-rendered 🐇. This means that if your content is properly fragment cached, you should see round-trip updates in **10-15ms**... which is a nice change from the before times.
+Updating a target element with a Selector morph does _not_ invoke ActionDispatch. There is no routing, your controller is not run, and the view template is not re-rendered. This means that if your content is properly fragment cached, you should see round-trip updates in **10-15ms**... which is a nice change from the before times. 🐇
 
 #### First steps
 
@@ -252,17 +252,11 @@ What fun is morphing if you can't [stretch out a little](https://www.youtube.com
 ```ruby
 morph "#username": "hopsoft", "#notification_count": 5
 morph "#regrets"
-Net::HTTP.get("www.mocky.io", "/v2/5185415ba171ea3a00704eed?mocky-delay=3s")
-morph "#regrets", "Not taking better care of my muscles"
 ```
 
+You can call `morph` multiple times in your Reflex action method.
+
 You can use Ruby's implicit Hash syntax to update multiple selectors with one morph. These updates will all be sent as part of the same broadcast, and executed in the order they are defined. Any non-String values will be coerced into Strings. Passing no html argument is equivalent to `""`.
-
-You can call `morph` multiple times in your Reflex action method. Morphs fire synchronously, in the order that they appear. You can even morph the same target element multiple times in one Reflex, if your state data has changed.
-
-{% hint style="success" %}
-One clever use of this technique is to morph a container to display a spinner, call an API or access computationally intense results - which you cache for next time - and then replace the spinner with the new update... all in the same Reflex action.
-{% endhint %}
 
 ### Morphing Sanity Checklist
 
@@ -393,6 +387,28 @@ morph :nothing
 ```
 
 That's it. That's the entire API surface. 🙇
+
+### Multi-Stage Morphs
+
+You can morph the same target element multiple times in one Reflex by calling CableReady directly. One clever use of this technique is to morph a container to display a spinner, call an API or access computationally intense results - which you cache for next time - and then replace the spinner with the new update... all in the same Reflex action.
+
+```ruby
+morph :nothing
+cable_ready[stream_name].morph { spinner... }
+cable_ready.broadcast
+# long running work
+cable_ready[stream_name].morph { progress update... }
+cable_ready.broadcast
+# long running work
+cable_ready[stream_name].morph { final update... }
+cable_ready.broadcast
+```
+
+{% hint style="info" %}
+Never, ever call `sleep` in a production application. It puts your process into an inactive state, effectively hanging your application. Instead, if you need to delay in real time, call out to a mock API that offers a custom response delay.
+
+`Net::HTTP.get("www.mocky.io", "/v2/5185415ba171ea3a00704eed?mocky-delay=3s")`
+{% endhint %}
 
 ### ActiveJob Example
 
