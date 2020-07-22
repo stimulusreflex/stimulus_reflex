@@ -182,6 +182,12 @@ yelling = element.value.upcase
 morph "#foo", ApplicationController.render(partial: "path/to/foo", locals: {message: yelling})
 ```
 
+If you're calling morph a lot, you might consider delegating the render to ApplicationController at the top of your Reflex class. This will allow you to just call `render(partial)` and DRY up your code.
+
+```ruby
+delegate :render, to: ApplicationController
+```
+
 If ViewComponents are your thing, we have you covered:
 
 ```ruby
