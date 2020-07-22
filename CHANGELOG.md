@@ -198,7 +198,6 @@
 **Fixed bugs:**
 
 -  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
-- Allow other CableReady operations to perform [\#145](https://github.com/hopsoft/stimulus_reflex/pull/145) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -293,6 +292,10 @@
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
+
+**Fixed bugs:**
+
+- Allow other CableReady operations to perform [\#145](https://github.com/hopsoft/stimulus_reflex/pull/145) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
