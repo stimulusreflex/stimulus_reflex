@@ -111,6 +111,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre0...v3.2.2.pre1)
 
+**Implemented enhancements:**
+
+- reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
+
 **Fixed bugs:**
 
 - Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
@@ -128,7 +132,6 @@
 
 - Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
-- reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
 - Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
 - Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Map hashes in incoming arguments using with\_indifferent\_access [\#203](https://github.com/hopsoft/stimulus_reflex/pull/203) ([jaredcwhite](https://github.com/jaredcwhite))
@@ -156,6 +159,7 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
+- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
 
@@ -236,7 +240,6 @@
 
 - prettier-standard: include all js files in the project [\#177](https://github.com/hopsoft/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Remove implicit permanent for text inputs [\#176](https://github.com/hopsoft/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
-- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 - Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/hopsoft/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
 - Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
@@ -442,6 +445,7 @@
 **Implemented enhancements:**
 
 - Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
+- Tweak generators [\#69](https://github.com/hopsoft/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -455,7 +459,6 @@
 
 - Create Rails generators [\#3](https://github.com/hopsoft/stimulus_reflex/issues/3)
 - Update installer [\#71](https://github.com/hopsoft/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
-- Tweak generators [\#69](https://github.com/hopsoft/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
 - add generators [\#67](https://github.com/hopsoft/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
