@@ -37,6 +37,8 @@ A thousand times, _yes_.
 
 CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
+{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
+
 ## Declaring a Reflex in HTML with data attributes
 
 It is frequently fastest to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
