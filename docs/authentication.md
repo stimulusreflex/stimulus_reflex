@@ -109,13 +109,7 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = find_verified_user
-    end
-
-    protected
-
-    def find_verified_user
-      env["warden"].user || reject_unauthorized_connection
+      self.current_user = env["warden"].user || reject_unauthorized_connection
     end
   end
 end
@@ -143,19 +137,7 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = find_verified_user
-    end
-
-    protected
-
-    def find_verified_user
-      user_id = request.session.fetch("user_id", nil)
-
-      if verified_user = User.find_by(id: user_id)
-        verified_user
-      else
-        reject_unauthorized_connection
-      end
+      self.current_user = User.find_by(id: request.session.fetch("user_id", nil)) || reject_unauthorized_connection
     end
   end
 end

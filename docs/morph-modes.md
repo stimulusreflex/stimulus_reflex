@@ -481,3 +481,7 @@ end
 
 This setup might seem like overkill to increment a number on your page, but you only need to setup the channel once, and then you really just need an ActiveJob class to make the magic happen. You can use these examples as starting points for applications of arbitrary sophistication and complexity.
 
+{% hint style="info" %}
+There's an amazing resource on best practices with ActiveJob and Sidekiq [available here](https://github.com/toptal/active-job-style-guide).
+{% endhint %}
+
