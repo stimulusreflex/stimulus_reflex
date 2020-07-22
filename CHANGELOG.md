@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
 
@@ -155,7 +156,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
-- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
 
@@ -236,6 +236,7 @@
 
 - prettier-standard: include all js files in the project [\#177](https://github.com/hopsoft/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Remove implicit permanent for text inputs [\#176](https://github.com/hopsoft/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
+- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 - Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/hopsoft/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
 - Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
