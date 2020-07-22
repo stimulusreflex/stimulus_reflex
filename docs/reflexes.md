@@ -68,7 +68,7 @@ You can use additional data attributes to pass variables as part of your Reflex 
 {% hint style="warning" %}
 One important thing to keep in mind is that after a Reflex operation morphs your page, all of your DOM elements are new. It's a **recommended best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. If no `id` is available, make sure that there is something unique and identifying about each element which calls a Reflex, even if you resort to something like `data-key="<%= rand %>"`.
 
-If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run. 
+If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
 {% endhint %}
 
 {% hint style="info" %}

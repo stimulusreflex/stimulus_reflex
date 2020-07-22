@@ -258,6 +258,22 @@ You can call `morph` multiple times in your Reflex action method.
 
 You can use Ruby's implicit Hash syntax to update multiple selectors with one morph. These updates will all be sent as part of the same broadcast, and executed in the order they are defined. Any non-String values will be coerced into Strings. Passing no html argument is equivalent to `""`.
 
+#### dom\_id
+
+One of the best perks of Rails naming conventions is that you can usually calculate what the name of an element or resource will be programmatically, so long as you know the class name and id.
+
+Inside a Reflex class, you might find yourself typing code like:
+
+```ruby
+morph "#user_#{user.id}", user.name
+```
+
+The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_id) helper is available inside Reflex classes and supports the optional prefix argument:
+
+```ruby
+morph dom_id(user), user.name
+```
+
 ### Morphing Sanity Checklist
 
 We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
