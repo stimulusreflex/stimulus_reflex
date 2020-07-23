@@ -188,6 +188,10 @@ If you're calling morph a lot, you might consider delegating the render to Appli
 delegate :render, to: ApplicationController
 ```
 
+{% hint style="success" %}
+For bonus DRY-ness, you could put the delegate statement in your ApplicationReflex and all of your Reflex classes would inherit this behavior by default.
+{% endhint %}
+
 If ViewComponents are your thing, we have you covered:
 
 ```ruby
