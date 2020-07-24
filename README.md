@@ -44,45 +44,51 @@
 <br />
 
 
-### 🎉 **You just discovered an exciting new way to build modern, reactive, real-time apps with Ruby on Rails.**
+### 🎉 **An exciting new way to build modern, reactive, real-time apps with Ruby on Rails.**
 
 StimulusReflex eliminates the complexity imposed by full-stack frontend frameworks.
 And, it's fast.
 
 It works seamlessly with the Rails tooling you already know and love.
 
-- [Server rendered HTML over the wire](https://guides.rubyonrails.org/action_view_overview.html)
-- [ERB, or your favorite templating engine](https://www.ruby-toolbox.com/categories/template_engines)
-- [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching)
-- [Stimulus](https://stimulusjs.org/)
-- [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
-- etc...
+- Server-rendered HTML, delivered in miliseconds over the wire via Websockets
+- ERB templates and partials, with first-class [ViewComponent](https://github.com/github/view_component) support
+- [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) and [ActiveJob](https://guides.rubyonrails.org/active_job_basics.html)
+- [StimulusJS](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
+- Built with [CableReady](https://www.youtube.com/watch?v=dPzv2qsj5L8), our secret power-move
 
-**The goal is to help small teams do big things with familiar tools.**
+**Our goal is to help small teams do big things with familiar tools.**
 
 This project strives to live up to the vision outlined in [The Rails Doctrine](https://rubyonrails.org/doctrine/).
 
 ## 📚 Docs
 
-- [Official Documentation](https://docs.stimulusreflex.com)
+- [StimulusReflex Documentation](https://docs.stimulusreflex.com)
+- [CableReady Documentation](https://cableready.stimulusreflex.com)
 
 ## ✨ Demos
 
-- https://youtu.be/F5hA79vKE_E
-- http://expo.stimulusreflex.com
+- [StimulusReflex Expo](http://expo.stimulusreflex.com) - part showcase, part learning tool
+- [Build a Twitter Clone in 10 Minutes](https://youtu.be/F5hA79vKE_E) (video)
+- [BoxDrop](https://dropbox-clone-rails.herokuapp.com/) - a Dropbox-inspired [concept demo](https://github.com/marcoroth/boxdrop/)
 
-## 💙 Community
+## 👩‍👩‍👧 Discord Community
 
-- [Discourse](https://stimulus-reflex.discourse.group) - long form async communication
-- [Discord](https://discord.gg/XveN625) - chat root
+Please join over 350 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+
+![](https://img.shields.io/discord/629472241427415060)
+
+Stop by #newcomers and introduce yourselves!
+
+## 💙 Support
+
+Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people to come with all relevant code to look at. A git repo is preferred, but Gists or posts on [Discourse](https://stimulus-reflex.discourse.group) are fine, too.
+
+Please note that we are not actively providing support on Stack Overflow. If you post there, we likely won't see it.
 
 ## 🚀 Install
 
-```sh
-bundle add stimulus_reflex && yarn add stimulus_reflex
-```
-
-Checkout the [documentation](https://docs.stimulusreflex.com) to continue!
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup).
 
 ## 🙏 Contributing
 
