@@ -90,9 +90,9 @@ You can specify multiple Reflex operations by separating them with a space:
 {% hint style="warning" %}
 There are two intentional limitations to this technique:
 
-All Reflex actions must target the same controller. In the above example, it won't work properly if the `mouseleave` points to `Dog#escape` because obviously, cats and dogs don't mix.
+All Reflex actions must target the same controller. In the above example, it won't work properly if the `mouseleave` points to `Dog#escape` because, obviously, cats and dogs don't mix.
 
-Also, you can only specify one action per event; this means `data-reflex="click->Cat#eat click->Cat#sleep"` will not work; the second action would be discarded.
+Also, you can only specify one action per event; this means `data-reflex="click->Cat#eat click->Cat#sleep"` will not work. In this example, the second action would be discarded.
 {% endhint %}
 
 ### Inheriting data-attributes from parent elements
