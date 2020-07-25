@@ -17,6 +17,11 @@ A thousand times, _yes_.
 * Reflex action: a method in a Reflex class, called in response to activity in the browser. It has access to several special accessors containing all of the Reflex controller element's attributes
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
+* Morph Modes: the three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morph Modes](https://docs.stimulusreflex.com/morph-modes) page for more
+
+#### Looking for the way to update just sections of the DOM?
+
+{% page-ref page="morph-modes.md" %}
 
 ## What's the deal with CableReady?
 
@@ -31,6 +36,8 @@ A thousand times, _yes_.
 ⬇️ CableReady is for **receiving** updates. 👽
 
 CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+
+{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
 ## Declaring a Reflex in HTML with data attributes
 
@@ -58,6 +65,12 @@ You can use additional data attributes to pass variables as part of your Reflex 
 >Create</button>
 ```
 
+{% hint style="warning" %}
+One important thing to keep in mind is that after a Reflex operation morphs your page, all of your DOM elements are new. It's a **recommended best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. If no `id` is available, make sure that there is something unique and identifying about each element which calls a Reflex, even if you resort to something like `data-key="<%= rand %>"`.
+
+If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
+{% endhint %}
+
 {% hint style="info" %}
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
 
@@ -76,12 +89,12 @@ You can specify multiple Reflex operations by separating them with a space:
 
 ### Inheriting data-attributes from parent elements
 
-You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-attributes="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
+You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
 
 ```markup
 <div data-post-id="<%= @post.id %>">
   <div data-category-id="<%= @category.id %>">
-    <button data-reflex="click->Comment#create" data-reflex-attributes="combined">Create</button>
+    <button data-reflex="click->Comment#create" data-reflex-dataset="combined">Create</button>
   </div>
 </div>
 ```
@@ -112,12 +125,14 @@ Behind the scenes, when you use declarative Reflex calls via `data-reflex` attri
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
-this.stimulate(string target, [DOMElement element], ...[JSONObject argument])
+this.stimulate(string target, [DOMElement element], [Object options], ...[JSONObject argument])
 ```
 
 **target** \[required\] \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "Example\#increment".
 
 **element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
+
+**options** \[optional\]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors** or **attrs**. Can be used to override the ID of a given Reflex or override the selector\(s\) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
 
 **argument** \[optional\]: a **splat** of JSON-compliant Javascript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
 
@@ -195,7 +210,48 @@ It's also possible to trigger this global Reflex by passing nothing but a browse
 
 ## Reflex Classes
 
-StimulusReflex makes the following properties available to the developer inside Reflex actions:
+Regardless of whether you use declared Reflexes in your HTML markup or call `stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `StimulusReflex::Reflex`.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+end
+```
+{% endcode %}
+
+Setting a declarative data-reflex="click-&gt;Example\#increment" will call the increment Reflex action in the Example Reflex class, before passing any instance variables along to your controller action and re-rendering your page. You can do anything you like in a Reflex action, including database updates, launching ActiveJobs and even initiating CableReady broadcasts.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  def increment
+    @counter += 1 # @counter will be available inside your controller action
+  end
+end
+```
+{% endcode %}
+
+{% hint style="warning" %}
+Note that there's no correlation between the Reflex class or Reflex action and the page \(or its controller\) that you're on. Your `users#show` page can call `Example#increment`.
+{% endhint %}
+
+It's very common to want to be able to access the current\_user or equivalent accessor inside your Reflex actions. The best way to achieve this is to delegate it from the ActionCable connection.
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+
+  def increment
+    current_user.counter.increment!
+  end
+end
+```
+{% endcode %}
+
+### Building your Reflex action
+
+The following properties available to the developer inside Reflex actions:
 
 * `connection` - the ActionCable connection
 * `channel` - the ActionCable channel
@@ -278,11 +334,11 @@ end
 
 ### Form parameters
 
-If the Reflex element is contained inside of a form element, `params` serializes the values of all input elements as an instance of `ActionController::Parameters` 
+If the Reflex element is contained inside of a form element, `params` serializes the values of all input elements as an instance of `ActionController::Parameters`
 
 You can access `params` directly in your Reflex action method and use it exactly as you do in a normal Rails controller. This is useful for model validations and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
-You can modify `params` in your `beforeReflex` callback using `element.reflexData` 
+You can modify `params` in your `beforeReflex` callback using `element.reflexData`
 
 ```javascript
 export default class extends ApplicationController {
@@ -302,7 +358,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 })
 ```
 
-You can find a full example for working with HTML forms on the Useful Patterns page.
+You can find a full example of form submission via Reflex on the Working With HTML Forms page.
 
 {% page-ref page="working-with-forms.md" %}
 

@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.2.3",
+  "version": "3.3.0-pre2",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -45,7 +45,7 @@
     "@babel/register": "^7.6.2",
     "assert": "^2.0.0",
     "jsdom": "^16.0.1",
-    "mocha": "^7.0.1",
+    "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0"
   }
 }

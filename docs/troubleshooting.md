@@ -101,6 +101,10 @@ Unfortunately, this is difficult to triage because it has yet to impact the Stim
 
 ## Anti-Patterns
 
+{% hint style="warning" %}
+Work in Progress!
+{% endhint %}
+
 ### \[Don't\] change the URL rendered by a reflex
 
 ### \[Don't\] call `stimulate()` in `connect()`

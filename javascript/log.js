@@ -8,7 +8,7 @@ function request (
   element
 ) {
   logs[reflexId] = new Date()
-  console.log(`\u2B95 ${target}`, {
+  console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
     stimulusControllerIdentifier,
@@ -17,27 +17,16 @@ function request (
 }
 
 function success (response, options = { halted: false }) {
-  const html = {}
-  const payloads = {}
-  const elements = {}
-  const { event, events } = response
-  const { reflexId, target, last } = event.detail.stimulusReflex || {}
+  const { event } = response
+  const { reflexId, target, last, broadcaster, updates } =
+    event.detail.stimulusReflex || {}
 
-  if (events) {
-    Object.keys(events).map(selector => {
-      elements[selector] = events[selector].detail.element
-      html[selector] = events[selector].detail.html
-      payloads[selector] = events[selector].detail.stimulusReflex
-    })
-  }
-
-  console.log(`\u2B05 ${target}`, {
+  console.log(`\u2193 reflex \u2193 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
-    elements,
-    payloads,
-    html
+    broadcaster,
+    updates
   })
   if (last) delete logs[reflexId]
 }
@@ -45,14 +34,20 @@ function success (response, options = { halted: false }) {
 function error (response) {
   const { event, element } = response || {}
   const { detail } = event || {}
-  const { reflexId, target, error } = detail.stimulusReflex || {}
-  console.error(`\u2B05 ${target}`, {
+  const { reflexId, target, error, broadcaster } = detail.stimulusReflex || {}
+  console.error(`\u2193 reflex \u2193 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     error,
+    broadcaster,
     payload: event.detail.stimulusReflex,
     element
   })
+  if (detail.stimulusReflex.serverMessage.body)
+    console.error(
+      `\u2193 reflex \u2193 ${target}`,
+      detail.stimulusReflex.serverMessage.body
+    )
   delete logs[reflexId]
 }
 

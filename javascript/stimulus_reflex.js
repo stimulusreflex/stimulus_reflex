@@ -14,6 +14,7 @@ import {
   extractElementDataset,
   findElement
 } from './attributes'
+import { extractReflexName } from './utils'
 
 const NOOP = () => {}
 
@@ -51,12 +52,14 @@ const createSubscription = controller => {
         received: data => {
           if (!data.cableReady) return
           if (data.operations.morph && data.operations.morph.length) {
-            const urls = Array.from(
-              new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-            )
-            if (urls.length !== 1 || urls[0] !== location.href) return
+            if (data.operations.morph[0].stimulusReflex) {
+              const urls = Array.from(
+                new Set(data.operations.morph.map(m => m.stimulusReflex.url))
+              )
+              if (urls.length !== 1 || urls[0] !== location.href) return
+            }
+            CableReady.perform(data.operations)
           }
-          CableReady.perform(data.operations)
         },
         connected: () => {
           actionCableSubscriptionActive = true
@@ -110,6 +113,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
+    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -127,11 +131,23 @@ const extendStimulusController = controller => {
       ) {
         return
       }
-      const attrs = extractElementAttributes(element)
+      const options = {}
+      if (
+        args[0] &&
+        typeof args[0] == 'object' &&
+        Object.keys(args[0]).filter(key =>
+          ['attrs', 'selectors', 'reflexId'].includes(key)
+        ).length
+      ) {
+        const opts = args.shift()
+        Object.keys(opts).forEach(o => (options[o] = opts[o]))
+      }
+      const attrs = options['attrs'] || extractElementAttributes(element)
+      const reflexId = options['reflexId'] || uuidv4()
+      let selectors = options['selectors'] || getReflexRoots(element)
+      if (typeof selectors == 'string') selectors = [selectors]
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
-      const selectors = getReflexRoots(element)
-      const reflexId = uuidv4()
       const data = {
         target,
         args,
@@ -139,9 +155,9 @@ const extendStimulusController = controller => {
         attrs,
         dataset,
         selectors,
+        reflexId,
         permanent_attribute_name:
-          stimulusApplication.schema.reflexPermanentAttribute,
-        reflexId: reflexId
+          stimulusApplication.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
 
@@ -187,8 +203,7 @@ const extendStimulusController = controller => {
         promises[reflexId] = {
           resolve,
           reject,
-          data,
-          events: {}
+          data
         }
       })
       if (debugging) promise.catch(NOOP)
@@ -261,7 +276,10 @@ const setupDeclarativeReflexes = debounce(() => {
         element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
       reflexes.forEach(reflex => {
-        const controller = allReflexControllers(stimulusApplication, element)[0]
+        const controller = findControllerByReflexString(
+          reflex,
+          allReflexControllers(stimulusApplication, element)
+        )
         let action
         if (controller) {
           action = `${reflex.split('->')[0]}->${
@@ -278,19 +296,44 @@ const setupDeclarativeReflexes = debounce(() => {
       })
       const controllerValue = attributeValue(controllers)
       const actionValue = attributeValue(actions)
-      if (controllerValue) {
+      if (
+        controllerValue &&
+        element.getAttribute(stimulusApplication.schema.controllerAttribute) !=
+          controllerValue
+      ) {
         element.setAttribute(
           stimulusApplication.schema.controllerAttribute,
           controllerValue
         )
       }
-      if (actionValue)
+      if (
+        actionValue &&
+        element.getAttribute(stimulusApplication.schema.actionAttribute) !=
+          actionValue
+      )
         element.setAttribute(
           stimulusApplication.schema.actionAttribute,
           actionValue
         )
     })
 }, 20)
+
+// Given a reflex string such as 'click->TestReflex#create' and a list of
+// controllers. It will find the matching controller based on the controller's
+// identifier. e.g. Given these controller identifiers ['foo', 'bar', 'test'],
+// it would select the 'test' controller.
+const findControllerByReflexString = (reflexString, controllers) => {
+  const controller = controllers.find(controller => {
+    if (!controller.identifier) return
+
+    return (
+      extractReflexName(reflexString).toLowerCase() ===
+      controller.identifier.toLowerCase()
+    )
+  })
+
+  return controller || controllers[0]
+}
 
 // compute the DOM element(s) which will be the morph root
 // use the data-reflex-root attribute on the reflex or the controller
@@ -355,25 +398,23 @@ if (!document.stimulusReflexInitialized) {
     })
   })
 
-  // Trigger success and after lifecycle methods from before-morph to ensure we can find a reference
+  // Trigger success and after lifecycle methods from before events (before-morph, before-inner-html) to ensure we can find a reference
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
-  document.addEventListener('cable-ready:before-morph', event => {
+  const beforeDOMUpdateHandler = event => {
     const { selector, stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs, last } = stimulusReflex
     const element = findElement(attrs)
     const promise = promises[reflexId]
 
-    if (promise) promise.events[selector] = event
-
     if (!last) return
 
     const response = {
       element,
       event,
-      data: promise && promise.data,
-      events: promise && promise.events
+      morphMode: promise && promise.morphMode,
+      data: promise && promise.data
     }
 
     if (promise) {
@@ -383,7 +424,12 @@ if (!document.stimulusReflexInitialized) {
 
     dispatchLifecycleEvent('success', element)
     if (debugging) Log.success(response)
-  })
+  }
+  document.addEventListener(
+    'cable-ready:before-inner-html',
+    beforeDOMUpdateHandler
+  )
+  document.addEventListener('cable-ready:before-morph', beforeDOMUpdateHandler)
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
@@ -391,7 +437,9 @@ if (!document.stimulusReflexInitialized) {
     const promise = promises[reflexId]
     const subjects = {
       error: true,
-      halted: true
+      halted: true,
+      nothing: true,
+      success: true
     }
 
     if (element && subject == 'error') element.reflexError = body
@@ -400,7 +448,6 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data,
       element,
       event,
-      events: promise && promise.events,
       toString: () => body
     }
 
@@ -420,6 +467,12 @@ if (!document.stimulusReflexInitialized) {
       switch (subject) {
         case 'error':
           Log.error(response)
+          break
+        case 'selector':
+          Log.success(response)
+          break
+        case 'nothing':
+          Log.success(response)
           break
         case 'halted':
           Log.success(response, { halted: true })

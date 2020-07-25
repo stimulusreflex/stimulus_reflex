@@ -32,3 +32,9 @@ export const debounce = (callback, delay = 250) => {
     }, delay)
   }
 }
+
+export const extractReflexName = reflexString => {
+  const match = reflexString.match(/(?:.*->)?(.*?)(?:Reflex)?#/)
+
+  return match ? match[1] : ''
+}

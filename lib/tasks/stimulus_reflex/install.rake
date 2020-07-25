@@ -11,11 +11,16 @@ namespace :stimulus_reflex do
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
 
-    filepath = if File.exist? Rails.root.join("app/javascript/controllers/index.js")
-      Rails.root.join("app/javascript/controllers/index.js")
-    else
-      Rails.root.join("app/javascript/packs/application.js")
-    end
+    filepath = %w[
+      app/javascript/controllers/index.js
+      app/javascript/controllers/index.ts
+      app/javascript/packs/application.js
+      app/javascript/packs/application.ts
+    ]
+      .select { |path| File.exist?(path) }
+      .map { |path| Rails.root.join(path) }
+      .first
+
     puts "Updating #{filepath}"
     lines = File.open(filepath, "r") { |f| f.readlines }
 
