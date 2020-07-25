@@ -8,6 +8,16 @@
 
 - First argument of type "object" in this.stimulate\(\) will always be assigned to options. [\#278](https://github.com/hopsoft/stimulus_reflex/issues/278)
 
+**Closed issues:**
+
+- jQuery Plugins [\#246](https://github.com/hopsoft/stimulus_reflex/issues/246)
+- ActiveStorage variants performance [\#242](https://github.com/hopsoft/stimulus_reflex/issues/242)
+- Unnecessary body update after text\_content [\#186](https://github.com/hopsoft/stimulus_reflex/issues/186)
+- Warn about enabling Rails after running stimulus reflex' initializer [\#185](https://github.com/hopsoft/stimulus_reflex/issues/185)
+- Integration tests for stimulus-reflex [\#162](https://github.com/hopsoft/stimulus_reflex/issues/162)
+- Clearer explanation of quickstart example without javascript.  [\#149](https://github.com/hopsoft/stimulus_reflex/issues/149)
+- Webpack compilation fails with rails/webpacker 3.6 [\#83](https://github.com/hopsoft/stimulus_reflex/issues/83)
+
 **Merged pull requests:**
 
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
