@@ -15,8 +15,14 @@ You can find additional information for supporting Rails 5.2+ below.
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails projects.
 
 ```bash
+# For new projects
 rails new myproject --webpack=stimulus
 cd myproject
+
+# For existing projects
+bundle exec rails webpacker:install:stimulus
+
+# For both project types
 bundle add stimulus_reflex
 bundle exec rails stimulus_reflex:install
 ```
