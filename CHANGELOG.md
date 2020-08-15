@@ -10,6 +10,10 @@
 
 **Closed issues:**
 
+- Issue with Stimulus Reflex and ViewComponent [\#284](https://github.com/hopsoft/stimulus_reflex/issues/284)
+- controller inheritance does not seem to work [\#283](https://github.com/hopsoft/stimulus_reflex/issues/283)
+- Cannot read property 'schema' of undefined [\#282](https://github.com/hopsoft/stimulus_reflex/issues/282)
+- Reflex on form submit does not get parameter from input\[type="file"\] [\#277](https://github.com/hopsoft/stimulus_reflex/issues/277)
 - jQuery Plugins [\#246](https://github.com/hopsoft/stimulus_reflex/issues/246)
 - ActiveStorage variants performance [\#242](https://github.com/hopsoft/stimulus_reflex/issues/242)
 - Unnecessary body update after text\_content [\#186](https://github.com/hopsoft/stimulus_reflex/issues/186)
@@ -20,6 +24,7 @@
 
 **Merged pull requests:**
 
+- Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -90,7 +95,6 @@
 - Bump rack from 2.2.2 to 2.2.3 [\#244](https://github.com/hopsoft/stimulus_reflex/pull/244) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
-- Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
@@ -111,6 +115,7 @@
 
 **Merged pull requests:**
 
+- Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
