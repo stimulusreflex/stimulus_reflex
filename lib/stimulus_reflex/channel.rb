@@ -40,7 +40,7 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         else
           logger.error "\e[31m#{body}\e[0m"
         end
-        return 
+        return
       end
 
       if reflex.halted?
