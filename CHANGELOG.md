@@ -7,9 +7,11 @@
 **Fixed bugs:**
 
 - First argument of type "object" in this.stimulate\(\) will always be assigned to options. [\#278](https://github.com/hopsoft/stimulus_reflex/issues/278)
+- Allow morphs to run before triggering success/after [\#286](https://github.com/hopsoft/stimulus_reflex/pull/286) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
+- Reflex ignores turbolinks cached pages [\#288](https://github.com/hopsoft/stimulus_reflex/issues/288)
 - Issue with Stimulus Reflex and ViewComponent [\#284](https://github.com/hopsoft/stimulus_reflex/issues/284)
 - controller inheritance does not seem to work [\#283](https://github.com/hopsoft/stimulus_reflex/issues/283)
 - Cannot read property 'schema' of undefined [\#282](https://github.com/hopsoft/stimulus_reflex/issues/282)
@@ -95,6 +97,7 @@
 - Bump rack from 2.2.2 to 2.2.3 [\#244](https://github.com/hopsoft/stimulus_reflex/pull/244) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
+- Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
@@ -115,7 +118,6 @@
 
 **Merged pull requests:**
 
-- Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
@@ -490,10 +492,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.0...v2.1.1)
 
-**Fixed bugs:**
-
-- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
-
 ## [v2.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.0) (2019-10-07)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.0.2...v2.1.0)
@@ -513,6 +511,10 @@
 - Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
 - Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
+
+**Fixed bugs:**
+
+- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
