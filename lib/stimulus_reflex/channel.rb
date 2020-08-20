@@ -32,9 +32,15 @@ class StimulusReflex::Channel < ActionCable::Channel::Base
         reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, permanent_attribute_name: permanent_attribute_name, params: params)
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
-        reflex&.rescue_with_handler(invoke_error)
         message = exception_message_with_backtrace(invoke_error)
-        return reflex.broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}", data: data
+        body = "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}"
+        if reflex
+          reflex.rescue_with_handler(invoke_error)
+          reflex.broadcast_message subject: "error", body: body, data: data
+        else
+          logger.error "\e[31m#{body}\e[0m"
+        end
+        return
       end
 
       if reflex.halted?
