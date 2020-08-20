@@ -26,6 +26,7 @@
 
 **Merged pull requests:**
 
+- Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 - Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
@@ -492,6 +493,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.0...v2.1.1)
 
+**Fixed bugs:**
+
+- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
+
 ## [v2.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.0) (2019-10-07)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.0.2...v2.1.0)
@@ -511,10 +516,6 @@
 - Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
 - Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
-
-**Fixed bugs:**
-
-- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
