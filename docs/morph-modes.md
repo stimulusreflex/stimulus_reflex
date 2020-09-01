@@ -105,6 +105,12 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 ```
 {% endcode %}
 
+{% hint style="warning" %}
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.  
+  
+¯\\_\(ツ\)\_/¯
+{% endhint %}
+
 {% hint style="danger" %}
 Beware of Ruby gems that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. Gems like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible, so that you can wrap the content with `data-reflex-permanent`.
 {% endhint %}
