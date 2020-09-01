@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...HEAD)
+
+**Closed issues:**
+
+- data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+
 ## [v3.3.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre3) (2020-08-31)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre2...v3.3.0.pre3)
