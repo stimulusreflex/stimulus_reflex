@@ -284,6 +284,10 @@ The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_i
 morph dom_id(user), user.name
 ```
 
+#### default\_url\_options
+
+If you are planning to render a partial that uses view helpers to create URLs, you will need to [set up your environment configuration files](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment) to make the live site metadata available inside your Reflexes.
+
 ### Morphing Sanity Checklist
 
 We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.

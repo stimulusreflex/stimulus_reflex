@@ -311,3 +311,30 @@ end
 ```
 {% endcode %}
 
+## Hybrid Anonymous + Authenticated Connections
+
+When you are building an application which has authenticated users, but you wish to provide Reflex-powered functionality to all users of your site, you can combine multiple authentication strategies.
+
+Here is an ActionCable connection class based on encrypted session cookies and Devise logins:
+
+{% code title="app/channels/application\_cable/connection.rb" %}
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+    identified_by :session_id
+
+    def connect
+      self.current_user = env["warden"].user
+      self.session_id = cookies.encrypted[:session_id]
+      reject_unauthorized_connection unless self.current_user || self.session_id
+    end
+  end
+end
+```
+{% endcode %}
+
+This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to set the encrypted cookie value in your `application_controller.rb` and delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
+
+Note that this approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user content. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
+

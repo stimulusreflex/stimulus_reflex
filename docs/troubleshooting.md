@@ -171,7 +171,11 @@ For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible fo
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? You might need to [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
+Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
+{% endhint %}
+
+{% hint style="info" %}
+Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`?  You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
 {% endhint %}
 
 {% hint style="info" %}

@@ -27,7 +27,7 @@ Then configure your environments to suit your caching strategy and pool size:
 
 {% code title="config/environments/production.rb" %}
 ```ruby
-config.cache_store = :redis_cache_store, {url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
+config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
 config.session_store :cache_store,
   key: "_session",
   compress: true,
@@ -41,6 +41,54 @@ Another powerful option for session storage is to use the [activerecord-session\
 Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weigh this against the additional strain this will put on your database server, especially in high-traffic scenarios.
 
 Regardless of which option you choose, keep an eye on your connection pools and memory usage.
+
+## Deployment on Heroku
+
+We have seen deployments where combining cache and session storage functions into one Redis database has led to strange behavior, such as forgetting Rails sessions after 10-15 minutes. Luckily, we have an excellent workaround based on splitting up caching and session functions into separate Redis instances.
+
+Heroku allows you to provision multiple Redis instances to your application, both via the [addon marketplace](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
+
+Install the `redis-session-store` gem into your project, and then in your `production.rb` you can change your session store:
+
+{% code title="config/environments/production.rb" %}
+```ruby
+config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
+
+config.session_store :redis_session_store, {
+  key: Rails.application.credentials.app_session_key,
+  serializer: :json,
+  redis: {
+    expire_after: 1.year,
+    ttl: 1.year,
+    key_prefix: "app:session:",
+    url: ENV.fetch("HEROKU_REDIS_MAROON_URL"),
+  }
+```
+{% endcode %}
+
+Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+
+## Set your `default_url_options` for each environment
+
+When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
+
+{% tabs %}
+{% tab title="Development" %}
+{% code title="config/environments/development.rb" %}
+```ruby
+config.action_controller.default_url_options = {host: "localhost", port: 3000}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Production" %}
+{% code title="config/environments/production.rb" %}
+```ruby
+config.action_controller.default_url_options = {host: "stimulusreflex.com"}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ## AnyCable
 
