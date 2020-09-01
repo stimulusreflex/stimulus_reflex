@@ -114,7 +114,7 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre2 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
 {% endhint %}
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
@@ -389,7 +389,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre2 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
 {% endhint %}
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.

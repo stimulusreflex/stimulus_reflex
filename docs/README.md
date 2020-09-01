@@ -26,7 +26,7 @@ v3.3 will introduce the concept of **Morph Modes** to StimulusReflex:
 
 **Nothing** morphs provide a lightning-fast RPC mechanism to launch ActiveJobs and emit signals to external processes.
 
-You can try for yourself **right now**. Just update to the preview v3.3.0.pre2 gem and npm package, and find all of the documentation and examples behind the link below.
+You can try for yourself **right now**. Just update to the preview v3.3.0.pre3 gem and npm package, and find all of the documentation and examples behind the link below.
 {% endhint %}
 
 {% page-ref page="morph-modes.md" %}
