@@ -121,8 +121,8 @@ Now, let's create the markup for our form, which will submit to the `Post` Refle
   <% end %>
 
   <div>
-    <%= f.label :name %>
-    <%= f.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
+    <%= form.label :name %>
+    <%= form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
   </div>
 
   <%= form.fields_for :comments, @post.comments do |comment_form| %>
