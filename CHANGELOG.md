@@ -7,6 +7,11 @@
 **Closed issues:**
 
 - data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
+
+**Merged pull requests:**
+
+- Fixed typo in sample code. [\#296](https://github.com/hopsoft/stimulus_reflex/pull/296) ([jclarke](https://github.com/jclarke))
 
 ## [v3.3.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre3) (2020-08-31)
 
