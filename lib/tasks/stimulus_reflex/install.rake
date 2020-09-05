@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require_relative "../../stimulus_reflex/version"
 
 namespace :stimulus_reflex do
   desc "Install StimulusReflex in this application"
   task install: :environment do
     system "bundle exec rails webpacker:install:stimulus"
-    system "yarn add stimulus_reflex"
+    gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
+    system "yarn add stimulus_reflex@#{gem_version}"
 
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
