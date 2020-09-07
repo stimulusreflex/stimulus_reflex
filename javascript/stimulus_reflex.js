@@ -133,7 +133,7 @@ const extendStimulusController = controller => {
       element.reflexController = this
       element.reflexData = data
 
-      dispatchLifecycleEvent('before', element)
+      dispatchLifecycleEvent('before', element, reflexId)
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
@@ -168,6 +168,9 @@ const extendStimulusController = controller => {
           data
         }
       })
+
+      promise.reflexId = reflexId
+
       if (debugging) promise.catch(() => {}) // noop default catch
       return promise
     },
@@ -384,7 +387,7 @@ if (!document.stimulusReflexInitialized) {
         promise.resolve(response)
       }
 
-      dispatchLifecycleEvent('success', element)
+      dispatchLifecycleEvent('success', element, reflexId)
       if (debugging) Log.success(response)
     })
   }
