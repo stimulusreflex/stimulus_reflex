@@ -130,11 +130,11 @@ Now, let's create the markup for our form, which will submit to the `Post` Refle
     <%= comment_form.label :name %>
     <%= comment_form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
   <% end %>
-  
+
   <%= link_to "New comment", "#", data: { reflex: "click->PostReflex#build_comment" } %>
 
   <%= form.submit %>
-  
+
 <% end %>
 ```
 

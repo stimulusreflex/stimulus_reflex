@@ -225,6 +225,20 @@ This means that you can now call `morph` with a more terse syntax:
 morph "#foo", render(partial: "path/to/foo")
 ```
 
+### Speed up page morphs
+
+Depending on what parts of your DOM are being morphed, it's possible that you don't need to render your layout template every time you run a Reflex. If your menus and sidebar are mostly static, you might want to experiment with constraining your update to just the template for the current action.
+
+First, check to see if the current controller action is executing inside of a Reflex:
+
+```ruby
+if @stimulus_reflex
+  render layout: false
+end
+```
+
+Then make sure that you're setting a `data-reflex-root` attribute that points to same DOM element where your template begins. Otherwise StimulusReflex will look for the `body` tag and not know what to do.
+
 ### Internationalization
 
 If you're building an application for an international audience, you might want to your morphed partials to be aware of the current user's location. Set your `I18n.locale` using a helper that you can define in your `ApplicationReflex`.
