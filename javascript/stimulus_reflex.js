@@ -40,20 +40,34 @@ const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
+  let totalOperations = 0
+  let reflexId
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
     actionCableConsumer.subscriptions.create(channel, {
       received: data => {
         if (!data.cableReady) return
-        if (data.operations.morph && data.operations.morph.length) {
-          if (data.operations.morph[0].stimulusReflex) {
-            const urls = Array.from(
-              new Set(data.operations.morph.map(m => m.stimulusReflex.url))
-            )
-            if (urls.length !== 1 || urls[0] !== location.href) return
+        ;['morph', 'innerHtml'].forEach(operation => {
+          if (data.operations[operation] && data.operations[operation].length) {
+            if (data.operations[operation][0].stimulusReflex) {
+              const urls = Array.from(
+                new Set(
+                  data.operations[operation].map(m => m.stimulusReflex.url)
+                )
+              )
+              if (urls.length !== 1 || urls[0] !== location.href) return
+              totalOperations += data.operations[operation].length
+              reflexId = data.operations[operation][0].stimulusReflex.reflexId
+            }
           }
+        })
+
+        if (promises[reflexId]) {
+          promises[reflexId].totalOperations = totalOperations
+          promises[reflexId].completedOperations = 0
         }
+
         CableReady.perform(data.operations)
       }
     })
@@ -368,29 +382,28 @@ if (!document.stimulusReflexInitialized) {
   const beforeDOMUpdateHandler = event => {
     const { selector, stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
-    const { reflexId, attrs, last } = stimulusReflex
+    const { reflexId, attrs } = stimulusReflex
     const element = findElement(attrs)
     const promise = promises[reflexId]
 
-    if (!last) return
+    promise.completedOperations++
+    if (promise.completedOperations < promise.totalOperations) return
 
     const response = {
       element,
       event,
-      morphMode: promise && promise.morphMode,
       data: promise && promise.data
     }
 
-    setTimeout(() => {
-      if (promise) {
-        delete promises[reflexId]
-        promise.resolve(response)
-      }
+    if (promise) {
+      delete promises[reflexId]
+      promise.resolve(response)
+    }
 
-      dispatchLifecycleEvent('success', element, reflexId)
-      if (debugging) Log.success(response)
-    })
+    dispatchLifecycleEvent('success', element, reflexId)
+    if (debugging) Log.success(response)
   }
+
   document.addEventListener(
     'cable-ready:before-inner-html',
     beforeDOMUpdateHandler
@@ -427,7 +440,8 @@ if (!document.stimulusReflexInitialized) {
       }
     }
 
-    if (element && subjects[subject]) dispatchLifecycleEvent(subject, element)
+    if (element && subjects[subject])
+      dispatchLifecycleEvent(subject, element, reflexId)
 
     if (debugging) {
       switch (subject) {
