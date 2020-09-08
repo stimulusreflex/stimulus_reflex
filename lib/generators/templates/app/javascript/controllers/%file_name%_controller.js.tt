@@ -17,7 +17,7 @@ export default class extends ApplicationController {
    *   element - the element that triggered the reflex
    *             may be different than the Stimulus controller's this.element
    *
-   *   reflex - the name of the reflex e.g. "<%= class_name %>Reflex#example"
+   *   reflex - the name of the reflex e.g. "<%= class_name %>#example"
    *
    *   error - error message from the server
    */
