@@ -22,12 +22,17 @@ export default class extends ApplicationController {
   // }
 
   /* Reflex specific lifecycle methods.
-   * Use methods similar to this example to handle lifecycle concerns for a specific Reflex method.
-   * Using the lifecycle is optional, so feel free to delete these stubs if you don't need them.
+   * For every method defined in your Reflex's ruby object, a set of lifecycle methods become available
+   * in this javascript controller. These are optional so feel free to delete these stubs if you don't
+   * need them.
+   *
+   * Important:
+   * Make sure to add data-controller="<%= class_name %>" to your markup alongside
+   * data-reflex="<%= class_name %>#example" for the lifecycle methods to fire properly.
    *
    * Example:
    *
-   *   <a href="#" data-reflex="<%= class_name %>Reflex#example">Example</a>
+   *   <a href="#" data-reflex="<%= class_name %>#example" data-controller="<%= class_name %>">Example</a>
    *
    * Arguments:
    *
