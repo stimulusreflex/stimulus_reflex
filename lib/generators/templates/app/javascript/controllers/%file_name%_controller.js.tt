@@ -1,6 +1,6 @@
 import ApplicationController from './application_controller'
 
-/* This is the custom StimulusReflex controller for <%= class_name %>Reflex.
+/* This is the custom StimulusReflex controller for the <%= class_name %> reflex.
  * Learn more at: https://docs.stimulusreflex.com
  */
 export default class extends ApplicationController {
@@ -40,17 +40,20 @@ export default class extends ApplicationController {
    */
 
 <% if actions.empty? -%>
-  // beforeUpdate(element, reflex) {
-  //  element.innerText = 'Updating...'
+  // Assuming you create a "<%= class_name %>#dance" action in your Reflex class
+  // you'll be able to use the following lifecycle methods:
+
+  // beforeDance(element, reflex) {
+  //  element.innerText = 'Putting dance shoes on...'
   // }
 
-  // updateSuccess(element, reflex) {
-  //   element.innerText = 'Updated Successfully.'
+  // danceSuccess(element, reflex) {
+  //   element.innerText = 'Danced like no one was watching! Was someone watching?'
   // }
 
-  // updateError(element, reflex, error) {
-  //   console.error('updateError', error);
-  //   element.innerText = 'Update Failed!'
+  // danceError(element, reflex, error) {
+  //   console.error('danceError', error);
+  //   element.innerText = "Couldn't dance!"
   // }
 <% end -%>
 <% actions.each do |action| -%>
