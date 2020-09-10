@@ -49,7 +49,7 @@ Simply pass a comma-delimited list of CSS selectors. Each selector will retrieve
 StimulusReflex will decide which element's children to replace by evaluating three criteria in order:
 
 1. Is there a `data-reflex-root` on the element with the `data-reflex`?
-2. Is there a `data-reflex-root` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
+2. Is there a `data-reflex-root` on an ancestor element above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
 3. Just use the `body` element.
 
 Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
@@ -57,7 +57,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% tabs %}
 {% tab title="index.html.erb" %}
 ```text
-<div data-controller="example" data-reflex-root="[forward],[backward]">
+<div data-reflex-root="[forward],[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
