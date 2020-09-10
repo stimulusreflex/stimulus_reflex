@@ -40,7 +40,7 @@ const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel } = controller.StimulusReflex
   const identifier = JSON.stringify({ channel })
-  let totalOperations = 0
+  let totalOperations
   let reflexId
 
   controller.StimulusReflex.subscription =
@@ -48,6 +48,7 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(channel, {
       received: data => {
         if (!data.cableReady) return
+        totalOperations = 0
         ;['morph', 'innerHtml'].forEach(operation => {
           if (data.operations[operation] && data.operations[operation].length) {
             if (data.operations[operation][0].stimulusReflex) {
@@ -62,7 +63,6 @@ const createSubscription = controller => {
             }
           }
         })
-
         if (promises[reflexId]) {
           promises[reflexId].totalOperations = totalOperations
           promises[reflexId].completedOperations = 0
