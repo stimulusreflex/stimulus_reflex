@@ -346,7 +346,7 @@ Use of the `acts_as_tenant` gem has skyrocketed since the excellent [JumpStart P
 
 While a multi-tenant tutorial is out-of-scope for this document, the basic idea of the gem is that you have a model - often `Account` - that other models get scoped to. If you have an `Image` class that `acts_as_tenant :account` then every query \(read and write\) to the `Image` class will automatically include a `WHERE` clause restricting results to the current `Account`.
 
-As is so typically the case with Rails, the actual technique for bringing the Tenant to your Reflex is shorter that the explanation. Just set the current tenant to a model of the correct class in your `Connection` module:
+As is so typically the case with Rails, the actual technique for bringing the Tenant to your Reflex is shorter than the explanation. Just set the current tenant to an instance of the correct class in your `Connection` module:
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
