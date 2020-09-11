@@ -105,6 +105,12 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 ```
 {% endcode %}
 
+{% hint style="warning" %}
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.  
+  
+¯\\_\(ツ\)\_/¯
+{% endhint %}
+
 {% hint style="danger" %}
 Beware of Ruby gems that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. Gems like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible, so that you can wrap the content with `data-reflex-permanent`.
 {% endhint %}
@@ -114,7 +120,7 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre2 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
 {% endhint %}
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
@@ -284,6 +290,10 @@ The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_i
 morph dom_id(user), user.name
 ```
 
+#### default\_url\_options
+
+If you are planning to render a partial that uses view helpers to create URLs, you will need to [set up your environment configuration files](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment) to make the live site metadata available inside your Reflexes.
+
 ### Morphing Sanity Checklist
 
 We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
@@ -389,7 +399,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre2 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
 {% endhint %}
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.

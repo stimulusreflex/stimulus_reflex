@@ -4,18 +4,6 @@ description: How to build a great StimulusReflex application
 
 # Useful Patterns
 
-```ruby
-<% cache([current_user, "todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
-  <ul>
-    <% @todos.each do |todo| %>
-      <% cache(todo) do %>
-        <li class="todo"><%= todo.description %></li>
-      <% end %>
-    <% end %>
-  </ul>
-<% end %>
-```
-
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
 
 ## Client Side
@@ -190,7 +178,7 @@ For example, if your controller is named _list-item_ you might consider **this.e
 
 ## Server Side
 
-### Russian Doll caching 🪆
+### Russian Doll caching
 
 Caching is the secret to getting your application responding in 30-50ms after a database query. Some developers are intimidated by application-level caching, but you can ease into it.
 
@@ -206,7 +194,7 @@ You might be surprised how easy it can be to stash frequently accessed resources
 Russian Doll caching is just stacking cache fragments inside each other, and then configuring your ActiveRecord model callbacks to expire any keys that they are cached in when updated by setting the `touch: true` option on your `belongs_to` associations.
 
 ```ruby
-<% cache(["todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
+<% cache([current_user, "todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
   <ul>
     <% @todos.each do |todo| %>
       <% cache(todo) do %>
@@ -219,6 +207,161 @@ Russian Doll caching is just stacking cache fragments inside each other, and the
 
 Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html)" is one of the best resources on the topic - and the source of the above examples. It's a half-hour incredibly well-spent.
 
+### Delegate render
+
+If you are planning to render a lot of partials or ViewComponents in your Reflex action methods, you can delegate the `render` keyword to `ApplicationController`.
+
+{% code title="app/reflexes/application\_reflex.rb" %}
+```ruby
+class ApplicationReflex < StimulusReflex::Reflex
+  delegate :render, to: ApplicationController
+end
+```
+{% endcode %}
+
+This means that you can now call `morph` with a more terse syntax:
+
+```ruby
+morph "#foo", render(partial: "path/to/foo")
+```
+
+### Speed up page morphs
+
+Depending on what parts of your DOM are being morphed, it's possible that you don't need to render your layout template every time you run a Reflex. If your menus and sidebar are mostly static, you might want to experiment with constraining your update to just the template for the current action.
+
+First, check to see if the current controller action is executing inside of a Reflex:
+
+```ruby
+if @stimulus_reflex
+  render layout: false
+end
+```
+
+Then make sure that you're setting a `data-reflex-root` attribute that points to same DOM element where your template begins. Otherwise StimulusReflex will look for the `body` tag and not know what to do.
+
+### Internationalization
+
+If you're building an application for an international audience, you might want to your morphed partials to be aware of the current user's location. Set your `I18n.locale` using a helper that you can define in your `ApplicationReflex`.
+
+{% code title="app/reflexes/application\_reflex.rb" %}
+```ruby
+class ApplicationReflex < StimulusReflex::Reflex
+  def with_locale(&block)
+    I18n.with_locale(session[:locale]) { yield }
+  end
+end
+```
+{% endcode %}
+
+Now you can wrap your render calls in your new `with_locale` helper:
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < ApplicationReflex
+  def foo
+    morph "#foo", with_locale { ApplicationController.render(partial: "path/to/foo") }
+  end
+end
+```
+{% endcode %}
+
+### The Current pattern
+
+Several years ago, DHH [introduced](https://www.youtube.com/watch?v=D7zUOtlpUPw) the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) pattern to Rails 5.1. It's easy to work with Current objects inside of your Reflex classes using a `before_reflex` callback in your `ApplicationReflex`.
+
+{% code title="app/reflexes/application\_reflex.rb" %}
+```ruby
+class ApplicationReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+
+  before_reflex do
+    Current.user = current_user
+  end
+end
+```
+{% endcode %}
+
+The `Current.user` accessor is now available in your Reflex action methods.
+
+{% code title="app/reflexes/user\_reflex.rb" %}
+```ruby
+class UserReflex < ApplicationReflex
+  def follow
+    user = User.find(element.dataset[:user_id])
+    Current.user.follow(user)
+    morph "#following", ApplicationController.render(partial: "users/following", locals: {user: Current.user})
+  end
+end
+```
+{% endcode %}
+
+You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) app.
+
+### Adding log tags
+
+You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
+
+{% code title="app/channels/application\_cable/connection.rb" %}
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = env["warden"].user
+      logger.add_tags "ActionCable: User #{current_user.id}"
+    end
+    
+  end
+end
+```
+{% endcode %}
+
+### Generating ids with dom\_id
+
+CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [dom\_id helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id.  Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.
+
+{% code title="app/reflexes/user\_reflex.rb" %}
+```ruby
+class UserReflex < ApplicationReflex
+  def profile
+    user = User.find(element.dataset[:user_id])
+    morph dom_id(user), ApplicationController.render(partial: "users/profile", locals: {user: user})
+  end
+end
+```
+{% endcode %}
+
+### ViewComponentReflex
+
+We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [view\_component\_reflex](https://github.com/joshleblanc/view_component_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
+
+Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh/) for inspiration and examples.
+
+### Rendering views inside of an ActiveRecord model or ActiveJob class
+
+If you plan to initiate a [CableReady](https://cableready.stimulusreflex.com/) broadcast inside of a model callback or job, you might find yourself trying to render templates and wondering why it seems to return nil.
+
+The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController` class.
+
+```ruby
+class Notification < ApplicationRecord
+  include CableReady::Broadcaster
+  after_save do
+    html = ApplicationController.render(
+      partial: "layouts/navbar/notification",
+      locals: { notification: self }
+    )
+    cable_ready["notification_feed:#{self.recipient.id}"].insert_adjacent_html(
+      selector: "#notification_dropdown",
+      position: "afterbegin",
+      html: html
+    )
+    cable_ready.broadcast
+  end
+end
+```
+
 ### Flash messages
 
 One Rails mechanism that you might use less in a StimulusReflex application is the flash message object. Flash made a lot more sense in the era of submitting a CRUD form and seeing the result confirmed on the next page load. With StimulusReflex, the current state of the UI might be updated dozens of times in rapid succession and the flash message could be easily lost before it's read.
@@ -226,12 +369,6 @@ One Rails mechanism that you might use less in a StimulusReflex application is t
 You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
-
-### ViewComponentReflex
-
-We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [view\_component\_reflex](https://github.com/joshleblanc/view_component_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
-
-Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh/) for inspiration and examples.
 
 ### Chained Reflexes for long-running actions
 
@@ -357,35 +494,5 @@ As you can see, we're only pretending to call an API for this example. **Do not 
 
 {% hint style="success" %}
 This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
-{% endhint %}
-
-### Rendering views inside of an ActiveRecord model or ActiveJob class
-
-If you plan to initiate a CableReady broadcast inside of a model callback or job, you might find yourself trying to render templates and wondering why it seems to return nil.
-
-The secret to an efficient and successful template render operation is to call the `render` method of the `ApplicationController` class.
-
-**The following isn't a complete working example**, but it should set you on the right path.
-
-```ruby
-class Notification < ApplicationRecord
-  include CableReady::Broadcaster
-  after_save do
-    html = ApplicationController.render(
-      partial: "layouts/navbar/notification",
-      locals: { notification: self }
-    )
-    cable_ready["notification_feed:#{self.recipient.id}"].insert_adjacent_html(
-      selector: "#notification_dropdown",
-      position: "afterbegin",
-      html: html
-    )
-    cable_ready.broadcast
-  end
-end
-```
-
-{% hint style="success" %}
-CableReady provides a slightly improved version of Rails' [dom\_id](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id) method to any class that includes it. Intended to be used to populate a DOM selector string, the CableReady version prefixes outfit with a `#` character.
 {% endhint %}
 

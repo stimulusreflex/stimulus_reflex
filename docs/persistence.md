@@ -210,6 +210,10 @@ Just remember that while data in Redis could potentially be accessed faster than
 It is a common pattern to store the results of API calls or long-running database queries in Redis, with the assumption that you could reconstitute your Redis store from scratch later in an emergency.
 {% endhint %}
 
+{% hint style="danger" %}
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://docs.stimulusreflex.com/deployment#deployment-on-heroku).
+{% endhint %}
+
 {% hint style="success" %}
 To get the best mileage from Redis, make sure that your key expiration strategy is set to **LRU**. Least-Recently Used keys means that as your database storage fills up, Redis will automatically evict the keys most likely to be stale or expired. This means that you never have to worry about setting expiry dates or manually expiring old keys.
 {% endhint %}

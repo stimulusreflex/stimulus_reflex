@@ -2,14 +2,50 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre2...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...HEAD)
+
+**Fixed bugs:**
+
+- Lifecycle callbacks do not work [\#281](https://github.com/hopsoft/stimulus_reflex/issues/281)
+
+**Closed issues:**
+
+- self-referential data-reflex-root [\#301](https://github.com/hopsoft/stimulus_reflex/issues/301)
+- data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
+
+**Merged pull requests:**
+
+- Fixed typo in sample code. [\#296](https://github.com/hopsoft/stimulus_reflex/pull/296) ([jclarke](https://github.com/jclarke))
+
+## [v3.3.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre3) (2020-08-31)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre2...v3.3.0.pre3)
 
 **Fixed bugs:**
 
 - First argument of type "object" in this.stimulate\(\) will always be assigned to options. [\#278](https://github.com/hopsoft/stimulus_reflex/issues/278)
+- Allow morphs to run before triggering success/after [\#286](https://github.com/hopsoft/stimulus_reflex/pull/286) ([hopsoft](https://github.com/hopsoft))
+
+**Closed issues:**
+
+- Reflex ignores turbolinks cached pages [\#288](https://github.com/hopsoft/stimulus_reflex/issues/288)
+- Issue with Stimulus Reflex and ViewComponent [\#284](https://github.com/hopsoft/stimulus_reflex/issues/284)
+- controller inheritance does not seem to work [\#283](https://github.com/hopsoft/stimulus_reflex/issues/283)
+- Cannot read property 'schema' of undefined [\#282](https://github.com/hopsoft/stimulus_reflex/issues/282)
+- Reflex on form submit does not get parameter from input\[type="file"\] [\#277](https://github.com/hopsoft/stimulus_reflex/issues/277)
+- jQuery Plugins [\#246](https://github.com/hopsoft/stimulus_reflex/issues/246)
+- ActiveStorage variants performance [\#242](https://github.com/hopsoft/stimulus_reflex/issues/242)
+- Unnecessary body update after text\_content [\#186](https://github.com/hopsoft/stimulus_reflex/issues/186)
+- Warn about enabling Rails after running stimulus reflex' initializer [\#185](https://github.com/hopsoft/stimulus_reflex/issues/185)
+- Integration tests for stimulus-reflex [\#162](https://github.com/hopsoft/stimulus_reflex/issues/162)
+- Clearer explanation of quickstart example without javascript.  [\#149](https://github.com/hopsoft/stimulus_reflex/issues/149)
+- Webpack compilation fails with rails/webpacker 3.6 [\#83](https://github.com/hopsoft/stimulus_reflex/issues/83)
 
 **Merged pull requests:**
 
+- Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
+- Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -294,7 +330,6 @@
 **Implemented enhancements:**
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
-- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -335,6 +370,7 @@
 
 **Implemented enhancements:**
 
+- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 

@@ -417,13 +417,15 @@ if (!document.stimulusReflexInitialized) {
       data: promise && promise.data
     }
 
-    if (promise) {
-      delete promises[reflexId]
-      promise.resolve(response)
-    }
+    setTimeout(() => {
+      if (promise) {
+        delete promises[reflexId]
+        promise.resolve(response)
+      }
 
-    dispatchLifecycleEvent('success', element)
-    if (debugging) Log.success(response)
+      dispatchLifecycleEvent('success', element)
+      if (debugging) Log.success(response)
+    })
   }
   document.addEventListener(
     'cable-ready:before-inner-html',

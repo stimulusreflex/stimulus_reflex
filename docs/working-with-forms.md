@@ -76,7 +76,11 @@ export default class extends Controller {
 
 #### A note about &lt;input type="file"&gt; fields
 
-At the time of this writing, forms that upload files are unsupported by StimulusReflex. We suggest that you design your UI in such a way that files can be uploaded directly. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
+At the time of this writing, **forms that upload files are unsupported by StimulusReflex**. We suggest that you design your UI in such a way that files can be uploaded directly, making use of the standard Rails UJS form upload techniques. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
+
+You can explore using Optimism for live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com/) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
+
+As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails.
 
 ### Example: Auto-saving Posts with nested Comments
 
@@ -117,8 +121,8 @@ Now, let's create the markup for our form, which will submit to the `Post` Refle
   <% end %>
 
   <div>
-    <%= f.label :name %>
-    <%= f.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
+    <%= form.label :name %>
+    <%= form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
   </div>
 
   <%= form.fields_for :comments, @post.comments do |comment_form| %>
@@ -126,11 +130,11 @@ Now, let's create the markup for our form, which will submit to the `Post` Refle
     <%= comment_form.label :name %>
     <%= comment_form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
   <% end %>
-  
+
   <%= link_to "New comment", "#", data: { reflex: "click->PostReflex#build_comment" } %>
 
   <%= form.submit %>
-  
+
 <% end %>
 ```
 
