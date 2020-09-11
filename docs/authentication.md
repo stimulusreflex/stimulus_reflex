@@ -16,7 +16,9 @@ You could use `before_reflex` callbacks to validate that the current user is aut
 
 If you come up with a clever generalized approach, please let us know about it.
 
-## Encrypted Session Cookies
+## Authentication Schemes
+
+### Encrypted Session Cookies
 
 You can use your default Rails encrypted cookie-based sessions to isolate your users into their own sessions. This works great even if your application doesn't have a login system.
 
@@ -48,7 +50,7 @@ end
 ```
 {% endcode %}
 
-## User-based Authentication
+### Current User
 
 Many Rails apps use the current\_user convention or more recently, the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
 
@@ -98,7 +100,7 @@ end
 ```
 {% endcode %}
 
-## Devise-based Authentication
+### Devise
 
 If you're using the versatile [Devise](https://github.com/plataformatec/devise) authentication library, your configuration is even easier.
 
@@ -126,7 +128,7 @@ end
 ```
 {% endcode %}
 
-## Sorcery-based Authentication
+### Sorcery
 
 If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user's `id` out of the session store.
 
@@ -154,7 +156,7 @@ end
 ```
 {% endcode %}
 
-## Token-based Authentication
+### Tokens \(Subscription-based\)
 
 {% hint style="danger" %}
 This section is a Work In Progress that is not yet functional in the current version of StimulusReflex. It's not yet something that you can use in your application.
@@ -283,7 +285,7 @@ end
 ```
 {% endcode %}
 
-## Unauthenticated Connections
+### Unauthenticated Connections
 
 Perhaps your application doesn't have users. And maybe it doesn't even have sessions! You just want to offer all visitors access for the duration of the time that they are looking at your page. This will give every browser looking at your page a unique ActionCable connection.
 
@@ -311,7 +313,7 @@ end
 ```
 {% endcode %}
 
-## Hybrid Anonymous + Authenticated Connections
+### Hybrid Anonymous + Authenticated Connections
 
 When you are building an application which has authenticated users, but you wish to provide Reflex-powered functionality to all users of your site, you can combine multiple authentication strategies.
 
@@ -337,4 +339,30 @@ end
 This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to set the encrypted cookie value in your `application_controller.rb` and delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
 
 Note that this approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user content. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
+
+## Multi-Tenant Applications
+
+Use of the `acts_as_tenant` gem has skyrocketed since the excellent [JumpStart Pro](https://jumpstartrails.com/) came out. It's easy to create Reflexes that automatically support tenant scopes.
+
+While a multi-tenant tutorial is out-of-scope for this document, the basic idea of the gem is that you have a model - often `Account` - that other models get scoped to. If you have an `Image` class that `acts_as_tenant :account` then every query \(read and write\) to the `Image` class will automatically include a `WHERE` clause restricting results to the current `Account`.
+
+As is so typically the case with Rails, the actual technique for bringing the Tenant to your Reflex is shorter that the explanation. Just set the current tenant to a model of the correct class in your `Connection` module:
+
+{% code title="app/channels/application\_cable/connection.rb" %}
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = env["warden"].user
+      ActsAsTenant.current_tenant = current_user.account
+    end
+    
+  end
+end
+```
+{% endcode %}
+
+A slightly more sophisticated reference application with multiple account support and a Current object is available in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) repo, if you'd like to dig into this approach further.
 

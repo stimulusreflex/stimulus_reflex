@@ -295,6 +295,28 @@ end
 ```
 {% endcode %}
 
+You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) app.
+
+### Adding log tags
+
+You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
+
+{% code title="app/channels/application\_cable/connection.rb" %}
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = env["warden"].user
+      logger.add_tags "ActionCable: User #{current_user.id}"
+    end
+    
+  end
+end
+```
+{% endcode %}
+
 ### Generating ids with dom\_id
 
 CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [dom\_id helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id.  Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.

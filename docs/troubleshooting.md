@@ -151,6 +151,10 @@ There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 
 {% endhint %}
 
 {% hint style="info" %}
+Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Unfortunately, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+{% endhint %}
+
+{% hint style="info" %}
 Make sure that your [Allowed Request Origins](https://guides.rubyonrails.org/action_cable_overview.html#allowed-request-origins) is properly configured for your environment, or else ActionCable won't be able to connect.
 {% endhint %}
 
