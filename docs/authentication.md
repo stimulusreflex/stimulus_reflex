@@ -6,16 +6,6 @@ description: How to secure your StimulusReflex application
 
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
-## Authentication != Authorization
-
-Libraries like Pundit, CanCanCan and Authz don't directly work on Reflexes because Reflexes action methods run before the controller action is called.
-
-If your application makes use of role-based authorization to different resources, and that authorization usually happens in the controller, you should design your application such that state mutations and database updates with destructive outcomes happen in the controller.
-
-You could use `before_reflex` callbacks to validate that the current user is authorized to take this action and call `throw :abort` to prevent the Reflex if the user is making decisions above their pay grade.
-
-If you come up with a clever generalized approach, please let us know about it.
-
 ## Authentication Schemes
 
 ### Encrypted Session Cookies
@@ -365,4 +355,61 @@ end
 {% endcode %}
 
 A slightly more sophisticated reference application with multiple account support and a Current object is available in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) repo, if you'd like to dig into this approach further.
+
+## Authorization
+
+Just because you are authenticated as a user doesn't mean you should have access to every function in the system. Sometimes you need to enforce roles and privilege levels in your Reflex classes.
+
+The `before_reflex` callback is the best place to handle privilege checks, because you can call `throw :abort` to prevent the Reflex if the user is making decisions above their pay grade.
+
+### Pundit
+
+The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
+
+{% code title="app/policies/example\_reflex\_policy.rb" %}
+```ruby
+class ExampleReflexPolicy < ApplicationPolicy
+  def test?
+    user.admin?
+  end
+end
+```
+{% endcode %}
+
+{% code title="app/reflexes/example\_reflex.rb" %}
+```ruby
+class ExampleReflex < ApplicationReflex
+  delegate :current_user, to: :connection
+
+  before_reflex do
+    unless ExampleReflexPolicy.new(current_user, self).test?
+      puts "DENIED"
+      throw :abort
+    end
+  end
+
+  def test
+    puts "We are authorized!"
+  end
+end
+```
+{% endcode %}
+
+You can even pick up this failure to thrive in a callback on your Stimulus controller:
+
+{% code title="app/javascript/controllers/example\_controller.js" %}
+```javascript
+import ApplicationController from './application_controller'
+
+export default class extends ApplicationController {
+  connect () {
+    super.connect()
+  }
+
+  testHalted () {
+    console.log('DENIED!')
+  }
+}
+```
+{% endcode %}
 
