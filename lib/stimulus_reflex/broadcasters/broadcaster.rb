@@ -29,6 +29,7 @@ module StimulusReflex
       cable_ready[stream_name].dispatch_event(
         name: "stimulus-reflex:server-message",
         detail: {
+          reflexId: data["reflexId"],
           stimulus_reflex: data.merge(
             broadcaster: to_sym,
             server_message: {subject: subject, body: body}

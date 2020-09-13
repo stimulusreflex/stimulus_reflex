@@ -11,7 +11,7 @@ import { camelize } from './utils'
 //
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
-const invokeLifecycleMethod = (stage, element) => {
+const invokeLifecycleMethod = (stage, element, reflexId) => {
   if (!element || !element.reflexData) return
   const controller = element.reflexController
   const reflex = element.reflexData.target
@@ -33,7 +33,8 @@ const invokeLifecycleMethod = (stage, element) => {
         controller,
         element,
         reflex,
-        element.reflexError
+        element.reflexError,
+        reflexId
       )
     )
   }
@@ -44,7 +45,8 @@ const invokeLifecycleMethod = (stage, element) => {
         controller,
         element,
         reflex,
-        element.reflexError
+        element.reflexError,
+        reflexId
       )
     )
   }
@@ -59,15 +61,15 @@ const invokeLifecycleMethod = (stage, element) => {
 
 document.addEventListener(
   'stimulus-reflex:before',
-  event => invokeLifecycleMethod('before', event.target),
+  event => invokeLifecycleMethod('before', event.target, event.detail.reflexId),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:success',
   event => {
-    invokeLifecycleMethod('success', event.target)
-    dispatchLifecycleEvent('after', event.target)
+    invokeLifecycleMethod('success', event.target, event.detail.reflexId)
+    dispatchLifecycleEvent('after', event.target, event.detail.reflexId)
   },
   true
 )
@@ -75,8 +77,8 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:selector',
   event => {
-    invokeLifecycleMethod('success', event.target)
-    dispatchLifecycleEvent('after', event.target)
+    invokeLifecycleMethod('success', event.target, event.detail.reflexId)
+    dispatchLifecycleEvent('after', event.target, event.detail.reflexId)
   },
   true
 )
@@ -84,8 +86,8 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:nothing',
   event => {
-    invokeLifecycleMethod('success', event.target)
-    dispatchLifecycleEvent('after', event.target)
+    invokeLifecycleMethod('success', event.target, event.detail.reflexId)
+    dispatchLifecycleEvent('after', event.target, event.detail.reflexId)
   },
   true
 )
@@ -93,21 +95,21 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:error',
   event => {
-    invokeLifecycleMethod('error', event.target)
-    dispatchLifecycleEvent('after', event.target)
+    invokeLifecycleMethod('error', event.target, event.detail.reflexId)
+    dispatchLifecycleEvent('after', event.target, event.detail.reflexId)
   },
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:halted',
-  event => invokeLifecycleMethod('halted', event.target),
+  event => invokeLifecycleMethod('halted', event.target, event.detail.reflexId),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:after',
-  event => invokeLifecycleMethod('after', event.target),
+  event => invokeLifecycleMethod('after', event.target, event.detail.reflexId),
   true
 )
 
@@ -122,7 +124,7 @@ document.addEventListener(
 //
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
-export const dispatchLifecycleEvent = (stage, element) => {
+export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) return
   const { target } = element.reflexData || {}
   element.dispatchEvent(
@@ -131,7 +133,8 @@ export const dispatchLifecycleEvent = (stage, element) => {
       cancelable: false,
       detail: {
         reflex: target,
-        controller: element.reflexController
+        controller: element.reflexController,
+        reflexId
       }
     })
   )

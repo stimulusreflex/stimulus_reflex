@@ -18,7 +18,6 @@ module StimulusReflex
           children_only: true,
           permanent_attribute_name: permanent_attribute_name,
           stimulus_reflex: data.merge({
-            last: selector == selectors.last,
             broadast_type: to_sym
           })
         )
