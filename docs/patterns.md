@@ -311,7 +311,7 @@ module ApplicationCable
       self.current_user = env["warden"].user
       logger.add_tags "ActionCable: User #{current_user.id}"
     end
-    
+
   end
 end
 ```
@@ -319,7 +319,7 @@ end
 
 ### Generating ids with dom\_id
 
-CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [dom\_id helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id.  Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.
+CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [dom\_id helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id. Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.
 
 {% code title="app/reflexes/user\_reflex.rb" %}
 ```ruby
@@ -375,7 +375,7 @@ Clever use of CableReady broadcasts when ActiveJobs complete or models update is
 {% hint style="danger" %}
 This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
 
-If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**. 
+If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**.
 {% endhint %}
 
 Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:

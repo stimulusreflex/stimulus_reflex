@@ -103,7 +103,7 @@ module ApplicationCable
     def connect
       self.current_user = find_verified_user
     end
-    
+
     protected
 
     def find_verified_user
@@ -359,7 +359,7 @@ module ApplicationCable
       self.current_user = env["warden"].user
       ActsAsTenant.current_tenant = current_user.account
     end
-    
+
   end
 end
 ```

@@ -140,7 +140,7 @@ end
 
 In general, you should be careful not to abuse the session object in a production app. First, sometimes sessions get lost or reset when people move between devices. It's also possible to accidentally reuse the same session variable key in multiple places, resulting in confusion and a frustrating bug hunt. Don't underestimate your ability to sabotage yourself in the future!
 
-The Rails session object is perfect for prototyping during development, before potentially moving to the Rails cache, Redis or your database to store anything important. You have the power and flexibility to decide which data is ephemeral and which needs to survive the loss of a data centre, coast or continent. 🦖 👾 🌪 
+The Rails session object is perfect for prototyping during development, before potentially moving to the Rails cache, Redis or your database to store anything important. You have the power and flexibility to decide which data is ephemeral and which needs to survive the loss of a data centre, coast or continent. 🦖 👾 🌪
 
 {% hint style="danger" %}
 Cookie-based sessions are not _currently_ supported. Be sure to use a session store such as :cache\_store or you will be sad. You can find guidance on this topic on the Setup page.

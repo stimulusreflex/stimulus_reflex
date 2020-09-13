@@ -203,9 +203,9 @@ Both generic and custom lifecycle callback methods share the same arguments:
 * `reflexHalted(element, reflex, noop, reflexId)`
 * `afterReflex(element, reflex, noop, reflexId)`
 
-**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_ 
+**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_
 
-**reflex** - the name of the server side Reflex 
+**reflex** - the name of the server side Reflex
 
 **error/noop** - the error message \(for reflexError\), otherwise `null`
 

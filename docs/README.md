@@ -15,7 +15,7 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 {% hint style="success" %}
 **Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/XveN625)
 
- [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
 {% hint style="info" %}
@@ -69,7 +69,7 @@ Some of our favorite demos include:
 
 ## Build the next Twitter in just 9 minutes \(or less\) 😉
 
-{% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" %}
+{% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" caption="" %}
 
 ## First-class ViewComponent support
 
