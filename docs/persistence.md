@@ -18,7 +18,7 @@ Designing applications in the StimulusReflex mindset is far simpler than what we
 
 ### The life of a Reflex
 
-When you access a page in a StimulusReflex application, you see the current state of your user interface for that URL. There is no mounting process and no fetching of JSON from an API. Your request goes through the Rails router to Action Pack where your controller renders your view template and sends HTML to the browser. This is Rails in all it's server-rendered glory.
+When you access a page in a StimulusReflex application, you see the current state of your user interface for that URL. There is no mounting process and no fetching of JSON from an API. Your request goes through the Rails router to Action Pack where your controller renders your view template and sends HTML to the browser. This is Rails in all its server-rendered glory.
 
 Only once the HTML page is displayed in your browser, StimulusReflex wakes up. First, it opens a websocket connection and waits for messages. Then it scans your DOM for elements with `data-reflex` attributes. Those attributes become event handlers that map to methods in Stimulus controllers. The controllers connect events in your browser to methods in your Reflex classes on the server.
 
