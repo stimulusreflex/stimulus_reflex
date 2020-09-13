@@ -275,7 +275,7 @@ The following properties available to the developer inside Reflex actions:
 
 ### `element`
 
-The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like, `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
+The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
 
 {% hint style="info" %}
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
