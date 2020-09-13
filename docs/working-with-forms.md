@@ -23,7 +23,7 @@ Note that this concept only applies to the active text input element. Any elemen
 When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](https://docs.stimulusreflex.com/quickstart#before-you-begin), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are \*great\*, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
 
 {% hint style="warning" %}
-Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling... just stick with Rails!
+Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
 {% endhint %}
 
 StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](https://docs.stimulusreflex.com/reflexes#inheriting-data-attributes-from-parent-elements). This leaves form submission in the cold, though... doesn't it? 🥶
