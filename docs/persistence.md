@@ -74,7 +74,7 @@ It's good to remember that in Ruby, **nil.to\_i** will return 0. This means that
 StimulusReflex doesn't need to go through the Rails routing module. This means updates are processed much faster than requests that come from typing in a URL or refreshing the page.
 {% endhint %}
 
-Of course, instance variables are aptly named; they only exist for the duration of a single request, regardless of whether that request is initiated by accessing a URL or clicking a button managed by StimulusReflex.
+Of course, instance variables are aptly named: they only exist for the duration of a single request, regardless of whether that request is initiated by accessing a URL or clicking a button managed by StimulusReflex.
 
 ### The @stimulus\_reflex instance variable
 
