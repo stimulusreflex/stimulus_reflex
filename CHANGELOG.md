@@ -4,8 +4,13 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...HEAD)
 
+**Closed issues:**
+
+- Using `morph` gives error on missing Warden::Manager midddleware? [\#304](https://github.com/hopsoft/stimulus_reflex/issues/304)
+
 **Merged pull requests:**
 
+- Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
@@ -126,7 +131,6 @@
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
-- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
@@ -196,6 +200,7 @@
 
 **Merged pull requests:**
 
+- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Bump activesupport from 6.0.3 to 6.0.3.1 [\#217](https://github.com/hopsoft/stimulus_reflex/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump activestorage from 6.0.3 to 6.0.3.1 [\#216](https://github.com/hopsoft/stimulus_reflex/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actionpack from 6.0.3 to 6.0.3.1 [\#215](https://github.com/hopsoft/stimulus_reflex/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
