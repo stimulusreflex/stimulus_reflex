@@ -138,11 +138,11 @@ this.stimulate(string target, [DOMElement element], [Object options], ...[JSONOb
 
 **target** \[required\] \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "Example\#increment".
 
-**element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
+**element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in JavaScript. **Defaults to the DOM element of the controller in scope**.
 
 **options** \[optional\]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors** or **attrs**. Can be used to override the ID of a given Reflex or override the selector\(s\) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
 
-**argument** \[optional\]: a **splat** of JSON-compliant Javascript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
+**argument** \[optional\]: a **splat** of JSON-compliant JavaScript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
 
 ### Receiving arguments
 
