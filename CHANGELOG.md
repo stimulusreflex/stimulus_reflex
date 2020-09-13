@@ -7,6 +7,7 @@
 **Fixed bugs:**
 
 - Lifecycle callbacks do not work [\#281](https://github.com/hopsoft/stimulus_reflex/issues/281)
+- Fix timing issues with post-Reflex lifecycle callbacks [\#299](https://github.com/hopsoft/stimulus_reflex/pull/299) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
