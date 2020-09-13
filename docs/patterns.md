@@ -148,7 +148,7 @@ By capturing the **cable-ready:after-morph** event, we can run code after every 
 
 ### Capture jQuery events with DOM event listeners
 
-Don't hate jQuery: it was a life-saver 12 years ago, and many of its best ideas are now part of the JavaScript language. However, one of the uglier realities of jQuery in a contemporary context is that it has its' own entirely proprietary system for managing events, and it's not compatible with the now-standard DOM events API.
+Don't hate jQuery: it was a life-saver 12 years ago, and many of its best ideas are now part of the JavaScript language. However, one of the uglier realities of jQuery in a contemporary context is that it has its own entirely proprietary system for managing events, and it's not compatible with the now-standard DOM events API.
 
 Sometimes you still need to be able to interface with legacy components, but you don't want to have to write two event handling systems.
 
