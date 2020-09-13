@@ -33,7 +33,7 @@ You can try for yourself **right now**. Just update to the preview v3.3.0.pre4 g
 
 ## Why should I use StimulusReflex?
 
-Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
+Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript? With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
 
 ### Goals
 
@@ -81,9 +81,9 @@ Some things just have to be seen: check out the [ViewComponentReflex Expo](http:
 
 ## How we got here
 
-**We love Rails.** Veterans of the framework remember the feeling of awe and disbelief after seeing David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has become so successful that nearly every framework since has borrowed ideas, patterns, and features from it.
+**We love Rails.** Veterans of the framework remember the feeling of awe and disbelief after seeing David Heinemeier Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has become so successful that nearly every framework since has borrowed ideas, patterns, and features from it.
 
-The landscape has changed a lot since those early days. Applications are more ambitious now. The pursuit of native UI speeds spawned a new breed of increasingly complex technologies. Modern **Single Page Apps** have pushed much of the server's responsibilities to the client. Unfortunately this new approach trades _a developer experience_ that was once **fun and productive** for an alternative of high complexity and only marginal gains.
+The landscape has changed a lot since those early days. Applications are more ambitious now. The pursuit of native UI speeds spawned a new breed of increasingly complex technologies. Modern **Single Page Apps** have pushed many of the server's responsibilities to the client. Unfortunately this new approach trades _a developer experience_ that was once **fun and productive** for an alternative of high complexity and only marginal gains.
 
 **There must be a better way.**
 

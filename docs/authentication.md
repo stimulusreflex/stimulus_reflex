@@ -131,7 +131,7 @@ end
 
 ### Sorcery
 
-If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user's `id` out of the session store.
+If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'll need to pull the user's `id` out of the session store.
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby

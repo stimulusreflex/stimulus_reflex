@@ -75,7 +75,7 @@ end
 
 ## Client-Side Reflex Callbacks
 
-StimulusReflex gives you the ability to inject custom Javascript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
+StimulusReflex gives you the ability to inject custom JavaScript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
 
 1. **`before`** prior to sending a request over the web socket
 2. **`success`** after the server side Reflex succeeds and the DOM has been updated
@@ -250,7 +250,7 @@ If you're calling the `stimulate` method inside of a Stimulus controller, the ev
 
 ### Promises
 
-Are you a hardcore Javascript developer? A props power-lifter? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
+Are you a hardcore JavaScript developer? A props power-lifter? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
 
 ```javascript
 this.stimulate('Comments#create')

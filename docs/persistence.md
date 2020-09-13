@@ -18,7 +18,7 @@ Designing applications in the StimulusReflex mindset is far simpler than what we
 
 ### The life of a Reflex
 
-When you access a page in a StimulusReflex application, you see the current state of your user interface for that URL. There is no mounting process and no fetching of JSON from an API. Your request goes through the Rails router to Action Pack where your controller renders your view template and sends HTML to the browser. This is Rails in all it's server-rendered glory.
+When you access a page in a StimulusReflex application, you see the current state of your user interface for that URL. There is no mounting process and no fetching of JSON from an API. Your request goes through the Rails router to Action Pack where your controller renders your view template and sends HTML to the browser. This is Rails in all its server-rendered glory.
 
 Only once the HTML page is displayed in your browser, StimulusReflex wakes up. First, it opens a websocket connection and waits for messages. Then it scans your DOM for elements with `data-reflex` attributes. Those attributes become event handlers that map to methods in Stimulus controllers. The controllers connect events in your browser to methods in your Reflex classes on the server.
 
@@ -74,7 +74,7 @@ It's good to remember that in Ruby, **nil.to\_i** will return 0. This means that
 StimulusReflex doesn't need to go through the Rails routing module. This means updates are processed much faster than requests that come from typing in a URL or refreshing the page.
 {% endhint %}
 
-Of course, instance variables are aptly named; they only exist for the duration of a single request, regardless of whether that request is initiated by accessing a URL or clicking a button managed by StimulusReflex.
+Of course, instance variables are aptly named: they only exist for the duration of a single request, regardless of whether that request is initiated by accessing a URL or clicking a button managed by StimulusReflex.
 
 ### The @stimulus\_reflex instance variable
 
