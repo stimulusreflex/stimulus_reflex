@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...HEAD)
+
+**Merged pull requests:**
+
+- add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
+
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...v3.3.0.pre4)
@@ -265,7 +273,6 @@
 - Possible bug when about to perform cableready operations [\#166](https://github.com/hopsoft/stimulus_reflex/issues/166)
 - Reflex not binding to ajax loaded content [\#161](https://github.com/hopsoft/stimulus_reflex/issues/161)
 - Input field values sometimes remain [\#159](https://github.com/hopsoft/stimulus_reflex/issues/159)
-- Remove unneeded registerConsumer logic [\#158](https://github.com/hopsoft/stimulus_reflex/pull/158) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -294,6 +301,7 @@
 **Fixed bugs:**
 
 - Unable to register the ActionCable Consumer [\#156](https://github.com/hopsoft/stimulus_reflex/issues/156)
+- Remove unneeded registerConsumer logic [\#158](https://github.com/hopsoft/stimulus_reflex/pull/158) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
