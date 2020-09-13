@@ -175,7 +175,7 @@ For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible fo
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
+Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
 {% endhint %}
 
 {% hint style="info" %}
