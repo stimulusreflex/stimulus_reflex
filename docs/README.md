@@ -33,7 +33,7 @@ You can try for yourself **right now**. Just update to the preview v3.3.0.pre4 g
 
 ## Why should I use StimulusReflex?
 
-Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
+Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript? With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
 
 ### Goals
 
