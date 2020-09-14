@@ -34,16 +34,6 @@ const promises = {}
 // Indicates if we should log calls to stimulate, etc...
 let debugging = false
 
-const emitEvent = (event, detail) => {
-  document.dispatchEvent(
-    new CustomEvent(event, {
-      bubbles: true,
-      cancelable: false,
-      detail
-    })
-  )
-}
-
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
 //
@@ -53,6 +43,16 @@ const createSubscription = controller => {
   const identifier = JSON.stringify({ channel })
   let totalOperations
   let reflexId
+
+  const emitEvent = (event, detail) => {
+    document.dispatchEvent(
+      new CustomEvent(event, {
+        bubbles: true,
+        cancelable: false,
+        detail
+      })
+    )
+  }
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
