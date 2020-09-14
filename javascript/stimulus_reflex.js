@@ -16,24 +16,35 @@ import {
 } from './attributes'
 import { extractReflexName } from './utils'
 
+// A lambda that does nothing. Very zen; we are made of stars
+const NOOP = () => {}
+
 // A reference to the Stimulus application registered with: StimulusReflex.initialize
-//
 let stimulusApplication
 
 // A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
-//
 let actionCableConsumer
 
+// Flag which will be false if the server does not accept the channel subscription
+let actionCableSubscriptionActive = false
+
 // A dictionary of promise data
-//
 const promises = {}
 
 // Indicates if we should log calls to stimulate, etc...
-//
 let debugging = false
 
+const emitEvent = (event, detail) => {
+  document.dispatchEvent(
+    new CustomEvent(event, {
+      bubbles: true,
+      cancelable: false,
+      detail
+    })
+  )
+}
+
 // Subscribes a StimulusReflex controller to an ActionCable channel.
-//
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
@@ -67,8 +78,20 @@ const createSubscription = controller => {
           promises[reflexId].totalOperations = totalOperations
           promises[reflexId].completedOperations = 0
         }
-
         CableReady.perform(data.operations)
+      },
+      connected: () => {
+        actionCableSubscriptionActive = true
+        emitEvent('stimulus-reflex:connected')
+      },
+      rejected: () => {
+        actionCableSubscriptionActive = false
+        emitEvent('stimulus-reflex:rejected')
+        if (debugging) console.warn('Channel subscription was rejected.')
+      },
+      disconnected: willAttemptReconnect => {
+        actionCableSubscriptionActive = false
+        emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
       }
     })
 }
@@ -143,6 +166,9 @@ const extendStimulusController = controller => {
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
+      if (!actionCableSubscriptionActive)
+        throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
+
       // lifecycle setup
       element.reflexController = this
       element.reflexData = data
@@ -185,7 +211,7 @@ const extendStimulusController = controller => {
 
       promise.reflexId = reflexId
 
-      if (debugging) promise.catch(() => {}) // noop default catch
+      if (debugging) promise.catch(NOOP)
       return promise
     },
 
