@@ -171,7 +171,7 @@ Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **
 {% endhint %}
 
 {% hint style="info" %}
-For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible for Rails to automatically hot reload Reflex classes in development mode. You _must_ restart your web server for changes to be picked up.
+If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 {% endhint %}
 
 {% hint style="info" %}

@@ -257,6 +257,10 @@ end
 ```
 {% endcode %}
 
+{% hint style="success" %}
+If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
+{% endhint %}
+
 ### Building your Reflex action
 
 The following properties available to the developer inside Reflex actions:
