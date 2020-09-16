@@ -22,11 +22,11 @@ module StimulusReflex
   class Engine < Rails::Engine
     initializer "verify_caching" do
       unless caching_enabled?
-        puts <<-WARN
-Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
-To enable caching in development, run:
-
-  rails dev:cache
+        puts <<~WARN
+          Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+          To enable caching in development, run:
+          
+            rails dev:cache
         WARN
         exit
       end
