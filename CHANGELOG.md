@@ -6,10 +6,12 @@
 
 **Closed issues:**
 
+- IE11 Support: "crypto" is undefined [\#308](https://github.com/hopsoft/stimulus_reflex/issues/308)
 - Using `morph` gives error on missing Warden::Manager midddleware? [\#304](https://github.com/hopsoft/stimulus_reflex/issues/304)
 
 **Merged pull requests:**
 
+- Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 
@@ -327,6 +329,7 @@
 **Fixed bugs:**
 
 - Cannot read property 'removeEventListener' of undefined after updating to 3.1.0 [\#151](https://github.com/hopsoft/stimulus_reflex/issues/151)
+- remove changelog rake task [\#150](https://github.com/hopsoft/stimulus_reflex/pull/150) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -349,7 +352,6 @@
 
 **Fixed bugs:**
 
-- remove changelog rake task [\#150](https://github.com/hopsoft/stimulus_reflex/pull/150) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow other CableReady operations to perform [\#145](https://github.com/hopsoft/stimulus_reflex/pull/145) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
