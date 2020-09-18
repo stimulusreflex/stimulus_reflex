@@ -12,6 +12,7 @@
 
 - IE11 Support: "crypto" is undefined [\#308](https://github.com/hopsoft/stimulus_reflex/issues/308)
 - Using `morph` gives error on missing Warden::Manager midddleware? [\#304](https://github.com/hopsoft/stimulus_reflex/issues/304)
+- Update client controller template comments [\#298](https://github.com/hopsoft/stimulus_reflex/issues/298)
 
 **Merged pull requests:**
 
@@ -21,6 +22,7 @@
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 - Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
+- Enhance controller templates docs [\#300](https://github.com/hopsoft/stimulus_reflex/pull/300) ([pinzonjulian](https://github.com/pinzonjulian))
 - Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
 
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
@@ -484,9 +486,7 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
-- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
-- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
@@ -505,6 +505,7 @@
 
 **Implemented enhancements:**
 
+- Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 - Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
@@ -518,9 +519,11 @@
 **Implemented enhancements:**
 
 - Create Rails generators [\#3](https://github.com/hopsoft/stimulus_reflex/issues/3)
+- Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - Update installer [\#71](https://github.com/hopsoft/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 - Tweak generators [\#69](https://github.com/hopsoft/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
 - add generators [\#67](https://github.com/hopsoft/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
+- Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -549,7 +552,6 @@
 - Client side call-backs? [\#34](https://github.com/hopsoft/stimulus_reflex/issues/34)
 - Scoped register\(\)? [\#26](https://github.com/hopsoft/stimulus_reflex/issues/26)
 - Add guard to verify same URL prior to morph [\#63](https://github.com/hopsoft/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
-- Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/hopsoft/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
 - Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
 - \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
