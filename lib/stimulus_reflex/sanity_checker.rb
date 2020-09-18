@@ -1,8 +1,14 @@
-module SanityChecker
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
-  JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
+module StimulusReflex
+  class SanityChecker
+    NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
+    JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
-  class << self
+    def self.check!
+      instance = new
+      instance.check_caching_enabled
+      instance.check_javascript_package_version
+    end
+
     def check_caching_enabled
       unless caching_enabled?
         puts <<~WARN

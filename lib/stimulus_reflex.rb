@@ -22,8 +22,7 @@ require "generators/stimulus_reflex_generator"
 module StimulusReflex
   class Engine < Rails::Engine
     initializer "stimulus_reflex.sanity_check" do
-      SanityChecker.check_caching_enabled
-      SanityChecker.check_javascript_package_version
+      SanityChecker.check!
     end
   end
 end
