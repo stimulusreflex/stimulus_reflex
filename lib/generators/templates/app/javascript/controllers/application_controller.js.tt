@@ -26,7 +26,7 @@ export default class extends Controller {
    *   element - the element that triggered the reflex
    *             may be different than the Stimulus controller's this.element
    *
-   *   reflex - the name of the reflex e.g. "ExampleReflex#demo"
+   *   reflex - the name of the reflex e.g. "Example#demo"
    *
    *   error - error message from the server
    */
