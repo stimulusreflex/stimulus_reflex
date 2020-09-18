@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...HEAD)
 
+**Implemented enhancements:**
+
+- Fail loudly if there's a version mismatch between the gem and the npm package. [\#294](https://github.com/hopsoft/stimulus_reflex/issues/294)
+
 **Closed issues:**
 
 - IE11 Support: "crypto" is undefined [\#308](https://github.com/hopsoft/stimulus_reflex/issues/308)
@@ -15,6 +19,7 @@
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
+- Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
 
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
 
