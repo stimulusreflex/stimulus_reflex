@@ -17,6 +17,7 @@
 
 - Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
+- ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 - Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
