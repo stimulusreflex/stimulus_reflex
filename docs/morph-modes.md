@@ -49,7 +49,7 @@ Simply pass a comma-delimited list of CSS selectors. Each selector will retrieve
 StimulusReflex will decide which element's children to replace by evaluating three criteria in order:
 
 1. Is there a `data-reflex-root` on the element with the `data-reflex`?
-2. Is there a `data-reflex-root` on an ancestor element with a `data-controller` above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
+2. Is there a `data-reflex-root` on an ancestor element above the element in the DOM? It could be the element's immediate parent, but it doesn't have to be.
 3. Just use the `body` element.
 
 Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
@@ -57,7 +57,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 {% tabs %}
 {% tab title="index.html.erb" %}
 ```text
-<div data-controller="example" data-reflex-root="[forward],[backward]">
+<div data-reflex-root="[forward],[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
@@ -120,7 +120,7 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre4 gem and npm package. 
 {% endhint %}
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
@@ -399,7 +399,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre3 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre4 gem and npm package. 
 {% endhint %}
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.

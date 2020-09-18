@@ -29,6 +29,21 @@ bundle exec rails stimulus_reflex:install
 
 The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, including enabling caching in your development environment.
 
+{% hint style="warning" %}
+When v3.3 ships, the install script will modify `cable.yml` to use Redis instead of the `async` adapter in development mode.
+{% endhint %}
+
+You might need to modify your ActionCable configuration to use the Redis adapter in development mode. If you don't have Redis on your machine, you can find out more [on the Redis site](https://redis.io/topics/quickstart).
+
+{% code title="config/cable.yml" %}
+```yaml
+development:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: your_application_development
+```
+{% endcode %}
+
 And that's it! **You can start using StimulusReflex in your application.**
 
 {% hint style="danger" %}
@@ -76,6 +91,17 @@ Rails.application.configure do
   config.session_store :cache_store
   # ....
 end
+```
+{% endcode %}
+
+Configure ActionCable to use the Redis adapter in development mode. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
+
+{% code title="config.cable.yml" %}
+```yaml
+development:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: your_application_development
 ```
 {% endcode %}
 

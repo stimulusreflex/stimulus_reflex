@@ -2,11 +2,37 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...HEAD)
+
+**Implemented enhancements:**
+
+- Fail loudly if there's a version mismatch between the gem and the npm package. [\#294](https://github.com/hopsoft/stimulus_reflex/issues/294)
+
+**Closed issues:**
+
+- IE11 Support: "crypto" is undefined [\#308](https://github.com/hopsoft/stimulus_reflex/issues/308)
+- Using `morph` gives error on missing Warden::Manager midddleware? [\#304](https://github.com/hopsoft/stimulus_reflex/issues/304)
+- Update client controller template comments [\#298](https://github.com/hopsoft/stimulus_reflex/issues/298)
+
+**Merged pull requests:**
+
+- Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
+- Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
+- ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
+- Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
+- add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
+- Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
+- Enhance controller templates docs [\#300](https://github.com/hopsoft/stimulus_reflex/pull/300) ([pinzonjulian](https://github.com/pinzonjulian))
+- Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
+
+## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...v3.3.0.pre4)
 
 **Fixed bugs:**
 
 - Lifecycle callbacks do not work [\#281](https://github.com/hopsoft/stimulus_reflex/issues/281)
+- Fix timing issues with post-Reflex lifecycle callbacks [\#299](https://github.com/hopsoft/stimulus_reflex/pull/299) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -330,6 +356,7 @@
 **Implemented enhancements:**
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
+- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -370,7 +397,6 @@
 
 **Implemented enhancements:**
 
-- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 

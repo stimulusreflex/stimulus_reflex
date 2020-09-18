@@ -101,8 +101,19 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = env["warden"].user || reject_unauthorized_connection
+      self.current_user = find_verified_user
     end
+
+    protected
+
+    def find_verified_user
+      if (current_user = env["warden"].user)
+        current_user
+      else
+        reject_unauthorized_connection
+      end
+    end
+
   end
 end
 ```
@@ -120,7 +131,7 @@ end
 
 ### Sorcery
 
-If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'd need to pull the user's `id` out of the session store.
+If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'll need to pull the user's `id` out of the session store.
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
@@ -348,7 +359,7 @@ module ApplicationCable
       self.current_user = env["warden"].user
       ActsAsTenant.current_tenant = current_user.account
     end
-    
+
   end
 end
 ```

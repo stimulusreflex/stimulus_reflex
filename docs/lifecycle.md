@@ -75,7 +75,7 @@ end
 
 ## Client-Side Reflex Callbacks
 
-StimulusReflex gives you the ability to inject custom Javascript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
+StimulusReflex gives you the ability to inject custom JavaScript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
 
 1. **`before`** prior to sending a request over the web socket
 2. **`success`** after the server side Reflex succeeds and the DOM has been updated
@@ -197,17 +197,19 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 
 Both generic and custom lifecycle callback methods share the same arguments:
 
-* `beforeReflex(element, reflex)`
-* `reflexSuccess(element, reflex)`
-* `reflexError(element, reflex, error)`
-* `reflexHalted(element, reflex)`
-* `afterReflex(element, reflex, error)`
+* `beforeReflex(element, reflex, noop, reflexId)`
+* `reflexSuccess(element, reflex, noop, reflexId)`
+* `reflexError(element, reflex, error, reflexId)`
+* `reflexHalted(element, reflex, noop, reflexId)`
+* `afterReflex(element, reflex, noop, reflexId)`
 
-**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_ 
+**element** - the DOM element that triggered the Reflex _this may not be the same as the controller's `this.element`_
 
-**reflex** - the name of the server side Reflex 
+**reflex** - the name of the server side Reflex
 
-**error** - the error message if an error occurred, otherwise `null`
+**error/noop** - the error message \(for reflexError\), otherwise `null`
+
+**reflexId** - a UUID4 or developer-provided unique identifier for each Reflex
 
 ### Lifecycle Events
 
@@ -233,6 +235,7 @@ When an event is captured, you can obtain all of the data required to respond to
 document.addEventListener('stimulus-reflex:before', event => {
   event.target // the element that triggered the Reflex (may not be the same as controller.element)
   event.detail.reflex // the name of the invoked Reflex
+  event.detail.reflexId // the UUID4 or developer-provided unique identifier for each Reflex
   event.detail.controller // the controller that invoked the stimuluate method
 })
 ```
@@ -247,7 +250,7 @@ If you're calling the `stimulate` method inside of a Stimulus controller, the ev
 
 ### Promises
 
-Are you a hardcore Javascript developer? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
+Are you a hardcore JavaScript developer? A props power-lifter? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
 
 ```javascript
 this.stimulate('Comments#create')
@@ -279,5 +282,13 @@ this.stimulate('Post#publish')
     // * event - the source event
     // * reflexId - a unique identifier for this specific reflex invocation
   })
+```
+
+You can get the `reflexId` of an unresolved promise:
+
+```javascript
+const snail = this.stimulate('Snail#secrete')
+console.log(snail.reflexId)
+snail.then(trail => {})
 ```
 

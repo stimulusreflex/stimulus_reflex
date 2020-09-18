@@ -7,7 +7,6 @@ module StimulusReflex
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
         updates.each do |selector, html|
-          last = morph == morphs.last && selector == updates.keys.last
           html = html.to_s
           fragment = Nokogiri::HTML.fragment(html)
           match = fragment.at_css(selector)
@@ -18,7 +17,6 @@ module StimulusReflex
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge({
-                last: last,
                 broadast_type: to_sym
               })
             )
@@ -27,7 +25,6 @@ module StimulusReflex
               selector: selector,
               html: fragment.to_html,
               stimulus_reflex: data.merge({
-                last: last,
                 broadast_type: to_sym
               })
             )

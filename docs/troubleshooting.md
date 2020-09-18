@@ -171,11 +171,11 @@ Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **
 {% endhint %}
 
 {% hint style="info" %}
-For [reasons](https://github.com/rails/rails/issues/33412), it isn't possible for Rails to automatically hot reload Reflex classes in development mode. You _must_ restart your web server for changes to be picked up.
+If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html).
+Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
 {% endhint %}
 
 {% hint style="info" %}
@@ -201,4 +201,16 @@ To remove spring **forever**, here is the process we recommend:
 2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub --remove --all`
 {% endhint %}
+
+## Be realistic
+
+We're very proud of StimulusReflex and CableReady, which are both standing on the shoulders of many giants such as Rails, Ruby and Redis.
+
+However, we want to be the first to recognize that there are limitations and constraints you should consider before using these technologies in your applications. After all, Rails itself does not claim to be immune from side effects, even as huge amounts of effort are being invested into improving Ruby's concurrency story even while you read this.
+
+There are edge cases where data could become out of date in between the time a Reflex queries the database and the resulting DOM update is applied in the browser. While there are mitigation strategies \(such as tracking versions on everything\) which you could employ, it's important to remember that you could be opening a can of worms that leads to sadness and/or madness.
+
+Please don't use StimulusReflex or CableReady to drive mission-critical and/or life-threatening situations. It is a terrible choice to re-write your laser vision correction servo motor controls with StimulusReflex. Don't pilot drones or operate heavy machinery that is controlled with StimulusReflex.
+
+The only exception to the above is [Guntron](https://pbfcomics.com/comics/guntron/). StimulusReflex is perfect for [Guntron](https://pbfcomics.com/comics/guntron/).
 
