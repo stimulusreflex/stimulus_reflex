@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.1.2",
+    "cable_ready": ">= 4.4.0-pre0",
     "form-serialize": ">= 0.7.2",
     "stimulus": ">= 1.1"
   },

@@ -21,6 +21,7 @@ require "generators/stimulus_reflex_generator"
 module StimulusReflex
   class Engine < Rails::Engine
     NODE_VERSION_FORMAT = /(\d\.\d\.\d.*):/
+    JSON_VERSION_FORMAT = /(\d\.\d\.\d.*)\"/
 
     initializer "stimulus_reflex.verify_caching_enabled" do
       unless caching_enabled?
@@ -62,11 +63,25 @@ module StimulusReflex
     end
 
     def node_package_version
-      File.foreach(yarn_lock_path).grep(/^stimulus_reflex/).first[NODE_VERSION_FORMAT, 1]
+      match = File.foreach(yarn_lock_path).grep(/^stimulus_reflex/)
+      return match.first[NODE_VERSION_FORMAT, 1] if match.present?
+
+      match = File.foreach(yarn_link_path).grep(/version/)
+      return match.first[JSON_VERSION_FORMAT, 1] if match.present?
+
+      puts <<~WARN
+        Can't locate the stimulus_reflex NPM package. 
+        Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
+      WARN
+      exit
     end
 
     def yarn_lock_path
       Rails.root.join("yarn.lock")
+    end
+
+    def yarn_link_path
+      Rails.root.join("node_modules", "stimulus_reflex", "package.json")
     end
   end
 end

@@ -1,6 +1,6 @@
 import ApplicationController from './application_controller'
 
-/* This is the custom StimulusReflex controller for the <%= class_name %> reflex.
+/* This is the custom StimulusReflex controller for the <%= class_name %> Reflex.
  * Learn more at: https://docs.stimulusreflex.com
  */
 export default class extends ApplicationController {
@@ -16,66 +16,73 @@ export default class extends ApplicationController {
    * call super if you intend to do anything else when this controller connects.
   */
 
-  // connect () {
-  //   super.connect()
-  //   // add your code here
-  // }
+  connect () {
+    super.connect()
+    // add your code here, if applicable
+  }
 
   /* Reflex specific lifecycle methods.
-   * For every method defined in your Reflex's ruby object, a set of lifecycle methods become available
-   * in this javascript controller. These are optional so feel free to delete these stubs if you don't
+   *
+   * For every method defined in your Reflex class, a matching set of lifecycle methods become available
+   * in this javascript controller. These are optional, so feel free to delete these stubs if you don't
    * need them.
    *
    * Important:
-   * Make sure to add data-controller="<%= class_name %>" to your markup alongside
-   * data-reflex="<%= class_name %>#example" for the lifecycle methods to fire properly.
+   * Make sure to add data-controller="<%= class_name.underscore.dasherize %>" to your markup alongside
+   * data-reflex="<%= class_name %>#dance" for the lifecycle methods to fire properly.
    *
    * Example:
    *
-   *   <a href="#" data-reflex="<%= class_name %>#example" data-controller="<%= class_name %>">Example</a>
+   *   <a href="#" data-reflex="click-><%= class_name %>#dance" data-controller="<%= class_name.underscore.dasherize %>">Dance!</a>
    *
    * Arguments:
    *
    *   element - the element that triggered the reflex
    *             may be different than the Stimulus controller's this.element
    *
-   *   reflex - the name of the reflex e.g. "<%= class_name %>#example"
+   *   reflex - the name of the reflex e.g. "<%= class_name %>#dance"
    *
-   *   error - error message from the server
+   *   error/noop - the error message (for reflexError), otherwise null
+   *
+   *   reflexId - a UUID4 or developer-provided unique identifier for each Reflex
    */
 
 <% if actions.empty? -%>
   // Assuming you create a "<%= class_name %>#dance" action in your Reflex class
   // you'll be able to use the following lifecycle methods:
 
-  // beforeDance(element, reflex) {
+  // beforeDance(element, reflex, noop, reflexId) {
   //  element.innerText = 'Putting dance shoes on...'
   // }
 
-  // danceSuccess(element, reflex) {
+  // danceSuccess(element, reflex, noop, reflexId) {
   //   element.innerText = 'Danced like no one was watching! Was someone watching?'
   // }
 
-  // danceError(element, reflex, error) {
+  // danceError(element, reflex, error, reflexId) {
   //   console.error('danceError', error);
   //   element.innerText = "Couldn't dance!"
   // }
 <% end -%>
 <% actions.each do |action| -%>
-  // <%= "before_#{action}".camelize(:lower) %>(element, reflex) {
-  //  console.log("before <%= action %>", element, reflex)
+  // <%= "before_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //  console.log("before <%= action %>", element, reflex, reflexId)
   // }
 
-  // <%= "#{action}_success".camelize(:lower) %>(element, reflex) {
-  //   console.log("<%= action %> success", element, reflex)
+  // <%= "#{action}_success".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.log("<%= action %> success", element, reflex, reflexId)
   // }
 
-  // <%= "#{action}_error".camelize(:lower) %>(element, reflex, error) {
-  //   console.error("<%= action %> error", element, reflex, error)
+  // <%= "#{action}_error".camelize(:lower) %>(element, reflex, error, reflexId) {
+  //   console.error("<%= action %> error", element, reflex, error, reflexId)
   // }
 
-  // <%= "after_#{action}".camelize(:lower) %>(element, reflex, error) {
-  //   console.log("after <%= action %>", element, reflex, error)
+  // <%= "#{action}_halted".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.warn("<%= action %> halted", element, reflex, reflexId)
+  // }
+
+  // <%= "after_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.log("after <%= action %>", element, reflex, reflexId)
   // }
 <%= "\n" unless action == actions.last -%>
 <% end -%>
