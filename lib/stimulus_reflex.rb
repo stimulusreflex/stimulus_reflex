@@ -21,7 +21,7 @@ require "generators/stimulus_reflex_generator"
 module StimulusReflex
   class Engine < Rails::Engine
     NODE_VERSION_FORMAT = /(\d\.\d\.\d.*):/
-    JSON_VERSION_FORMAT = /(\d\.\d\.\d.*)\"/
+    JSON_VERSION_FORMAT = /(\d\.\d\.\d.*)"/
 
     initializer "stimulus_reflex.verify_caching_enabled" do
       unless caching_enabled?
