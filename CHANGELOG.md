@@ -19,6 +19,7 @@
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
+- Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
 - Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
 
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
