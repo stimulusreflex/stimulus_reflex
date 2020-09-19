@@ -20,7 +20,7 @@ Changing the Morph Mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph Mode is useful in different scenarios.](.gitbook/assets/power-rangers.jpg)
+![Each Morph Mode is useful in different scenarios.](.gitbook/assets/power-rangers%20%281%29.jpg)
 
 | What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
 | :--- | :--- | :--- |
@@ -106,9 +106,9 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% endcode %}
 
 {% hint style="warning" %}
-We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.  
-  
-¯\\_\(ツ\)\_/¯
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
+
+¯\_\(ツ\)\_/¯
 {% endhint %}
 
 {% hint style="danger" %}
@@ -120,7 +120,7 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre4 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre4 gem and npm package.
 {% endhint %}
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
@@ -399,7 +399,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="warning" %}
 This section describes functionality which will be available in StimulusReflex v3.3.0.
 
-You can try it out today if you install the v3.3.0.pre4 gem and npm package. 
+You can try it out today if you install the v3.3.0.pre4 gem and npm package.
 {% endhint %}
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.
