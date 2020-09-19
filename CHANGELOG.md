@@ -8,8 +8,15 @@
 
 - Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 
+**Closed issues:**
+
+- Authorization [\#292](https://github.com/hopsoft/stimulus_reflex/issues/292)
+- Params incorrect for form submitted for nested resource  [\#290](https://github.com/hopsoft/stimulus_reflex/issues/290)
+- Use set I18n.locale in Reflexes with Selector Morphs  [\#280](https://github.com/hopsoft/stimulus_reflex/issues/280)
+
 **Merged pull requests:**
 
+- fixes and tweaks to client logging subsystem [\#313](https://github.com/hopsoft/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
 
