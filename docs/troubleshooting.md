@@ -206,7 +206,7 @@ To remove spring **forever**, here is the process we recommend:
 
 We're very proud of StimulusReflex and CableReady, which are both standing on the shoulders of many giants such as Rails, Ruby and Redis.
 
-However, we want to be the first to recognize that there are limitations and constraints you should consider before using these technologies in your applications. After all, Rails itself does not claim to be immune from side effects, even as huge amounts of effort are being invested into improving Ruby's concurrency story even while you read this.
+However, we want to be the first to recognize that there are limitations and constraints you should consider before using these technologies in your applications. After all, Rails itself does not claim to be immune from side effects, though huge amounts of effort are being invested into improving Ruby's concurrency story even while you read this.
 
 There are edge cases where data could become out of date in between the time a Reflex queries the database and the resulting DOM update is applied in the browser. While there are mitigation strategies \(such as tracking versions on everything\) which you could employ, it's important to remember that you could be opening a can of worms that leads to sadness and/or madness.
 

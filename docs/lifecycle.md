@@ -292,3 +292,22 @@ console.log(snail.reflexId)
 snail.then(trail => {})
 ```
 
+## StimulusReflex Library Events
+
+In addition to the Reflex lifecycle mechanisms, the StimulusReflex client library emits its own set of handy DOM events which you can hook into and use in your applications.
+
+* `stimulus-reflex:connected`
+* `stimulus-reflex:disconnected`
+* `stimulus-reflex:rejected`
+* `stimulus-reflex:ready`
+
+All four events fire on `document`.
+
+`connected` fires when the ActionCable connection is established, which is a precondition of a successful call to `stimulate` - meaning that you can delay calls until the event arrives. It will also fire after a `disconnected` subscription is reconnected.
+
+`disconnected` fires if the connection to the server is lost; the `detail` object of the event has a `willAttemptReconnect` boolean which should be `true` in most cases.
+
+`rejected` is fired if you're doing authentication in your Channel and the subscription request was denied.
+
+`ready` is slightly different than the first three, in that it has nothing to do with the ActionCable subscription. Instead, it is called after StimulusReflex has scanned your page, looking for declared Reflexes to connect. This event fires every time the document body is modified, and was created primarily to support automated JS test runners like Cypress. Without this event, Cypress tests would have to wait for a few seconds before "clicking" on Reflex-enabled UI elements.
+

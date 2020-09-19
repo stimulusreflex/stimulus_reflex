@@ -5,7 +5,7 @@ import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4, debounce } from './utils'
+import { uuidv4, debounce, emitEvent } from './utils'
 import Log from './log'
 import {
   attributeValue,
@@ -47,16 +47,6 @@ const createSubscription = controller => {
   const identifier = JSON.stringify(subscription)
   let totalOperations
   let reflexId
-
-  const emitEvent = (event, detail) => {
-    document.dispatchEvent(
-      new CustomEvent(event, {
-        bubbles: true,
-        cancelable: false,
-        detail
-      })
-    )
-  }
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
@@ -325,6 +315,7 @@ const setupDeclarativeReflexes = debounce(() => {
           actionValue
         )
     })
+  emitEvent('stimulus-reflex:ready')
 }, 20)
 
 // Given a reflex string such as 'click->TestReflex#create' and a list of

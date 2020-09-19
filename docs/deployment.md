@@ -36,6 +36,10 @@ config.session_store :cache_store,
 ```
 {% endcode %}
 
+{% hint style="danger" %}
+Please note that `cache_store` is an accessor, while `session_store` is a method. Take care **not** to use an `=` when defining your `session_store`.
+{% endhint %}
+
 Another powerful option for session storage is to use the [activerecord-session\_store](https://github.com/rails/activerecord-session_store) gem and keep your sessions in the database. This technique requires some additional setup in the form of a migration that will create a `sessions` table in your database.
 
 Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weigh this against the additional strain this will put on your database server, especially in high-traffic scenarios.
