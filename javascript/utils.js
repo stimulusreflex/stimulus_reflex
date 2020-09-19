@@ -39,3 +39,13 @@ export const extractReflexName = reflexString => {
 
   return match ? match[1] : ''
 }
+
+export const emitEvent = (event, detail) => {
+  document.dispatchEvent(
+    new CustomEvent(event, {
+      bubbles: true,
+      cancelable: false,
+      detail
+    })
+  )
+}
