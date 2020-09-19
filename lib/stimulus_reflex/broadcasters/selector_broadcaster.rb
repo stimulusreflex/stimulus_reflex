@@ -17,7 +17,7 @@ module StimulusReflex
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge({
-                broadast_type: to_sym
+                broadcaster: to_sym
               })
             )
           else
@@ -25,7 +25,7 @@ module StimulusReflex
               selector: selector,
               html: fragment.to_html,
               stimulus_reflex: data.merge({
-                broadast_type: to_sym
+                broadcaster: to_sym
               })
             )
           end
