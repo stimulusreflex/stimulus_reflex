@@ -108,7 +108,7 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% hint style="warning" %}
 We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
-¯\_\(ツ\)\_/¯
+¯\\__\(ツ\)\__/¯
 {% endhint %}
 
 {% hint style="danger" %}
