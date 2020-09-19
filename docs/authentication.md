@@ -159,8 +159,8 @@ end
 
 ### Tokens \(Subscription-based\)
 
-{% hint style="danger" %}
-This section is a Work In Progress that is not yet functional in the current version of StimulusReflex. It's not yet something that you can use in your application.
+{% hint style="success" %}
+You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
 {% endhint %}
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.
@@ -423,4 +423,49 @@ export default class extends ApplicationController {
 }
 ```
 {% endcode %}
+
+## Passing params to ActionCable
+
+It's common to pass key/value pairs to your ActionCable subscriptions, which show up as a `params` hash in your ActionCable Channel class. While it's usually not necessary to send extra information to the StimulusReflex Channel, it is a mechanism available to you. You might have used it to implement the token-based JWT auth technique above.
+
+In this example, we want to tell the server whether the user has granted permission to send them native notifications. We'll then pick it up on the server:
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+import { Application } from 'stimulus'
+import { definitionsFromContext } from 'stimulus/webpack-helpers'
+import StimulusReflex from 'stimulus_reflex'
+import consumer from '../channels/consumer'
+import controller from './application_controller'
+
+const application = Application.start()
+const context = require.context('controllers', true, /_controller\.js$/)
+
+let params
+Notification.requestPermission().then(notifications => {
+  params = { notifications }
+}
+
+application.load(definitionsFromContext(context))
+StimulusReflex.initialize(application, { consumer, controller, params })
+```
+{% endcode %}
+
+{% code title="app/channels/application\_cable/channel.rb" %}
+```ruby
+module ApplicationCable
+  class Channel < ActionCable::Channel::Base
+    attr_accessor :notifications
+
+    def subscribed
+      @notifications = params[:notifications]
+      puts @notifications # "default", "granted" or "denied" 
+    end
+    
+  end
+end
+```
+{% endcode %}
+
+Once you know if you can send notifications, you could consider using CableReady's [notification operation](https://cableready.stimulusreflex.com/usage/dom-operations/notifications#notification) to send updates. If they denied your request, you could use the Rails flash object instead.
 
