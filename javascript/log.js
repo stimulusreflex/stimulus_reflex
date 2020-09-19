@@ -18,17 +18,15 @@ function request (
 
 function success (response, options = { halted: false }) {
   const { event } = response
-  const { reflexId, target, last, broadcaster, updates } =
-    event.detail.stimulusReflex || {}
+  const { reflexId, target, broadcaster } = event.detail.stimulusReflex || {}
 
   console.log(`\u2193 reflex \u2193 ${target}`, {
     reflexId,
     duration: `${new Date() - logs[reflexId]}ms`,
     halted: options.halted,
-    broadcaster,
-    updates
+    broadcaster
   })
-  if (last) delete logs[reflexId]
+  delete logs[reflexId]
 }
 
 function error (response) {
