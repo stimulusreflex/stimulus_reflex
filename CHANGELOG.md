@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre5...HEAD)
+
+**Merged pull requests:**
+
+- Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
+
+## [v3.3.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre5) (2020-09-18)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...v3.3.0.pre5)
 
 **Implemented enhancements:**
 

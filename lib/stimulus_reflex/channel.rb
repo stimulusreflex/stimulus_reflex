@@ -4,15 +4,13 @@ module ApplicationCable
   class Channel < ActionCable::Channel::Base
     def initialize(connection, identifier, params = {})
       super
-      application_cable = Rails.root.join("app", "channels", "application_cable", "channel.rb")
-      require application_cable if File.exist?(application_cable)
+      application_channel = Rails.root.join("app", "channels", "application_cable", "channel.rb")
+      require application_channel if File.exist?(application_channel)
     end
   end
 end
 
 class StimulusReflex::Channel < ApplicationCable::Channel
-  include CableReady::Broadcaster
-
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
