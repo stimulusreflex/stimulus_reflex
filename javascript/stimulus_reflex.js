@@ -43,7 +43,8 @@ let debugging = false
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel } = controller.StimulusReflex
-  const identifier = JSON.stringify({ channel })
+  const subscription = { channel, ...actionCableParams }
+  const identifier = JSON.stringify(subscription)
   let totalOperations
   let reflexId
 
@@ -59,50 +60,44 @@ const createSubscription = controller => {
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(
-      { channel, ...actionCableParams },
-      {
-        received: data => {
-          if (!data.cableReady) return
-          totalOperations = 0
-          ;['morph', 'innerHtml'].forEach(operation => {
-            if (
-              data.operations[operation] &&
-              data.operations[operation].length
-            ) {
-              if (data.operations[operation][0].stimulusReflex) {
-                const urls = Array.from(
-                  new Set(
-                    data.operations[operation].map(m => m.stimulusReflex.url)
-                  )
+    actionCableConsumer.subscriptions.create(subscription, {
+      received: data => {
+        if (!data.cableReady) return
+        totalOperations = 0
+        ;['morph', 'innerHtml'].forEach(operation => {
+          if (data.operations[operation] && data.operations[operation].length) {
+            if (data.operations[operation][0].stimulusReflex) {
+              const urls = Array.from(
+                new Set(
+                  data.operations[operation].map(m => m.stimulusReflex.url)
                 )
-                if (urls.length !== 1 || urls[0] !== location.href) return
-                totalOperations += data.operations[operation].length
-                reflexId = data.operations[operation][0].stimulusReflex.reflexId
-              }
+              )
+              if (urls.length !== 1 || urls[0] !== location.href) return
+              totalOperations += data.operations[operation].length
+              reflexId = data.operations[operation][0].stimulusReflex.reflexId
             }
-          })
-          if (promises[reflexId]) {
-            promises[reflexId].totalOperations = totalOperations
-            promises[reflexId].completedOperations = 0
           }
-          CableReady.perform(data.operations)
-        },
-        connected: () => {
-          actionCableSubscriptionActive = true
-          emitEvent('stimulus-reflex:connected')
-        },
-        rejected: () => {
-          actionCableSubscriptionActive = false
-          emitEvent('stimulus-reflex:rejected')
-          if (debugging) console.warn('Channel subscription was rejected.')
-        },
-        disconnected: willAttemptReconnect => {
-          actionCableSubscriptionActive = false
-          emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
+        })
+        if (promises[reflexId]) {
+          promises[reflexId].totalOperations = totalOperations
+          promises[reflexId].completedOperations = 0
         }
+        CableReady.perform(data.operations)
+      },
+      connected: () => {
+        actionCableSubscriptionActive = true
+        emitEvent('stimulus-reflex:connected')
+      },
+      rejected: () => {
+        actionCableSubscriptionActive = false
+        emitEvent('stimulus-reflex:rejected')
+        if (debugging) console.warn('Channel subscription was rejected.')
+      },
+      disconnected: willAttemptReconnect => {
+        actionCableSubscriptionActive = false
+        emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
       }
-    )
+    })
 }
 
 // Extends a regular Stimulus controller with StimulusReflex behavior.
