@@ -25,6 +25,9 @@ let stimulusApplication
 // A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
 let actionCableConsumer
 
+// A reference to an optional object called params defined in the StimulusReflex.initialize and passed to channels
+let actionCableParams
+
 // Flag which will be false if the server does not accept the channel subscription
 let actionCableSubscriptionActive = false
 
@@ -40,13 +43,14 @@ let debugging = false
 const createSubscription = controller => {
   actionCableConsumer = actionCableConsumer || getConsumer()
   const { channel } = controller.StimulusReflex
-  const identifier = JSON.stringify({ channel })
+  const subscription = { channel, ...actionCableParams }
+  const identifier = JSON.stringify(subscription)
   let totalOperations
   let reflexId
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(channel, {
+    actionCableConsumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
         totalOperations = 0
@@ -369,8 +373,9 @@ const getReflexRoots = element => {
 //   * consumer - [optional] the ActionCable consumer
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug } = initializeOptions
+  const { controller, consumer, debug, params } = initializeOptions
   actionCableConsumer = consumer
+  actionCableParams = params
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
