@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
 
 ## [v3.3.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre5) (2020-09-18)
@@ -83,7 +84,6 @@
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
 
@@ -98,6 +98,7 @@
 **Merged pull requests:**
 
 - Smarter warnings when element not found [\#274](https://github.com/hopsoft/stimulus_reflex/pull/274) ([hopsoft](https://github.com/hopsoft))
+- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 - Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
@@ -230,6 +231,7 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -282,7 +284,6 @@
 **Merged pull requests:**
 
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
-- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
