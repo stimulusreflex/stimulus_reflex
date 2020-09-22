@@ -5,7 +5,7 @@
 * [Quick Start](quickstart.md)
 * [Reflexes](reflexes.md)
 * [Lifecycle](lifecycle.md)
-* [Morph Modes](morph-modes.md)
+* [Morphs](morph-modes.md)
 * [Authentication](authentication.md)
 * [Persistence](persistence.md)
 * [Useful Patterns](patterns.md)

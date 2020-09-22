@@ -2,7 +2,7 @@
 description: "How to update everything, nothing or something in-between \U0001F9D8"
 ---
 
-# Morph Modes
+# Morphs
 
 By default, StimulusReflex updates your entire page. After re-processing your controller action, rendering your view template, and sending the raw HTML to your browser, StimulusReflex uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
 
@@ -12,15 +12,15 @@ Other times... we just need to hit a button which feeds a cat which may or may n
 
 It's _almost_ as if complex, real-world scenarios don't always fit the one-size-fits-all default full page Reflex.
 
-## Introducing Morph Modes
+## Introducing Morphs
 
 Behind the scenes, there are actually three different _modes_ in which StimulusReflex can process your requests. We refer to them by _what they will replace_ on your page: **Page**, **Selector** and **Nothing**. All three benefit from the same logging, callbacks, events and promises.
 
-Changing the Morph Mode happens in your server-side Reflex class, either in the action method or the callbacks. Both markup e.g. `data-reflex` and programmatic e.g. `stimulate()` mechanisms for initiating a Reflex on the client work without modification.
+Changing the Morph mode happens in your server-side Reflex class, either in the action method or the callbacks. Both markup e.g. `data-reflex` and programmatic e.g. `stimulate()` mechanisms for initiating a Reflex on the client work without modification.
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph Mode is useful in different scenarios.](.gitbook/assets/power-rangers%20%281%29.jpg)
+![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers%20%281%29.jpg)
 
 | What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
 | :--- | :--- | :--- |
@@ -116,12 +116,6 @@ Beware of Ruby gems that implicitly inject HTML into the body as it might be rem
 {% endhint %}
 
 ## Selector Morphs
-
-{% hint style="warning" %}
-This section describes functionality which will be available in StimulusReflex v3.3.0.
-
-You can try it out today if you install the v3.3.0.pre4 gem and npm package.
-{% endhint %}
 
 This is the perfect option if you want to re-render a partial, update a counter or just set a container to empty. Since it accepts a string, you can pass a value to it directly, use `render` to regenerate a partial or even connect it to a ViewComponent.
 
@@ -395,12 +389,6 @@ Do you have any more weird edge cases? Please let us know!
 {% endhint %}
 
 ## Nothing Morphs
-
-{% hint style="warning" %}
-This section describes functionality which will be available in StimulusReflex v3.3.0.
-
-You can try it out today if you install the v3.3.0.pre4 gem and npm package.
-{% endhint %}
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.
 
