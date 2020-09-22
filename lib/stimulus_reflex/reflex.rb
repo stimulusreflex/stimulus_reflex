@@ -3,6 +3,7 @@
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
+  include CableReady::Broadcaster
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
 
@@ -42,18 +43,22 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
-  delegate :connection, to: :channel
+  delegate :connection, :stream_name, to: :channel
   delegate :session, to: :request
+  delegate :broadcast, :broadcast_message, to: :broadcaster
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {})
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
     @params = params
+    @permanent_attribute_name = permanent_attribute_name
+    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    self.params
   end
 
   def request
@@ -79,6 +84,20 @@ class StimulusReflex::Reflex
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
       req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
+    end
+  end
+
+  def morph(selectors, html = "")
+    case selectors
+    when :page
+      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
+    when :nothing
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
+      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
+    else
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
+      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
+      broadcaster.morphs << [selectors, html]
     end
   end
 

@@ -1,15 +1,151 @@
 # Changelog
 
-## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre6...v3.3.0)
+
+## [v3.3.0.pre6](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre6) (2020-09-20)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre5...v3.3.0.pre6)
 
 **Implemented enhancements:**
 
-- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
+- Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
+- Authorization [\#292](https://github.com/hopsoft/stimulus_reflex/issues/292)
+- Params incorrect for form submitted for nested resource  [\#290](https://github.com/hopsoft/stimulus_reflex/issues/290)
+- Use set I18n.locale in Reflexes with Selector Morphs  [\#280](https://github.com/hopsoft/stimulus_reflex/issues/280)
+
+**Merged pull requests:**
+
+- fixes and tweaks to client logging subsystem [\#313](https://github.com/hopsoft/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
+- add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
+- Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
+
+## [v3.3.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre5) (2020-09-18)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre4...v3.3.0.pre5)
+
+**Implemented enhancements:**
+
+- Fail loudly if there's a version mismatch between the gem and the npm package. [\#294](https://github.com/hopsoft/stimulus_reflex/issues/294)
+
+**Closed issues:**
+
+- IE11 Support: "crypto" is undefined [\#308](https://github.com/hopsoft/stimulus_reflex/issues/308)
+- Using `morph` gives error on missing Warden::Manager midddleware? [\#304](https://github.com/hopsoft/stimulus_reflex/issues/304)
+- Update client controller template comments [\#298](https://github.com/hopsoft/stimulus_reflex/issues/298)
+
+**Merged pull requests:**
+
+- Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
+- Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
+- ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
+- Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
+- add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
+- Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
+- Enhance controller templates docs [\#300](https://github.com/hopsoft/stimulus_reflex/pull/300) ([pinzonjulian](https://github.com/pinzonjulian))
+- Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
+
+## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre3...v3.3.0.pre4)
+
+**Fixed bugs:**
+
+- Lifecycle callbacks do not work [\#281](https://github.com/hopsoft/stimulus_reflex/issues/281)
+- Fix timing issues with post-Reflex lifecycle callbacks [\#299](https://github.com/hopsoft/stimulus_reflex/pull/299) ([leastbad](https://github.com/leastbad))
+
+**Closed issues:**
+
+- self-referential data-reflex-root [\#301](https://github.com/hopsoft/stimulus_reflex/issues/301)
+- data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
+
+**Merged pull requests:**
+
+- Fixed typo in sample code. [\#296](https://github.com/hopsoft/stimulus_reflex/pull/296) ([jclarke](https://github.com/jclarke))
+
+## [v3.3.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre3) (2020-08-31)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre2...v3.3.0.pre3)
+
+**Fixed bugs:**
+
+- First argument of type "object" in this.stimulate\(\) will always be assigned to options. [\#278](https://github.com/hopsoft/stimulus_reflex/issues/278)
+- Allow morphs to run before triggering success/after [\#286](https://github.com/hopsoft/stimulus_reflex/pull/286) ([hopsoft](https://github.com/hopsoft))
+
+**Closed issues:**
+
+- Reflex ignores turbolinks cached pages [\#288](https://github.com/hopsoft/stimulus_reflex/issues/288)
+- Issue with Stimulus Reflex and ViewComponent [\#284](https://github.com/hopsoft/stimulus_reflex/issues/284)
+- controller inheritance does not seem to work [\#283](https://github.com/hopsoft/stimulus_reflex/issues/283)
+- Cannot read property 'schema' of undefined [\#282](https://github.com/hopsoft/stimulus_reflex/issues/282)
+- Reflex on form submit does not get parameter from input\[type="file"\] [\#277](https://github.com/hopsoft/stimulus_reflex/issues/277)
+- jQuery Plugins [\#246](https://github.com/hopsoft/stimulus_reflex/issues/246)
+- ActiveStorage variants performance [\#242](https://github.com/hopsoft/stimulus_reflex/issues/242)
+- Unnecessary body update after text\_content [\#186](https://github.com/hopsoft/stimulus_reflex/issues/186)
+- Warn about enabling Rails after running stimulus reflex' initializer [\#185](https://github.com/hopsoft/stimulus_reflex/issues/185)
+- Integration tests for stimulus-reflex [\#162](https://github.com/hopsoft/stimulus_reflex/issues/162)
+- Clearer explanation of quickstart example without javascript.  [\#149](https://github.com/hopsoft/stimulus_reflex/issues/149)
+- Webpack compilation fails with rails/webpacker 3.6 [\#83](https://github.com/hopsoft/stimulus_reflex/issues/83)
+
+**Merged pull requests:**
+
+- Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
+- Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
+- Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
+- Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
+- Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre1...v3.3.0.pre2)
+
+**Closed issues:**
+
+- afterReflex not always firing on morph with selectors [\#269](https://github.com/hopsoft/stimulus_reflex/issues/269)
+- Lifecycle hooks [\#266](https://github.com/hopsoft/stimulus_reflex/issues/266)
+- Stimulus Reflex with Rspec not working [\#263](https://github.com/hopsoft/stimulus_reflex/issues/263)
+
+**Merged pull requests:**
+
+- Smarter warnings when element not found [\#274](https://github.com/hopsoft/stimulus_reflex/pull/274) ([hopsoft](https://github.com/hopsoft))
+- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
+- Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
+- Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
+- coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
+- Update deployment docs after the official AnyCable 1.0 release [\#267](https://github.com/hopsoft/stimulus_reflex/pull/267) ([rmacklin](https://github.com/rmacklin))
+
+## [v3.3.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre1) (2020-07-08)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre0...v3.3.0.pre1)
+
+**Merged pull requests:**
+
+- Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
+
+## [v3.3.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre0) (2020-07-04)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...v3.3.0.pre0)
+
+**Implemented enhancements:**
+
+- Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
+- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
+- Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
+
+**Fixed bugs:**
+
+- Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+
+**Closed issues:**
+
+- beforeUpdate/updateSuccess/updateError functions deprecated? [\#255](https://github.com/hopsoft/stimulus_reflex/issues/255)
+- Error handling will fail if reflex is not defined [\#253](https://github.com/hopsoft/stimulus_reflex/issues/253)
+- Select with data-reflex in Firefox flickers [\#251](https://github.com/hopsoft/stimulus_reflex/issues/251)
 - data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/hopsoft/stimulus_reflex/issues/237)
 - Shorthand action notations corresponding to stimulus [\#233](https://github.com/hopsoft/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/hopsoft/stimulus_reflex/issues/225)
@@ -19,6 +155,11 @@
 
 **Merged pull requests:**
 
+- Prep for pre release of 3.3.0 [\#259](https://github.com/hopsoft/stimulus_reflex/pull/259) ([hopsoft](https://github.com/hopsoft))
+- Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
+- Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
+- warn against collections of identical elements that trigger reflexes [\#250](https://github.com/hopsoft/stimulus_reflex/pull/250) ([leastbad](https://github.com/leastbad))
+- always calls params to persist them into controller action [\#249](https://github.com/hopsoft/stimulus_reflex/pull/249) ([RolandStuder](https://github.com/RolandStuder))
 - Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
 - Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
 - Bump actionpack from 6.0.3.1 to 6.0.3.2 [\#245](https://github.com/hopsoft/stimulus_reflex/pull/245) ([dependabot[bot]](https://github.com/apps/dependabot))

@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.2.3",
+  "version": "3.3.0",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -14,7 +14,9 @@
     "ssr",
     "stimulus",
     "reflex",
-    "stimulus_reflex"
+    "stimulus_reflex",
+    "dom",
+    "morphdom"
   ],
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": {
@@ -35,7 +37,7 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.1.2",
+    "cable_ready": ">= 4.3.0",
     "form-serialize": ">= 0.7.2",
     "stimulus": ">= 1.1"
   },
@@ -45,7 +47,7 @@
     "@babel/register": "^7.6.2",
     "assert": "^2.0.0",
     "jsdom": "^16.0.1",
-    "mocha": "^7.0.1",
+    "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0"
   }
 }

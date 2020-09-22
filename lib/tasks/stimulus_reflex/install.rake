@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "stimulus_reflex/version"
 
 namespace :stimulus_reflex do
   desc "Install StimulusReflex in this application"
   task install: :environment do
     system "bundle exec rails webpacker:install:stimulus"
-    system "yarn add stimulus_reflex"
+    gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
+    system "yarn add stimulus_reflex@#{gem_version}"
 
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
@@ -47,6 +49,16 @@ namespace :stimulus_reflex do
     lines = File.open(filepath, "r") { |f| f.readlines }
     unless lines.find { |line| line.include?("config.session_store") }
       lines.insert 3, "  config.session_store :cache_store\n\n"
+      File.open(filepath, "w") { |f| f.write lines.join }
+    end
+
+    filepath = Rails.root.join("config/cable.yml")
+    lines = File.open(filepath, "r") { |f| f.readlines }
+    if lines[1].include?("adapter: async")
+      lines.delete_at 1
+      lines.insert 1, "  adapter: redis\n"
+      lines.insert 2, "  url: <%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>\n"
+      lines.insert 3, "  channel_prefix: " + Rails.application.class.module_parent.to_s.underscore + "_development\n"
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 

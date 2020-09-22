@@ -13,10 +13,15 @@ A thousand times, _yes_.
 * StimulusReflex: the name of this project, which has a JS client and a Ruby based server component that rides along on top of Rails' ActionCable websockets framework
 * Stimulus: an incredibly simple yet powerful JS framework by the creators of Rails
 * "a Reflex": used to describe the full, round-trip life-cycle of a StimulusReflex operation, from client to server and back again
-* Reflex class: a Ruby class that inherits from `StimulusReflex::Reflex` and lives in your `app/reflexes` folder, this is where your Reflex actions are implemented
+* Reflex class: a Ruby class that inherits from `StimulusReflex::Reflex` and lives in your `app/reflexes` folder. This is where your Reflex actions are implemented
 * Reflex action: a method in a Reflex class, called in response to activity in the browser. It has access to several special accessors containing all of the Reflex controller element's attributes
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
+* Morph Modes: the three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morph Modes](https://docs.stimulusreflex.com/morph-modes) page for more
+
+#### Looking for the way to update just sections of the DOM?
+
+{% page-ref page="morph-modes.md" %}
 
 ## What's the deal with CableReady?
 
@@ -31,6 +36,8 @@ A thousand times, _yes_.
 ⬇️ CableReady is for **receiving** updates. 👽
 
 CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+
+{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
 ## Declaring a Reflex in HTML with data attributes
 
@@ -61,7 +68,7 @@ You can use additional data attributes to pass variables as part of your Reflex 
 {% hint style="warning" %}
 One important thing to keep in mind is that after a Reflex operation morphs your page, all of your DOM elements are new. It's a **recommended best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. If no `id` is available, make sure that there is something unique and identifying about each element which calls a Reflex, even if you resort to something like `data-key="<%= rand %>"`.
 
-If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run. 
+If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
 {% endhint %}
 
 {% hint style="info" %}
@@ -79,6 +86,14 @@ You can specify multiple Reflex operations by separating them with a space:
 ```markup
 <img src="cat.jpg" data-reflex="mouseenter->Cat#approach mouseleave->Cat#escape">
 ```
+
+{% hint style="warning" %}
+There are two intentional limitations to this technique:
+
+All Reflex actions must target the same controller. In the above example, it won't work properly if the `mouseleave` points to `Dog#escape` because, obviously, cats and dogs don't mix.
+
+Also, you can only specify one action per event; this means `data-reflex="click->Cat#eat click->Cat#sleep"` will not work. In this example, the second action would be discarded.
+{% endhint %}
 
 ### Inheriting data-attributes from parent elements
 
@@ -118,14 +133,16 @@ Behind the scenes, when you use declarative Reflex calls via `data-reflex` attri
 All Stimulus controllers that have had `StimulusReflex.register(this)` called in their `connect` method gain a `stimulate` method.
 
 ```javascript
-this.stimulate(string target, [DOMElement element], ...[JSONObject argument])
+this.stimulate(string target, [DOMElement element], [Object options], ...[JSONObject argument])
 ```
 
 **target** \[required\] \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form "Example\#increment".
 
-**element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in Javascript. **Defaults to the DOM element of the controller in scope**.
+**element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in JavaScript. **Defaults to the DOM element of the controller in scope**.
 
-**argument** \[optional\]: a **splat** of JSON-compliant Javascript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
+**options** \[optional\]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors** or **attrs**. Can be used to override the ID of a given Reflex or override the selector\(s\) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
+
+**argument** \[optional\]: a **splat** of JSON-compliant JavaScript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
 
 ### Receiving arguments
 
@@ -240,6 +257,10 @@ end
 ```
 {% endcode %}
 
+{% hint style="success" %}
+If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
+{% endhint %}
+
 ### Building your Reflex action
 
 The following properties available to the developer inside Reflex actions:
@@ -258,7 +279,7 @@ The following properties available to the developer inside Reflex actions:
 
 ### `element`
 
-The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like, `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
+The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
 
 {% hint style="info" %}
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
@@ -349,7 +370,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 })
 ```
 
-You can find a full example for working with HTML forms on the Useful Patterns page.
+You can find a full example of form submission via Reflex on the Working With HTML Forms page.
 
 {% page-ref page="working-with-forms.md" %}
 

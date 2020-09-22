@@ -60,7 +60,7 @@ export default class extends Controller {
     window.removeEventListener('scroll', this.scroll, { passive: true })
   }
 
-  scroll () {
+  scroll = () => {
     this.stimulate('Event#scroll', window.scrollY)
   }
 }

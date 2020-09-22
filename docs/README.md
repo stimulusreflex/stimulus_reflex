@@ -15,12 +15,26 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 {% hint style="success" %}
 **Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/XveN625)
 
- [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
+
+## Introducing: Morphs
+
+v3.3 introduces the concept of **Morphs** to StimulusReflex.
+
+{% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
+
+**Selector** morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials and ViewComponents.
+
+**Nothing** morphs provide a lightning-fast RPC mechanism to launch ActiveJobs and emit signals to external processes.
+
+There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how Morphs work. Find all of the documentation and examples behind the link below.
+
+{% page-ref page="morph-modes.md" %}
 
 ## Why should I use StimulusReflex?
 
-Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript. With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
+Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript? With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
 
 ### Goals
 
@@ -56,13 +70,21 @@ Some of our favorite demos include:
 
 ## Build the next Twitter in just 9 minutes \(or less\) 😉
 
-{% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" %}
+{% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" caption="" %}
+
+## First-class ViewComponent support
+
+When you have [ViewComponent ](https://github.com/github/view_component)installed in your project, you can use [componentized views](https://www.youtube.com/watch?v=YVYRus_2KZM) in your Reflexes **without any configuration required**. 💯
+
+If you install the amazing [ViewComponentReflex](https://github.com/joshleblanc/view_component_reflex) as well, you will be able to persist the state of your components into the user's session. Every instance of your components will maintain their own local state. This provides seamless continuity for your UI - even when doing full-page Reflex updates. _Hand, meet glove._ 🖐️+🧤
+
+Some things just have to be seen: check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh/) for live demos.
 
 ## How we got here
 
-**We love Rails.** Veterans of the framework remember the feeling of awe and disbelief after seeing David Heinemeier-Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has become so successful that nearly every framework since has borrowed ideas, patterns, and features from it.
+**We love Rails.** Veterans of the framework remember the feeling of awe and disbelief after seeing David Heinemeier Hansson's [Build a Blog in 15 minutes](https://www.youtube.com/watch?v=Gzj723LkRJY) video. It didn't seem possible that web development could be so easy, productive, and fun. We're talking [exponential gains in developer efficiency](https://www.youtube.com/watch?v=SWEts0rlezA&t=3m23s) and happiness. Rails has become so successful that nearly every framework since has borrowed ideas, patterns, and features from it.
 
-The landscape has changed a lot since those early days. Applications are more ambitious now. The pursuit of native UI speeds spawned a new breed of increasingly complex technologies. Modern **Single Page Apps** have pushed much of the server's responsibilities to the client. Unfortunately this new approach trades _a developer experience_ that was once **fun and productive** for an alternative of high complexity and only marginal gains.
+The landscape has changed a lot since those early days. Applications are more ambitious now. The pursuit of native UI speeds spawned a new breed of increasingly complex technologies. Modern **Single Page Apps** have pushed many of the server's responsibilities to the client. Unfortunately this new approach trades _a developer experience_ that was once **fun and productive** for an alternative of high complexity and only marginal gains.
 
 **There must be a better way.**
 

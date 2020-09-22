@@ -4,6 +4,8 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
+## Command-Line Install
+
 {% hint style="warning" %}
 StimulusReflex v3 has been released, and there are some big changes. **Server-side session storage is now required.**
 
@@ -13,13 +15,34 @@ You can find additional information for supporting Rails 5.2+ below.
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails projects.
 
 ```bash
+# For new projects
 rails new myproject --webpack=stimulus
 cd myproject
+
+# For existing projects
+bundle exec rails webpacker:install:stimulus
+
+# For both project types
 bundle add stimulus_reflex
 bundle exec rails stimulus_reflex:install
 ```
 
 The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, including enabling caching in your development environment.
+
+{% hint style="warning" %}
+When v3.3 ships, the install script will modify `cable.yml` to use Redis instead of the `async` adapter in development mode.
+{% endhint %}
+
+You might need to modify your ActionCable configuration to use the Redis adapter in development mode. If you don't have Redis on your machine, you can find out more [on the Redis site](https://redis.io/topics/quickstart).
+
+{% code title="config/cable.yml" %}
+```yaml
+development:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: your_application_development
+```
+{% endcode %}
 
 And that's it! **You can start using StimulusReflex in your application.**
 
@@ -71,6 +94,17 @@ end
 ```
 {% endcode %}
 
+Configure ActionCable to use the Redis adapter in development mode. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
+
+{% code title="config.cable.yml" %}
+```yaml
+development:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: your_application_development
+```
+{% endcode %}
+
 You should also add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
 
 {% code title="app/views/layouts/application.html.erb" %}
@@ -83,7 +117,7 @@ You should also add the `action_cable_meta_tag`helper to your application templa
 ```
 {% endcode %}
 
-### Authentication
+## Authentication
 
 {% hint style="info" %}
 If you're just experimenting with StimulusReflex or trying to bootstrap a proof-of-concept application on your local workstation, you can actually skip this section until you're planning to deploy.
@@ -114,6 +148,12 @@ You can learn more about session storage on the Deployment page.
 StimulusReflex supports both client and server logging of Reflexes.
 
 {% page-ref page="troubleshooting.md" %}
+
+## ViewComponent Integration
+
+There is no special process required for using [view\_component](https://github.com/github/view_component) with StimulusReflex. If ViewComponent is setup and running properly, you're already able to use them in your Reflex-enabled views.
+
+Many StimulusReflex + ViewComponent developers are enjoying using the [view\_component\_reflex](https://github.com/joshleblanc/view_component_reflex) gem, which automatically persists component state to your session between Reflexes.
 
 ## Rails 5.2+ Support
 

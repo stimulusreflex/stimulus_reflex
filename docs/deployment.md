@@ -27,7 +27,7 @@ Then configure your environments to suit your caching strategy and pool size:
 
 {% code title="config/environments/production.rb" %}
 ```ruby
-config.cache_store = :redis_cache_store, {url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
+config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
 config.session_store :cache_store,
   key: "_session",
   compress: true,
@@ -36,11 +36,63 @@ config.session_store :cache_store,
 ```
 {% endcode %}
 
+{% hint style="danger" %}
+Please note that `cache_store` is an accessor, while `session_store` is a method. Take care **not** to use an `=` when defining your `session_store`.
+{% endhint %}
+
 Another powerful option for session storage is to use the [activerecord-session\_store](https://github.com/rails/activerecord-session_store) gem and keep your sessions in the database. This technique requires some additional setup in the form of a migration that will create a `sessions` table in your database.
 
 Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weigh this against the additional strain this will put on your database server, especially in high-traffic scenarios.
 
 Regardless of which option you choose, keep an eye on your connection pools and memory usage.
+
+## Deployment on Heroku
+
+We have seen deployments where combining cache and session storage functions into one Redis database has led to strange behavior, such as forgetting Rails sessions after 10-15 minutes. Luckily, we have an excellent workaround based on splitting up caching and session functions into separate Redis instances.
+
+Heroku allows you to provision multiple Redis instances to your application, both via the [addon marketplace](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
+
+Install the `redis-session-store` gem into your project, and then in your `production.rb` you can change your session store:
+
+{% code title="config/environments/production.rb" %}
+```ruby
+config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
+
+config.session_store :redis_session_store, {
+  key: Rails.application.credentials.app_session_key,
+  serializer: :json,
+  redis: {
+    expire_after: 1.year,
+    ttl: 1.year,
+    key_prefix: "app:session:",
+    url: ENV.fetch("HEROKU_REDIS_MAROON_URL"),
+  }
+```
+{% endcode %}
+
+Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+
+## Set your `default_url_options` for each environment
+
+When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
+
+{% tabs %}
+{% tab title="Development" %}
+{% code title="config/environments/development.rb" %}
+```ruby
+config.action_controller.default_url_options = {host: "localhost", port: 3000}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Production" %}
+{% code title="config/environments/production.rb" %}
+```ruby
+config.action_controller.default_url_options = {host: "stimulusreflex.com"}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ## AnyCable
 
@@ -56,10 +108,10 @@ We're excited to announce that StimulusReflex now works with [AnyCable](https://
 
 We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. Of course, the message delivery speed will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
 
-Getting to this point required significant effort and cooperation between members of both projects. You can try out a preview of the upcoming AnyCable v1.0.0 release today.
+Getting to this point required significant effort and cooperation between members of both projects. You can try out the AnyCable v1.0 release today.
 
-1. Add `gem "anycable-rails", "1.0.0.rc2"` to your `Gemfile`.
-2. Install `anycable-go` v1.0.0.rc1 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\).
+1. Add `gem "anycable-rails", "~> 1.0"` to your `Gemfile`.
+2. Install `anycable-go` v1.0 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\).
 3. If you are using the session object, you must select a cache store that is not MemoryStore, which is not compatible with AnyCable.
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
