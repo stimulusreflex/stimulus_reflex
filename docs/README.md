@@ -20,15 +20,15 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 
 ## Introducing: Morphs
 
-{% hint style="info" %}
-v3.3 introduces the concept of **Morphs** to StimulusReflex:
+v3.3 introduces the concept of **Morphs** to StimulusReflex.
+
+{% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
 
 **Selector** morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials and ViewComponents.
 
 **Nothing** morphs provide a lightning-fast RPC mechanism to launch ActiveJobs and emit signals to external processes.
 
-You can try for yourself **right now**. There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how Morphs work. Find all of the documentation and examples behind the link below.
-{% endhint %}
+There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how Morphs work. Find all of the documentation and examples behind the link below.
 
 {% page-ref page="morph-modes.md" %}
 
