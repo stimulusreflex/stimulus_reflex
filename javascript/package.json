@@ -36,9 +36,11 @@
     "test": "yarn run mocha --require @babel/register"
   },
   "dependencies": {
+    "form-serialize": ">= 0.7.2"
+  },
+  "peerDependencies": {
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.3.0",
-    "form-serialize": ">= 0.7.2",
     "stimulus": ">= 1.1"
   },
   "devDependencies": {
