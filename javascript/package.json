@@ -52,10 +52,13 @@
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
+    "@rails/actioncable": "^6.0.3-3",
     "assert": "^2.0.0",
+    "cable_ready": "^4.4.0-pre0",
     "jsdom": "^16.0.1",
     "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
-    "prettier-standard": "^16.1.0"
+    "prettier-standard": "^16.1.0",
+    "stimulus": "^1.1.1"
   }
 }
