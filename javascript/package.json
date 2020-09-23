@@ -28,12 +28,17 @@
   },
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./stimulus_reflex.js",
+  "source": "./stimulus_reflex.js",
+  "main": "dist/stimulus_reflex.js",
+  "module": "dist/stimulus_reflex.module.js",
+  "unpkg": "dist/stimulus_reflex.umd.js",
   "scripts": {
     "postinstall": "node scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register"
+    "test": "yarn run mocha --require @babel/register",
+    "build": "microbundle",
+    "dev": "microbundle watch"
   },
   "dependencies": {
     "form-serialize": ">= 0.7.2"
@@ -49,6 +54,7 @@
     "@babel/register": "^7.6.2",
     "assert": "^2.0.0",
     "jsdom": "^16.0.1",
+    "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0"
   }
