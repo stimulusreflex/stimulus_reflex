@@ -49,6 +49,7 @@ function error (response) {
       `\u2193 reflex \u2193 ${target}`,
       detail.stimulusReflex.serverMessage.body
     )
+  delete logs[reflexId]
 }
 
 export default {
