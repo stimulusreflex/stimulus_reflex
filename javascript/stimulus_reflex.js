@@ -37,6 +37,9 @@ const promises = {}
 // Indicates if we should log calls to stimulate, etc...
 let debugging = false
 
+// Should we draw pretty boxes when CableReady updates content?
+let wireframes = null
+
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
 //
@@ -373,9 +376,10 @@ const getReflexRoots = element => {
 //   * consumer - [optional] the ActionCable consumer
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug, params } = initializeOptions
+  const { controller, consumer, debug, params, gsap } = initializeOptions
   actionCableConsumer = consumer
   actionCableParams = params
+  if (gsap && typeof gsap === 'object') wireframes = gsap
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
@@ -402,7 +406,7 @@ if (!document.stimulusReflexInitialized) {
   // to the source element in case it gets removed from the DOM via morph.
   // This is safe because the server side reflex completed successfully.
   const beforeDOMUpdateHandler = event => {
-    const { selector, stimulusReflex } = event.detail || {}
+    const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
     const element = findElement(attrs)
@@ -431,6 +435,64 @@ if (!document.stimulusReflexInitialized) {
     beforeDOMUpdateHandler
   )
   document.addEventListener('cable-ready:before-morph', beforeDOMUpdateHandler)
+
+  const afterDOMUpdateHandler = event => {
+    if (event.detail.stimulusReflex) {
+      if (wireframes) {
+        const duration =
+          new Date() - Log.logs[event.detail.stimulusReflex.reflexId]
+        const selector = document.querySelector(event.detail.selector)
+        const style = getComputedStyle(selector)
+        const backgroundColor = style.getPropertyValue('background-color')
+        const border = style.getPropertyValue('border')
+        const div = document.createElement('div')
+        selector.style.border = '2px solid #000'
+        setTimeout(() => {
+          const rect =
+            event.detail.selector === 'body'
+              ? { top: 50, left: 0 }
+              : selector.getBoundingClientRect()
+          div.style.cssText = `position:absolute;z-index:5000;top:${rect.top -
+            50}px;left:${rect.left}px;background-color:#fff;`
+          div.innerHTML = `${duration}ms<br>${event.detail.stimulusReflex.reflexId}`
+          document.body.appendChild(div)
+          wireframes.fromTo(
+            selector,
+            {
+              backgroundColor:
+                event.type === 'cable-ready:after-morph' ? '#FF9800' : '#0F0'
+            },
+            {
+              backgroundColor,
+              duration: 5,
+              ease: 'power4',
+              onComplete: () => {
+                wireframes.fromTo(
+                  div,
+                  { opacity: 1 },
+                  {
+                    opacity: 0,
+                    onComplete: () => {
+                      selector.style.border = border
+                      div.remove()
+                    }
+                  }
+                )
+              }
+            }
+          )
+        })
+      }
+      delete Log.logs[event.detail.stimulusReflex.reflexId]
+    }
+  }
+
+  document.addEventListener(
+    'cable-ready:after-inner-html',
+    afterDOMUpdateHandler
+  )
+  document.addEventListener('cable-ready:after-morph', afterDOMUpdateHandler)
+
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
