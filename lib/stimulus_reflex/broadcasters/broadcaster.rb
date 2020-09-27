@@ -31,7 +31,7 @@ module StimulusReflex
         detail: {
           reflexId: data["reflexId"],
           stimulus_reflex: data.merge(
-            broadcaster: to_sym,
+            morph: to_sym,
             server_message: {subject: subject, body: body}
           )
         }

@@ -413,6 +413,12 @@ if (!document.stimulusReflexInitialized) {
     const promise = promises[reflexId]
 
     promise.completedOperations++
+    if (debugging)
+      Log.success(event, {
+        halted: false,
+        completed: promise.completedOperations,
+        total: promise.totalOperations
+      })
     if (promise.completedOperations < promise.totalOperations) return
 
     const response = {
@@ -427,7 +433,6 @@ if (!document.stimulusReflexInitialized) {
     }
 
     dispatchLifecycleEvent('success', element, reflexId)
-    if (debugging) Log.success(response)
   }
 
   document.addEventListener(
@@ -483,7 +488,8 @@ if (!document.stimulusReflexInitialized) {
           )
         })
       }
-      delete Log.logs[event.detail.stimulusReflex.reflexId]
+      if (!promises[event.detail.stimulusReflex.reflexId])
+        delete Log.logs[event.detail.stimulusReflex.reflexId]
     }
   }
 
@@ -530,19 +536,19 @@ if (!document.stimulusReflexInitialized) {
     if (debugging) {
       switch (subject) {
         case 'error':
-          Log.error(response)
+          Log.error(event)
           break
         case 'selector':
-          Log.success(response)
+          Log.success(event)
           break
         case 'nothing':
-          Log.success(response)
+          Log.success(event)
           break
         case 'halted':
-          Log.success(response, { halted: true })
+          Log.success(event, { halted: true })
           break
         default:
-          Log.success(response)
+          Log.success(event)
           break
       }
     }
