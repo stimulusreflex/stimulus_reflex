@@ -10,7 +10,7 @@ function request (reflexId, target, args, controller, element) {
   })
 }
 
-function success (event, options = { halted: false }) {
+function success (event, options) {
   const { detail } = event || {}
   const { selector } = detail || {}
   const { reflexId, target, morph } = event.detail.stimulusReflex || {}
@@ -26,7 +26,8 @@ function success (event, options = { halted: false }) {
     .join('_')
 
   console.log(
-    `\u2193 reflex \u2193 ${target} \u2192 ${selector}${progress} in ${duration}`,
+    `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
+      '\u221E'}${progress} in ${duration}`,
     {
       reflexId,
       morph,
@@ -42,7 +43,8 @@ function error (event) {
   const { reflexId, target, error, morph } = detail.stimulusReflex || {}
   const duration = `${new Date() - logs[reflexId]}ms`
   console.error(
-    `\u2193 reflex \u2193 ${target} \u2192 ${selector} in ${duration}`,
+    `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
+      '\u221E'} in ${duration}`,
     {
       reflexId,
       error,
@@ -55,7 +57,6 @@ function error (event) {
       `\u2193 reflex \u2193 ${target}`,
       detail.stimulusReflex.serverMessage.body
     )
-  delete logs[reflexId]
 }
 
 export default {

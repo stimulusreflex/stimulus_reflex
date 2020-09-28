@@ -398,10 +398,7 @@ if (!document.stimulusReflexInitialized) {
     })
   })
 
-  // Trigger success and after lifecycle methods from before events (before-morph, before-inner-html) to ensure we can find a reference
-  // to the source element in case it gets removed from the DOM via morph.
-  // This is safe because the server side reflex completed successfully.
-  const beforeDOMUpdateHandler = event => {
+  const afterDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
@@ -409,100 +406,48 @@ if (!document.stimulusReflexInitialized) {
     const promise = promises[reflexId]
 
     promise.completedOperations++
+
     if (debugging)
       Log.success(event, {
         halted: false,
         completed: promise.completedOperations,
         total: promise.totalOperations
       })
+
     if (promise.completedOperations < promise.totalOperations) return
 
-    const response = {
-      element,
-      event,
-      data: promise && promise.data
-    }
-
-    if (promise) {
-      delete promises[reflexId]
-      promise.resolve(response)
-    }
-
+    delete Log.logs[reflexId]
+    delete promises[reflexId]
+    promise.resolve({ element, event, data: promise.data })
     dispatchLifecycleEvent('success', element, reflexId)
   }
 
-  document.addEventListener(
-    'cable-ready:before-inner-html',
-    beforeDOMUpdateHandler
-  )
-  document.addEventListener('cable-ready:before-morph', beforeDOMUpdateHandler)
-
-  const afterDOMUpdateHandler = event => {
-    const { stimulusReflex } = event.detail || {}
-    if (!stimulusReflex) return
-    if (!promises[event.detail.stimulusReflex.reflexId])
-      delete Log.logs[event.detail.stimulusReflex.reflexId]
-  }
-
-  document.addEventListener(
-    'cable-ready:after-inner-html',
-    afterDOMUpdateHandler
-  )
-  document.addEventListener('cable-ready:after-morph', afterDOMUpdateHandler)
+  document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
+  document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
     const element = findElement(attrs)
     const promise = promises[reflexId]
-    const subjects = {
-      error: true,
-      halted: true,
-      nothing: true,
-      success: true
-    }
+    const subjects = { error: true, halted: true, nothing: true, success: true }
 
     if (element && subject == 'error') element.reflexError = body
 
-    const response = {
-      data: promise && promise.data,
+    delete promises[reflexId]
+    promise[subject == 'error' ? 'reject' : 'resolve']({
+      data: promise.data,
       element,
       event,
       toString: () => body
-    }
-
-    if (promise) {
-      delete promises[reflexId]
-
-      if (subject == 'error') {
-        promise.reject(response)
-      } else {
-        promise.resolve(response)
-      }
-    }
+    })
 
     if (element && subjects[subject])
       dispatchLifecycleEvent(subject, element, reflexId)
 
-    if (debugging) {
-      switch (subject) {
-        case 'error':
-          Log.error(event)
-          break
-        case 'selector':
-          Log.success(event)
-          break
-        case 'nothing':
-          Log.success(event)
-          break
-        case 'halted':
-          Log.success(event, { halted: true })
-          break
-        default:
-          Log.success(event)
-          break
-      }
-    }
+    const options = subject == 'halted' ? { halted: true } : { halted: false }
+    if (debugging) Log[subject == 'error' ? 'error' : 'success'](event, options)
+    delete Log.logs[reflexId]
   })
 }
 
