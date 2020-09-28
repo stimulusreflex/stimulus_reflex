@@ -24,7 +24,6 @@ function success (event, options) {
     .split('-')
     .slice(1)
     .join('_')
-
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} in ${duration}`,
@@ -39,24 +38,16 @@ function success (event, options) {
 
 function error (event) {
   const { detail } = event || {}
-  const { selector } = detail || {}
-  const { reflexId, target, error, morph } = detail.stimulusReflex || {}
+  const { reflexId, target } = detail.stimulusReflex || {}
   const duration = `${new Date() - logs[reflexId]}ms`
-  console.error(
-    `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
-      '\u221E'} in ${duration}`,
+  console.log(
+    `\u2193 reflex \u2193 ${target} in ${duration} %cERROR: ${detail.stimulusReflex.serverMessage.body}`,
+    'color: #f00;',
     {
       reflexId,
-      error,
-      morph,
       payload: event.detail.stimulusReflex
     }
   )
-  if (detail.stimulusReflex.serverMessage.body)
-    console.error(
-      `\u2193 reflex \u2193 ${target}`,
-      detail.stimulusReflex.serverMessage.body
-    )
 }
 
 export default {

@@ -24,7 +24,7 @@ module StimulusReflex
       false
     end
 
-    def enqueue_message(subject:, body: nil, data: {})
+    def broadcast_message(subject:, body: nil, data: {}, error: nil)
       logger.error "\e[31m#{body}\e[0m" if subject == "error"
       cable_ready[stream_name].dispatch_event(
         name: "stimulus-reflex:server-message",
@@ -32,14 +32,10 @@ module StimulusReflex
           reflexId: data["reflexId"],
           stimulus_reflex: data.merge(
             morph: to_sym,
-            server_message: {subject: subject, body: body}
+            server_message: {subject: subject, body: error&.to_s}
           )
         }
       )
-    end
-
-    def broadcast_message(subject:, body: nil, data: {})
-      enqueue_message subject: subject, body: body, data: data
       cable_ready.broadcast
     end
 
