@@ -1,7 +1,5 @@
-const logs = {}
-
 function request (reflexId, target, args, controller, element) {
-  logs[reflexId] = new Date()
+  reflexes[reflexId].timestamp = new Date()
   console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
@@ -10,49 +8,39 @@ function request (reflexId, target, args, controller, element) {
   })
 }
 
-function success (event, options) {
+function success (event) {
   const { detail } = event || {}
   const { selector } = detail || {}
-  const { reflexId, target, morph } = event.detail.stimulusReflex || {}
+  const { reflexId, target, morph, serverMessage } = detail.stimulusReflex || {}
+  const reflex = reflexes[reflexId]
   const progress =
-    options.completed && options.total > 1
-      ? ` ${options.completed}/${options.total}`
+    reflex.totalOperations > 1
+      ? ` ${reflex.completedOperations}/${reflex.totalOperations}`
       : ''
-  const duration = `${new Date() - logs[reflexId]}ms`
+  const duration = `${new Date() - reflex.timestamp}ms`
   const operation = event.type
     .split(':')[1]
     .split('-')
     .slice(1)
     .join('_')
+  const halted = (serverMessage && serverMessage.subject == 'halted') || false
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} in ${duration}`,
-    {
-      reflexId,
-      morph,
-      operation,
-      halted: options.halted
-    }
+    { reflexId, morph, operation, halted }
   )
 }
 
 function error (event) {
   const { detail } = event || {}
-  const { reflexId, target } = detail.stimulusReflex || {}
-  const duration = `${new Date() - logs[reflexId]}ms`
+  const { reflexId, target, serverMessage } = detail.stimulusReflex || {}
+  const duration = `${new Date() - reflexes[reflexId].timestamp}ms`
+  const payload = detail.stimulusReflex
   console.log(
-    `\u2193 reflex \u2193 ${target} in ${duration} %cERROR: ${detail.stimulusReflex.serverMessage.body}`,
+    `\u2193 reflex \u2193 ${target} in ${duration} %cERROR: ${serverMessage.body}`,
     'color: #f00;',
-    {
-      reflexId,
-      payload: event.detail.stimulusReflex
-    }
+    { reflexId, payload }
   )
 }
 
-export default {
-  logs,
-  request,
-  success,
-  error
-}
+export default { request, success, error }
