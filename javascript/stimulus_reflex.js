@@ -279,19 +279,19 @@ const setupDeclarativeReflexes = debounce(() => {
       const actions = attributeValues(
         element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
-      reflexAttributeNames.forEach(reflex => {
-        const controller = findControllerByReflexString(
-          reflex,
+      reflexAttributeNames.forEach(reflexName => {
+        const controller = findControllerByReflexName(
+          reflexName,
           allReflexControllers(stimulusApplication, element)
         )
         let action
         if (controller) {
-          action = `${reflex.split('->')[0]}->${
+          action = `${reflexName.split('->')[0]}->${
             controller.identifier
           }#__perform`
           if (!actions.includes(action)) actions.push(action)
         } else {
-          action = `${reflex.split('->')[0]}->stimulus-reflex#__perform`
+          action = `${reflexName.split('->')[0]}->stimulus-reflex#__perform`
           if (!controllers.includes('stimulus-reflex')) {
             controllers.push('stimulus-reflex')
           }
@@ -327,12 +327,12 @@ const setupDeclarativeReflexes = debounce(() => {
 // controllers. It will find the matching controller based on the controller's
 // identifier. e.g. Given these controller identifiers ['foo', 'bar', 'test'],
 // it would select the 'test' controller.
-const findControllerByReflexString = (reflexString, controllers) => {
+const findControllerByReflexName = (reflexName, controllers) => {
   const controller = controllers.find(controller => {
     if (!controller.identifier) return
 
     return (
-      extractReflexName(reflexString).toLowerCase() ===
+      extractReflexName(reflexName).toLowerCase() ===
       controller.identifier.toLowerCase()
     )
   })
