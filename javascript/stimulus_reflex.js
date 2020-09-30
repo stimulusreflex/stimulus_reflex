@@ -273,13 +273,13 @@ const setupDeclarativeReflexes = debounce(() => {
       const controllers = attributeValues(
         element.getAttribute(stimulusApplication.schema.controllerAttribute)
       )
-      const reflexInstances = attributeValues(
+      const reflexAttributeNames = attributeValues(
         element.getAttribute(stimulusApplication.schema.reflexAttribute)
       )
       const actions = attributeValues(
         element.getAttribute(stimulusApplication.schema.actionAttribute)
       )
-      reflexInstances.forEach(reflex => {
+      reflexAttributeNames.forEach(reflex => {
         const controller = findControllerByReflexString(
           reflex,
           allReflexControllers(stimulusApplication, element)
