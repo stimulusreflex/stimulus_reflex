@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...HEAD)
+
+**Implemented enhancements:**
+
+- LiveView .leex inspired payloads [\#232](https://github.com/hopsoft/stimulus_reflex/issues/232)
+
+**Closed issues:**
+
+- Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
+- Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
+- Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
+
 ## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre6...v3.3.0)
