@@ -72,6 +72,14 @@ config.session_store :redis_session_store, {
 
 Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
 
+## Cloudflare DNS
+
+Cloudflare's infrastructure is nothing short of impressive, and they are a great choice for free DNS hosting. However, the default behaviour of their DNS product is to proxy all traffic to your domain. **This includes websocket traffic.**
+
+Your mileage may vary \(literally, depending on how far you are from a Cloudflare edge node!\) but changing your DNS records from "Proxying" to "DNS Only", you could shave 60-90ms off the real-world execution time of your Reflex actions.
+
+In a more sophisticated setup, you could experiment with hosting your websockets endpoint on a different domain, allowing you to experience the best of both worlds. In fact, this is the specific reason we add `<%= action_cable_meta_tag %>` to our HEADs.
+
 ## Set your `default_url_options` for each environment
 
 When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
