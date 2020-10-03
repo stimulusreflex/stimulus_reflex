@@ -10,9 +10,9 @@ The team behind StimulusReflex works hard to make sure that the library has ever
 
 A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulusjs.org), a lightweight library that provides powerful event handling.
 
-We also draw upon proven libraries such as [Lodash](https://lodash.com) when necessary to craft flexible solutions to common problems.
+We also draw upon proven libraries such as [Lodash](https://lodash.com) and [debounced](https://github.com/hopsoft/debounced) when necessary to craft flexible solutions to common problems.
 
-## Throttle, Debounce and requestAnimationFrame
+## Throttle and Debounce
 
 Some actions with some input devices can trigger enough events in a short period of time that unless you handle them properly, you will massively degrade the performance of your application. Common examples include: moving your mouse, holding down a key on your keyboard, scrolling a webpage and resizing your browser window.
 
@@ -27,18 +27,24 @@ For these use cases, we can use a technique known as a **debounce**. The classic
 Debounce is flexible. In addition to specifying a delay, additional options can indicate whether the first \("_leading_"\) event is fired and whether the last \("_trailing_"\) event is fired. Much like an angry, beeping elevator there is also _maxWait_ to provide the amount of time to wait before an interim event is fired, even if new events are still arriving.
 
 {% hint style="info" %}
-**debounce** is so flexible that the Lodash implementation of throttle is actually implemented using debounce.
-{% endhint %}
-
-{% hint style="success" %}
 LiveView's **debounce** implementation accepts **blur** as a delay value, effectively saying "don't do this until the user leaves this input element".
 
 With Stimulus, we can just define a handler for the **blur** event and keep the concepts separate.
 {% endhint %}
 
-While you can find many implementations of throttle and debounce on the web, we strongly recommend that you use the functions found in the Lodash library. Not only are they are flexible, well-tested and optimised, but _they actually return new functions that you can assign to replace your existing functions_. Once you wrap your head around the power this provides, other approaches will feel like dirty hacks.
+While you can find many implementations of throttle and debounce on the web, one of the most commonly used implementations can be found in the [Lodash](https://lodash.com/) library. Lodash has dozens of functions that are flexible, well-tested and optimised. They also __return new functions that you can assign to replace your existing functions.
 
-If you `yarn add lodash-es` you will be able to use a version of the library that supports **tree shaking**. This means that Webpack will only grab the minimum code required, keeping your production JS bundle size tiny.
+{% hint style="info" %}
+Lodash implementation of **debounce** is so flexible that **throttle** is actually implemented using debounce.
+{% endhint %}
+
+If you `yarn add lodash` you will be able to import just the functions you need thanks to a process known as **tree shaking**, where Webpack will only grab the minimum code required, keeping your production JS bundle size tiny. [In order for tree shaking to work, you have to use the following import syntax](https://www.azavea.com/blog/2019/03/07/lessons-on-tree-shaking-lodash/):
+
+```javascript
+import debounce from 'lodash/debounce'
+```
+
+Tree shaking will not work if you attempt to use `{ debounce }` or forget to specify `'lodash/debounce'` - just `from 'lodash'` will include the entire library.
 
 Let's set up a simple example: we will debounce your page scroll events while keeping your server up-to-date on how far down your user is.
 
@@ -47,7 +53,7 @@ Let's set up a simple example: we will debounce your page scroll events while ke
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { debounce } from 'lodash-es/debounce'
+import debounce from 'lodash/debounce'
 
 export default class extends Controller {
   connect () {
@@ -55,7 +61,7 @@ export default class extends Controller {
     this.scroll = debounce(this.scroll, 1000)
     window.addEventListener('scroll', this.scroll, { passive: true })
   }
-  
+
   disconnect () {
     window.removeEventListener('scroll', this.scroll, { passive: true })
   }
@@ -90,15 +96,15 @@ When the handler is executed, we call `stimulate` and pass the current scroll of
 
 We will look at more examples below, but for now just remember that `throttle` with default parameters has the example same form and syntax as `debounce`.
 
-{% hint style="success" %}
-Just before we move on, there is a third important mechanism modern browsers provide to control time in our applications, and that is **requestAnimationFrame**.
+## debounced
 
-If you've ever developed games, simulations or visualisations, chances are that you've worked with _render loops_. For the rest of us, the idea that we can use JavaScript, WebGL and the HTML canvas/SVG elements to create incredible visual results might seem alien. There are many great starter articles including "[Anatomy of a video game](https://developer.mozilla.org/en-US/docs/Games/Anatomy)" on MDN.
+Another excellent option for debouncing events is the [debounced](https://github.com/hopsoft/debounced) library, which creates debounced versions of standard bubbling DOM events. It's been designed to pair exceptionally well with Stimulus and StimulusReflex:
 
-**requestAnimationFrame** is the mechanism used to control screen draw operations. When paired with **keydown** and mouse/touch events, complete games with GPU-accelerated graphics are possible. New browser APIs such as [HTML5 Bluetooth](https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web) mean that you could use your Xbox controllers.
+```markup
+<input type="text" data-reflex="debounced:input->Example#work">
+```
 
-What might come as a surprise is that clever use of **StimulusReflex is theoretically fast enough to keep your game state running live on the server while your client is updating at 60fps**. We leave this as an exercise for the reader, but please tell us if you achieve cold fusion.
-{% endhint %}
+You can find all of the details on the debounced GitHub page, but it provides a powerful declared syntax which is the perfect fit for declared Reflexes.
 
 ## The Four Horsemen aka Key Events
 
@@ -191,7 +197,7 @@ First, let's tackle a creative use of `throttle`. We're going to allow the user 
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { throttle } from 'lodash-es/throttle'
+import throttle from 'lodash/throttle'
 
 export default class extends Controller {
   connect () {
@@ -303,7 +309,7 @@ end
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { debounce } from 'lodash-es/debounce'
+import debounce from 'lodash/debounce'
 
 export default class extends Controller {
   connect () {
@@ -342,5 +348,23 @@ end
 
 It's worth noting that if you have called `StimulusReflex.register()` at least once on your page and you can live without fancy debouncing and input blurring, _you could actually delete_ `search_controller.js` _and the example would continue to work **perfectly**_.
 
-#### That you can quickly implement a reactive, API-backed auto-suggest that requires zero custom JavaScript is a great representation of the pride we take in our work on StimulusReflex.
+That you can quickly implement a reactive, API-backed auto-suggest that requires zero custom JavaScript is a great representation of the pride we take in our work on StimulusReflex.
+
+## requestAnimationFrame
+
+Just before we wrap up events, there is a third important mechanism modern browsers provide to control time in our applications, and that is requestAnimationFrame.
+
+If you've ever developed games, simulations or visualisations, chances are that you've worked with render loops. For the rest of us, the idea that we can use JavaScript, WebGL and the HTML canvas/SVG elements to create incredible visual results might seem alien. There are many great starter articles including "[Anatomy of a video game](https://developer.mozilla.org/en-US/docs/Games/Anatomy)" on MDN.
+
+requestAnimationFrame is the mechanism used to control screen draw operations. When paired with keydown and mouse/touch events, complete games with GPU-accelerated graphics are possible. New browser APIs such as [HTML5 Bluetooth](https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web) mean that you could use your Xbox controllers.
+
+{% hint style="info" %}
+It can be intimidating to start out from nothing with requestAnimationFrame, which is why excellent libraries such as [Greensock](https://greensock.com/) are so popular.
+
+While a paid version is available, you can get amazingly far with the free version, specifically if you check out their [Timeline](https://greensock.com/docs/v3/GSAP/Timeline) primative, which offers an impressive selection of callbacks.
+
+We're living in an era when you can use a high accuracy animation timeline to launch Stimulus controller methods in a way that is scrubbable like a video. That's pretty damn cool.
+{% endhint %}
+
+What might come as a surprise is that clever use of StimulusReflex is theoretically fast enough to keep your game state running live on the server while your client is updating at 60fps. We leave this as an exercise for the reader, but please tell us if you achieve cold fusion.
 
