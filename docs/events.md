@@ -47,7 +47,7 @@ Let's set up a simple example: we will debounce your page scroll events while ke
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { debounce } from 'lodash-es'
+import { debounce } from 'lodash-es/debounce'
 
 export default class extends Controller {
   connect () {
@@ -191,7 +191,7 @@ First, let's tackle a creative use of `throttle`. We're going to allow the user 
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { throttle } from 'lodash-es'
+import { throttle } from 'lodash-es/throttle'
 
 export default class extends Controller {
   connect () {
@@ -303,7 +303,7 @@ end
 ```javascript
 import { Controller } from 'stimulus'
 import StimulusReflex from 'stimulus_reflex'
-import { debounce } from 'lodash-es'
+import { debounce } from 'lodash-es/debounce'
 
 export default class extends Controller {
   connect () {
