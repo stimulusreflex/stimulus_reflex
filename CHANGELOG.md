@@ -14,6 +14,10 @@
 - Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
 - Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
 
+**Merged pull requests:**
+
+- Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
+
 ## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre6...v3.3.0)
