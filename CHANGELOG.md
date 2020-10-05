@@ -16,6 +16,7 @@
 
 **Merged pull requests:**
 
+- Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
 
 ## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
