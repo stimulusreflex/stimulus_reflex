@@ -93,7 +93,7 @@ If you define a method with a name that matches what the library searches for, i
 
 There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
 
-StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, jQuery plugins or even the console.
+StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
 
 ### Generic Lifecycle Methods
 
