@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
+  attr_reader :channel, :url, :url_params, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
   delegate :connection, :stream_name, to: :channel
   delegate :session, to: :request
@@ -66,22 +66,27 @@ class StimulusReflex::Reflex
       uri = URI.parse(url)
       path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
       query_hash = Rack::Utils.parse_nested_query(uri.query)
-      req = ActionDispatch::Request.new(
-        connection.env.merge(
-          Rack::MockRequest.env_for(uri.to_s).merge(
-            "rack.request.query_hash" => query_hash,
-            "rack.request.query_string" => uri.query,
-            "ORIGINAL_SCRIPT_NAME" => "",
-            "ORIGINAL_FULLPATH" => path,
-            Rack::SCRIPT_NAME => "",
-            Rack::PATH_INFO => path,
-            Rack::REQUEST_PATH => path,
-            Rack::QUERY_STRING => uri.query
-          )
-        )
+      mock_env = Rack::MockRequest.env_for(uri.to_s)
+
+      mock_env.merge!(
+        "rack.request.query_hash" => query_hash,
+        "rack.request.query_string" => uri.query,
+        "ORIGINAL_SCRIPT_NAME" => "",
+        "ORIGINAL_FULLPATH" => path,
+        Rack::SCRIPT_NAME => "",
+        Rack::PATH_INFO => path,
+        Rack::REQUEST_PATH => path,
+        Rack::QUERY_STRING => uri.query
       )
-      path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
-      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
+
+      env = connection.env.merge(mock_env)
+      req = ActionDispatch::Request.new(env)
+
+      @url_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
+      @url_params[:controller] = @url_params[:controller].force_encoding("UTF-8")
+      @url_params[:action] = @url_params[:action].force_encoding("UTF-8")
+
+      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => @url_params)
       req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
     end
@@ -110,10 +115,6 @@ class StimulusReflex::Reflex
         c.response = ActionDispatch::Response.new
       end
     end
-  end
-
-  def url_params
-    @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
   end
 
   def process(name, *args)
