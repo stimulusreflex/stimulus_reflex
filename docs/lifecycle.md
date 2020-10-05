@@ -97,7 +97,7 @@ StimulusReflex also emits lifecycle events which can be captured in other Stimul
 
 ### Generic Lifecycle Methods
 
-StimulusReflex controllers can define up to five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
+StimulusReflex controllers automatically support five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -105,11 +105,17 @@ StimulusReflex controllers can define up to five generic lifecycle callback meth
 4. `reflexHalted`
 5. `afterReflex`
 
+{% hint style="warning" %}
+While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Lifecycle Methods](https://docs.stimulusreflex.com/lifecycle#custom-lifecycle-methods), which allow you to define different callbacks for every action.
+{% endhint %}
+
+In this example, we update each anchor's text before invoking the server side Reflex:
+
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="Example#update">Update</a>
-  <a href="#" data-reflex="Example#delete">Delete</a>
+  <a href="#" data-reflex="Example#masticate">Eat</a>
+  <a href="#" data-reflex="Example#deficate">Poop</a>
 </div>
 ```
 {% endcode %}
@@ -126,18 +132,18 @@ export default class extends Controller {
 
   beforeReflex(anchorElement) {
     const { reflex } = anchorElement.dataset
-    if (reflex.match(/update$/)) anchorElement.innerText = 'Updating...'
-    if (reflex.match(/delete$/)) anchorElement.innerText = 'Deleting...'
+    if (reflex.match(/masticate$/)) anchorElement.innerText = 'Eating...'
+    if (reflex.match(/deficate$/)) anchorElement.innerText = 'Pooping...'
   }
 }
 ```
 {% endcode %}
 
-In this example, we update each anchor's text before invoking the server side Reflex.
-
 ### Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
+
+The Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforePoke`
 2. `pokeSuccess`
