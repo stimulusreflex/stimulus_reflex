@@ -88,35 +88,34 @@ As websockets is a text-based protocol that doesn't guarantee packet delivery or
 
 #### Resetting a Submitted Form
 
-Occasionally, if you submit a form via reflex, and the resulting DOM diff doesn't touch the form, you will end up with stale data in your form's `<input>` fields. 
+If you submit a form via StimulusReflex, and the resulting DOM diff doesn't touch the form, you will end up with stale data in your form `<input>` fields. You're going to need to clear your form so the user can add more data.
 
-To overcome that, simply write a 10 line Stimulus controller and reset the form after the reflex completes successfully:
+One simple technique is to use a Stimulus controller to reset the form after the Reflex completes successfully. We'll call this controller `reflex-form` and we'll use it to set a target on the first text field, as well as an action on the submit button:
 
 ```javascript
 <%= form_with(model: model, data: {controller: "reflex-form", reflex_form_reflex: "ExampleReflex#submit"}) do |form| %>
+  <%= form.text_field :name, data: {target: "reflex-form.focus"} %>
   <%= form.button data: {action: "click->reflex-form#submit"} %>
 <% end %>
 ```
 
+This controller will make use of the [Promise](https://docs.stimulusreflex.com/lifecycle#promises) returned by the `stimulate` method:
+
 ```javascript
+// app/javascript/controllers/reflex_form_controller.js
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
+  static targets = ['focus']
   submit (e) {
     e.preventDefault()
     this.stimulate(this.data.get('reflex')).then(() => {
       this.element.reset()
+      // optional: set focus on the freshly cleared input
+      this.focusTarget.focus()
     })
   }
 }
-```
-
-```ruby
-class ExampleReflex < ApplicationReflex
-  def submit
-    # ... some side effect
-  end
-end
 ```
 
 ### Example: Auto-saving Posts with nested Comments
