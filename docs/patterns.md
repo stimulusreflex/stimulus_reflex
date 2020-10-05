@@ -370,6 +370,27 @@ You'll want to experiment with other, more contemporary feedback mechanisms to p
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
 
+### Use `webpack-dev-server` to reload after Reflex changes
+
+It can be a pain to remember to reload your page after you make changes to a Reflex. Luckily, if you're already running `bin/webpack-dev-server` while you are building your application, you can add folders in your app to the list of places that are being monitored.
+
+{% code title="config/webpack/development.js" %}
+```javascript
+var path = require('path')
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
+const environment = require('./environment')
+environment.config.devServer.watchContentBase = true
+environment.config.devServer.contentBase = [
+  path.join(__dirname, '../../app/views'),
+  path.join(__dirname, '../../app/helpers'),
+  path.join(__dirname, '../../app/reflexes')
+]
+
+module.exports = environment.toWebpackConfig()
+```
+{% endcode %}
+
 ### Chained Reflexes for long-running actions
 
 {% hint style="danger" %}
