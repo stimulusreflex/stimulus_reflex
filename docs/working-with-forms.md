@@ -86,6 +86,39 @@ You can explore using Optimism for live error handling, and there are excellent 
 
 As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails.
 
+#### Resetting a Submitted Form
+
+Occasionally, if you submit a form via reflex, and the resulting DOM diff doesn't touch the form, you will end up with stale data in your form's `<input>` fields. 
+
+To overcome that, simply write a 10 line Stimulus controller and reset the form after the reflex completes successfully:
+
+```javascript
+<%= form_with(model: model, data: {controller: "reflex-form", reflex_form_reflex: "ExampleReflex#submit"}) do |form| %>
+  <%= form.button data: {action: "click->reflex-form#submit"} %>
+<% end %>
+```
+
+```javascript
+import ApplicationController from './application_controller'
+
+export default class extends ApplicationController {
+  submit (e) {
+    e.preventDefault()
+    this.stimulate(this.data.get('reflex')).then(() => {
+      this.element.reset()
+    })
+  }
+}
+```
+
+```ruby
+class ExampleReflex < ApplicationReflex
+  def submit
+    # ... some side effect
+  end
+end
+```
+
 ### Example: Auto-saving Posts with nested Comments
 
 We're going to build an example of StimulusReflex form handling for an **edit** action, starting with the ActiveRecord models for a classic Post with Comments relationship:
