@@ -25,11 +25,11 @@ The terminal commands above will ensure that both Stimulus and StimulusReflex ar
 
 And that's it! **You can start using StimulusReflex in your application.**
 
+{% page-ref page="quickstart.md" %}
+
 {% hint style="danger" %}
 Starting with v2.2.2 of StimulusReflex, support for the Rails default session storage mechanism `cookie_store` has been _temporarily_ dropped. The `stimulus_reflex:install` script will now set your session storage to be `:cache_store` in your development environment if no value has been set.
 {% endhint %}
-
-{% page-ref page="quickstart.md" %}
 
 ## Manual Configuration
 
