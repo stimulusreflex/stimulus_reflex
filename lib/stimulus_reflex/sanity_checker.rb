@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
   def self.check!
@@ -63,14 +62,11 @@ class StimulusReflex::SanityChecker
   end
 
   def javascript_package_version
-    return @_js_version if defined?(@_js_version)
-    @_js_version = find_javascript_package_version
+    @_js_version ||= find_javascript_package_version
   end
 
   def find_javascript_package_version
-    if (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
-      match[NODE_VERSION_FORMAT, 1]
-    elsif (match = search_file(yarn_link_path, regex: /version/))
+    if (match = search_file(package_json_path, regex: /version/))
       match[JSON_VERSION_FORMAT, 1]
     end
   end
@@ -80,11 +76,7 @@ class StimulusReflex::SanityChecker
     File.foreach(path).grep(regex).first
   end
 
-  def yarn_lock_path
-    Rails.root.join("yarn.lock")
-  end
-
-  def yarn_link_path
+  def package_json_path
     Rails.root.join("node_modules", "stimulus_reflex", "package.json")
   end
 
