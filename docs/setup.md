@@ -6,12 +6,6 @@ description: How to prepare your app to use StimulusReflex
 
 ## Command-Line Install
 
-{% hint style="warning" %}
-StimulusReflex v3 has been released, and there are some big changes. **Server-side session storage is now required.**
-
-You can find additional information for supporting Rails 5.2+ below.
-{% endhint %}
-
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails projects.
 
 ```bash
@@ -28,21 +22,6 @@ bundle exec rails stimulus_reflex:install
 ```
 
 The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, including enabling caching in your development environment.
-
-{% hint style="warning" %}
-When v3.3 ships, the install script will modify `cable.yml` to use Redis instead of the `async` adapter in development mode.
-{% endhint %}
-
-You might need to modify your ActionCable configuration to use the Redis adapter in development mode. If you don't have Redis on your machine, you can find out more [on the Redis site](https://redis.io/topics/quickstart).
-
-{% code title="config/cable.yml" %}
-```yaml
-development:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: your_application_development
-```
-{% endcode %}
 
 And that's it! **You can start using StimulusReflex in your application.**
 
