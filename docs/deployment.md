@@ -80,6 +80,12 @@ Your mileage may vary \(literally, depending on how far you are from a Cloudflar
 
 In a more sophisticated setup, you could experiment with hosting your websockets endpoint on a different domain, allowing you to experience the best of both worlds. In fact, this is the specific reason we add `<%= action_cable_meta_tag %>` to our HEADs.
 
+## Phusion Passenger
+
+[Passenger](https://www.phusionpassenger.com/) users might have [a few extra steps](https://www.phusionpassenger.com/library/config/nginx/action_cable_integration/) to make sure that your deployment is smooth.
+
+Specifically, if you experience your server process appear to freeze up when ActionCable is in play, make sure that your `passenger_force_max_concurrent_requests_per_process` is properly configured.
+
 ## Set your `default_url_options` for each environment
 
 When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
