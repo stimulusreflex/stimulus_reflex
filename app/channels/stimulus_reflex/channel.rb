@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-module ApplicationCable
-  class Channel < ActionCable::Channel::Base
-    def initialize(connection, identifier, params = {})
-      super
-      application_channel = Rails.root.join("app", "channels", "application_cable", "channel.rb")
-      require application_channel if File.exist?(application_channel)
-    end
-  end
-end
-
-class StimulusReflex::Channel < ApplicationCable::Channel
+class StimulusReflex::Channel < StimulusReflex.parent_channel.constantize
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
