@@ -86,6 +86,38 @@ You can explore using Optimism for live error handling, and there are excellent 
 
 As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails.
 
+#### Resetting a Submitted Form
+
+If you submit a form via StimulusReflex, and the resulting DOM diff doesn't touch the form, you will end up with stale data in your form `<input>` fields. You're going to need to clear your form so the user can add more data.
+
+One simple technique is to use a Stimulus controller to reset the form after the Reflex completes successfully. We'll call this controller `reflex-form` and we'll use it to set a target on the first text field, as well as an action on the submit button:
+
+```javascript
+<%= form_with(model: model, data: {controller: "reflex-form", reflex_form_reflex: "ExampleReflex#submit"}) do |form| %>
+  <%= form.text_field :name, data: {target: "reflex-form.focus"} %>
+  <%= form.button data: {action: "click->reflex-form#submit"} %>
+<% end %>
+```
+
+This controller will make use of the [Promise](https://docs.stimulusreflex.com/lifecycle#promises) returned by the `stimulate` method:
+
+```javascript
+// app/javascript/controllers/reflex_form_controller.js
+import ApplicationController from './application_controller'
+
+export default class extends ApplicationController {
+  static targets = ['focus']
+  submit (e) {
+    e.preventDefault()
+    this.stimulate(this.data.get('reflex')).then(() => {
+      this.element.reset()
+      // optional: set focus on the freshly cleared input
+      this.focusTarget.focus()
+    })
+  }
+}
+```
+
 ### Example: Auto-saving Posts with nested Comments
 
 We're going to build an example of StimulusReflex form handling for an **edit** action, starting with the ActiveRecord models for a classic Post with Comments relationship:

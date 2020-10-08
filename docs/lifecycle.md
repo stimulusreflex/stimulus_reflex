@@ -93,11 +93,11 @@ If you define a method with a name that matches what the library searches for, i
 
 There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
 
-StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, jQuery plugins or even the console.
+StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
 
 ### Generic Lifecycle Methods
 
-StimulusReflex controllers can define up to five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
+StimulusReflex controllers automatically support five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -105,11 +105,17 @@ StimulusReflex controllers can define up to five generic lifecycle callback meth
 4. `reflexHalted`
 5. `afterReflex`
 
+{% hint style="warning" %}
+While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Lifecycle Methods](https://docs.stimulusreflex.com/lifecycle#custom-lifecycle-methods), which allow you to define different callbacks for every action.
+{% endhint %}
+
+In this example, we update each anchor's text before invoking the server side Reflex:
+
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="Example#update">Update</a>
-  <a href="#" data-reflex="Example#delete">Delete</a>
+  <a href="#" data-reflex="Example#masticate">Eat</a>
+  <a href="#" data-reflex="Example#deficate">Poop</a>
 </div>
 ```
 {% endcode %}
@@ -126,18 +132,18 @@ export default class extends Controller {
 
   beforeReflex(anchorElement) {
     const { reflex } = anchorElement.dataset
-    if (reflex.match(/update$/)) anchorElement.innerText = 'Updating...'
-    if (reflex.match(/delete$/)) anchorElement.innerText = 'Deleting...'
+    if (reflex.match(/masticate$/)) anchorElement.innerText = 'Eating...'
+    if (reflex.match(/deficate$/)) anchorElement.innerText = 'Pooping...'
   }
 }
 ```
 {% endcode %}
 
-In this example, we update each anchor's text before invoking the server side Reflex.
-
 ### Custom Lifecycle Methods
 
-StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex. These methods use a naming convention **based on the name of the Reflex**. For example, the Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
+
+The Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
 
 1. `beforePoke`
 2. `pokeSuccess`
@@ -179,6 +185,16 @@ Adapting the Generic example, we've refactored our controller to capture the `be
 
 {% hint style="info" %}
 **It's not required to implement all lifecycle methods.** Pick and choose which lifecycle callback methods make sense for your application. The answer is frequently **none**.
+{% endhint %}
+
+{% hint style="warning" %}
+Adding a declarative Reflex such as `Foo#action` to your element does **not** automatically attach an instance of the _foo_ Stimulus controller to the element.
+
+This coupling would only add an unneccesary constraint, as you can call any Reflex from any Stimulus controller.
+
+If you want to run Reflex lifecycle callbacks on your element, you need to use `data-controller="foo"` to attach it.
+
+You can use **both** `data-reflex` and `data-controller` at the same time.
 {% endhint %}
 
 ### Conventions
