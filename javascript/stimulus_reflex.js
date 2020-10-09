@@ -114,7 +114,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors
+    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, skipFormSerialization
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -137,7 +137,7 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'reflexId', 'resolveLate'].includes(key)
+          ['attrs', 'selectors', 'reflexId', 'resolveLate', 'skipFormSerialization'].includes(key)
         ).length
       ) {
         const opts = args.shift()
@@ -178,14 +178,15 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
+        const skipFormSerialization = options['skipFormSerialization'] || false
         element.reflexData = {
           ...data,
           params: {
-            ...params,
-            ...serializeForm(element.closest('form'), {
+            ...!skipFormSerialization && serializeForm(element.closest('form'), {
               hash: true,
               empty: true
-            })
+            }),
+            ...params
           }
         }
 
