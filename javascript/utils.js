@@ -11,10 +11,10 @@ export const uuidv4 = () => {
   )
 }
 
-export const serializeForm = (form) => {
-  const formData = new FormData(form);
+export const serializeForm = (form, w = window) => {
+  const formData = new w.FormData(form)
 
-  return Array.from(formData, e => e.map(encodeURIComponent).join('=')).join('&');
+  return Array.from(formData, e => e.join('=')).join('&')
 }
 
 export const camelize = (value, uppercaseFirstLetter = true) => {
