@@ -56,6 +56,8 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
+        if (data.operations['dispatchEvent'])
+          return CableReady.perform(data.operations)
         totalOperations = 0
         ;['morph', 'innerHtml'].forEach(operation => {
           if (data.operations[operation] && data.operations[operation].length) {
@@ -472,10 +474,11 @@ if (!document.stimulusReflexInitialized) {
     })
 
     reflexes[reflexId].finalStage = subject == 'halted' ? 'halted' : 'after'
-    if (element && subjects[subject])
-      dispatchLifecycleEvent(subject, element, reflexId)
 
     if (debugging) Log[subject == 'error' ? 'error' : 'success'](event)
+
+    if (element && subjects[subject])
+      dispatchLifecycleEvent(subject, element, reflexId)
   })
 }
 
