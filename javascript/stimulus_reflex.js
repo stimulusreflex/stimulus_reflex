@@ -170,15 +170,13 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
+        const form = element.closest('form');
+        const form_data = serializeForm(form);
+
         element.reflexData = {
           ...data,
-          params: {
-            ...params,
-            ...serializeForm(element.closest('form'), {
-              hash: true,
-              empty: true
-            })
-          }
+          params,
+          form_data
         }
 
         subscription.send(element.reflexData)

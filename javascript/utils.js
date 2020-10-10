@@ -1,8 +1,6 @@
 // uuid4 function taken from stackoverflow
 // https://stackoverflow.com/a/2117523/554903
 
-import formSerialize from 'form-serialize';
-
 export const uuidv4 = () => {
   const crypto = window.crypto || window.msCrypto
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -13,8 +11,10 @@ export const uuidv4 = () => {
   )
 }
 
-export const serializeForm = (form, options = {}) => {
-  return formSerialize(form, options);
+export const serializeForm = (form) => {
+  const formData = new FormData(form);
+
+  return Array.from(formData, e => e.map(encodeURIComponent).join('=')).join('&');
 }
 
 export const camelize = (value, uppercaseFirstLetter = true) => {
