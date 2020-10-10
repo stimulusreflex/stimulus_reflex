@@ -1,11 +1,10 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
-import serializeForm from 'form-serialize'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4, debounce, emitEvent } from './utils'
+import { uuidv4, debounce, emitEvent, serializeForm } from './utils'
 import Log from './log'
 import {
   attributeValue,
