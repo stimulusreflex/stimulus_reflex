@@ -137,7 +137,13 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'reflexId', 'resolveLate', 'skipFormSerialization'].includes(key)
+          [
+            'attrs',
+            'selectors',
+            'reflexId',
+            'resolveLate',
+            'skipFormSerialization'
+          ].includes(key)
         ).length
       ) {
         const opts = args.shift()
@@ -179,13 +185,16 @@ const extendStimulusController = controller => {
       setTimeout(() => {
         const { params } = element.reflexData || {}
         const skipFormSerialization = options['skipFormSerialization'] || false
+        const formData = skipFormSerialization
+          ? {}
+          : serializeForm(element.closest('form'), {
+              hash: true,
+              empty: true
+            })
         element.reflexData = {
           ...data,
           params: {
-            ...!skipFormSerialization && serializeForm(element.closest('form'), {
-              hash: true,
-              empty: true
-            }),
+            ...formData,
             ...params
           }
         }
