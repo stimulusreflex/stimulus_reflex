@@ -158,13 +158,13 @@ Now, let's create the markup for our form, which will submit to the `Post` Refle
 
   <div>
     <%= form.label :name %>
-    <%= form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
+    <%= form.text_field :name, data: { reflex: "change->PostReflex#submit", reflex_dataset: "combined" } %>
   </div>
 
   <%= form.fields_for :comments, @post.comments do |comment_form| %>
     <%= comment_form.hidden :id %>
     <%= comment_form.label :name %>
-    <%= comment_form.text_field :name, data: { reflex: "change->PostReflex#submit" } %>
+    <%= comment_form.text_field :name, data: { reflex: "change->PostReflex#submit", reflex_dataset: "combined" } %>
   <% end %>
 
   <%= link_to "New comment", "#", data: { reflex: "click->PostReflex#build_comment" } %>
