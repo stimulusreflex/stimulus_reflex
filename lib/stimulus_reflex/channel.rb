@@ -47,10 +47,10 @@ class StimulusReflex::Channel < ApplicationCable::Channel
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
-        body = "StimulusReflex::Channel Failed to invoke #{target}! #{url} #{message}"
+        body = "Reflex #{target} failed: #{message} [#{url}]"
         if reflex
           reflex.rescue_with_handler(invoke_error)
-          reflex.broadcast_message subject: "error", body: body, data: data
+          reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
         else
           logger.error "\e[31m#{body}\e[0m"
         end
@@ -65,7 +65,8 @@ class StimulusReflex::Channel < ApplicationCable::Channel
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
-          reflex.broadcast_message subject: "error", body: "StimulusReflex::Channel Failed to re-render #{url} #{message}", data: data
+          body = "Reflex failed to re-render: #{message} [#{url}]"
+          reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
         end
       end
     ensure
@@ -108,6 +109,6 @@ class StimulusReflex::Channel < ApplicationCable::Channel
   end
 
   def exception_message_with_backtrace(exception)
-    "#{exception} #{exception.backtrace.first}"
+    "#{exception}\n#{exception.backtrace.first}"
   end
 end

@@ -4,10 +4,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...HEAD)
 
-**Implemented enhancements:**
-
-- LiveView .leex inspired payloads [\#232](https://github.com/hopsoft/stimulus_reflex/issues/232)
-
 **Closed issues:**
 
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
@@ -16,7 +12,10 @@
 
 **Merged pull requests:**
 
+- fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
+- introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
+- lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
 
 ## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
@@ -187,7 +186,6 @@
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
-- Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
@@ -207,6 +205,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 

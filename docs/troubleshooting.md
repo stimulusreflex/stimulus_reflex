@@ -173,6 +173,10 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
+Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](https://docs.stimulusreflex.com/deployment#phusion-passenger) is correct.
+{% endhint %}
+
+{% hint style="info" %}
 Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **npm** package version is **identical** to your Ruby **gem** version.
 {% endhint %}
 
