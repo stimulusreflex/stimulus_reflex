@@ -184,12 +184,13 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
-        const formData = options['serialize'] == false
-          ? {}
-          : serializeForm(element.closest('form'), {
-              hash: true,
-              empty: true
-            })
+        const formData =
+          options['serialize'] == false
+            ? {}
+            : serializeForm(element.closest('form'), {
+                hash: true,
+                empty: true
+              })
         element.reflexData = {
           ...data,
           params: {
