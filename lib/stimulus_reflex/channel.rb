@@ -21,6 +21,7 @@ class StimulusReflex::Channel < ApplicationCable::Channel
 
   def subscribed
     super
+    fix_environment!
     stream_from stream_name
   end
 
@@ -107,5 +108,11 @@ class StimulusReflex::Channel < ApplicationCable::Channel
 
   def exception_message_with_backtrace(exception)
     "#{exception}\n#{exception.backtrace.first}"
+  end
+
+  def fix_environment!
+    ([ApplicationController] + ApplicationController.descendants).each do |controller|
+      controller.renderer.instance_variable_set(:@env, connection.env.merge(controller.renderer.instance_variable_get(:@env)))
+    end
   end
 end
