@@ -84,7 +84,7 @@ In a more sophisticated setup, you could experiment with hosting your websockets
 
 [Passenger](https://www.phusionpassenger.com/) users might have [a few extra steps](https://www.phusionpassenger.com/library/config/nginx/action_cable_integration/) to make sure that your deployment is smooth.
 
-Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your nginx.conf has the port 443 section set up to receive secure websockets:
+Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your `nginx.conf` has the **port 443 section** set up to receive secure websockets:
 
 {% code title="/etc/nginx/nginx.conf" %}
 ```ruby
