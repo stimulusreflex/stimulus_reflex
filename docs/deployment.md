@@ -80,11 +80,26 @@ Your mileage may vary \(literally, depending on how far you are from a Cloudflar
 
 In a more sophisticated setup, you could experiment with hosting your websockets endpoint on a different domain, allowing you to experience the best of both worlds. In fact, this is the specific reason we add `<%= action_cable_meta_tag %>` to our HEADs.
 
-## Phusion Passenger
+## Nginx + Passenger
 
 [Passenger](https://www.phusionpassenger.com/) users might have [a few extra steps](https://www.phusionpassenger.com/library/config/nginx/action_cable_integration/) to make sure that your deployment is smooth.
 
-Specifically, if you experience your server process appear to freeze up when ActionCable is in play, make sure that your `passenger_force_max_concurrent_requests_per_process` is properly configured.
+Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your nginx.conf has the port 443 section set up to receive secure websockets:
+
+{% code title="/etc/nginx/nginx.conf" %}
+```ruby
+server {
+    listen 443;
+    passenger_enabled on;
+    location /cable {
+        passenger_app_group_name YOUR_APP_HERE_action_cable;
+        passenger_force_max_concurrent_requests_per_process 0;
+    }
+}
+```
+{% endcode %}
+
+Please note that **the above is not a complete document**; it's just the fragments often missing from the default configurations found on hosts like Cloud 66.
 
 ## Set your `default_url_options` for each environment
 
