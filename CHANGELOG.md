@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...HEAD)
 
+**Breaking changes:**
+
+- remove isolate concept and make behavior default [\#332](https://github.com/hopsoft/stimulus_reflex/pull/332) ([leastbad](https://github.com/leastbad))
+
 **Closed issues:**
 
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
@@ -442,7 +446,6 @@
 **Implemented enhancements:**
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
-- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -492,6 +495,7 @@
 
 **Implemented enhancements:**
 
+- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 - More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
