@@ -12,6 +12,7 @@
 
 **Merged pull requests:**
 
+- add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
 - fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
 - introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
