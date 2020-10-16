@@ -12,6 +12,9 @@
 
 **Merged pull requests:**
 
+- merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
+- fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
+- introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
