@@ -37,9 +37,6 @@ window.reflexes = {}
 // Indicates if we should log calls to stimulate, etc...
 let debugging
 
-// Should Reflex playback be restricted to the tab that called it?
-let isolationMode
-
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
 //
@@ -78,8 +75,7 @@ const createSubscription = controller => {
           reflexes[reflexId].pendingOperations = 0
           reflexes[reflexId].completedOperations = 0
         }
-        if (reflexes[reflexId] || !isolationMode)
-          CableReady.perform(data.operations)
+        if (reflexes[reflexId]) CableReady.perform(data.operations)
       },
       connected: () => {
         actionCableSubscriptionActive = true
@@ -387,10 +383,9 @@ const getReflexRoots = element => {
 //   * isolate - [false] restrict Reflex playback to the tab which initiated it
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug, params, isolate } = initializeOptions
+  const { controller, consumer, debug, params } = initializeOptions
   actionCableConsumer = consumer
   actionCableParams = params
-  isolationMode = !!isolate
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(
