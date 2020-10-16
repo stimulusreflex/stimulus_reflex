@@ -34,8 +34,14 @@ let actionCableSubscriptionActive = false
 // A dictionary of all active Reflex operations, indexed by reflexId
 window.reflexes = {}
 
-// Indicates if we should log calls to stimulate, etc...
-let debugging = false
+// Debug state convenience functions
+const getDebug = () => {
+  return sessionStorage.getItem('stimulus-reflex-debugging') === 'true' || false
+}
+
+const setDebug = debug => {
+  sessionStorage.setItem('stimulus-reflex-debugging', debug)
+}
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
@@ -82,7 +88,7 @@ const createSubscription = controller => {
       rejected: () => {
         actionCableSubscriptionActive = false
         emitEvent('stimulus-reflex:rejected')
-        if (debugging) console.warn('Channel subscription was rejected.')
+        if (getDebug()) console.warn('Channel subscription was rejected.')
       },
       disconnected: willAttemptReconnect => {
         actionCableSubscriptionActive = false
@@ -190,7 +196,7 @@ const extendStimulusController = controller => {
 
       reflexes[reflexId] = { finalStage: 'finalize' }
 
-      if (debugging) {
+      if (getDebug()) {
         Log.request(
           reflexId,
           target,
@@ -210,7 +216,7 @@ const extendStimulusController = controller => {
 
       promise.reflexId = reflexId
 
-      if (debugging) promise.catch(NOOP)
+      if (getDebug()) promise.catch(NOOP)
       return promise
     },
 
@@ -387,7 +393,7 @@ const initialize = (application, initializeOptions = {}) => {
     'stimulus-reflex',
     controller || StimulusReflexController
   )
-  debugging = !!debug
+  setDebug(!!debug)
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -434,7 +440,7 @@ if (!document.stimulusReflexInitialized) {
 
     reflex.completedOperations++
 
-    if (debugging) Log.success(event)
+    if (getDebug()) Log.success(event)
 
     if (reflex.completedOperations < reflex.totalOperations) return
 
@@ -467,17 +473,29 @@ if (!document.stimulusReflexInitialized) {
     if (element && subjects[subject])
       dispatchLifecycleEvent(subject, element, reflexId)
 
-    if (debugging) Log[subject == 'error' ? 'error' : 'success'](event)
+    if (getDebug()) Log[subject == 'error' ? 'error' : 'success'](event)
   })
+}
+
+window.StimulusReflex = {
+  enableDebug () {
+    setDebug(true)
+  },
+  disableDebug () {
+    setDebug(false)
+  },
+  get debugging () {
+    return getDebug()
+  }
 }
 
 export default {
   initialize,
   register,
   get debug () {
-    return debugging
+    return getDebug()
   },
   set debug (value) {
-    debugging = !!value
+    setDebug(!!value)
   }
 }
