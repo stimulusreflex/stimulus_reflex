@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...HEAD)
 
+**Breaking changes:**
+
+- remove isolate concept and make behavior default [\#332](https://github.com/hopsoft/stimulus_reflex/pull/332) ([leastbad](https://github.com/leastbad))
+
 **Closed issues:**
 
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
@@ -12,6 +16,10 @@
 
 **Merged pull requests:**
 
+- add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
+- merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
+- fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
+- introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
@@ -438,7 +446,6 @@
 **Implemented enhancements:**
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
-- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -469,6 +476,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.9...v2.2.0)
 
+**Implemented enhancements:**
+
+- Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
+
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.8...v2.1.9)
@@ -484,6 +495,7 @@
 
 **Implemented enhancements:**
 
+- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 - More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
@@ -522,7 +534,6 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
-- Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
