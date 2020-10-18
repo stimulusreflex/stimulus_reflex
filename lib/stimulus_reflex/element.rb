@@ -11,6 +11,14 @@ class StimulusReflex::Element < OpenStruct
     @data_attributes.transform_keys! { |key| key.delete_prefix "data-" }
   end
 
+  def signed
+    @signed ||= ->(accessor) { GlobalID::Locator.locate_signed(dataset[accessor]) }
+  end
+
+  def unsigned
+    @unsigned ||= ->(accessor) { GlobalID::Locator.locate(dataset[accessor]) }
+  end
+
   def dataset
     @dataset ||= OpenStruct.new(data_attributes.merge(data_attributes.transform_keys(&:underscore)))
   end

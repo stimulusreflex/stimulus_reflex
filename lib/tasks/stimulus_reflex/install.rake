@@ -8,7 +8,7 @@ namespace :stimulus_reflex do
   task install: :environment do
     system "bundle exec rails webpacker:install:stimulus"
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
-    system "yarn add stimulus_reflex@#{gem_version}"
+    system "yarn add cable_ready stimulus_reflex@#{gem_version}"
 
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
@@ -42,7 +42,7 @@ namespace :stimulus_reflex do
     end
 
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    lines << "StimulusReflex.initialize(application, { consumer, controller, isolate: true })\n" unless initialize_line
+    lines << "StimulusReflex.initialize(application, { consumer, controller })\n" unless initialize_line
     lines << "if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
