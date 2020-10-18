@@ -12,16 +12,16 @@ export const uuidv4 = () => {
 }
 
 export const serializeForm = (form, options = { w: window }) => {
-  const { element, w } = options;
+  const { element, w } = options
 
   const formData = new w.FormData(form)
-  const data = Array.from(formData, e => e.join('='));
+  const data = Array.from(formData, e => e.join('='))
 
   if (element && element.name) {
     data.push(`${element.name}=${element.value}`)
   }
 
-  return Array.from(new Set(data)).join('&');
+  return Array.from(new Set(data)).join('&')
 }
 
 export const camelize = (value, uppercaseFirstLetter = true) => {
