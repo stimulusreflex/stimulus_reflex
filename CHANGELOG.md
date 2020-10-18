@@ -23,6 +23,7 @@
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
+- Proposal: Reduce bundle size and add a bundler for Stimulus Reflex javascript [\#315](https://github.com/hopsoft/stimulus_reflex/pull/315) ([ParamagicDev](https://github.com/ParamagicDev))
 
 ## [v3.3.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0) (2020-09-22)
 
@@ -446,6 +447,7 @@
 **Implemented enhancements:**
 
 - Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
+- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -495,7 +497,6 @@
 
 **Implemented enhancements:**
 
-- tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 - More defense in the received handler [\#107](https://github.com/hopsoft/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
