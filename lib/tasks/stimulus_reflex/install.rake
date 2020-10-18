@@ -8,7 +8,7 @@ namespace :stimulus_reflex do
   task install: :environment do
     system "bundle exec rails webpacker:install:stimulus"
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
-    system "yarn add stimulus_reflex@#{gem_version}"
+    system "yarn add cable_ready stimulus_reflex@#{gem_version}"
 
     FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
