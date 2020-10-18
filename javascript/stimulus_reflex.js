@@ -180,7 +180,7 @@ const extendStimulusController = controller => {
       setTimeout(() => {
         const { params } = element.reflexData || {}
         const form = element.closest('form')
-        const form_data = serializeForm(form)
+        const form_data = serializeForm(form, { element })
 
         element.reflexData = {
           ...data,
