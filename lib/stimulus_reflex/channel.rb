@@ -35,7 +35,7 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
-    permanent_attribute_name = data["permanent_attribute_name"]
+    permanent_attribute_name = data["permanentAttributeName"]
     params = data["params"] || {}
 
     begin
