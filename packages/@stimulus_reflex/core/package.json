@@ -1,7 +1,6 @@
 {
   "name": "@stimulus_reflex/core",
   "version": "3.4.0-dev",
-  "description": "Build reactive applications with the Rails tooling you already know and love.",
   "description": "StimulusReflex: Core library",
   "keywords": [
     "ruby",
