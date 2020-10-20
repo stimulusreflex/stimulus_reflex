@@ -17,7 +17,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
   const controller = element.reflexController
   const reflex = element.reflexData.target
   const reflexMethodName = reflex.split('#')[1]
-  console.log(controller)
+
   const specificLifecycleMethodName = ['before', 'after', 'finalize'].includes(
     stage
   )

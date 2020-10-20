@@ -82,11 +82,11 @@ const createSubscription = controller => {
 
         if (!reflexes[reflexId] && !isolationMode) {
           const element = xPathToElement(reflexData.xpath)
+          const controllerElement = xPathToElement(reflexData.cXpath)
           element.reflexController = stimulusApplication.getControllerForElementAndIdentifier(
-            element,
+            controllerElement,
             reflexData.reflexController
           )
-          console.log(element)
           element.reflexData = reflexData
           dispatchLifecycleEvent('before', element, reflexId)
           registerReflex(reflexData)
@@ -173,6 +173,8 @@ const extendStimulusController = controller => {
       const dataset = extractElementDataset(element, datasetAttribute)
       let xpath = elementToxPath(element)
       xpath = xpath.startsWith('//*') ? xpath : '/html/' + xpath
+      let cXpath = elementToxPath(this.element)
+      cXpath = cXpath.startsWith('//*') ? cXpath : '/html/' + cXpath
       const data = {
         target,
         args,
@@ -183,6 +185,7 @@ const extendStimulusController = controller => {
         reflexId,
         resolveLate,
         xpath,
+        cXpath,
         reflexController: this.identifier,
         permanentAttributeName:
           stimulusApplication.schema.reflexPermanentAttribute
