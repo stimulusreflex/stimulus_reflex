@@ -8,4 +8,6 @@
 tmp/
 node_modules
 .vscode
-/javascript/dist
+/javascript/dist/
+/packages/**/dist/
+lerna-debug.log
