@@ -114,7 +114,7 @@ gem 'stimulus_reflex', github: 'hopsoft/stimulus_reflex'
 ```
 {% endcode %}
 
-Don't forget to run `bundle install && yarn install` after you change your configuration.
+Don't forget to run `bundle install && yarn install --check-files` after you change your configuration.
 
 {% hint style="success" %}
 As always, it is really important to always make sure that your Ruby and Javascript package versions are the same!
