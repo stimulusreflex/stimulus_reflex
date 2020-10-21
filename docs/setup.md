@@ -96,6 +96,30 @@ You should also add the `action_cable_meta_tag`helper to your application templa
 ```
 {% endcode %}
 
+## Running "Edge"
+
+If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on Github:
+
+{% code title="package.json" %}
+```javascript
+"dependencies": {
+  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
+}
+```
+{% endcode %}
+
+{% code title="Gemfile" %}
+```ruby
+gem 'stimulus_reflex', github: 'hopsoft/stimulus_reflex'
+```
+{% endcode %}
+
+Don't forget to run `bundle install && yarn install` after you change your configuration.
+
+{% hint style="success" %}
+As always, it is really important to always make sure that your Ruby and Javascript package versions are the same!
+{% endhint %}
+
 ## Authentication
 
 {% hint style="info" %}
