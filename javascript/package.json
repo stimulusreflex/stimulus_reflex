@@ -40,9 +40,6 @@
     "build": "microbundle",
     "dev": "microbundle watch"
   },
-  "dependencies": {
-    "form-serialize": ">= 0.7.2"
-  },
   "peerDependencies": {
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.3.0",

@@ -36,7 +36,8 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
     permanent_attribute_name = data["permanent_attribute_name"]
-    params = data["params"] || {}
+    form_data = Rack::Utils.parse_nested_query(data["formData"] || "")
+    params = form_data.deep_merge(data["params"] || {})
 
     begin
       begin
