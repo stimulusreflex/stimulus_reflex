@@ -11,6 +11,7 @@
 **Implemented enhancements:**
 
 - Delegate flash to the request [\#334](https://github.com/hopsoft/stimulus_reflex/pull/334) ([hopsoft](https://github.com/hopsoft))
+- Opt-in form serialization & params overriding [\#325](https://github.com/hopsoft/stimulus_reflex/pull/325) ([s-s](https://github.com/s-s))
 
 **Closed issues:**
 
@@ -474,6 +475,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
 
+**Implemented enhancements:**
+
+- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
+
 **Fixed bugs:**
 
 - Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
@@ -493,7 +498,6 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
-- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
