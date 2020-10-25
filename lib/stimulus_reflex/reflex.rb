@@ -57,8 +57,8 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @permanent_attribute_name = permanent_attribute_name
-		@broadcaster = StimulusReflex::PageBroadcaster.new(self)
-		@logger = StimulusReflex::Logger.new(self)
+    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @logger = StimulusReflex::Logger.new(self)
     self.params
   end
 
