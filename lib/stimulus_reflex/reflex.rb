@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :logger
 
   delegate :connection, :stream_name, to: :channel
   delegate :flash, :session, to: :request
@@ -57,7 +57,8 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @permanent_attribute_name = permanent_attribute_name
-    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+		@broadcaster = StimulusReflex::PageBroadcaster.new(self)
+		@logger = StimulusReflex::Logger.new(self)
     self.params
   end
 

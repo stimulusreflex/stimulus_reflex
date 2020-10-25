@@ -20,6 +20,7 @@ require "stimulus_reflex/broadcasters/selector_broadcaster"
 require "generators/stimulus_reflex_generator"
 require "generators/config_generator"
 require "stimulus_reflex/config"
+require "stimulus_reflex/logger"
 
 module StimulusReflex
   class Engine < Rails::Engine
