@@ -18,6 +18,7 @@ require "stimulus_reflex/broadcasters/nothing_broadcaster"
 require "stimulus_reflex/broadcasters/page_broadcaster"
 require "stimulus_reflex/broadcasters/selector_broadcaster"
 require "generators/stimulus_reflex_generator"
+require "generators/config_generator"
 
 module StimulusReflex
   class Engine < Rails::Engine
