@@ -96,30 +96,6 @@ You should also add the `action_cable_meta_tag`helper to your application templa
 ```
 {% endcode %}
 
-## Running "Edge"
-
-If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on Github:
-
-{% code title="package.json" %}
-```javascript
-"dependencies": {
-  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
-}
-```
-{% endcode %}
-
-{% code title="Gemfile" %}
-```ruby
-gem 'stimulus_reflex', github: 'hopsoft/stimulus_reflex'
-```
-{% endcode %}
-
-Don't forget to run `bundle install && yarn install --check-files` after you change your configuration.
-
-{% hint style="success" %}
-As always, it is really important to always make sure that your Ruby and Javascript package versions are the same!
-{% endhint %}
-
 ## Authentication
 
 {% hint style="info" %}
@@ -173,4 +149,50 @@ To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable packag
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 {% endhint %}
+
+## Running "Edge"
+
+If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on Github:
+
+{% code title="package.json" %}
+```javascript
+"dependencies": {
+  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
+}
+```
+{% endcode %}
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
+```
+{% endcode %}
+
+Don't forget to run `bundle install && yarn install --check-files` and restart your server after you change your configuration.
+
+{% hint style="success" %}
+It is really important to **always make sure that your Ruby and Javascript package versions are the same**!
+{% endhint %}
+
+### Running a branch to test a Github Pull Request
+
+Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
+
+Using [\#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+
+{% code title="package.json" %}
+```javascript
+"dependencies": {
+  "stimulus_reflex": "leastbad/stimulus_reflex#isolation_optional"
+}
+```
+{% endcode %}
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "leastbad/stimulus_reflex", branch: "isolation_optional"
+```
+{% endcode %}
+
+Now that we know the details, we end up with the above changes. Don't forget to run `bundle install && yarn install --check-files` and restart your server.
 
