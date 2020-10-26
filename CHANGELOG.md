@@ -171,6 +171,7 @@
 **Fixed bugs:**
 
 - Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
 
 **Closed issues:**
 
@@ -235,7 +236,6 @@
 **Fixed bugs:**
 
 - Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
-- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
 
 **Merged pull requests:**
 
@@ -548,7 +548,6 @@
 **Fixed bugs:**
 
 - Use application.js as fallback file path [\#82](https://github.com/hopsoft/stimulus_reflex/pull/82) ([julianrubisch](https://github.com/julianrubisch))
-- Don't assume that connection identifiers are model instances [\#77](https://github.com/hopsoft/stimulus_reflex/pull/77) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -564,6 +563,10 @@
 **Implemented enhancements:**
 
 - Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
+
+**Fixed bugs:**
+
+- Don't assume that connection identifiers are model instances [\#77](https://github.com/hopsoft/stimulus_reflex/pull/77) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.3](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.3) (2019-10-16)
 
