@@ -39,10 +39,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre5...v3.3.0.pre6)
 
-**Implemented enhancements:**
-
-- Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
-
 **Closed issues:**
 
 - Authorization [\#292](https://github.com/hopsoft/stimulus_reflex/issues/292)
@@ -165,6 +161,7 @@
 **Implemented enhancements:**
 
 - Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
+- Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 - Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 - Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
 
@@ -219,6 +216,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
@@ -236,10 +234,6 @@
 
 - Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
 - Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
-
-**Merged pull requests:**
-
-- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
@@ -433,10 +427,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.3...v3.0.0)
 
-**Breaking changes:**
-
-- Update ActionCable JS dep to @rails/actioncable [\#135](https://github.com/hopsoft/stimulus_reflex/pull/135) ([hopsoft](https://github.com/hopsoft))
-
 **Implemented enhancements:**
 
 - update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
@@ -483,6 +473,10 @@
 ## [v2.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.9...v2.2.0)
+
+**Breaking changes:**
+
+- Update ActionCable JS dep to @rails/actioncable [\#135](https://github.com/hopsoft/stimulus_reflex/pull/135) ([hopsoft](https://github.com/hopsoft))
 
 **Implemented enhancements:**
 
