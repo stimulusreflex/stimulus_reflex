@@ -1,5 +1,5 @@
 {
-  "version": "3.4.0-dev",
+  "version": "3.4.0-dev.0",
   "npmClient": "yarn",
   "registry": "https://npm.pkg.github.com/",
   "useWorkspaces": true,
