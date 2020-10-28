@@ -38,9 +38,9 @@
     "reset": "yarn clean && lerna clean",
     "clean": "lerna run --parallel clean",
     "build": "lerna run --stream --prefix build",
-    "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
-    "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register",
+    "prettier-standard:check": "lerna run --parallel run prettier-standard:check",
+    "prettier-standard:format": "lerna run --parallel run prettier-standard:format",
+    "test": "lerna run --parallel test",
     "dev": "lerna run --parallel dev",
     "release": "lerna publish"
   },
