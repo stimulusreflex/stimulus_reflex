@@ -37,15 +37,17 @@
     "postinstall": "node ./scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register",
-    "build": "microbundle --target browser --format modern,es,cjs",
-    "dev": "microbundle watch --target browser --format modern,es,cjs"
+    "test": "yarn run mocha --require @babel/register --require esm",
+    "build": "microbundle --target browser --format modern,es,cjs --no-strict",
+    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.3.0",
-    "form-serialize": ">= 0.7.2",
     "stimulus": ">= 1.1"
+  },
+  "dependencies": {
+    "form-serialize": ">= 0.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -54,6 +56,7 @@
     "@rails/actioncable": "^6.0.3-3",
     "assert": "^2.0.0",
     "cable_ready": "^4.4.0-pre0",
+    "esm": "^3.2.25",
     "jsdom": "^16.0.1",
     "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
