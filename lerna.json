@@ -5,7 +5,6 @@
   "useWorkspaces": true,
   "sort": true,
   "packages": [
-    "packages/*",
-    "packages/@stimulus_reflex/*"
+    "packages/@stimulus_reflex/polyfills"
   ]
 }
