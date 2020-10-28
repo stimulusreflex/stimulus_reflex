@@ -1,7 +1,7 @@
 {
   "version": "3.4.0-dev",
   "npmClient": "yarn",
-  "registry": "https://registry.npmjs.org/",
+  "registry": "https://npm.pkg.github.com/",
   "useWorkspaces": true,
   "sort": true,
   "packages": [
