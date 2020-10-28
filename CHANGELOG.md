@@ -21,6 +21,7 @@
 
 **Merged pull requests:**
 
+- feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
 - Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
 - add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
@@ -314,7 +315,6 @@
 - Replace camelize with homegrown version [\#184](https://github.com/hopsoft/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
 - Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
-- add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 
 **Fixed bugs:**
@@ -410,6 +410,7 @@
 
 **Implemented enhancements:**
 
+- add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
@@ -516,7 +517,6 @@
 **Implemented enhancements:**
 
 - Support devise authenticated routes [\#105](https://github.com/hopsoft/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
-- inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 
 **Closed issues:**
 
@@ -543,6 +543,7 @@
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
+- inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
