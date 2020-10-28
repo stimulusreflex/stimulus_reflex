@@ -38,8 +38,8 @@
     "reset": "yarn clean && lerna clean",
     "clean": "lerna run --parallel clean",
     "build": "lerna run --stream --prefix build",
-    "prettier-standard:check": "lerna run --parallel run prettier-standard:check",
-    "prettier-standard:format": "lerna run --parallel run prettier-standard:format",
+    "prettier-standard:check": "lerna run --parallel prettier-standard:check",
+    "prettier-standard:format": "lerna run --parallel prettier-standard:format",
     "test": "lerna run --parallel test",
     "dev": "lerna run --parallel dev",
     "release": "lerna publish"
