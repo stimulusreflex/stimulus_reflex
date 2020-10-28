@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
-  JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
-
   def self.check!
     instance = new
     instance.check_caching_enabled
@@ -58,16 +55,13 @@ class StimulusReflex::SanityChecker
   end
 
   def find_javascript_package_version
-    if (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
-      match[NODE_VERSION_FORMAT, 1]
-    elsif (match = search_file(yarn_link_path, regex: /version/))
-      match[JSON_VERSION_FORMAT, 1]
-    end
+    search_file(yarn_lock_path, regex: /stimulus_reflex.*\s.*version "(.*)"/) ||
+      search_file(yarn_link_path, regex: /"version": "(.*)"/)
   end
 
   def search_file(path, regex:)
     return unless File.exist?(path)
-    File.foreach(path).grep(regex).first
+    File.read(path).scan(regex).first&.first
   end
 
   def yarn_lock_path
