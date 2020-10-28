@@ -1,1 +1,1 @@
-export * from "@stimulus_reflex/core"
+export * from '@stimulus_reflex/core'
