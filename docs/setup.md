@@ -168,7 +168,18 @@ gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
 ```
 {% endcode %}
 
-Don't forget to run `bundle install && yarn install --check-files` and restart your server after you change your configuration.
+Once you have updated your `Gemfile` and `package.json` you need to run the following commands from the root folder of your project:
+
+```bash
+bundle install
+yarn install --check-files
+cd node_modules/stimulus_reflex/javascript
+yarn install
+yarn run build
+cd ../../..
+```
+
+Finally, restart your server\(s\) and refresh your page to see the latest.
 
 {% hint style="success" %}
 It is really important to **always make sure that your Ruby and Javascript package versions are the same**!
@@ -194,5 +205,16 @@ gem "stimulus_reflex", github: "leastbad/stimulus_reflex", branch: "isolation_op
 ```
 {% endcode %}
 
-Now that we know the details, we end up with the above changes. Don't forget to run `bundle install && yarn install --check-files` and restart your server.
+Once you have updated your `Gemfile` and `package.json` you need to run the following commands from the root folder of your project:
+
+```bash
+bundle install
+yarn install --check-files
+cd node_modules/stimulus_reflex/javascript
+yarn install
+yarn run build
+cd ../../..
+```
+
+Finally, restart your server\(s\) and refresh your page to see the latest.
 
