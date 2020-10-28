@@ -45,5 +45,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1",
+    "assert": "^2.0.0",
+    "mocha": "^8.2.0"
   }
 }
