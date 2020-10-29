@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.4.0-dev",
+  "version": "3.4.0-dev.4",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -18,39 +18,33 @@
     "dom",
     "morphdom"
   ],
+  "repository": "https://github.com/hopsoft/hopsoft",
   "homepage": "https://docs.stimulusreflex.com/",
-  "bugs": {
-    "url": "https://github.com/hopsoft/stimulus_reflex/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
-  },
+  "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "source": "./index.js",
+  "source": "index.js",
   "main": "dist/stimulus_reflex.js",
   "module": "dist/stimulus_reflex.module.js",
-  "unpkg": "dist/stimulus_reflex.umd.js",
+  "esmodule": "dist/stimulus_reflex.modern.js",
   "scripts": {
+    "prepare": "yarn build",
+    "postinstall": "echo 'TODO: fix me'",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register",
     "clean": "rimraf dist",
-    "build": "microbundle",
-    "dev": "microbundle watch"
+    "build": "microbundle --target browser --format modern,es,cjs --no-strict",
+    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict"
   },
   "dependencies": {
-    "@stimulus_reflex/core": "3.4.0-dev"
+    "@stimulus_reflex/core": "3.4.0-dev.4"
+  },
+  "devDependencies": {
+    "microbundle": "^0.12.4",
+    "prettier-standard": "^16.4.1",
+    "rimraf": "^3.0.2"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/register": "^7.12.1",
-    "assert": "^2.0.0",
-    "mocha": "^8.2.0"
   }
 }

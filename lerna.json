@@ -1,10 +1,7 @@
 {
-  "version": "3.4.0-dev.3",
+  "version": "3.4.0-dev.4",
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
   "useWorkspaces": true,
-  "sort": true,
-  "packages": [
-    "packages/@stimulus_reflex/polyfills"
-  ]
+  "sort": true
 }

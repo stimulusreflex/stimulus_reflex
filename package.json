@@ -1,45 +1,25 @@
 {
   "name": "stimulus_reflex-repo",
-  "version": "3.4.0-dev",
+  "version": "3.4.0-dev.4",
   "private": true,
   "description": "Build reactive applications with the Rails tooling you already know and love.",
-  "keywords": [
-    "ruby",
-    "rails",
-    "websockets",
-    "actioncable",
-    "turbolinks",
-    "reactive",
-    "cable",
-    "ujs",
-    "ssr",
-    "stimulus",
-    "reflex",
-    "stimulus_reflex",
-    "dom",
-    "morphdom"
-  ],
   "homepage": "https://docs.stimulusreflex.com/",
-  "bugs": {
-    "url": "https://github.com/hopsoft/stimulus_reflex/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
-  },
+  "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
+  "repository": "https://github.com:hopsoft/stimulus_reflex",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
   "source": "packages/stimulus_reflex/index.js",
   "main": "packages/stimulus_reflex/dist/stimulus_reflex.js",
   "module": "packages/stimulus_reflex/dist/stimulus_reflex.module.js",
-  "unpkg": "packages/stimulus_reflex/dist/stimulus_reflex.umd.js",
+  "esmodule": "packages/stimulus_reflex/dist/stimulus_reflex.modern.js",
   "scripts": {
-    "postinstall": "node packages/@stimulus_reflex/core/scripts/post_install.js",
+    "prepare": "yarn build",
     "reset": "yarn clean && lerna clean",
     "clean": "lerna run --parallel clean",
     "build": "lerna run --stream --prefix build",
     "prettier-standard:check": "lerna run --parallel prettier-standard:check",
     "prettier-standard:format": "lerna run --parallel prettier-standard:format",
+    "bootstrap": "lerna bootstrap",
     "test": "lerna run --parallel test",
     "dev": "lerna run --parallel dev",
     "prerelease": "yarn build",
@@ -47,7 +27,8 @@
     "release:beta": "lerna publish --npm-tag=beta"
   },
   "workspaces": [
-    "packages/@stimulus_reflex/polyfills"
+    "packages/*",
+    "packages/@stimulus_reflex/*"
   ],
   "dependencies": {
     "lerna": "^3.22.1"
