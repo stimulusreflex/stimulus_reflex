@@ -265,6 +265,16 @@ end
 ```
 {% endcode %}
 
+If you're working on translations and would like to have your `.yml` files automatically reload when the browser refreshes, we've got you covered:
+
+{% code title="app/controllers/application\_controller.rb" %}
+```ruby
+class ApplicationController < ActionController::Base
+  before_action -> { I18n.backend.reload! } if Rails.env.development?
+end
+```
+{% endcode %}
+
 ### The Current pattern
 
 Several years ago, DHH [introduced](https://www.youtube.com/watch?v=D7zUOtlpUPw) the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) pattern to Rails 5.1. It's easy to work with Current objects inside of your Reflex classes using a `before_reflex` callback in your `ApplicationReflex`.

@@ -1008,9 +1008,9 @@
     fastq "^1.6.0"
 
 "@rails/actioncable@^6.0.3-3":
-  version "6.0.3-3"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3-3.tgz#fb1a46d3d353512764d5fa3cea2f492391601b7a"
-  integrity sha512-+DEbtzvD2ITPKOGBAV0lLdUvImCsHtUYfxwW7TDKOrGNEFqgbVJij7aO6ZE8a3aDPQ7NnO/MlyrPwLVeiIZRSw==
+  version "6.0.3-4"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3-4.tgz#f17c0ef2235d1624d6052b749005608260bd55ef"
+  integrity sha512-uie5McTpl69vHnXCVzKj7iYpVKFfLuE7aqul/I7MX5zVd+yVyyC/g75T1Q10GofyqHYNYWgPiIxgQIoYPyyeKw==
 
 "@rollup/plugin-alias@^3.1.1":
   version "3.1.1"
@@ -1540,9 +1540,9 @@ builtin-modules@^3.1.0:
   integrity sha512-k0KL0aWZuBt2lrxrcASWDfwOLMnodeQjodT/1SxEQAXsHANgo6ZC/VEaSEHCXt7aSTZ4/4H5LKa+tBXmW7Vtvw==
 
 cable_ready@^4.4.0-pre0:
-  version "4.4.0-pre0"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.4.0-pre0.tgz#ed3fb4733c4632982c3fc3f8e7d2ba19fb902793"
-  integrity sha512-tG6oBgoTCaPinsbH0xJm9VBIJjXe3V9ocv+BlE1N6TKJf0uaBwRIMVvKzPs5t3QT5bTXhR1w+NL34kgAsg133g==
+  version "4.4.0-pre1"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.4.0-pre1.tgz#b9a262cefb539a9a87bd71da56835a7ba7d93653"
+  integrity sha512-V71BpFB9Q9KCHEWH3kzz3umaFpafMb7khr3TTZclO1xnepwPTiWgWEMqSv2afaQlPtqH6FEpr0UNK6dH4GwrSA==
   dependencies:
     morphdom "^2.6.1"
 
@@ -2423,6 +2423,11 @@ eslint@^6.8.0:
     table "^5.2.3"
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
+
+esm@^3.2.25:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
 espree@^6.1.2:
   version "6.2.1"
