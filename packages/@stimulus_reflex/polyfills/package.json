@@ -1,6 +1,6 @@
 {
   "name": "@stimulus_reflex/polyfills",
-  "version": "3.4.0-dev.2",
+  "version": "3.4.0-dev.3",
   "description": "Polyfills to support StimulusReflex in older browsers",
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": {
