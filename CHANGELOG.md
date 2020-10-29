@@ -22,6 +22,7 @@
 **Merged pull requests:**
 
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
+- Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
 - Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
 - add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
@@ -200,7 +201,6 @@
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
-- Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
@@ -240,6 +240,7 @@
 
 **Merged pull requests:**
 
+- Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
