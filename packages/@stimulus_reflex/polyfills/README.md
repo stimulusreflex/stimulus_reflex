@@ -1,10 +1,36 @@
-# `@stimulus_reflex/polyfills`
+# Polyfills for StimulusReflex
+
+### Description
 
 The `@stimulus_reflex/polyfills` package provides support for StimulusReflex and CableReady in older browsers like Internet Explorer 11.
 
-This package contains a few polyfills and bundles polyfills from other packages. See below for details:
+### Usage
 
-### `@stimulus_reflex/polyfills`
+To include the polyfills you just have to import the package. Typically you want to import it in `app/javascript/packs/application.js`.
+
+```javascript
+// app/javascript/packs/application.js
+
+import '@stimulus_reflex/polyfills'
+import 'controllers'
+
+// ...
+```
+
+If you have an existing import for `@stimulus/polyfills` you can safely remove it. The `@stimulus/polyfills` package is included with `@stimulus_reflex/polyfills`.
+
+
+```diff
+-import '@stimulus/polyfills'
++import '@stimulus_reflex/polyfills'
+```
+
+
+### Details
+
+This repository contains a few polyfills itself and bundles up polyfills from other packages. The following list shows the included polyfills and where they are coming from:
+
+#### Polyfills imported in this package
 
 * Custom
   * [`NodeList.forEach()`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach#Polyfill)
@@ -16,7 +42,7 @@ This package contains a few polyfills and bundles polyfills from other packages.
   * `String.startsWith()`
   * `String.includes()`
 
-### `@stimulus/polyfills`
+#### Polyfills imported from `@stimulus/polyfills`
 
 * [core-js](https://www.npmjs.com/package/core-js)
   * `Array.find()`
@@ -34,8 +60,8 @@ This package contains a few polyfills and bundles polyfills from other packages.
   * once & passive support for Internet Explorer 11 & Edge
 
 
-### `@webcomponents/template`
+#### Polyfills imported from `@webcomponents/template`
 * [`<template>`](https://www.npmjs.com/package/@webcomponents/template)
 
-### `formdata-polyfill`
+#### Polyfills imported from `formdata-polyfill`
 * [`FormData`](https://www.npmjs.com/package/formdata-polyfill)
