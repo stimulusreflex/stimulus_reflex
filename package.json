@@ -42,15 +42,14 @@
     "prettier-standard:format": "lerna run --parallel prettier-standard:format",
     "test": "lerna run --parallel test",
     "dev": "lerna run --parallel dev",
-    "release": "lerna publish prerelease -y"
+    "prerelease": "yarn build",
+    "release": "lerna publish",
+    "release:beta": "lerna publish --npm-tag=beta"
   },
   "workspaces": [
     "packages/@stimulus_reflex/polyfills"
   ],
   "dependencies": {
-    "lerna": "^3.22.1",
-    "stimulus": ">= 1.1",
-    "rimraf": "^3.0.2",
-    "microbundle": "^0.12.3"
+    "lerna": "^3.22.1"
   }
 }

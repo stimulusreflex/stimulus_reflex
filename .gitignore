@@ -11,3 +11,4 @@ node_modules
 /javascript/dist/
 /packages/**/dist/
 lerna-debug.log
+yarn-error.log

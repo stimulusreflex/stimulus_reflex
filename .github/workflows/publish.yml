@@ -3,15 +3,15 @@
 
 name: Node.js Package
 
-#on:
-#  release:
-#    types: [created]
-
 on:
-  push:
-    branches:
-      - master
-      - multiple-packages
+ release:
+   types: [created]
+
+# on:
+#   push:
+#     branches:
+#       - master
+#       - multiple-packages
 
 jobs:
   build:
