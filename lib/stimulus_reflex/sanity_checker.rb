@@ -83,20 +83,16 @@ class StimulusReflex::SanityChecker
   def warn_and_exit(text)
     puts "WARNING:"
     puts text
-    exit_with_info if exit_for_failed_sanity_checks?
+    exit_with_info if StimulusReflex.config.exit_on_failed_sanity_checks
   end
 
   def exit_with_info
     puts
     puts <<~INFO
-      If you want know what you are doing and you want to start the application anyway, set the following config
-          config.x.stimulus_reflex.exit_for_failed_sanity_checks = false
+      If you want know what you are doing and you want to start the application anyway,
+      you can do by putting the following configuration in an initializer:
+            StimulusReflex.config.exit_on_failed_sanity_checks = false
     INFO
     exit
-  end
-
-  def exit_for_failed_sanity_checks?
-    exit_config = Rails.application.config.x.stimulus_reflex.exit_for_failed_sanity_checks
-    exit_config.nil? ? true : exit_config # defaults to true
   end
 end

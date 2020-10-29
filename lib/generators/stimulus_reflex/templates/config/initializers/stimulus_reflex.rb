@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 StimulusReflex.configure do |config|
-  # configuration options explained here:
-  # Short description of what the config variable does, best with the available options.
-  # config.example = true
+  # Enable/disable whether startup should be aborted
+  # when the sanity checks fail.
+  config.exit_on_failed_sanity_checks = true
 end

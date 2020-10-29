@@ -14,10 +14,10 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :example # put your attr_accessors here, like `attr_accessor: debug`, remove this line when you do.
+    attr_accessor :exit_on_failed_sanity_checks
 
     def initialize
-      @example = true # put your defaults here like `@debug = true, remove this line when you do.
+      @exit_on_failed_sanity_checks = true
     end
   end
 end
