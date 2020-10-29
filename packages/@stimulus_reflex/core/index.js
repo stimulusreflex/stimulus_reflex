@@ -3,6 +3,6 @@
 
 export default {
   todo: () => {
-    console.log("TODO")
+    console.log('TODO')
   }
 }
