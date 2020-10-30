@@ -15,12 +15,14 @@
 
 **Closed issues:**
 
+- ActionController::RoutingError with Rails 6 Engines [\#342](https://github.com/hopsoft/stimulus_reflex/issues/342)
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
 - Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
 - Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
 
 **Merged pull requests:**
 
+- Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 - Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
 - Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
