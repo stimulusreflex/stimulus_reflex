@@ -114,10 +114,6 @@ class StimulusReflex::Reflex
     end
   end
 
-  def url_params
-    @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
-  end
-
   def process(name, *args)
     reflex_invoked = false
     result = run_callbacks(:process) {
