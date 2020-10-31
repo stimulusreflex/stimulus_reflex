@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :url_params, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
   delegate :connection, :stream_name, to: :channel
   delegate :session, to: :request
@@ -82,11 +82,11 @@ class StimulusReflex::Reflex
       env = connection.env.merge(mock_env)
       req = ActionDispatch::Request.new(env)
 
-      @url_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
-      @url_params[:controller] = @url_params[:controller].force_encoding("UTF-8")
-      @url_params[:action] = @url_params[:action].force_encoding("UTF-8")
+      path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
+      path_params[:controller] = path_params[:controller].force_encoding("UTF-8")
+      path_params[:action] = path_params[:action].force_encoding("UTF-8")
 
-      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => @url_params)
+      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
       req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
     end
