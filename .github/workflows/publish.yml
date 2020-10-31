@@ -1,17 +1,8 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
-
-name: Node.js Package
+name: Node.js Packages
 
 on:
  release:
    types: [created]
-
-# on:
-#   push:
-#     branches:
-#       - master
-#       - multiple-packages
 
 jobs:
   build:
@@ -25,7 +16,7 @@ jobs:
       - run: yarn build
       - run: yarn test
 
-  publish-npm:
+  publish:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -42,20 +33,3 @@ jobs:
       - run: yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  # publish-gpr:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12
-  #         registry-url: https://npm.pkg.github.com/
-  #         scope: '@stimulus_reflex'
-  #     - run: yarn install
-  #     - run: yarn test
-  #     - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
-  #     - run: yarn release
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
