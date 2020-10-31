@@ -1,11 +1,10 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
-import serializeForm from 'form-serialize'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4, debounce, emitEvent } from './utils'
+import { uuidv4, debounce, emitEvent, serializeForm } from './utils'
 import Log from './log'
 import {
   attributeValue,
@@ -182,19 +181,14 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
-        const formData =
-          options['serializeForm'] == false
-            ? {}
-            : serializeForm(element.closest('form'), {
-                hash: true,
-                empty: true
-              })
+        const formData = options['serializeForm']
+          ? serializeForm(element.closest('form'), { element })
+          : ''
+
         element.reflexData = {
           ...data,
-          params: {
-            ...formData,
-            ...params
-          }
+          params,
+          formData
         }
 
         subscription.send(element.reflexData)
