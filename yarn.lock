@@ -4356,11 +4356,6 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-"form-serialize@>= 0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/form-serialize/-/form-serialize-0.7.2.tgz#b0a2ff0c22026fb6d3d15c9d33f6de6a432e4732"
-  integrity sha1-sKL/DCICb7bT0VydM/beakMuRzI=
-
 formdata-polyfill@^3.0.20:
   version "3.0.20"
   resolved "https://registry.yarnpkg.com/formdata-polyfill/-/formdata-polyfill-3.0.20.tgz#d6319db8efc5cf4bb2da27856c2b902be63be1c6"

@@ -1,5 +1,5 @@
 // TODO
-// move everything from javascript/ to here
+// move everything from javascript/ into the core package
 
 export default {
   todo: () => {

@@ -15,13 +15,10 @@
     "prepare": "yarn build",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register --require esm",
-    "clean": "rimraf dist",
+    "test": "yarn run mocha --require @babel/register --require esm ./test",
     "build": "microbundle --target browser --format modern,es,cjs --no-strict",
-    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict"
-  },
-  "dependencies": {
-    "form-serialize": ">= 0.7.2"
+    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict",
+    "clean": "rimraf dist"
   },
   "peerDependencies": {
     "@rails/actioncable": ">= 6.0",
