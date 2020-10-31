@@ -16,6 +16,7 @@
 **Closed issues:**
 
 - ActionController::RoutingError with Rails 6 Engines [\#342](https://github.com/hopsoft/stimulus_reflex/issues/342)
+- Wrong input name parsing [\#321](https://github.com/hopsoft/stimulus_reflex/issues/321)
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
 - Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
 - Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
@@ -29,6 +30,7 @@
 - Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
 - add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
+- Move form-data merge logic to the server-side [\#327](https://github.com/hopsoft/stimulus_reflex/pull/327) ([marcoroth](https://github.com/marcoroth))
 - fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
 - introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
