@@ -10,8 +10,13 @@
 
 **Implemented enhancements:**
 
+- tab isolation mode v2 [\#335](https://github.com/hopsoft/stimulus_reflex/pull/335) ([leastbad](https://github.com/leastbad))
 - Delegate flash to the request [\#334](https://github.com/hopsoft/stimulus_reflex/pull/334) ([hopsoft](https://github.com/hopsoft))
 - Opt-in form serialization & params overriding [\#325](https://github.com/hopsoft/stimulus_reflex/pull/325) ([s-s](https://github.com/s-s))
+
+**Fixed bugs:**
+
+- Console exception when reflex updates a page that didn't trigger the update [\#336](https://github.com/hopsoft/stimulus_reflex/issues/336)
 
 **Closed issues:**
 
