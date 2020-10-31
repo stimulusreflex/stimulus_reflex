@@ -63,3 +63,40 @@ export const emitEvent = (event, detail) => {
     })
   )
 }
+
+// construct a valid xPath for an element in the DOM
+export const elementToxPath = element => {
+  if (element.id !== '') return "//*[@id='" + element.id + "']"
+  if (element === document.body) return 'body'
+
+  let ix = 0
+  const siblings = element.parentNode.childNodes
+
+  for (var i = 0; i < siblings.length; i++) {
+    const sibling = siblings[i]
+    if (sibling === element) {
+      return (
+        elementToxPath(element.parentNode) +
+        '/' +
+        element.tagName.toLowerCase() +
+        '[' +
+        (ix + 1) +
+        ']'
+      )
+    }
+
+    if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
+      ix++
+    }
+  }
+}
+
+export const xPathToElement = xpath => {
+  return document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue
+}
