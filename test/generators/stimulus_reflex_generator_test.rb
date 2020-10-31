@@ -2,6 +2,7 @@
 
 require "rails/generators/test_case"
 require_relative "../test_helper"
+require "./lib/generators/stimulus_reflex/stimulus_reflex_generator"
 
 class StimulusReflexGeneratorTest < Rails::Generators::TestCase
   tests StimulusReflexGenerator
