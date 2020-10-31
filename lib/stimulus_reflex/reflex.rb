@@ -45,6 +45,8 @@ class StimulusReflex::Reflex
 
   attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
+  alias action_name method_name # for compatibility with controller libraries like Pundit that expect an action name
+
   delegate :connection, :stream_name, to: :channel
   delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
@@ -110,10 +112,6 @@ class StimulusReflex::Reflex
         c.response = ActionDispatch::Response.new
       end
     end
-  end
-
-  def url_params
-    @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
   end
 
   def process(name, *args)

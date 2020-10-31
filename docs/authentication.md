@@ -375,7 +375,53 @@ The `before_reflex` callback is the best place to handle privilege checks, becau
 
 ### Pundit
 
-The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
+The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. Reflexes are similar enough to controllers that if you include the `Pundit` module, you can take advantage of the `authorize` method.
+
+Pundit expects you to have a `current_user` in scope and a policy matching the name of your Reflex action. In the following example we create a `sing?` policy for our `sing` Reflex action in `song_policy.rb`
+
+{% code title="app/policies/song\_policy.rb" %}
+```ruby
+class SongPolicy < ApplicationPolicy
+  def sing?
+    user.sings_in_key?
+  end
+end
+```
+{% endcode %}
+
+{% code title="app/reflexes/song\_reflex.rb" %}
+```ruby
+class SongReflex < ApplicationReflex
+  include Pundit
+  
+  def sing
+    @song = Song.find(params[:song_id])
+    authorize @song
+    # sing your heart out, baby!
+  end
+end
+```
+{% endcode %}
+
+Pundit will match your Reflex action to the right policy. If the `authorize` call fails, a `Pundit::NotAuthorizedError` will be raised, which you can handle in your Reflex action or leave unhandled so that it bubbles up and gets picked up by a 3rd-party error handling mechanism such as [Sentry](https://sentry.io) or [HoneyBadger](https://www.honeybadger.io/).
+
+{% code title="app/reflexes/application\_reflex.rb" %}
+```ruby
+class ApplicationReflex < StimulusReflex::Reflex
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    # handle authorization issue
+  end
+end
+```
+{% endcode %}
+
+If you're using Pundit to safeguard data from being accessed by bad actors and unauthorized parties - due to bugs in your code - that's probably the correct approach. _However..._ you might also want to explicitly validate policies so that you can react to them in your browser:
+
+#### Explitic policy validation
+
+You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](https://docs.stimulusreflex.com/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** lifecycle event.
+
+The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 
 {% code title="app/policies/example\_reflex\_policy.rb" %}
 ```ruby

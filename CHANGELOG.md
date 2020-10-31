@@ -15,12 +15,18 @@
 
 **Closed issues:**
 
+- ActionController::RoutingError with Rails 6 Engines [\#342](https://github.com/hopsoft/stimulus_reflex/issues/342)
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
 - Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
 - Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
 
 **Merged pull requests:**
 
+- Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
+- Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
+- feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
+- Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
+- Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
 - add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
 - fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
@@ -275,7 +281,7 @@
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
-- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([seb1441](https://github.com/seb1441))
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -314,7 +320,7 @@
 - Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
-- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([seb1441](https://github.com/seb1441))
+- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 
 **Fixed bugs:**
 
@@ -475,10 +481,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
 
-**Implemented enhancements:**
-
-- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
-
 **Fixed bugs:**
 
 - Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
@@ -498,6 +500,7 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
+- Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
