@@ -4,12 +4,9 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...HEAD)
 
-**Breaking changes:**
-
-- remove isolate concept and make behavior default [\#332](https://github.com/hopsoft/stimulus_reflex/pull/332) ([leastbad](https://github.com/leastbad))
-
 **Implemented enhancements:**
 
+- Move StimulusReflex::Channel to app/ and allow for a configurable parent channel [\#346](https://github.com/hopsoft/stimulus_reflex/pull/346) ([leastbad](https://github.com/leastbad))
 - tab isolation mode v2 [\#335](https://github.com/hopsoft/stimulus_reflex/pull/335) ([leastbad](https://github.com/leastbad))
 - Delegate flash to the request [\#334](https://github.com/hopsoft/stimulus_reflex/pull/334) ([hopsoft](https://github.com/hopsoft))
 - Opt-in form serialization & params overriding [\#325](https://github.com/hopsoft/stimulus_reflex/pull/325) ([s-s](https://github.com/s-s))
@@ -17,6 +14,8 @@
 **Fixed bugs:**
 
 - Console exception when reflex updates a page that didn't trigger the update [\#336](https://github.com/hopsoft/stimulus_reflex/issues/336)
+- AlpineJS components not reinitalised after reflex [\#329](https://github.com/hopsoft/stimulus_reflex/issues/329)
+- Encoding changes from UTF-8 to ASCII-8BIT [\#202](https://github.com/hopsoft/stimulus_reflex/issues/202)
 
 **Closed issues:**
 
@@ -33,11 +32,13 @@
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
 - Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
 - Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
+- remove isolate concept and make behavior default [\#332](https://github.com/hopsoft/stimulus_reflex/pull/332) ([leastbad](https://github.com/leastbad))
 - add signed/unsigned accessors to element [\#330](https://github.com/hopsoft/stimulus_reflex/pull/330) ([joshleblanc](https://github.com/joshleblanc))
 - merge environment into ApplicationController and descendants [\#328](https://github.com/hopsoft/stimulus_reflex/pull/328) ([leastbad](https://github.com/leastbad))
 - Move form-data merge logic to the server-side [\#327](https://github.com/hopsoft/stimulus_reflex/pull/327) ([marcoroth](https://github.com/marcoroth))
 - fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
 - introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
+- Force request encodings to be UTF-8 instead of ASCII-8BIT after a reflex [\#320](https://github.com/hopsoft/stimulus_reflex/pull/320) ([marcoroth](https://github.com/marcoroth))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
