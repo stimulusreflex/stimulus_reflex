@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-module ApplicationCable
-  class Channel < ActionCable::Channel::Base
-    def initialize(connection, identifier, params = {})
-      super
-      application_channel = Rails.root.join("app", "channels", "application_cable", "channel.rb")
-      require application_channel if File.exist?(application_channel)
-    end
-  end
-end
-
-class StimulusReflex::Channel < ApplicationCable::Channel
+class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
@@ -35,8 +25,9 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
-    permanent_attribute_name = data["permanent_attribute_name"]
-    params = data["params"] || {}
+    permanent_attribute_name = data["permanentAttributeName"]
+    form_data = Rack::Utils.parse_nested_query(data["formData"])
+    params = form_data.deep_merge(data["params"] || {})
 
     begin
       begin

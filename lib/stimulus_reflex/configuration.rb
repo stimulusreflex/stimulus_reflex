@@ -14,10 +14,11 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :exit_on_failed_sanity_checks
+    attr_accessor :exit_on_failed_sanity_checks, :parent_channel
 
     def initialize
       @exit_on_failed_sanity_checks = true
+      @parent_channel = "ApplicationCable::Channel"
     end
   end
 end
