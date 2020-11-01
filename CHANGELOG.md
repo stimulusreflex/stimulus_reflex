@@ -10,6 +10,7 @@
 - tab isolation mode v2 [\#335](https://github.com/hopsoft/stimulus_reflex/pull/335) ([leastbad](https://github.com/leastbad))
 - Delegate flash to the request [\#334](https://github.com/hopsoft/stimulus_reflex/pull/334) ([hopsoft](https://github.com/hopsoft))
 - Opt-in form serialization & params overriding [\#325](https://github.com/hopsoft/stimulus_reflex/pull/325) ([s-s](https://github.com/s-s))
+- Exit on failed sanity check, provide config to skip exit [\#318](https://github.com/hopsoft/stimulus_reflex/pull/318) ([RolandStuder](https://github.com/RolandStuder))
 
 **Fixed bugs:**
 
