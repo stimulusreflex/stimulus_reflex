@@ -89,8 +89,8 @@ class StimulusReflex::SanityChecker
   def exit_with_info
     puts
     puts <<~INFO
-      If you want know what you are doing and you want to start the application anyway,
-      you can do by putting the following configuration in an initializer:
+      If you know what you are doing and you want to start the application anyway,
+      you can add the following directive to an initializer:
             StimulusReflex.config.exit_on_failed_sanity_checks = false
     INFO
     exit
