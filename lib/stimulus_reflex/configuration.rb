@@ -14,10 +14,10 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :example # put your attr_accessors here, like `attr_accessor: debug`, remove this line when you do.
+    attr_accessor :parent_channel
 
     def initialize
-      @example = true # put your defaults here like `@debug = true, remove this line when you do.
+      @parent_channel = "ApplicationCable::Channel"
     end
   end
 end
