@@ -34,5 +34,9 @@
     "microbundle": "^0.12.4",
     "prettier-standard": "^16.4.1",
     "rimraf": "^3.0.2"
-  }
+  },
+  "sideEffects": [
+    "./index.js",
+    "./polyfills/**/*.js"
+  ]
 }
