@@ -2,55 +2,55 @@
 
 module StimulusReflex
   class Logger
-    attr_accessor :reflex, :log_type
+    attr_accessor :reflex
 
-    LOG_TYPE_TO_COLOR_CODE = {
-      error: "0;31",
-      success: "0;32",
-      halted: "0;33"
-    }.freeze
+    COLORS = {
+      "black" => "0;30",
+      "red" => "0;31",
+      "green" => "0;32",
+      "yellow" => "0;33",
+      "blue" => "0;34",
+      "magenta" => "0;35",
+      "cyan" => "0;36",
+      "white" => "0;37"
+    }
 
     def initialize(reflex)
       @reflex = reflex
     end
 
     def print
-      return unless debugging?
+      return if debugging? || log.empty?
 
-      colorized_log_message
+      puts <<~WARN
+        #{self.class} logging #{colorized_log_message}
+      WARN
     end
 
     private
 
     def debugging?
-      StimulusReflex.config.debugging
+      StimulusReflex.config.debug
     end
 
     def colorized_log_message
-      return if log.empty?
+      log.map { |element| colorize(element) }.push("\e[0;0m").join(" ")
+    end
 
-      puts <<~WARN
-        #{colorize("#{self.class} logging #{log_type} for reflex action:")}
-        #{colorize(formatted_log_message)}
-      WARN
+    def colorize(element)
+      return element unless COLORS.key?(element)
+
+      "\e[#{COLORS[element]}m"
     end
 
     def log
-      @log ||= StimulusReflex.config.logging.each_with_object({}) { |log_level, h| h[log_level] = send(log_level) }
-    end
-
-    def colorize(message, color = LOG_TYPE_TO_COLOR_CODE[log_type.to_sym])
-      "\e[#{color}m#{message}\e[0;0m"
-    end
-
-    def formatted_log_message
-      log.values.to_sentence(words_connector: " ", last_word_connector: " ")
+      @log ||= StimulusReflex.config.logging.map { |element| element.is_a?(Symbol) ? send(element) : element }
     end
 
     def session_id(session = reflex.request&.session)
       return "-" if session.nil?
 
-      "[#{session.id}]"
+      session.id
     end
 
     def reflex_name(dataset = reflex.element&.dataset)
@@ -60,7 +60,7 @@ module StimulusReflex
     end
 
     def operation
-      "(#{broadcaster}: ##{selectors})"
+      "#{broadcaster}: #{selectors}"
     end
 
     def broadcaster
@@ -74,11 +74,11 @@ module StimulusReflex
     def connection_id(identifier = reflex.connection&.connection_identifier)
       return "-" if identifier.nil?
 
-      "for #{identifier}"
+      identifier
     end
 
     def timestamp
-      "at #{Time.now}"
+      Time.now.strftime("%Y-%m-%d %H:%M:%S")
     end
   end
 end

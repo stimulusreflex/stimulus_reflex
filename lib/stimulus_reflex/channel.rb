@@ -70,8 +70,6 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     ensure
       if reflex
         commit_session(reflex)
-        subject = invoke_error.nil? && render_error.nil? ? "success" : "error"
-        reflex.logger.log_type = reflex.halted? ? "halted" : subject
         reflex.logger.print
       end
     end
