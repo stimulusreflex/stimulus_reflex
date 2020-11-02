@@ -53,7 +53,7 @@ You can feel free to remove both of these files after you're done, but leave `ap
 
 You might want to know the order in which your Reflexes are called, how long it took to process each Reflex or what the Reflex response payload contains. Luckily you can enable Reflex logging to your browser's Console Inspector.
 
-![](.gitbook/assets/screenshot_2020-05-05_at_01.19.44%20%281%29.png)
+![](.gitbook/assets/screenshot_2020-05-05_at_01.19.44.png)
 
 There are two ways to enable client debugging in your StimulusReflex instance.
 
