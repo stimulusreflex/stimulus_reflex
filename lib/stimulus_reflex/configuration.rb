@@ -10,7 +10,7 @@ module StimulusReflex
       @configuration ||= Configuration.new
     end
 
-    alias config configuration
+    alias_method :config, :configuration
   end
 
   class Configuration

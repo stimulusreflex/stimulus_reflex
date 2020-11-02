@@ -45,7 +45,7 @@ class StimulusReflex::Reflex
 
   attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
 
-  alias action_name method_name # for compatibility with controller libraries like Pundit that expect an action name
+  alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
   delegate :flash, :session, to: :request

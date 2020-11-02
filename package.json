@@ -52,7 +52,7 @@
     "@babel/register": "^7.6.2",
     "@rails/actioncable": "^6.0.3-3",
     "assert": "^2.0.0",
-    "cable_ready": "^4.4.0-pre0",
+    "cable_ready": "^4.4.0-pre2",
     "esm": "^3.2.25",
     "jsdom": "^16.0.1",
     "microbundle": "^0.12.3",
