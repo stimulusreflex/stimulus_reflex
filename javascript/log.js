@@ -17,7 +17,9 @@ function success (event) {
     reflex.totalOperations > 1
       ? ` ${reflex.completedOperations}/${reflex.totalOperations}`
       : ''
-  const duration = `${new Date() - reflex.timestamp}ms`
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
   const operation = event.type
     .split(':')[1]
     .split('-')
@@ -26,7 +28,7 @@ function success (event) {
   const halted = (serverMessage && serverMessage.subject == 'halted') || false
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
-      '\u221E'}${progress} in ${duration}`,
+      '\u221E'}${progress} ${duration}`,
     { reflexId, morph, operation, halted }
   )
 }
@@ -34,10 +36,12 @@ function success (event) {
 function error (event) {
   const { detail } = event || {}
   const { reflexId, target, serverMessage } = detail.stimulusReflex || {}
-  const duration = `${new Date() - reflexes[reflexId].timestamp}ms`
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
   const payload = detail.stimulusReflex
   console.log(
-    `\u2193 reflex \u2193 ${target} in ${duration} %cERROR: ${serverMessage.body}`,
+    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${serverMessage.body}`,
     'color: #f00;',
     { reflexId, payload }
   )

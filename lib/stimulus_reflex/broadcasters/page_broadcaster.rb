@@ -3,7 +3,7 @@
 module StimulusReflex
   class PageBroadcaster < Broadcaster
     def broadcast(selectors, data)
-      reflex.controller.process reflex.url_params[:action]
+      reflex.controller.process reflex.params[:action]
       page_html = reflex.controller.response.body
 
       return unless page_html.present?
