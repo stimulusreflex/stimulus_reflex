@@ -213,7 +213,6 @@
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
-- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
@@ -233,6 +232,7 @@
 
 **Merged pull requests:**
 
+- adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
@@ -335,7 +335,6 @@
 **Fixed bugs:**
 
 -  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
-- Remove unneeded registerConsumer logic [\#158](https://github.com/hopsoft/stimulus_reflex/pull/158) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -389,6 +388,7 @@
 **Fixed bugs:**
 
 - Unable to register the ActionCable Consumer [\#156](https://github.com/hopsoft/stimulus_reflex/issues/156)
+- Remove unneeded registerConsumer logic [\#158](https://github.com/hopsoft/stimulus_reflex/pull/158) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
