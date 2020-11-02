@@ -70,7 +70,7 @@ You can also set debug mode after you've initialized StimulusReflex. This is esp
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === "development"
 ```
 {% endcode %}
 
@@ -130,7 +130,7 @@ const application = Application.start(document.documentElement, {
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === "development"
 ```
 {% endcode %}
 
