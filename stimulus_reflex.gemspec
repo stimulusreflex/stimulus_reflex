@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
     "source_code_uri" => gem.homepage
   }
 
-  gem.files = Dir["lib/**/*", "bin/*", "[A-Z]*"]
+  gem.files = Dir["app/**/*", "lib/**/*", "bin/*", "[A-Z]*"]
   gem.test_files = Dir["test/**/*.rb"]
 
   gem.add_dependency "rack"
