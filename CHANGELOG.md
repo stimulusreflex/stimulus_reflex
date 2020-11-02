@@ -28,6 +28,7 @@
 
 **Merged pull requests:**
 
+- \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
 - Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 - Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
@@ -345,6 +346,7 @@
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
+- Trap errors in registerConsumer [\#154](https://github.com/hopsoft/stimulus_reflex/pull/154) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
@@ -413,10 +415,6 @@
 **Closed issues:**
 
 - Setup & Quick Start guide from scratch results in showstopping error [\#153](https://github.com/hopsoft/stimulus_reflex/issues/153)
-
-**Merged pull requests:**
-
-- Trap errors in registerConsumer [\#154](https://github.com/hopsoft/stimulus_reflex/pull/154) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.0) (2020-04-15)
 
