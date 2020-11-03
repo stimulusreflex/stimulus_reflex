@@ -211,9 +211,10 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
-        const formData = options['serializeForm'] == false
-          ? ''
-          : serializeForm(element.closest('form'), { element })
+        const formData =
+          options['serializeForm'] == false
+            ? ''
+            : serializeForm(element.closest('form'), { element })
 
         element.reflexData = {
           ...data,
