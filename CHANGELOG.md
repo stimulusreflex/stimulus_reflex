@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre0...v3.4.0.pre1)
+
 ## [v3.4.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre0) (2020-11-02)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0...v3.4.0.pre0)
