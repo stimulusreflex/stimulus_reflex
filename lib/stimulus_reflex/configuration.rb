@@ -10,14 +10,15 @@ module StimulusReflex
       @configuration ||= Configuration.new
     end
 
-    alias config configuration
+    alias_method :config, :configuration
   end
 
   class Configuration
-    attr_accessor :example # put your attr_accessors here, like `attr_accessor: debug`, remove this line when you do.
+    attr_accessor :exit_on_failed_sanity_checks, :parent_channel
 
     def initialize
-      @example = true # put your defaults here like `@debug = true, remove this line when you do.
+      @exit_on_failed_sanity_checks = true
+      @parent_channel = "ApplicationCable::Channel"
     end
   end
 end

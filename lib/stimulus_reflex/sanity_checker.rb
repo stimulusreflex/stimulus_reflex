@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
   def self.check!
@@ -12,25 +11,32 @@ class StimulusReflex::SanityChecker
 
   def check_caching_enabled
     unless caching_enabled?
-      puts <<~WARN
-        WARNING: Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+      warn_and_exit <<~WARN
+        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         To enable caching in development, run:
             rails dev:cache
+      WARN
+    end
+
+    unless not_null_store?
+      warn_and_exit <<~WARN
+        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+        But your config.cache_store is set to :null_store, so it won't work.
       WARN
     end
   end
 
   def check_javascript_package_version
     if javascript_package_version.nil?
-      puts <<~WARN
-        WARNING: Can't locate the stimulus_reflex NPM package.
+      warn_and_exit <<~WARN
+        Can't locate the stimulus_reflex NPM package.
         Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
       WARN
     end
 
     unless javascript_version_matches?
-      puts <<~WARN
-        WARNING: The Stimulus Reflex javascript package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
+      warn_and_exit <<~WARN
+        The Stimulus Reflex javascript package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
         To update the Stimulus Reflex npm package:
             yarn upgrade stimulus_reflex@#{gem_version}
       WARN
@@ -40,8 +46,11 @@ class StimulusReflex::SanityChecker
   private
 
   def caching_enabled?
-    Rails.application.config.action_controller.perform_caching &&
-      Rails.application.config.cache_store != :null_store
+    Rails.application.config.action_controller.perform_caching
+  end
+
+  def not_null_store?
+    Rails.application.config.cache_store != :null_store
   end
 
   def javascript_version_matches?
@@ -53,14 +62,11 @@ class StimulusReflex::SanityChecker
   end
 
   def javascript_package_version
-    return @_js_version if defined?(@_js_version)
-    @_js_version = find_javascript_package_version
+    @_js_version ||= find_javascript_package_version
   end
 
   def find_javascript_package_version
-    if (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
-      match[NODE_VERSION_FORMAT, 1]
-    elsif (match = search_file(yarn_link_path, regex: /version/))
+    if (match = search_file(package_json_path, regex: /version/))
       match[JSON_VERSION_FORMAT, 1]
     end
   end
@@ -70,11 +76,23 @@ class StimulusReflex::SanityChecker
     File.foreach(path).grep(regex).first
   end
 
-  def yarn_lock_path
-    Rails.root.join("yarn.lock")
+  def package_json_path
+    Rails.root.join("node_modules", "stimulus_reflex", "package.json")
   end
 
-  def yarn_link_path
-    Rails.root.join("node_modules", "stimulus_reflex", "package.json")
+  def warn_and_exit(text)
+    puts "WARNING:"
+    puts text
+    exit_with_info if StimulusReflex.config.exit_on_failed_sanity_checks
+  end
+
+  def exit_with_info
+    puts
+    puts <<~INFO
+      If you know what you are doing and you want to start the application anyway,
+      you can add the following directive to an initializer:
+            StimulusReflex.config.exit_on_failed_sanity_checks = false
+    INFO
+    exit
   end
 end
