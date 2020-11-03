@@ -1,6 +1,6 @@
 {
   "name": "@stimulus_reflex/polyfills",
-  "version": "3.4.0-dev.4",
+  "version": "3.4.0-pre1",
   "description": "Polyfills to support StimulusReflex in older browsers",
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
@@ -20,20 +20,18 @@
     "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict"
   },
   "dependencies": {
+    "@cable_ready/polyfills": "4.4.0-pre2",
     "@stimulus/polyfills": "^1.1.1",
-    "@webcomponents/template": "^1.4.4",
     "core-js": "^3.4.0",
     "formdata-polyfill": "^3.0.20"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
-    "assert": "^2.0.0",
-    "esm": "^3.2.25",
     "microbundle": "^0.12.4",
     "prettier-standard": "^16.4.1",
     "rimraf": "^3.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "sideEffects": [
     "./index.js",

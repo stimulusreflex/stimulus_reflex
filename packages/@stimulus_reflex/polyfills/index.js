@@ -1,13 +1,9 @@
 import '@stimulus/polyfills'
-
-import 'core-js/es/array/for-each'
-import 'core-js/es/array/includes'
+import '@cable_ready/polyfills'
 
 import 'core-js/es/string/starts-with'
 import 'core-js/es/string/virtual/includes'
 
 import './polyfills/node-list/for-each'
-import './polyfills/custom-event/custom-event'
 
 import 'formdata-polyfill'
-import '@webcomponents/template'

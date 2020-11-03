@@ -1,8 +1,8 @@
 {
   "name": "@stimulus_reflex/core",
-  "version": "3.4.0-dev.4",
+  "version": "3.4.0-pre1",
   "description": "StimulusReflex: Core library",
-  "repository": "https://github.com/hopsoft/hopsoft",
+  "repository": "https://github.com/hopsoft/stimulus_reflex",
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
   "license": "MIT",
@@ -37,6 +37,7 @@
     "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0",
+    "rimraf": "^3.0.2",
     "stimulus": "^1.1.1"
   },
   "publishConfig": {

@@ -30,15 +30,12 @@ If you have an existing import for `@stimulus/polyfills` you can safely remove i
 
 This repository contains a few polyfills itself and bundles up polyfills from other packages. The following list shows the included polyfills and where they are coming from:
 
-#### Polyfills imported in this package
+#### Polyfills included/imported in this package
 
 * Custom
   * [`NodeList.forEach()`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach#Polyfill)
-  * [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill)
 
 * [core-js](https://www.npmjs.com/package/core-js)
-  * `Array.forEach()`
-  * `Array.includes()`
   * `String.startsWith()`
   * `String.includes()`
 
@@ -59,8 +56,18 @@ This repository contains a few polyfills itself and bundles up polyfills from ot
 * [eventlistener-polyfill](https://github.com/github/eventlistener-polyfill)
   * once & passive support for Internet Explorer 11 & Edge
 
+#### Polyfills imported from `@cable_ready/polyfills`
 
-#### Polyfills imported from `@webcomponents/template`
+* [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill)
+
+* [core-js](https://www.npmjs.com/package/core-js)
+  * `Array.flat()`
+  * `Array.forEach()`
+  * `Array.from()`
+  * `Array.includes()`
+  * `Object.entries()`
+  * `Promise`
+
 * [`<template>`](https://www.npmjs.com/package/@webcomponents/template)
 
 #### Polyfills imported from `formdata-polyfill`

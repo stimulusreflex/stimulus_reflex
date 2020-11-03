@@ -977,6 +977,15 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@cable_ready/polyfills@4.4.0-pre2":
+  version "4.4.0-pre2"
+  resolved "https://registry.yarnpkg.com/@cable_ready/polyfills/-/polyfills-4.4.0-pre2.tgz#9ddd2d4dde9c45b123ba527a6e1a8f4651110f66"
+  integrity sha512-RUQu5BsvAfgE8nLogObMoGIIxwOgPuH5MApQbd+STxFXBejCHjmt0IMQySzDvYPKp6msdzN7xdP6/XYfiWhu8g==
+  dependencies:
+    "@webcomponents/template" "^1.4.4"
+    core-js "^3.4.0"
+    element-closest "^3.0.2"
+
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"
@@ -3742,6 +3751,11 @@ element-closest@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/element-closest/-/element-closest-2.0.2.tgz#72a740a107453382e28df9ce5dbb5a8df0f966ec"
   integrity sha1-cqdAoQdFM4LijfnOXbtajfD5Zuw=
+
+element-closest@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/element-closest/-/element-closest-3.0.2.tgz#3814a69a84f30e48e63eaf57341f4dbf4227d2aa"
+  integrity sha512-JxKQiJKX0Zr5Q2/bCaTx8P+UbfyMET1OQd61qu5xQFeWr1km3fGaxelSJtnfT27XQ5Uoztn2yIyeamAc/VX13g==
 
 emoji-regex@^7.0.1:
   version "7.0.3"

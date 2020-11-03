@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.4.0-dev.4",
+  "version": "3.4.0-pre1",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -18,7 +18,7 @@
     "dom",
     "morphdom"
   ],
-  "repository": "https://github.com/hopsoft/hopsoft",
+  "repository": "https://github.com/hopsoft/stimulus_reflex",
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@stimulus_reflex/core": "3.4.0-dev.4"
+    "@stimulus_reflex/core": "3.4.0-pre1"
   },
   "devDependencies": {
     "microbundle": "^0.12.4",
