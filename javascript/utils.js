@@ -11,8 +11,9 @@ export const uuidv4 = () => {
   )
 }
 
-export const serializeForm = (form, options = { w: window }) => {
-  const { element, w } = options
+export const serializeForm = (form, options = {}) => {
+  const w = options.w || window
+  const { element } = options
 
   const formData = new w.FormData(form)
   const data = Array.from(formData, e => e.join('='))
