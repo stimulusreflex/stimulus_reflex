@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre1...HEAD)
+
+**Merged pull requests:**
+
+- Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
+
 ## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre0...v3.4.0.pre1)
@@ -98,7 +106,6 @@
 - Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
 - Enhance controller templates docs [\#300](https://github.com/hopsoft/stimulus_reflex/pull/300) ([pinzonjulian](https://github.com/pinzonjulian))
 - Avoid mismatching client and server versions [\#297](https://github.com/hopsoft/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
-- Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 
 ## [v3.3.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
 
@@ -145,6 +152,7 @@
 
 **Merged pull requests:**
 
+- Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 - Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
