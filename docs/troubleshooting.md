@@ -70,7 +70,7 @@ You can also set debug mode after you've initialized StimulusReflex. This is esp
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
 
@@ -130,7 +130,7 @@ const application = Application.start(document.documentElement, {
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
 
@@ -185,7 +185,7 @@ Do you have your `config/cable.yml` set up properly? We strongly recommend that 
 {% endhint %}
 
 {% hint style="info" %}
-Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`?  You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
+Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
 {% endhint %}
 
 {% hint style="info" %}

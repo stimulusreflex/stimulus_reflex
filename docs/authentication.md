@@ -10,21 +10,7 @@ If you're just trying to bootstrap a proof-of-concept application on your local 
 
 ### Encrypted Session Cookies
 
-You can use your default Rails encrypted cookie-based sessions to isolate your users into their own sessions. This works great even if your application doesn't have a login system.
-
-{% code title="app/controllers/application\_controller.rb" %}
-```ruby
-class ApplicationController < ActionController::Base
-  before_action :set_action_cable_identifier
-
-  private
-
-  def set_action_cable_identifier
-    cookies.encrypted[:session_id] = session.id.to_s
-  end
-end
-```
-{% endcode %}
+You can use your Rails session to isolate your users so that they don't see each other's updates. This works great even if your application doesn't have a login system.
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
@@ -33,7 +19,7 @@ module ApplicationCable
     identified_by :session_id
 
     def connect
-      self.session_id = cookies.encrypted[:session_id]
+      self.session_id = request.session.id
     end
   end
 end
@@ -329,7 +315,7 @@ module ApplicationCable
 
     def connect
       self.current_user = env["warden"].user
-      self.session_id = cookies.encrypted[:session_id]
+      self.session_id = request.session.id
       reject_unauthorized_connection unless self.current_user || self.session_id
     end
   end
@@ -337,9 +323,9 @@ end
 ```
 {% endcode %}
 
-This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to set the encrypted cookie value in your `application_controller.rb` and delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
+This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
 
-Note that this approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user content. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
+This approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
 
 ## Multi-Tenant Applications
 
