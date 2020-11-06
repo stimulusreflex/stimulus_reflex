@@ -32,7 +32,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     begin
       begin
         reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-        reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, permanent_attribute_name: permanent_attribute_name, params: params)
+        reflex = reflex_class.new(self,
+          url: url,
+          element: element,
+          selectors: selectors,
+          method_name: method_name,
+          permanent_attribute_name: permanent_attribute_name,
+          params: params,
+          reflex_id: data["reflexId"])
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
