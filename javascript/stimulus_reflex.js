@@ -176,10 +176,8 @@ const extendStimulusController = controller => {
       const resolveLate = options['resolveLate'] || false
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
-      let xpath = elementToxPath(element)
-      xpath = xpath.startsWith('//*') ? xpath : '/html/' + xpath
-      let cXpath = elementToxPath(this.element)
-      cXpath = cXpath.startsWith('//*') ? cXpath : '/html/' + cXpath
+      const xpath = elementToXPath(element)
+      const cXpath = elementToXPath(this.element)
       const data = {
         target,
         args,

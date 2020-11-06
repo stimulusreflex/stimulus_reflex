@@ -66,7 +66,7 @@ export const emitEvent = (event, detail) => {
 }
 
 // construct a valid xPath for an element in the DOM
-export const elementToxPath = element => {
+const computeXPath = element => {
   if (element.id !== '') return "//*[@id='" + element.id + "']"
   if (element === document.body) return 'body'
 
@@ -76,20 +76,22 @@ export const elementToxPath = element => {
   for (var i = 0; i < siblings.length; i++) {
     const sibling = siblings[i]
     if (sibling === element) {
-      return (
-        elementToxPath(element.parentNode) +
-        '/' +
-        element.tagName.toLowerCase() +
-        '[' +
-        (ix + 1) +
-        ']'
-      )
+      const computedPath = elementToxPath(element.parentNode)
+      const tagName = element.tagName.toLowerCase()
+      const ixInc = ix + 1
+      return `${computedPath}/${tagName}[${ixInc}]`
     }
 
     if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
       ix++
     }
   }
+}
+
+// if element has an id, pass directly; otherwise, prepend /html/
+export const elementToXPath = element => {
+  const xpath = computeXPath(element)
+  return xpath.startsWith('//*') ? xpath : '/html/' + xpath
 }
 
 export const xPathToElement = xpath => {
