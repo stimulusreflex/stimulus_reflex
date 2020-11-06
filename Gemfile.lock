@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.4.0.pre1)
+    stimulus_reflex (3.4.0.pre2)
       nokogiri
       rack
       rails (>= 5.2)
@@ -143,7 +143,7 @@ GEM
       rubocop-ast (>= 0.6.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (1.1.0)
+    rubocop-ast (1.1.1)
       parser (>= 2.7.1.5)
     rubocop-performance (1.8.1)
       rubocop (>= 0.87.0)
