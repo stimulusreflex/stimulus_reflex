@@ -60,6 +60,8 @@ class StimulusReflex::Reflex
     @params = params
     @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @id = id
+    
     self.params
   end
 
