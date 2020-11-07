@@ -12,6 +12,8 @@ export const uuidv4 = () => {
 }
 
 export const serializeForm = (form, options = {}) => {
+  if (!form) return ''
+
   const w = options.w || window
   const { element } = options
 

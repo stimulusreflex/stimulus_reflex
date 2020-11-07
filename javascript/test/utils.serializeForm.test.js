@@ -4,6 +4,14 @@ import { serializeForm } from '../utils'
 
 describe('formSerialize', () => {
   context('basic', () => {
+    it('should output an empty string if no form is present', () => {
+      const dom = new JSDOM('<div></div>')
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = ''
+      assert.deepStrictEqual(actual, expected)
+    })
+
     it('should serialize empty form', () => {
       const dom = new JSDOM('<form></form>')
       const form = dom.window.document.querySelector('form')
