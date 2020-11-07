@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 - simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
 - pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
 
@@ -79,10 +80,6 @@
 ## [v3.3.0.pre6](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre6) (2020-09-20)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre5...v3.3.0.pre6)
-
-**Implemented enhancements:**
-
-- Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -206,6 +203,7 @@
 **Implemented enhancements:**
 
 - Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
+- Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 - Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 - Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
 
@@ -296,6 +294,7 @@
 - Map hashes in incoming arguments using with\_indifferent\_access [\#203](https://github.com/hopsoft/stimulus_reflex/pull/203) ([jaredcwhite](https://github.com/jaredcwhite))
 - Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/hopsoft/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
 - Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
+- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 
 **Fixed bugs:**
 
@@ -353,7 +352,6 @@
 - Stimulate without a reflex target [\#179](https://github.com/hopsoft/stimulus_reflex/issues/179)
 - Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
 - Replace camelize with homegrown version [\#184](https://github.com/hopsoft/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
-- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
