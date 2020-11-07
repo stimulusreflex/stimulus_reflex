@@ -20,7 +20,7 @@ module StimulusReflex
     end
 
     def print
-			return if debugging? || log.empty?
+      return if debugging? || log.empty?
 
       Kernel.print("#{self.class} logging #{colorized_log_message}")
     end
@@ -31,7 +31,7 @@ module StimulusReflex
       StimulusReflex.config.debug
     end
 
-		def colorized_log_message
+    def colorized_log_message
       log.map { |element| colorize(element) }.push("\e[0m").join
     end
 
@@ -39,9 +39,9 @@ module StimulusReflex
       return element unless COLORS.key?(element)
 
       "\e[#{COLORS[element]}m"
-		end
+    end
 
-		def log
+    def log
       @log ||= StimulusReflex.config.logging.map { |element| element.is_a?(Symbol) ? send(element) : element }
     end
 
@@ -65,7 +65,7 @@ module StimulusReflex
       reflex.selectors.last
     end
 
-		def connection_id(identifier = reflex.connection&.connection_identifier)
+    def connection_id(identifier = reflex.connection&.connection_identifier)
       return "-" if identifier.empty?
 
       identifier

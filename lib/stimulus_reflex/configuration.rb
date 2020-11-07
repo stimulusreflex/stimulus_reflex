@@ -18,9 +18,9 @@ module StimulusReflex
 
     def initialize
       @exit_on_failed_sanity_checks = true
-			@parent_channel = "ApplicationCable::Channel"
-			@debug = false
-			@logging = []
-		end
+      @parent_channel = "ApplicationCable::Channel"
+      @debug = false
+      @logging = []
+    end
   end
 end
