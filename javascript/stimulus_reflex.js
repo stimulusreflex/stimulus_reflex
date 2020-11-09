@@ -13,7 +13,7 @@ import {
   extractElementDataset,
   findElement
 } from './attributes'
-import { extractReflexName, elementToxPath, xPathToElement } from './utils'
+import { extractReflexName, elementToXPath, xPathToElement } from './utils'
 
 // A lambda that does nothing. Very zen; we are made of stars
 const NOOP = () => {}
