@@ -78,7 +78,7 @@ const computeXPath = element => {
   for (var i = 0; i < siblings.length; i++) {
     const sibling = siblings[i]
     if (sibling === element) {
-      const computedPath = elementToxPath(element.parentNode)
+      const computedPath = elementToXPath(element.parentNode)
       const tagName = element.tagName.toLowerCase()
       const ixInc = ix + 1
       return `${computedPath}/${tagName}[${ixInc}]`
