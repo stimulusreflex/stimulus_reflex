@@ -2,10 +2,26 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre1...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...HEAD)
 
 **Merged pull requests:**
 
+- Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
+- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
+- simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
+- pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
+
+## [v3.4.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre2) (2020-11-06)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre1...v3.4.0.pre2)
+
+**Closed issues:**
+
+- Regression in version 3.4.0-pre1: Cannot find module `cable\_ready` [\#350](https://github.com/hopsoft/stimulus_reflex/issues/350)
+
+**Merged pull requests:**
+
+- move `cable\_ready` to development dependencies [\#351](https://github.com/hopsoft/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
 - Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
@@ -346,7 +362,7 @@
 
 **Fixed bugs:**
 
--  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([darkrubyist](https://github.com/darkrubyist))
+-  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([dark88888](https://github.com/dark88888))
 
 **Closed issues:**
 
