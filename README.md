@@ -54,7 +54,7 @@ And, it's fast.
 
 It works seamlessly with the Rails tooling you already know and love.
 
-- Server-rendered HTML, delivered in miliseconds over the wire via Websockets
+- Server-rendered HTML, delivered in milliseconds over the wire via Websockets
 - ERB templates and partials, with first-class [ViewComponent](https://github.com/github/view_component) support
 - [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) and [ActiveJob](https://guides.rubyonrails.org/active_job_basics.html)
 - [StimulusJS](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
