@@ -483,7 +483,7 @@ Now, you can refactor your view template like this:
 We've got your back.
 {% endhint %}
 
-Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asyncronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
+Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asynchronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
 
 {% tabs %}
 {% tab title="example\_reflex.rb" %}
