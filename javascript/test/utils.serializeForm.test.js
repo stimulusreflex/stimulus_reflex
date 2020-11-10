@@ -517,10 +517,14 @@ describe('formSerialize', () => {
 
     it('should not serialize input even if the input element triggered the action', () => {
       const dom = new JSDOM(
-        '<form>' + '<input type="checkbox" name="public" value="1" />' + '</form>'
+        '<form>' +
+          '<input type="checkbox" name="public" value="1" />' +
+          '</form>'
       )
       const form = dom.window.document.querySelector('form')
-      const element = dom.window.document.querySelector('input[type="checkbox"]')
+      const element = dom.window.document.querySelector(
+        'input[type="checkbox"]'
+      )
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = ''
       assert.equal(actual, expected)
@@ -541,9 +545,7 @@ describe('formSerialize', () => {
 
     it('should not serialize if element is no input', () => {
       const dom = new JSDOM(
-        '<form>' +
-          '<div name="foo" value="bar">bar</div>' +
-          '</form>'
+        '<form>' + '<div name="foo" value="bar">bar</div>' + '</form>'
       )
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('div')
