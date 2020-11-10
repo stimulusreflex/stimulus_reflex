@@ -9,7 +9,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize empty form', () => {
@@ -17,7 +17,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize basic form with single input', () => {
@@ -27,7 +27,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize inputs with no values', () => {
@@ -35,7 +35,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo='
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text input with spaces in name', () => {
@@ -45,7 +45,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'name 1=StimulusReflex'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize from with multiple inputs', () => {
@@ -59,7 +59,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar 1&foo.bar=bar 2&baz.foo=bar 3'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text input and textarea', () => {
@@ -73,7 +73,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'name=StimulusReflex&description=An exciting new way to build modern, reactive, real-time apps with Ruby on Rails.'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should ignore disabled inputs', () => {
@@ -86,7 +86,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar 1'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -102,7 +102,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=on&baz=on'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize checkbox array', () => {
@@ -116,7 +116,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo[]=bar&foo[]=baz'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize checkbox array with one input', () => {
@@ -128,7 +128,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo[]=bar'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -143,7 +143,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize radio button', () => {
@@ -156,7 +156,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar1'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize radio button with empty input', () => {
@@ -169,7 +169,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo='
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize radio and checkbox with the same key', () => {
@@ -184,7 +184,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar1&foo=bar3'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -195,13 +195,16 @@ describe('formSerialize', () => {
           '<input type="submit" name="submit" value="submit"/>' +
           '<input type="reset" name="reset" value="reset"/>' +
           '<input type="button" name="button" value="button"/>' +
+          '<button type="submit name="submitButton" value="submit">Submit</button>' +
+          '<button type="reset name="resetButton" value="reset">Reset</button>' +
+          '<button type="button name="buttonButton" value="button">Button</button>' +
           '</form>'
       )
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      const expected = 'submit=submit'
+      assert.equal(actual, expected)
     })
   })
 
@@ -216,7 +219,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'name[]=StimulusReflex&name[]=CableReady'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with nested brackets notation', () => {
@@ -233,7 +236,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'account[name]=Foo Dude&account[email]=foobar@example.org&account[address][city]=Qux&account[address][state]=CA&account[address][empty]='
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with brackets notation and nested numbered index', () => {
@@ -247,7 +250,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'person[address][23][city]=Paris&person[address][45][city]=London'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with brackets notation and nested non-numbered index', () => {
@@ -261,7 +264,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'person[address][23_id][city]=Paris&person[address][45_id][city]=London'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with non-indexed bracket notation', () => {
@@ -276,7 +279,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'people[][name]=fred&people[][name]=bob&people[][name]=bubba'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with non-indexed nested bracket notation', () => {
@@ -289,7 +292,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'user[tags][]=cow&user[tags][]=milk'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize text inputs with indexed bracket notation', () => {
@@ -309,7 +312,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'people[2][name]=bubba&people[2][age]=15&people[0][name]=fred&people[0][age]=12&people[1][name]=bob&people[1][age]=14&people[][name]=frank&people[3][age]=2'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -326,7 +329,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=baz'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize select with empty option', () => {
@@ -342,7 +345,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo='
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -360,7 +363,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=bar&foo=cat'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize select multiple with empty option', () => {
@@ -377,7 +380,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo=&foo=bar'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize select multiple with bracket notation', () => {
@@ -393,7 +396,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo[]=bar&foo[]=qux'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize select multiple with bracket notation and empty option', () => {
@@ -412,7 +415,7 @@ describe('formSerialize', () => {
       const actual = serializeForm(form, { w: dom.window })
       const expected =
         'foo[bar]=Default value&foo[bar]=&foo[bar]=baz&foo[bar]=norf'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should serialize select multiple with nested bracket notation', () => {
@@ -428,7 +431,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected = 'foo[bar]=baz&foo[bar]=norf'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 
@@ -443,10 +446,10 @@ describe('formSerialize', () => {
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = 'commit=Create Post'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
-    it('should serialize inputs and button which triggered the action', () => {
+    it('should serialize inputs and input button which triggered the action', () => {
       const dom = new JSDOM(
         '<form>' +
           '<input type="text" name="title" value="Post"/>' +
@@ -457,7 +460,48 @@ describe('formSerialize', () => {
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = 'title=Post&commit=Create Post'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
+    })
+
+    it('should also serialize submit button if other element triggered action', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="text" name="name" value="Hello World"/>' +
+          '<input type="submit" name="commit" value="Create Post"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const element = dom.window.document.querySelector('input[type="text"]')
+      const actual = serializeForm(form, { w: dom.window, element })
+      const expected = 'name=Hello World&commit=Create Post'
+      assert.equal(actual, expected)
+    })
+
+    it('should serialize first submit button if no submit button triggered the action', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="submit" name="commit" value="One"/>' +
+          '<input type="submit" name="commit" value="Two"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'commit=One'
+      assert.equal(actual, expected)
+    })
+
+    it('should serialize submit button which triggered the action even if there is more than one submit button', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="submit" name="commit" value="One"/>' +
+          '<input type="submit" name="commit" value="Two"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const element = dom.window.document.querySelector('input[value="Two"]')
+      const actual = serializeForm(form, { w: dom.window, element })
+      const expected = 'commit=Two'
+      assert.equal(actual, expected)
     })
 
     it('should serialize empty button if button triggered action', () => {
@@ -468,7 +512,18 @@ describe('formSerialize', () => {
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = 'commit='
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
+    })
+
+    it('should not serialize input even if the input element triggered the action', () => {
+      const dom = new JSDOM(
+        '<form>' + '<input type="checkbox" name="public" value="1" />' + '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const element = dom.window.document.querySelector('input[type="checkbox"]')
+      const actual = serializeForm(form, { w: dom.window, element })
+      const expected = ''
+      assert.equal(actual, expected)
     })
 
     it('should not serialize if input has no name', () => {
@@ -481,21 +536,20 @@ describe('formSerialize', () => {
       const element = dom.window.document.querySelector('input')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should not serialize if element is no input', () => {
       const dom = new JSDOM(
         '<form>' +
-          '<input type="submit" name="commit" value="Create Post"/>' +
-          '<div class="foo">bar</div>' +
+          '<div name="foo" value="bar">bar</div>' +
           '</form>'
       )
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('div')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = ''
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
 
     it('should not serialize input twice if input also triggered the action', () => {
@@ -508,7 +562,7 @@ describe('formSerialize', () => {
       const element = dom.window.document.querySelector('input')
       const actual = serializeForm(form, { w: dom.window, element })
       const expected = 'commit=Create Post'
-      assert.deepStrictEqual(actual, expected)
+      assert.equal(actual, expected)
     })
   })
 })
