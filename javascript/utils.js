@@ -76,9 +76,9 @@ export const emitEvent = (event, detail) => {
 }
 
 // construct a valid xPath for an element in the DOM
-const computeXPath = element => {
+export const elementToXPath = element => {
   if (element.id !== '') return "//*[@id='" + element.id + "']"
-  if (element === document.body) return 'body'
+  if (element === document.body) return '/html/body'
 
   let ix = 0
   const siblings = element.parentNode.childNodes
@@ -96,12 +96,6 @@ const computeXPath = element => {
       ix++
     }
   }
-}
-
-// if element has an id, pass directly; otherwise, prepend /html/
-export const elementToXPath = element => {
-  const xpath = computeXPath(element)
-  return xpath.startsWith('//*') ? xpath : '/html/' + xpath
 }
 
 export const xPathToElement = xpath => {
