@@ -19,9 +19,17 @@ export const serializeForm = (form, options = {}) => {
 
   const formData = new w.FormData(form)
   const data = Array.from(formData, e => e.join('='))
+  const submitButton = form.querySelector('input[type=submit]')
 
-  if (element && element.name) {
+  if (
+    element &&
+    element.name &&
+    element.nodeName == 'INPUT' &&
+    element.type == 'submit'
+  ) {
     data.push(`${element.name}=${element.value}`)
+  } else if (submitButton && submitButton.name) {
+    data.push(`${submitButton.name}=${submitButton.value}`)
   }
 
   return Array.from(new Set(data)).join('&')
