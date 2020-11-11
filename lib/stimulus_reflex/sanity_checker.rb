@@ -4,6 +4,8 @@ class StimulusReflex::SanityChecker
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
   def self.check!
+    return if StimulusReflex.config.on_failed_sanity_checks == :ignore
+
     instance = new
     instance.check_caching_enabled
     instance.check_javascript_package_version
@@ -83,7 +85,7 @@ class StimulusReflex::SanityChecker
   def warn_and_exit(text)
     puts "WARNING:"
     puts text
-    exit_with_info if StimulusReflex.config.exit_on_failed_sanity_checks
+    exit_with_info if StimulusReflex.config.on_failed_sanity_checks == :exit
   end
 
   def exit_with_info
@@ -91,7 +93,7 @@ class StimulusReflex::SanityChecker
     puts <<~INFO
       If you know what you are doing and you want to start the application anyway,
       you can add the following directive to an initializer:
-            StimulusReflex.config.exit_on_failed_sanity_checks = false
+            StimulusReflex.config.on_failed_sanity_checks = :warn
     INFO
     exit
   end
