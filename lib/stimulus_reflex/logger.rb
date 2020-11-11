@@ -68,8 +68,8 @@ module StimulusReflex
       reflex.broadcaster.operations[@current_operation - 1][1]
     end
 
-    def total_operations
-      reflex.broadcaster.operations.size
+    def operation_counter
+      current_operation.to_s + "/" + reflex.broadcaster.operations.size.to_s
     end
 
     def connection_id_full
