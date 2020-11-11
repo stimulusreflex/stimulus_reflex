@@ -81,7 +81,7 @@ class StimulusReflex::SanityChecker
   def package_json_path
     Rails.root.join("node_modules", "stimulus_reflex", "package.json")
   end
-  
+
   def initializer_path
     @_initializer_path ||= Rails.root.join("config", "initializers", "stimulus_reflex.rb")
   end
@@ -94,7 +94,7 @@ class StimulusReflex::SanityChecker
 
   def exit_with_info
     puts
-    
+
     # bundle exec rails generate stimulus_reflex:config
     if File.exist?(initializer_path)
       puts <<~INFO
