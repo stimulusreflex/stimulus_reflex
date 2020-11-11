@@ -12,7 +12,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   def subscribed
     super
     fix_environment!
-    disable_full_debug
     stream_from stream_name
   end
 
@@ -115,12 +114,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   def fix_environment!
     ([ApplicationController] + ApplicationController.descendants).each do |controller|
       controller.renderer.instance_variable_set(:@env, connection.env.merge(controller.renderer.instance_variable_get(:@env)))
-    end
-  end
-
-  def disable_full_debug
-    if StimulusReflex.config.debug == false && StimulusReflex.config.parent_channel == "ApplicationCable::Channel"
-      ActionCable.server.config.logger = Logger.new(nil)
     end
   end
 end
