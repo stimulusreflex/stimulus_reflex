@@ -2,7 +2,7 @@
 
 module StimulusReflex
   class Logger
-    attr_accessor :reflex
+    attr_accessor :reflex, :current_operation
 
     COLORS = {
       red: "31",
@@ -68,10 +68,6 @@ module StimulusReflex
       reflex.broadcaster.operations[@current_operation - 1][1]
     end
 
-    def current_operation
-      @current_operation
-    end
-
     def total_operations
       reflex.broadcaster.operations.size
     end
@@ -93,11 +89,18 @@ module StimulusReflex
       return "\e[#{COLORS[method]}m" if COLORS.key?(method)
       reflex.connection.identifiers.each do |identifier|
         ident = reflex.connection.send(identifier)
-        if ident.respond_to?(:attributes) && ident.attributes.keys.include?(method.to_s)
-          return ident.send method
-        end
+        return ident.send(method) if ident.respond_to?(:attributes) && ident.attributes.key?(method.to_s)
       end
       "-"
+    end
+
+    def respond_to_missing? method
+      return true if COLORS.key?(method)
+      reflex.connection.identifiers.each do |identifier|
+        ident = reflex.connection.send(identifier)
+        return true if ident.respond_to?(:attributes) && ident.attributes.key?(method.to_s)
+      end
+      false
     end
   end
 end

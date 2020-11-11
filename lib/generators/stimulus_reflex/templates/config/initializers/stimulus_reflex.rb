@@ -14,5 +14,4 @@ StimulusReflex.configure do |config|
   # eg. if your connection is `identified_by :current_user` and your User model has an :email attribute, you can pass :email ... it will display `-` if the user isn't logged in
 
   config.logging = [:timestamp, :red, " [", :session_id, "] ", :magenta, :current_operation, "/", :total_operations, " ", :green, :reflex_info, " -> ", :white, :selector, " ", :yellow, :operation, :white, " via ", :blue, :mode, " Morph", :cyan, " to ", :connection_id]
-
 end
