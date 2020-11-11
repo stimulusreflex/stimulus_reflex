@@ -81,6 +81,10 @@ class StimulusReflex::SanityChecker
   def package_json_path
     Rails.root.join("node_modules", "stimulus_reflex", "package.json")
   end
+  
+  def initializer_path
+    @_initializer_path ||= Rails.root.join("config", "initializers", "stimulus_reflex.rb")
+  end
 
   def warn_and_exit(text)
     puts "WARNING:"
@@ -90,11 +94,38 @@ class StimulusReflex::SanityChecker
 
   def exit_with_info
     puts
-    puts <<~INFO
-      If you know what you are doing and you want to start the application anyway,
-      you can add the following directive to an initializer:
-            StimulusReflex.config.on_failed_sanity_checks = :warn
-    INFO
+    
+    # bundle exec rails generate stimulus_reflex:config
+    if File.exist?(initializer_path)
+      puts <<~INFO
+        If you know what you are doing and you want to start the application anyway,
+        you can add the following directive to the StimulusReflex initializer,
+        which is located at #{initializer_path}
+
+          StimulusReflex.configure do |config|
+            config.on_failed_sanity_checks = :warn
+          end
+
+      INFO
+    else
+      puts <<~INFO
+        If you know what you are doing and you want to start the application anyway,
+        you can create a StimulusReflex initializer with the command:
+      
+        bundle exec rails generate stimulus_reflex:config
+      
+        Then open your initializer at
+      
+        <RAILS_ROOT>/config/initializers/stimulus_reflex.rb
+      
+        and then add the following directive:
+
+          StimulusReflex.configure do |config|
+            config.on_failed_sanity_checks = :warn
+          end
+
+      INFO
+    end
     exit
   end
 end
