@@ -2,10 +2,20 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...HEAD)
 
 **Merged pull requests:**
 
+- xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
+
+## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...v3.4.0.pre3)
+
+**Merged pull requests:**
+
+- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
+- serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
 - Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
