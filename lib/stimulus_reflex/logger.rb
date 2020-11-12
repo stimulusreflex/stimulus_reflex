@@ -20,10 +20,11 @@ module StimulusReflex
     end
 
     def print
-      return if log.empty?
+      return unless config_logging.lambda?
+
       puts
       reflex.broadcaster.operations.each do
-        puts log.push("\e[0m").join
+        puts log + "\e[0m"
         @current_operation += 1
       end
       puts
@@ -31,8 +32,12 @@ module StimulusReflex
 
     private
 
+    def config_logging
+      StimulusReflex.config.logging
+    end
+
     def log
-      StimulusReflex.config.logging.map { |element| element.is_a?(Symbol) ? send(element) : element }
+      config_logging.call(self)
     end
 
     def session_id_full
@@ -61,11 +66,11 @@ module StimulusReflex
     end
 
     def selector
-      reflex.broadcaster.operations[@current_operation - 1][0]
+      reflex.broadcaster.operations[current_operation - 1][0]
     end
 
     def operation
-      reflex.broadcaster.operations[@current_operation - 1][1]
+      reflex.broadcaster.operations[current_operation - 1][1]
     end
 
     def operation_counter
@@ -87,6 +92,8 @@ module StimulusReflex
 
     def method_missing method
       return "\e[#{COLORS[method]}m" if COLORS.key?(method)
+      return send(method.to_sym) if private_instance_methods.include?(method.to_sym)
+
       reflex.connection.identifiers.each do |identifier|
         ident = reflex.connection.send(identifier)
         return ident.send(method) if ident.respond_to?(:attributes) && ident.attributes.key?(method.to_s)
@@ -96,11 +103,17 @@ module StimulusReflex
 
     def respond_to_missing? method
       return true if COLORS.key?(method)
+      return true if private_instance_methods.include?(method.to_sym)
+
       reflex.connection.identifiers.each do |identifier|
         ident = reflex.connection.send(identifier)
         return true if ident.respond_to?(:attributes) && ident.attributes.key?(method.to_s)
       end
       false
+    end
+
+    def private_instance_methods
+      StimulusReflex::Logger.private_instance_methods(false)
     end
   end
 end
