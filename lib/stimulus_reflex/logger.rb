@@ -20,6 +20,7 @@ module StimulusReflex
     end
 
     def print
+      return unless StimulusReflex.config.logging.lambda?
       puts
       reflex.broadcaster.operations.each do
         puts StimulusReflex.config.logging.call(self) + "\e[0m"
