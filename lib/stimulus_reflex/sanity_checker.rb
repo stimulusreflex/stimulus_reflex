@@ -3,12 +3,21 @@
 class StimulusReflex::SanityChecker
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
-  def self.check!
-    return if StimulusReflex.config.on_failed_sanity_checks == :ignore
+  class << self
+    def check!
+      return if StimulusReflex.config.on_failed_sanity_checks == :ignore
+      return if called_by_generate_config?
 
-    instance = new
-    instance.check_caching_enabled
-    instance.check_javascript_package_version
+      instance = new
+      instance.check_caching_enabled
+      instance.check_javascript_package_version
+    end
+
+    private
+
+    def called_by_generate_config?
+      ARGV.include? "stimulus_reflex:config"
+    end
   end
 
   def check_caching_enabled
