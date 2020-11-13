@@ -20,25 +20,15 @@ module StimulusReflex
     end
 
     def print
-      return unless config_logging.lambda?
-
       puts
       reflex.broadcaster.operations.each do
-        puts log + "\e[0m"
+        puts StimulusReflex.config.logging.call(self) + "\e[0m"
         @current_operation += 1
       end
       puts
     end
 
     private
-
-    def config_logging
-      StimulusReflex.config.logging
-    end
-
-    def log
-      config_logging.call(self)
-    end
 
     def session_id_full
       session = reflex.request&.session
@@ -90,8 +80,11 @@ module StimulusReflex
       Time.now.strftime("%Y-%m-%d %H:%M:%S")
     end
 
+    COLORS.each do |name, code|
+      define_method(name) { "\e[#{code}m" }
+    end
+
     def method_missing method
-      return "\e[#{COLORS[method]}m" if COLORS.key?(method)
       return send(method.to_sym) if private_instance_methods.include?(method.to_sym)
 
       reflex.connection.identifiers.each do |identifier|
@@ -102,7 +95,6 @@ module StimulusReflex
     end
 
     def respond_to_missing? method
-      return true if COLORS.key?(method)
       return true if private_instance_methods.include?(method.to_sym)
 
       reflex.connection.identifiers.each do |identifier|

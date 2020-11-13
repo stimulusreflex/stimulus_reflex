@@ -19,7 +19,7 @@ module StimulusReflex
     def initialize
       @on_failed_sanity_checks = :exit
       @parent_channel = "ApplicationCable::Channel"
-      @logging = []
+      @logging = ->(r) { "#{r.timestamp} #{r.red} [#{r.session_id}] #{r.magenta} #{r.operation_counter} #{r.green} #{r.reflex_info} -> #{r.white} ##{r.selector} #{r.yellow} #{r.operation} #{r.white} via #{r.blue} #{r.mode} Morph #{r.cyan} to #{r.connection_id}" }
     end
   end
 end
