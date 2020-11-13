@@ -15,11 +15,12 @@ module StimulusReflex
 
   class Configuration
     attr_accessor :on_failed_sanity_checks, :parent_channel, :logging
+    DEFAULT_LOGGING = ->(r) { "[#{r.session_id}] #{r.operation_counter.magenta} #{r.reflex_info.green} -> #{r.selector.cyan} via #{r.mode} Morph (#{r.operation.yellow})" }
 
     def initialize
       @on_failed_sanity_checks = :exit
       @parent_channel = "ApplicationCable::Channel"
-      @logging = ->(r) { "#{r.timestamp} #{r.red} [#{r.session_id}] #{r.magenta} #{r.operation_counter} #{r.green} #{r.reflex_info} -> #{r.white} ##{r.selector} #{r.yellow} #{r.operation} #{r.white} via #{r.blue} #{r.mode} Morph #{r.cyan} to #{r.connection_id}" }
+      @logging = DEFAULT_LOGGING
     end
   end
 end
