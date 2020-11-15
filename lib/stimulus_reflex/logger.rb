@@ -10,11 +10,11 @@ module StimulusReflex
     end
 
     def print
-      return unless config_logging.lambda?
+      return unless config_logging.instance_of?(Proc)
 
       puts
       reflex.broadcaster.operations.each do
-        puts config_logging.call(self) + "\e[0m"
+        puts instance_eval(&config_logging) + "\e[0m"
         @current_operation += 1
       end
       puts
