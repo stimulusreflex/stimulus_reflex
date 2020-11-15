@@ -11,11 +11,12 @@ module StimulusReflex
 
     def print
       return unless config_logging.lambda?
+
       puts
       set_config_lambda_binding
       reflex.broadcaster.operations.each do
         puts config_logging.call(self) + "\e[0m"
-        @current_operation += 1
+        current_operation += 1
       end
       puts
     end
