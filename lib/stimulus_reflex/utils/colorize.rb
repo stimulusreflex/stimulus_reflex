@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StimulusReflex
   module Utils
     module Colorize
