@@ -13,10 +13,9 @@ module StimulusReflex
       return unless config_logging.lambda?
 
       puts
-      set_config_lambda_binding
       reflex.broadcaster.operations.each do
         puts config_logging.call(self) + "\e[0m"
-        current_operation += 1
+        @current_operation += 1
       end
       puts
     end
@@ -24,11 +23,10 @@ module StimulusReflex
     private
 
     def config_logging
-      @config_logging ||= StimulusReflex.config.logging
-    end
+      return @config_logging if @config_logging
 
-    def set_config_lambda_binding
-      config_logging.binding.eval("using StimulusReflex::Utils::Colorize")
+      StimulusReflex.config.logging.binding.eval("using StimulusReflex::Utils::Colorize")
+      @config_logging = StimulusReflex.config.logging
     end
 
     def session_id_full
