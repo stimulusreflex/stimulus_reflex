@@ -10,21 +10,7 @@ If you're just trying to bootstrap a proof-of-concept application on your local 
 
 ### Encrypted Session Cookies
 
-You can use your default Rails encrypted cookie-based sessions to isolate your users into their own sessions. This works great even if your application doesn't have a login system.
-
-{% code title="app/controllers/application\_controller.rb" %}
-```ruby
-class ApplicationController < ActionController::Base
-  before_action :set_action_cable_identifier
-
-  private
-
-  def set_action_cable_identifier
-    cookies.encrypted[:session_id] = session.id.to_s
-  end
-end
-```
-{% endcode %}
+You can use your Rails session to isolate your users so that they don't see each other's updates. This works great even if your application doesn't have a login system.
 
 {% code title="app/channels/application\_cable/connection.rb" %}
 ```ruby
@@ -33,7 +19,7 @@ module ApplicationCable
     identified_by :session_id
 
     def connect
-      self.session_id = cookies.encrypted[:session_id]
+      self.session_id = request.session.id
     end
   end
 end
@@ -329,7 +315,7 @@ module ApplicationCable
 
     def connect
       self.current_user = env["warden"].user
-      self.session_id = cookies.encrypted[:session_id]
+      self.session_id = request.session.id
       reject_unauthorized_connection unless self.current_user || self.session_id
     end
   end
@@ -337,9 +323,9 @@ end
 ```
 {% endcode %}
 
-This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to set the encrypted cookie value in your `application_controller.rb` and delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
+This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
 
-Note that this approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user content. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
+This approach could make some operations more complicated, because you cannot take for granted that a connection is attached to a valid user. Please ensure that you are double-checking that all destructive mutations are properly guarded based on whatever policies you have in place.
 
 ## Multi-Tenant Applications
 
@@ -375,7 +361,53 @@ The `before_reflex` callback is the best place to handle privilege checks, becau
 
 ### Pundit
 
-The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
+The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. Reflexes are similar enough to controllers that if you include the `Pundit` module, you can take advantage of the `authorize` method.
+
+Pundit expects you to have a `current_user` in scope and a policy matching the name of your Reflex action. In the following example we create a `sing?` policy for our `sing` Reflex action in `song_policy.rb`
+
+{% code title="app/policies/song\_policy.rb" %}
+```ruby
+class SongPolicy < ApplicationPolicy
+  def sing?
+    user.sings_in_key?
+  end
+end
+```
+{% endcode %}
+
+{% code title="app/reflexes/song\_reflex.rb" %}
+```ruby
+class SongReflex < ApplicationReflex
+  include Pundit
+  
+  def sing
+    @song = Song.find(params[:song_id])
+    authorize @song
+    # sing your heart out, baby!
+  end
+end
+```
+{% endcode %}
+
+Pundit will match your Reflex action to the right policy. If the `authorize` call fails, a `Pundit::NotAuthorizedError` will be raised, which you can handle in your Reflex action or leave unhandled so that it bubbles up and gets picked up by a 3rd-party error handling mechanism such as [Sentry](https://sentry.io) or [HoneyBadger](https://www.honeybadger.io/).
+
+{% code title="app/reflexes/application\_reflex.rb" %}
+```ruby
+class ApplicationReflex < StimulusReflex::Reflex
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    # handle authorization issue
+  end
+end
+```
+{% endcode %}
+
+If you're using Pundit to safeguard data from being accessed by bad actors and unauthorized parties - due to bugs in your code - that's probably the correct approach. _However..._ you might also want to explicitly validate policies so that you can react to them in your browser:
+
+#### Explitic policy validation
+
+You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](https://docs.stimulusreflex.com/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** lifecycle event.
+
+The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 
 {% code title="app/policies/example\_reflex\_policy.rb" %}
 ```ruby

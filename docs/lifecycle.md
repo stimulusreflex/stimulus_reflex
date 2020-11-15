@@ -190,7 +190,7 @@ Adapting the Generic example, we've refactored our controller to capture the `be
 {% hint style="warning" %}
 Adding a declarative Reflex such as `Foo#action` to your element does **not** automatically attach an instance of the _foo_ Stimulus controller to the element.
 
-This coupling would only add an unneccesary constraint, as you can call any Reflex from any Stimulus controller.
+This coupling would only add an unneccessary constraint, as you can call any Reflex from any Stimulus controller.
 
 If you want to run Reflex lifecycle callbacks on your element, you need to use `data-controller="foo"` to attach it.
 

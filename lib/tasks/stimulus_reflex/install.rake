@@ -6,18 +6,20 @@ require "stimulus_reflex/version"
 namespace :stimulus_reflex do
   desc "Install StimulusReflex in this application"
   task install: :environment do
+    system "bundle add cable_ready"
     system "bundle exec rails webpacker:install:stimulus"
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
-    system "yarn add stimulus_reflex@#{gem_version}"
+    system "yarn add cable_ready stimulus_reflex@#{gem_version}"
+    main_folder = defined?(Webpacker) ? Webpacker.config.source_path.to_s.gsub("#{Rails.root}/", "") : "app/javascript"
 
-    FileUtils.mkdir_p Rails.root.join("app/javascript/controllers"), verbose: true
+    FileUtils.mkdir_p Rails.root.join("#{main_folder}/controllers"), verbose: true
     FileUtils.mkdir_p Rails.root.join("app/reflexes"), verbose: true
 
-    filepath = %w[
-      app/javascript/controllers/index.js
-      app/javascript/controllers/index.ts
-      app/javascript/packs/application.js
-      app/javascript/packs/application.ts
+    filepath = [
+      "#{main_folder}/controllers/index.js",
+      "#{main_folder}/controllers/index.ts",
+      "#{main_folder}/packs/application.js",
+      "#{main_folder}/packs/application.ts"
     ]
       .select { |path| File.exist?(path) }
       .map { |path| Rails.root.join(path) }
@@ -42,8 +44,8 @@ namespace :stimulus_reflex do
     end
 
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    lines << "StimulusReflex.initialize(application, { consumer, controller })\n" unless initialize_line
-    lines << "if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true\n" unless initialize_line
+    lines << "StimulusReflex.initialize(application, { consumer, controller, isolate: true })\n" unless initialize_line
+    lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
     filepath = Rails.root.join("config/environments/development.rb")
@@ -64,6 +66,7 @@ namespace :stimulus_reflex do
     end
 
     system "bundle exec rails generate stimulus_reflex example"
+    system "bundle exec rails generate stimulus_reflex:config"
     system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
   end
 end

@@ -1,11 +1,10 @@
 import { Controller } from 'stimulus'
 import CableReady from 'cable_ready'
-import serializeForm from 'form-serialize'
 import { defaultSchema } from './schema'
 import { getConsumer } from './consumer'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
-import { uuidv4, debounce, emitEvent } from './utils'
+import { uuidv4, debounce, emitEvent, serializeForm } from './utils'
 import Log from './log'
 import {
   attributeValue,
@@ -14,7 +13,7 @@ import {
   extractElementDataset,
   findElement
 } from './attributes'
-import { extractReflexName } from './utils'
+import { extractReflexName, elementToXPath, xPathToElement } from './utils'
 
 // A lambda that does nothing. Very zen; we are made of stars
 const NOOP = () => {}
@@ -37,6 +36,9 @@ window.reflexes = {}
 // Indicates if we should log calls to stimulate, etc...
 let debugging
 
+// Should Reflex playback be restricted to the tab that called it?
+let isolationMode
+
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
 //
@@ -45,17 +47,18 @@ const createSubscription = controller => {
   const { channel } = controller.StimulusReflex
   const subscription = { channel, ...actionCableParams }
   const identifier = JSON.stringify(subscription)
-  let totalOperations
-  let reflexId
 
   controller.StimulusReflex.subscription =
     actionCableConsumer.subscriptions.findAll(identifier)[0] ||
     actionCableConsumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
+
         if (data.operations['dispatchEvent'])
           return CableReady.perform(data.operations)
-        totalOperations = 0
+
+        let totalOperations = 0
+        let reflexData
         ;['morph', 'innerHtml'].forEach(operation => {
           if (data.operations[operation] && data.operations[operation].length) {
             if (data.operations[operation][0].stimulusReflex) {
@@ -65,17 +68,35 @@ const createSubscription = controller => {
                 )
               )
               if (urls.length !== 1 || urls[0] !== location.href) return
-              totalOperations += data.operations[operation].length
-              reflexId = data.operations[operation][0].stimulusReflex.reflexId
+
+              totalOperations++
+
+              if (!reflexData)
+                reflexData = data.operations[operation][0].stimulusReflex
             }
           }
         })
+
+        const { reflexId } = reflexData
+
+        if (!reflexes[reflexId] && !isolationMode) {
+          const element = xPathToElement(reflexData.xpath)
+          const controllerElement = xPathToElement(reflexData.cXpath)
+          element.reflexController = stimulusApplication.getControllerForElementAndIdentifier(
+            controllerElement,
+            reflexData.reflexController
+          )
+          element.reflexData = reflexData
+          dispatchLifecycleEvent('before', element, reflexId)
+          registerReflex(reflexData)
+        }
+
         if (reflexes[reflexId]) {
           reflexes[reflexId].totalOperations = totalOperations
           reflexes[reflexId].pendingOperations = 0
           reflexes[reflexId].completedOperations = 0
+          CableReady.perform(data.operations)
         }
-        if (reflexes[reflexId]) CableReady.perform(data.operations)
       },
       connected: () => {
         actionCableSubscriptionActive = true
@@ -112,7 +133,7 @@ const extendStimulusController = controller => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - element - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors
+    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, serializeForm
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -128,6 +149,7 @@ const extendStimulusController = controller => {
         element.validity &&
         element.validity.badInput
       ) {
+        if (debugging) console.warn('Reflex aborted: invalid numeric input')
         return
       }
       const options = {}
@@ -135,7 +157,13 @@ const extendStimulusController = controller => {
         args[0] &&
         typeof args[0] == 'object' &&
         Object.keys(args[0]).filter(key =>
-          ['attrs', 'selectors', 'reflexId', 'resolveLate'].includes(key)
+          [
+            'attrs',
+            'selectors',
+            'reflexId',
+            'resolveLate',
+            'serializeForm'
+          ].includes(key)
         ).length
       ) {
         const opts = args.shift()
@@ -148,6 +176,8 @@ const extendStimulusController = controller => {
       const resolveLate = options['resolveLate'] || false
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(element, datasetAttribute)
+      const xpath = elementToXPath(element)
+      const cXpath = elementToXPath(this.element)
       const data = {
         target,
         args,
@@ -157,7 +187,10 @@ const extendStimulusController = controller => {
         selectors,
         reflexId,
         resolveLate,
-        permanent_attribute_name:
+        xpath,
+        cXpath,
+        reflexController: this.identifier,
+        permanentAttributeName:
           stimulusApplication.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
@@ -176,21 +209,21 @@ const extendStimulusController = controller => {
 
       setTimeout(() => {
         const { params } = element.reflexData || {}
+        const formData =
+          options['serializeForm'] == false
+            ? ''
+            : serializeForm(element.closest('form'), { element })
+
         element.reflexData = {
           ...data,
-          params: {
-            ...params,
-            ...serializeForm(element.closest('form'), {
-              hash: true,
-              empty: true
-            })
-          }
+          params,
+          formData
         }
 
         subscription.send(element.reflexData)
       })
 
-      reflexes[reflexId] = { finalStage: 'finalize' }
+      const promise = registerReflex(data)
 
       if (debugging) {
         Log.request(
@@ -202,17 +235,6 @@ const extendStimulusController = controller => {
         )
       }
 
-      const promise = new Promise((resolve, reject) => {
-        reflexes[reflexId].promise = {
-          resolve,
-          reject,
-          data
-        }
-      })
-
-      promise.reflexId = reflexId
-
-      if (debugging) promise.catch(NOOP)
       return promise
     },
 
@@ -240,6 +262,25 @@ const extendStimulusController = controller => {
       }
     }
   })
+}
+
+const registerReflex = data => {
+  const { reflexId } = data
+  reflexes[reflexId] = { finalStage: 'finalize' }
+
+  const promise = new Promise((resolve, reject) => {
+    reflexes[reflexId].promise = {
+      resolve,
+      reject,
+      data
+    }
+  })
+
+  promise.reflexId = reflexId
+
+  if (debugging) promise.catch(NOOP)
+
+  return promise
 }
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
@@ -383,9 +424,10 @@ const getReflexRoots = element => {
 //   * isolate - [false] restrict Reflex playback to the tab which initiated it
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug, params } = initializeOptions
+  const { controller, consumer, debug, params, isolate } = initializeOptions
   actionCableConsumer = consumer
   actionCableParams = params
+  isolationMode = !!isolate
   stimulusApplication = application
   stimulusApplication.schema = { ...defaultSchema, ...application.schema }
   stimulusApplication.register(

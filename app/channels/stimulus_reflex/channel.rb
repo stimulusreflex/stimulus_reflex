@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-module ApplicationCable
-  class Channel < ActionCable::Channel::Base
-    def initialize(connection, identifier, params = {})
-      super
-      application_channel = Rails.root.join("app", "channels", "application_cable", "channel.rb")
-      require application_channel if File.exist?(application_channel)
-    end
-  end
-end
-
-class StimulusReflex::Channel < ApplicationCable::Channel
+class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
@@ -35,13 +25,21 @@ class StimulusReflex::Channel < ApplicationCable::Channel
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
-    permanent_attribute_name = data["permanent_attribute_name"]
-    params = data["params"] || {}
+    permanent_attribute_name = data["permanentAttributeName"]
+    form_data = Rack::Utils.parse_nested_query(data["formData"])
+    params = form_data.deep_merge(data["params"] || {})
 
     begin
       begin
         reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-        reflex = reflex_class.new(self, url: url, element: element, selectors: selectors, method_name: method_name, permanent_attribute_name: permanent_attribute_name, params: params)
+        reflex = reflex_class.new(self,
+          url: url,
+          element: element,
+          selectors: selectors,
+          method_name: method_name,
+          permanent_attribute_name: permanent_attribute_name,
+          params: params,
+          reflex_id: data["reflexId"])
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)

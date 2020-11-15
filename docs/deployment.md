@@ -135,7 +135,9 @@ Yes.
 
 We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
 
-We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. Of course, the message delivery speed will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
+We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. We've even [seen reports](https://nebulab.it/blog/actioncable-vs-anycable-fight/) that ActionCable can benchmark at 20,000 connections, while AnyCable maxes out around 60,000 because it runs out of TCP ports to allocate.
+
+Of course, the message delivery speed - and even delivery _success_ rate - will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
 
 Getting to this point required significant effort and cooperation between members of both projects. You can try out the AnyCable v1.0 release today.
 

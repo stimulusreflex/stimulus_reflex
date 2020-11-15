@@ -43,13 +43,15 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :reflex_id
+
+  alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
-  delegate :session, to: :request
+  delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, reflex_id: nil)
     @channel = channel
     @url = url
     @element = element
@@ -58,6 +60,7 @@ class StimulusReflex::Reflex
     @params = params
     @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @reflex_id = reflex_id
     self.params
   end
 
@@ -66,21 +69,26 @@ class StimulusReflex::Reflex
       uri = URI.parse(url)
       path = ActionDispatch::Journey::Router::Utils.normalize_path(uri.path)
       query_hash = Rack::Utils.parse_nested_query(uri.query)
-      req = ActionDispatch::Request.new(
-        connection.env.merge(
-          Rack::MockRequest.env_for(uri.to_s).merge(
-            "rack.request.query_hash" => query_hash,
-            "rack.request.query_string" => uri.query,
-            "ORIGINAL_SCRIPT_NAME" => "",
-            "ORIGINAL_FULLPATH" => path,
-            Rack::SCRIPT_NAME => "",
-            Rack::PATH_INFO => path,
-            Rack::REQUEST_PATH => path,
-            Rack::QUERY_STRING => uri.query
-          )
-        )
+      mock_env = Rack::MockRequest.env_for(uri.to_s)
+
+      mock_env.merge!(
+        "rack.request.query_hash" => query_hash,
+        "rack.request.query_string" => uri.query,
+        "ORIGINAL_SCRIPT_NAME" => "",
+        "ORIGINAL_FULLPATH" => path,
+        Rack::SCRIPT_NAME => "",
+        Rack::PATH_INFO => path,
+        Rack::REQUEST_PATH => path,
+        Rack::QUERY_STRING => uri.query
       )
+
+      env = connection.env.merge(mock_env)
+      req = ActionDispatch::Request.new(env)
+
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
+      path_params[:controller] = path_params[:controller].force_encoding("UTF-8")
+      path_params[:action] = path_params[:action].force_encoding("UTF-8")
+
       req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
       req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
       req.tap { |r| r.session.send :load! }
@@ -110,10 +118,6 @@ class StimulusReflex::Reflex
         c.response = ActionDispatch::Response.new
       end
     end
-  end
-
-  def url_params
-    @url_params ||= Rails.application.routes.recognize_path_with_request(request, request.path, request.env[:extras] || {})
   end
 
   def process(name, *args)
