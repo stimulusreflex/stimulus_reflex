@@ -265,6 +265,16 @@ end
 ```
 {% endcode %}
 
+If you're working on translations and would like to have your `.yml` files automatically reload when the browser refreshes, we've got you covered:
+
+{% code title="app/controllers/application\_controller.rb" %}
+```ruby
+class ApplicationController < ActionController::Base
+  before_action -> { I18n.backend.reload! } if Rails.env.development?
+end
+```
+{% endcode %}
+
 ### The Current pattern
 
 Several years ago, DHH [introduced](https://www.youtube.com/watch?v=D7zUOtlpUPw) the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) pattern to Rails 5.1. It's easy to work with Current objects inside of your Reflex classes using a `before_reflex` callback in your `ApplicationReflex`.
@@ -370,6 +380,27 @@ You'll want to experiment with other, more contemporary feedback mechanisms to p
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
 
+### Use `webpack-dev-server` to reload after Reflex changes
+
+It can be a pain to remember to reload your page after you make changes to a Reflex. Luckily, if you're already running `bin/webpack-dev-server` while you are building your application, you can add folders in your app to the list of places that are being monitored.
+
+{% code title="config/webpack/development.js" %}
+```javascript
+var path = require('path')
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
+const environment = require('./environment')
+environment.config.devServer.watchContentBase = true
+environment.config.devServer.contentBase = [
+  path.join(__dirname, '../../app/views'),
+  path.join(__dirname, '../../app/helpers'),
+  path.join(__dirname, '../../app/reflexes')
+]
+
+module.exports = environment.toWebpackConfig()
+```
+{% endcode %}
+
 ### Chained Reflexes for long-running actions
 
 {% hint style="danger" %}
@@ -452,7 +483,7 @@ Now, you can refactor your view template like this:
 We've got your back.
 {% endhint %}
 
-Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asyncronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
+Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asynchronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
 
 {% tabs %}
 {% tab title="example\_reflex.rb" %}

@@ -72,6 +72,35 @@ config.session_store :redis_session_store, {
 
 Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
 
+## Cloudflare DNS
+
+Cloudflare's infrastructure is nothing short of impressive, and they are a great choice for free DNS hosting. However, the default behaviour of their DNS product is to proxy all traffic to your domain. **This includes websocket traffic.**
+
+Your mileage may vary \(literally, depending on how far you are from a Cloudflare edge node!\) but changing your DNS records from "Proxying" to "DNS Only", you could shave 60-90ms off the real-world execution time of your Reflex actions.
+
+In a more sophisticated setup, you could experiment with hosting your websockets endpoint on a different domain, allowing you to experience the best of both worlds. In fact, this is the specific reason we add `<%= action_cable_meta_tag %>` to our HEADs.
+
+## Nginx + Passenger
+
+[Passenger](https://www.phusionpassenger.com/) users might have [a few extra steps](https://www.phusionpassenger.com/library/config/nginx/action_cable_integration/) to make sure that your deployment is smooth.
+
+Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your `nginx.conf` has the **port 443 section** set up to receive secure websockets:
+
+{% code title="/etc/nginx/nginx.conf" %}
+```ruby
+server {
+    listen 443;
+    passenger_enabled on;
+    location /cable {
+        passenger_app_group_name YOUR_APP_HERE_action_cable;
+        passenger_force_max_concurrent_requests_per_process 0;
+    }
+}
+```
+{% endcode %}
+
+Please note that **the above is not a complete document**; it's just the fragments often missing from the default configurations found on hosts like Cloud 66.
+
 ## Set your `default_url_options` for each environment
 
 When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
@@ -106,7 +135,9 @@ Yes.
 
 We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
 
-We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. Of course, the message delivery speed will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
+We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. We've even [seen reports](https://nebulab.it/blog/actioncable-vs-anycable-fight/) that ActionCable can benchmark at 20,000 connections, while AnyCable maxes out around 60,000 because it runs out of TCP ports to allocate.
+
+Of course, the message delivery speed - and even delivery _success_ rate - will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
 
 Getting to this point required significant effort and cooperation between members of both projects. You can try out the AnyCable v1.0 release today.
 

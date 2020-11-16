@@ -1,56 +1,50 @@
-const logs = {}
-
-function request (
-  reflexId,
-  target,
-  args,
-  stimulusControllerIdentifier,
-  element
-) {
-  logs[reflexId] = new Date()
+function request (reflexId, target, args, controller, element) {
+  reflexes[reflexId].timestamp = new Date()
   console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
-    stimulusControllerIdentifier,
+    controller,
     element
   })
 }
 
-function success (response, options = { halted: false }) {
-  const { event } = response
-  const { reflexId, target, broadcaster } = event.detail.stimulusReflex || {}
-
-  console.log(`\u2193 reflex \u2193 ${target}`, {
-    reflexId,
-    duration: `${new Date() - logs[reflexId]}ms`,
-    halted: options.halted,
-    broadcaster
-  })
-  delete logs[reflexId]
-}
-
-function error (response) {
-  const { event, element } = response || {}
+function success (event) {
   const { detail } = event || {}
-  const { reflexId, target, error, broadcaster } = detail.stimulusReflex || {}
-  console.error(`\u2193 reflex \u2193 ${target}`, {
-    reflexId,
-    duration: `${new Date() - logs[reflexId]}ms`,
-    error,
-    broadcaster,
-    payload: event.detail.stimulusReflex,
-    element
-  })
-  if (detail.stimulusReflex.serverMessage.body)
-    console.error(
-      `\u2193 reflex \u2193 ${target}`,
-      detail.stimulusReflex.serverMessage.body
-    )
-  delete logs[reflexId]
+  const { selector } = detail || {}
+  const { reflexId, target, morph, serverMessage } = detail.stimulusReflex || {}
+  const reflex = reflexes[reflexId]
+  const progress =
+    reflex.totalOperations > 1
+      ? ` ${reflex.completedOperations}/${reflex.totalOperations}`
+      : ''
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
+  const operation = event.type
+    .split(':')[1]
+    .split('-')
+    .slice(1)
+    .join('_')
+  const halted = (serverMessage && serverMessage.subject == 'halted') || false
+  console.log(
+    `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
+      '\u221E'}${progress} ${duration}`,
+    { reflexId, morph, operation, halted }
+  )
 }
 
-export default {
-  request,
-  success,
-  error
+function error (event) {
+  const { detail } = event || {}
+  const { reflexId, target, serverMessage } = detail.stimulusReflex || {}
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
+  const payload = detail.stimulusReflex
+  console.log(
+    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${serverMessage.body}`,
+    'color: #f00;',
+    { reflexId, payload }
+  )
 }
+
+export default { request, success, error }

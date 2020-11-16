@@ -6,13 +6,7 @@ description: How to prepare your app to use StimulusReflex
 
 ## Command-Line Install
 
-{% hint style="warning" %}
-StimulusReflex v3 has been released, and there are some big changes. **Server-side session storage is now required.**
-
-You can find additional information for supporting Rails 5.2+ below.
-{% endhint %}
-
-StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails projects.
+StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](https://docs.stimulusreflex.com/setup#rails-5-2-support).
 
 ```bash
 # For new projects
@@ -29,32 +23,17 @@ bundle exec rails stimulus_reflex:install
 
 The terminal commands above will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, including enabling caching in your development environment.
 
-{% hint style="warning" %}
-When v3.3 ships, the install script will modify `cable.yml` to use Redis instead of the `async` adapter in development mode.
-{% endhint %}
-
-You might need to modify your ActionCable configuration to use the Redis adapter in development mode. If you don't have Redis on your machine, you can find out more [on the Redis site](https://redis.io/topics/quickstart).
-
-{% code title="config/cable.yml" %}
-```yaml
-development:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: your_application_development
-```
-{% endcode %}
-
 And that's it! **You can start using StimulusReflex in your application.**
+
+{% page-ref page="quickstart.md" %}
 
 {% hint style="danger" %}
 Starting with v2.2.2 of StimulusReflex, support for the Rails default session storage mechanism `cookie_store` has been _temporarily_ dropped. The `stimulus_reflex:install` script will now set your session storage to be `:cache_store` in your development environment if no value has been set.
 {% endhint %}
 
-{% page-ref page="quickstart.md" %}
-
 ## Manual Configuration
 
-Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project.
+Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](https://docs.stimulusreflex.com/setup#rails-5-2-support).
 
 First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment.
 
@@ -170,4 +149,72 @@ To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable packag
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 {% endhint %}
+
+## Running "Edge"
+
+If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on Github:
+
+{% code title="package.json" %}
+```javascript
+"dependencies": {
+  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
+}
+```
+{% endcode %}
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
+```
+{% endcode %}
+
+Once you have updated your `Gemfile` and `package.json` you need to run the following commands from the root folder of your project:
+
+```bash
+bundle install
+yarn install --check-files
+cd node_modules/stimulus_reflex/javascript
+yarn install
+yarn run build
+cd ../../..
+```
+
+Finally, restart your server\(s\) and refresh your page to see the latest.
+
+{% hint style="success" %}
+It is really important to **always make sure that your Ruby and Javascript package versions are the same**!
+{% endhint %}
+
+### Running a branch to test a Github Pull Request
+
+Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
+
+Using [\#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+
+{% code title="package.json" %}
+```javascript
+"dependencies": {
+  "stimulus_reflex": "leastbad/stimulus_reflex#isolation_optional"
+}
+```
+{% endcode %}
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "leastbad/stimulus_reflex", branch: "isolation_optional"
+```
+{% endcode %}
+
+Once you have updated your `Gemfile` and `package.json` you need to run the following commands from the root folder of your project:
+
+```bash
+bundle install
+yarn install --check-files
+cd node_modules/stimulus_reflex/javascript
+yarn install
+yarn run build
+cd ../../..
+```
+
+Finally, restart your server\(s\) and refresh your page to see the latest.
 

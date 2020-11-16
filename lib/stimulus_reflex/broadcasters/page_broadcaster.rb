@@ -3,7 +3,7 @@
 module StimulusReflex
   class PageBroadcaster < Broadcaster
     def broadcast(selectors, data)
-      reflex.controller.process reflex.url_params[:action]
+      reflex.controller.process reflex.params[:action]
       page_html = reflex.controller.response.body
 
       return unless page_html.present?
@@ -18,7 +18,7 @@ module StimulusReflex
           children_only: true,
           permanent_attribute_name: permanent_attribute_name,
           stimulus_reflex: data.merge({
-            broadcaster: to_sym
+            morph: to_sym
           })
         )
       end

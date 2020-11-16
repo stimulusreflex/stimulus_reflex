@@ -20,7 +20,7 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 
 ## Introducing: Morphs
 
-v3.3 introduces the concept of **Morphs** to StimulusReflex.
+v3.3 introduced the concept of **Morphs** to StimulusReflex.
 
 {% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
 

@@ -70,7 +70,7 @@ You can also set debug mode after you've initialized StimulusReflex. This is esp
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
 
@@ -130,7 +130,7 @@ const application = Application.start(document.documentElement, {
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application, { consumer })
-if (process.env.RAILS_ENV === 'development') StimulusReflex.debug = true
+StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
 
@@ -139,7 +139,9 @@ In the above example, you have now configured your application to parse your DOM
 ## Flight Safety Card
 
 {% hint style="info" %}
-If you change the code in a Reflex class in development, you will have to refresh the page in your browser to access the new version.
+If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
+
+You can [setup webpack-dev-server to help](https://docs.stimulusreflex.com/patterns#use-webpack-dev-server-to-reload-after-reflex-changes), however.
 {% endhint %}
 
 {% hint style="info" %}
@@ -147,11 +149,15 @@ If you're collaborating with a team during development, **make sure that they ha
 {% endhint %}
 
 {% hint style="info" %}
+Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` controller. If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
+{% endhint %}
+
+{% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 {% endhint %}
 
 {% hint style="info" %}
-Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Unfortunately, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](https://docs.stimulusreflex.com/morph-modes#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
 {% endhint %}
 
 {% hint style="info" %}
@@ -167,11 +173,11 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
-Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **npm** package version is **identical** to your Ruby **gem** version.
+Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](https://docs.stimulusreflex.com/deployment#phusion-passenger) is correct.
 {% endhint %}
 
 {% hint style="info" %}
-If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
+Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **npm** package version is **identical** to your Ruby **gem** version.
 {% endhint %}
 
 {% hint style="info" %}
@@ -179,7 +185,7 @@ Do you have your `config/cable.yml` set up properly? We strongly recommend that 
 {% endhint %}
 
 {% hint style="info" %}
-Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`?  You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
+Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
 {% endhint %}
 
 {% hint style="info" %}
