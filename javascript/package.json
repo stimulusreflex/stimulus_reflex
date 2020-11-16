@@ -49,7 +49,6 @@
     "assert": "^2.0.0",
     "esm": "^3.2.25",
     "jsdom": "^16.0.1",
-    "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0",
     "stimulus": "^1.1.1"
