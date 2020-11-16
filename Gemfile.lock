@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     stimulus_reflex (3.4.0.pre3)
+      cable_ready (>= 4.3.0)
       nokogiri
       rack
       rails (>= 5.2)
@@ -176,7 +177,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  cable_ready (>= 4.3.0)
   pry
   pry-nav
   rake

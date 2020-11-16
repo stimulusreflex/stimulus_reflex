@@ -1023,10 +1023,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@rails/actioncable@^6.0.3-3":
-  version "6.0.3-4"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3-4.tgz#f17c0ef2235d1624d6052b749005608260bd55ef"
-  integrity sha512-uie5McTpl69vHnXCVzKj7iYpVKFfLuE7aqul/I7MX5zVd+yVyyC/g75T1Q10GofyqHYNYWgPiIxgQIoYPyyeKw==
+"@rails/actioncable@>= 6.0":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3.tgz#722b4b639936129307ddbab3a390f6bcacf3e7bc"
+  integrity sha512-I01hgqxxnOgOtJTGlq0ZsGJYiTEEiSGVEGQn3vimZSqEP1HqzyFNbzGTq14Xdyeow2yGJjygjoFF1pmtE+SQaw==
 
 "@rollup/plugin-alias@^3.1.1":
   version "3.1.1"
@@ -1534,10 +1534,10 @@ builtin-modules@^3.1.0:
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.1.0.tgz#aad97c15131eb76b65b50ef208e7584cd76a7484"
   integrity sha512-k0KL0aWZuBt2lrxrcASWDfwOLMnodeQjodT/1SxEQAXsHANgo6ZC/VEaSEHCXt7aSTZ4/4H5LKa+tBXmW7Vtvw==
 
-cable_ready@^4.4.0-pre2:
-  version "4.4.0-pre2"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.4.0-pre2.tgz#8a970f9117425c5346218a900e24b74fd5d1ddea"
-  integrity sha512-p1PVlVpGW7WVQNrttcaStJ1c+wuoG4fRuyoJJ7hAloZPQu2koPpeO0R48J+iomq4ZRfOmCGTe6I49r/cg/8DJw==
+"cable_ready@>= 4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-4.3.0.tgz#69c6c6963a60d7891f43c7530e343007a00a50b3"
+  integrity sha512-/hjwgdwMoe2hE5KKunsuWXDTr26GzwR7CovdFKHdSHD/yZTFFIv/eY27slMiXUEb57X12GHdliSM59rftTKpoQ==
   dependencies:
     morphdom "^2.6.1"
 
