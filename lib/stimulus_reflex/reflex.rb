@@ -43,15 +43,16 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :reflex_id, :reflex_controller, :xpath, :c_xpath
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :client_attributes
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
   delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
+  delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, to: :client_attributes
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, reflex_id: nil, xpath: nil, c_xpath: nil, reflex_controller: nil)
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, client_attributes: {})
     @channel = channel
     @url = url
     @element = element
@@ -60,10 +61,7 @@ class StimulusReflex::Reflex
     @params = params
     @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
-    @reflex_id = reflex_id
-    @xpath = xpath
-    @c_xpath = c_xpath
-    @reflex_controller = reflex_controller
+    @client_attributes = OpenStruct.new(client_attributes)
 
     self.params
   end
