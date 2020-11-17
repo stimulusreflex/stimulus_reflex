@@ -31,6 +31,7 @@
   "main": "./stimulus_reflex.js",
   "module": "./stimulus_reflex.js",
   "scripts": {
+    "postinstall": "node ./scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
     "test": "yarn run mocha --require @babel/register --require esm"
