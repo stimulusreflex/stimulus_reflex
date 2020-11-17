@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :reflex_id
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :reflex_id, :reflex_controller, :xpath, :c_xpath
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -51,7 +51,7 @@ class StimulusReflex::Reflex
   delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, reflex_id: nil)
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, reflex_id: nil, xpath: nil, c_xpath: nil, reflex_controller: nil)
     @channel = channel
     @url = url
     @element = element
@@ -61,6 +61,10 @@ class StimulusReflex::Reflex
     @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @reflex_id = reflex_id
+    @xpath = xpath
+    @c_xpath = c_xpath
+    @reflex_controller = reflex_controller
+
     self.params
   end
 

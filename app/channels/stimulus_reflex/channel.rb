@@ -39,7 +39,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           method_name: method_name,
           permanent_attribute_name: permanent_attribute_name,
           params: params,
-          reflex_id: data["reflexId"])
+          reflex_id: data["reflexId"],
+          xpath: data['xpath'],
+          c_xpath: data['cXpath'],
+          reflex_controller: data['reflexController']
+        )
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
