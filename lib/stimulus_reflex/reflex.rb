@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :c_xpath, keyword_init: true)
+ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, keyword_init: true)
 
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
@@ -45,23 +45,22 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :permanent_attribute_name, :client_attributes
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
   delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
-  delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, to: :client_attributes
+  delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, to: :client_attributes
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, permanent_attribute_name: nil, params: {}, client_attributes: {})
+  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
     @params = params
-    @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
 
