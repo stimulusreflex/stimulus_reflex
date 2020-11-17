@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :c_xpath, keyword_init: true)
+
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
@@ -61,7 +63,7 @@ class StimulusReflex::Reflex
     @params = params
     @permanent_attribute_name = permanent_attribute_name
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
-    @client_attributes = OpenStruct.new(client_attributes)
+    @client_attributes = ClientAttributes.new(client_attributes)
 
     self.params
   end
