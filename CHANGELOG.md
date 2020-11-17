@@ -4,8 +4,13 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...HEAD)
 
+**Fixed bugs:**
+
+- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+
 **Closed issues:**
 
+- `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
 - Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
 
 **Merged pull requests:**
