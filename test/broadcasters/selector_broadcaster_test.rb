@@ -44,4 +44,40 @@ class StimulusReflex::SelectorBroadcasterTest < ActiveSupport::TestCase
     assert_mock cable_ready_channels
     assert_mock cable_ready_channel
   end
+
+  test "replaces the contents of an element and ignores permanent-attributes if the selector(s) aren't present in the replacing html fragment" do
+    broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+
+    cable_ready_channels = Minitest::Mock.new
+    cable_ready_channel = Minitest::Mock.new
+    fragment = Minitest::Mock.new
+    match = Minitest::Mock.new
+    Nokogiri::HTML.stub :fragment, fragment do
+      fragment.expect(:at_css, match, ["#foo"])
+      fragment.expect(:to_html, "<div id=\"baz\"><span>bar</span></div>")
+      match.expect(:present?, false)
+
+      # we need to mock `!`, because `blank?` returns
+      # respond_to?(:empty?) ? !!empty? : !self
+      match.expect(:!, true)
+      CableReady::Channels.stub :instance, cable_ready_channels do
+        broadcaster.append_morph("#foo", "<div id=\"baz\"><span>bar</span></div>")
+        cable_ready_channel.expect(:inner_html, nil, [{
+          selector: "#foo",
+          html: "<div id=\"baz\"><span>bar</span></div>",
+          stimulus_reflex: {
+            some: :data,
+            morph: :selector
+          }
+        }])
+        cable_ready_channels.expect(:[], cable_ready_channel, ["TestStream"])
+        cable_ready_channels.expect(:broadcast, nil)
+
+        broadcaster.broadcast(nil, {some: :data})
+      end
+    end
+
+    assert_mock cable_ready_channels
+    assert_mock cable_ready_channel
+  end
 end
