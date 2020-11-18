@@ -17,6 +17,7 @@
 
 **Merged pull requests:**
 
+- Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
 - fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
@@ -222,10 +223,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre0...v3.3.0.pre1)
 
-**Merged pull requests:**
-
-- Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
-
 ## [v3.3.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre0) (2020-07-04)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.3...v3.3.0.pre0)
@@ -254,6 +251,7 @@
 
 **Merged pull requests:**
 
+- Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
 - Prep for pre release of 3.3.0 [\#259](https://github.com/hopsoft/stimulus_reflex/pull/259) ([hopsoft](https://github.com/hopsoft))
 - Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
@@ -344,13 +342,16 @@
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
-- Prevent halting if reflex returns false [\#194](https://github.com/hopsoft/stimulus_reflex/pull/194) ([hopsoft](https://github.com/hopsoft))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.0...v3.2.1)
+
+**Merged pull requests:**
+
+- Prevent halting if reflex returns false [\#194](https://github.com/hopsoft/stimulus_reflex/pull/194) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.0) (2020-05-09)
 
