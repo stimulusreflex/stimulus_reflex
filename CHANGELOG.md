@@ -14,6 +14,7 @@
 - `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
 - Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
 - Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/hopsoft/stimulus_reflex/issues/363)
+- Improve server-side logging options [\#264](https://github.com/hopsoft/stimulus_reflex/issues/264)
 
 **Merged pull requests:**
 
