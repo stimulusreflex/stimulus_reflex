@@ -75,7 +75,7 @@ end
 
 Configure ActionCable to use the Redis adapter in development mode. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
 
-{% code title="config.cable.yml" %}
+{% code title="config/cable.yml" %}
 ```yaml
 development:
   adapter: redis
