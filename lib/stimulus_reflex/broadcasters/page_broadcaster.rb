@@ -8,7 +8,7 @@ module StimulusReflex
 
       return unless page_html.present?
 
-      document = Nokogiri::HTML(page_html)
+      document = Nokogiri::HTML.parse(page_html)
       selectors = selectors.select { |s| document.css(s).present? }
       selectors.each do |selector|
         html = document.css(selector).inner_html
