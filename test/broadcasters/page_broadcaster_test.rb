@@ -2,20 +2,40 @@ require_relative "../test_helper"
 
 class StimulusReflex::PageBroadcasterTest < ActiveSupport::TestCase
   setup do
-    controller = Minitest::Mock.new
-    controller.expect(:process, nil, ["show"])
-
-    # stub the controller response with a struct responding to :body
-    controller.expect(:response, Struct.new(:body).new("<html></html>"))
     @reflex = Minitest::Mock.new
     @reflex.expect :params, {action: "show"}
-    @reflex.expect :controller, controller
-    @reflex.expect :controller, controller
     @reflex.expect :stream_name, "TestStream"
     @reflex.expect :permanent_attribute_name, "some-attribute"
   end
 
-  test "morphs the contents of an element if the selector(s) are present in both original and morphed html fragments" do
+  test "returns if the response html is empty" do
+    controller = Minitest::Mock.new
+    controller.expect(:process, nil, ["show"])
+    @reflex.expect :controller, controller
+    @reflex.expect :controller, controller
+
+    # stub the controller response with a struct responding to :body
+    controller.expect(:response, Struct.new(:body).new(nil))
+
+    broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
+
+    cable_ready_channels = Minitest::Mock.new
+    cable_ready_channels.expect(:broadcast, nil)
+
+    broadcaster.broadcast(["#foo"], {some: :data})
+
+    assert_raises { cable_ready_channels.verify }
+  end
+
+  test "performs a page morph given an array of reflex root selectors" do
+    controller = Minitest::Mock.new
+    controller.expect(:process, nil, ["show"])
+    @reflex.expect :controller, controller
+    @reflex.expect :controller, controller
+
+    # stub the controller response with a struct responding to :body
+    controller.expect(:response, Struct.new(:body).new("<html></html>"))
+
     broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
 
     cable_ready_channels = Minitest::Mock.new
