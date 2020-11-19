@@ -45,7 +45,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -62,8 +62,8 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
-
     self.params
   end
 

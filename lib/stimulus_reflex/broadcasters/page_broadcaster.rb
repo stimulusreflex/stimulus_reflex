@@ -11,6 +11,7 @@ module StimulusReflex
       document = Nokogiri::HTML.parse(page_html)
       selectors = selectors.select { |s| document.css(s).present? }
       selectors.each do |selector|
+        @operations << [selector, :morph]
         html = document.css(selector).inner_html
         cable_ready[stream_name].morph(
           selector: selector,
@@ -31,6 +32,10 @@ module StimulusReflex
 
     def page?
       true
+    end
+
+    def to_s
+      "Page"
     end
   end
 end

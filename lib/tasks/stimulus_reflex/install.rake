@@ -65,6 +65,7 @@ namespace :stimulus_reflex do
     end
 
     system "bundle exec rails generate stimulus_reflex example"
+    puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
     system "bundle exec rails generate stimulus_reflex:config"
     system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
   end

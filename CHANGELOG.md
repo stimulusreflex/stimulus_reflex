@@ -14,9 +14,11 @@
 - `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
 - Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
 - Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/hopsoft/stimulus_reflex/issues/363)
+- Improve server-side logging options [\#264](https://github.com/hopsoft/stimulus_reflex/issues/264)
 
 **Merged pull requests:**
 
+- use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
 - Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
 - fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))

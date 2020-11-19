@@ -82,6 +82,7 @@ StimulusReflex gives you the ability to inject custom JavaScript at five distinc
 3. **`error`** whenever the server side Reflex raises an error
 4. **`halted`** Reflex canceled with `throw :abort` in the `before_reflex` callback
 5. **`after`** after both `success` and `error`
+6. finalize 
 
 {% hint style="info" %}
 **Using lifecycle callback methods is not a requirement.**

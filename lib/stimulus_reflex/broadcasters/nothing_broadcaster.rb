@@ -13,5 +13,9 @@ module StimulusReflex
     def to_sym
       :nothing
     end
+
+    def to_s
+      "Nothing"
+    end
   end
 end
