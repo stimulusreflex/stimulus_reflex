@@ -4,8 +4,24 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...HEAD)
 
+**Fixed bugs:**
+
+- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+- fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
+
+**Closed issues:**
+
+- `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
+- Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
+- Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/hopsoft/stimulus_reflex/issues/363)
+
 **Merged pull requests:**
 
+- Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
+- Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
+- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
+- Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
+- fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)

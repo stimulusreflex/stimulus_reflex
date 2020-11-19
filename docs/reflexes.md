@@ -35,26 +35,17 @@ A thousand times, _yes_.
 ⬆️ StimulusReflex is for **sending** commands. 📡  
 ⬇️ CableReady is for **receiving** updates. 👽
 
-CableReady has more than 15 methods for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 22 operations for changing every aspect of your page, and you can define your own if we missed something. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
 ## Declaring a Reflex in HTML with data attributes
 
-It is frequently fastest to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
+The fastest way to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 
 ```markup
 <button data-reflex="click->Comment#create">Create</button>
 ```
-
-{% hint style="success" %}
-The syntax for `data-reflex` was recently loosened; you can now safely omit the string fragment "Reflex" from the Reflex class identifier.
-
-Previously: &lt;div data-reflex="click-&gt;UserReflex\#poke"&gt;  
-Now: &lt;div data-reflex="click-&gt;User\#poke"&gt;
-
-Server-side Reflex classes still follow the UserReflex / user\_reflex.rb naming.
-{% endhint %}
 
 You can use additional data attributes to pass variables as part of your Reflex payload.
 
@@ -65,11 +56,9 @@ You can use additional data attributes to pass variables as part of your Reflex 
 >Create</button>
 ```
 
-{% hint style="warning" %}
-One important thing to keep in mind is that after a Reflex operation morphs your page, all of your DOM elements are new. It's a **recommended best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. If no `id` is available, make sure that there is something unique and identifying about each element which calls a Reflex, even if you resort to something like `data-key="<%= rand %>"`.
+It's a recommended **best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. `id` is unique in a valid DOM, and  this is how StimulusReflex locates the controller which called the Reflex after a morph operation.
 
 If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
-{% endhint %}
 
 {% hint style="info" %}
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
@@ -125,6 +114,14 @@ If a data attribute appears several times, the deepest one in the DOM tree is ta
   <button data-id="2" data-reflex="Example#whatever" data-reflex-dataset="combined">Click me</button>
 </div>
 ```
+
+### Don't get confused
+
+Placing a `data-reflex="click->Foo#action"` attribute on your element does **not** automatically add an instance of the Stimulus `foo` controller. In fact, you might not even `have` a `foo` controller in your application!
+
+There doesn't need to be a `foo_controller.js` in order for you to call your `Foo` Reflex actions.
+
+It _is_ common use both `data-reflex` and `data-controller` at the same time, allowing you to create a `foo` Stimulus controller which extends `ApplicationController` and allowes you to define Reflex callback event handlers. We'll cover how this works in the [Lifecycle](https://docs.stimulusreflex.com/lifecycle) section.
 
 ## Calling a Reflex in a Stimulus controller
 

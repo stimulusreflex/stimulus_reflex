@@ -36,6 +36,7 @@ function success (event) {
 function error (event) {
   const { detail } = event || {}
   const { reflexId, target, serverMessage } = detail.stimulusReflex || {}
+  const reflex = reflexes[reflexId]
   const duration = reflex.timestamp
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
