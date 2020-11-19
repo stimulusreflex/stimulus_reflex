@@ -53,7 +53,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           reflex.rescue_with_handler(invoke_error)
           reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
         else
-          logger.error "\e[31m#{body}\e[0m"
+          puts "\e[31m#{body}\e[0m"
         end
         return
       end
@@ -68,6 +68,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           message = exception_message_with_backtrace(render_error)
           body = "Reflex failed to re-render: #{message} [#{url}]"
           reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
+          puts "\e[31m#{body}\e[0m"
         end
       end
     ensure
@@ -109,7 +110,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     store.commit_session reflex.request, reflex.controller.response
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
-    logger.error "\e[31m#{message}\e[0m"
+    puts "\e[31m#{message}\e[0m"
   end
 
   def exception_message_with_backtrace(exception)
