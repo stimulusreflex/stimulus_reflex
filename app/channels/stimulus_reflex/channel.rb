@@ -71,7 +71,10 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         end
       end
     ensure
-      commit_session reflex if reflex
+      if reflex
+        commit_session(reflex)
+        reflex.logger.print
+      end
     end
   end
 
