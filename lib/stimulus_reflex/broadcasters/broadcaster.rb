@@ -9,7 +9,7 @@ module StimulusReflex
 
     def initialize(reflex)
       @reflex = reflex
-      @logger = Rails.logger
+      @logger = Rails.logger if defined?(Rails.logger)
       @operations = []
     end
 

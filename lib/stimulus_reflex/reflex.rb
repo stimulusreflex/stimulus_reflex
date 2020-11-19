@@ -108,7 +108,7 @@ class StimulusReflex::Reflex
     else
       raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
       @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
-      broadcaster.morphs << [selectors, html]
+      broadcaster.append_morph(selectors, html)
     end
   end
 

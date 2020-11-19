@@ -42,6 +42,10 @@ module StimulusReflex
       @morphs ||= []
     end
 
+    def append_morph(selectors, html)
+      morphs << [selectors, html]
+    end
+
     def to_sym
       :selector
     end
