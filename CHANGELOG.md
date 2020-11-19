@@ -98,6 +98,7 @@
 - Move form-data merge logic to the server-side [\#327](https://github.com/hopsoft/stimulus_reflex/pull/327) ([marcoroth](https://github.com/marcoroth))
 - fix for PR\#317 which was preventing server messages [\#326](https://github.com/hopsoft/stimulus_reflex/pull/326) ([leastbad](https://github.com/leastbad))
 - introduce tab isolation mode [\#324](https://github.com/hopsoft/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
+- Force request encodings to be UTF-8 instead of ASCII-8BIT after a reflex [\#320](https://github.com/hopsoft/stimulus_reflex/pull/320) ([marcoroth](https://github.com/marcoroth))
 - Append short section about resetting a form [\#319](https://github.com/hopsoft/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
 - lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/hopsoft/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/hopsoft/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
@@ -123,7 +124,6 @@
 
 **Merged pull requests:**
 
-- Force request encodings to be UTF-8 instead of ASCII-8BIT after a reflex [\#320](https://github.com/hopsoft/stimulus_reflex/pull/320) ([marcoroth](https://github.com/marcoroth))
 - fixes and tweaks to client logging subsystem [\#313](https://github.com/hopsoft/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
