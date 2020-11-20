@@ -11,7 +11,7 @@
 * [Useful Patterns](patterns.md)
 * [Working with HTML Forms](working-with-forms.md)
 * [Working with Events](events.md)
-* [Testing \(WIP\)](testing-wip.md)
+* [Testing \(WIP\)](testing.md)
 * [Deployment](deployment.md)
 * [Troubleshooting](troubleshooting.md)
 
