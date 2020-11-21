@@ -4,12 +4,13 @@ module StimulusReflex
   class Broadcaster
     include CableReady::Broadcaster
 
-    attr_reader :reflex, :logger
+    attr_reader :reflex, :logger, :operations
     delegate :permanent_attribute_name, :stream_name, to: :reflex
 
     def initialize(reflex)
       @reflex = reflex
-      @logger = Rails.logger
+      @logger = Rails.logger if defined?(Rails.logger)
+      @operations = []
     end
 
     def nothing?
@@ -26,6 +27,7 @@ module StimulusReflex
 
     def broadcast_message(subject:, body: nil, data: {}, error: nil)
       logger.error "\e[31m#{body}\e[0m" if subject == "error"
+      @operations << ["document", :dispatch_event]
       cable_ready[stream_name].dispatch_event(
         name: "stimulus-reflex:server-message",
         detail: {
@@ -46,6 +48,11 @@ module StimulusReflex
 
     # abstract method to be implemented by subclasses
     def to_sym
+      raise NotImplementedError
+    end
+
+    # abstract method to be implemented by subclasses
+    def to_s
       raise NotImplementedError
     end
   end

@@ -53,12 +53,13 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
-
-        if (data.operations['dispatchEvent'])
-          return CableReady.perform(data.operations)
-
         let totalOperations = 0
         let reflexData
+
+        if (data.operations['dispatchEvent']) {
+          reflexData = data.operations['dispatchEvent'][0].detail.stimulusReflex
+        }
+
         ;['morph', 'innerHtml'].forEach(operation => {
           if (data.operations[operation] && data.operations[operation].length) {
             if (data.operations[operation][0].stimulusReflex) {

@@ -428,12 +428,6 @@ cable_ready[stream_name].morph { final update... }
 cable_ready.broadcast
 ```
 
-{% hint style="info" %}
-Never, ever call `sleep` in a production application. It puts your process into an inactive state, effectively hanging your application. Instead, if you need to delay in real time, call out to a mock API that offers a custom response delay.
-
-`Net::HTTP.get("www.mocky.io", "/v2/5185415ba171ea3a00704eed?mocky-delay=3s")`
-{% endhint %}
-
 ### ActiveJob Example
 
 Let's step through creating a simple ActiveJob that will be triggered by a Nothing morph. Upon completion, the job will increment a counter and direct CableReady to update the browser. Note that you'll have to ensure that your ActiveJob infrastructure is up and running, ideally backed by Sidekiq and Redis.

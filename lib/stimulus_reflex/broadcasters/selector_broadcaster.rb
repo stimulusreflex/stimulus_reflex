@@ -11,6 +11,7 @@ module StimulusReflex
           fragment = Nokogiri::HTML.fragment(html)
           match = fragment.at_css(selector)
           if match.present?
+            @operations << [selector, :morph]
             cable_ready[stream_name].morph(
               selector: selector,
               html: match.inner_html,
@@ -21,6 +22,7 @@ module StimulusReflex
               })
             )
           else
+            @operations << [selector, :inner_html]
             cable_ready[stream_name].inner_html(
               selector: selector,
               html: fragment.to_html,
@@ -40,12 +42,20 @@ module StimulusReflex
       @morphs ||= []
     end
 
+    def append_morph(selectors, html)
+      morphs << [selectors, html]
+    end
+
     def to_sym
       :selector
     end
 
     def selector?
       true
+    end
+
+    def to_s
+      "Selector"
     end
   end
 end

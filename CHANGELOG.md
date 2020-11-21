@@ -2,11 +2,37 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre4...HEAD)
 
 **Merged pull requests:**
 
+- Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
+
+## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...v3.4.0.pre4)
+
+**Fixed bugs:**
+
+- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+- fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
+
+**Closed issues:**
+
+- `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
+- Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
+- Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/hopsoft/stimulus_reflex/issues/363)
+- Improve server-side logging options [\#264](https://github.com/hopsoft/stimulus_reflex/issues/264)
+
+**Merged pull requests:**
+
+- use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
+- Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
+- Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
+- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
+- Add tests for broadcasters [\#364](https://github.com/hopsoft/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
+- fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
@@ -34,6 +60,7 @@
 **Merged pull requests:**
 
 - move `cable\_ready` to development dependencies [\#351](https://github.com/hopsoft/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
+- Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
 
@@ -67,7 +94,6 @@
 
 **Merged pull requests:**
 
-- Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 - \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
 - Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 - Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
@@ -737,6 +763,7 @@
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
+- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -745,10 +772,6 @@
 ## [v1.0.2](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.2) (2019-08-17)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.1...v1.0.2)
-
-**Implemented enhancements:**
-
-- Small performance enhancements [\#16](https://github.com/hopsoft/stimulus_reflex/pull/16) ([hopsoft](https://github.com/hopsoft))
 
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
