@@ -135,6 +135,6 @@ class StimulusReflex::SanityChecker
 
       INFO
     end
-    exit
+    exit false
   end
 end
