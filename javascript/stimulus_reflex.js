@@ -221,6 +221,14 @@ const extendStimulusController = controller => {
           formData
         }
 
+        // include guaranteed reflex params
+        if (typeof this.guaranteedReflexParams === Object) {
+          element.reflexData.params = {
+            ...params,
+            ...this.guaranteedReflexParams
+          }
+        }
+
         subscription.send(element.reflexData)
       })
 
@@ -486,10 +494,16 @@ if (!document.stimulusReflexInitialized) {
 
     if (reflex.completedOperations < reflex.totalOperations) return
 
-    if (stimulusReflex.resolveLate)
+    if (
+      stimulusReflex.resolveLate &&
+      stimulusReflex.resolveLate != 'afterFinalize'
+    )
       setTimeout(() => promise.resolve({ element, event, data: promise.data }))
 
     setTimeout(() => dispatchLifecycleEvent('finalize', element, reflexId))
+
+    if (stimulusReflex.resolveLate == 'afterFinalize')
+      setTimeout(() => promise.resolve({ element, event, data: promise.data }))
   }
 
   document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
