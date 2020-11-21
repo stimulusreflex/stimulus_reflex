@@ -34,6 +34,10 @@ Full-page Reflexes are described in great detail on the Reflexes page. Page morp
 
 All Reflexes are, in fact, Page morphs - until they are not. 👴⚗️
 
+{% hint style="info" %}
+StimulusReflex does not support using redirect\_to in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
+{% endhint %}
+
 If you've already been using Page morphs, nothing below changes what you know about them, with the possible exception that the `data-reflex-permanent` attribute is not all-powerful and can be defeated if you aren't careful with your Selector morphs.
 
 {% page-ref page="reflexes.md" %}

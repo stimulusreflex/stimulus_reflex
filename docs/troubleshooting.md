@@ -227,6 +227,10 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
+StimulusReflex does not support using `redirect_to` in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
+{% endhint %}
+
+{% hint style="info" %}
 Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](https://docs.stimulusreflex.com/deployment#phusion-passenger) is correct.
 {% endhint %}
 

@@ -51,11 +51,17 @@ config.cache_store = :redis_cache_store, {driver: :hiredis, url: Rails.applicati
 ```
 {% endcode %}
 
-## stimulus\_reflex\_testing gem
+## Resources
+
+### ActionCable testing guide
+
+There's lots of helpful information contained in the [Testing Rails Applications](https://guides.rubyonrails.org/testing.html#testing-action-cable) guide page.
+
+### stimulus\_reflex\_testing gem
 
 Our friends at Podia released [stimulus\_reflex\_testing](https://github.com/podia/stimulus_reflex_testing), which provides some helpers for unit testing your Reflex classes. 
 
-## Library testing
+## Open questions!
 
 How do you run the StimulusReflex tests on the server? How do you run them on the client?
 
