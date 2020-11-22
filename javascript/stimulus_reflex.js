@@ -83,8 +83,11 @@ const createSubscription = controller => {
         if (!reflexes[reflexId] && !isolationMode) {
           const element = xPathToElement(reflexData.xpath)
           const controllerElement = xPathToElement(reflexData.cXpath)
-          if (element.reflexController == undefined) element.reflexController = {}
-          element.reflexController[reflexId] = stimulusApplication.getControllerForElementAndIdentifier(
+          if (element.reflexController == undefined)
+            element.reflexController = {}
+          element.reflexController[
+            reflexId
+          ] = stimulusApplication.getControllerForElementAndIdentifier(
             controllerElement,
             reflexData.reflexController
           )
@@ -205,7 +208,7 @@ const extendStimulusController = controller => {
         throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
 
       // lifecycle setup
-      if (element.reflexController == undefined) element.reflexController = {}    
+      if (element.reflexController == undefined) element.reflexController = {}
       element.reflexController[reflexId] = this
       if (element.reflexData == undefined) element.reflexData = {}
       element.reflexData[reflexId] = data
