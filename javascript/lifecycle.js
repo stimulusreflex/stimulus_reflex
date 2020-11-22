@@ -13,9 +13,9 @@ import { camelize } from './utils'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
-  if (!element || !element.reflexData) return
+  if (!element || !element.reflexData[reflexId]) return
   const controller = element.reflexController
-  const reflex = element.reflexData.target
+  const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
 
   const specificLifecycleMethodName = ['before', 'after', 'finalize'].includes(
@@ -54,7 +54,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
     delete element.reflexController
-    delete element.reflexData
+    delete element.reflexData[reflexId]
     delete element.reflexError
     delete reflexes[reflexId]
   }
@@ -126,7 +126,7 @@ document.addEventListener(
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) return
-  const { target } = element.reflexData || {}
+  const { target } = element.reflexData[reflexId] || {}
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
       bubbles: true,

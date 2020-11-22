@@ -87,7 +87,8 @@ const createSubscription = controller => {
             controllerElement,
             reflexData.reflexController
           )
-          element.reflexData = reflexData
+          if (element.reflexData == undefined) element.reflexData = {}
+          element.reflexData[reflexId] = reflexData
           dispatchLifecycleEvent('before', element, reflexId)
           registerReflex(reflexData)
         }
@@ -204,24 +205,25 @@ const extendStimulusController = controller => {
 
       // lifecycle setup
       element.reflexController = this
-      element.reflexData = data
+      if (element.reflexData == undefined) element.reflexData = {}
+      element.reflexData[reflexId] = data
 
       dispatchLifecycleEvent('before', element, reflexId)
 
       setTimeout(() => {
-        const { params } = element.reflexData || {}
+        const { params } = element.reflexData[reflexId] || {}
         const formData =
           options['serializeForm'] == false
             ? ''
             : serializeForm(element.closest('form'), { element })
 
-        element.reflexData = {
+        element.reflexData[reflexId] = {
           ...data,
           params,
           formData
         }
 
-        subscription.send(element.reflexData)
+        subscription.send(element.reflexData[reflexId])
       })
 
       const promise = registerReflex(data)
