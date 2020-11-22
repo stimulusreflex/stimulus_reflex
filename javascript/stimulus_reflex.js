@@ -87,7 +87,8 @@ const createSubscription = controller => {
             controllerElement,
             reflexData.reflexController
           )
-          element.reflexData = reflexData
+          if (element.reflexData == undefined) element.reflexData = {}
+          element.reflexData[reflexId] = reflexData
           dispatchLifecycleEvent('before', element, reflexId)
           registerReflex(reflexData)
         }
@@ -204,32 +205,25 @@ const extendStimulusController = controller => {
 
       // lifecycle setup
       element.reflexController = this
-      element.reflexData = data
+      if (element.reflexData == undefined) element.reflexData = {}
+      element.reflexData[reflexId] = data
 
       dispatchLifecycleEvent('before', element, reflexId)
 
       setTimeout(() => {
-        const { params } = element.reflexData || {}
+        const { params } = element.reflexData[reflexId] || {}
         const formData =
           options['serializeForm'] == false
             ? ''
             : serializeForm(element.closest('form'), { element })
 
-        element.reflexData = {
+        element.reflexData[reflexId] = {
           ...data,
           params,
           formData
         }
 
-        // include guaranteed reflex params
-        if (typeof this.guaranteedReflexParams === Object) {
-          element.reflexData.params = {
-            ...params,
-            ...this.guaranteedReflexParams
-          }
-        }
-
-        subscription.send(element.reflexData)
+        subscription.send(element.reflexData[reflexId])
       })
 
       const promise = registerReflex(data)
@@ -494,16 +488,10 @@ if (!document.stimulusReflexInitialized) {
 
     if (reflex.completedOperations < reflex.totalOperations) return
 
-    if (
-      stimulusReflex.resolveLate &&
-      stimulusReflex.resolveLate != 'afterFinalize'
-    )
+    if (stimulusReflex.resolveLate)
       setTimeout(() => promise.resolve({ element, event, data: promise.data }))
 
     setTimeout(() => dispatchLifecycleEvent('finalize', element, reflexId))
-
-    if (stimulusReflex.resolveLate == 'afterFinalize')
-      setTimeout(() => promise.resolve({ element, event, data: promise.data }))
   }
 
   document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
