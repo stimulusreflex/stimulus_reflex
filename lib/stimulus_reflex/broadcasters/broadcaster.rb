@@ -27,7 +27,7 @@ module StimulusReflex
 
     def broadcast_message(subject:, body: nil, data: {}, error: nil)
       logger.error "\e[31m#{body}\e[0m" if subject == "error"
-      @operations << ["document", :dispatch_event]
+      operations << ["document", :dispatch_event]
       cable_ready[stream_name].dispatch_event(
         name: "stimulus-reflex:server-message",
         detail: {

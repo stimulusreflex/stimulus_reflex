@@ -70,7 +70,7 @@ const createSubscription = controller => {
               )
               if (urls.length !== 1 || urls[0] !== location.href) return
 
-              totalOperations++
+              totalOperations += data.operations[operation].length
 
               if (!reflexData)
                 reflexData = data.operations[operation][0].stimulusReflex
@@ -95,7 +95,7 @@ const createSubscription = controller => {
 
         if (reflexes[reflexId]) {
           reflexes[reflexId].totalOperations = totalOperations
-          reflexes[reflexId].pendingOperations = 0
+          reflexes[reflexId].pendingOperations = totalOperations
           reflexes[reflexId].completedOperations = 0
           CableReady.perform(data.operations)
         }
@@ -461,9 +461,9 @@ if (!document.stimulusReflexInitialized) {
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
-    reflex.pendingOperations++
+    reflex.pendingOperations--
 
-    if (reflex.pendingOperations < reflex.totalOperations) return
+    if (reflex.pendingOperations > 0) return
 
     if (!stimulusReflex.resolveLate)
       setTimeout(() => promise.resolve({ element, event, data: promise.data }))
