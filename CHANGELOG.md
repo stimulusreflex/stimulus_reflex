@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
@@ -234,6 +235,7 @@
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
 - Update deployment docs after the official AnyCable 1.0 release [\#267](https://github.com/hopsoft/stimulus_reflex/pull/267) ([rmacklin](https://github.com/rmacklin))
+- Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
 
 ## [v3.3.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre1) (2020-07-08)
 
@@ -272,7 +274,6 @@
 **Merged pull requests:**
 
 - Prep for pre release of 3.3.0 [\#259](https://github.com/hopsoft/stimulus_reflex/pull/259) ([hopsoft](https://github.com/hopsoft))
-- Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
 - warn against collections of identical elements that trigger reflexes [\#250](https://github.com/hopsoft/stimulus_reflex/pull/250) ([leastbad](https://github.com/leastbad))
 - always calls params to persist them into controller action [\#249](https://github.com/hopsoft/stimulus_reflex/pull/249) ([RolandStuder](https://github.com/RolandStuder))
@@ -699,7 +700,6 @@
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
 - Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
-- Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -727,6 +727,7 @@
 - Provide before/after callbacks for calls delegated to server side Stimulus controllers [\#4](https://github.com/hopsoft/stimulus_reflex/issues/4)
 - Updated Minimal Javascript Example in README.md [\#47](https://github.com/hopsoft/stimulus_reflex/pull/47) ([kobaltz](https://github.com/kobaltz))
 - Setup StimulusReflex controller callbacks [\#45](https://github.com/hopsoft/stimulus_reflex/pull/45) ([hopsoft](https://github.com/hopsoft))
+- Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
