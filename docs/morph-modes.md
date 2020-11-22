@@ -403,7 +403,7 @@ class IncrementJob < ApplicationJob
   queue_as :default
 
   def perform
-    Net::HTTP.get("www.mocky.io", "/v2/5185415ba171ea3a00704eed?mocky-delay=3s")
+    sleep 3
     cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter"))
     cable_ready.broadcast
   end
