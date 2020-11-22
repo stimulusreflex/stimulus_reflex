@@ -125,7 +125,7 @@ This is the perfect option if you want to re-render a partial, update a counter 
 
 Updating a target element with a Selector morph does _not_ invoke ActionDispatch. There is no routing, your controller is not run, and the view template is not re-rendered. This means that if your content is properly fragment cached, you should see round-trip updates in **10-15ms**... which is a nice change from the before times. 🐇
 
-#### First steps
+### Tutorial
 
 Let's first establish a baseline HTML sample to modify. Our attention will focus primarily on the `div` known colloquially as **\#foo**.
 
@@ -177,7 +177,7 @@ The truth is that a lot of complexity and nasty edge cases are being hidden away
 There's no sugar coating the fact that there's a happy path for all of the typical use cases, and lots of gotchas to be mindful of otherwise. We're going to tackle this by showing you best practices first. Start by \#winning now and later there will be a section with all of the logic behind the decisions so you can troubleshoot if things go awry / [Charlie Sheen](https://www.youtube.com/watch?v=pipTwjwrQYQ).
 {% endhint %}
 
-#### Intelligent defaults
+### Intelligent defaults
 
 Morphs work differently depending on whether you are replacing existing content with a new version or something entirely new. This allows us to intelligently re-render partials and ViewComponents based on data that has been changed in the Reflex action.
 
@@ -259,7 +259,7 @@ Ultimately, we've optimized for two primary use cases for morph functionality:
 
 If you're trying to do something not covered by the above: tell us about it on Discord, consult the list of gotchas and exceptions below, and consider calling CableReady\#outer\_html directly in your Reflex.
 
-#### Flexibility
+### Morphing Multiplicity
 
 What fun is morphing if you can't [stretch out a little](https://www.youtube.com/watch?v=J5G_rdNQLFU)?
 
@@ -272,7 +272,7 @@ You can call `morph` multiple times in your Reflex action method.
 
 You can use Ruby's implicit Hash syntax to update multiple selectors with one morph. These updates will all be sent as part of the same broadcast, and executed in the order they are defined. Any non-String values will be coerced into Strings. Passing no html argument is equivalent to `""`.
 
-#### dom\_id
+### dom\_id
 
 One of the best perks of Rails naming conventions is that you can usually calculate what the name of an element or resource will be programmatically, so long as you know the class name and id.
 
@@ -288,109 +288,19 @@ The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_i
 morph dom_id(user), user.name
 ```
 
-#### default\_url\_options
+### View Helpers
 
-If you are planning to render a partial that uses view helpers to create URLs, you will need to [set up your environment configuration files](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment) to make the live site metadata available inside your Reflexes.
-
-### Morphing Sanity Checklist
-
-We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
-
-#### You cannot change the attributes of your morph target.
-
-Even if you maintain the same CSS selector, you cannot modify any attributes \(including data attributes\) of the container element with the `morph` method.
+If you render a partial that makes use of controller-specific helpers, use that controller to render the partial:
 
 ```ruby
-morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
+morph "#stan", StanController.render(stan)
 ```
 
-You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) methods like `outer_html` or `set_attribute`.
+If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment) to make the live site metadata available inside your Reflexes.
 
-#### Your top-level content needs to be an element.
+### Things go wrong...
 
-It's not enough for the container selector to match. Your content needs to be wrapped in an element, or else `data-reflex-permanent` will not work.
-
-```ruby
-morph "#foo", "<div id=\"foo\"><p>Strengthen your core.</p></div>"
-```
-
-#### No closing tag? No problem.
-
-Inexplicably, morphdom just doesn't seem to care if your top-level element node is closed.
-
-```ruby
-morph "#foo", "<div id=\"foo\"><span>Who needs muscl</span>"
-```
-
-#### Different element type altogether? Who cares, so long as the CSS selector matches?
-
-Go ahead, turn your `div` into a `span`. morphdom just doesn't care.
-
-```ruby
-morph "#foo", "<span id=\"foo\">Are these muscles or rocks? lol</span>"
-```
-
-#### A new CSS selector \(or no CSS selector\) will be processed with innerHTML
-
-Changing the CSS selector will result in some awkward nesting issues.
-
-```ruby
-morph "#foo", "<div id=\"baz\">Let me know if this is too strong.</div>"
-```
-
-```markup
-<div id="foo">
-  <div id="baz">Let me know if this is too strong.</div>
-</div>
-```
-
-#### If the element with the CSS selector is surrounded, external content will be discarded.
-
-```ruby
-morph "#foo", "I am excited to see your <div id=\"foo\">muscles</div> next week."
-```
-
-```markup
-<div id="foo">muscles</div>
-```
-
-#### If an element matches the target CSS selector, other elements will be ignored.
-
-```ruby
-morph "#foo", "<div id=\"foo\">Foo!</div><div id=\"post_foo\">Avant-Foo!</div>"
-```
-
-```ruby
-<div id="foo">Foo!</div>
-```
-
-#### This is true even if the elements are reversed.
-
-```ruby
-morph "#foo", "<div id=\"post_foo\">Avant-Foo!</div><div id=\"foo\">Foo!</div>"
-```
-
-```ruby
-<div id="foo">Foo!</div>
-```
-
-#### But it's all good in the hood if the selector is not present. 🤦
-
-```ruby
-morph "#foo", "<div id=\"mike\">Mike</div> and <div id=\"ike\">Ike</div>"
-```
-
-```ruby
-<div id="foo">
-  <div id="mike">Mike</div>
-  and
-  <div id="ike">Ike</div>
-</div>
-```
-
-{% hint style="success" %}
-Do you have any more weird edge cases? Please let us know!
-{% endhint %}
+We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow. If something strange seems to be happening, please consult the [Morphing Sanity Checklist](https://docs.stimulusreflex.com/troubleshooting#morphing-sanity-checklist) to make sure you're on the right side of history.
 
 ## Nothing Morphs
 

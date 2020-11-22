@@ -123,14 +123,9 @@ In this example, we update each anchor's text before invoking the server side Re
 
 {% code title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
+import ApplicationController from './application_controller.js'
 
-export default class extends Controller {
-  connect () {
-    StimulusReflex.register(this)
-  }
-
+export default class extends ApplicationController {
   beforeReflex(anchorElement) {
     const { reflex } = anchorElement.dataset
     if (reflex.match(/masticate$/)) anchorElement.innerText = 'Eating...'
@@ -163,14 +158,9 @@ The Reflex `Example#poke` will cause StimulusReflex to check for the existence o
 
 {% code title="app/javascript/controllers/example\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
+import ApplicationController from './application_controller.js'
 
-export default class extends Controller {
-  connect () {
-    StimulusReflex.register(this)
-  }
-
+export default class extends ApplicationController {
   beforePoke(anchorElement) {
     anchorElement.innerText = 'Poking...'
   }

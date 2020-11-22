@@ -61,7 +61,7 @@ You can provide `debug: true` to the initialize options like this:
 
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
-StimulusReflex.initialize(application, { consumer, debug: true })
+StimulusReflex.initialize(application, { debug: true })
 ```
 {% endcode %}
 
@@ -69,7 +69,7 @@ You can also set debug mode after you've initialized StimulusReflex. This is esp
 
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
-StimulusReflex.initialize(application, { consumer })
+StimulusReflex.initialize(application)
 StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
@@ -172,19 +172,117 @@ You can update these values by providing your own schema to `Application.start()
 import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import StimulusReflex from 'stimulus_reflex'
-import consumer from '../channels/consumer'
 
 const application = Application.start(document.documentElement, {
   reflexAttribute: 'data-avenger'
 })
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
-StimulusReflex.initialize(application, { consumer })
-StimulusReflex.debug = process.env.RAILS_ENV === 'development'
+StimulusReflex.initialize(application)
 ```
 {% endcode %}
 
 In the above example, you have now configured your application to parse your DOM for `data-avenger` attributes instead of `data-reflex` attributes. 🦸
+
+## Morphing Sanity Checklist
+
+We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
+
+#### You cannot change the attributes of your morph target.
+
+Even if you maintain the same CSS selector, you cannot modify any attributes \(including data attributes\) of the container element with the `morph` method.
+
+```ruby
+morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
+```
+
+You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) methods like `outer_html` or `set_attribute`.
+
+#### Your top-level content needs to be an element.
+
+It's not enough for the container selector to match. Your content needs to be wrapped in an element, or else `data-reflex-permanent` will not work.
+
+```ruby
+morph "#foo", "<div id=\"foo\"><p>Strengthen your core.</p></div>"
+```
+
+#### No closing tag? No problem.
+
+Inexplicably, morphdom just doesn't seem to care if your top-level element node is closed.
+
+```ruby
+morph "#foo", "<div id=\"foo\"><span>Who needs muscl</span>"
+```
+
+#### Different element type altogether? Who cares, so long as the CSS selector matches?
+
+Go ahead, turn your `div` into a `span`. morphdom just doesn't care.
+
+```ruby
+morph "#foo", "<span id=\"foo\">Are these muscles or rocks? lol</span>"
+```
+
+#### A new CSS selector \(or no CSS selector\) will be processed with innerHTML
+
+Changing the CSS selector will result in some awkward nesting issues.
+
+```ruby
+morph "#foo", "<div id=\"baz\">Let me know if this is too strong.</div>"
+```
+
+```markup
+<div id="foo">
+  <div id="baz">Let me know if this is too strong.</div>
+</div>
+```
+
+#### If the element with the CSS selector is surrounded, external content will be discarded.
+
+```ruby
+morph "#foo", "I am excited to see your <div id=\"foo\">muscles</div> next week."
+```
+
+```markup
+<div id="foo">muscles</div>
+```
+
+#### If an element matches the target CSS selector, other elements will be ignored.
+
+```ruby
+morph "#foo", "<div id=\"foo\">Foo!</div><div id=\"post_foo\">Avant-Foo!</div>"
+```
+
+```ruby
+<div id="foo">Foo!</div>
+```
+
+#### This is true even if the elements are reversed.
+
+```ruby
+morph "#foo", "<div id=\"post_foo\">Avant-Foo!</div><div id=\"foo\">Foo!</div>"
+```
+
+```ruby
+<div id="foo">Foo!</div>
+```
+
+#### But it's all good in the hood if the selector is not present. 🤦
+
+```ruby
+morph "#foo", "<div id=\"mike\">Mike</div> and <div id=\"ike\">Ike</div>"
+```
+
+```ruby
+<div id="foo">
+  <div id="mike">Mike</div>
+  and
+  <div id="ike">Ike</div>
+</div>
+```
+
+{% hint style="success" %}
+Do you have any more weird edge cases? Please let us know!
+{% endhint %}
 
 ## Flight Safety Card
 

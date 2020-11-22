@@ -93,6 +93,8 @@ Let's build on our increment counter example by adding a Stimulus controller and
 3. Create a server side Reflex object with Ruby.
 4. Create a server side Example controller with Ruby.
 
+We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](https://docs.stimulusreflex.com/troubleshooting#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
+
 {% code title="app/views/pages/index.html.erb" %}
 ```text
 <a href="#"
@@ -102,18 +104,13 @@ Let's build on our increment counter example by adding a Stimulus controller and
 ```
 {% endcode %}
 
-Here, we rely on the standard Stimulus `data-controller` and `data-action` attributes. There's no StimulusReflex-specific markup required.
+Now we can create a simple Stimulus controller that extends `ApplicationController` , which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `stimulate` method:
 
 {% code title="app/javascript/controllers/counter\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus';
-import StimulusReflex from 'stimulus_reflex';
+import ApplicationController from './application_controller.js'
 
-export default class extends Controller {
-  connect() {
-    StimulusReflex.register(this)
-  }
-
+export default class extends ApplicationController {
   increment(event) {
     event.preventDefault()
     this.stimulate('Counter#increment', 1)
@@ -122,12 +119,14 @@ export default class extends Controller {
 ```
 {% endcode %}
 
-The controller's `connect` lifecycle method fires during both the initial browser page load and after Turbolinks visits that refresh content. We tell StimulusReflex that this controller is going to be calling server-side Reflex actions by passing the Stimulus Controller instance to the `register` method. This gives the controller a `stimulate` method that we can call.
+{% hint style="warning" %}
+If you extend `ApplicationController` and need to create a `connect` method, make sure that the first line of your method is `super.connect()` or else you can't call `stimulate`.
+{% endhint %}
 
 When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ServerSideClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
 
 {% hint style="warning" %}
-If you're responding to an event like click on an element that would have a default action \(such as an `a` or a `button` element\) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
+If you're responding to an event like click on an element that would have a default action \(such as an anchor, button or submit element\) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
 {% endhint %}
 
 {% code title="app/reflexes/counter\_reflex.rb" %}

@@ -93,7 +93,7 @@ If you submit a form via StimulusReflex, and the resulting DOM diff doesn't touc
 One simple technique is to use a Stimulus controller to reset the form after the Reflex completes successfully. We'll call this controller `reflex-form` and we'll use it to set a target on the first text field, as well as an action on the submit button:
 
 ```javascript
-<%= form_with(model: model, data: {controller: "reflex-form", reflex_form_reflex: "ExampleReflex#submit"}) do |form| %>
+<%= form_with(model: model, data: {controller: "reflex-form"}) do |form| %>
   <%= form.text_field :name, data: {target: "reflex-form.focus"} %>
   <%= form.button data: {action: "click->reflex-form#submit"} %>
 <% end %>
@@ -101,15 +101,15 @@ One simple technique is to use a Stimulus controller to reset the form after the
 
 This controller will make use of the [Promise](https://docs.stimulusreflex.com/lifecycle#promises) returned by the `stimulate` method:
 
+{% code title="app/javascript/controllers/reflex\_form\_controller.js" %}
 ```javascript
-// app/javascript/controllers/reflex_form_controller.js
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
   static targets = ['focus']
   submit (e) {
     e.preventDefault()
-    this.stimulate(this.data.get('reflex')).then(() => {
+    this.stimulate('Reflex#submit').then(() => {
       this.element.reset()
       // optional: set focus on the freshly cleared input
       this.focusTarget.focus()
@@ -117,6 +117,7 @@ export default class extends ApplicationController {
   }
 }
 ```
+{% endcode %}
 
 ### Example: Auto-saving Posts with nested Comments
 
