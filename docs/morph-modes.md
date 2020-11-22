@@ -388,13 +388,13 @@ This is the complete implementation of a minimum viable Nothing morph Reflex act
 class CounterReflex < ApplicationReflex
   def increment
     morph :nothing
-    IncrementJob.perform_later
+    IncrementJob.set(wait: 3.seconds).perform_later
   end
 end
 ```
 {% endcode %}
 
-Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We request a response from a mock API that waits three seconds before returning an acknowledgement. We then use CableReady to queue up a text\_content operation with the newly incremented value before ultimately sending the broadcast.
+Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We then use CableReady to queue up a text\_content operation with the newly incremented value before ultimately sending the broadcast.
 
 {% code title="app/jobs/increment\_job.rb" %}
 ```ruby
@@ -403,7 +403,6 @@ class IncrementJob < ApplicationJob
   queue_as :default
 
   def perform
-    sleep 3
     cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter"))
     cable_ready.broadcast
   end
