@@ -14,7 +14,7 @@ import { camelize } from './utils'
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
   if (!element || !element.reflexData[reflexId]) return
-  const controller = element.reflexController
+  const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
 
@@ -53,7 +53,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
   }
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    delete element.reflexController
+    delete element.reflexController[reflexId]
     delete element.reflexData[reflexId]
     delete element.reflexError
     delete reflexes[reflexId]
@@ -134,7 +134,7 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
       cancelable: false,
       detail: {
         reflex: target,
-        controller: element.reflexController,
+        controller: element.reflexController[reflexId],
         reflexId
       }
     })
