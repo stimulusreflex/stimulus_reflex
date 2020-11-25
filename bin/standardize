@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 bundle exec standardrb --fix
-cd ./javascript && yarn run prettier-standard:format
+yarn run prettier-standard:format
