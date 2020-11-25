@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/stimulus-reflex-logo-with-copy.svg" width="360" />
+  <img src="https://gitcdn.link/repo/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo-with-copy.svg" width="360" />
   <h1 align="center">Welcome to StimulusReflex 👋</h1>
   <p align="center">
     <img src="https://img.shields.io/gem/v/stimulus_reflex.svg?color=red" />
