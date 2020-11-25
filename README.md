@@ -11,7 +11,7 @@
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
-      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1501-brightgreen.svg?style=flat" />
+      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1506-brightgreen.svg?style=flat" />
     </a>
     <a href="https://docs.stimulusreflex.com/" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -113,9 +113,8 @@ View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configura
 1. Bump version number at `lib/stimulus_reflex/version.rb`
 1. Run `rake build`
 1. Run `rake release`
-1. Change directories `cd ./javascript`
-1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish
-
+1. Run `yarn publish --no-git-tag-version`
+1. Commit and push changes to the `package.json` file
 
 ## 📝 License
 
