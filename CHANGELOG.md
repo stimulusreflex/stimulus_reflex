@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
 - make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
@@ -680,10 +681,6 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.0...v2.1.1)
 
-**Implemented enhancements:**
-
-- Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
-
 **Fixed bugs:**
 
 - Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
@@ -700,6 +697,7 @@
 - Add guard to verify same URL prior to morph [\#63](https://github.com/hopsoft/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
 - Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/hopsoft/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
+- Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
 - \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
 - Stricter parsing of attributes [\#56](https://github.com/hopsoft/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
