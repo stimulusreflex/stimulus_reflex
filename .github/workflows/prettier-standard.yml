@@ -30,7 +30,5 @@ jobs:
           ${{ runner.os }}-yarn-
     - name: Yarn install
       run: yarn
-      working-directory: javascript/
     - name: Run prettier-standard check
       run: yarn run prettier-standard:check
-      working-directory: javascript/
