@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre5...HEAD)
+
+**Merged pull requests:**
+
+- non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
+
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre4...v3.4.0.pre5)
