@@ -1,69 +1,73 @@
-require_relative "../test_helper"
+require_relative "broadcaster_test_case"
 
-class StimulusReflex::PageBroadcasterTest < ActiveSupport::TestCase
-  setup do
-    @reflex = Minitest::Mock.new
-    @reflex.expect :params, {action: "show"}
-    @reflex.expect :stream_name, "TestStream"
-    @reflex.expect :permanent_attribute_name, "some-attribute"
-  end
-
+class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
   test "returns if the response html is empty" do
-    controller = Minitest::Mock.new
-    controller.expect(:process, nil, ["show"])
-    @reflex.expect :controller, controller
-    @reflex.expect :controller, controller
-
-    # stub the controller response with a struct responding to :body
-    controller.expect(:response, Struct.new(:body).new(nil))
-
     broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
-
-    cable_ready_channels = Minitest::Mock.new
-    cable_ready_channels.expect(:broadcast, nil)
-
     broadcaster.broadcast(["#foo"], {some: :data})
-
-    assert_raises { cable_ready_channels.verify }
+    # TODO: figure out how to refute_broadcast_on
   end
 
-  test "performs a page morph given an array of reflex root selectors" do
-    controller = Minitest::Mock.new
-    controller.expect(:process, nil, ["show"])
-    @reflex.expect :controller, controller
-    @reflex.expect :controller, controller
-
-    # stub the controller response with a struct responding to :body
-    controller.expect(:response, Struct.new(:body).new("<html></html>"))
-
-    broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
-
-    cable_ready_channels = Minitest::Mock.new
-    cable_ready_channel = Minitest::Mock.new
-    document = Minitest::Mock.new
-    Nokogiri::HTML.stub :parse, document do
-      document.expect(:css, "something that is present", ["#foo"])
-      document.expect(:css, Struct.new(:inner_html).new("<span>bar</span>"), ["#foo"])
-
-      CableReady::Channels.stub :instance, cable_ready_channels do
-        cable_ready_channel.expect(:morph, nil, [{
-          selector: "#foo",
-          html: "<span>bar</span>",
-          children_only: true,
-          permanent_attribute_name: "some-attribute",
-          stimulus_reflex: {
-            some: :data,
-            morph: :page
-          }
-        }])
-        cable_ready_channels.expect(:[], cable_ready_channel, ["TestStream"])
-        cable_ready_channels.expect(:broadcast, nil)
-
-        broadcaster.broadcast(["#foo"], {some: :data})
+  test "performs a page morph on body" do
+    class << @reflex.controller.response
+      def body
+        "<html><head></head><body>New Content</body></html>"
       end
     end
 
-    assert_mock cable_ready_channels
-    assert_mock cable_ready_channel
+    broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
+
+    expected = {
+      "cableReady" => true,
+      "operations" => {
+        "morph" => [
+          {
+            "selector" => "body",
+            "html" => "New Content",
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => :data,
+              "morph" => :page
+            }
+          }
+        ]
+      }
+    }
+
+    assert_broadcast_on @reflex.stream_name, expected do
+      broadcaster.broadcast(["body"], {some: :data})
+    end
+  end
+
+  test "performs a page morph given an array of reflex root selectors" do
+    class << @reflex.controller.response
+      def body
+        "<html><head></head><body><div id=\"foo\">New Content</div></body></html>"
+      end
+    end
+
+    broadcaster = StimulusReflex::PageBroadcaster.new(@reflex)
+
+    expected = {
+      "cableReady" => true,
+      "operations" => {
+        "morph" => [
+          {
+            "selector" => "#foo",
+            "html" => "New Content",
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => :data,
+              "morph" => :page
+            }
+          }
+        ]
+      }
+    }
+
+    assert_broadcast_on @reflex.stream_name, expected do
+      broadcaster.broadcast(["#foo"], {some: :data})
+    end
   end
 end
