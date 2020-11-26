@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/stimulus-reflex-logo-with-copy.svg" width="360" />
+  <img src="https://gitcdn.link/repo/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo-with-copy.svg" width="360" />
   <h1 align="center">Welcome to StimulusReflex 👋</h1>
   <p align="center">
     <img src="https://img.shields.io/gem/v/stimulus_reflex.svg?color=red" />
@@ -11,7 +11,7 @@
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
-      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1322-brightgreen.svg?style=flat" />
+      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1506-brightgreen.svg?style=flat" />
     </a>
     <a href="https://docs.stimulusreflex.com/" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -54,7 +54,7 @@ And, it's fast.
 
 It works seamlessly with the Rails tooling you already know and love.
 
-- Server-rendered HTML, delivered in miliseconds over the wire via Websockets
+- Server-rendered HTML, delivered in milliseconds over the wire via Websockets
 - ERB templates and partials, with first-class [ViewComponent](https://github.com/github/view_component) support
 - [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) and [ActiveJob](https://guides.rubyonrails.org/active_job_basics.html)
 - [StimulusJS](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
@@ -113,9 +113,8 @@ View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configura
 1. Bump version number at `lib/stimulus_reflex/version.rb`
 1. Run `rake build`
 1. Run `rake release`
-1. Change directories `cd ./javascript`
-1. Run `yarn publish` - NOTE: this will throw a fatal error because the tag already exists but the package will still publish
-
+1. Run `yarn publish --no-git-tag-version`
+1. Commit and push changes to the `package.json` file
 
 ## 📝 License
 

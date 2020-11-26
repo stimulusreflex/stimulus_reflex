@@ -54,49 +54,56 @@ const createSubscription = controller => {
       received: data => {
         if (!data.cableReady) return
 
-        if (data.operations['dispatchEvent'])
-          return CableReady.perform(data.operations)
-
         let totalOperations = 0
         let reflexData
-        ;['morph', 'innerHtml'].forEach(operation => {
-          if (data.operations[operation] && data.operations[operation].length) {
-            if (data.operations[operation][0].stimulusReflex) {
-              const urls = Array.from(
-                new Set(
-                  data.operations[operation].map(m => m.stimulusReflex.url)
-                )
-              )
-              if (urls.length !== 1 || urls[0] !== location.href) return
 
-              totalOperations++
+        const dispatchEvent = data.operations['dispatchEvent']
+        const morph = data.operations['morph']
+        const innerHtml = data.operations['innerHtml']
 
-              if (!reflexData)
-                reflexData = data.operations[operation][0].stimulusReflex
+        ;[dispatchEvent, morph, innerHtml].forEach(operation => {
+          if (operation && operation.length && operation[0].stimulusReflex) {
+            const urls = Array.from(
+              new Set(operation.map(m => m.stimulusReflex.url))
+            )
+            if (urls.length !== 1 || urls[0] !== location.href) return
+
+            totalOperations += operation.length
+            if (!reflexData) {
+              reflexData = operation[0].detail
+                ? operation[0].detail.stimulusReflex
+                : operation[0].stimulusReflex
             }
           }
         })
 
-        const { reflexId } = reflexData
+        if (reflexData) {
+          const { reflexId } = reflexData
 
-        if (!reflexes[reflexId] && !isolationMode) {
-          const element = xPathToElement(reflexData.xpath)
-          const controllerElement = xPathToElement(reflexData.cXpath)
-          element.reflexController = stimulusApplication.getControllerForElementAndIdentifier(
-            controllerElement,
-            reflexData.reflexController
-          )
-          element.reflexData = reflexData
-          dispatchLifecycleEvent('before', element, reflexId)
-          registerReflex(reflexData)
-        }
+          if (!reflexes[reflexId] && !isolationMode) {
+            const element = xPathToElement(reflexData.xpath)
+            const controllerElement = xPathToElement(reflexData.cXpath)
+            if (element.reflexController == undefined)
+              element.reflexController = {}
+            element.reflexController[
+              reflexId
+            ] = stimulusApplication.getControllerForElementAndIdentifier(
+              controllerElement,
+              reflexData.reflexController
+            )
+            if (element.reflexData == undefined) element.reflexData = {}
+            element.reflexData[reflexId] = reflexData
+            dispatchLifecycleEvent('before', element, reflexId)
+            registerReflex(reflexData)
+          }
 
-        if (reflexes[reflexId]) {
-          reflexes[reflexId].totalOperations = totalOperations
-          reflexes[reflexId].pendingOperations = 0
-          reflexes[reflexId].completedOperations = 0
-          CableReady.perform(data.operations)
-        }
+          if (reflexes[reflexId]) {
+            reflexes[reflexId].totalOperations = totalOperations
+            reflexes[reflexId].pendingOperations = totalOperations
+            reflexes[reflexId].completedOperations = 0
+            CableReady.perform(data.operations)
+          }
+        } else CableReady.perform(data.operations)
       },
       connected: () => {
         actionCableSubscriptionActive = true
@@ -202,25 +209,27 @@ const extendStimulusController = controller => {
         throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
 
       // lifecycle setup
-      element.reflexController = this
-      element.reflexData = data
+      if (element.reflexController == undefined) element.reflexController = {}
+      element.reflexController[reflexId] = this
+      if (element.reflexData == undefined) element.reflexData = {}
+      element.reflexData[reflexId] = data
 
       dispatchLifecycleEvent('before', element, reflexId)
 
       setTimeout(() => {
-        const { params } = element.reflexData || {}
+        const { params } = element.reflexData[reflexId] || {}
         const formData =
           options['serializeForm'] == false
             ? ''
             : serializeForm(element.closest('form'), { element })
 
-        element.reflexData = {
+        element.reflexData[reflexId] = {
           ...data,
           params,
           formData
         }
 
-        subscription.send(element.reflexData)
+        subscription.send(element.reflexData[reflexId])
       })
 
       const promise = registerReflex(data)
@@ -458,9 +467,9 @@ if (!document.stimulusReflexInitialized) {
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
-    reflex.pendingOperations++
+    reflex.pendingOperations--
 
-    if (reflex.pendingOperations < reflex.totalOperations) return
+    if (reflex.pendingOperations > 0) return
 
     if (!stimulusReflex.resolveLate)
       setTimeout(() => promise.resolve({ element, event, data: promise.data }))

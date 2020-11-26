@@ -37,9 +37,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           element: element,
           selectors: selectors,
           method_name: method_name,
-          permanent_attribute_name: permanent_attribute_name,
           params: params,
-          reflex_id: data["reflexId"])
+          client_attributes: {
+            reflex_id: data["reflexId"],
+            xpath: data["xpath"],
+            c_xpath: data["cXpath"],
+            reflex_controller: data["reflexController"],
+            permanent_attribute_name: permanent_attribute_name
+          })
         delegate_call_to_reflex reflex, method_name, arguments
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
@@ -48,7 +53,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           reflex.rescue_with_handler(invoke_error)
           reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
         else
-          logger.error "\e[31m#{body}\e[0m"
+          puts "\e[31m#{body}\e[0m"
         end
         return
       end
@@ -63,10 +68,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           message = exception_message_with_backtrace(render_error)
           body = "Reflex failed to re-render: #{message} [#{url}]"
           reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
+          puts "\e[31m#{body}\e[0m"
         end
       end
     ensure
-      commit_session reflex if reflex
+      if reflex
+        commit_session(reflex)
+        reflex.logger.print
+      end
     end
   end
 
@@ -101,7 +110,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     store.commit_session reflex.request, reflex.controller.response
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
-    logger.error "\e[31m#{message}\e[0m"
+    puts "\e[31m#{message}\e[0m"
   end
 
   def exception_message_with_backtrace(exception)

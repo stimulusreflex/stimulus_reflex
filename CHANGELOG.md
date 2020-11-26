@@ -2,10 +2,64 @@
 
 ## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre5...HEAD)
 
 **Merged pull requests:**
 
+- non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
+
+## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre4...v3.4.0.pre5)
+
+**Closed issues:**
+
+- SR doesn't seem to handle redirects / 302s [\#376](https://github.com/hopsoft/stimulus_reflex/issues/376)
+
+**Merged pull requests:**
+
+- Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
+- make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
+- fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
+- Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
+- Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
+
+## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre3...v3.4.0.pre4)
+
+**Fixed bugs:**
+
+- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+- fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
+
+**Closed issues:**
+
+- `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/hopsoft/stimulus_reflex/issues/367)
+- Form data still not captured [\#366](https://github.com/hopsoft/stimulus_reflex/issues/366)
+- Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/hopsoft/stimulus_reflex/issues/363)
+- Improve server-side logging options [\#264](https://github.com/hopsoft/stimulus_reflex/issues/264)
+
+**Merged pull requests:**
+
+- use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
+- Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
+- Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
+- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
+- Add tests for broadcasters [\#364](https://github.com/hopsoft/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
+- Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
+- fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
+- xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
+
+## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...v3.4.0.pre3)
+
+**Merged pull requests:**
+
+- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
+- serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
+- Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
 - Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 - simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))

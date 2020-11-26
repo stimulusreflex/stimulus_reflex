@@ -51,13 +51,12 @@ Let's set up a simple example: we will debounce your page scroll events while ke
 {% tabs %}
 {% tab title="scroll\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
+import ApplicationController from './application_controller.js'
 import debounce from 'lodash/debounce'
 
-export default class extends Controller {
+export default class extends ApplicationController {
   connect () {
-    StimulusReflex.register(this)
+    super.connect()
     this.scroll = debounce(this.scroll, 1000)
     window.addEventListener('scroll', this.scroll, { passive: true })
   }
@@ -195,13 +194,12 @@ First, let's tackle a creative use of `throttle`. We're going to allow the user 
 {% tabs %}
 {% tab title="event\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
+import ApplicationController from './application_controller.js'
 import throttle from 'lodash/throttle'
 
-export default class extends Controller {
+export default class extends ApplicationController {
   connect () {
-    StimulusReflex.register(this)
+    super.connect()
     this.throttleKeydown = throttle(this.throttleKeydown, 1000)
   }
 
@@ -307,13 +305,12 @@ end
 
 {% tab title="app/javascript/controllers/search\_controller.js" %}
 ```javascript
-import { Controller } from 'stimulus'
-import StimulusReflex from 'stimulus_reflex'
+import ApplicationController from './application_controller.js'
 import debounce from 'lodash/debounce'
 
-export default class extends Controller {
+export default class extends ApplicationController {
   connect () {
-    StimulusReflex.register(this)
+    super.connect()
     this.suggest = debounce(this.suggest, 500)
   }
 

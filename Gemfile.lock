@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.4.0.pre2)
+    stimulus_reflex (3.4.0.pre5)
+      cable_ready (>= 4.3.0)
       nokogiri
       rack
       rails (>= 5.2)
@@ -67,12 +68,12 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     ast (2.4.1)
     builder (3.2.4)
-    cable_ready (4.3.0)
+    cable_ready (4.4.0)
       rails (>= 5.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
-    erubi (1.9.0)
+    erubi (1.10.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.5)
@@ -92,7 +93,7 @@ GEM
     nio4r (2.5.4)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
-    parallel (1.19.2)
+    parallel (1.20.1)
     parser (2.7.2.0)
       ast (~> 2.4.1)
     pry (0.12.2)
@@ -131,19 +132,19 @@ GEM
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
     rake (13.0.1)
-    redis (4.2.2)
-    regexp_parser (1.8.2)
+    redis (4.2.5)
+    regexp_parser (2.0.0)
     rexml (3.2.4)
-    rubocop (1.0.0)
+    rubocop (1.2.0)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8)
       rexml
-      rubocop-ast (>= 0.6.0)
+      rubocop-ast (>= 1.0.1)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (1.1.1)
+    rubocop-ast (1.2.0)
       parser (>= 2.7.1.5)
     rubocop-performance (1.8.1)
       rubocop (>= 0.87.0)
@@ -156,14 +157,14 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    standard (0.8.1)
-      rubocop (= 1.0.0)
+    standard (0.9.0)
+      rubocop (= 1.2.0)
       rubocop-performance (= 1.8.1)
     standardrb (1.0.0)
       standard
     thor (1.0.1)
     thread_safe (0.3.6)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
     websocket-driver (0.7.3)
@@ -176,7 +177,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  cable_ready (>= 4.3.0)
   pry
   pry-nav
   rake

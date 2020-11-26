@@ -14,11 +14,14 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :exit_on_failed_sanity_checks, :parent_channel
+    attr_accessor :on_failed_sanity_checks, :parent_channel, :logging
+
+    DEFAULT_LOGGING = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
     def initialize
-      @exit_on_failed_sanity_checks = true
+      @on_failed_sanity_checks = :exit
       @parent_channel = "ApplicationCable::Channel"
+      @logging = DEFAULT_LOGGING
     end
   end
 end
