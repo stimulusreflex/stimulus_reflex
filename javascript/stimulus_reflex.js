@@ -78,6 +78,7 @@ const createSubscription = controller => {
           }
         })
 
+        if (!reflexData) return
         const { reflexId } = reflexData
 
         if (!reflexes[reflexId] && !isolationMode) {
