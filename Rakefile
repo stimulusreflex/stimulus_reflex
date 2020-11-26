@@ -4,7 +4,7 @@ require "bundler/gem_tasks"
 require "rails/test_unit/runner"
 
 task :test_javascript do |task|
-  system("yarn run test")
+  system "yarn run test"
 end
 
 task :test_ruby do |task|
