@@ -53,57 +53,57 @@ const createSubscription = controller => {
     actionCableConsumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
+
         let totalOperations = 0
         let reflexData
 
-        if (data.operations['dispatchEvent']) {
-          reflexData = data.operations['dispatchEvent'][0].detail.stimulusReflex
-        }
+        const dispatchEvent = data.operations['dispatchEvent']
+        const morph = data.operations['morph']
+        const innerHtml = data.operations['innerHtml']
 
-        ;['morph', 'innerHtml'].forEach(operation => {
-          if (data.operations[operation] && data.operations[operation].length) {
-            if (data.operations[operation][0].stimulusReflex) {
-              const urls = Array.from(
-                new Set(
-                  data.operations[operation].map(m => m.stimulusReflex.url)
-                )
-              )
-              if (urls.length !== 1 || urls[0] !== location.href) return
+        ;[dispatchEvent, morph, innerHtml].forEach(operation => {
+          if (operation && operation.length && operation[0].stimulusReflex) {
+            const urls = Array.from(
+              new Set(operation.map(m => m.stimulusReflex.url))
+            )
+            if (urls.length !== 1 || urls[0] !== location.href) return
 
-              totalOperations += data.operations[operation].length
-
-              if (!reflexData)
-                reflexData = data.operations[operation][0].stimulusReflex
+            totalOperations += operation.length
+            if (!reflexData) {
+              reflexData = operation[0].detail
+                ? operation[0].detail.stimulusReflex
+                : operation[0].stimulusReflex
             }
           }
         })
 
-        if (!reflexData) return
-        const { reflexId } = reflexData
+        if (reflexData) {
+          const { reflexId } = reflexData
 
-        if (!reflexes[reflexId] && !isolationMode) {
-          const element = xPathToElement(reflexData.xpath)
-          const controllerElement = xPathToElement(reflexData.cXpath)
-          if (element.reflexController == undefined)
-            element.reflexController = {}
-          element.reflexController[
-            reflexId
-          ] = stimulusApplication.getControllerForElementAndIdentifier(
-            controllerElement,
-            reflexData.reflexController
-          )
-          if (element.reflexData == undefined) element.reflexData = {}
-          element.reflexData[reflexId] = reflexData
-          dispatchLifecycleEvent('before', element, reflexId)
-          registerReflex(reflexData)
-        }
+          if (!reflexes[reflexId] && !isolationMode) {
+            const element = xPathToElement(reflexData.xpath)
+            const controllerElement = xPathToElement(reflexData.cXpath)
+            if (element.reflexController == undefined)
+              element.reflexController = {}
+            element.reflexController[
+              reflexId
+            ] = stimulusApplication.getControllerForElementAndIdentifier(
+              controllerElement,
+              reflexData.reflexController
+            )
+            if (element.reflexData == undefined) element.reflexData = {}
+            element.reflexData[reflexId] = reflexData
+            dispatchLifecycleEvent('before', element, reflexId)
+            registerReflex(reflexData)
+          }
 
-        if (reflexes[reflexId]) {
-          reflexes[reflexId].totalOperations = totalOperations
-          reflexes[reflexId].pendingOperations = totalOperations
-          reflexes[reflexId].completedOperations = 0
-          CableReady.perform(data.operations)
-        }
+          if (reflexes[reflexId]) {
+            reflexes[reflexId].totalOperations = totalOperations
+            reflexes[reflexId].pendingOperations = totalOperations
+            reflexes[reflexId].completedOperations = 0
+            CableReady.perform(data.operations)
+          }
+        } else CableReady.perform(data.operations)
       },
       connected: () => {
         actionCableSubscriptionActive = true
