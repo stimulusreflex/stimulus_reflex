@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.4.0-pre1",
+  "version": "3.4.0-pre5",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -23,26 +23,18 @@
   "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "source": "index.js",
-  "main": "dist/stimulus_reflex.js",
-  "module": "dist/stimulus_reflex.module.js",
-  "esmodule": "dist/stimulus_reflex.modern.js",
+  "source": "./index.js",
+  "main": "./index.js",
   "scripts": {
-    "prepare": "yarn build",
-    "postinstall": "echo 'TODO: fix me'",
+    "postinstall": "node ./scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
-    "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "build": "microbundle --target browser --format modern,es,cjs --no-strict",
-    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict",
-    "clean": "rimraf dist"
+    "prettier-standard:format": "yarn run prettier-standard *.js **/*.js"
   },
   "dependencies": {
-    "@stimulus_reflex/core": "3.4.0-pre1"
+    "@stimulus_reflex/core": "3.4.0-pre5"
   },
   "devDependencies": {
-    "microbundle": "^0.12.4",
-    "prettier-standard": "^16.4.1",
-    "rimraf": "^3.0.2"
+    "prettier-standard": "^16.4.1"
   },
   "publishConfig": {
     "access": "public"

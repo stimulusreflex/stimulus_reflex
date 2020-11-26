@@ -1,43 +1,35 @@
 {
   "name": "@stimulus_reflex/core",
-  "version": "3.4.0-pre1",
+  "version": "3.4.0-pre5",
   "description": "StimulusReflex: Core library",
   "repository": "https://github.com/hopsoft/stimulus_reflex",
   "homepage": "https://docs.stimulusreflex.com/",
   "bugs": "https://github.com/hopsoft/stimulus_reflex/issues",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "source": "index.js",
-  "main": "dist/core.js",
-  "module": "dist/core.module.js",
-  "esmodule": "dist/core.modern.js",
+  "source": "./index.js",
+  "main": "./index.js",
   "scripts": {
-    "prepare": "yarn build",
     "prettier-standard:check": "yarn run prettier-standard --check *.js **/*.js",
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js",
-    "test": "yarn run mocha --require @babel/register --require esm ./test",
-    "build": "microbundle --target browser --format modern,es,cjs --no-strict",
-    "dev": "microbundle watch --target browser --format modern,es,cjs --no-strict",
-    "clean": "rimraf dist"
+    "test": "yarn run mocha --require @babel/register --require esm ./test"
   },
   "peerDependencies": {
-    "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.3.0",
     "stimulus": ">= 1.1"
+  },
+  "dependencies": {
+    "@rails/actioncable": ">= 6.0",
+    "cable_ready": ">= 4.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@rails/actioncable": "^6.0.3-3",
     "assert": "^2.0.0",
-    "cable_ready": "^4.4.0-pre0",
     "esm": "^3.2.25",
     "jsdom": "^16.0.1",
-    "microbundle": "^0.12.3",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0",
-    "rimraf": "^3.0.2",
     "stimulus": "^1.1.1"
   },
   "publishConfig": {
