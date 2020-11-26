@@ -50,7 +50,7 @@ Regardless of which option you choose, keep an eye on your connection pools and 
 
 We have seen deployments where combining cache and session storage functions into one Redis database has led to strange behavior, such as forgetting Rails sessions after 10-15 minutes. Luckily, we have an excellent workaround based on splitting up caching and session functions into separate Redis instances.
 
-Heroku allows you to provision multiple Redis instances to your application, both via the [addon marketplace](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
+Heroku allows you to provision multiple Redis instances to your application, both via their [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
 
 Install the `redis-session-store` gem into your project, and then in your `production.rb` you can change your session store:
 
@@ -71,6 +71,10 @@ config.session_store :redis_session_store, {
 {% endcode %}
 
 Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+
+{% hint style="warning" %}
+You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - only Heroku assigns color-based instance names, for example.
+{% endhint %}
 
 ## Cloudflare DNS
 
