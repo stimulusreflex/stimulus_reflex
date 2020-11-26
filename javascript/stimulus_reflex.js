@@ -61,15 +61,7 @@ const createSubscription = controller => {
         const morph = data.operations['morph']
         const innerHtml = data.operations['innerHtml']
 
-        if (
-          dispatchEvent &&
-          dispatchEvent.length &&
-          dispatchEvent[0].stimulusReflex
-        ) {
-          reflexData = dispatchEvent[0].detail.stimulusReflex
-        }
-
-        ;[morph, innerHtml].forEach(operation => {
+        ;[dispatchEvent, morph, innerHtml].forEach(operation => {
           if (operation && operation.length && operation[0].stimulusReflex) {
             const urls = Array.from(
               new Set(operation.map(m => m.stimulusReflex.url))
@@ -77,8 +69,11 @@ const createSubscription = controller => {
             if (urls.length !== 1 || urls[0] !== location.href) return
 
             totalOperations += operation.length
-
-            if (!reflexData) reflexData = operation[0].stimulusReflex
+            if (!reflexData) {
+              reflexData = operation[0].detail
+                ? operation[0].detail.stimulusReflex
+                : operation[0].stimulusReflex
+            }
           }
         })
 
