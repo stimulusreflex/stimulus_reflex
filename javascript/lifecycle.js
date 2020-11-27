@@ -1,4 +1,5 @@
 import { camelize } from './utils'
+import { findElement, extractElementAttributes } from './attributes'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -13,7 +14,7 @@ import { camelize } from './utils'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
-  if (!element || !element.reflexData[reflexId]) return
+  if (!element || !element.reflexData || !element.reflexData[reflexId]) return
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
@@ -125,17 +126,30 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
+  const reflexData = element.reflexData
+  const reflexController = element.reflexController
+
+  if (!document.body.contains(element)) {
+    const attrs = extractElementAttributes(element)
+    element = findElement(attrs, true)
+    element.reflexData = reflexData
+    element.reflexController = reflexController
+  }
+
   if (!element) return
   if (!element.reflexData) element.reflexData = {}
   if (!element.reflexController) element.reflexController = {}
+
   const { target } = element.reflexData[reflexId] || {}
+  const { controller } = element.reflexController[reflexId] || {}
+
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
       bubbles: true,
       cancelable: false,
       detail: {
         reflex: target,
-        controller: element.reflexController[reflexId],
+        controller,
         reflexId
       }
     })
