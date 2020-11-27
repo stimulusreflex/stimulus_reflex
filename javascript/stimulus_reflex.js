@@ -463,7 +463,7 @@ if (!document.stimulusReflexInitialized) {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs)
+    const element = findElement(attrs, debugging)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -484,7 +484,7 @@ if (!document.stimulusReflexInitialized) {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs)
+    const element = findElement(attrs, debugging)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -506,7 +506,7 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
-    const element = findElement(attrs)
+    const element = findElement(attrs, debugging)
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 

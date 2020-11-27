@@ -108,7 +108,7 @@ export const extractDataAttributes = element => {
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
 //
-export const findElement = attributes => {
+export const findElement = (attributes, debugging) => {
   attributes = attributes || {}
   let elements = []
   let selectors = []
@@ -132,21 +132,22 @@ export const findElement = attributes => {
     try {
       elements = document.querySelectorAll(selectors.join(''))
     } catch (error) {
-      console.error(
-        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
-        error,
-        { 'CSS selector': selectors.join(''), attributes }
-      )
+      if (debugging)
+        console.error(
+          'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
+          error,
+          { 'CSS selector': selectors.join(''), attributes }
+        )
     }
   }
 
-  if (elements.length === 0)
+  if (debugging && elements.length === 0)
     console.warn(
       'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }
     )
 
-  if (elements.length > 1)
+  if (debugging && elements.length > 1)
     console.warn(
       'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }
