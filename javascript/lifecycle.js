@@ -127,6 +127,7 @@ document.addEventListener(
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) return
   if (!element.reflexData) element.reflexData = {}
+  if (!element.reflexController) element.reflexController = {}
   const { target } = element.reflexData[reflexId] || {}
   element.dispatchEvent(
     new CustomEvent(`stimulus-reflex:${stage}`, {
