@@ -69,7 +69,7 @@ const createSubscription = controller => {
                 data.operations[name].splice(i, 1)
               }
             }
-            if (data.operations[name].length == 0)
+            if (!data.operations[name].length)
               Reflect.deleteProperty(data.operations, name)
           }
         }
