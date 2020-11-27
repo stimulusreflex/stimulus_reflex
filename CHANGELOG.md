@@ -190,7 +190,6 @@
 
 - self-referential data-reflex-root [\#301](https://github.com/hopsoft/stimulus_reflex/issues/301)
 - data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
-- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 
 **Merged pull requests:**
 
@@ -234,6 +233,7 @@
 
 **Closed issues:**
 
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 - afterReflex not always firing on morph with selectors [\#269](https://github.com/hopsoft/stimulus_reflex/issues/269)
 - Lifecycle hooks [\#266](https://github.com/hopsoft/stimulus_reflex/issues/266)
 - Stimulus Reflex with Rspec not working [\#263](https://github.com/hopsoft/stimulus_reflex/issues/263)
@@ -511,7 +511,6 @@
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
-- update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
@@ -537,6 +536,7 @@
 
 **Implemented enhancements:**
 
+- update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
@@ -674,6 +674,7 @@
 - Create Rails generators [\#3](https://github.com/hopsoft/stimulus_reflex/issues/3)
 - Update installer [\#71](https://github.com/hopsoft/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 - Tweak generators [\#69](https://github.com/hopsoft/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
+- add generators [\#67](https://github.com/hopsoft/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -701,7 +702,6 @@
 - Move ActionCable room configuration to controller registration [\#51](https://github.com/hopsoft/stimulus_reflex/issues/51)
 - Client side call-backs? [\#34](https://github.com/hopsoft/stimulus_reflex/issues/34)
 - Scoped register\(\)? [\#26](https://github.com/hopsoft/stimulus_reflex/issues/26)
-- add generators [\#67](https://github.com/hopsoft/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add guard to verify same URL prior to morph [\#63](https://github.com/hopsoft/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
 - Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/hopsoft/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
