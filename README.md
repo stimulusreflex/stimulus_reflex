@@ -85,7 +85,7 @@ Stop by #newcomers and introduce yourselves!
 
 ## 💙 Support
 
-Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people to come with all relevant code to look at. A git repo is preferred, but Gists or posts on [Discourse](https://stimulus-reflex.discourse.group) are fine, too.
+Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people to come with all relevant code to look at. A git repo is preferred, but Gists or posts on [Discourse](https://discourse.stimulusjs.org/) are fine, too.
 
 Please note that we are not actively providing support on Stack Overflow. If you post there, we likely won't see it.
 
