@@ -126,8 +126,7 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
-  const reflexData = element.reflexData
-  const reflexController = element.reflexController
+  const { reflexData, reflexController } = element
 
   if (!document.body.contains(element)) {
     const attrs = extractElementAttributes(element)
