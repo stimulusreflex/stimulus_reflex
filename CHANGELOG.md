@@ -6,6 +6,8 @@
 
 **Merged pull requests:**
 
+- split SR operations from data.operations [\#385](https://github.com/hopsoft/stimulus_reflex/pull/385) ([leastbad](https://github.com/leastbad))
+- don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
@@ -190,6 +192,7 @@
 
 - self-referential data-reflex-root [\#301](https://github.com/hopsoft/stimulus_reflex/issues/301)
 - data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 
 **Merged pull requests:**
 
@@ -233,7 +236,6 @@
 
 **Closed issues:**
 
-- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 - afterReflex not always firing on morph with selectors [\#269](https://github.com/hopsoft/stimulus_reflex/issues/269)
 - Lifecycle hooks [\#266](https://github.com/hopsoft/stimulus_reflex/issues/266)
 - Stimulus Reflex with Rspec not working [\#263](https://github.com/hopsoft/stimulus_reflex/issues/263)
@@ -316,6 +318,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
@@ -333,10 +336,6 @@
 
 - Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
 - Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
-
-**Merged pull requests:**
-
-- Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
 
@@ -536,8 +535,11 @@
 
 **Implemented enhancements:**
 
-- update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
+
+**Fixed bugs:**
+
+- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -573,16 +575,13 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.0...v2.2.1)
 
-**Fixed bugs:**
-
-- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/hopsoft/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
-
 ## [v2.2.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.9...v2.2.0)
 
 **Implemented enhancements:**
 
+- update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
