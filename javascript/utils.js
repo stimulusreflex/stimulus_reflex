@@ -73,6 +73,7 @@ export const emitEvent = (event, detail) => {
       detail
     })
   )
+  if (window.jQuery) window.jQuery(document).trigger(event, detail)
 }
 
 // construct a valid xPath for an element in the DOM
