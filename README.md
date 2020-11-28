@@ -30,9 +30,6 @@
     <a href="https://www.codacy.com/manual/hopsoft/stimulus_reflex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hopsoft/stimulus_reflex&amp;utm_campaign=Badge_Grade" target="_blank">
       <img alt="Code Quality" src="https://app.codacy.com/project/badge/Grade/d1d72a7060f5467b8696884351cf477f"/>
     </a>
-    <a href="https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability" target="_blank">
-      <img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability" />
-    </a>
     <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
       <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
     </a>
