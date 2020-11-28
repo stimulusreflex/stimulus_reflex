@@ -5,7 +5,6 @@ ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :c_xpath, 
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
-  include CableReady::Broadcaster
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
 
@@ -45,7 +44,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -64,6 +63,7 @@ class StimulusReflex::Reflex
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
     self.params
   end
 

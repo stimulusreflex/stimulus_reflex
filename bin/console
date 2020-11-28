@@ -4,4 +4,5 @@ require "bundler/setup"
 require "stimulus_reflex"
 require "pry"
 
+StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"
 Pry.start

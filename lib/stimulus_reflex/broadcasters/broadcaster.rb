@@ -2,10 +2,8 @@
 
 module StimulusReflex
   class Broadcaster
-    include CableReady::Broadcaster
-
     attr_reader :reflex, :logger, :operations
-    delegate :permanent_attribute_name, :stream_name, to: :reflex
+    delegate :cable_ready, :permanent_attribute_name, to: :reflex
 
     def initialize(reflex)
       @reflex = reflex
@@ -28,7 +26,7 @@ module StimulusReflex
     def broadcast_message(subject:, body: nil, data: {}, error: nil)
       logger.error "\e[31m#{body}\e[0m" if subject == "error"
       operations << ["document", :dispatch_event]
-      cable_ready[stream_name].dispatch_event(
+      cable_ready.dispatch_event(
         name: "stimulus-reflex:server-message",
         detail: {
           reflexId: data["reflexId"],
