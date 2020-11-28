@@ -1,4 +1,5 @@
 import { defaultSchema } from './schema'
+import Debug from './debug'
 
 const multipleInstances = element =>
   document.querySelectorAll(
@@ -108,7 +109,7 @@ export const extractDataAttributes = element => {
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
 //
-export const findElement = (attributes, debugging) => {
+export const findElement = (attributes) => {
   attributes = attributes || {}
   let elements = []
   let selectors = []
@@ -132,7 +133,7 @@ export const findElement = (attributes, debugging) => {
     try {
       elements = document.querySelectorAll(selectors.join(''))
     } catch (error) {
-      if (debugging)
+      if (Debug.enabled)
         console.error(
           'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
           error,
@@ -141,13 +142,13 @@ export const findElement = (attributes, debugging) => {
     }
   }
 
-  if (debugging && elements.length === 0)
+  if (Debug.enabled && elements.length === 0)
     console.warn(
       'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }
     )
 
-  if (debugging && elements.length > 1)
+  if (Debug.enabled && elements.length > 1)
     console.warn(
       'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }

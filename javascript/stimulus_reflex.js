@@ -6,6 +6,7 @@ import { dispatchLifecycleEvent } from './lifecycle'
 import { allReflexControllers } from './controllers'
 import { uuidv4, debounce, emitEvent, serializeForm } from './utils'
 import Log from './log'
+import Debug from './debug'
 import {
   attributeValue,
   attributeValues,
@@ -32,9 +33,6 @@ let actionCableSubscriptionActive = false
 
 // A dictionary of all active Reflex operations, indexed by reflexId
 window.reflexes = {}
-
-// Indicates if we should log calls to stimulate, etc...
-let debugging
 
 // Should Reflex playback be restricted to the tab that called it?
 let isolationMode
@@ -112,7 +110,7 @@ const createSubscription = controller => {
       rejected: () => {
         actionCableSubscriptionActive = false
         emitEvent('stimulus-reflex:rejected')
-        if (debugging) console.warn('Channel subscription was rejected.')
+        if (Debug.enabled) console.warn('Channel subscription was rejected.')
       },
       disconnected: willAttemptReconnect => {
         actionCableSubscriptionActive = false
@@ -156,7 +154,7 @@ const extendStimulusController = controller => {
         element.validity &&
         element.validity.badInput
       ) {
-        if (debugging) console.warn('Reflex aborted: invalid numeric input')
+        if (Debug.enabled) console.warn('Reflex aborted: invalid numeric input')
         return
       }
       const options = {}
@@ -234,7 +232,7 @@ const extendStimulusController = controller => {
 
       const promise = registerReflex(data)
 
-      if (debugging) {
+      if (Debug.enabled) {
         Log.request(
           reflexId,
           target,
@@ -287,7 +285,7 @@ const registerReflex = data => {
 
   promise.reflexId = reflexId
 
-  if (debugging) promise.catch(NOOP)
+  if (Debug.enabled) promise.catch(NOOP)
 
   return promise
 }
@@ -443,7 +441,7 @@ const initialize = (application, initializeOptions = {}) => {
     'stimulus-reflex',
     controller || StimulusReflexController
   )
-  debugging = !!debug
+  Debug.set(!!debug)
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -463,7 +461,7 @@ if (!document.stimulusReflexInitialized) {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs, debugging)
+    const element = findElement(attrs)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -484,13 +482,13 @@ if (!document.stimulusReflexInitialized) {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
     const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs, debugging)
+    const element = findElement(attrs)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
     reflex.completedOperations++
 
-    if (debugging) Log.success(event)
+    if (Debug.enabled) Log.success(event)
 
     if (reflex.completedOperations < reflex.totalOperations) return
 
@@ -506,7 +504,7 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('stimulus-reflex:server-message', event => {
     const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
-    const element = findElement(attrs, debugging)
+    const element = findElement(attrs)
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 
@@ -521,7 +519,7 @@ if (!document.stimulusReflexInitialized) {
 
     reflexes[reflexId].finalStage = subject == 'halted' ? 'halted' : 'after'
 
-    if (debugging) Log[subject == 'error' ? 'error' : 'success'](event)
+    if (Debug.enabled) Log[subject == 'error' ? 'error' : 'success'](event)
 
     if (element && subjects[subject])
       dispatchLifecycleEvent(subject, element, reflexId)
@@ -532,9 +530,9 @@ export default {
   initialize,
   register,
   get debug () {
-    return debugging
+    return Debug.value
   },
   set debug (value) {
-    debugging = !!value
+    Debug.set(!!value)
   }
 }
