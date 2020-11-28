@@ -37,7 +37,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
@@ -47,16 +47,16 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    delete element.reflexController[reflexId]
-    delete element.reflexData[reflexId]
-    delete element.reflexError
-    delete reflexes[reflexId]
+    Reflect.deleteProperty(element.reflexController, reflexId)
+    Reflect.deleteProperty(element.reflexData, reflexId)
+    Reflect.deleteProperty(element.reflexError, reflexId)
+    Reflect.deleteProperty(reflexes, reflexId)
   }
 }
 

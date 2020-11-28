@@ -84,9 +84,13 @@ const createSubscription = controller => {
         const innerHtml = reflexOperations['innerHtml']
 
         ;[dispatchEvent, morph, innerHtml].forEach(operation => {
-          if (operation && operation.length && operation[0].stimulusReflex) {
+          if (operation && operation.length) {
             const urls = Array.from(
-              new Set(operation.map(m => m.stimulusReflex.url))
+              new Set(
+                operation.map(m =>
+                  m.detail ? m.detail.stimulusReflex.url : m.stimulusReflex.url
+                )
+              )
             )
             if (urls.length !== 1 || urls[0] !== location.href) return
 
@@ -114,6 +118,7 @@ const createSubscription = controller => {
               reflexData.reflexController
             )
             if (element.reflexData == undefined) element.reflexData = {}
+            if (element.reflexError == undefined) element.reflexError = {}
             element.reflexData[reflexId] = reflexData
             dispatchLifecycleEvent('before', element, reflexId)
             registerReflex(reflexData)
@@ -235,6 +240,7 @@ const extendStimulusController = controller => {
       element.reflexController[reflexId] = this
       if (element.reflexData == undefined) element.reflexData = {}
       element.reflexData[reflexId] = data
+      if (element.reflexError == undefined) element.reflexError = {}
 
       dispatchLifecycleEvent('before', element, reflexId)
 
@@ -532,7 +538,7 @@ if (!document.stimulusReflexInitialized) {
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 
-    if (element && subject == 'error') element.reflexError = body
+    if (element && subject == 'error') element.reflexError[reflexId] = body
 
     promise[subject == 'error' ? 'reject' : 'resolve']({
       data: promise.data,
