@@ -6,6 +6,8 @@
 
 **Merged pull requests:**
 
+- Update templates for new stage etc [\#390](https://github.com/hopsoft/stimulus_reflex/pull/390) ([leastbad](https://github.com/leastbad))
+- add jQuery support to SR library events [\#388](https://github.com/hopsoft/stimulus_reflex/pull/388) ([leastbad](https://github.com/leastbad))
 - dont exit in sanity checker on `stimulus\_reflex:install` [\#387](https://github.com/hopsoft/stimulus_reflex/pull/387) ([marcoroth](https://github.com/marcoroth))
 - split SR operations from data.operations [\#385](https://github.com/hopsoft/stimulus_reflex/pull/385) ([leastbad](https://github.com/leastbad))
 - don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
