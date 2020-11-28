@@ -1,11 +1,6 @@
-require_relative "../test_helper"
+require_relative "broadcaster_test_case"
 
-class StimulusReflex::BroadcasterTest < ActiveSupport::TestCase
-  setup do
-    @reflex = Minitest::Mock.new
-    @reflex.expect :stream_name, "TestStream"
-  end
-
+class StimulusReflex::BroadcasterTest < StimulusReflex::BroadcasterTestCase
   test "raises a NotImplementedError if called directly" do
     broadcaster = StimulusReflex::Broadcaster.new(@reflex)
 

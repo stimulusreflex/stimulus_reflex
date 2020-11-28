@@ -6,6 +6,11 @@
 
 **Merged pull requests:**
 
+- Update templates for new stage etc [\#390](https://github.com/hopsoft/stimulus_reflex/pull/390) ([leastbad](https://github.com/leastbad))
+- add jQuery support to SR library events [\#388](https://github.com/hopsoft/stimulus_reflex/pull/388) ([leastbad](https://github.com/leastbad))
+- dont exit in sanity checker on `stimulus\_reflex:install` [\#387](https://github.com/hopsoft/stimulus_reflex/pull/387) ([marcoroth](https://github.com/marcoroth))
+- split SR operations from data.operations [\#385](https://github.com/hopsoft/stimulus_reflex/pull/385) ([leastbad](https://github.com/leastbad))
+- don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
@@ -190,6 +195,7 @@
 
 - self-referential data-reflex-root [\#301](https://github.com/hopsoft/stimulus_reflex/issues/301)
 - data-reflex-permanent not working when using slim templates [\#295](https://github.com/hopsoft/stimulus_reflex/issues/295)
+- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 
 **Merged pull requests:**
 
@@ -233,7 +239,6 @@
 
 **Closed issues:**
 
-- undefined method `rescue\_with\_handler' whit reflex action such as "click-\>…" or "change-\>…" [\#287](https://github.com/hopsoft/stimulus_reflex/issues/287)
 - afterReflex not always firing on morph with selectors [\#269](https://github.com/hopsoft/stimulus_reflex/issues/269)
 - Lifecycle hooks [\#266](https://github.com/hopsoft/stimulus_reflex/issues/266)
 - Stimulus Reflex with Rspec not working [\#263](https://github.com/hopsoft/stimulus_reflex/issues/263)

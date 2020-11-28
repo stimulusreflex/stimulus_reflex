@@ -38,7 +38,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
@@ -48,16 +48,16 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    delete element.reflexController[reflexId]
-    delete element.reflexData[reflexId]
-    delete element.reflexError
-    delete reflexes[reflexId]
+    Reflect.deleteProperty(element.reflexController, reflexId)
+    Reflect.deleteProperty(element.reflexData, reflexId)
+    Reflect.deleteProperty(element.reflexError, reflexId)
+    Reflect.deleteProperty(reflexes, reflexId)
   }
 }
 
@@ -162,16 +162,11 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
 
   const { target } = element.reflexData[reflexId] || {}
   const { controller } = element.reflexController[reflexId] || {}
+  const event = `stimulus-reflex:${stage}`
+  const detail = { reflex: target, controller, reflexId }
 
   element.dispatchEvent(
-    new CustomEvent(`stimulus-reflex:${stage}`, {
-      bubbles: true,
-      cancelable: false,
-      detail: {
-        reflex: target,
-        controller,
-        reflexId
-      }
-    })
+    new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
+  if (window.jQuery) window.jQuery(element).trigger(event, detail)
 }

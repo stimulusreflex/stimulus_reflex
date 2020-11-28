@@ -39,14 +39,22 @@ export default class extends Controller {
   }
 
   reflexSuccess (element, reflex, noop, reflexId) {
-    // show success message etc...
+    // show success message
   }
 
   reflexError (element, reflex, error, reflexId) {
-    // show error message etc...
+    // show error message
+  }
+
+  reflexHalted (element, reflex, error, reflexId) {
+    // handle aborted Reflex action
   }
 
   afterReflex (element, reflex, noop, reflexId) {
     // document.body.classList.remove('wait')
+  }
+
+  finalizeReflex (element, reflex, noop, reflexId) {
+    // all operations have completed, animation etc is now safe
   }
 }

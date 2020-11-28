@@ -24,8 +24,8 @@ export const serializeForm = (form, options = {}) => {
   if (
     element &&
     element.name &&
-    element.nodeName == 'INPUT' &&
-    element.type == 'submit'
+    element.nodeName === 'INPUT' &&
+    element.type === 'submit'
   ) {
     data.push(`${element.name}=${element.value}`)
   } else if (submitButton && submitButton.name) {
@@ -73,6 +73,7 @@ export const emitEvent = (event, detail) => {
       detail
     })
   )
+  if (window.jQuery) window.jQuery(document).trigger(event, detail)
 }
 
 // construct a valid xPath for an element in the DOM
