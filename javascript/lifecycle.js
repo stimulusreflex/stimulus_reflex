@@ -129,15 +129,11 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element.reflexData) element.reflexData = {}
   if (!element.reflexController) element.reflexController = {}
   const { target } = element.reflexData[reflexId] || {}
+  const { controller } = element.reflexController[reflexId] || {}
+  const detail = { reflex: target, controller, reflexId }
+  const event = `stimulus-reflex:${stage}`
   element.dispatchEvent(
-    new CustomEvent(`stimulus-reflex:${stage}`, {
-      bubbles: true,
-      cancelable: false,
-      detail: {
-        reflex: target,
-        controller: element.reflexController[reflexId],
-        reflexId
-      }
-    })
+    new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
+  if (window.jQuery) window.jQuery(element).trigger(event, detail)
 }
