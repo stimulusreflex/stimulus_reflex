@@ -1,5 +1,6 @@
 import { camelize } from './utils'
 import { findElement, extractElementAttributes } from './attributes'
+import Debug from './debug'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -14,7 +15,6 @@ import { findElement, extractElementAttributes } from './attributes'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
-  if (!element || !element.reflexData || !element.reflexData[reflexId]) return
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
@@ -126,18 +126,29 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
-  const { reflexData, reflexController } = element
+  if (!element) {
+    if (Debug.enabled) console.warn(`StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore.`)
+    return
+  }
+
+  const reflexData = element.reflexData || {}
+  const reflexController = element.reflexController || {}
+  const oldElement = element
 
   if (!document.body.contains(element)) {
     const attrs = extractElementAttributes(element)
-    element = findElement(attrs, true)
-    element.reflexData = reflexData
-    element.reflexController = reflexController
+    element = findElement(attrs)
+
+    if (Debug.enabled) console.warn(`StimulusReflex detected that the element which triggered the reflex was replaced with a morph operartion. This is not recommended! Make sure you don't replace the element with a morph operartion if you rely on all lifecycle methods to be executed.`)
   }
 
-  if (!element) return
-  if (!element.reflexData) element.reflexData = {}
-  if (!element.reflexController) element.reflexController = {}
+  if (!element) {
+    if (Debug.enabled) console.warn(`StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore. Was looking for element: `, oldElement)
+    return
+  }
+
+  element.reflexData = reflexData
+  element.reflexController = reflexController
 
   const { target } = element.reflexData[reflexId] || {}
   const { controller } = element.reflexController[reflexId] || {}
