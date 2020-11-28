@@ -109,7 +109,7 @@ export const extractDataAttributes = element => {
 // SEE: StimulusReflex::Channel#broadcast_morph
 // SEE: StimulusReflex::Channel#broadcast_error
 //
-export const findElement = (attributes) => {
+export const findElement = attributes => {
   attributes = attributes || {}
   let elements = []
   let selectors = []

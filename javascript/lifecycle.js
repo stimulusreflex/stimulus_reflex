@@ -127,11 +127,14 @@ document.addEventListener(
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) {
-    if (Debug.enabled) console.warn(`StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore.`)
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore.`
+      )
     return
   }
 
-  const reflexData = element.reflexData || {}
+  const reflexData = element.reflexData || {}
   const reflexController = element.reflexController || {}
   const oldElement = element
 
@@ -139,11 +142,18 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
     const attrs = extractElementAttributes(element)
     element = findElement(attrs)
 
-    if (Debug.enabled) console.warn(`StimulusReflex detected that the element which triggered the reflex was replaced with a morph operartion. This is not recommended! Make sure you don't replace the element with a morph operartion if you rely on all lifecycle methods to be executed.`)
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex detected that the element which triggered the reflex was replaced with a morph operartion. This is not recommended! Make sure you don't replace the element with a morph operartion if you rely on all lifecycle methods to be executed.`
+      )
   }
 
   if (!element) {
-    if (Debug.enabled) console.warn(`StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore. Was looking for element: `, oldElement)
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore. Was looking for element: `,
+        oldElement
+      )
     return
   }
 
