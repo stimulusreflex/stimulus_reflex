@@ -129,13 +129,14 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) {
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex controller to an element higher in your DOM?`
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex action to an element higher in your DOM?`
       )
     return
   }
 
   const reflexData = element.reflexData || {}
   const reflexController = element.reflexController || {}
+  const reflexError = element.reflexError || {}
   const oldElement = element
 
   if (!document.body.contains(element)) {
@@ -144,7 +145,7 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
 
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all lifecycle methods to be executed, move the Reflex controller to an element higher in your DOM.`
+        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all lifecycle methods to be executed, move the Reflex action to an element higher in your DOM.`
       )
   }
 
@@ -159,6 +160,7 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
 
   element.reflexData = reflexData
   element.reflexController = reflexController
+  element.reflexError = reflexError
 
   const { target } = element.reflexData[reflexId] || {}
   const { controller } = element.reflexController[reflexId] || {}
