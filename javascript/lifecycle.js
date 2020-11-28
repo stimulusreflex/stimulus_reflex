@@ -129,7 +129,7 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) {
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore.`
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex controller to an element higher in your DOM?`
       )
     return
   }
@@ -144,14 +144,14 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
 
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex detected that the element which triggered the reflex was replaced with a morph operartion. This is not recommended! Make sure you don't replace the element with a morph operartion if you rely on all lifecycle methods to be executed.`
+        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all lifecycle methods to be executed, move the Reflex controller to an element higher in your DOM.`
       )
   }
 
   if (!element) {
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the reflex because the element is not present anymore. Was looking for element: `,
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The following element is no longer present in the DOM: `,
         oldElement
       )
     return
