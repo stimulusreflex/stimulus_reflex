@@ -1,4 +1,6 @@
 import { camelize } from './utils'
+import { findElement, extractElementAttributes } from './attributes'
+import Debug from './debug'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -13,7 +15,6 @@ import { camelize } from './utils'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
-  if (!element || !element.reflexData[reflexId]) return
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
@@ -125,13 +126,47 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
-  if (!element) return
-  element.reflexController = element.reflexController || {}
-  element.reflexData = element.reflexData || {}
+  if (!element) {
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex action to an element higher in your DOM?`
+      )
+    return
+  }
+
+  const reflexData = element.reflexData || {}
+  const reflexController = element.reflexController || {}
+  const reflexError = element.reflexError || {}
+  const oldElement = element
+
+  if (!document.body.contains(element)) {
+    const attrs = extractElementAttributes(element)
+    element = findElement(attrs)
+
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all lifecycle methods to be executed, move the Reflex action to an element higher in your DOM.`
+      )
+  }
+
+  if (!element) {
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" lifecycle method on the element which triggered the Reflex. The following element is no longer present in the DOM: `,
+        oldElement
+      )
+    return
+  }
+
+  element.reflexData = reflexData
+  element.reflexController = reflexController
+  element.reflexError = reflexError
+
   const { target } = element.reflexData[reflexId] || {}
   const { controller } = element.reflexController[reflexId] || {}
-  const detail = { reflex: target, controller, reflexId }
   const event = `stimulus-reflex:${stage}`
+  const detail = { reflex: target, controller, reflexId }
+
   element.dispatchEvent(
     new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
