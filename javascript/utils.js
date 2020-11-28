@@ -24,8 +24,8 @@ export const serializeForm = (form, options = {}) => {
   if (
     element &&
     element.name &&
-    element.nodeName == 'INPUT' &&
-    element.type == 'submit'
+    element.nodeName === 'INPUT' &&
+    element.type === 'submit'
   ) {
     data.push(`${element.name}=${element.value}`)
   } else if (submitButton && submitButton.name) {
