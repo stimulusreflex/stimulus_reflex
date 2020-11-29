@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+## [v3.4.0.pre6](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre6) (2020-11-29)
 
-[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre5...HEAD)
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre5...v3.4.0.pre6)
 
 **Merged pull requests:**
 
