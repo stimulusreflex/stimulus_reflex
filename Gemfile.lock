@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.4.0.pre5)
-      cable_ready (>= 4.3.0)
+    stimulus_reflex (3.4.0.pre6)
+      cable_ready (>= 4.4)
       nokogiri
       rack
       rails (>= 5.2)
@@ -68,7 +68,7 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     ast (2.4.1)
     builder (3.2.4)
-    cable_ready (4.4.0)
+    cable_ready (4.4.1)
       rails (>= 5.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
@@ -78,7 +78,7 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
-    loofah (2.7.0)
+    loofah (2.8.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -170,7 +170,7 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.4.1)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
