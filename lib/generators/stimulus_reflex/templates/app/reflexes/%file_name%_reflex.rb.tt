@@ -16,6 +16,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #     - signed    - use a signed Global ID to map dataset attribute to a model eg. element.signed[:foo]
   #     - unsigned  - use an unsigned Global ID to map dataset attribute to a model  eg. element.unsigned[:foo]
   #   - cable_ready - a special cable_ready that can broadcast to the current visitor (no brackets needed)
+  #   - reflex_id   - a UUIDv4 that uniquely identies each Reflex
   #
   # Example:
   #
