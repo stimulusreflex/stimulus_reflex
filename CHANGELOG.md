@@ -270,6 +270,7 @@
 **Implemented enhancements:**
 
 - Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
+- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 - Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
@@ -309,10 +310,6 @@
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2...v3.2.3)
-
-**Implemented enhancements:**
-
-- Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
 
 **Fixed bugs:**
 
