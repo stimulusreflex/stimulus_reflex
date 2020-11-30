@@ -304,7 +304,7 @@ const extendStimulusController = controller => {
 
 const registerReflex = data => {
   const { reflexId } = data
-  reflexes[reflexId] = { finalStage: 'finalize', warned: false }
+  reflexes[reflexId] = { finalStage: 'finalize' }
 
   const promise = new Promise((resolve, reject) => {
     reflexes[reflexId].promise = {
