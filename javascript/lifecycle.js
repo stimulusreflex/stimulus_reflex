@@ -127,10 +127,12 @@ document.addEventListener(
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   if (!element) {
-    if (Debug.enabled && stage !== 'finalize')
+    if (Debug.enabled && !reflexes[reflexId].warned) {
       console.warn(
         `StimulusReflex was not able execute the "${stage}" or later life-cycle methods on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex action to an element higher in your DOM?`
       )
+      reflexes[reflexId].warned = true
+    }
     return
   }
 
@@ -150,11 +152,13 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
   }
 
   if (!element) {
-    if (Debug.enabled && stage !== 'finalize')
+    if (Debug.enabled && !reflexes[reflexId].warned) {
       console.warn(
         `StimulusReflex was not able execute the "${stage}" or later life-cycle methods on the element which triggered the Reflex. The following element is no longer present in the DOM: `,
         oldElement
       )
+      reflexes[reflexId].warned = true
+    }
     return
   }
 
