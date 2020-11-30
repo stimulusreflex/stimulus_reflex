@@ -8,6 +8,10 @@
 
 - Multiple reflex submissions can lead to unexpected behaviour.  [\#391](https://github.com/hopsoft/stimulus_reflex/issues/391)
 
+**Merged pull requests:**
+
+- don't warn folks twice [\#392](https://github.com/hopsoft/stimulus_reflex/pull/392) ([leastbad](https://github.com/leastbad))
+
 ## [v3.4.0.pre6](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre6) (2020-11-29)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre5...v3.4.0.pre6)
