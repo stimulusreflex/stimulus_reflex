@@ -62,7 +62,7 @@ const createSubscription = controller => {
                 (data.operations[name][i].detail &&
                   data.operations[name][i].detail.stimulusReflex)
               ) {
-                if (!reflexOperations[name]) reflexOperations[name] = []
+                reflexOperations[name] = reflexOperations[name] || []
                 reflexOperations[name].push(data.operations[name][i])
                 data.operations[name].splice(i, 1)
               }
