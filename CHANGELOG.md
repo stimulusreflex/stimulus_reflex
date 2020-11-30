@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- `invokeLifecycleMethod\(\)`: handle undefined `element` parameter [\#393](https://github.com/hopsoft/stimulus_reflex/pull/393) ([marcoroth](https://github.com/marcoroth))
 - don't warn folks twice [\#392](https://github.com/hopsoft/stimulus_reflex/pull/392) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre6](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre6) (2020-11-29)
@@ -283,7 +284,6 @@
 
 - Returns more helpful error message if Reflex doesn't exist [\#254](https://github.com/hopsoft/stimulus_reflex/pull/254) ([leastbad](https://github.com/leastbad))
 - Update install.rake to handle Typescript [\#241](https://github.com/hopsoft/stimulus_reflex/pull/241) ([iv-mexx](https://github.com/iv-mexx))
-- Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
@@ -367,6 +367,7 @@
 - Add a halted lifecycle event [\#190](https://github.com/hopsoft/stimulus_reflex/issues/190)
 - Allow extractElementAttributes to use a checkbox list [\#147](https://github.com/hopsoft/stimulus_reflex/issues/147)
 - reflex\_name restriction loosening [\#212](https://github.com/hopsoft/stimulus_reflex/pull/212) ([leastbad](https://github.com/leastbad))
+- Morph Modes: page, selector and nothing [\#211](https://github.com/hopsoft/stimulus_reflex/pull/211) ([leastbad](https://github.com/leastbad))
 - Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
 - Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Map hashes in incoming arguments using with\_indifferent\_access [\#203](https://github.com/hopsoft/stimulus_reflex/pull/203) ([jaredcwhite](https://github.com/jaredcwhite))
