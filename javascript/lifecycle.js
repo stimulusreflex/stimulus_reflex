@@ -15,6 +15,8 @@ import Debug from './debug'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
+  if (!element || !element.reflexData[reflexId]) return
+
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
