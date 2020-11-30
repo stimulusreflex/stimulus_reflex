@@ -72,8 +72,6 @@ const createSubscription = controller => {
           }
         }
 
-        CableReady.perform(data.operations)
-
         let totalOperations = 0
         let reflexData
 
@@ -90,8 +88,8 @@ const createSubscription = controller => {
                 )
               )
             )
-            if (urls.length !== 1 || urls[0] !== location.href) return
 
+            if (urls.length !== 1 || urls[0] !== location.href) return
             totalOperations += operation.length
 
             if (!reflexData) {
@@ -131,6 +129,9 @@ const createSubscription = controller => {
             CableReady.perform(reflexOperations)
           }
         }
+
+        // run piggy back operations after stimulus reflex behavior
+        CableReady.perform(data.operations)
       },
       connected: () => {
         actionCableSubscriptionActive = true
