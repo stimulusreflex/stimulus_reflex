@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre7...HEAD)
+
+**Closed issues:**
+
+- DirectUpload URL not set using morphs [\#396](https://github.com/hopsoft/stimulus_reflex/issues/396)
+
 ## [v3.4.0.pre7](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre7) (2020-12-01)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre6...v3.4.0.pre7)
@@ -319,7 +327,6 @@
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
-- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
@@ -338,6 +345,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
