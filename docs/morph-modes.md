@@ -71,9 +71,11 @@ Here is a simple example: the user is presented with a text box. Anything they t
 
 {% tab title="example\_reflex.rb" %}
 ```ruby
+class ExampleReflex < ApplicationReflex
   def words
     @words = element[:value]
   end
+end
 ```
 {% endtab %}
 {% endtabs %}
@@ -332,14 +334,11 @@ You can morph the same target element multiple times in one Reflex by calling Ca
 
 ```ruby
 morph :nothing
-cable_ready[stream_name].morph { spinner... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ spinner... }).broadcast
 # long running work
-cable_ready[stream_name].morph { progress update... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ progress update... }).broadcast
 # long running work
-cable_ready[stream_name].morph { final update... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ final update... }).broadcast
 ```
 
 ### ActiveJob Example
@@ -403,8 +402,7 @@ class IncrementJob < ApplicationJob
   queue_as :default
 
   def perform
-    cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter"))
-    cable_ready.broadcast
+    cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter")).broadcast
   end
 end
 ```

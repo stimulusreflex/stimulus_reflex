@@ -137,7 +137,7 @@ Now you're free to delegate `current_user` to the ActionCable `connection`.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
@@ -266,7 +266,7 @@ Finally, delegate `current_user` to the ActionCable `connection` as you would in
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
@@ -294,7 +294,7 @@ While there is no user concept in this scenario, you can still access the visito
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :uuid, to: :connection
 end
 ```

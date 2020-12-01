@@ -380,6 +380,10 @@ You'll want to experiment with other, more contemporary feedback mechanisms to p
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
 
+With all of those caveats established, Flash isn't dead, yet! Nate Hopkins has [shared his pattern](https://gist.github.com/leastbad/48466c8f16cbd3bc6a192666629a6bf5) for working with Rails Flash in a StimulusReflex project.
+
+You can access the `ActionDispatch::Flash::FlashHash` for the current request via the `flash` accessor inside of a Reflex action.
+
 ### Use `webpack-dev-server` to reload after Reflex changes
 
 It can be a pain to remember to reload your page after you make changes to a Reflex. Luckily, if you're already running `bin/webpack-dev-server` while you are building your application, you can add folders in your app to the list of places that are being monitored.
@@ -400,130 +404,4 @@ environment.config.devServer.contentBase = [
 module.exports = environment.toWebpackConfig()
 ```
 {% endcode %}
-
-### Chained Reflexes for long-running actions
-
-{% hint style="danger" %}
-This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
-
-If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**.
-{% endhint %}
-
-Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:
-
-{% tabs %}
-{% tab title="example\_reflex.rb" %}
-```ruby
-  def wait_for_it(target)
-    if block_given?
-      Thread.new do
-        @channel.receive({
-          "target" => "#{self.class}##{target}",
-          "args" => [yield],
-          "url" => url,
-          "attrs" => element.attributes.to_s,
-          "selectors" => selectors,
-        })
-      end
-    end
-  end
-```
-{% endtab %}
-{% endtabs %}
-
-This is code that you can insert into the bottom of your Reflex classes. It might look a bit arcane, but **it allows our Reflex action methods to call other Reflex actions after their work is complete**.
-
-Let's explore this with a contrived example. When the page first loads, we see a button. If you click the button, it hides the button and displays a "Waiting" message while the server calls a slow API. When the API call comes back, it updates the page with the result.
-
-{% tabs %}
-{% tab title="index.html.erb" %}
-```text
-<div data-controller="example">
-  <% case @api_status %>
-  <% when :loading %>
-    <em>Waiting...</em>
-  <% when :ready %>
-    <strong>@api_response</strong>
-  <% else %>
-    <button data-reflex="click->Example#api">Call API</button>
-  <% end %>
-</div>
-```
-{% endtab %}
-{% endtabs %}
-
-As you can see, we're following all of the proper StimulusReflex naming conventions; we have defined a simple component that has an `example` Stimulus controller defined. The button declares that it will call the `api` Reflex action of our `ExampleReflex` class on the server.
-
-Since there is no `@api_status` instance variable during the initial page load, the case statement defaults to the `else` case which is our initial view state. Unfortunately, this might look visually confusing at first.
-
-{% hint style="success" %}
-If you really want to ditch the `else` you can define an initial state in your Rails controller:
-
-```ruby
-  def index
-    @api_status ||= :default
-  end
-```
-
-Now, you can refactor your view template like this:
-
-```ruby
-<div data-controller="example">
-  <% case @api_status %>
-  <% when :default %>
-    <button data-reflex="click->Example#api">Call API</button>
-  <% when :loading %>
-    <em>Waiting...</em>
-  <% when :ready %>
-    <strong>@api_response</strong>
-  <% end %>
-</div>
-```
-
-We've got your back.
-{% endhint %}
-
-Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asynchronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
-
-{% tabs %}
-{% tab title="example\_reflex.rb" %}
-```ruby
-  def api
-    @api_status = :loading
-    wait_for_it(:success) do
-      sleep 3 # DON'T EVER ACTUALLY DO THIS IRL
-      "Worth the wait!"
-    end
-  end
-
-  def success(response)
-    @api_status = :ready
-    @api_response = response
-  end
-
-  private
-
-  def wait_for_it(target)
-    return unless respond_to? target
-    if block_given?
-      Thread.new do
-        channel.receive({
-          "target" => "#{self.class}##{target}",
-          "args" => [yield],
-          "url" => url,
-          "attrs" => element.attributes.to_h,
-          "selectors" => selectors,
-        })
-      end
-    end
-  end
-```
-{% endtab %}
-{% endtabs %}
-
-As you can see, we're only pretending to call an API for this example. **Do not call `sleep` in a production Ruby web application**. `sleep` tells your web server to stop dreaming of new possibilities. **However**, assuming that you're the only person on your **development** machine, you'll see that after three seconds, a second Reflex action is triggered and delivered to the browser over the websocket connection.
-
-{% hint style="success" %}
-This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
-{% endhint %}
 

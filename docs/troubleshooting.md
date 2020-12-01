@@ -47,17 +47,13 @@ If ActionCable is running properly, you should see `ActionCable is connected` in
 
 You can feel free to remove both of these files after you're done, but leave `app/javascript/channels/consumer.js` where it is so that you can pass it to `StimulusReflex.initialize()` and share one ActionCable connection.
 
-## Logging
+## Client-side logging
 
-### Client-Side
+Seeing that your Reflexes are called, including which elements are being updated by which operations, is an invaluable tool. StimulusReflex provides granular console logging designed to give you everything you need to know at a glance.
 
-You might want to know the order in which your Reflexes are called, how long it took to process each Reflex or what the Reflex response payload contains. Luckily you can enable Reflex logging to your browser's Console Inspector.
+![A Reflex with two Selector Morph operations](.gitbook/assets/chrome_ap8v8v5gsq.png)
 
-![](.gitbook/assets/screenshot_2020-05-05_at_01.19.44.png)
-
-There are two ways to enable client debugging in your StimulusReflex instance.
-
-You can provide `debug: true` to the initialize options like this:
+There are two ways to enable client debugging in your StimulusReflex instance. You can provide `debug: true` to the initialize options like this:
 
 {% code title="app/javascript/controllers/index.js" %}
 ```javascript
@@ -74,7 +70,82 @@ StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endcode %}
 
-### Server-Side
+### The Reflex request
+
+![](.gitbook/assets/chrome_pep9ucqub2.png)
+
+The log for the Reflex request \(which starts with `↑ stimulus ↑`\) shows the **target** "Pagy\#paginate" \(name of the Reflex class and the Reflex action being called\) as well as an object containing the reflexId, any `args` \(arguments\) being passed to `stimulate()`, the Stimulus `controller` that invoked the Reflex, and the `element` that the Stimulus controller instance was placed on.
+
+{% hint style="info" %}
+Remember, the Morph mode \(Page, Selector or Nothing\) is decided on the server, so there's no way to know which one it will be at the time the Reflex is initiated.
+{% endhint %}
+
+{% hint style="info" %}
+In the example above, the controller is "pagy" because the triggering element \(in this case, an anchor\) has an ancestor element with the `pagy` Stimulus controller on it, matching the name of the Reflex class, `Pagy`. This means any callbacks defined in the `pagy` Stimulus controller will be called.
+
+If there was no ancestor element with the `pagy` Stimulus controller on it, the controller would be the default controller for all Reflexes, `stimulus-reflex`. If you inspect your DOM, you'll see that all elements with a `data-reflex` attribute have gained a `data-controller="stimulus-reflex"`. Knowing is half the battle!
+{% endhint %}
+
+Once the Reflex action has completed, you should receive one or more **replies**. Replies start with `↓ reflex ↓` and their job is to report on exactly how things went down.
+
+### Page Morph reply
+
+![](.gitbook/assets/chrome_kj3sivvhk1.png)
+
+Page Morphs reply with the target \("User\#rails"\) as well as the destination for the content and how long the Reflex took to complete, start to finish. Page Morphs run the controller action for the current page, so they tend to be significantly slower than Selector Morphs. CableReady `morph` operations are always used for Page Morphs.
+
+![](.gitbook/assets/page.png)
+
+"body" is the destination for Page Morphs unless the `data-reflex-root` attribute is used to specify one or more CSS selectors, as seen in the example above.
+
+### Selector Morph reply
+
+![](.gitbook/assets/chrome_lqwseqeawe.png)
+
+Selector Morphs reply with the target as well as the destination for each `morph` operation. They tend to be extremely fast because they do not need to go through the ActionDispatch controller stack. There could be a blend of `morph` and `inner_html` CableReady operations in one Reflex.
+
+### Nothing Morph reply
+
+![](.gitbook/assets/chrome_nhffsjb2zj.png)
+
+Nothing Morphs reply with the target, but the destination is either infinity or a God particle, depending on how your OS is configured. Since Nothing Morphs don't render any HTML, they can be very fast.
+
+### Halted Reflex reply
+
+![](.gitbook/assets/chrome_qc1ngo9y4f.png)
+
+Even aborted Reflexes have life-cycle callback events. When a Reflex is halted on the server, it means that the Reflex action was not executed.
+
+### Reflex error reply
+
+![](.gitbook/assets/chrome_mpg1ueidtp.png)
+
+Similar to a halted Reflex, an error means that something went wrong in the processing of the Reflex action or, in the case of a Page Morph, potentially something in the controller action.
+
+### Cloned Reflex reply
+
+![](.gitbook/assets/chrome_vqhlnjrzze.png)
+
+If you have multiple tabs open and isolation mode is disabled, you will see that Reflexes are being cloned across tabs. Everything behaves normally in the tab in which the Reflex was initiated, but other tabs do not know a Reflex is happening until the server sends instructions. This means that you will not see the Reflex request logged on non-active tabs, but you will see any replies. They will be marked as `CLONED` instead of showing a duration, because non-active tabs have no way of knowing when the Reflex was started.
+
+### Configuring logging and radiolabel in Development
+
+If you have several aspects that you only want running in the Development environment, it's easy to set up your tooling so that it only imports, for example, [radiolabel](https://github.com/leastbad/radiolabel) in Development as well:
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+if (process.env.RAILS_ENV === 'development') {
+  StimulusReflex.debug = true
+  import('radiolabel').then(Radiolabel =>
+    application.register('radiolabel', Radiolabel.default)
+  )
+}
+```
+{% endcode %}
+
+## Server-side logging
+
+### Rails logging
 
 By default, ActionCable emits particularly verbose Rails logger messages. You can **optionally** discard everything but exceptions by switching to the `warn` log level, as is common in development environments:
 
@@ -85,7 +156,9 @@ config.log_level = :warn
 ```
 {% endcode %}
 
-Alternatively, you can disable ActionCable logs at the framework level. This _may_ improve performance, at the cost of not having ActionCable logs when you need them.
+### ActionCable logging
+
+You can disable ActionCable logs at the framework level. In addition to likely performance gains, you will likely have your logging needs better covered by StimulusReflex logging, which works even when ActionCable logging is disabled.
 
 {% code title="config/initializers/action\_cable.rb" %}
 ```ruby
@@ -94,10 +167,75 @@ ActionCable.server.config.logger = Logger.new(nil)
 {% endcode %}
 
 {% hint style="warning" %}
-We have received reports that for some developers, silencing their ActionCable logs resulted in a dramatic performance increase. If your Reflex action round-trip times are inexplicably sluggish, please do experiment with disabling logs.
-
-Unfortunately, this is difficult to triage because it has yet to impact the StimulusReflex team members; if you have any insights, don't be shy.
+We have received reports that for some developers, silencing their ActionCable logs resulted in a dramatic performance increase. If your Reflex durations are inexplicably sluggish, please do experiment with disabling logs.
 {% endhint %}
+
+### StimulusReflex logging
+
+StimulusReflex provides an intelligent default for its highly customizable logging mechanism:
+
+![](.gitbook/assets/windowsterminal_dqpv6fcnzm.png)
+
+This is the first 8 characters of the current user's session id, the operation counter, the target \(Reflex class name \# Reflex action\), the destination CSS selector, the Morph mode and finally, which CableReady operation was used. This was all generated as if the following was in your initializer:
+
+{% code title="config/initializers/stimulus\_reflex.rb" %}
+```ruby
+StimulusReflex.configure do |config|
+  config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
+end
+```
+{% endcode %}
+
+You can customize the contents, order, formatting and even color of the logging to suit your needs just by tweaking the contents of the string. Out of the box, the following tokens are available:
+
+* `session_id` - the first 8 characters of the current user's session id
+* `session_id_full` - the current user's session id
+* `reflex_info` - the Reflex Class \# the Reflex action
+* `operation` - the CableReady operation used to execute the current Morph
+* `reflex_id` - the first 8 characters of the unique [UUIDv4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_%28random%29) identifying the Reflex
+* `reflex_id_full` - the unique UUIDv4 identifying the Reflex
+* `mode` - whether the current Morph is Page, Selector or Nothing
+* `selector` - the destination CSS selector for the content to be updated
+* `operation_counter` - shows the current and total Morph count for this Reflex
+* `connection_id` - the first 8 characters of the ActionCable Connection identifier
+* `connection_id_full` - the ActionCable Connection identifier
+* `timestamp` - Time.now.[strftime](https://apidock.com/ruby/Time/strftime)\("%Y-%m-%d %H:%M:%S"\)
+
+You can also use attributes from your ActionCable Connection's identifiers that resolve to valid ActiveRecord models. Let's say that your connection is identified by the current Devise user:
+
+{% code title="app/channels/application\_cable/connection.rb" %}
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = env["warden"].user
+    end
+  end
+end
+```
+{% endcode %}
+
+Assuming that your User model has an `email` attribute, you could include the current user's email in your new log string:
+
+{% code title="config/initializers/stimulus\_reflex.rb" %}
+```ruby
+StimulusReflex.configure do |config|
+  config.logging = proc { "#{email} just called another Reflex!" }
+end
+```
+{% endcode %}
+
+If your Connection has multiple `identified_by` resources defined, the logger will look into each one of them in the order they are defined, looking for the first match.
+
+Additionally, all tokens have color methods that you can use to achieve optimal log skim potency. You can choose from red, green, yellow, blue, magenta, cyan and white.
+
+```ruby
+StimulusReflex.configure do |config|
+  config.logging = proc { reflex_info.blue }
+end
+```
 
 ## Anti-Patterns
 
@@ -183,6 +321,12 @@ StimulusReflex.initialize(application)
 {% endcode %}
 
 In the above example, you have now configured your application to parse your DOM for `data-avenger` attributes instead of `data-reflex` attributes. 🦸
+
+## Rails 5.2, revisited
+
+The transition from asset pipeline \(Sprockets\) to webpacker hasn't been smooth for a lot of developers. Indeed, the need to address conversion growing pains was one of the [top](https://discuss.rubyonrails.org/t/sprockets-abandonment/74371/15) [complaints](https://discuss.rubyonrails.org/t/webpacker-presents-a-more-difficult-oob-experience-for-js-sprinkles-than-sprockets-did/75345/2) expressed during the May of WTFs. If you are among those trying to get StimulusReflex working in a 5.2 app that is floundering because the whole sprockets-&gt;webpacker thing is ruining your day, you are in great company.
+
+While every project is different, we helped a developer configure his 5.2 project so that their Javascript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/POC2u/pull/1/files), which reads like a checklist for those who might be struggling.
 
 ## Morphing Sanity Checklist
 
@@ -310,6 +454,10 @@ It's important that you don't modify the hierarchy of your DOM while a Reflex ac
 
 {% hint style="info" %}
 Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](https://docs.stimulusreflex.com/morph-modes#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+{% endhint %}
+
+{% hint style="info" %}
+Are you experiencing weird behavior in your production environment where your users appear to be getting randomly logged out? Try switching your session management to the [redis-session-store](https://github.com/roidrage/redis-session-store) gem.
 {% endhint %}
 
 {% hint style="info" %}

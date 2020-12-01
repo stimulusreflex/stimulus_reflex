@@ -18,17 +18,41 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
-## Introducing: Morphs
+## New \(PRE\)Release: v3.4 - Developer Happiness Edition
+
+#### NOTE: This beta documentation for the pre-release of v3.4. All of the new features below are only accessible if you are helping us test.
+
+Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the [10,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
+
+As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
+
+* we completely overhauled the client-side Reflex logging with per-Morph granularity
+* a brand new and shockingly customizable server-side Reflex **colorized logging** module
+* a new `finalize` life-cycle stage that occurs after all DOM mutations are complete
+* support for lazily evaluated signed and unsigned Global ID to model instances
+* a special `cable_ready` method that automatically broadcasts to the current user
+* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
+* an optional \(but recommended\) "tab isolation" mode to restrict Reflexes to the current tab
+* major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
+* StimulusReflex library configuration courtesy of our new initializer system
+* automatic support for mirroring DOM events with jQuery events, if jQuery is present
+* JS bundle size reduction from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
+
+More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
+
+## Morphs
 
 v3.3 introduced the concept of **Morphs** to StimulusReflex.
 
 {% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
 
-**Selector** morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials and ViewComponents.
+**Page** Morphs provide a full-page [morphdom](https://github.com/patrick-steele-idem/morphdom) refresh with controller processing as an intelligent default.
 
-**Nothing** morphs provide a lightning-fast RPC mechanism to launch ActiveJobs and emit signals to external processes.
+**Selector** Morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials or [ViewComponents](https://github.com/github/view_component).
 
-There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how Morphs work. Find all of the documentation and examples behind the link below.
+**Nothing** Morphs provide a lightning-fast RPC mechanism to launch ActiveJobs, initiate CableReady broadcasts, call APIs and emit signals to external processes.
+
+There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how the different Morphs work. Find all of the documentation and examples behind the link below.
 
 {% page-ref page="morph-modes.md" %}
 
@@ -45,7 +69,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ## Faster UIs, smaller downloads and longer battery life
 
-Our over-the-wire JavaScript payload size is a tiny **40kb** gzipped... and that _includes_ Stimulus, ActionCable, StimulusReflex and CableReady.
+Our over-the-wire JavaScript payload size is a tiny [**11.1kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre6)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
 While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
 

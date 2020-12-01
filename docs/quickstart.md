@@ -50,6 +50,12 @@ We use data attributes to declaratively tell StimulusReflex to pay special atten
 
 The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 
+{% hint style="success" %}
+While `click` and `change` are two of the most common events used to initiate Reflex actions, you can use `mouseover`, `drop`, `play` and [any others](https://developer.mozilla.org/en-US/docs/Web/Events) that makes sense for your application.
+
+We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](https://docs.stimulusreflex.com/events#throttle-and-debounce) to reduce how many events are emitted. 
+{% endhint %}
+
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
 {% hint style="info" %}
@@ -60,7 +66,7 @@ If you're watching a video or following a tutorial and see the long-form usage, 
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
-class CounterReflex < StimulusReflex::Reflex
+class CounterReflex < ApplicationReflex
   def increment
     @count = element.dataset[:count].to_i + element.dataset[:step].to_i
   end
@@ -131,7 +137,7 @@ If you're responding to an event like click on an element that would have a defa
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
-class CounterReflex < StimulusReflex::Reflex
+class CounterReflex < ApplicationReflex
   def increment(step = 1)
     session[:count] = session[:count].to_i + step
   end
