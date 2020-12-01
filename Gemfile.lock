@@ -68,7 +68,7 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     ast (2.4.1)
     builder (3.2.4)
-    cable_ready (4.4.2)
+    cable_ready (4.4.3)
       rails (>= 5.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
