@@ -26,17 +26,17 @@ Developer happiness is not a catch-phrase. We are actively working to improve th
 
 As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
 
-* we completely overhauled the client-side Reflex logging with per-Morph granularity
-* a brand new and shockingly customizable server-side Reflex **colorized logging** module
-* a new `finalize` life-cycle stage that occurs after all DOM mutations are complete
-* support for lazily evaluated signed and unsigned Global ID to model instances
-* a special `cable_ready` method that automatically broadcasts to the current user
+* we completely overhauled the [client-side Reflex logging](https://docs.stimulusreflex.com/troubleshooting#client-side-logging) with per-Morph granularity
+* a brand new and shockingly customizable [server-side Reflex](https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging) **colorized logging** module
+* a new `finalize` [life-cycle stage](https://docs.stimulusreflex.com/lifecycle#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
+* support for lazily evaluated [signed and unsigned](https://docs.stimulusreflex.com/reflexes#signed-and-unsigned-global-id-accessors) Global ID to model instances
+* a special `cable_ready` method that [automatically broadcasts](https://docs.stimulusreflex.com/reflexes#using-cableready-inside-a-reflex-action) to the current user
 * speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
-* an optional \(but recommended\) "tab isolation" mode to restrict Reflexes to the current tab
+* an optional \(but recommended\) "[tab isolation](https://docs.stimulusreflex.com/reflexes#tab-isolation)" mode to restrict Reflexes to the current tab
 * major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
-* StimulusReflex library configuration courtesy of our new initializer system
-* automatic support for mirroring DOM events with jQuery events, if jQuery is present
-* JS bundle size reduction from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
+* StimulusReflex library configuration courtesy of our new [initializer](https://docs.stimulusreflex.com/setup#upgrading-package-versions-and-sanity) system
+* automatic support for mirroring DOM events with [jQuery events](https://docs.stimulusreflex.com/lifecycle#jquery-events), if jQuery is present
+* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7) drops from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
 
@@ -69,7 +69,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ## Faster UIs, smaller downloads and longer battery life
 
-Our over-the-wire JavaScript payload size is a tiny [**11.1kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre6)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
+Our over-the-wire JavaScript payload size is a tiny [**11.1kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
 While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
 
