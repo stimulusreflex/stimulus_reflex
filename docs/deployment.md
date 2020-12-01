@@ -108,7 +108,9 @@ Please note that **the above is not a complete document**; it's just the fragmen
 
 ## Set your `default_url_options` for each environment
 
-When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
+When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build URL paths based on the current application environment.
+
+If your helper is generating **example.com** URLs, this is for you.
 
 {% tabs %}
 {% tab title="Development" %}
@@ -127,6 +129,14 @@ config.action_controller.default_url_options = {host: "stimulusreflex.com"}
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+Similarly, if you need URL helpers in your mailers:
+
+{% code title="config/environments/development.rb" %}
+```ruby
+config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+```
+{% endcode %}
 
 ## AnyCable
 
