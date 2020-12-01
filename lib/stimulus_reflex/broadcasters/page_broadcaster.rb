@@ -23,6 +23,7 @@ module StimulusReflex
           })
         )
       end
+
       cable_ready.broadcast
     end
 

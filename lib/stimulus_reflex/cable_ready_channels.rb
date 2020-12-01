@@ -1,18 +1,12 @@
 module StimulusReflex
   class CableReadyChannels
+    stimulus_reflex_channel_methods = CableReady::Channels.instance.operations.keys + [:broadcast, :broadcast_to]
+    delegate(*stimulus_reflex_channel_methods, to: "@stimulus_reflex_channel")
+    delegate :[], to: "@cable_ready_channels"
+
     def initialize(stream_name)
       @cable_ready_channels = CableReady::Channels.instance
       @stimulus_reflex_channel = @cable_ready_channels[stream_name]
-    end
-
-    def method_missing(name, *args)
-      return @stimulus_reflex_channel.send(name, *args) if @stimulus_reflex_channel.respond_to?(name)
-      @cable_ready_channels.send(name, *args)
-    end
-
-    def respond_to_missing?(name, include_all)
-      @stimulus_reflex_channel.respond_to?(name, include_all) ||
-        @cable_ready_channels.respond_to?(name, include_all)
     end
   end
 end
