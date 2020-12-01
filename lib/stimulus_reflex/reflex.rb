@@ -52,6 +52,7 @@ class StimulusReflex::Reflex
   delegate :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, to: :client_attributes
+  delegate :render, to: :controller
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
