@@ -326,7 +326,7 @@ In the above example, you have now configured your application to parse your DOM
 
 The transition from asset pipeline \(Sprockets\) to webpacker hasn't been smooth for a lot of developers. Indeed, the need to address conversion growing pains was one of the [top](https://discuss.rubyonrails.org/t/sprockets-abandonment/74371/15) [complaints](https://discuss.rubyonrails.org/t/webpacker-presents-a-more-difficult-oob-experience-for-js-sprinkles-than-sprockets-did/75345/2) expressed during the May of WTFs. If you are among those trying to get StimulusReflex working in a 5.2 app that is floundering because the whole sprockets-&gt;webpacker thing is ruining your day, you are in great company.
 
-While every project is different, we helped a developer configure his 5.2 project so that their Javascript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/POC2u/pull/1/files), which reads like a checklist for those who might be struggling.
+While every project is different, we helped a developer configure his 5.2 project so that their JavaScript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/POC2u/pull/1/files), which reads like a checklist for those who might be struggling.
 
 ## Morphing Sanity Checklist
 
@@ -449,7 +449,7 @@ There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 
 {% endhint %}
 
 {% hint style="info" %}
-It's important that you don't modify the hierarchy of your DOM while a Reflex action is running. This includes CableReady DOM operations broadcast inside of a Reflex, as well as Javascript in your `beforeReflex` callback.
+It's important that you don't modify the hierarchy of your DOM while a Reflex action is running. This includes CableReady DOM operations broadcast inside of a Reflex, as well as JavaScript in your `beforeReflex` callback.
 {% endhint %}
 
 {% hint style="info" %}

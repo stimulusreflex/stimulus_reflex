@@ -20,7 +20,7 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers%20%281%29.jpg)
+![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers.jpg)
 
 | What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
 | :--- | :--- | :--- |

@@ -210,7 +210,7 @@ gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
 Restart your server\(s\) and refresh your page to see the latest.
 
 {% hint style="success" %}
-It is really important to **always make sure that your Ruby and Javascript package versions are the same**!
+It is really important to **always make sure that your Ruby and JavaScript package versions are the same**!
 {% endhint %}
 
 ### Running a branch to test a Github Pull Request
