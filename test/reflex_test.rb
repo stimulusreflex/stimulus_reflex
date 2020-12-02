@@ -9,7 +9,7 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
       @env ||= {}
     end
     @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com")
-    @reflex.controller.view_paths << Rails.root.join("test/views")
+    @reflex.controller_class.view_paths << Rails.root.join("test/views")
   end
 
   test "render plain" do
