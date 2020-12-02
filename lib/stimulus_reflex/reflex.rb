@@ -49,9 +49,10 @@ class StimulusReflex::Reflex
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
-  delegate :flash, :session, to: :request
+  delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, to: :client_attributes
+  delegate :render, to: :controller_class
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
@@ -114,11 +115,11 @@ class StimulusReflex::Reflex
 
   def controller
     @controller ||= begin
-      request.controller_class.new.tap do |c|
+      controller_class.new.tap do |c|
         c.instance_variable_set :"@stimulus_reflex", true
         instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
-        c.request = request
-        c.response = ActionDispatch::Response.new
+        c.set_request! request
+        c.set_response! controller_class.make_response!(request)
       end
     end
   end
