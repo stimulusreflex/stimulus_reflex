@@ -8,6 +8,10 @@
 
 - DirectUpload URL not set using morphs [\#396](https://github.com/hopsoft/stimulus_reflex/issues/396)
 
+**Merged pull requests:**
+
+- Delegate render to controller [\#397](https://github.com/hopsoft/stimulus_reflex/pull/397) ([hopsoft](https://github.com/hopsoft))
+
 ## [v3.4.0.pre7](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre7) (2020-12-01)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre6...v3.4.0.pre7)
@@ -94,6 +98,7 @@
 - Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 - simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
 - pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
+- Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre2) (2020-11-06)
 
@@ -141,7 +146,6 @@
 **Merged pull requests:**
 
 - \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
-- Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 - Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
 - Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
@@ -327,6 +331,7 @@
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/hopsoft/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/hopsoft/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
+- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
@@ -345,7 +350,6 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
-- Allow to pass reflex action names to reflex generator [\#224](https://github.com/hopsoft/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
