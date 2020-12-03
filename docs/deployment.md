@@ -71,15 +71,21 @@ config.session_store :redis_session_store, {
 ```
 {% endcode %}
 
-Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
-
-{% hint style="danger" %}
-At the time of this writing, `hiredis-rb` does not support SSL. When you provision multiple Heroku Redis addons, it will give you a "color URL" and a `REDIS_TLS_URL` . You want to use the one _with_ the color, which works just fine without SSL.
-{% endhint %}
-
 {% hint style="success" %}
-You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - only Heroku assigns color-based instance names, for example.
+You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - **only Heroku Redis assigns color-based instance names**, for example.
 {% endhint %}
+
+Heroku will give all Redis instances after the first a distinct URL. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+
+### Heroku Redis Secure URLs
+
+At the time of this writing, the `hiredis` gem does not support SSL. When you provision multiple Heroku Redis addons at the "Hobby" tier, it will give you a "color URL" and a REDIS\_TLS\_URL . You need to use the **non-TLS** one which works just fine without SSL.
+
+If you plan to use the paid "Premium" tier Heroku Redis addons, they use Redis 6 by default and TLS becomes mandatory. Until such time as `hiredis` supports SSL, you will need to create your addon instance by specifying that Redis 5 is to be used:
+
+```bash
+heroku addons:create heroku-redis:premium-0 --version 5
+```
 
 ## Cloudflare DNS
 

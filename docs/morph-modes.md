@@ -189,7 +189,9 @@ morph "#foo", render(partial: "path/to/foo", locals: {message: yelling})
 ```
 
 {% hint style="success" %}
-Since StimulusReflex v3.4, the `render` method has been automatically delegated to an instance of an ActionDispatch controller. You are free to use `ApplicationController` or any other ActionDispatch controller to render your content.
+Since StimulusReflex v3.4, `render` has been delegated to the controller class responsible for rendering the current page. Of course, you're still free to use `ApplicationController` or any other ActionDispatch controller to render your content.
+
+You'll have access to all the same helpers that you would in a normal Rails HTTP request and the subsequent SSR handling of it.
 {% endhint %}
 
 If ViewComponents are your thing, we have you covered:
