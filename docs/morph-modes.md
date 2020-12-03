@@ -257,7 +257,7 @@ Ultimately, we've optimized for two primary use cases for morph functionality:
 
 ### Real-world example: Pagy refactoring
 
-If you're doing pagination in Rails, [pagy](https://github.com/ddnexus/pagy) is the tool for the job. pagy works great with StimulusReflex:
+If you're doing pagination in Rails, [pagy](https://github.com/ddnexus/pagy) is the tool for the job. pagy works great with StimulusReflex, Bootstrap and FontAwesome:
 
 {% tabs %}
 {% tab title="View" %}
@@ -282,7 +282,7 @@ class PagyReflex < ApplicationReflex
 
   def paginate
     pagy, posts = pagy(Post.all, page: element.dataset[:page].to_i)
-    morph "#paginator", render(partial: "home/paginator", locals: {pagy: pagy})
+    morph "#paginator", render(partial: "paginator", locals: {pagy: pagy})
     morph "#posts", render(posts)
   end
 end
@@ -291,9 +291,9 @@ end
 
 {% tab title="Partial" %}
 ```markup
-<nav class="d-flex justify-content-center my-4" aria-label="News navigation">
+<nav class="d-flex justify-content-center">
   <ul class="pagination">
-    <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="fad fa-angle-double-left"></span></a></li>
+    <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="far fa-angle-double-left"></span></a></li>
     <% pagy.series.each do |item| %>
       <% if item == :gap %>
         <li class="page-item disabled"><a class="page-link" id="page_gap_li">...</a></li>
@@ -303,7 +303,7 @@ end
         </li>
       <% end %>
     <% end %>
-    <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-reflex-root="#foo, .bar" data-page="<%= pagy.next || pagy.last %>"><span class="fad fa-angle-double-right"></span></a></li>
+    <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.next || pagy.last %>"><span class="far fa-angle-double-right"></span></a></li>
   </ul>
 </nav>
 ```
@@ -325,9 +325,9 @@ The `paginator` partial is only rendered one time, so this one is easy: we have 
 {% tab title="Partial" %}
 ```markup
 <div id="paginator">
-  <nav class="d-flex justify-content-center my-4">
+  <nav class="d-flex justify-content-center">
     <ul class="pagination">
-      <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="fad fa-angle-double-left"></span></a></li>
+      <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="far fa-angle-double-left"></span></a></li>
       <% pagy.series.each do |item| %>
         <% if item == :gap %>
           <li class="page-item disabled"><a class="page-link" id="page_gap_li">...</a></li>
@@ -337,7 +337,7 @@ The `paginator` partial is only rendered one time, so this one is easy: we have 
           </li>
         <% end %>
       <% end %>
-      <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-reflex-root="#foo, .bar" data-page="<%= pagy.next || pagy.last %>"><span class="fad fa-angle-double-right"></span></a></li>
+      <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.next || pagy.last %>"><span class="far fa-angle-double-right"></span></a></li>
     </ul>
   </nav>
 </div>
