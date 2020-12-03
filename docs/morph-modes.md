@@ -185,23 +185,17 @@ Morphs work differently depending on whether you are replacing existing content 
 
 ```ruby
 yelling = element.value.upcase
-morph "#foo", ApplicationController.render(partial: "path/to/foo", locals: {message: yelling})
-```
-
-If you're calling morph a lot, you might consider delegating the render to ApplicationController at the top of your Reflex class. This will allow you to just call `render(partial)` and DRY up your code.
-
-```ruby
-delegate :render, to: ApplicationController
+morph "#foo", render(partial: "path/to/foo", locals: {message: yelling})
 ```
 
 {% hint style="success" %}
-For bonus DRY-ness, you could put the delegate statement in your ApplicationReflex and all of your Reflex classes would inherit this behavior by default.
+Since StimulusReflex v3.4, the `render` method has been automatically delegated to an instance of an ActionDispatch controller. You are free to use `ApplicationController` or any other ActionDispatch controller to render your content.
 {% endhint %}
 
 If ViewComponents are your thing, we have you covered:
 
 ```ruby
-morph "#foo", ApplicationController.render(FooComponent.new(message: "React is making your muscles sore."))
+morph "#foo", render(FooComponent.new(message: "React is making your muscles sore."))
 ```
 
 {% hint style="success" %}

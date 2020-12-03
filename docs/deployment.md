@@ -73,7 +73,11 @@ config.session_store :redis_session_store, {
 
 Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
 
-{% hint style="warning" %}
+{% hint style="danger" %}
+At the time of this writing, `hiredis-rb` does not support SSL. When you provision multiple Heroku Redis addons, it will give you a "color URL" and a `REDIS_TLS_URL` . You want to use the one _with_ the color, which works just fine without SSL.
+{% endhint %}
+
+{% hint style="success" %}
 You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - only Heroku assigns color-based instance names, for example.
 {% endhint %}
 
