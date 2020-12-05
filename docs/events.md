@@ -74,7 +74,7 @@ export default class extends ApplicationController {
 
 {% tab title="event\_reflex.rb" %}
 ```ruby
-class EventReflex < StimulusReflex::Reflex
+class EventReflex < ApplicationReflex
   def scroll(value)
     puts value
   end

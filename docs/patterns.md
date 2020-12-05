@@ -209,6 +209,10 @@ Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://ww
 
 ### Delegate render
 
+{% hint style="warning" %}
+Since StimulusReflex v3.4, this is now done automatically. This section will be removed when the next major release arrives.
+{% endhint %}
+
 If you are planning to render a lot of partials or ViewComponents in your Reflex action methods, you can delegate the `render` keyword to `ApplicationController`.
 
 {% code title="app/reflexes/application\_reflex.rb" %}
@@ -259,7 +263,7 @@ Now you can wrap your render calls in your new `with_locale` helper:
 ```ruby
 class ExampleReflex < ApplicationReflex
   def foo
-    morph "#foo", with_locale { ApplicationController.render(partial: "path/to/foo") }
+    morph "#foo", with_locale { render(partial: "path/to/foo") }
   end
 end
 ```
@@ -299,7 +303,7 @@ class UserReflex < ApplicationReflex
   def follow
     user = User.find(element.dataset[:user_id])
     Current.user.follow(user)
-    morph "#following", ApplicationController.render(partial: "users/following", locals: {user: Current.user})
+    morph "#following", render(partial: "users/following", locals: {user: Current.user})
   end
 end
 ```
@@ -308,6 +312,10 @@ end
 You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) app.
 
 ### Adding log tags
+
+{% hint style="warning" %}
+Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging). This section will be removed when the next release arrives.
+{% endhint %}
 
 You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
 
@@ -336,7 +344,7 @@ CableReady - which is included and available for use in your Reflex classes - ex
 class UserReflex < ApplicationReflex
   def profile
     user = User.find(element.dataset[:user_id])
-    morph dom_id(user), ApplicationController.render(partial: "users/profile", locals: {user: user})
+    morph dom_id(user), render(partial: "users/profile", locals: {user: user})
   end
 end
 ```
@@ -366,8 +374,7 @@ class Notification < ApplicationRecord
       selector: "#notification_dropdown",
       position: "afterbegin",
       html: html
-    )
-    cable_ready.broadcast
+    ).broadcast
   end
 end
 ```
