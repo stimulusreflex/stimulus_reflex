@@ -46,6 +46,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre4...v3.4.0.pre5)
 
+**Fixed bugs:**
+
+- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+
 **Closed issues:**
 
 - SR doesn't seem to handle redirects / 302s [\#376](https://github.com/hopsoft/stimulus_reflex/issues/376)
@@ -64,7 +68,6 @@
 
 **Fixed bugs:**
 
-- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
 - fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
