@@ -43,7 +43,7 @@ You can use additional data attributes to pass variables as part of your Reflex 
 
 It's a recommended **best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. `id` is unique in a valid DOM, and  this is how StimulusReflex locates the controller which called the Reflex after a morph operation.
 
-If you have multiple identical elements calling Reflex actions, no lifecycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
+If you have multiple identical elements calling Reflex actions, no life-cycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
 
 {% hint style="info" %}
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
@@ -106,7 +106,7 @@ Placing a `data-reflex="click->Foo#action"` attribute on your element does **not
 
 There doesn't need to be a `foo_controller.js` in order for you to call your `Foo` Reflex actions.
 
-It _is_ common use both `data-reflex` and `data-controller` at the same time, allowing you to create a `foo` Stimulus controller which extends `ApplicationController` and allowes you to define Reflex callback event handlers. We'll cover how this works in the [Lifecycle](https://docs.stimulusreflex.com/lifecycle) section.
+It _is_ common use both `data-reflex` and `data-controller` at the same time, allowing you to create a `foo` Stimulus controller which extends `ApplicationController` and allowes you to define Reflex callback event handlers. We'll cover how this works on the [Life-cycle](lifecycle.md) page.
 
 ## Calling a Reflex in a Stimulus controller
 
@@ -171,7 +171,7 @@ export default class extends ApplicationController {
 
 It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
 
-We'll go into much deeper detail on lifecycle callbacks on the [Lifecycle](https://docs.stimulusreflex.com/lifecycle) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
+We'll go into much deeper detail on life-cycle callbacks on the [Life-cycle](lifecycle.md) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
 
 {% hint style="warning" %}
 Halted Reflexes do not execute afterReflex callbacks on the server or client.
@@ -361,7 +361,7 @@ end
 
 ### Accessing `reflex_id`
 
-Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip lifecycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`. 
+Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`. 
 
 ```ruby
 class ExampleReflex < ApplicationReflex
@@ -409,7 +409,7 @@ CableReady has 22 operations for changing every aspect of your page, and you can
 
 StimulusReflex uses CableReady's `morph` for Page Morphs and some Selector Morphs, `inner_html` for Selector Morphs that don't use `morph` , and `dispatch_event` for Nothing Morphs, as well as aborted/halted Reflexes and sending errors that occur in a Reflex action.
 
-The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](https://docs.stimulusreflex.com/troubleshooting#morphing-sanity-checklist).
+The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist).
 
 ### Using CableReady inside a Reflex action
 
@@ -485,7 +485,7 @@ If you're making extensive use of StimulusReflex `morph` and CableReady operatio
 * Reflex action: a method in a Reflex class, called in response to activity in the browser. It has access to several special accessors containing all of the Reflex controller element's attributes
 * Reflex controller: a Stimulus controller that imports the StimulusReflex client library. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulusjs.org/reference/targets) in its DOM hierarchy
 * Reflex controller element: the DOM element upon which the `data-reflex` attribute is placed, which often has data attributes intended to be delivered to the server during a Reflex action
-* Morphs: the three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs](https://docs.stimulusreflex.com/morph-modes) page for more
+* Morphs: the three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs ](morph-modes.md)page for more
 * Operation: a CableReady concept, operations are "things CableReady can do" such as changing the DOM or updating an element. Multiple operations of different types can be queued together for later delivery by calling `broadcast`
 * Broadcast: operations are batched up by CableReady until a `broadcast` method is invoked, which immediately delivers all queued operations to one or multiple connected clients
 

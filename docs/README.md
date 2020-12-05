@@ -26,16 +26,16 @@ Developer happiness is not a catch-phrase. We are actively working to improve th
 
 As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
 
-* we completely overhauled the [client-side Reflex logging](https://docs.stimulusreflex.com/troubleshooting#client-side-logging) with per-Morph granularity
-* a brand new and shockingly customizable [server-side Reflex](https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging) **colorized logging** module
-* a new `finalize` [life-cycle stage](https://docs.stimulusreflex.com/lifecycle#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
-* support for lazily evaluated [signed and unsigned](https://docs.stimulusreflex.com/reflexes#signed-and-unsigned-global-id-accessors) Global ID to model instances
-* a special `cable_ready` method that [automatically broadcasts](https://docs.stimulusreflex.com/reflexes#using-cableready-inside-a-reflex-action) to the current user
+* we completely overhauled the [client-side Reflex logging](troubleshooting.md#client-side-logging) with per-Morph granularity
+* a brand new and shockingly customizable [server-side Reflex](troubleshooting.md#stimulusreflex-logging) **colorized logging** module
+* a new `finalize` [life-cycle stage](lifecycle.md#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
+* support for lazily evaluated [signed and unsigned](reflexes.md#signed-and-unsigned-global-id-accessors) Global ID to model instances
+* a special `cable_ready` method that [automatically broadcasts](reflexes.md#using-cableready-inside-a-reflex-action) to the current user
 * speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
-* an optional \(but recommended\) "[tab isolation](https://docs.stimulusreflex.com/reflexes#tab-isolation)" mode to restrict Reflexes to the current tab
+* an optional \(but recommended\) "[tab isolation](reflexes.md#tab-isolation)" mode to restrict Reflexes to the current tab
 * major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
-* StimulusReflex library configuration courtesy of our new [initializer](https://docs.stimulusreflex.com/setup#upgrading-package-versions-and-sanity) system
-* automatic support for mirroring DOM events with [jQuery events](https://docs.stimulusreflex.com/lifecycle#jquery-events), if jQuery is present
+* StimulusReflex library configuration courtesy of our new [initializer](setup.md#upgrading-package-versions-and-sanity) system
+* automatic support for mirroring DOM events with [jQuery events](lifecycle.md#jquery-events-1), if jQuery is present
 * JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7) drops from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲

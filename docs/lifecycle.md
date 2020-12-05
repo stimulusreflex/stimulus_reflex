@@ -2,7 +2,7 @@
 description: How to hook into Reflex activity... aka callbacks
 ---
 
-# Lifecycle
+# Life-cycle
 
 ## Server-Side Reflex Callbacks
 
@@ -85,7 +85,7 @@ StimulusReflex gives you the ability to inject custom JavaScript at five distinc
 6. **`finalize`** occurs immediately after all DOM manipulations are complete
 
 {% hint style="info" %}
-**Using lifecycle callback methods is not a requirement.**
+**Using life-cycle callback methods is not a requirement.**
 
 Think of them as power tools that can help you build more sophisticated results. 👷
 {% endhint %}
@@ -94,11 +94,11 @@ If you define a method with a name that matches what the library searches for, i
 
 There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
 
-StimulusReflex also emits lifecycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
+StimulusReflex also emits life-cycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
 
-### Generic Lifecycle Methods
+### Generic Life-cycle Methods
 
-StimulusReflex controllers automatically support five generic lifecycle callback methods. These methods fire for every Reflex action handled by the controller.
+StimulusReflex controllers automatically support five generic life-cycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -108,7 +108,7 @@ StimulusReflex controllers automatically support five generic lifecycle callback
 6. `finalizeReflex`
 
 {% hint style="warning" %}
-While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Lifecycle Methods](https://docs.stimulusreflex.com/lifecycle#custom-lifecycle-methods), which allow you to define different callbacks for every action.
+While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using Custom [Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
 {% endhint %}
 
 In this example, we update each anchor's text before invoking the server side Reflex:
@@ -136,11 +136,11 @@ export default class extends ApplicationController {
 ```
 {% endcode %}
 
-### Custom Lifecycle Methods
+### Custom Life-cycle Methods
 
-StimulusReflex controllers can define up to five custom lifecycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
+StimulusReflex controllers can define up to five custom life-cycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
 
-The Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following lifecycle callback methods:
+The Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following life-cycle callback methods:
 
 1. `beforePoke`
 2. `pokeSuccess`
@@ -177,7 +177,7 @@ export default class extends ApplicationController {
 Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
 
 {% hint style="info" %}
-**It's not required to implement all lifecycle methods.** Pick and choose which lifecycle callback methods make sense for your application. The answer is frequently **none**.
+**It's not required to implement all life-cycle methods.** Pick and choose which life-cycle callback methods make sense for your application. The answer is frequently **none**.
 {% endhint %}
 
 {% hint style="info" %}
@@ -185,7 +185,7 @@ Adding a declarative Reflex such as `Foo#action` to your element does **not** au
 
 This coupling would only add an unneccessary constraint, as you can call any Reflex from any Stimulus controller.
 
-If you want to run Reflex lifecycle callbacks on your element, you need to use `data-controller="foo"` to attach it.
+If you want to run Reflex life-cycle callbacks on your element, you need to use `data-controller="foo"` to attach it.
 
 You can use **both** `data-reflex` and `data-controller` at the same time.
 {% endhint %}
@@ -194,7 +194,7 @@ You can use **both** `data-reflex` and `data-controller` at the same time.
 
 #### Method Names
 
-Lifecycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will produce the following camel-cased lifecycle callback methods.
+Life-cycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will produce the following camel-cased life-cycle callback methods.
 
 1. `beforeDoStuff`
 2. `doStuffSuccess`
@@ -205,7 +205,7 @@ Lifecycle callback methods apply a naming convention based on your Reflex action
 
 #### Method Signatures
 
-Both generic and custom lifecycle callback methods share the same arguments:
+Both generic and custom life-cycle callback methods share the same arguments:
 
 * `beforeReflex(element, reflex, noop, reflexId)`
 * `reflexSuccess(element, reflex, noop, reflexId)`
@@ -222,11 +222,11 @@ Both generic and custom lifecycle callback methods share the same arguments:
 
 **reflexId** - a UUID4 or developer-provided unique identifier for each Reflex
 
-### Lifecycle Events
+### Life-cycle Events
 
 If you need to know when a Reflex method is called, but you're working outside of the Stimulus controller that initiated it, you can subscribe to receive DOM events.
 
-DOM events are limited to the generic lifecycle; developers can obtain information about which Reflex methods were called by inspecting the detail object when the event is captured.
+DOM events are limited to the generic life-cycle; developers can obtain information about which Reflex methods were called by inspecting the detail object when the event is captured.
 
 Events are dispatched on the same element that triggered the Reflex. Events bubble but cannot be cancelled.
 
@@ -268,7 +268,7 @@ These jQuery events have the same name and `details` accessors as the DOM events
 
 ### Promises
 
-Are you a hardcore JavaScript developer? A props power-lifter? Then you'll be pleased to know that in addition to lifecycle methods and events, StimulusReflex allows you to write promise resolver functions:
+Are you a hardcore JavaScript developer? A props power-lifter? Then you'll be pleased to know that in addition to life-cycle methods and events, StimulusReflex allows you to write promise resolver functions:
 
 ```javascript
 this.stimulate('Comments#create')
@@ -326,7 +326,7 @@ this.stimulate('Example#foo', { resolveLate: true }).then(() => {
 
 ## StimulusReflex Library Events
 
-In addition to the Reflex lifecycle mechanisms, the StimulusReflex client library emits its own set of handy DOM events which you can hook into and use in your applications.
+In addition to the Reflex life-cycle mechanisms, the StimulusReflex client library emits its own set of handy DOM events which you can hook into and use in your applications.
 
 * `stimulus-reflex:connected`
 * `stimulus-reflex:disconnected`

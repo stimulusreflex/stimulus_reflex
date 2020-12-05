@@ -4,13 +4,13 @@ description: Forms fly business class on StimulusReflex Airways ✈️
 
 # Working with HTML Forms
 
-When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](https://docs.stimulusreflex.com/quickstart#before-you-begin), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
+When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
 
 {% hint style="warning" %}
 Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
 {% endhint %}
 
-StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](https://docs.stimulusreflex.com/reflexes#inheriting-data-attributes-from-parent-elements). This leaves form submission in the cold, though... doesn't it? 🥶
+StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](reflexes.md#combined-data-attributes-with-stimulate). This leaves form submission in the cold, though... doesn't it? 🥶
 
 _Heck no!_ If a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form will be serialized and made available to the Reflex action method as the `params` accessor.
 
@@ -48,7 +48,7 @@ this.stimulate('Example#foo', { serializeForm: false })
 
 ## Working with the `params` accessor in your Reflex class
 
-The `params` accessor is available to your `before_reflex` `around_reflex` and `after_reflex` callbacks in your server-side Reflex class. You are also free to add additional business logic on the client using the Reflex [lifecycle callbacks](https://docs.stimulusreflex.com/lifecycle) in your Stimulus controllers.
+The `params` accessor is available to your `before_reflex` `around_reflex` and `after_reflex` callbacks in your server-side Reflex class. You are also free to add additional business logic on the client using the Reflex [life-cycle callbacks](lifecycle.md#server-side-reflex-callbacks) in your Stimulus controllers.
 
 The `params` accessor behaves as it does in a Rails controller, so you are free to lock it down and add nested models as you expect:
 

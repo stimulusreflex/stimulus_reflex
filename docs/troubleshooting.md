@@ -241,7 +241,7 @@ end
 
 ### Don't use form serialization as a replacement for Rails remote forms
 
-Developers who are new to and excited about StimulusReflex frequently start making plans to start using form serialization even though [they don't have a specific reason for doing so](https://docs.stimulusreflex.com/working-with-forms#form-submission).
+Developers who are new to and excited about StimulusReflex frequently start making plans to start using form serialization even though they [don't have a specific reason for doing so](working-with-forms.md).
 
 There are many good reasons to stick to Rails' form handling, the best one being that Rails is really good at it. Rails makes working with REST-ful resources really easy, with allowlist/blocklist functionality for deciding what attributes to process. There's lots of great gems and tools that augment Rails' form-handling systems that you largely give up, including the familiar magic of seeing POST and PATCH in your log files.
 
@@ -433,7 +433,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="info" %}
 If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 
-You can [setup webpack-dev-server to help](https://docs.stimulusreflex.com/patterns#use-webpack-dev-server-to-reload-after-reflex-changes), however.
+You can [setup webpack-dev-server to help](patterns.md#use-webpack-dev-server-to-reload-after-reflex-changes), however.
 {% endhint %}
 
 {% hint style="info" %}
@@ -453,7 +453,7 @@ It's important that you don't modify the hierarchy of your DOM while a Reflex ac
 {% endhint %}
 
 {% hint style="info" %}
-Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](https://docs.stimulusreflex.com/morph-modes#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](morph-modes.md#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
 {% endhint %}
 
 {% hint style="info" %}
@@ -477,7 +477,7 @@ StimulusReflex does not support using `redirect_to` in a Page Morph. If you try 
 {% endhint %}
 
 {% hint style="info" %}
-Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](https://docs.stimulusreflex.com/deployment#phusion-passenger) is correct.
+Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](deployment.md#nginx-passenger) is correct.
 {% endhint %}
 
 {% hint style="info" %}
@@ -489,7 +489,7 @@ Do you have your `config/cable.yml` set up properly? We strongly recommend that 
 {% endhint %}
 
 {% hint style="info" %}
-Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment).
+Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](troubleshooting.md#modifying-the-default-data-attribute-schema).
 {% endhint %}
 
 {% hint style="info" %}

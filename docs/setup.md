@@ -6,7 +6,7 @@ description: How to prepare your app to use StimulusReflex
 
 ## Command-Line Install
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](https://docs.stimulusreflex.com/setup#rails-5-2-support).
+StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**.
 
@@ -39,7 +39,7 @@ And that's it! You can start using StimulusReflex in your application.
 
 ## Manual Configuration
 
-Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](https://docs.stimulusreflex.com/setup#rails-5-2-support).
+Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
 {% hint style="warning" %}
 StimulusReflex requires Redis be installed and running. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
@@ -174,7 +174,7 @@ To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable packag
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 
-If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](https://docs.stimulusreflex.com/troubleshooting#rails-5-2-revisited)" on the Troubleshooting page.
+If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](troubleshooting.md#rails-5-2-revisited)" on the Troubleshooting page.
 {% endhint %}
 
 ## Polyfills for IE11

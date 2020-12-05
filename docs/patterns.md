@@ -10,7 +10,7 @@ In the course of creating StimulusReflex and using it to build production applic
 
 ### Application controller pattern
 
-You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
+You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up life-cycle callback methods for your entire application.
 
 {% tabs %}
 {% tab title="application\_controller.js" %}
@@ -54,7 +54,7 @@ If you need to override any methods on your Application controller, you can rede
 
 You might want to see how long your Reflex actions are taking to complete a round-trip, and without Ajax calls to monitor getting reliable metrics requires new approaches.
 
-We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
+We suggest making use of the `beforeReflex` and `afterReflex` life-cycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
 
 You can add this code to your desired Reflex controller. If you're making use of the ApplicationController pattern described above, all of your Reflexes will log their round-trip execution times.
 
@@ -100,7 +100,7 @@ body.wait, body.wait * {
 
 ### Autofocus text boxes
 
-If you are working with input elements in your application, you will quickly realize an unfortunate quirk of web browsers is that the `autofocus` attribute is only processed on the initial page load. If you want to implement a "click to edit" UI, you need to use a lifecycle callback method to make sure that the focus lands in the right place.
+If you are working with input elements in your application, you will quickly realize an unfortunate quirk of web browsers is that the `autofocus` attribute is only processed on the initial page load. If you want to implement a "click to edit" UI, you need to use a life-cycle callback method to make sure that the focus lands in the right place.
 
 Handling this problem for every action would be extremely tedious. Luckily we can make use of the `afterReflex` callback to inspect the element to see if it has the `autofocus` attribute and, if so, correctly set the focus on that element.
 
@@ -314,7 +314,7 @@ You can also set the Current object in the `connect` method of your `Connection`
 ### Adding log tags
 
 {% hint style="warning" %}
-Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging). This section will be removed when the next release arrives.
+Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](troubleshooting.md#stimulusreflex-logging). This section will be removed when the next release arrives.
 {% endhint %}
 
 You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
