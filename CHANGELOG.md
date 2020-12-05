@@ -139,7 +139,6 @@
 - ActionController::RoutingError with Rails 6 Engines [\#342](https://github.com/hopsoft/stimulus_reflex/issues/342)
 - Wrong input name parsing [\#321](https://github.com/hopsoft/stimulus_reflex/issues/321)
 - Stimulus' controllers are not reconnecting after reflex, why? [\#314](https://github.com/hopsoft/stimulus_reflex/issues/314)
-- Rendering issue [\#289](https://github.com/hopsoft/stimulus_reflex/issues/289)
 - Documentation Request for a Rails 6.x app with 5.2 defaults [\#265](https://github.com/hopsoft/stimulus_reflex/issues/265)
 
 **Merged pull requests:**
