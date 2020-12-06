@@ -87,6 +87,12 @@ class StimulusReflex::Reflex
       )
 
       env = connection.env.merge(mock_env)
+
+      StimulusReflex.configuration.middlewares.each do |middleware|
+        instance = middleware.new(Rails.application.routes)
+        instance.call(env)
+      end
+
       req = ActionDispatch::Request.new(env)
 
       path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
