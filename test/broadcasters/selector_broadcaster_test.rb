@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # require_relative "broadcaster_test_case"
 
 # class StimulusReflex::SelectorBroadcasterTest < StimulusReflex::BroadcasterTestCase
