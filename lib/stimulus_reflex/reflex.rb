@@ -88,11 +88,13 @@ class StimulusReflex::Reflex
 
       env = connection.env.merge(mock_env)
 
-      stack = Rails.application.middleware
+      if StimulusReflex.config.process_middleware
+        stack = Rails.application.middleware
 
-      if stack.respond_to?(:build)
-        stack = stack.build(Rails.application.routes)
-        stack.call(env)
+        if stack.respond_to?(:build)
+          stack = stack.build(Rails.application.routes)
+          stack.call(env)
+        end
       end
 
       req = ActionDispatch::Request.new(env)

@@ -17,4 +17,10 @@ StimulusReflex.configure do |config|
   # eg. if your connection is `identified_by :current_user` and your User model has an email attribute, you can access r.email (it will display `-` if the user isn't logged in)
 
   # config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
+
+  # Set `process_middleware` to `false` if StimulusReflex shouldn't process
+  # the Rails middleware stack before executing the reflex. This is useful if
+  # you don't need rack middleware processing and want to gain some performance.
+
+  # config.process_middleware = true
 end
