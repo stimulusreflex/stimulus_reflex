@@ -91,7 +91,7 @@ class StimulusReflex::Reflex
       stack = Rails.application.middleware
 
       if stack.respond_to?(:build)
-        stack = stack.build
+        stack = stack.build(Rails.application.routes)
         stack.call(env)
       end
 
