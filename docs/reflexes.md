@@ -403,6 +403,12 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 ⬆️ StimulusReflex is for **sending** commands. 📡  
 ⬇️ CableReady is for **receiving** updates. 👽
 
+{% hint style="info" %}
+A Reflex action is a reaction to a user action that changes server-side state and re-renders the current page \(or a subset of the current page\) for that particular user in the background, provided that they are still on the same page.
+
+A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
+{% endhint %}
+
 CableReady has 22 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
@@ -415,7 +421,7 @@ The reason some Selector morphs are sent via `inner_html` is that the content yo
 
 It's common for developers to use CableReady inside a Reflex action for all sorts of things, especially initiating client-side events which can be picked up by Stimulus controllers. Another pattern is to use Nothing Morphs that call CableReady operations.
 
-Inside of a Reflex class, `CableReady::Broadcaster` is already included, giving you access to the `dom_id` helper and a special version of the `cable_ready` method. If you call `cable_ready` in a Reflex action without specifying a stream or resource - in other words, **no brackets** - CableReady will piggyback on the StimulusReflex ActionCable channel.
+Inside of a Reflex class, `CableReady::Broadcaster` is **already included**, giving you access to the `dom_id` helper and a special version of the `cable_ready` method. If you call `cable_ready` in a Reflex action without specifying a stream or resource - in other words, **no brackets** - CableReady will piggyback on the StimulusReflex ActionCable channel.
 
 This means **you can automatically target the current user**, and if you're _only_ ever targeting the current user, you don't need to set up a channel for CableReady at all.
 
@@ -429,6 +435,10 @@ end
 ```
 
 Of course, you're still free to call `cable_ready` with a different stream or resource, if you need your update to go to a wider audience.
+
+{% hint style="danger" %}
+Do not include `CableReady::Broadcaster` in your Reflex classes. It's already present in the Reflex scope and including it again will cause errors.
+{% endhint %}
 
 ### When to use a StimulusReflex `morph` vs. a CableReady operation
 
