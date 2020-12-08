@@ -18,13 +18,13 @@ _Heck no!_ If a Reflex is called on a `form` element - or a **child** of that `f
 
 ## Modifying `params` before its sent to the server
 
-On the client, you can modify `params` in your `beforeReflex` callback by modifying  `element.reflexData` before it is sent to the server.
+On the client, you can modify `params` in your `beforeReflex` callback by modifying  `element.reflexData[reflexId]` before it is sent to the server.
 
 ```javascript
 export default class extends ApplicationController {
-  beforeReflex(element) {
-    const { params } = element.reflexData
-    element.reflexData.params = { ...params, foo: true, bar: false }
+  beforeReflex(element, reflex, noop, reflexId) {
+    const { params } = element.reflexData[reflexId]
+    element.reflexData[reflexId].params = { ...params, foo: true, bar: false }
   }
 }
 ```
@@ -33,8 +33,9 @@ Or, if you prefer working with events:
 
 ```javascript
 document.addEventListener('stimulus-reflex:before', event => {
-  const { params } = event.target.reflexData
-  event.target.reflexData.params = { ...params, foo: true, bar: false }
+  const reflexId = event.detail.reflexId
+  const { params } = event.target.reflexData[reflexId]
+  event.target.reflexData[reflexId].params = { ...params, foo: true, bar: false }
 })
 ```
 

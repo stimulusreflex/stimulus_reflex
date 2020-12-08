@@ -249,6 +249,8 @@ document.addEventListener('stimulus-reflex:before', event => {
   event.detail.reflex // the name of the invoked Reflex
   event.detail.reflexId // the UUID4 or developer-provided unique identifier for each Reflex
   event.detail.controller // the controller that invoked the stimuluate method
+  event.target.reflexData[event.detail.reflexId] // the data payload that will be delivered to the server
+  event.target.reflexData[event.detail.reflexId].params // the serialized form data for this Reflex
 })
 ```
 
