@@ -6,9 +6,10 @@ require "stimulus_reflex/version"
 namespace :stimulus_reflex do
   desc "Install StimulusReflex in this application"
   task install: :environment do
-    system "bundle exec rails webpacker:install:stimulus"
+    system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
     system "yarn add stimulus_reflex@#{gem_version}"
+    system "bundle exec rails webpacker:install:stimulus"
     main_folder = defined?(Webpacker) ? Webpacker.config.source_path.to_s.gsub("#{Rails.root}/", "") : "app/javascript"
 
     FileUtils.mkdir_p Rails.root.join("#{main_folder}/controllers"), verbose: true
@@ -39,7 +40,7 @@ namespace :stimulus_reflex do
 
     unless lines.find { |line| line.start_with?("import controller") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
-      lines.insert lines.index(matches.last).to_i + 1, "import controller from './application_controller'\n"
+      lines.insert lines.index(matches.last).to_i + 1, "import controller from '../controllers/application_controller'\n"
     end
 
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
@@ -67,6 +68,10 @@ namespace :stimulus_reflex do
     system "bundle exec rails generate stimulus_reflex example"
     puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
     system "bundle exec rails generate stimulus_reflex:config"
-    system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
+
+    puts
+    puts "StimulusReflex and CableReady have been successfully installed!"
+    puts "Go to https://docs.stimulusreflex.com/quickstart if you need help getting started."
+    puts
   end
 end
