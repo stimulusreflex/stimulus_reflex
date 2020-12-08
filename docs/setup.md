@@ -10,24 +10,10 @@ StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent libra
 
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**.
 
-{% tabs %}
-{% tab title="New projects" %}
-```bash
-rails new myproject --webpack=stimulus
-cd myproject
+```ruby
 bundle add stimulus_reflex
 bundle exec rails stimulus_reflex:install
 ```
-{% endtab %}
-
-{% tab title="Existing projects" %}
-```
-bundle exec rails webpacker:install:stimulus
-bundle add stimulus_reflex
-bundle exec rails stimulus_reflex:install
-```
-{% endtab %}
-{% endtabs %}
 
 {% hint style="warning" %}
 StimulusReflex requires Redis be installed and running. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
@@ -51,7 +37,7 @@ First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.or
 bundle exec rails webpacker:install:stimulus
 bundle add stimulus_reflex
 yarn add stimulus_reflex
-rails dev:cache
+rails dev:cache # caching needs to be enabled
 bundle exec rails generate stimulus_reflex:config
 ```
 
