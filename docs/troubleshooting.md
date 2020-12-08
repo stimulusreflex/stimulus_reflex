@@ -431,6 +431,12 @@ Do you have any more weird edge cases? Please let us know!
 ## Flight Safety Card
 
 {% hint style="info" %}
+The [StimulusJS installation instructions](https://stimulusjs.org/handbook/installing#using-webpack) recommend requiring your controllers in your application pack; don't do this. Webpacker will create an `index.js` in your `app/javascript/controllers` that you should import into your application pack.
+
+Don't ever require your Stimulus controllers more than once.
+{% endhint %}
+
+{% hint style="info" %}
 If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 
 You can [setup webpack-dev-server to help](patterns.md#use-webpack-dev-server-to-reload-after-reflex-changes), however.
