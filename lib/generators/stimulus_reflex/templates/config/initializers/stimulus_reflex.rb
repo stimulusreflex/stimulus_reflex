@@ -15,15 +15,15 @@ StimulusReflex.configure do |config|
   # Available colors: red, green, yellow, blue, magenta, cyan, white
   # You can also use attributes from your ActionCable Connection's identifiers that resolve to valid ActiveRecord models
   # eg. if your connection is `identified_by :current_user` and your User model has an email attribute, you can access r.email (it will display `-` if the user isn't logged in)
+  # Learn more at: https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging
 
   # config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
-  # StimulusReflex uses it's own middleware stack. If you need a middleware to
-  # be executed on every reflex register them here. It works the same way as
-  # registering a rack middleware in Rails.
+  # Optimized for speed, StimulusReflex doesn't enable Rack middleware by default.
+  # If you are using Page Morphs and your app uses Rack middleware to rewrite part of the request path, you must enable those middleware modules in StimulusReflex.
   #
-  # Learn more about registering rack middleware in Rails here:
-  # https://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack
+  # Learn more about registering Rack middleware in Rails here: https://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack
 
-  # config.middleware.use YourRackMiddleware
+  # config.middleware.use FirstRackMiddleware
+  # config.middleware.use SecondRackMiddleware
 end
