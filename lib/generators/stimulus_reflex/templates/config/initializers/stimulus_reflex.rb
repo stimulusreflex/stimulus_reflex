@@ -18,9 +18,12 @@ StimulusReflex.configure do |config|
 
   # config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
-  # Set `process_middleware` to `false` if StimulusReflex shouldn't process
-  # the Rails middleware stack before executing the reflex. This is useful if
-  # you don't need rack middleware processing and want to gain some performance.
+  # StimulusReflex uses it's own middleware stack. If you need a middleware to
+  # be executed on every reflex register them here. It works the same way as
+  # registering a rack middleware in Rails.
+  #
+  # Learn more about registering rack middleware in Rails here:
+  # https://guides.rubyonrails.org/rails_on_rack.html#configuring-middleware-stack
 
-  # config.process_middleware = true
+  # config.middleware.use YourRackMiddleware
 end
