@@ -60,18 +60,18 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
             initializer_path = Rails.root.join("config", "initializers", "stimulus_reflex.rb")
 
             puts <<~NOTE
-              \e[33mNOTE: It looks like we couldn't re-render the page because we couldn't find a matching route.
-              If you are using rack middleware to rewrite part of the request path make sure you also configured
-              the middleware accordingly in the StimulusReflex initializer.
-              The initializer should be located at #{initializer_path}.
-              If it doesn't exist you can generate it with:
+              \e[33mNOTE: StimulusReflex failed to locate a matching route and could not re-render the page.
+
+              If your app uses Rack middleware to rewrite part of the request path, you must enable those middleware modules in StimulusReflex.
+              The StimulusReflex initializer should be located at #{initializer_path}, or you can generate it with:
 
                 $ bundle exec rails generate stimulus_reflex:config
 
-              Configure the middleware in your initializer:
+              Configure any required middleware:
 
                 StimulusReflex.configure do |config|
-                  config.middleware.use YourRackMiddleware
+                  config.middleware.use FirstRackMiddleware
+                  config.middleware.use SecondRackMiddleware
                 end\e[0m
 
             NOTE
