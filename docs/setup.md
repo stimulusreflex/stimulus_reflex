@@ -41,6 +41,10 @@ bundle add stimulus_reflex
 bundle exec rails generate stimulus_reflex:config
 ```
 
+{% hint style="info" %}
+StimulusReflex happily supports both Stimulus v1.1 and v2.
+{% endhint %}
+
 We need to modify our Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer. A new websocket connection is created if the consumer isn't found.
 
 {% tabs %}

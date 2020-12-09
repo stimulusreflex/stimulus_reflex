@@ -34,8 +34,12 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 * speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
 * an optional \(but recommended\) "[tab isolation](reflexes.md#tab-isolation)" mode to restrict Reflexes to the current tab
 * major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
+* `render` is now automatically delegated to the current page's controller
 * StimulusReflex library configuration courtesy of our new [initializer](setup.md#upgrading-package-versions-and-sanity) system
+* opt-in Rack middleware support for Page Morphs
 * automatic support for mirroring DOM events with [jQuery events](lifecycle.md#jquery-events-1), if jQuery is present
+* drop-in [Stimulus 2](https://github.com/stimulusjs/stimulus/releases/tag/v2.0.0) support
+* warnings to alert you if your caching is off or your gem+npm versions [don't match](setup.md#upgrading-package-versions-and-sanity)
 * JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7) drops from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
