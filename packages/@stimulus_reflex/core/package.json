@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.3.0"
+    "@rails/actioncable": ">= 6.0",
+    "cable_ready": ">= 4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -30,7 +31,7 @@
     "jsdom": "^16.0.1",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0",
-    "stimulus": "^1.1.1"
+    "stimulus": ">= 1.1"
   },
   "publishConfig": {
     "access": "public"

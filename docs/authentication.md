@@ -6,6 +6,10 @@ description: How to secure your StimulusReflex application
 
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
+{% hint style="info" %}
+Since StimulusReflex v3.4, there is now an additional concept that you should understand - [Tab Isolation](reflexes.md#tab-isolation) - which is adjacent to but not the same as authentication. Authentication is about who sees what, while Tab Isolation is about what **you** see if you open the same thing, twice.
+{% endhint %}
+
 ## Authentication Schemes
 
 ### Encrypted Session Cookies
@@ -137,7 +141,7 @@ Now you're free to delegate `current_user` to the ActionCable `connection`.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
@@ -266,7 +270,7 @@ Finally, delegate `current_user` to the ActionCable `connection` as you would in
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
@@ -294,7 +298,7 @@ While there is no user concept in this scenario, you can still access the visito
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   delegate :uuid, to: :connection
 end
 ```
@@ -405,7 +409,7 @@ If you're using Pundit to safeguard data from being accessed by bad actors and u
 
 #### Explitic policy validation
 
-You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](https://docs.stimulusreflex.com/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** lifecycle event.
+You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](reflexes.md#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** life-cycle event.
 
 The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 

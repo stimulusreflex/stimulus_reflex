@@ -65,16 +65,27 @@ config.session_store :redis_session_store, {
     expire_after: 1.year,
     ttl: 1.year,
     key_prefix: "app:session:",
-    url: ENV.fetch("HEROKU_REDIS_MAROON_URL"),
+    url: ENV.fetch("HEROKU_REDIS_MAROON_URL")
   }
+}
 ```
 {% endcode %}
 
-Heroku will give all Redis instances after the first a distinct URL based on a color. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
-
-{% hint style="warning" %}
-You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - only Heroku assigns color-based instance names, for example.
+{% hint style="success" %}
+You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - **only Heroku Redis assigns color-based instance names**, for example.
 {% endhint %}
+
+Heroku will give all Redis instances after the first a distinct URL. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+
+### Heroku Redis Secure URLs
+
+At the time of this writing, the `hiredis` gem does not support SSL. When you provision multiple Heroku Redis addons at the "Hobby" tier, it will give you a "color URL" and a REDIS\_TLS\_URL . You need to use the **non-TLS** one which works just fine without SSL.
+
+If you plan to use the paid "Premium" tier Heroku Redis addons, they use Redis 6 by default and TLS becomes mandatory. Until such time as `hiredis` supports SSL, you will need to create your addon instance by specifying that Redis 5 is to be used:
+
+```bash
+heroku addons:create heroku-redis:premium-0 --version 5
+```
 
 ## Cloudflare DNS
 
@@ -107,7 +118,9 @@ Please note that **the above is not a complete document**; it's just the fragmen
 
 ## Set your `default_url_options` for each environment
 
-When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build url paths based on the current application environment.
+When you are using Selector Morphs, it is very common to use `ApplicationController.render()` to re-render a partial to replace existing content. It is advisable to give ActionDispatch enough information about your environment that it can pass the right values to any helpers that need to build URL paths based on the current application environment.
+
+If your helper is generating **example.com** URLs, this is for you.
 
 {% tabs %}
 {% tab title="Development" %}
@@ -126,6 +139,14 @@ config.action_controller.default_url_options = {host: "stimulusreflex.com"}
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+Similarly, if you need URL helpers in your mailers:
+
+{% code title="config/environments/development.rb" %}
+```ruby
+config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+```
+{% endcode %}
 
 ## AnyCable
 

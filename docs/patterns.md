@@ -10,7 +10,7 @@ In the course of creating StimulusReflex and using it to build production applic
 
 ### Application controller pattern
 
-You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up lifecycle callback methods for your entire application.
+You can make use of JavaScript's class inheritance to set up an Application controller that will serve as the foundation for all of your StimulusReflex controllers to build upon. This not only reduces boilerplate, but it's also a convenient way to set up life-cycle callback methods for your entire application.
 
 {% tabs %}
 {% tab title="application\_controller.js" %}
@@ -54,7 +54,7 @@ If you need to override any methods on your Application controller, you can rede
 
 You might want to see how long your Reflex actions are taking to complete a round-trip, and without Ajax calls to monitor getting reliable metrics requires new approaches.
 
-We suggest making use of the `beforeReflex` and `afterReflex` lifecycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
+We suggest making use of the `beforeReflex` and `afterReflex` life-cycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
 
 You can add this code to your desired Reflex controller. If you're making use of the ApplicationController pattern described above, all of your Reflexes will log their round-trip execution times.
 
@@ -100,7 +100,7 @@ body.wait, body.wait * {
 
 ### Autofocus text boxes
 
-If you are working with input elements in your application, you will quickly realize an unfortunate quirk of web browsers is that the `autofocus` attribute is only processed on the initial page load. If you want to implement a "click to edit" UI, you need to use a lifecycle callback method to make sure that the focus lands in the right place.
+If you are working with input elements in your application, you will quickly realize an unfortunate quirk of web browsers is that the `autofocus` attribute is only processed on the initial page load. If you want to implement a "click to edit" UI, you need to use a life-cycle callback method to make sure that the focus lands in the right place.
 
 Handling this problem for every action would be extremely tedious. Luckily we can make use of the `afterReflex` callback to inspect the element to see if it has the `autofocus` attribute and, if so, correctly set the focus on that element.
 
@@ -209,6 +209,10 @@ Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://ww
 
 ### Delegate render
 
+{% hint style="warning" %}
+Since StimulusReflex v3.4, this is now done automatically. This section will be removed when the next major release arrives.
+{% endhint %}
+
 If you are planning to render a lot of partials or ViewComponents in your Reflex action methods, you can delegate the `render` keyword to `ApplicationController`.
 
 {% code title="app/reflexes/application\_reflex.rb" %}
@@ -259,7 +263,7 @@ Now you can wrap your render calls in your new `with_locale` helper:
 ```ruby
 class ExampleReflex < ApplicationReflex
   def foo
-    morph "#foo", with_locale { ApplicationController.render(partial: "path/to/foo") }
+    morph "#foo", with_locale { render(partial: "path/to/foo") }
   end
 end
 ```
@@ -299,7 +303,7 @@ class UserReflex < ApplicationReflex
   def follow
     user = User.find(element.dataset[:user_id])
     Current.user.follow(user)
-    morph "#following", ApplicationController.render(partial: "users/following", locals: {user: Current.user})
+    morph "#following", render(partial: "users/following", locals: {user: Current.user})
   end
 end
 ```
@@ -308,6 +312,10 @@ end
 You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) app.
 
 ### Adding log tags
+
+{% hint style="warning" %}
+Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](troubleshooting.md#stimulusreflex-logging). This section will be removed when the next release arrives.
+{% endhint %}
 
 You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
 
@@ -336,7 +344,7 @@ CableReady - which is included and available for use in your Reflex classes - ex
 class UserReflex < ApplicationReflex
   def profile
     user = User.find(element.dataset[:user_id])
-    morph dom_id(user), ApplicationController.render(partial: "users/profile", locals: {user: user})
+    morph dom_id(user), render(partial: "users/profile", locals: {user: user})
   end
 end
 ```
@@ -366,8 +374,7 @@ class Notification < ApplicationRecord
       selector: "#notification_dropdown",
       position: "afterbegin",
       html: html
-    )
-    cable_ready.broadcast
+    ).broadcast
   end
 end
 ```
@@ -379,6 +386,10 @@ One Rails mechanism that you might use less in a StimulusReflex application is t
 You'll want to experiment with other, more contemporary feedback mechanisms to provide field validations and event notification functionality. An example would be the Facebook notification widget, or a dedicated notification drop-down that is part of your site navigation.
 
 Clever use of CableReady broadcasts when ActiveJobs complete or models update is likely to produce a cleaner reactive surface for status information.
+
+With all of those caveats established, Flash isn't dead, yet! Nate Hopkins has [shared his pattern](https://gist.github.com/leastbad/48466c8f16cbd3bc6a192666629a6bf5) for working with Rails Flash in a StimulusReflex project.
+
+You can access the `ActionDispatch::Flash::FlashHash` for the current request via the `flash` accessor inside of a Reflex action.
 
 ### Use `webpack-dev-server` to reload after Reflex changes
 
@@ -400,130 +411,4 @@ environment.config.devServer.contentBase = [
 module.exports = environment.toWebpackConfig()
 ```
 {% endcode %}
-
-### Chained Reflexes for long-running actions
-
-{% hint style="danger" %}
-This concept was interesting but outdated and will soon be removed from this documentation. It was never a great idea to spin up threads in this manner, the payload expected from the client has changed, and this approach did not fire client callbacks.
-
-If you need to respond to long-running actions, your best strategy is to **use ActionCable jobs to emit CableReady broadcasts**.
-{% endhint %}
-
-Ideally, you want your Reflex action methods to be as fast as possible. Otherwise, no amount of client-side magic will cover for the fact that your app feels slow. If your round-trip click-to-redraw time is taking more than 300ms, people will describe the experience as sluggish. We can optimize our queries, make use of Russian Doll caching, and employ many other performance tricks in the app... but what if we rely on external, 3rd party services? Some tasks just take time, and for those situations, we **wait for it**:
-
-{% tabs %}
-{% tab title="example\_reflex.rb" %}
-```ruby
-  def wait_for_it(target)
-    if block_given?
-      Thread.new do
-        @channel.receive({
-          "target" => "#{self.class}##{target}",
-          "args" => [yield],
-          "url" => url,
-          "attrs" => element.attributes.to_s,
-          "selectors" => selectors,
-        })
-      end
-    end
-  end
-```
-{% endtab %}
-{% endtabs %}
-
-This is code that you can insert into the bottom of your Reflex classes. It might look a bit arcane, but **it allows our Reflex action methods to call other Reflex actions after their work is complete**.
-
-Let's explore this with a contrived example. When the page first loads, we see a button. If you click the button, it hides the button and displays a "Waiting" message while the server calls a slow API. When the API call comes back, it updates the page with the result.
-
-{% tabs %}
-{% tab title="index.html.erb" %}
-```text
-<div data-controller="example">
-  <% case @api_status %>
-  <% when :loading %>
-    <em>Waiting...</em>
-  <% when :ready %>
-    <strong>@api_response</strong>
-  <% else %>
-    <button data-reflex="click->Example#api">Call API</button>
-  <% end %>
-</div>
-```
-{% endtab %}
-{% endtabs %}
-
-As you can see, we're following all of the proper StimulusReflex naming conventions; we have defined a simple component that has an `example` Stimulus controller defined. The button declares that it will call the `api` Reflex action of our `ExampleReflex` class on the server.
-
-Since there is no `@api_status` instance variable during the initial page load, the case statement defaults to the `else` case which is our initial view state. Unfortunately, this might look visually confusing at first.
-
-{% hint style="success" %}
-If you really want to ditch the `else` you can define an initial state in your Rails controller:
-
-```ruby
-  def index
-    @api_status ||= :default
-  end
-```
-
-Now, you can refactor your view template like this:
-
-```ruby
-<div data-controller="example">
-  <% case @api_status %>
-  <% when :default %>
-    <button data-reflex="click->Example#api">Call API</button>
-  <% when :loading %>
-    <em>Waiting...</em>
-  <% when :ready %>
-    <strong>@api_response</strong>
-  <% end %>
-</div>
-```
-
-We've got your back.
-{% endhint %}
-
-Now, let's revisit our `ExampleReflex` class. When the user clicks the button, it calls our `api` action. The `@api_status` is set to `:loading` and `wait_for_it` gets called specifying the `success` action as the callback. Since `wait_for_it` operates asynchronously in its own thread, the action immediately sends the template back to the client to notify them that a slow process has started.
-
-{% tabs %}
-{% tab title="example\_reflex.rb" %}
-```ruby
-  def api
-    @api_status = :loading
-    wait_for_it(:success) do
-      sleep 3 # DON'T EVER ACTUALLY DO THIS IRL
-      "Worth the wait!"
-    end
-  end
-
-  def success(response)
-    @api_status = :ready
-    @api_response = response
-  end
-
-  private
-
-  def wait_for_it(target)
-    return unless respond_to? target
-    if block_given?
-      Thread.new do
-        channel.receive({
-          "target" => "#{self.class}##{target}",
-          "args" => [yield],
-          "url" => url,
-          "attrs" => element.attributes.to_h,
-          "selectors" => selectors,
-        })
-      end
-    end
-  end
-```
-{% endtab %}
-{% endtabs %}
-
-As you can see, we're only pretending to call an API for this example. **Do not call `sleep` in a production Ruby web application**. `sleep` tells your web server to stop dreaming of new possibilities. **However**, assuming that you're the only person on your **development** machine, you'll see that after three seconds, a second Reflex action is triggered and delivered to the browser over the websocket connection.
-
-{% hint style="success" %}
-This is one of the coolest things about websockets; you can respond many times to a single request, or not at all. It's an entirely different mental model than Ajax and HTTP.
-{% endhint %}
 

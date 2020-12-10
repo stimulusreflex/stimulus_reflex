@@ -12,7 +12,7 @@ module StimulusReflex
           match = fragment.at_css(selector)
           if match.present?
             operations << [selector, :morph]
-            cable_ready[stream_name].morph(
+            cable_ready.morph(
               selector: selector,
               html: match.inner_html,
               children_only: true,
@@ -23,7 +23,7 @@ module StimulusReflex
             )
           else
             operations << [selector, :inner_html]
-            cable_ready[stream_name].inner_html(
+            cable_ready.inner_html(
               selector: selector,
               html: fragment.to_html,
               stimulus_reflex: data.merge({

@@ -13,7 +13,7 @@ module StimulusReflex
       selectors.each do |selector|
         operations << [selector, :morph]
         html = document.css(selector).inner_html
-        cable_ready[stream_name].morph(
+        cable_ready.morph(
           selector: selector,
           html: html,
           children_only: true,
@@ -23,6 +23,7 @@ module StimulusReflex
           })
         )
       end
+
       cable_ready.broadcast
     end
 

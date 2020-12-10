@@ -56,12 +56,20 @@ export default class extends ApplicationController {
   // }
 
   // danceSuccess(element, reflex, noop, reflexId) {
-  //   element.innerText = 'Danced like no one was watching! Was someone watching?'
+  //   element.innerText = '\nDanced like no one was watching! Was someone watching?'
   // }
 
   // danceError(element, reflex, error, reflexId) {
   //   console.error('danceError', error);
-  //   element.innerText = "Couldn't dance!"
+  //   element.innerText = "\nCouldn\'t dance!"
+  // }
+
+  // afterDance(element, reflex, noop, reflexId) {
+  //   element.innerText = '\nWhatever that was, it\'s over now.'
+  // }
+
+  // finalizeDance(element, reflex, noop, reflexId) {
+  //   element.innerText = '\nNow, the cleanup can begin!'
   // }
 <% end -%>
 <% actions.each do |action| -%>
@@ -83,6 +91,10 @@ export default class extends ApplicationController {
 
   // <%= "after_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
   //   console.log("after <%= action %>", element, reflex, reflexId)
+  // }
+
+  // <%= "finalize_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.log("finalize <%= action %>", element, reflex, reflexId)
   // }
 <%= "\n" unless action == actions.last -%>
 <% end -%>

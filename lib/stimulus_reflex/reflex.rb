@@ -5,7 +5,6 @@ ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :c_xpath, 
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include ActiveSupport::Callbacks
-  include CableReady::Broadcaster
 
   define_callbacks :process, skip_after_callbacks_if_terminated: true
 
@@ -45,14 +44,16 @@ class StimulusReflex::Reflex
     end
   end
 
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
-  delegate :flash, :session, to: :request
+  delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, to: :client_attributes
+  delegate :render, to: :controller_class
+  delegate :dom_id, to: "ActionView::RecordIdentifier"
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
@@ -64,6 +65,7 @@ class StimulusReflex::Reflex
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
     self.params
   end
 
@@ -114,11 +116,11 @@ class StimulusReflex::Reflex
 
   def controller
     @controller ||= begin
-      request.controller_class.new.tap do |c|
+      controller_class.new.tap do |c|
         c.instance_variable_set :"@stimulus_reflex", true
         instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
-        c.request = request
-        c.response = ActionDispatch::Response.new
+        c.set_request! request
+        c.set_response! controller_class.make_response!(request)
       end
     end
   end

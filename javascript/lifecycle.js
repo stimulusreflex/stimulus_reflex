@@ -1,4 +1,6 @@
 import { camelize } from './utils'
+import { findElement, extractElementAttributes } from './attributes'
+import Debug from './debug'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
@@ -14,6 +16,7 @@ import { camelize } from './utils'
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
   if (!element || !element.reflexData[reflexId]) return
+
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target
   const reflexMethodName = reflex.split('#')[1]
@@ -37,7 +40,7 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
@@ -47,16 +50,16 @@ const invokeLifecycleMethod = (stage, element, reflexId) => {
       controller,
       element,
       reflex,
-      element.reflexError,
+      element.reflexError[reflexId],
       reflexId
     )
   }
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    delete element.reflexController[reflexId]
-    delete element.reflexData[reflexId]
-    delete element.reflexError
-    delete reflexes[reflexId]
+    Reflect.deleteProperty(element.reflexController, reflexId)
+    Reflect.deleteProperty(element.reflexData, reflexId)
+    Reflect.deleteProperty(element.reflexError, reflexId)
+    Reflect.deleteProperty(reflexes, reflexId)
   }
 }
 
@@ -125,18 +128,53 @@ document.addEventListener(
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 export const dispatchLifecycleEvent = (stage, element, reflexId) => {
-  if (!element) return
-  if (!element.reflexData) element.reflexData = {}
+  if (!element) {
+    if (Debug.enabled && !reflexes[reflexId].warned) {
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" or later life-cycle methods on the element which triggered the Reflex. The element is no longer present in the DOM. Could you move the Reflex action to an element higher in your DOM?`
+      )
+      reflexes[reflexId].warned = true
+    }
+    return
+  }
+
+  const reflexData = element.reflexData || {}
+  const reflexController = element.reflexController || {}
+  const reflexError = element.reflexError || {}
+  const oldElement = element
+
+  if (!document.body.contains(element)) {
+    const attrs = extractElementAttributes(element)
+    element = findElement(attrs)
+
+    if (Debug.enabled)
+      console.warn(
+        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all life-cycle methods to be executed, move the Reflex action to an element higher in your DOM.`
+      )
+  }
+
+  if (!element) {
+    if (Debug.enabled && !reflexes[reflexId].warned) {
+      console.warn(
+        `StimulusReflex was not able execute the "${stage}" or later life-cycle methods on the element which triggered the Reflex. The following element is no longer present in the DOM: `,
+        oldElement
+      )
+      reflexes[reflexId].warned = true
+    }
+    return
+  }
+
+  element.reflexData = reflexData
+  element.reflexController = reflexController
+  element.reflexError = reflexError
+
   const { target } = element.reflexData[reflexId] || {}
+  const { controller } = element.reflexController[reflexId] || {}
+  const event = `stimulus-reflex:${stage}`
+  const detail = { reflex: target, controller, reflexId }
+
   element.dispatchEvent(
-    new CustomEvent(`stimulus-reflex:${stage}`, {
-      bubbles: true,
-      cancelable: false,
-      detail: {
-        reflex: target,
-        controller: element.reflexController[reflexId],
-        reflexId
-      }
-    })
+    new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
+  if (window.jQuery) window.jQuery(element).trigger(event, detail)
 }

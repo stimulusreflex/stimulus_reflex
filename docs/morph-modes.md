@@ -20,7 +20,7 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers%20%281%29.jpg)
+![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers.jpg)
 
 | What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
 | :--- | :--- | :--- |
@@ -71,9 +71,11 @@ Here is a simple example: the user is presented with a text box. Anything they t
 
 {% tab title="example\_reflex.rb" %}
 ```ruby
+class ExampleReflex < ApplicationReflex
   def words
     @words = element[:value]
   end
+end
 ```
 {% endtab %}
 {% endtabs %}
@@ -179,36 +181,26 @@ There's no sugar coating the fact that there's a happy path for all of the typic
 
 ### Intelligent defaults
 
-Morphs work differently depending on whether you are replacing existing content with a new version or something entirely new. This allows us to intelligently re-render partials and ViewComponents based on data that has been changed in the Reflex action.
+**Morphs work differently depending on whether you are replacing existing content with a new version or something entirely new.** This allows us to intelligently re-render partials and ViewComponents based on data that has been changed in the Reflex action.
 
 ```ruby
 yelling = element.value.upcase
-morph "#foo", ApplicationController.render(partial: "path/to/foo", locals: {message: yelling})
-```
-
-If you're calling morph a lot, you might consider delegating the render to ApplicationController at the top of your Reflex class. This will allow you to just call `render(partial)` and DRY up your code.
-
-```ruby
-delegate :render, to: ApplicationController
+morph "#foo", render(partial: "path/to/foo", locals: {message: yelling})
 ```
 
 {% hint style="success" %}
-For bonus DRY-ness, you could put the delegate statement in your ApplicationReflex and all of your Reflex classes would inherit this behavior by default.
+Since StimulusReflex v3.4, `render` has been delegated to the controller class responsible for rendering the current page. Of course, you're still free to use `ApplicationController` or any other ActionDispatch controller to render your content.
+
+You'll have access to all the same helpers that you would in a normal Rails HTTP request and the subsequent SSR handling of it.
 {% endhint %}
 
 If ViewComponents are your thing, we have you covered:
 
 ```ruby
-morph "#foo", ApplicationController.render(FooComponent.new(message: "React is making your muscles sore."))
+morph "#foo", render(FooComponent.new(message: "React is making your muscles sore."))
 ```
 
-{% hint style="success" %}
-When you're using `morph` in a production application, it's a good habit to use the controller that is associated with the thing you're rendering, just as way to remind your future self which resource you're operating on.
-
-If you're rendering the `users/profile` partial, you might consider using `UsersController.render` instead of `ApplicationController.render` so that in six months, you really can feel smarter.
-{% endhint %}
-
-The `foo` partial is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
+The `foo` partial \(listed in the [Tutorial ](morph-modes.md#tutorial)section above\) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
 
 * it has a **single** top-level container element with the same CSS selector as the target
 * inside that container element is another [element node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), **not a text node**
@@ -257,7 +249,105 @@ Ultimately, we've optimized for two primary use cases for morph functionality:
 1. Updating a partial or ViewComponent to reflect a state change.
 2. Updating a container element with a new simple value or HTML fragment.
 
-If you're trying to do something not covered by the above: tell us about it on Discord, consult the list of gotchas and exceptions below, and consider calling CableReady\#outer\_html directly in your Reflex.
+### Real-world example: Pagy refactoring
+
+If you're doing pagination in Rails, [pagy](https://github.com/ddnexus/pagy) is the tool for the job. pagy works great with StimulusReflex, Bootstrap and FontAwesome:
+
+{% tabs %}
+{% tab title="View" %}
+```markup
+<div id="paginator"><%= render partial: "paginator", locals: {pagy: @pagy} %></div>
+<div id="posts"><%= render @posts %></div>
+```
+{% endtab %}
+
+{% tab title="Controller" %}
+```ruby
+def index
+  @pagy, @posts = pagy(Post.all, page: 1)
+end
+```
+{% endtab %}
+
+{% tab title="Reflex" %}
+```ruby
+class PagyReflex < ApplicationReflex
+  include Pagy::Backend
+
+  def paginate
+    pagy, posts = pagy(Post.all, page: element.dataset[:page].to_i)
+    morph "#paginator", render(partial: "paginator", locals: {pagy: pagy})
+    morph "#posts", render(posts)
+  end
+end
+```
+{% endtab %}
+
+{% tab title="Partial" %}
+```markup
+<nav class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="far fa-angle-double-left"></span></a></li>
+    <% pagy.series.each do |item| %>
+      <% if item == :gap %>
+        <li class="page-item disabled"><a class="page-link" id="page_gap_li">...</a></li>
+      <% else %>
+        <li class="page-item <%= "active" if item.is_a?(String) %>">
+          <a href="#" id="page_<%= item %>_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= item %>"><%= item %></a>
+        </li>
+      <% end %>
+    <% end %>
+    <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.next || pagy.last %>"><span class="far fa-angle-double-right"></span></a></li>
+  </ul>
+</nav>
+```
+{% endtab %}
+{% endtabs %}
+
+Hang on, though... if you watch the [client-side logging](troubleshooting.md#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
+
+The `paginator` partial is only rendered one time, so this one is easy: we have to move the top-level div into the partial. When it gets re-rendered, it will automatically match what `morph` needs to update the contents because it _is_ the contents:
+
+{% tabs %}
+{% tab title="View" %}
+```markup
+<%= render partial: "paginator", locals: {pagy: @pagy} %>
+<div id="posts"><%= render @posts %></div>
+```
+{% endtab %}
+
+{% tab title="Partial" %}
+```markup
+<div id="paginator">
+  <nav class="d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="far fa-angle-double-left"></span></a></li>
+      <% pagy.series.each do |item| %>
+        <% if item == :gap %>
+          <li class="page-item disabled"><a class="page-link" id="page_gap_li">...</a></li>
+        <% else %>
+          <li class="page-item <%= "active" if item.is_a?(String) %>">
+            <a href="#" id="page_<%= item %>_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= item %>"><%= item %></a>
+          </li>
+        <% end %>
+      <% end %>
+      <li class="page-item"><a href="#" id="page_next_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.next || pagy.last %>"><span class="far fa-angle-double-right"></span></a></li>
+    </ul>
+  </nav>
+</div>
+```
+{% endtab %}
+{% endtabs %}
+
+The `posts` partial \(not listed\) is rendered as a collection, and so it must be handled differently. You cannot put the top-level div into each element of the collection!
+
+Instead, simply wrap the `render` call itself with markup for the top-level div:
+
+```ruby
+morph "#posts", "<div id=\"posts\">" + render(posts) + "</div>"
+```
+
+Now, both `paginator` and `posts` are being updated using `morphdom`.
 
 ### Morphing Multiplicity
 
@@ -288,19 +378,15 @@ The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_i
 morph dom_id(user), user.name
 ```
 
-### View Helpers
+### View Helpers that emit URLs
 
-If you render a partial that makes use of controller-specific helpers, use that controller to render the partial:
+If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](deployment.md#set-your-default_url_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
 
-```ruby
-morph "#stan", StanController.render(stan)
-```
-
-If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](https://docs.stimulusreflex.com/deployment#set-your-default_url_options-for-each-environment) to make the live site metadata available inside your Reflexes.
+You'll know that you forgot this step if your URLs are coming out as **example.com**.
 
 ### Things go wrong...
 
-We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow. If something strange seems to be happening, please consult the [Morphing Sanity Checklist](https://docs.stimulusreflex.com/troubleshooting#morphing-sanity-checklist) to make sure you're on the right side of history.
+We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow. If something strange seems to be happening, please consult the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist) to make sure you're on the right side of history.
 
 ## Nothing Morphs
 
@@ -332,14 +418,11 @@ You can morph the same target element multiple times in one Reflex by calling Ca
 
 ```ruby
 morph :nothing
-cable_ready[stream_name].morph { spinner... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ spinner... }).broadcast
 # long running work
-cable_ready[stream_name].morph { progress update... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ progress update... }).broadcast
 # long running work
-cable_ready[stream_name].morph { final update... }
-cable_ready.broadcast
+cable_ready[stream_name].morph({ final update... }).broadcast
 ```
 
 ### ActiveJob Example
@@ -403,8 +486,7 @@ class IncrementJob < ApplicationJob
   queue_as :default
 
   def perform
-    cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter"))
-    cable_ready.broadcast
+    cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter")).broadcast
   end
 end
 ```

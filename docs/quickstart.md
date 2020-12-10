@@ -50,6 +50,12 @@ We use data attributes to declaratively tell StimulusReflex to pay special atten
 
 The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 
+{% hint style="success" %}
+While `click` and `change` are two of the most common events used to initiate Reflex actions, you can use `mouseover`, `drop`, `play` and [any others](https://developer.mozilla.org/en-US/docs/Web/Events) that makes sense for your application.
+
+We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](events.md#throttle-and-debounce) to reduce how many events are emitted. 
+{% endhint %}
+
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
 {% hint style="info" %}
@@ -60,7 +66,7 @@ If you're watching a video or following a tutorial and see the long-form usage, 
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
-class CounterReflex < StimulusReflex::Reflex
+class CounterReflex < ApplicationReflex
   def increment
     @count = element.dataset[:count].to_i + element.dataset[:step].to_i
   end
@@ -93,7 +99,7 @@ Let's build on our increment counter example by adding a Stimulus controller and
 3. Create a server side Reflex object with Ruby.
 4. Create a server side Example controller with Ruby.
 
-We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](https://docs.stimulusreflex.com/troubleshooting#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
+We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](troubleshooting.md#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
 
 {% code title="app/views/pages/index.html.erb" %}
 ```text
@@ -131,7 +137,7 @@ If you're responding to an event like click on an element that would have a defa
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
-class CounterReflex < StimulusReflex::Reflex
+class CounterReflex < ApplicationReflex
   def increment(step = 1)
     session[:count] = session[:count].to_i + step
   end

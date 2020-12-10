@@ -1,4 +1,5 @@
 import { defaultSchema } from './schema'
+import Debug from './debug'
 
 const multipleInstances = element =>
   document.querySelectorAll(
@@ -132,21 +133,22 @@ export const findElement = attributes => {
     try {
       elements = document.querySelectorAll(selectors.join(''))
     } catch (error) {
-      console.error(
-        'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
-        error,
-        { 'CSS selector': selectors.join(''), attributes }
-      )
+      if (Debug.enabled)
+        console.error(
+          'StimulusReflex encountered an error identifying the Stimulus element. Consider adding an #id to the element.',
+          error,
+          { 'CSS selector': selectors.join(''), attributes }
+        )
     }
   }
 
-  if (elements.length === 0)
+  if (Debug.enabled && elements.length === 0)
     console.warn(
       'StimulusReflex was unable to find an element that matches the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }
     )
 
-  if (elements.length > 1)
+  if (Debug.enabled && elements.length > 1)
     console.warn(
       'StimulusReflex found multiple identical elements that match the signature of the element which triggered this Reflex. Lifecycle callbacks and events cannot be raised unless your elements have distinguishing characteristics. Consider adding an #id or a randomized data-key to the element.',
       { 'CSS selector': selectors.join(''), attributes }

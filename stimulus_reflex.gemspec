@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path("../lib/stimulus_reflex/version", __FILE__)
 
 Gem::Specification.new do |gem|
@@ -30,7 +32,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "nokogiri"
   gem.add_dependency "rails", ">= 5.2"
   gem.add_dependency "redis"
-  gem.add_dependency "cable_ready", ">= 4.3.0"
+  gem.add_dependency "cable_ready", ">= 4.4"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "pry-nav"

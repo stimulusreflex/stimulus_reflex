@@ -25,7 +25,7 @@ function success (event) {
     .split('-')
     .slice(1)
     .join('_')
-  const halted = (serverMessage && serverMessage.subject == 'halted') || false
+  const halted = (serverMessage && serverMessage.subject === 'halted') || false
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} ${duration}`,

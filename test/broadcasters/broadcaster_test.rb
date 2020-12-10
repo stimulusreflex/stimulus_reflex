@@ -1,11 +1,8 @@
-require_relative "../test_helper"
+# frozen_string_literal: true
 
-class StimulusReflex::BroadcasterTest < ActiveSupport::TestCase
-  setup do
-    @reflex = Minitest::Mock.new
-    @reflex.expect :stream_name, "TestStream"
-  end
+require_relative "broadcaster_test_case"
 
+class StimulusReflex::BroadcasterTest < StimulusReflex::BroadcasterTestCase
   test "raises a NotImplementedError if called directly" do
     broadcaster = StimulusReflex::Broadcaster.new(@reflex)
 

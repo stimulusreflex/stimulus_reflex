@@ -6,6 +6,7 @@ class StimulusReflex::SanityChecker
   class << self
     def check!
       return if StimulusReflex.config.on_failed_sanity_checks == :ignore
+      return if called_by_installer?
       return if called_by_generate_config?
 
       instance = new
@@ -14,6 +15,12 @@ class StimulusReflex::SanityChecker
     end
 
     private
+
+    def called_by_installer?
+      Rake.application.top_level_tasks.include? "stimulus_reflex:install"
+    rescue
+      false
+    end
 
     def called_by_generate_config?
       ARGV.include? "stimulus_reflex:config"
@@ -120,13 +127,13 @@ class StimulusReflex::SanityChecker
       puts <<~INFO
         If you know what you are doing and you want to start the application anyway,
         you can create a StimulusReflex initializer with the command:
-      
+
         bundle exec rails generate stimulus_reflex:config
-      
+
         Then open your initializer at
-      
+
         <RAILS_ROOT>/config/initializers/stimulus_reflex.rb
-      
+
         and then add the following directive:
 
           StimulusReflex.configure do |config|

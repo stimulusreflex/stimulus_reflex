@@ -1,0 +1,7 @@
+---
+exclude_paths:
+  - 'assets/**'
+  - 'bin/**'
+  - 'docs/**'
+  - '**/test/**'
+  - '**.md'

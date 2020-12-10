@@ -4,7 +4,7 @@
 * [Setup](setup.md)
 * [Quick Start](quickstart.md)
 * [Reflexes](reflexes.md)
-* [Lifecycle](lifecycle.md)
+* [Life-cycle](lifecycle.md)
 * [Morphs](morph-modes.md)
 * [Authentication](authentication.md)
 * [Persistence](persistence.md)

@@ -11,7 +11,7 @@
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
-      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1506-brightgreen.svg?style=flat" />
+      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1600-brightgreen.svg?style=flat" />
     </a>
     <a href="https://docs.stimulusreflex.com/" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -29,9 +29,6 @@
     <br />
     <a href="https://www.codacy.com/manual/hopsoft/stimulus_reflex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hopsoft/stimulus_reflex&amp;utm_campaign=Badge_Grade" target="_blank">
       <img alt="Code Quality" src="https://app.codacy.com/project/badge/Grade/d1d72a7060f5467b8696884351cf477f"/>
-    </a>
-    <a href="https://codeclimate.com/github/hopsoft/stimulus_reflex/maintainability" target="_blank">
-      <img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/2b24fdbd1ae37a24bedb/maintainability" />
     </a>
     <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
       <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
@@ -77,7 +74,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 700 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 800 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 
