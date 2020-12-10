@@ -4,6 +4,7 @@ ENV["RAILS_ENV"] ||= "test"
 
 require "minitest/mock"
 require "rails"
+require "active_model"
 require "action_controller"
 require "pry"
 require_relative "../lib/stimulus_reflex"
@@ -32,6 +33,11 @@ class ActionDispatch::Request
   def session
     @session ||= SessionMock.new
   end
+end
+
+class TestModel
+  include ActiveModel::Model
+  attr_accessor :id
 end
 
 StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"
