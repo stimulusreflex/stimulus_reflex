@@ -25,4 +25,8 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
   test "render partial" do
     assert @reflex.render(partial: "/hello_partial", assigns: {message: "Testing 123"}) == "<p>Hello from partial! Testing 123</p>\n"
   end
+
+  test "dom_id" do
+    assert @reflex.dom_id(TestModel.new(id: 123)) == "test_model_123"
+  end
 end
