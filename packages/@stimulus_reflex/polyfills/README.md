@@ -48,6 +48,7 @@ This repository contains a few polyfills itself and bundles up polyfills from ot
   * `Map`
   * `Object.assign()`
   * `Promise`
+  * `Reflect.deleteProperty()`
   * `Set`
 * [element-closest](https://www.npmjs.com/package/element-closest)
   * `Element.closest()`
