@@ -13,9 +13,15 @@
 - fix up install task [\#401](https://github.com/hopsoft/stimulus_reflex/pull/401) ([leastbad](https://github.com/leastbad))
 - Fix multiple broadcasts from within the same reflex [\#400](https://github.com/hopsoft/stimulus_reflex/pull/400) ([hopsoft](https://github.com/hopsoft))
 
+**Closed issues:**
+
+- Sanity checker will fail if node\_modules folder isn't present [\#402](https://github.com/hopsoft/stimulus_reflex/issues/402)
+- stimulus\_reflex.js:388 Uncaught TypeError: Cannot read property 'completedOperations' of undefined [\#394](https://github.com/hopsoft/stimulus_reflex/issues/394)
+
 **Merged pull requests:**
 
 - Add dom\_id to the reflex [\#405](https://github.com/hopsoft/stimulus_reflex/pull/405) ([hopsoft](https://github.com/hopsoft))
+- Check package version from yarn.lock if node\_modules folder is not av… [\#403](https://github.com/hopsoft/stimulus_reflex/pull/403) ([RolandStuder](https://github.com/RolandStuder))
 
 ## [v3.4.0.pre8](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre8) (2020-12-02)
 
@@ -277,6 +283,7 @@
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
 
 ## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
 
@@ -300,10 +307,6 @@
 ## [v3.3.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre1) (2020-07-08)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre0...v3.3.0.pre1)
-
-**Merged pull requests:**
-
-- Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
 
 ## [v3.3.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre0) (2020-07-04)
 
