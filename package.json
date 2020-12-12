@@ -16,7 +16,6 @@
     "prettier-standard:format": "lerna run --parallel prettier-standard:format",
     "bootstrap": "lerna bootstrap",
     "test": "lerna run --parallel test",
-    "prerelease": "yarn build",
     "release": "lerna publish",
     "release:beta": "lerna publish --npm-tag=beta"
   },

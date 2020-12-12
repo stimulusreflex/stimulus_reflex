@@ -18,6 +18,6 @@ jobs:
       - run: yarn install
       - run: yarn test
       - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
-      - run: yarn release --scope @stimulus_reflex/polyfills
+      - run: yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
