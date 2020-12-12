@@ -49,11 +49,33 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
         body = "Reflex #{target} failed: #{message} [#{url}]"
+
         if reflex
           reflex.rescue_with_handler(invoke_error)
           reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
         else
           puts "\e[31m#{body}\e[0m"
+
+          if body.to_s.include? "No route matches"
+            initializer_path = Rails.root.join("config", "initializers", "stimulus_reflex.rb")
+
+            puts <<~NOTE
+              \e[33mNOTE: StimulusReflex failed to locate a matching route and could not re-render the page.
+
+              If your app uses Rack middleware to rewrite part of the request path, you must enable those middleware modules in StimulusReflex.
+              The StimulusReflex initializer should be located at #{initializer_path}, or you can generate it with:
+
+                $ bundle exec rails generate stimulus_reflex:config
+
+              Configure any required middleware:
+
+                StimulusReflex.configure do |config|
+                  config.middleware.use FirstRackMiddleware
+                  config.middleware.use SecondRackMiddleware
+                end\e[0m
+
+            NOTE
+          end
         end
         return
       end
