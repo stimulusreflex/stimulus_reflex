@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@cable_ready/polyfills": "4.4.0-pre2",
-    "@stimulus/polyfills": "^1.1.1",
+    "@stimulus/polyfills": ">= 1.1.1",
     "core-js": "^3.4.0",
     "formdata-polyfill": "^3.0.20"
   },
