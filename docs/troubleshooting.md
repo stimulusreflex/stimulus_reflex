@@ -499,6 +499,10 @@ Do you have your `config/cable.yml` set up properly? We strongly recommend that 
 {% endhint %}
 
 {% hint style="info" %}
+Are `ActionController::RoutingError Exception: No route matches`errors getting you down? You might need to add [Rack middleware](setup.md#rack-middleware-support) to your initializer.
+{% endhint %}
+
+{% hint style="info" %}
 Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](troubleshooting.md#modifying-the-default-data-attribute-schema).
 {% endhint %}
 

@@ -143,11 +143,24 @@ You can learn more about session storage on the Deployment page.
 
 {% page-ref page="deployment.md" %}
 
-## Logging
+## Rack middleware support
 
-StimulusReflex supports both client and server logging of Reflexes.
+While StimulusReflex is optimized for speed, some developers might be using Rack middleware that rewrites the URL, which will cause problems for Page Morphs.
 
-{% page-ref page="troubleshooting.md" %}
+You can add any middleware you need in your initializer:
+
+{% code title="config/initializers/stimulus\_reflex.rb" %}
+```ruby
+StimulusReflex.configure do |config|
+  config.middleware.use FirstRackMiddleware
+  config.middleware.use SecondRackMiddleware
+end
+```
+{% endcode %}
+
+{% hint style="info" %}
+Users of [Jumpstart Pro](https://jumpstartrails.com/) are advised to add the `Jumpstart::AccountMiddleware` middleware if they are doing path-based multitenancy.
+{% endhint %}
 
 ## ViewComponent Integration
 
