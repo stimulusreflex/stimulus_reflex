@@ -145,7 +145,7 @@ You can learn more about session storage on the Deployment page.
 
 ## Rack middleware support
 
-While StimulusReflex is optimized for speed, some developers might be using Rack middleware that rewrites the URL, which will cause problems for Page Morphs.
+While StimulusReflex is optimized for speed, some developers might be using Rack middleware that rewrites the URL, which could cause problems for Page Morphs.
 
 You can add any middleware you need in your initializer:
 
