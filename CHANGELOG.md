@@ -83,6 +83,7 @@
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
+- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 
 ## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
 
@@ -105,7 +106,6 @@
 - use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
 - Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
-- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 - Add tests for broadcasters [\#364](https://github.com/hopsoft/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
@@ -136,6 +136,7 @@
 **Merged pull requests:**
 
 - move `cable\_ready` to development dependencies [\#351](https://github.com/hopsoft/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
+- Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
 
@@ -168,7 +169,6 @@
 
 **Merged pull requests:**
 
-- Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 - \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
 - Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
 - Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
