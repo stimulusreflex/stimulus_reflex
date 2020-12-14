@@ -109,6 +109,10 @@ end
 ```
 {% endcode %}
 
+{% hint style="warning" %}
+If you have multiple Devise user models, you [need to specify](https://stackoverflow.com/questions/43258458/envwarden-not-working-with-rails-5) `env["warden"].user(:user)` or the variable will return `nil`.
+{% endhint %}
+
 Delegate `current_user` to the ActionCable `connection` and be home by lunch:
 
 {% code title="app/reflexes/example\_reflex.rb" %}
