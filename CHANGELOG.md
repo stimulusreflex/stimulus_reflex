@@ -83,7 +83,6 @@
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
-- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 
 ## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
 
@@ -106,10 +105,12 @@
 - use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
 - Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
+- fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 - Add tests for broadcasters [\#364](https://github.com/hopsoft/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
+- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
@@ -121,7 +122,6 @@
 - serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
-- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 - simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
 - pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
 
