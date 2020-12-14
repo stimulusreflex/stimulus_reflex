@@ -433,7 +433,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="info" %}
 The [StimulusJS installation instructions](https://stimulusjs.org/handbook/installing#using-webpack) recommend requiring your controllers in your application pack; don't do this. Webpacker will create an `index.js` in your `app/javascript/controllers` that you should import into your application pack.
 
-Don't ever require your Stimulus controllers more than once.
+If you require your Stimulus controllers more than once, you might find that your actions are firing multiple times.
 {% endhint %}
 
 {% hint style="info" %}
