@@ -22,7 +22,7 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 
 #### NOTE: This beta documentation for the pre-release of v3.4. All of the new features below are only accessible if you are helping us test.
 
-Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the [10,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
+Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [12,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
 
 As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
 
