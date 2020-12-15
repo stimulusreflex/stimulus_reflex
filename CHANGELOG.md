@@ -262,6 +262,7 @@
 **Fixed bugs:**
 
 - First argument of type "object" in this.stimulate\(\) will always be assigned to options. [\#278](https://github.com/hopsoft/stimulus_reflex/issues/278)
+- Allow morphs to run before triggering success/after [\#286](https://github.com/hopsoft/stimulus_reflex/pull/286) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -289,10 +290,6 @@
 ## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.3.0.pre1...v3.3.0.pre2)
-
-**Fixed bugs:**
-
-- Allow morphs to run before triggering success/after [\#286](https://github.com/hopsoft/stimulus_reflex/pull/286) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
