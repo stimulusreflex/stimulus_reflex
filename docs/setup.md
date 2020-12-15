@@ -119,6 +119,14 @@ end
 ```
 {% endcode %}
 
+### Upgrading to v3.4.0
+
+* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
+* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
+* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
+* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
+
 ## Authentication
 
 {% hint style="info" %}
