@@ -44,6 +44,13 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
 
+### Upgrading to v3.4.0
+
+* make sure that you update `stimulus_reflex` **both** your Gemfile and package.json
+* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
+* you can enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* you can generate an initializer with `rails g stimulus_reflex:config`
+
 ## Morphs
 
 v3.3 introduced the concept of **Morphs** to StimulusReflex.
