@@ -82,13 +82,13 @@ Stop by #newcomers and introduce yourselves!
 
 ## 💙 Support
 
-Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people to come with all relevant code to look at. A git repo is preferred, but Gists or posts on [Discourse](https://stimulus-reflex.discourse.group) are fine, too.
+Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people who need help to come with all relevant code to look at. A git repo is preferred, but Gists are fine, too. If you need an MVCE template, try [this](https://github.com/leastbad/stimulus_reflex_harness).
 
 Please note that we are not actively providing support on Stack Overflow. If you post there, we likely won't see it.
 
-## 🚀 Install
+## 🚀 Installation and upgrading
 
-CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup).
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup). For information on upgrading existing projects to v3.4, read [this](https://docs.stimulusreflex.com/setup#upgrading-to-v-3-4-0).
 
 ## 🙏 Contributing
 
