@@ -46,10 +46,11 @@ More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn
 
 ### Upgrading to v3.4.0
 
-* make sure that you update `stimulus_reflex` **both** your Gemfile and package.json
+* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
 * it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* you can enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
-* you can generate an initializer with `rails g stimulus_reflex:config`
+* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
+* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
 
 ## Morphs
 
