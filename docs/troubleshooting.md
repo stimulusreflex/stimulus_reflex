@@ -447,7 +447,9 @@ If you're collaborating with a team during development, **make sure that they ha
 {% endhint %}
 
 {% hint style="info" %}
-Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` controller. If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
+Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` Stimulus controller \(if indeed one exists\).
+
+If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
 {% endhint %}
 
 {% hint style="info" %}
@@ -479,6 +481,10 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
+Are you having trouble with [Shoelace](https://shoelace.style/) web components not Morphing properly? [This discusson](https://discordapp.com/channels/629472241427415060/725845575278264340/787094162981388329) on Discord might help.
+{% endhint %}
+
+{% hint style="info" %}
 If you're getting "undefined method" errors in your Reflex action method classes, make sure that you're not including `CableReady::Broadcaster`, which is already avalable in scope.
 {% endhint %}
 
@@ -495,7 +501,7 @@ Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
+Do you have your `config/cable.yml` set up properly? You must [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
 {% endhint %}
 
 {% hint style="info" %}
@@ -507,7 +513,7 @@ Are you using `ApplicationController.render` to regenerate partials that make us
 {% endhint %}
 
 {% hint style="info" %}
-If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well.
+If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` \(see the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist)\)
 {% endhint %}
 
 {% hint style="info" %}
