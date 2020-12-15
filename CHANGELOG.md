@@ -229,6 +229,7 @@
 
 - Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
+- ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 - Update morph-modes.md [\#302](https://github.com/hopsoft/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
@@ -252,7 +253,6 @@
 
 **Merged pull requests:**
 
-- ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
 - Fixed typo in sample code. [\#296](https://github.com/hopsoft/stimulus_reflex/pull/296) ([jclarke](https://github.com/jclarke))
 
 ## [v3.3.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre3) (2020-08-31)
@@ -433,7 +433,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
-- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -486,6 +485,7 @@
 **Merged pull requests:**
 
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
