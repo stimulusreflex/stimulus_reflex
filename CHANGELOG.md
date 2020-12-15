@@ -110,7 +110,6 @@
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
-- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
@@ -122,6 +121,7 @@
 - serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
+- Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
 - simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
 - pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
 
