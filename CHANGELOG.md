@@ -305,6 +305,7 @@
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
 - Update deployment docs after the official AnyCable 1.0 release [\#267](https://github.com/hopsoft/stimulus_reflex/pull/267) ([rmacklin](https://github.com/rmacklin))
+- always calls params to persist them into controller action [\#249](https://github.com/hopsoft/stimulus_reflex/pull/249) ([RolandStuder](https://github.com/RolandStuder))
 
 ## [v3.3.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre1) (2020-07-08)
 
@@ -346,7 +347,6 @@
 - Fallback to first Stimulus controller in array [\#257](https://github.com/hopsoft/stimulus_reflex/pull/257) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix cases where plural reflexes were unresolved [\#252](https://github.com/hopsoft/stimulus_reflex/pull/252) ([joshleblanc](https://github.com/joshleblanc))
 - warn against collections of identical elements that trigger reflexes [\#250](https://github.com/hopsoft/stimulus_reflex/pull/250) ([leastbad](https://github.com/leastbad))
-- always calls params to persist them into controller action [\#249](https://github.com/hopsoft/stimulus_reflex/pull/249) ([RolandStuder](https://github.com/RolandStuder))
 - Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
 - Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
 - Bump actionpack from 6.0.3.1 to 6.0.3.2 [\#245](https://github.com/hopsoft/stimulus_reflex/pull/245) ([dependabot[bot]](https://github.com/apps/dependabot))
