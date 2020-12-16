@@ -386,7 +386,9 @@ You'll know that you forgot this step if your URLs are coming out as **example.c
 
 ### Things go wrong...
 
-We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow. If something strange seems to be happening, please consult the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist) to make sure you're on the right side of history.
+We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow if you want your Selector Morphs to use a CableReady `morph` operation instead of an `inner_html` operation.
+
+If you're not getting the results you expect, please consult the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist) to make sure you're not accidentally using the wrong operation. Use of [radiolabel](https://github.com/leastbad/radiolabel) can help provide an early warning.
 
 ## Nothing Morphs
 

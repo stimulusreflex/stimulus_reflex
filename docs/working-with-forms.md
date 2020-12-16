@@ -199,11 +199,17 @@ While stateless form submissions have technically always suffered from the "last
 
 There are a few guiding principles that we adhere to when building a technology that can change the page you're on, even while you're busy working on something important. One of the biggest wins associated with keeping the web server as the single source of truth about the state of your application and its data is that you don't have to worry about the synchronization of state with the client. Whatever you see on your screen is the same thing that you would see if you hit refresh. This makes developing applications with StimulusReflex faster and significantly less complicated than equivalent solutions which make use of SPAs like React.
 
-However, **StimulusReflex will never overwrite the value of a text input or textarea element if it has active focus in your browser**. This exception is important because there's no compelling UI experience where you want to change the contents of an input element _while the user is typing into it_.
+However, **StimulusReflex works hard to ensure morph operations will not overwrite the value of a text input or textarea element if it has active focus in your browser**. This exception is important because there's no compelling UI experience where you want to change the contents of an input element _while the user is typing into it_.
 
 We've worked really hard to make sure that developers can update other aspects of the active text input element. For example, it's possible to change the background color or even mark the element as disabled while you're typing into it. However, all attempts to overwrite the input element's value will be silently suppressed.
 
 If you need to filter or constrain the contents of a text input, consider using a client-side library such as [Cleave.js](https://nosir.github.io/cleave.js/) instead of trying to circumvent the Single Source of Truth mechanisms, which are there to protect your users from their fellow collaborators.
 
-Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be morphed in any way.
+Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be **morphed** in any way.
+
+{% hint style="warning" %}
+Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](morph-modes.md#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
+
+Similarly, CableReady operations launched by the developer do not respect `data-reflex-permanent` so please take care to understand the limitations of the approach.
+{% endhint %}
 
