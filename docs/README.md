@@ -31,7 +31,7 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 * a new `finalize` [life-cycle stage](lifecycle.md#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
 * support for lazily evaluated [signed and unsigned](reflexes.md#signed-and-unsigned-global-id-accessors) Global ID to model instances
 * a special `cable_ready` method that [automatically broadcasts](reflexes.md#using-cableready-inside-a-reflex-action) to the current user
-* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
+* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining** as well as customizable should/did morph callbacks
 * an optional \(but recommended\) "[tab isolation](reflexes.md#tab-isolation)" mode to restrict Reflexes to the current tab
 * major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
 * `render` is now automatically delegated to the current page's controller
