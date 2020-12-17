@@ -11,7 +11,7 @@ StimulusReflex configures :cache\_store to be the Rails session storage mechanis
 The recommended solution is to use Redis as your cache store, and `:cache_store` as your session store. Memcache is also an excellent cache store; we prefer Redis because it offers a far broader range of data structures and querying mechanisms. If you're not using Redis' advanced features, both tools are equally well-suited to key:value string caching.
 
 {% hint style="warning" %}
-Make sure that your Redis instance is configured to use the `lru-volatile` expiration strategy with expiring session keys.
+For session storage, make sure that your Redis instance is configured to use the `volatile-lru` key expiration strategy. It means that if your Redis instance gets full, it will start ejecting the session data for the users who have likely churned anyhow, while ensuring regular users stay logged in.
 {% endhint %}
 
 Many Rails projects are already using Redis for ActiveJob queues and Russian doll caching, making the decision to use it for session storage easy and incremental. Add the `redis` and `hiredis` gems to your Gemfile:
