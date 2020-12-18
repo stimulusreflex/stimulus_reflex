@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.4.0.pre9)
+    stimulus_reflex (3.4.0)
       cable_ready (>= 4.4)
       nokogiri
       rack
@@ -72,7 +72,7 @@ GEM
       zeitwerk (~> 2.3)
     ast (2.4.1)
     builder (3.2.4)
-    cable_ready (4.4.5)
+    cable_ready (4.4.6)
       rails (>= 5.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
@@ -167,7 +167,7 @@ GEM
     standardrb (1.0.0)
       standard
     thor (1.0.1)
-    tzinfo (2.0.3)
+    tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.7.0)
     websocket-driver (0.7.3)
