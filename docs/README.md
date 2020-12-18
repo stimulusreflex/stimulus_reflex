@@ -18,9 +18,7 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
-## New \(PRE\)Release: v3.4 - Developer Happiness Edition
-
-#### NOTE: This beta documentation for the pre-release of v3.4. All of the new features below are only accessible if you are helping us test.
+## New Release: v3.4 - Developer Happiness Edition
 
 Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [12,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
 
