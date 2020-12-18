@@ -38,7 +38,7 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 * automatic support for mirroring DOM events with [jQuery events](lifecycle.md#jquery-events-1), if jQuery is present
 * drop-in [Stimulus 2](https://github.com/stimulusjs/stimulus/releases/tag/v2.0.0) support
 * warnings to alert you if your caching is off or your gem+npm versions [don't match](setup.md#upgrading-package-versions-and-sanity)
-* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7) drops from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
+* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0) drops from 43kb to **11.4kb** - _including_ CableReady, morphdom and ActionCable
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
 
@@ -79,7 +79,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ## Faster UIs, smaller downloads and longer battery life
 
-Our over-the-wire JavaScript payload size is a tiny [**11.1kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
+Our over-the-wire JavaScript payload size is a tiny [**11.4kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
 While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
 
