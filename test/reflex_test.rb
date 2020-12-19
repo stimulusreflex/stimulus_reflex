@@ -29,16 +29,4 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
   test "dom_id" do
     assert @reflex.dom_id(TestModel.new(id: 123)) == "#test_model_123"
   end
-
-  test "dom_id no hash" do
-    assert @reflex.dom_id(TestModel.new(id: 123), nil, hash: false) == "test_model_123"
-  end
-
-  test "dom_id prefix" do
-    assert @reflex.dom_id(TestModel.new(id: 123), "foo") == "#foo_test_model_123"
-  end
-
-  test "dom_id prefix no hash" do
-    assert @reflex.dom_id(TestModel.new(id: 123), "foo", hash: false) == "foo_test_model_123"
-  end
 end
