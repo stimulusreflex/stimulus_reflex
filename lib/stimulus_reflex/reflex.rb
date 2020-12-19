@@ -156,4 +156,8 @@ class StimulusReflex::Reflex
   def params
     @_params ||= ActionController::Parameters.new(request.parameters)
   end
+
+  def dom_id(record_or_class, prefix = "#")
+    ActionView::RecordIdentifier.dom_id record_or_class, prefix
+  end
 end
