@@ -330,7 +330,7 @@ While every project is different, we helped a developer configure his 5.2 projec
 
 ## Morphing Sanity Checklist
 
-We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
+We want to stress that if you follow the happy path explained on the [Morphs](morph-modes.md#intelligent-defaults) page, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
 
 #### You cannot change the attributes of your morph target.
 
