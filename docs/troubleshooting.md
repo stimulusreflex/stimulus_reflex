@@ -340,7 +340,7 @@ Even if you maintain the same CSS selector, you cannot modify any attributes \(i
 morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
 ```
 
-You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) methods like `outer_html` or `set_attribute`.
+You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) operations like `outer_html` or `set_attribute`.
 
 #### Your top-level content needs to be an element.
 
