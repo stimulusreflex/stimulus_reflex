@@ -220,7 +220,7 @@ If you are interested in running the latest version of StimulusReflex, you can p
 
 {% code title="Gemfile" %}
 ```ruby
-gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
+gem "stimulus_reflex", github: "hopsoft/stimulus_reflex", branch: "master"
 ```
 {% endcode %}
 
