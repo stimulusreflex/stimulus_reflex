@@ -102,6 +102,9 @@ export const extractDataAttributes = element => {
   return attrs
 }
 
+// A reference to the Stimulus application registered with: StimulusReflex.initialize
+export let stimulusApplication
+
 // Finds an element based on the passed represention of the DOM element's attributes.
 //
 // NOTE: This is the same set of attributes extrated via extractElementAttributes and forwarded to the server side reflex.

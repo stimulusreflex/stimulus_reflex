@@ -1,5 +1,9 @@
 import { camelize } from './utils'
-import { findElement, extractElementAttributes } from './attributes'
+import {
+  findElement,
+  extractElementAttributes,
+  stimulusApplication
+} from './attributes'
 import Debug from './debug'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
@@ -15,7 +19,18 @@ import Debug from './debug'
 // - element - the element that triggered the reflex (not necessarily the Stimulus controller's element)
 //
 const invokeLifecycleMethod = (stage, element, reflexId) => {
-  if (!element || !element.reflexData[reflexId]) return
+  if (!element || !reflexes[reflexId]) return
+
+  if (Object.entries(element.reflexData).length === 0) {
+    element.reflexData[reflexId] = reflexes[reflexId].promise.data
+    let controllerName = reflexes[reflexId].promise.data.reflexController
+    element.reflexController[
+      reflexId
+    ] = stimulusApplication.getControllerForElementAndIdentifier(
+      element,
+      controllerName
+    )
+  }
 
   const controller = element.reflexController[reflexId]
   const reflex = element.reflexData[reflexId].target

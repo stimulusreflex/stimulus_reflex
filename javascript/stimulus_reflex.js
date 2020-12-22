@@ -12,15 +12,14 @@ import {
   attributeValues,
   extractElementAttributes,
   extractElementDataset,
-  findElement
+  findElement,
+  // A reference to the Stimulus application registered with: StimulusReflex.initialize
+  stimulusApplication
 } from './attributes'
 import { extractReflexName, elementToXPath, xPathToElement } from './utils'
 
 // A lambda that does nothing. Very zen; we are made of stars
 const NOOP = () => {}
-
-// A reference to the Stimulus application registered with: StimulusReflex.initialize
-let stimulusApplication
 
 // A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
 let actionCableConsumer
