@@ -41,12 +41,15 @@ jobs:
   ruby_test:
     name: Ruby Test Action
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.6.x, 2.7.x, 3.0.x]
     steps:
     - uses: actions/checkout@master
-    - name: Set up Ruby 2.6
+    - name: Set up Ruby ${{ matrix.ruby-version }}
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: ${{ matrix.ruby-version }}
     - uses: actions/cache@v1
       with:
         path: vendor/bundle
