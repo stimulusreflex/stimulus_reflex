@@ -108,7 +108,7 @@ StimulusReflex controllers automatically support five generic life-cycle callbac
 6. `finalizeReflex`
 
 {% hint style="warning" %}
-While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using Custom [Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
+While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
 {% endhint %}
 
 In this example, we update each anchor's text before invoking the server side Reflex:
@@ -130,7 +130,7 @@ export default class extends ApplicationController {
   beforeReflex(anchorElement) {
     const { reflex } = anchorElement.dataset
     if (reflex.match(/masticate$/)) anchorElement.innerText = 'Eating...'
-    if (reflex.match(/deficate$/)) anchorElement.innerText = 'Pooping...'
+    if (reflex.match(/defecate$/)) anchorElement.innerText = 'Pooping...'
   }
 }
 ```
@@ -138,7 +138,7 @@ export default class extends ApplicationController {
 
 ### Custom Life-cycle Methods
 
-StimulusReflex controllers can define up to five custom life-cycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
+StimulusReflex controllers can define up to six custom life-cycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
 
 The Reflex `Example#poke` will cause StimulusReflex to check for the existence of the following life-cycle callback methods:
 

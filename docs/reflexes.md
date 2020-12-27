@@ -106,7 +106,7 @@ Placing a `data-reflex="click->Foo#action"` attribute on your element does **not
 
 There doesn't need to be a `foo_controller.js` in order for you to call your `Foo` Reflex actions.
 
-It _is_ common use both `data-reflex` and `data-controller` at the same time, allowing you to create a `foo` Stimulus controller which extends `ApplicationController` and allowes you to define Reflex callback event handlers. We'll cover how this works on the [Life-cycle](lifecycle.md) page.
+It _is_ common to use both `data-reflex` and `data-controller` at the same time, allowing you to create a `foo` Stimulus controller which extends `ApplicationController` and allows you to define Reflex callback event handlers. We'll cover how this works on the [Life-cycle](lifecycle.md) page.
 
 ## Calling a Reflex in a Stimulus controller
 
@@ -409,7 +409,7 @@ A Reflex action is a reaction to a user action that changes server-side state an
 A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
 {% endhint %}
 
-CableReady has 22 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 25 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
