@@ -50,28 +50,6 @@ export default class extends ApplicationController {
 
 If you need to override any methods on your Application controller, you can redefine them. Optionally call `super.sayHi(...Array.from(arguments))` to invoke the method on the parent super class.
 
-### Benchmarking your Reflex actions
-
-You might want to see how long your Reflex actions are taking to complete a round-trip, and without Ajax calls to monitor getting reliable metrics requires new approaches.
-
-We suggest making use of the `beforeReflex` and `afterReflex` life-cycle callback methods to sample your performance. As a rule of thumb, anything below 200-300ms will be perceived as "native" by your users.
-
-You can add this code to your desired Reflex controller. If you're making use of the ApplicationController pattern described above, all of your Reflexes will log their round-trip execution times.
-
-{% tabs %}
-{% tab title="application\_controller.js" %}
-```javascript
-  beforeReflex () {
-    this.benchmark = performance.now()
-  }
-
-  afterReflex (element, reflex) {
-    console.log(reflex, `${(performance.now() - this.benchmark).toFixed(0)}ms`)
-  }
-```
-{% endtab %}
-{% endtabs %}
-
 ### Spinners for long-running actions
 
 You can use `beforeReflex` and `afterReflex` to create UI spinners for anything that might take more than a heartbeat to complete. In addition to providing helpful visual feedback, research has demonstrated that acknowledging a slight delay will result in the user _perceiving_ the delay as being shorter than they would if you did not acknowledge the delay. This is likely because we've been trained by good UI design to understand that this convention means we're waiting on the system. A sluggish UI otherwise forces people to wonder if they have done something wrong, and you don't want that.
