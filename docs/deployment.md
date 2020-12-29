@@ -190,7 +190,7 @@ When all of your ActionCable channels \(including StimulusReflex\) share one mem
 
 Turbolinks 5 offered an excellent native mobile [wrapper for building iOS apps](https://github.com/turbolinks/turbolinks-ios) based on web applications. Originally, there was an Android wrapper as well, but that codebase was later deprecated.
 
-StimulusReflex core team member prepared a [video presentation with source code](https://dev.to/julianrubisch/twitter-clone-with-stimulusreflex-gone-hybrid-native-app-17fm) for people interested in offering Reflex+TL5-powered iOS apps.
+StimulusReflex core team member [Julian Rubisch](https://twitter.com/julian_rubisch) prepared a [video presentation with source code](https://dev.to/julianrubisch/twitter-clone-with-stimulusreflex-gone-hybrid-native-app-17fm) for people interested in offering Reflex+TL5-powered iOS apps.
 
 Now that Turbo Drive is here, there are new mobile wrappers for both [iOS](https://github.com/hotwired/turbo-ios) and [Android](https://github.com/hotwired/turbo-android), which is incredible news. They are both technically beta, but the Hey email service apps are in production and well-received.
 
