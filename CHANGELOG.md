@@ -413,7 +413,6 @@
 **Fixed bugs:**
 
 - Session lost after throw :abort [\#221](https://github.com/hopsoft/stimulus_reflex/issues/221)
-- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
 
 **Merged pull requests:**
 
@@ -437,6 +436,7 @@
 **Fixed bugs:**
 
 - Text area values are lost if re-sized [\#195](https://github.com/hopsoft/stimulus_reflex/issues/195)
+- Fix multipleInstances convenience method [\#220](https://github.com/hopsoft/stimulus_reflex/pull/220) ([julianrubisch](https://github.com/julianrubisch))
 
 **Closed issues:**
 
@@ -722,6 +722,7 @@
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
+- Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
 
@@ -737,10 +738,6 @@
 ## [v2.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.4) (2019-10-19)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.3...v2.1.4)
-
-**Implemented enhancements:**
-
-- Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
 
