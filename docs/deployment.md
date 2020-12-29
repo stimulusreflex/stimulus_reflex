@@ -178,13 +178,23 @@ Official AnyCable documentation for StimulusReflex can be found [here](https://d
 If you're looking to authenticate AnyCable connections with Devise, the documentation for that process is [here](https://docs.anycable.io/v1/#/ruby/authentication), and there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
 {% endhint %}
 
-## Turbolinks
+## Turbolinks / Turbo Drive
 
-We strongly recommend the use of Turbolinks for your applications.
+We strongly recommend the use of [Turbolinks 5](https://github.com/turbolinks/turbolinks) / [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) for your applications.
 
-In addition to the dramatic speed benefits associated with swapping the page content without having to load a new page, Turbolinks will help you minimize the resource consumption of your ActionCable connections as well.
+In addition to the dramatic speed benefits associated with swapping the page content without having to load a new page, Turbo Drive will help you minimize the resource consumption of your ActionCable connections as well.
 
 When all of your ActionCable channels \(including StimulusReflex\) share one memoized `consumer.js` your browser doesn't have to re-establish a new websocket connection with the server on every page. Turbolinks allows your connection to be persisted between page loads.
+
+## Native Mobile Wrappers
+
+Turbolinks 5 offered an excellent native mobile [wrapper for building iOS apps](https://github.com/turbolinks/turbolinks-ios) based on web applications. Originally, there was an Android wrapper as well, but that codebase was later deprecated.
+
+StimulusReflex core team member prepared a [video presentation with source code](https://dev.to/julianrubisch/twitter-clone-with-stimulusreflex-gone-hybrid-native-app-17fm) for people interested in offering Reflex+TL5-powered iOS apps.
+
+Now that Turbo Drive is here, there are new mobile wrappers for both [iOS](https://github.com/hotwired/turbo-ios) and [Android](https://github.com/hotwired/turbo-android), which is incredible news. They are both technically beta, but the Hey email service apps are in production and well-received.
+
+Once we've had an opportunity to build something with these new tools, we will update this space.
 
 ## Connecting ActionCable to a different host
 
