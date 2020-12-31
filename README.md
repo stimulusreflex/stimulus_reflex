@@ -11,7 +11,7 @@
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
-      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1600-brightgreen.svg?style=flat" />
+      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1632-brightgreen.svg?style=flat" />
     </a>
     <a href="https://docs.stimulusreflex.com/" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -74,7 +74,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 800 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 900 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 
@@ -82,13 +82,13 @@ Stop by #newcomers and introduce yourselves!
 
 ## 💙 Support
 
-Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people to come with all relevant code to look at. A git repo is preferred, but Gists or posts on [Discourse](https://stimulus-reflex.discourse.group) are fine, too.
+Your best bet is to ask for help on Discord before filing an issue on Github. We are happy to help, and we ask people who need help to come with all relevant code to look at. A git repo is preferred, but Gists are fine, too. If you need an MVCE template, try [this](https://github.com/leastbad/stimulus_reflex_harness).
 
 Please note that we are not actively providing support on Stack Overflow. If you post there, we likely won't see it.
 
-## 🚀 Install
+## 🚀 Installation and upgrading
 
-CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup).
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup). For information on upgrading existing projects to v3.4, read [this](https://docs.stimulusreflex.com/setup#upgrading-to-v-3-4-0).
 
 ## 🙏 Contributing
 

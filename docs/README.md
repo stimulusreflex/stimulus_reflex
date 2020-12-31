@@ -18,11 +18,9 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
-## New \(PRE\)Release: v3.4 - Developer Happiness Edition
+## New Release: v3.4 - Developer Happiness Edition
 
-#### NOTE: This beta documentation for the pre-release of v3.4. All of the new features below are only accessible if you are helping us test.
-
-Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the [10,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
+Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [12,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
 
 As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
 
@@ -31,7 +29,7 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 * a new `finalize` [life-cycle stage](lifecycle.md#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
 * support for lazily evaluated [signed and unsigned](reflexes.md#signed-and-unsigned-global-id-accessors) Global ID to model instances
 * a special `cable_ready` method that [automatically broadcasts](reflexes.md#using-cableready-inside-a-reflex-action) to the current user
-* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining**
+* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining** as well as customizable should/did morph callbacks
 * an optional \(but recommended\) "[tab isolation](reflexes.md#tab-isolation)" mode to restrict Reflexes to the current tab
 * major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
 * `render` is now automatically delegated to the current page's controller
@@ -40,9 +38,17 @@ As with all major StimulusReflex releases, v3.4 is [packed full of new features]
 * automatic support for mirroring DOM events with [jQuery events](lifecycle.md#jquery-events-1), if jQuery is present
 * drop-in [Stimulus 2](https://github.com/stimulusjs/stimulus/releases/tag/v2.0.0) support
 * warnings to alert you if your caching is off or your gem+npm versions [don't match](setup.md#upgrading-package-versions-and-sanity)
-* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7) drops from 43kb to **11.1kb** - _including_ CableReady, morphdom and ActionCable
+* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0) drops from 43kb to **11.4kb** - _including_ CableReady, morphdom and ActionCable
 
 More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
+
+### Upgrading to v3.4.0
+
+* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
+* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
+* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
+* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
 
 ## Morphs
 
@@ -73,7 +79,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ## Faster UIs, smaller downloads and longer battery life
 
-Our over-the-wire JavaScript payload size is a tiny [**11.1kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0-pre7)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
+Our over-the-wire JavaScript payload size is a tiny [**11.4kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
 While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
 

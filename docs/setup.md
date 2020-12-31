@@ -119,6 +119,14 @@ end
 ```
 {% endcode %}
 
+### Upgrading to v3.4.0
+
+* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
+* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
+* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
+* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
+
 ## Authentication
 
 {% hint style="info" %}
@@ -143,11 +151,24 @@ You can learn more about session storage on the Deployment page.
 
 {% page-ref page="deployment.md" %}
 
-## Logging
+## Rack middleware support
 
-StimulusReflex supports both client and server logging of Reflexes.
+While StimulusReflex is optimized for speed, some developers might be using Rack middleware that rewrites the URL, which could cause problems for Page Morphs.
 
-{% page-ref page="troubleshooting.md" %}
+You can add any middleware you need in your initializer:
+
+{% code title="config/initializers/stimulus\_reflex.rb" %}
+```ruby
+StimulusReflex.configure do |config|
+  config.middleware.use FirstRackMiddleware
+  config.middleware.use SecondRackMiddleware
+end
+```
+{% endcode %}
+
+{% hint style="info" %}
+Users of [Jumpstart Pro](https://jumpstartrails.com/) are advised to add the `Jumpstart::AccountMiddleware` middleware if they are doing path-based multitenancy.
+{% endhint %}
 
 ## ViewComponent Integration
 
@@ -199,7 +220,7 @@ If you are interested in running the latest version of StimulusReflex, you can p
 
 {% code title="Gemfile" %}
 ```ruby
-gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
+gem "stimulus_reflex", github: "hopsoft/stimulus_reflex", branch: "master"
 ```
 {% endcode %}
 

@@ -326,11 +326,11 @@ In the above example, you have now configured your application to parse your DOM
 
 The transition from asset pipeline \(Sprockets\) to webpacker hasn't been smooth for a lot of developers. Indeed, the need to address conversion growing pains was one of the [top](https://discuss.rubyonrails.org/t/sprockets-abandonment/74371/15) [complaints](https://discuss.rubyonrails.org/t/webpacker-presents-a-more-difficult-oob-experience-for-js-sprinkles-than-sprockets-did/75345/2) expressed during the May of WTFs. If you are among those trying to get StimulusReflex working in a 5.2 app that is floundering because the whole sprockets-&gt;webpacker thing is ruining your day, you are in great company.
 
-While every project is different, we helped a developer configure his 5.2 project so that their JavaScript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/POC2u/pull/1/files), which reads like a checklist for those who might be struggling.
+While every project is different, we helped a developer configure his 5.2 project so that their JavaScript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/stimulus_reflex_poc/pull/1/files), which reads like a checklist for those who might be struggling.
 
 ## Morphing Sanity Checklist
 
-We want to stress that if you follow the happy path explained in the previous section, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
+We want to stress that if you follow the happy path explained on the [Morphs](morph-modes.md#intelligent-defaults) page, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
 
 #### You cannot change the attributes of your morph target.
 
@@ -340,7 +340,7 @@ Even if you maintain the same CSS selector, you cannot modify any attributes \(i
 morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
 ```
 
-You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) methods like `outer_html` or `set_attribute`.
+You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) operations like `outer_html` or `set_attribute`.
 
 #### Your top-level content needs to be an element.
 
@@ -433,7 +433,7 @@ Do you have any more weird edge cases? Please let us know!
 {% hint style="info" %}
 The [StimulusJS installation instructions](https://stimulusjs.org/handbook/installing#using-webpack) recommend requiring your controllers in your application pack; don't do this. Webpacker will create an `index.js` in your `app/javascript/controllers` that you should import into your application pack.
 
-Don't ever require your Stimulus controllers more than once.
+If you require your Stimulus controllers more than once, you might find that your actions are firing multiple times.
 {% endhint %}
 
 {% hint style="info" %}
@@ -447,7 +447,9 @@ If you're collaborating with a team during development, **make sure that they ha
 {% endhint %}
 
 {% hint style="info" %}
-Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` controller. If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
+Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` Stimulus controller \(if indeed one exists\).
+
+If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
 {% endhint %}
 
 {% hint style="info" %}
@@ -479,6 +481,10 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
+Are you having trouble with [Shoelace](https://shoelace.style/) web components not Morphing properly? [This discusson](https://discordapp.com/channels/629472241427415060/725845575278264340/787094162981388329) on Discord might help.
+{% endhint %}
+
+{% hint style="info" %}
 If you're getting "undefined method" errors in your Reflex action method classes, make sure that you're not including `CableReady::Broadcaster`, which is already avalable in scope.
 {% endhint %}
 
@@ -495,7 +501,11 @@ Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? We strongly recommend that you [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
+Do you have your `config/cable.yml` set up properly? You must [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
+{% endhint %}
+
+{% hint style="info" %}
+Are `ActionController::RoutingError Exception: No route matches`errors getting you down? You might need to add [Rack middleware](setup.md#rack-middleware-support) to your initializer.
 {% endhint %}
 
 {% hint style="info" %}
@@ -503,7 +513,7 @@ Are you using `ApplicationController.render` to regenerate partials that make us
 {% endhint %}
 
 {% hint style="info" %}
-If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well.
+If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` \(see the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist)\)
 {% endhint %}
 
 {% hint style="info" %}

@@ -149,7 +149,7 @@ export const dispatchLifecycleEvent = (stage, element, reflexId) => {
 
     if (Debug.enabled)
       console.warn(
-        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operartion. If you rely on all life-cycle methods to be executed, move the Reflex action to an element higher in your DOM.`
+        `StimulusReflex detected that the element which triggered the Reflex has been replaced by a morph operation. If you rely on all life-cycle methods to be executed, move the Reflex action to an element higher in your DOM.`
       )
   }
 
