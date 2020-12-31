@@ -14,7 +14,7 @@
     "prettier-standard:format": "yarn run prettier-standard *.js **/*.js"
   },
   "dependencies": {
-    "@cable_ready/polyfills": "4.4.0-pre2",
+    "@cable_ready/polyfills": "4.4.6",
     "@stimulus/polyfills": ">= 1.1.1",
     "core-js": "^3.4.0",
     "formdata-polyfill": "^3.0.20"

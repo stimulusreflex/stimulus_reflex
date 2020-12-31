@@ -845,10 +845,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@cable_ready/polyfills@4.4.0-pre2":
-  version "4.4.0-pre2"
-  resolved "https://registry.yarnpkg.com/@cable_ready/polyfills/-/polyfills-4.4.0-pre2.tgz#9ddd2d4dde9c45b123ba527a6e1a8f4651110f66"
-  integrity sha512-RUQu5BsvAfgE8nLogObMoGIIxwOgPuH5MApQbd+STxFXBejCHjmt0IMQySzDvYPKp6msdzN7xdP6/XYfiWhu8g==
+"@cable_ready/polyfills@4.4.6":
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/@cable_ready/polyfills/-/polyfills-4.4.6.tgz#57d242b3363902f4da3e76ed8c72d24d4a527f92"
+  integrity sha512-qdRzfUCx4Tal49XC1vHRxm0A7FxbBeF/7dOxmAFOqmXWVkO+pclk9v7KqK2G/OnYt7CyZrD/YxDV8rooog14Qg==
   dependencies:
     "@webcomponents/template" "^1.4.4"
     core-js "^3.4.0"
