@@ -1,6 +1,6 @@
 {
   "name": "@stimulus_reflex/core",
-  "version": "3.4.0-pre8",
+  "version": "3.4.0",
   "description": "StimulusReflex: Core library",
   "repository": "https://github.com/hopsoft/stimulus_reflex",
   "homepage": "https://docs.stimulusreflex.com/",
@@ -18,7 +18,6 @@
     "stimulus": ">= 1.1"
   },
   "dependencies": {
-    "@rails/actioncable": ">= 6.0",
     "@rails/actioncable": ">= 6.0",
     "cable_ready": ">= 4.4"
   },
