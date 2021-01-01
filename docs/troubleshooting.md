@@ -285,11 +285,11 @@ When you do a Page Morph, StimulusReflex goes through a full Rails controller ac
 
 That said, it's easy to change the URL the user is looking at from the server when it's appropriate to do so. CableReady's `push_state` method allows you to drive the page the user sees from your server-side code.
 
-If you need more control, you could also use CableReady's `dispatch_event` method to send an instruction to a Stimulus controller. Upon receving your event, you can easily initiate a Turbolinks [visit](https://github.com/turbolinks/turbolinks#turbolinksvisit), call [History.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState) directly or just change the `window.location` if that's all you need.
+If you need more control, you could also use CableReady's `dispatch_event` method to send an instruction to a Stimulus controller. Upon receving your event, you can easily initiate a Turbo Drive [visit](https://turbo.hotwire.dev/reference/drive#turbodrivevisit), call [History.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState) directly or just change the `window.location` if that's all you need.
 
 ### Don't initiate a Reflex when your page has finished loading
 
-Regardless of whether you're talking about a Stimulus controller's `connect` method, jQuery's `load` event, a Turbolinks navigation event or your own [pageshow](https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event) event handler, we recommend that you don't attempt to immediate call a Reflex operation as soon as the page loads. This advice is especially important in the context of Page Morphs.
+Regardless of whether you're talking about a Stimulus controller's `connect` method, jQuery's `load` event, a Turbo Drive visit event or your own [pageshow](https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event) event handler, we recommend that you don't attempt to immediate call a Reflex operation as soon as the page loads. This advice is especially important in the context of Page Morphs.
 
 Best case, it's an extremely inefficient way to build your UI, since you should **just render the HTML you want to see** the first time. Worst case, you can find yourself in an infinite loop that wastes extraordinary bandwidth and resources.
 

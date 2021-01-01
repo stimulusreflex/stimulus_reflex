@@ -183,7 +183,7 @@ However, the real power of `input` \(and it's sister event `beforeinput`\) is th
 
 Getting into the details of how `contenteditable` works is far beyond the scope of this document, but you can find more information on what's possible in the [W3C Input Events spec](https://www.w3.org/TR/input-events-1/#interface-InputEvent-Attributes).
 
-You might also consider checking out [Trix](https://trix-editor.org/), the editor library created by the team behind Rails, Stimulus, TurboLinks and ActionCable.
+You might also consider checking out [Trix](https://trix-editor.org/), the editor library created by the team behind Rails, Stimulus, Turbo Drive and ActionCable.
 
 ## keydown throttle example
 

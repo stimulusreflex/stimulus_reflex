@@ -6,7 +6,7 @@ description: How to use StimulusReflex in your app
 
 ## Before you begin...
 
-**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbolinks](https://github.com/turbolinks/turbolinks) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
+**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
 
 {% hint style="warning" %}
 We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods. 👨‍👨‍👧‍👧🎨🌲
