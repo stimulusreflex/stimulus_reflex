@@ -16,11 +16,9 @@ export const serializeForm = (form, options = {}) => {
 
   const w = options.w || window
   const { element } = options
-
   const formData = new w.FormData(form)
-  const data = Array.from(formData, e => e.join('='))
+  const data = Array.from(formData, e => e.map(encodeURIComponent).join('='))
   const submitButton = form.querySelector('input[type=submit]')
-
   if (
     element &&
     element.name &&
