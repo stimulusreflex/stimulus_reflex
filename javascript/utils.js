@@ -25,9 +25,15 @@ export const serializeForm = (form, options = {}) => {
     element.nodeName === 'INPUT' &&
     element.type === 'submit'
   ) {
-    data.push(`${element.name}=${element.value}`)
+    data.push(
+      `${encodeURIComponent(element.name)}=${encodeURIComponent(element.value)}`
+    )
   } else if (submitButton && submitButton.name) {
-    data.push(`${submitButton.name}=${submitButton.value}`)
+    data.push(
+      `${encodeURIComponent(submitButton.name)}=${encodeURIComponent(
+        submitButton.value
+      )}`
+    )
   }
 
   return Array.from(new Set(data)).join('&')
