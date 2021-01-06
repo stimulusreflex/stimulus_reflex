@@ -38,16 +38,6 @@ describe('formSerialize', () => {
       assert.equal(actual, expected)
     })
 
-    it('should serialize text input with spaces in name', () => {
-      const dom = new JSDOM(
-        '<form><input type="text" name="name 1" value="StimulusReflex"></form>'
-      )
-      const form = dom.window.document.querySelector('form')
-      const actual = serializeForm(form, { w: dom.window })
-      const expected = 'name 1=StimulusReflex'
-      assert.equal(actual, expected)
-    })
-
     it('should serialize from with multiple inputs', () => {
       const dom = new JSDOM(
         '<form>' +
@@ -58,7 +48,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo=bar 1&foo.bar=bar 2&baz.foo=bar 3'
+      const expected = 'foo=bar%201&foo.bar=bar%202&baz.foo=bar%203'
       assert.equal(actual, expected)
     })
 
@@ -72,7 +62,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'name=StimulusReflex&description=An exciting new way to build modern, reactive, real-time apps with Ruby on Rails.'
+        'name=StimulusReflex&description=An%20exciting%20new%20way%20to%20build%20modern%2C%20reactive%2C%20real-time%20apps%20with%20Ruby%20on%20Rails.'
       assert.equal(actual, expected)
     })
 
@@ -85,7 +75,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo=bar 1'
+      const expected = 'foo=bar%201'
       assert.equal(actual, expected)
     })
   })
@@ -115,7 +105,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo[]=bar&foo[]=baz'
+      const expected = 'foo%5B%5D=bar&foo%5B%5D=baz'
       assert.equal(actual, expected)
     })
 
@@ -127,7 +117,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo[]=bar'
+      const expected = 'foo%5B%5D=bar'
       assert.equal(actual, expected)
     })
   })
@@ -218,7 +208,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'name[]=StimulusReflex&name[]=CableReady'
+      const expected = 'name%5B%5D=StimulusReflex&name%5B%5D=CableReady'
       assert.equal(actual, expected)
     })
 
@@ -235,7 +225,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'account[name]=Foo Dude&account[email]=foobar@example.org&account[address][city]=Qux&account[address][state]=CA&account[address][empty]='
+        'account%5Bname%5D=Foo%20Dude&account%5Bemail%5D=foobar%40example.org&account%5Baddress%5D%5Bcity%5D=Qux&account%5Baddress%5D%5Bstate%5D=CA&account%5Baddress%5D%5Bempty%5D='
       assert.equal(actual, expected)
     })
 
@@ -249,7 +239,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'person[address][23][city]=Paris&person[address][45][city]=London'
+        'person%5Baddress%5D%5B23%5D%5Bcity%5D=Paris&person%5Baddress%5D%5B45%5D%5Bcity%5D=London'
       assert.equal(actual, expected)
     })
 
@@ -263,7 +253,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'person[address][23_id][city]=Paris&person[address][45_id][city]=London'
+        'person%5Baddress%5D%5B23_id%5D%5Bcity%5D=Paris&person%5Baddress%5D%5B45_id%5D%5Bcity%5D=London'
       assert.equal(actual, expected)
     })
 
@@ -278,7 +268,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'people[][name]=fred&people[][name]=bob&people[][name]=bubba'
+        'people%5B%5D%5Bname%5D=fred&people%5B%5D%5Bname%5D=bob&people%5B%5D%5Bname%5D=bubba'
       assert.equal(actual, expected)
     })
 
@@ -291,7 +281,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'user[tags][]=cow&user[tags][]=milk'
+      const expected = 'user%5Btags%5D%5B%5D=cow&user%5Btags%5D%5B%5D=milk'
       assert.equal(actual, expected)
     })
 
@@ -311,7 +301,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'people[2][name]=bubba&people[2][age]=15&people[0][name]=fred&people[0][age]=12&people[1][name]=bob&people[1][age]=14&people[][name]=frank&people[3][age]=2'
+        'people%5B2%5D%5Bname%5D=bubba&people%5B2%5D%5Bage%5D=15&people%5B0%5D%5Bname%5D=fred&people%5B0%5D%5Bage%5D=12&people%5B1%5D%5Bname%5D=bob&people%5B1%5D%5Bage%5D=14&people%5B%5D%5Bname%5D=frank&people%5B3%5D%5Bage%5D=2'
       assert.equal(actual, expected)
     })
   })
@@ -395,7 +385,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo[]=bar&foo[]=qux'
+      const expected = 'foo%5B%5D=bar&foo%5B%5D=qux'
       assert.equal(actual, expected)
     })
 
@@ -414,7 +404,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
       const expected =
-        'foo[bar]=Default value&foo[bar]=&foo[bar]=baz&foo[bar]=norf'
+        'foo%5Bbar%5D=Default%20value&foo%5Bbar%5D=&foo%5Bbar%5D=baz&foo%5Bbar%5D=norf'
       assert.equal(actual, expected)
     })
 
@@ -430,7 +420,7 @@ describe('formSerialize', () => {
       )
       const form = dom.window.document.querySelector('form')
       const actual = serializeForm(form, { w: dom.window })
-      const expected = 'foo[bar]=baz&foo[bar]=norf'
+      const expected = 'foo%5Bbar%5D=baz&foo%5Bbar%5D=norf'
       assert.equal(actual, expected)
     })
   })
@@ -445,7 +435,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window, element })
-      const expected = 'commit=Create Post'
+      const expected = 'commit=Create%20Post'
       assert.equal(actual, expected)
     })
 
@@ -459,7 +449,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('input[type="submit"]')
       const actual = serializeForm(form, { w: dom.window, element })
-      const expected = 'title=Post&commit=Create Post'
+      const expected = 'title=Post&commit=Create%20Post'
       assert.equal(actual, expected)
     })
 
@@ -473,7 +463,7 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('input[type="text"]')
       const actual = serializeForm(form, { w: dom.window, element })
-      const expected = 'name=Hello World&commit=Create Post'
+      const expected = 'name=Hello%20World&commit=Create%20Post'
       assert.equal(actual, expected)
     })
 
@@ -563,7 +553,200 @@ describe('formSerialize', () => {
       const form = dom.window.document.querySelector('form')
       const element = dom.window.document.querySelector('input')
       const actual = serializeForm(form, { w: dom.window, element })
-      const expected = 'commit=Create Post'
+      const expected = 'commit=Create%20Post'
+      assert.equal(actual, expected)
+    })
+  })
+
+  context('url encodings', () => {
+    it('should encode space', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na me" value="Stimulus Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%20me=Stimulus%20Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode ampersand', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na&me" value="Stimulus&Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%26me=Stimulus%26Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode equals', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name=" value="Stimulus=Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%3D=Stimulus%3DReflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode colon', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na:me" value="Stimulus:Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%3Ame=Stimulus%3AReflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode semi-colon', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name;" value="StimulusReflex;"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%3B=StimulusReflex%3B'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode slash', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na/me" value="Stimulus/Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%2Fme=Stimulus%2FReflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode plus', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name+" value="Stimulus+Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%2B=Stimulus%2BReflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode dollar sign', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name$" value="Stimulus$Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%24=Stimulus%24Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode at symbol', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name@" value="Stimulus@Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%40=Stimulus%40Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode question mark', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name?" value="StimulusReflex?"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%3F=StimulusReflex%3F'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode percent', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name%" value="Stimulus%Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%25=Stimulus%25Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode brackets', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name[]" value="StimulusReflex[]"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name%5B%5D=StimulusReflex%5B%5D'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode curly braces', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na{}me" value="Stimulus{}Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%7B%7Dme=Stimulus%7B%7DReflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode pound character', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="na#me" value="Stimulus#Reflex"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'na%23me=Stimulus%23Reflex'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode multiple inputs with ampersand and equals', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="text" name="one" value="Hello & World">' +
+          '<input type="text" name="two" value="foo = bar">' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'one=Hello%20%26%20World&two=foo%20%3D%20bar'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode submit button name', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="text" name="name" value="Hello&World">' +
+          '<input type="submit" name="commit&" value="Create=Post"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected = 'name=Hello%26World&commit%26=Create%3DPost'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode submit button name as triggered element', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="text" name="name" value="Hello&World">' +
+          '<input type="submit" name="commit&" value="Create=Post"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const element = dom.window.document.querySelector('input[type="submit"]')
+      const actual = serializeForm(form, { w: dom.window, element })
+      const expected = 'name=Hello%26World&commit%26=Create%3DPost'
+      assert.equal(actual, expected)
+    })
+
+    it('should encode all characterss', () => {
+      const dom = new JSDOM(
+        '<form><input type="text" name="name" value=" $&+,/:;=?@<>#%{}|^[]`\\"></form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected =
+        'name=%20%24%26%2B%2C%2F%3A%3B%3D%3F%40%3C%3E%23%25%7B%7D%7C%5E%5B%5D%60%5C'
       assert.equal(actual, expected)
     })
   })
