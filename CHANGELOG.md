@@ -15,6 +15,7 @@
 
 **Merged pull requests:**
 
+- Bump nokogiri from 1.10.10 to 1.11.1 [\#420](https://github.com/hopsoft/stimulus_reflex/pull/420) ([dependabot[bot]](https://github.com/apps/dependabot))
 - fix 'operartion' typo [\#411](https://github.com/hopsoft/stimulus_reflex/pull/411) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0) (2020-12-18)
@@ -225,6 +226,10 @@
 
 - Support for token-based authentication [\#243](https://github.com/hopsoft/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
 
+**Fixed bugs:**
+
+- Add more smarts to \_\_perform [\#235](https://github.com/hopsoft/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
+
 **Closed issues:**
 
 - Authorization [\#292](https://github.com/hopsoft/stimulus_reflex/issues/292)
@@ -353,7 +358,6 @@
 **Fixed bugs:**
 
 - Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
-- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -391,7 +395,7 @@
 
 **Fixed bugs:**
 
-- Add more smarts to \_\_perform [\#235](https://github.com/hopsoft/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
+- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 - merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/hopsoft/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
 
 **Closed issues:**
