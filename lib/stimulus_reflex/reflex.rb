@@ -53,7 +53,6 @@ class StimulusReflex::Reflex
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath, :c_xpath, :permanent_attribute_name, to: :client_attributes
   delegate :render, to: :controller_class
-  delegate :dom_id, to: "ActionView::RecordIdentifier"
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
@@ -155,5 +154,9 @@ class StimulusReflex::Reflex
 
   def params
     @_params ||= ActionController::Parameters.new(request.parameters)
+  end
+
+  def dom_id(record_or_class, prefix = nil)
+    "#" + ActionView::RecordIdentifier.dom_id(record_or_class, prefix).to_s
   end
 end

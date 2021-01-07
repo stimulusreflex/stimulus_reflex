@@ -27,6 +27,6 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
   end
 
   test "dom_id" do
-    assert @reflex.dom_id(TestModel.new(id: 123)) == "test_model_123"
+    assert @reflex.dom_id(TestModel.new(id: 123)) == "#test_model_123"
   end
 end
