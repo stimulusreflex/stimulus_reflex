@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0...HEAD)
 
+**Fixed bugs:**
+
+- Prefix dom\_id with hash/pound [\#410](https://github.com/hopsoft/stimulus_reflex/pull/410) ([hopsoft](https://github.com/hopsoft))
+
 **Closed issues:**
 
 - Lifecycle events not being issued correctly [\#413](https://github.com/hopsoft/stimulus_reflex/issues/413)
@@ -349,6 +353,7 @@
 **Fixed bugs:**
 
 - Limit MutationObserver mutations [\#256](https://github.com/hopsoft/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -387,7 +392,6 @@
 **Fixed bugs:**
 
 - Add more smarts to \_\_perform [\#235](https://github.com/hopsoft/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
-- \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/hopsoft/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 - merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/hopsoft/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
 
 **Closed issues:**
