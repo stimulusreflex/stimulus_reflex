@@ -317,6 +317,7 @@
 
 - Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 - Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
+- Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
 
@@ -332,7 +333,6 @@
 
 **Merged pull requests:**
 
-- Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Smarter warnings when element not found [\#274](https://github.com/hopsoft/stimulus_reflex/pull/274) ([hopsoft](https://github.com/hopsoft))
 - Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 - Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
@@ -465,7 +465,6 @@
 - Stimulus reflexData assignment after callback  [\#208](https://github.com/hopsoft/stimulus_reflex/pull/208) ([jasoncharnes](https://github.com/jasoncharnes))
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
-- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
@@ -507,6 +506,10 @@
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 
+**Fixed bugs:**
+
+-  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([dark88888](https://github.com/dark88888))
+
 **Closed issues:**
 
 -  The ActionCable connection is not open! `this.isActionCableConnectionOpen\(\)` must return true before calling `this.stimulate\(\)` [\#187](https://github.com/hopsoft/stimulus_reflex/issues/187)
@@ -514,6 +517,7 @@
 
 **Merged pull requests:**
 
+- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
@@ -531,7 +535,6 @@
 - Possible bug when about to perform cableready operations [\#166](https://github.com/hopsoft/stimulus_reflex/issues/166)
 - Reflex not binding to ajax loaded content [\#161](https://github.com/hopsoft/stimulus_reflex/issues/161)
 - Input field values sometimes remain [\#159](https://github.com/hopsoft/stimulus_reflex/issues/159)
--  Pluralize the generated class name, so that will match with the file name [\#178](https://github.com/hopsoft/stimulus_reflex/pull/178) ([dark88888](https://github.com/dark88888))
 
 **Closed issues:**
 
