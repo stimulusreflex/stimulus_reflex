@@ -11,8 +11,7 @@ import {
   attributeValue,
   attributeValues,
   extractElementAttributes,
-  extractElementDataset,
-  findElement
+  extractElementDataset
 } from './attributes'
 import { extractReflexName, elementToXPath, xPathToElement } from './utils'
 
@@ -105,7 +104,6 @@ const createSubscription = controller => {
 
           if (!reflexes[reflexId] && !isolationMode) {
             const element = xPathToElement(reflexData.xpath)
-            const controllerElement = xPathToElement(reflexData.cXpath)
             element.reflexController = element.reflexController || {}
             element.reflexData = element.reflexData || {}
             element.reflexError = element.reflexError || {}
@@ -113,7 +111,7 @@ const createSubscription = controller => {
             element.reflexController[
               reflexId
             ] = stimulusApplication.getControllerForElementAndIdentifier(
-              controllerElement,
+              element,
               reflexData.reflexController
             )
 
@@ -167,7 +165,7 @@ const extendStimulusController = controller => {
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
-    // - element - [optional] the element that triggered the reflex, defaults to this.element
+    // - controllerElement - [optional] the element that triggered the reflex, defaults to this.element
     // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, serializeForm
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
@@ -175,14 +173,15 @@ const extendStimulusController = controller => {
       const url = location.href
       const args = Array.from(arguments)
       const target = args.shift() || 'StimulusReflex::Reflex#default_reflex'
-      const element =
+      const controllerElement = this.element
+      const reflexElement =
         args[0] && args[0].nodeType === Node.ELEMENT_NODE
           ? args.shift()
-          : this.element
+          : controllerElement
       if (
-        element.type === 'number' &&
-        element.validity &&
-        element.validity.badInput
+        reflexElement.type === 'number' &&
+        reflexElement.validity &&
+        reflexElement.validity.badInput
       ) {
         if (Debug.enabled) console.warn('Reflex aborted: invalid numeric input')
         return
@@ -204,15 +203,14 @@ const extendStimulusController = controller => {
         const opts = args.shift()
         Object.keys(opts).forEach(o => (options[o] = opts[o]))
       }
-      const attrs = options['attrs'] || extractElementAttributes(element)
+      const attrs = options['attrs'] || extractElementAttributes(reflexElement)
       const reflexId = options['reflexId'] || uuidv4()
-      let selectors = options['selectors'] || getReflexRoots(element)
+      let selectors = options['selectors'] || getReflexRoots(reflexElement)
       if (typeof selectors === 'string') selectors = [selectors]
       const resolveLate = options['resolveLate'] || false
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
-      const dataset = extractElementDataset(element, datasetAttribute)
-      const xpath = elementToXPath(element)
-      const cXpath = elementToXPath(this.element)
+      const dataset = extractElementDataset(reflexElement, datasetAttribute)
+      const xpath = elementToXPath(controllerElement)
       const data = {
         target,
         args,
@@ -223,7 +221,6 @@ const extendStimulusController = controller => {
         reflexId,
         resolveLate,
         xpath,
-        cXpath,
         reflexController: this.identifier,
         permanentAttributeName:
           stimulusApplication.schema.reflexPermanentAttribute
@@ -237,29 +234,32 @@ const extendStimulusController = controller => {
         throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
 
       // lifecycle setup
-      element.reflexController = element.reflexController || {}
-      element.reflexData = element.reflexData || {}
-      element.reflexError = element.reflexError || {}
+      controllerElement.reflexController =
+        controllerElement.reflexController || {}
+      controllerElement.reflexData = controllerElement.reflexData || {}
+      controllerElement.reflexError = controllerElement.reflexError || {}
 
-      element.reflexController[reflexId] = this
-      element.reflexData[reflexId] = data
+      controllerElement.reflexController[reflexId] = this
+      controllerElement.reflexData[reflexId] = data
 
-      dispatchLifecycleEvent('before', element, reflexId)
+      dispatchLifecycleEvent('before', controllerElement, reflexId)
 
       setTimeout(() => {
-        const { params } = element.reflexData[reflexId] || {}
+        const { params } = controllerElement.reflexData[reflexId] || {}
         const formData =
           options['serializeForm'] === false
             ? ''
-            : serializeForm(element.closest('form'), { element })
+            : serializeForm(reflexElement.closest('form'), {
+                element: reflexElement
+              })
 
-        element.reflexData[reflexId] = {
+        controllerElement.reflexData[reflexId] = {
           ...data,
           params,
           formData
         }
 
-        subscription.send(element.reflexData[reflexId])
+        subscription.send(controllerElement.reflexData[reflexId])
       })
 
       const promise = registerReflex(data)
@@ -270,7 +270,8 @@ const extendStimulusController = controller => {
           target,
           args,
           this.context.scope.identifier,
-          element
+          reflexElement,
+          controllerElement
         )
       }
 
@@ -492,8 +493,8 @@ if (!document.stimulusReflexInitialized) {
   const beforeDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
-    const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs)
+    const { reflexId, xpath } = stimulusReflex
+    const element = xPathToElement(xpath)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -513,8 +514,8 @@ if (!document.stimulusReflexInitialized) {
   const afterDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
-    const { reflexId, attrs } = stimulusReflex
-    const element = findElement(attrs)
+    const { reflexId, xpath } = stimulusReflex
+    const element = xPathToElement(xpath)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -534,9 +535,9 @@ if (!document.stimulusReflexInitialized) {
   document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, attrs, serverMessage } = event.detail.stimulusReflex || {}
+    const { reflexId, serverMessage, xpath } = event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
-    const element = findElement(attrs)
+    const element = xPathToElement(xpath)
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 

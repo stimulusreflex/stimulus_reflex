@@ -1,10 +1,18 @@
-function request (reflexId, target, args, controller, element) {
+function request (
+  reflexId,
+  target,
+  args,
+  controller,
+  element,
+  controllerElement
+) {
   reflexes[reflexId].timestamp = new Date()
   console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
     controller,
-    element
+    element,
+    controllerElement
   })
 }
 
