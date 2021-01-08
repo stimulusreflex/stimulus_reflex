@@ -65,6 +65,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 - [StimulusReflex Documentation](https://docs.stimulusreflex.com)
 - [CableReady Documentation](https://cableready.stimulusreflex.com)
+- [StimulusReflex Cheatsheet](https://devhints.io/stimulus-reflex)
 
 ## ✨ Demos
 
