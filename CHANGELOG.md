@@ -125,7 +125,6 @@
 **Fixed bugs:**
 
 - Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/hopsoft/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
-- fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -148,6 +147,10 @@
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre2...v3.4.0.pre3)
+
+**Fixed bugs:**
+
+- fix nothing morphs and error messages [\#368](https://github.com/hopsoft/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
 
 **Merged pull requests:**
 
@@ -465,6 +468,7 @@
 - Stimulus reflexData assignment after callback  [\#208](https://github.com/hopsoft/stimulus_reflex/pull/208) ([jasoncharnes](https://github.com/jasoncharnes))
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
+- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
@@ -517,7 +521,6 @@
 
 **Merged pull requests:**
 
-- Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
@@ -798,7 +801,6 @@
 - Add guard to verify same URL prior to morph [\#63](https://github.com/hopsoft/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
 - Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/hopsoft/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
-- Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
 - \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
 - Stricter parsing of attributes [\#56](https://github.com/hopsoft/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
@@ -816,6 +818,7 @@
 
 **Implemented enhancements:**
 
+- Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
 - Add support to configure room via register option [\#52](https://github.com/hopsoft/stimulus_reflex/pull/52) ([hopsoft](https://github.com/hopsoft))
 - Move gitbook files to docs [\#49](https://github.com/hopsoft/stimulus_reflex/pull/49) ([hopsoft](https://github.com/hopsoft))
 
