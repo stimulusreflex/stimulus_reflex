@@ -20,7 +20,7 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](.gitbook/assets/power-rangers.jpg)
+![Each Morph is useful in different scenarios.](../.gitbook/assets/power-rangers.jpg)
 
 | What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
 | :--- | :--- | :--- |
@@ -304,7 +304,7 @@ end
 {% endtab %}
 {% endtabs %}
 
-Hang on, though... if you watch the [client-side logging](troubleshooting.md#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
+Hang on, though... if you watch the [client-side logging](../appendices/troubleshooting.md#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
 
 The `paginator` partial is only rendered one time, so this one is easy: we have to move the top-level div into the partial. When it gets re-rendered, it will automatically match what `morph` needs to update the contents because it _is_ the contents:
 
@@ -380,7 +380,7 @@ morph dom_id(user), user.name
 
 ### View Helpers that emit URLs
 
-If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](deployment.md#set-your-default_url_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
+If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](../appendices/deployment.md#set-your-default_url_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
 
 You'll know that you forgot this step if your URLs are coming out as **example.com**.
 
@@ -388,7 +388,7 @@ You'll know that you forgot this step if your URLs are coming out as **example.c
 
 We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow if you want your Selector Morphs to use a CableReady `morph` operation instead of an `inner_html` operation.
 
-If you're not getting the results you expect, please consult the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist) to make sure you're not accidentally using the wrong operation. Use of [radiolabel](https://github.com/leastbad/radiolabel) can help provide an early warning.
+If you're not getting the results you expect, please consult the [Morphing Sanity Checklist](../appendices/troubleshooting.md#morphing-sanity-checklist) to make sure you're not accidentally using the wrong operation. Use of [radiolabel](https://github.com/leastbad/radiolabel) can help provide an early warning.
 
 ## Nothing Morphs
 

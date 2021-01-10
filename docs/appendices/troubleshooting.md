@@ -51,7 +51,7 @@ You can feel free to remove both of these files after you're done, but leave `ap
 
 Seeing that your Reflexes are called, including which elements are being updated by which operations, is an invaluable tool. StimulusReflex provides granular console logging designed to give you everything you need to know at a glance.
 
-![A Reflex with two Selector Morph operations](.gitbook/assets/chrome_ap8v8v5gsq.png)
+![A Reflex with two Selector Morph operations](../.gitbook/assets/chrome_ap8v8v5gsq.png)
 
 There are two ways to enable client debugging in your StimulusReflex instance. You can provide `debug: true` to the initialize options like this:
 
@@ -72,7 +72,7 @@ StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 
 ### The Reflex request
 
-![](.gitbook/assets/chrome_pep9ucqub2.png)
+![](../.gitbook/assets/chrome_pep9ucqub2.png)
 
 The log for the Reflex request \(which starts with `↑ stimulus ↑`\) shows the **target** "Pagy\#paginate" \(name of the Reflex class and the Reflex action being called\) as well as an object containing the reflexId, any `args` \(arguments\) being passed to `stimulate()`, the Stimulus `controller` that invoked the Reflex, and the `element` that the Stimulus controller instance was placed on.
 
@@ -90,41 +90,41 @@ Once the Reflex action has completed, you should receive one or more **replies**
 
 ### Page Morph reply
 
-![](.gitbook/assets/chrome_kj3sivvhk1.png)
+![](../.gitbook/assets/chrome_kj3sivvhk1.png)
 
 Page Morphs reply with the target \("User\#rails"\) as well as the destination for the content and how long the Reflex took to complete, start to finish. Page Morphs run the controller action for the current page, so they tend to be significantly slower than Selector Morphs. CableReady `morph` operations are always used for Page Morphs.
 
-![](.gitbook/assets/page.png)
+![](../.gitbook/assets/page.png)
 
 "body" is the destination for Page Morphs unless the `data-reflex-root` attribute is used to specify one or more CSS selectors, as seen in the example above.
 
 ### Selector Morph reply
 
-![](.gitbook/assets/chrome_lqwseqeawe.png)
+![](../.gitbook/assets/chrome_lqwseqeawe.png)
 
 Selector Morphs reply with the target as well as the destination for each `morph` operation. They tend to be extremely fast because they do not need to go through the ActionDispatch controller stack. There could be a blend of `morph` and `inner_html` CableReady operations in one Reflex.
 
 ### Nothing Morph reply
 
-![](.gitbook/assets/chrome_nhffsjb2zj.png)
+![](../.gitbook/assets/chrome_nhffsjb2zj.png)
 
 Nothing Morphs reply with the target, but the destination is either infinity or a God particle, depending on how your OS is configured. Since Nothing Morphs don't render any HTML, they can be very fast.
 
 ### Halted Reflex reply
 
-![](.gitbook/assets/chrome_qc1ngo9y4f.png)
+![](../.gitbook/assets/chrome_qc1ngo9y4f.png)
 
 Even aborted Reflexes have life-cycle callback events. When a Reflex is halted on the server, it means that the Reflex action was not executed.
 
 ### Reflex error reply
 
-![](.gitbook/assets/chrome_mpg1ueidtp.png)
+![](../.gitbook/assets/chrome_mpg1ueidtp.png)
 
 Similar to a halted Reflex, an error means that something went wrong in the processing of the Reflex action or, in the case of a Page Morph, potentially something in the controller action.
 
 ### Cloned Reflex reply
 
-![](.gitbook/assets/chrome_vqhlnjrzze.png)
+![](../.gitbook/assets/chrome_vqhlnjrzze.png)
 
 If you have multiple tabs open and isolation mode is disabled, you will see that Reflexes are being cloned across tabs. Everything behaves normally in the tab in which the Reflex was initiated, but other tabs do not know a Reflex is happening until the server sends instructions. This means that you will not see the Reflex request logged on non-active tabs, but you will see any replies. They will be marked as `CLONED` instead of showing a duration, because non-active tabs have no way of knowing when the Reflex was started.
 
@@ -174,7 +174,7 @@ We have received reports that for some developers, silencing their ActionCable l
 
 StimulusReflex provides an intelligent default for its highly customizable logging mechanism:
 
-![](.gitbook/assets/windowsterminal_dqpv6fcnzm.png)
+![](../.gitbook/assets/windowsterminal_dqpv6fcnzm.png)
 
 This is the first 8 characters of the current user's session id, the operation counter, the target \(Reflex class name \# Reflex action\), the destination CSS selector, the Morph mode and finally, which CableReady operation was used. This was all generated as if the following was in your initializer:
 
@@ -241,7 +241,7 @@ end
 
 ### Don't use form serialization as a replacement for Rails remote forms
 
-Developers who are new to and excited about StimulusReflex frequently start making plans to start using form serialization even though they [don't have a specific reason for doing so](working-with-forms.md).
+Developers who are new to and excited about StimulusReflex frequently start making plans to start using form serialization even though they [don't have a specific reason for doing so](../rtfm/working-with-forms.md).
 
 There are many good reasons to stick to Rails' form handling, the best one being that Rails is really good at it. Rails makes working with REST-ful resources really easy, with allowlist/blocklist functionality for deciding what attributes to process. There's lots of great gems and tools that augment Rails' form-handling systems that you largely give up, including the familiar magic of seeing POST and PATCH in your log files.
 
@@ -330,7 +330,7 @@ While every project is different, we helped a developer configure his 5.2 projec
 
 ## Morphing Sanity Checklist
 
-We want to stress that if you follow the happy path explained on the [Morphs](morph-modes.md#intelligent-defaults) page, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
+We want to stress that if you follow the happy path explained on the [Morphs](../rtfm/morph-modes.md#intelligent-defaults) page, you shouldn't need to ever worry about the edge cases that follow. However, we have worked hard to think of and collect the possible ways someone could abuse the HTML spec and potentially experience unexpected outcomes.
 
 #### You cannot change the attributes of your morph target.
 
@@ -439,7 +439,7 @@ If you require your Stimulus controllers more than once, you might find that you
 {% hint style="info" %}
 If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 
-You can [setup webpack-dev-server to help](patterns.md#use-webpack-dev-server-to-reload-after-reflex-changes), however.
+You can [setup webpack-dev-server to help](../rtfm/patterns.md#use-webpack-dev-server-to-reload-after-reflex-changes), however.
 {% endhint %}
 
 {% hint style="info" %}
@@ -461,7 +461,7 @@ It's important that you don't modify the hierarchy of your DOM while a Reflex ac
 {% endhint %}
 
 {% hint style="info" %}
-Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](morph-modes.md#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](../rtfm/morph-modes.md#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
 {% endhint %}
 
 {% hint style="info" %}
@@ -505,7 +505,7 @@ Do you have your `config/cable.yml` set up properly? You must [install Redis](ht
 {% endhint %}
 
 {% hint style="info" %}
-Are `ActionController::RoutingError Exception: No route matches`errors getting you down? You might need to add [Rack middleware](setup.md#rack-middleware-support) to your initializer.
+Are `ActionController::RoutingError Exception: No route matches`errors getting you down? You might need to add [Rack middleware](../hello-world/setup.md#rack-middleware-support) to your initializer.
 {% endhint %}
 
 {% hint style="info" %}

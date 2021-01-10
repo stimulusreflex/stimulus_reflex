@@ -292,7 +292,7 @@ You can also set the Current object in the `connect` method of your `Connection`
 ### Adding log tags
 
 {% hint style="warning" %}
-Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](troubleshooting.md#stimulusreflex-logging). This section will be removed when the next release arrives.
+Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](../appendices/troubleshooting.md#stimulusreflex-logging). This section will be removed when the next release arrives.
 {% endhint %}
 
 You can prepend the `id` of the current `User` on messages logged from your `Connection` module.

@@ -6,7 +6,7 @@ description: Build reactive applications with the Rails tooling you already know
 
 ## What is StimulusReflex?
 
-**StimulusReflex is a new way to craft modern, reactive web interfaces with Ruby on Rails.**
+**A new way to craft modern, reactive web interfaces with Ruby on Rails.**
 
 We extend the capabilities of both [Rails](https://rubyonrails.org) and [Stimulus](https://stimulusjs.org) by intercepting user interactions and passing them to Rails over real-time websockets. These interactions are processed by _Reflex actions_ that change application state. The current page is quickly re-rendered and the changes are sent to the client using [CableReady](https://cableready.stimulusreflex.com). The page is then [morphed](https://github.com/patrick-steele-idem/morphdom) to reflect the new application state. This entire round-trip allows us to update the UI in 20-30ms without flicker or expensive page loads.
 
@@ -18,54 +18,6 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
-## New Release: v3.4 - Developer Happiness Edition
-
-Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [12,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
-
-As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
-
-* we completely overhauled the [client-side Reflex logging](troubleshooting.md#client-side-logging) with per-Morph granularity
-* a brand new and shockingly customizable [server-side Reflex](troubleshooting.md#stimulusreflex-logging) **colorized logging** module
-* a new `finalize` [life-cycle stage](lifecycle.md#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
-* support for lazily evaluated [signed and unsigned](reflexes.md#signed-and-unsigned-global-id-accessors) Global ID to model instances
-* a special `cable_ready` method that [automatically broadcasts](reflexes.md#using-cableready-inside-a-reflex-action) to the current user
-* speaking of CableReady, the new v4.4 means operation and broadcast **method chaining** as well as customizable should/did morph callbacks
-* an optional \(but recommended\) "[tab isolation](reflexes.md#tab-isolation)" mode to restrict Reflexes to the current tab
-* major improvements behind the scenes to better handle \(many\) concurrent Reflex actions
-* `render` is now automatically delegated to the current page's controller
-* StimulusReflex library configuration courtesy of our new [initializer](setup.md#upgrading-package-versions-and-sanity) system
-* opt-in Rack middleware support for Page Morphs
-* automatic support for mirroring DOM events with [jQuery events](lifecycle.md#jquery-events-1), if jQuery is present
-* drop-in [Stimulus 2](https://github.com/stimulusjs/stimulus/releases/tag/v2.0.0) support
-* warnings to alert you if your caching is off or your gem+npm versions [don't match](setup.md#upgrading-package-versions-and-sanity)
-* JS [bundle size](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0) drops from 43kb to **11.4kb** - _including_ CableReady, morphdom and ActionCable
-
-More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn't take any shortcuts when it came to killing bugs and doing things right. We owe that to our users as we use our surplus to build the world we want to live in, together. 🌲
-
-### Upgrading to v3.4.0
-
-* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
-* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
-* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
-* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
-
-## Morphs
-
-v3.3 introduced the concept of **Morphs** to StimulusReflex.
-
-{% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
-
-**Page** Morphs provide a full-page [morphdom](https://github.com/patrick-steele-idem/morphdom) refresh with controller processing as an intelligent default.
-
-**Selector** Morphs allow you to intelligently update target elements in your DOM, provided by regenerated partials or [ViewComponents](https://github.com/github/view_component).
-
-**Nothing** Morphs provide a lightning-fast RPC mechanism to launch ActiveJobs, initiate CableReady broadcasts, call APIs and emit signals to external processes.
-
-There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how the different Morphs work. Find all of the documentation and examples behind the link below.
-
-{% page-ref page="morph-modes.md" %}
-
 ## Why should I use StimulusReflex?
 
 Wouldn't it be great if you could **focus on your product** instead of the technical noise introduced by modern JavaScript? With StimulusReflex, you'll **ship projects faster, with smaller teams** and re-discover the joy of programming.
@@ -76,6 +28,12 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 * [x] Increase developer happiness ❤️❤️❤️
 * [x] Facilitate simple, concise, and clear code 🤸
 * [x] Integrate seamlessly with Ruby on Rails 🚝
+
+## New Release: v3.4 - Developer Happiness Edition
+
+![](.gitbook/assets/kittens.jpg)
+
+Find out more and learn how to upgrade on the [Release History](appendices/release-history.md) page.
 
 ## Faster UIs, smaller downloads and longer battery life
 
@@ -102,6 +60,8 @@ Some of our favorite demos include:
 * [Tabular](https://expo.stimulusreflex.com/demos/tabular): filtering, sorting and pagination without any client JavaScript
 * [Todo](https://expo.stimulusreflex.com/demos/todo): our take on the [classic](http://todomvc.com/), with a wire size 2-15x smaller than every other solution
 
+Another excellent demo is [BoxDrop](https://www.boxdrop.io/).
+
 ## Build the next Twitter in just 9 minutes \(or less\) 😉
 
 {% embed url="https://www.youtube.com/watch?v=F5hA79vKE\_E" caption="" %}
@@ -125,6 +85,10 @@ The landscape has changed a lot since those early days. Applications are more am
 ## The revolution begins
 
 In his 2018 ElixirConf keynote, [Chris McCord](https://twitter.com/chris_mccord) _\(creator of the_ [_Phoenix_](http://www.phoenixframework.org/) _framework for_ [_Elixir_](https://elixir-lang.org/)_\)_ introduced [LiveView](https://github.com/phoenixframework/phoenix_live_view), an alternative to the SPA. His [presentation](https://www.youtube.com/watch?v=8xJzHq8ru0M) captures the same promise and excitement that Rails had in the early days.
+
+
+
+dddddd
 
 We love Elixir and Phoenix. Elixir hits a sweet spot for people who want Rails-like conventions in a functional language. The community is terrific, but it's still small and comparatively niche.
 

@@ -39,7 +39,7 @@ This example updates the page with the latest count when the link is clicked:
 {% code title="app/views/pages/index.html.erb" %}
 ```text
 <a href="#"
-  data-reflex="click->CounterReflex#increment"
+  data-reflex="click->Counter#increment"
   data-step="1" 
   data-count="<%= @count.to_i %>"
 >Increment <%= @count.to_i %></a>
@@ -53,16 +53,10 @@ The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 {% hint style="success" %}
 While `click` and `change` are two of the most common events used to initiate Reflex actions, you can use `mouseover`, `drop`, `play` and [any others](https://developer.mozilla.org/en-US/docs/Web/Events) that makes sense for your application.
 
-We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](events.md#throttle-and-debounce) to reduce how many events are emitted. 
+We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](../appendices/events.md#throttle-and-debounce) to reduce how many events are emitted. 
 {% endhint %}
 
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
-
-{% hint style="info" %}
-The syntax requirement for `data-reflex` was recently loosened to make specifying "Reflex" optional. In the example above, you could now opt to use a shorter form: `data-reflex="click->Counter#increment"`
-
-If you're watching a video or following a tutorial and see the long-form usage, **there is no functional difference** between the two - it's just shorter!
-{% endhint %}
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
@@ -99,7 +93,7 @@ Let's build on our increment counter example by adding a Stimulus controller and
 3. Create a server side Reflex object with Ruby.
 4. Create a server side Example controller with Ruby.
 
-We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](troubleshooting.md#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
+We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](../appendices/troubleshooting.md#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
 
 {% code title="app/views/pages/index.html.erb" %}
 ```text
@@ -110,7 +104,7 @@ We can use the standard Stimulus `data-controller` and `data-action` attributes,
 ```
 {% endcode %}
 
-Now we can create a simple Stimulus controller that extends `ApplicationController` , which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `stimulate` method:
+Now we can create a simple Stimulus controller that extends `ApplicationController`, which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `stimulate` method:
 
 {% code title="app/javascript/controllers/counter\_controller.js" %}
 ```javascript
@@ -129,7 +123,7 @@ export default class extends ApplicationController {
 If you extend `ApplicationController` and need to create a `connect` method, make sure that the first line of your method is `super.connect()` or else you can't call `stimulate`.
 {% endhint %}
 
-When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ServerSideClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
+When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ReflexClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
 
 {% hint style="warning" %}
 If you're responding to an event like click on an element that would have a default action \(such as an anchor, button or submit element\) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
@@ -181,4 +175,8 @@ This will create but not overwrite the following files:
 {% hint style="info" %}
 If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
 {% endhint %}
+
+## StimulusReflex Cheatsheet
+
+If you're going to be working with StimulusReflex, you might want to bookmark [Rafe Rosen](https://github.com/existentialmutt)'s excellent reference for frequently used method names and callbacks: [https://devhints.io/stimulus-reflex](https://devhints.io/stimulus-reflex)
 

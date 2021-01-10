@@ -96,6 +96,18 @@ There are two kinds of callback methods: **generic** and **custom**. Generic cal
 
 StimulusReflex also emits life-cycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
 
+### Understanding Stages
+
+Most of the time, it's reasonable to expect that your Reflexes will follow a predictable cycle: `before` -&gt; `success` -&gt; `after` -&gt; `finalize`.
+
+There are, however, several important exceptions to the norm.
+
+1. Reflexes that are aborted on the server have a short cycle: `before` -&gt; `halted`
+2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; `finalize`
+3. **Nothing Reflexes end early**: `before` -&gt; `success` -&gt; `after`
+
+Nothing Reflexes have no CableReady operations to wait for, so there is nothing to `finalize`.
+
 ### Generic Life-cycle Methods
 
 StimulusReflex controllers automatically support five generic life-cycle callback methods. These methods fire for every Reflex action handled by the controller.
@@ -180,16 +192,6 @@ Adapting the Generic example, we've refactored our controller to capture the `be
 **It's not required to implement all life-cycle methods.** Pick and choose which life-cycle callback methods make sense for your application. The answer is frequently **none**.
 {% endhint %}
 
-{% hint style="info" %}
-Adding a declarative Reflex such as `Foo#action` to your element does **not** automatically attach an instance of the _foo_ Stimulus controller to the element.
-
-This coupling would only add an unneccessary constraint, as you can call any Reflex from any Stimulus controller.
-
-If you want to run Reflex life-cycle callbacks on your element, you need to use `data-controller="foo"` to attach it.
-
-You can use **both** `data-reflex` and `data-controller` at the same time.
-{% endhint %}
-
 ### Conventions
 
 #### Method Names
@@ -259,7 +261,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 {% hint style="info" %}
 Knowing which element dispatched the event might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
 
-If you're calling the `stimulate` method inside of a Stimulus controller, the event will be emitted by the element the `data-controller` attribute is declared on.
+You can learn all about Reflex controller elements on the [Calling Reflexes](reflexes.md#understanding-reflex-controllers) page.
 {% endhint %}
 
 #### jQuery Events

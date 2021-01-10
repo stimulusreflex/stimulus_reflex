@@ -2,9 +2,9 @@
 description: Forms fly business class on StimulusReflex Airways ✈️
 ---
 
-# Working with HTML Forms
+# Forms
 
-When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
+When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](../hello-world/quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
 
 {% hint style="warning" %}
 Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
@@ -15,6 +15,19 @@ StimulusReflex gathers all of the attributes on the element that initiates a Ref
 _Heck no!_ If a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form will be serialized and made available to the Reflex action method as the `params` accessor.
 
 `params` is an instance of `ActionController::Parameters` which you can manipulate the same way you would with a real form submitted via a normal POST action, with `require` and `permit`. This is useful for validating models and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
+
+## Forms are not actually forms
+
+StimulusReflex uses `form` elements as a familiar way to group related elements together. However, a lot of newcomers get attached to the idea that the form they are serializing is being used _as_ an HTML form, which it is **not**.
+
+* forms are usually submitted via a classic POST operation or an Ajax fetch; this is _not the case_ when working with StimulusReflex
+* forms usually have action and method attributes; we recommend against them - you really **can** just use `<form></form>` with no other mechanism or configuration required
+* forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
+* there's no reason to set up a route or controller action for a form intended for SR
+
+{% hint style="warning" %}
+It's very likely that in a future version of StimulusReflex, form serialization will be both optional and configurable to use any container element.
+{% endhint %}
 
 ## Modifying `params` before its sent to the server
 

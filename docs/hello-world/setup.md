@@ -123,7 +123,7 @@ end
 
 * make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
 * it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* OPTIONAL: enable [isolation mode](reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* OPTIONAL: enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
 * OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
 * OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
 
@@ -139,7 +139,27 @@ Out of the box, ActionCable doesn't give StimulusReflex the ability to distingui
 
 When the time comes, it's easy to configure your application to support authenticating users by their Rails session or current\_user scope. Just check out the Authentication page and choose your own adventure.
 
-{% page-ref page="authentication.md" %}
+{% page-ref page="../rtfm/authentication.md" %}
+
+## Tab isolation
+
+One of the most universally surprising aspects of real-time UI updates is that by default, Morph operations intended for the current user execute in all of the current user's open tabs. Since the early days of StimulusReflex, this behavior has shifted from being an interesting edge case curiosity to something many developers need to prevent. Meanwhile, others built applications that rely on it.
+
+The solution has arrived in the form of **isolation mode**.
+
+When engaged, isolation mode restricts Morph operations to the active tab. While technically not enabled by default, we believe that most developers will want this behavior, so the StimulusReflex installation task will prepare new applications with isolation mode enabled. Any existing applications can turn it on by passing `isolate: true`:
+
+{% code title="app/javascript/controllers/index.js" %}
+```javascript
+StimulusReflex.initialize(application, { consumer, controller, isolate: true })
+```
+{% endcode %}
+
+If isolation mode is not enabled, Reflexes initiated in one tab will also be executed in all other tabs, as you will see if you have client-side logging enabled.
+
+{% hint style="info" %}
+Keep in mind that tab isolation mode only applies when multiple tabs are open to the same URL. If your tabs are open to different URLs, Reflexes will not carry over even if isolation mode is disabled.
+{% endhint %}
 
 ## Session Storage
 
@@ -149,7 +169,7 @@ We default to using the `:cache_store` for `config.session_store` \(and enabling
 
 You can learn more about session storage on the Deployment page.
 
-{% page-ref page="deployment.md" %}
+{% page-ref page="../appendices/deployment.md" %}
 
 ## Rack middleware support
 
@@ -191,7 +211,7 @@ To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable packag
 {% hint style="info" %}
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 
-If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](troubleshooting.md#rails-5-2-revisited)" on the Troubleshooting page.
+If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](../appendices/troubleshooting.md#rails-5-2-revisited)" on the Troubleshooting page.
 {% endhint %}
 
 ## Polyfills for IE11

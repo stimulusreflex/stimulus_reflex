@@ -146,7 +146,7 @@ The Rails session object is perfect for prototyping during development, before p
 Cookie-based sessions are not _currently_ supported. Be sure to use a session store such as :cache\_store or you will be sad. You can find guidance on this topic on the Setup page.
 {% endhint %}
 
-{% page-ref page="setup.md" %}
+{% page-ref page="../hello-world/setup.md" %}
 
 ## The Rails cache store
 
