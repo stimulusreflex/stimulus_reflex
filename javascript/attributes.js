@@ -65,11 +65,6 @@ export const extractElementAttributes = element => {
     attrs.value = collectedOptions.join(',')
   } else {
     attrs.value = element.value
-    if (element.tagName.match(/select/i)) {
-      if (element.selectedIndex > -1) {
-        attrs.value = element.options[element.selectedIndex].value
-      }
-    }
   }
   return attrs
 }
