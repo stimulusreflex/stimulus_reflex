@@ -1,11 +1,16 @@
 import { defaultSchema } from './schema'
 import Debug from './debug'
 
-const multipleInstances = element =>
-  document.querySelectorAll(
-    `input[type="${element.type}"][name="${element.name}"]`
-  ).length > 1
-
+const multipleInstances = element => {
+  if (['checkbox', 'radio'].includes(element.type)) {
+    return (
+      document.querySelectorAll(
+        `input[type="${element.type}"][name="${element.name}"]`
+      ).length > 1
+    )
+  }
+  return false
+}
 const collectCheckedOptions = element => {
   return Array.from(element.querySelectorAll('option:checked'))
     .concat(
@@ -59,11 +64,6 @@ export const extractElementAttributes = element => {
     attrs.value = collectedOptions.join(',')
   } else {
     attrs.value = element.value
-    if (element.tagName.match(/select/i)) {
-      if (element.selectedIndex > -1) {
-        attrs.value = element.options[element.selectedIndex].value
-      }
-    }
   }
   return attrs
 }

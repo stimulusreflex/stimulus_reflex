@@ -70,6 +70,26 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
+  it('returns expected attributes for textbox when multiple inputs with same name', () => {
+    const dom = new JSDOM(`
+      <input name="repeated" type="text" id="example" value="StimulusReflex" />
+      <input name="repeated" type="text" id="another" value="StimulusReflex" />
+    `)
+    global.document = dom.window.document
+    const element = dom.window.document.querySelector('input#example')
+    const actual = extractElementAttributes(element)
+    const expected = {
+      type: 'text',
+      id: 'example',
+      name: 'repeated',
+      value: 'StimulusReflex',
+      tag_name: 'INPUT',
+      checked: false,
+      selected: false
+    }
+    assert.deepStrictEqual(actual, expected)
+  })
+
   it('returns expected attributes for unchecked checkbox', () => {
     const dom = new JSDOM('<input type="checkbox" id="example" />')
     global.document = dom.window.document
