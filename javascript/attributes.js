@@ -1,11 +1,17 @@
 import { defaultSchema } from './schema'
 import Debug from './debug'
 
-const multipleInstances = element =>
-  document.querySelectorAll(
-    `input[type="${element.type}"][name="${element.name}"]`
-  ).length > 1
-
+const multipleInstances = element => {
+  if (['checkbox', 'radio'].includes(element.type)) {
+    return (
+      document.querySelectorAll(
+        `input[type="${element.type}"][name="${element.name}"]`
+      ).length > 1
+    )
+  } else {
+    return false
+  }
+}
 const collectCheckedOptions = element => {
   return Array.from(element.querySelectorAll('option:checked'))
     .concat(
