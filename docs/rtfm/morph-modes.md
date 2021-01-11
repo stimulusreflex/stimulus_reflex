@@ -112,7 +112,9 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% endcode %}
 
 {% hint style="warning" %}
-We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org/) editor \([ActionText](https://guides.rubyonrails.org/action_text_overview.html)\) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
+
+Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
 ¯\\__\(ツ\)\__/¯
 {% endhint %}

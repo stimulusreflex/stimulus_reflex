@@ -461,7 +461,7 @@ It's important that you don't modify the hierarchy of your DOM while a Reflex ac
 {% endhint %}
 
 {% hint style="info" %}
-Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](../rtfm/morph-modes.md#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute until we figure out what's up.
+Are you finding that the [Trix](https://github.com/basecamp/trix) rich text editor isn't playing nicely with morphs? Our suggestion is to use [Selector Morphs](../rtfm/morph-modes.md#selector-morphs). If that's not possible, you might need to wrap it with a `data-reflex-permanent` attribute **and** an `id` attribute until we figure out what's up.
 {% endhint %}
 
 {% hint style="info" %}
