@@ -146,7 +146,6 @@
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
-- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
@@ -154,6 +153,7 @@
 
 **Merged pull requests:**
 
+- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 - serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
@@ -902,10 +902,6 @@
 ## [v1.0.0](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.0) (2019-08-09)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.3.3...v1.0.0)
-
-**Implemented enhancements:**
-
-- Ruby function splat args return arity of -1 [\#9](https://github.com/hopsoft/stimulus_reflex/pull/9) ([leastbad](https://github.com/leastbad))
 
 ## [v0.3.3](https://github.com/hopsoft/stimulus_reflex/tree/v0.3.3) (2019-05-13)
 
