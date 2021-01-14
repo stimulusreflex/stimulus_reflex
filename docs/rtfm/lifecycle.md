@@ -104,9 +104,11 @@ There are, however, several important exceptions to the norm.
 
 1. Reflexes that are aborted on the server have a short cycle: `before` -&gt; `halted`
 2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; \[`finalize`\]
-3. **Nothing Reflexes end early**: `before` -&gt; `after`
+3. **Nothing Morphs end early**: `before` -&gt; \[`success`\] -&gt; `after`
 
-Nothing Reflexes have no CableReady operations to wait for, so there is nothing to `finalize`. This means that a Nothing Reflex with an error will not have a `finalize` stage.
+Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`. A Nothing Morph with an error will not have a `finalize` stage.
+
+Nothing Morphs support `success` methods but do not emit `success` events.
 
 ### Generic Life-cycle Methods
 
@@ -240,6 +242,8 @@ Events are dispatched on the same element that triggered the Reflex. Events bubb
 * `stimulus-reflex:halted`
 * `stimulus-reflex:after`
 * `stimulus-reflex:finalize`
+
+Nothing Morphs do not emit `stimulus-reflex:success` events.
 
 #### Event Metadata
 
