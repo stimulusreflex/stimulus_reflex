@@ -103,10 +103,10 @@ Most of the time, it's reasonable to expect that your Reflexes will follow a pre
 There are, however, several important exceptions to the norm.
 
 1. Reflexes that are aborted on the server have a short cycle: `before` -&gt; `halted`
-2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; `finalize`
-3. **Nothing Reflexes end early**: `before` -&gt; `success` -&gt; `after`
+2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; \[`finalize`\]
+3. **Nothing Reflexes end early**: `before` -&gt; `after`
 
-Nothing Reflexes have no CableReady operations to wait for, so there is nothing to `finalize`.
+Nothing Reflexes have no CableReady operations to wait for, so there is nothing to `finalize`. This means that a Nothing Reflex with an error will not have a `finalize` stage.
 
 ### Generic Life-cycle Methods
 
