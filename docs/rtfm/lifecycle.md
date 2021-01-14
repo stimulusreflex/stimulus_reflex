@@ -164,8 +164,8 @@ The Reflex `Example#poke` will cause StimulusReflex to check for the existence o
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
 <div data-controller="example">
-  <a href="#" data-reflex="Example#poke">Poke</a>
-  <a href="#" data-reflex="Example#purge">Purge</a>
+  <a href="#" data-reflex="click->Example#poke">Poke</a>
+  <a href="#" data-reflex="click->Example#purge">Purge</a>
 </div>
 ```
 {% endcode %}
@@ -175,12 +175,12 @@ The Reflex `Example#poke` will cause StimulusReflex to check for the existence o
 import ApplicationController from './application_controller.js'
 
 export default class extends ApplicationController {
-  beforePoke(anchorElement) {
-    anchorElement.innerText = 'Poking...'
+  beforePoke(element) {
+    element.innerText = 'Poking...'
   }
 
-  beforePurge(anchorElement) {
-    anchorElement.innerText = 'Purging...'
+  beforePurge(element) {
+    element.innerText = 'Purging...'
   }
 }
 ```
