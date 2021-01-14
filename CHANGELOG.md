@@ -103,7 +103,6 @@
 - don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
 - Setup a proxy object that wraps CableReady::Channels [\#382](https://github.com/hopsoft/stimulus_reflex/pull/382) ([hopsoft](https://github.com/hopsoft))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
-- Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
 
@@ -115,6 +114,7 @@
 
 **Merged pull requests:**
 
+- Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
 - make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
@@ -146,6 +146,7 @@
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
+- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
@@ -153,7 +154,6 @@
 
 **Merged pull requests:**
 
-- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 - serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
@@ -445,6 +445,7 @@
 - Make element even more user friendly [\#210](https://github.com/hopsoft/stimulus_reflex/pull/210) ([hopsoft](https://github.com/hopsoft))
 - Form parameters [\#204](https://github.com/hopsoft/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Map hashes in incoming arguments using with\_indifferent\_access [\#203](https://github.com/hopsoft/stimulus_reflex/pull/203) ([jaredcwhite](https://github.com/jaredcwhite))
+- Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/hopsoft/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
 - Setup mutation aware declarative reflexes [\#197](https://github.com/hopsoft/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
@@ -502,8 +503,8 @@
 
 - Stimulate without a reflex target [\#179](https://github.com/hopsoft/stimulus_reflex/issues/179)
 - Reflex callbacks [\#155](https://github.com/hopsoft/stimulus_reflex/issues/155)
-- Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/hopsoft/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
 - Replace camelize with homegrown version [\#184](https://github.com/hopsoft/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
+- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
 - add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
@@ -530,7 +531,6 @@
 **Implemented enhancements:**
 
 - TypeScript typing support [\#152](https://github.com/hopsoft/stimulus_reflex/issues/152)
-- Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 
 **Fixed bugs:**
 
