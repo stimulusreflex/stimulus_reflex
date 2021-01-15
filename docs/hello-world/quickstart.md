@@ -42,7 +42,7 @@ This example updates the page with the latest count when the link is clicked:
   data-reflex="click->Counter#increment"
   data-step="1" 
   data-count="<%= @count.to_i %>"
->Increment <%= @count.to_i %></a>
+>Increment <%= @count.present? ? @count.to_i : "from 0" %></a>
 ```
 {% endcode %}
 
