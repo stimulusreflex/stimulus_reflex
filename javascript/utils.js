@@ -103,7 +103,7 @@ export const elementToXPath = element => {
   }
 }
 
-export const xPathToElement = xpath => {
+export const XPathToElement = xpath => {
   return document.evaluate(
     xpath,
     document,
