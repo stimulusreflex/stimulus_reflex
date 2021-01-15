@@ -229,8 +229,8 @@ export const dispatchLifecycleEvent = (
     element: reflexElement
   }
 
-  controllerElement.dispatchEvent(
+  reflexElement.dispatchEvent(
     new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
-  if (window.jQuery) window.jQuery(controllerElement).trigger(event, detail)
+  if (window.jQuery) window.jQuery(reflexElement).trigger(event, detail)
 }
