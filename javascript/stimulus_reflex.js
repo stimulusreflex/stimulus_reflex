@@ -577,6 +577,8 @@ if (!document.stimulusReflexInitialized) {
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 
+    controllerElement.reflexError = controllerElement.reflexError || {}
+
     if (controllerElement && subject === 'error')
       controllerElement.reflexError[reflexId] = body
 
