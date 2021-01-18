@@ -16,6 +16,7 @@
 
 **Closed issues:**
 
+- Form serialisation does not escape input values [\#430](https://github.com/hopsoft/stimulus_reflex/issues/430)
 - Multiple text inputs with the same name lose value in Reflex [\#425](https://github.com/hopsoft/stimulus_reflex/issues/425)
 - Lifecycle events not being issued correctly [\#413](https://github.com/hopsoft/stimulus_reflex/issues/413)
 - If the element no longer exists, try to find it.  [\#412](https://github.com/hopsoft/stimulus_reflex/issues/412)
@@ -101,7 +102,6 @@
 - Allow `success` and `after` lifecycle methods on replaced elements [\#386](https://github.com/hopsoft/stimulus_reflex/pull/386) ([marcoroth](https://github.com/marcoroth))
 - split SR operations from data.operations [\#385](https://github.com/hopsoft/stimulus_reflex/pull/385) ([leastbad](https://github.com/leastbad))
 - don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
-- Setup a proxy object that wraps CableReady::Channels [\#382](https://github.com/hopsoft/stimulus_reflex/pull/382) ([hopsoft](https://github.com/hopsoft))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
@@ -114,6 +114,7 @@
 
 **Merged pull requests:**
 
+- Setup a proxy object that wraps CableReady::Channels [\#382](https://github.com/hopsoft/stimulus_reflex/pull/382) ([hopsoft](https://github.com/hopsoft))
 - Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
 - make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
@@ -902,6 +903,10 @@
 ## [v1.0.0](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.0) (2019-08-09)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v0.3.3...v1.0.0)
+
+**Implemented enhancements:**
+
+- Ruby function splat args return arity of -1 [\#9](https://github.com/hopsoft/stimulus_reflex/pull/9) ([leastbad](https://github.com/leastbad))
 
 ## [v0.3.3](https://github.com/hopsoft/stimulus_reflex/tree/v0.3.3) (2019-05-13)
 
