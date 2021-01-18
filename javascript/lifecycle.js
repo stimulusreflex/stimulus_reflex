@@ -76,7 +76,7 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'before',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     ),
@@ -88,13 +88,13 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'success',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
@@ -107,13 +107,13 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'success',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
@@ -126,13 +126,13 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'error',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     )
@@ -145,7 +145,7 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'halted',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     ),
@@ -157,7 +157,7 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'after',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     ),
@@ -169,7 +169,7 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'finalize',
-      event.target,
+      event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId
     ),
@@ -209,22 +209,18 @@ export const dispatchLifecycleEvent = (
   }
 
   if (
-    (!controllerElement.reflexController ||
-      !controllerElement.reflexController[reflexId]) &&
-    Debug.enabled &&
-    !reflexes[reflexId].warned
-  ) {
-    console.warn(
-      `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
-    )
-    reflexes[reflexId].warned = true
-  }
-
-  if (
     !controllerElement.reflexController ||
-    !controllerElement.reflexController[reflexId]
-  )
+    (controllerElement.reflexController &&
+      !controllerElement.reflexController[reflexId])
+  ) {
+    if (Debug.enabled && !reflexes[reflexId].warned) {
+      console.warn(
+        `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
+      )
+      reflexes[reflexId].warned = true
+    }
     return
+  }
 
   const { target } = controllerElement.reflexData[reflexId] || {}
   const controller = controllerElement.reflexController[reflexId] || {}
@@ -232,7 +228,8 @@ export const dispatchLifecycleEvent = (
   const detail = {
     reflex: target,
     controller,
-    reflexId
+    reflexId,
+    element: reflexElement
   }
 
   controllerElement.dispatchEvent(
