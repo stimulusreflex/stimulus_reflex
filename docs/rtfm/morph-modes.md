@@ -468,7 +468,9 @@ The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter",
 ```
 {% endcode %}
 
-This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can only accept and store simple Ruby values; no complex objects. You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, you should make sure to pass the user's id to the ActiveJob.
+This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active_job_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active_job_basics.html#globalid) system behind the scenes.
+
+You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, make sure to pass the user resource \(ActiveRecord model instance\) to the ActiveJob.
 
 {% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
