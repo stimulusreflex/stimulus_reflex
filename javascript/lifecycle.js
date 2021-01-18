@@ -76,8 +76,8 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'before',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     ),
   true
@@ -88,14 +88,14 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'success',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
   },
@@ -107,14 +107,14 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'success',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
   },
@@ -126,14 +126,14 @@ document.addEventListener(
   event => {
     invokeLifecycleMethod(
       'error',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
     dispatchLifecycleEvent(
       'after',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     )
   },
@@ -145,8 +145,8 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'halted',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     ),
   true
@@ -157,8 +157,8 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'after',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     ),
   true
@@ -169,8 +169,8 @@ document.addEventListener(
   event =>
     invokeLifecycleMethod(
       'finalize',
-      event.detail.element,
       event.target,
+      event.detail.controller.element,
       event.detail.reflexId
     ),
   true
@@ -225,8 +225,7 @@ export const dispatchLifecycleEvent = (
   const detail = {
     reflex: target,
     controller,
-    reflexId,
-    element: reflexElement
+    reflexId
   }
 
   reflexElement.dispatchEvent(
