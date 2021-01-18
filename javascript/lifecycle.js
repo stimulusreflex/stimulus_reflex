@@ -209,7 +209,8 @@ export const dispatchLifecycleEvent = (
   }
 
   if (
-    !controllerElement.reflexController &&
+    (!controllerElement.reflexController ||
+      !controllerElement.reflexController[reflexId]) &&
     Debug.enabled &&
     !reflexes[reflexId].warned
   ) {
@@ -218,6 +219,12 @@ export const dispatchLifecycleEvent = (
     )
     reflexes[reflexId].warned = true
   }
+
+  if (
+    !controllerElement.reflexController ||
+    !controllerElement.reflexController[reflexId]
+  )
+    return
 
   const { target } = controllerElement.reflexData[reflexId] || {}
   const controller = controllerElement.reflexController[reflexId] || {}
@@ -228,8 +235,8 @@ export const dispatchLifecycleEvent = (
     reflexId
   }
 
-  reflexElement.dispatchEvent(
+  controllerElement.dispatchEvent(
     new CustomEvent(event, { bubbles: true, cancelable: false, detail })
   )
-  if (window.jQuery) window.jQuery(reflexElement).trigger(event, detail)
+  if (window.jQuery) window.jQuery(controllerElement).trigger(event, detail)
 }
