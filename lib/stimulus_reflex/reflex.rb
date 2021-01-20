@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath, :permanent_attribute_name, keyword_init: true)
+ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, keyword_init: true)
 
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
@@ -51,7 +51,7 @@ class StimulusReflex::Reflex
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
-  delegate :reflex_id, :reflex_controller, :xpath, :permanent_attribute_name, to: :client_attributes
+  delegate :reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
   delegate :render, to: :controller_class
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})

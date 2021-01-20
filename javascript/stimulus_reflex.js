@@ -13,7 +13,7 @@ import {
   extractElementAttributes,
   extractElementDataset
 } from './attributes'
-import { extractReflexName, elementToXPath, xPathToElement } from './utils'
+import { extractReflexName, elementToXPath, XPathToElement } from './utils'
 
 // A lambda that does nothing. Very zen; we are made of stars
 const NOOP = () => {}
@@ -103,20 +103,27 @@ const createSubscription = controller => {
           const { reflexId } = reflexData
 
           if (!reflexes[reflexId] && !isolationMode) {
-            const element = xPathToElement(reflexData.xpath)
-            element.reflexController = element.reflexController || {}
-            element.reflexData = element.reflexData || {}
-            element.reflexError = element.reflexError || {}
+            const controllerElement = XPathToElement(reflexData.xpathController)
+            const reflexElement = XPathToElement(reflexData.xpathElement)
+            controllerElement.reflexController =
+              controllerElement.reflexController || {}
+            controllerElement.reflexData = controllerElement.reflexData || {}
+            controllerElement.reflexError = controllerElement.reflexError || {}
 
-            element.reflexController[
+            controllerElement.reflexController[
               reflexId
             ] = stimulusApplication.getControllerForElementAndIdentifier(
-              element,
+              controllerElement,
               reflexData.reflexController
             )
 
-            element.reflexData[reflexId] = reflexData
-            dispatchLifecycleEvent('before', element, reflexId)
+            controllerElement.reflexData[reflexId] = reflexData
+            dispatchLifecycleEvent(
+              'before',
+              reflexElement,
+              controllerElement,
+              reflexId
+            )
             registerReflex(reflexData)
           }
 
@@ -210,7 +217,8 @@ const extendStimulusController = controller => {
       const resolveLate = options['resolveLate'] || false
       const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(reflexElement, datasetAttribute)
-      const xpath = elementToXPath(controllerElement)
+      const xpathController = elementToXPath(controllerElement)
+      const xpathElement = elementToXPath(reflexElement)
       const data = {
         target,
         args,
@@ -220,7 +228,8 @@ const extendStimulusController = controller => {
         selectors,
         reflexId,
         resolveLate,
-        xpath,
+        xpathController,
+        xpathElement,
         reflexController: this.identifier,
         permanentAttributeName:
           stimulusApplication.schema.reflexPermanentAttribute
@@ -242,7 +251,12 @@ const extendStimulusController = controller => {
       controllerElement.reflexController[reflexId] = this
       controllerElement.reflexData[reflexId] = data
 
-      dispatchLifecycleEvent('before', controllerElement, reflexId)
+      dispatchLifecycleEvent(
+        'before',
+        reflexElement,
+        controllerElement,
+        reflexId
+      )
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
@@ -493,8 +507,9 @@ if (!document.stimulusReflexInitialized) {
   const beforeDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
-    const { reflexId, xpath } = stimulusReflex
-    const element = xPathToElement(xpath)
+    const { reflexId, xpathElement, xpathController } = stimulusReflex
+    const controllerElement = XPathToElement(xpathController)
+    const reflexElement = XPathToElement(xpathElement)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -503,9 +518,18 @@ if (!document.stimulusReflexInitialized) {
     if (reflex.pendingOperations > 0) return
 
     if (!stimulusReflex.resolveLate)
-      setTimeout(() => promise.resolve({ element, event, data: promise.data }))
+      setTimeout(() =>
+        promise.resolve({ element: reflexElement, event, data: promise.data })
+      )
 
-    setTimeout(() => dispatchLifecycleEvent('success', element, reflexId))
+    setTimeout(() =>
+      dispatchLifecycleEvent(
+        'success',
+        reflexElement,
+        controllerElement,
+        reflexId
+      )
+    )
   }
 
   document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
@@ -514,8 +538,9 @@ if (!document.stimulusReflexInitialized) {
   const afterDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
     if (!stimulusReflex) return
-    const { reflexId, xpath } = stimulusReflex
-    const element = xPathToElement(xpath)
+    const { reflexId, xpathElement, xpathController } = stimulusReflex
+    const controllerElement = XPathToElement(xpathController)
+    const reflexElement = XPathToElement(xpathElement)
     const reflex = reflexes[reflexId]
     const promise = reflex.promise
 
@@ -526,26 +551,40 @@ if (!document.stimulusReflexInitialized) {
     if (reflex.completedOperations < reflex.totalOperations) return
 
     if (stimulusReflex.resolveLate)
-      setTimeout(() => promise.resolve({ element, event, data: promise.data }))
+      setTimeout(() =>
+        promise.resolve({ element: reflexElement, event, data: promise.data })
+      )
 
-    setTimeout(() => dispatchLifecycleEvent('finalize', element, reflexId))
+    setTimeout(() =>
+      dispatchLifecycleEvent(
+        'finalize',
+        reflexElement,
+        controllerElement,
+        reflexId
+      )
+    )
   }
 
   document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
   document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 
   document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, serverMessage, xpath } = event.detail.stimulusReflex || {}
+    const { reflexId, serverMessage, xpathController, xpathElement } =
+      event.detail.stimulusReflex || {}
     const { subject, body } = serverMessage
-    const element = xPathToElement(xpath)
+    const controllerElement = XPathToElement(xpathController)
+    const reflexElement = XPathToElement(xpathElement)
     const promise = reflexes[reflexId].promise
     const subjects = { error: true, halted: true, nothing: true, success: true }
 
-    if (element && subject === 'error') element.reflexError[reflexId] = body
+    controllerElement.reflexError = controllerElement.reflexError || {}
+
+    if (controllerElement && subject === 'error')
+      controllerElement.reflexError[reflexId] = body
 
     promise[subject === 'error' ? 'reject' : 'resolve']({
       data: promise.data,
-      element,
+      element: reflexElement,
       event,
       toString: () => body
     })
@@ -554,8 +593,13 @@ if (!document.stimulusReflexInitialized) {
 
     if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
 
-    if (element && subjects[subject])
-      dispatchLifecycleEvent(subject, element, reflexId)
+    if (subjects[subject])
+      dispatchLifecycleEvent(
+        subject,
+        reflexElement,
+        controllerElement,
+        reflexId
+      )
   })
 }
 

@@ -40,7 +40,8 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           params: params,
           client_attributes: {
             reflex_id: data["reflexId"],
-            xpath: data["xpath"],
+            xpath_controller: data["xpathController"],
+            xpath_element: data["xpathElement"],
             reflex_controller: data["reflexController"],
             permanent_attribute_name: permanent_attribute_name
           })
