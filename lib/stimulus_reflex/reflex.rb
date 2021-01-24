@@ -57,8 +57,11 @@ class StimulusReflex::Reflex
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
       message = <<~MSG
-        #{self.class.name} includes CableReady::Broadcaster as an ancestor!
-        Reflexes already expose StimulusReflex::Reflex#cable_ready. Please remove CableReady::Broadcaster from the ancestor tree.
+
+        #{self.class.name} includes CableReady::Broadcaster, and you need to remove it.
+        Reflexes have their own CableReady interface. You can just assume that it's present.
+        See https://docs.stimulusreflex.com/rtfm/cableready#using-cableready-inside-a-reflex-action for more details.
+
       MSG
       raise TypeError.new(message.strip)
     end
