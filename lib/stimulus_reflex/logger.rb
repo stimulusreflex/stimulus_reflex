@@ -79,7 +79,7 @@ module StimulusReflex
       Time.now.strftime("%Y-%m-%d %H:%M:%S")
     end
 
-    def method_missing method
+    def method_missing(method)
       return send(method.to_sym) if private_instance_methods.include?(method.to_sym)
 
       reflex.connection.identifiers.each do |identifier|
@@ -89,7 +89,7 @@ module StimulusReflex
       "-"
     end
 
-    def respond_to_missing? method
+    def respond_to_missing?(method)
       return true if private_instance_methods.include?(method.to_sym)
 
       reflex.connection.identifiers.each do |identifier|
