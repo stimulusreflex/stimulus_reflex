@@ -18,6 +18,7 @@ module StimulusReflex
 
     def method_missing(name, *args)
       return stimulus_reflex_channel.public_send(name, *args) if stimulus_reflex_channel.respond_to?(name)
+      super
     end
 
     def respond_to_missing?(name, include_all)
