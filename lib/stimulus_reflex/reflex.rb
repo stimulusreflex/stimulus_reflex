@@ -55,7 +55,7 @@ class StimulusReflex::Reflex
   delegate :render, to: :controller_class
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
-    if is_a?(CableReady::Broadcaster)
+    if is_a? CableReady::Broadcaster
       message = <<~MSG
         #{self.class.name} includes CableReady::Broadcaster as an ancestor!
         Reflexes already expose StimulusReflex::Reflex#cable_ready. Please remove CableReady::Broadcaster from the ancestor tree.
