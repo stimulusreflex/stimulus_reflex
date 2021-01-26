@@ -55,6 +55,17 @@ class StimulusReflex::Reflex
   delegate :render, to: :controller_class
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
+    if is_a? CableReady::Broadcaster
+      message = <<~MSG
+
+        #{self.class.name} includes CableReady::Broadcaster, and you need to remove it.
+        Reflexes have their own CableReady interface. You can just assume that it's present.
+        See https://docs.stimulusreflex.com/rtfm/cableready#using-cableready-inside-a-reflex-action for more details.
+
+      MSG
+      raise TypeError.new(message.strip)
+    end
+
     @channel = channel
     @url = url
     @element = element
