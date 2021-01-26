@@ -61,6 +61,12 @@ is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
 Further details of specific enforcement policies may be posted separately.
 
+### General Policy
+
+- 1st offense - user will be warned that they violated the CoC
+- 2nd offense - user will be publicly flagged as a CoC violator
+- 3rd offense - user will be banned from the community
+
 Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.
