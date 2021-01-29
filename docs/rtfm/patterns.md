@@ -219,7 +219,15 @@ if @stimulus_reflex
 end
 ```
 
-Then make sure that you're setting a `data-reflex-root` attribute that points to same DOM element where your template begins. Otherwise StimulusReflex will look for the `body` tag and not know what to do.
+Then make sure that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
+
+```markup
+<div id="pow" data-reflex-root="#pow" data-reflex="click->Biff#pow">Pow.</div>
+```
+
+Otherwise StimulusReflex will look for the `body` tag and not know what to do.
+
+You can read more about scoping Page Morphs [here](morph-modes.md#scoping-page-morphs).
 
 ### Internationalization
 

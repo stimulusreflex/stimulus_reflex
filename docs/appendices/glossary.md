@@ -38,7 +38,7 @@ The three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page
 
 ### Reflex root
 
-Page Morphs update with the `body` element as the default Reflex root. You can specify one or more elements to constrain what part of the DOM will be updated using the `data-reflex-root` attribute.
+Page Morphs update with the `body` element as the default Reflex root. You can specify one or more elements to constrain what part of the DOM will be updated using the `data-reflex-root` attribute. See [Scoping Page Morphs](https://docs.stimulusreflex.com/rtfm/morph-modes#scoping-page-morphs) for more information.
 
 ### reflexId
 
