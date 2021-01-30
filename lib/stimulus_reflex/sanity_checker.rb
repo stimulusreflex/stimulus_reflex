@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
+  LATEST_VERSION_FORMAT = /(\d+\.\d+\.\d+)/
   NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
@@ -66,7 +67,7 @@ class StimulusReflex::SanityChecker
   def check_new_version_available
     return unless Rails.env.development?
     return if StimulusReflex.config.on_new_version_available == :ignore
-    if StimulusReflex::VERSION.match?(/(\d+\.\d+\.\d+)/)
+    if not_prerelease
       begin
         latest_version = open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
         if latest_version != StimulusReflex::VERSION
@@ -100,6 +101,11 @@ class StimulusReflex::SanityChecker
 
   def javascript_version_matches?
     javascript_package_version == gem_version
+  end
+
+  def not_prerelease
+    StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT) &&
+      StimulusReflex::VERSION.match(LATEST_VERSION_FORMAT).captures[0] == StimulusReflex::VERSION
   end
 
   def gem_version
