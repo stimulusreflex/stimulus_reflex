@@ -66,16 +66,16 @@ class StimulusReflex::SanityChecker
   def check_new_version_available
     return unless Rails.env.development?
     return if StimulusReflex.config.on_new_version_available == :ignore
-    if StimulusReflex::VERSION.match? /(\d+\.\d+\.\d+)/
+    if StimulusReflex::VERSION.match?(/(\d+\.\d+\.\d+)/)
       begin
         latest_version = open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
         if latest_version != StimulusReflex::VERSION
           puts <<~WARN
 
-          There is a new version of StimulusReflex available!
-          Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
-          It is very important that you update BOTH Gemfile and package.json
-          Run `bundle install && yarn install` to complete the upgrade.
+            There is a new version of StimulusReflex available!
+            Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
+            It is very important that you update BOTH Gemfile and package.json
+            Run `bundle install && yarn install` to complete the upgrade.
 
           WARN
           exit if StimulusReflex.config.on_new_version_available == :exit
