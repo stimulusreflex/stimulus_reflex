@@ -6,6 +6,11 @@ StimulusReflex.configure do |config|
 
   # config.on_failed_sanity_checks = :exit
 
+  # Enable/disable exiting / warning when there's a new StimulusReflex release
+  # `:exit` or `:warn` or `:ignore`
+
+  # config.on_new_version_available = :ignore
+
   # Override the parent class that the StimulusReflex ActionCable channel inherits from
 
   # config.parent_channel = "ApplicationCable::Channel"

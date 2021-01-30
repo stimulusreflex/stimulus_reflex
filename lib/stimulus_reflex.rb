@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "uri"
+require "open-uri"
 require "rack"
 require "rails/engine"
 require "active_support/all"

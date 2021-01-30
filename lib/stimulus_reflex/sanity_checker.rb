@@ -13,6 +13,7 @@ class StimulusReflex::SanityChecker
       instance = new
       instance.check_caching_enabled
       instance.check_javascript_package_version
+      instance.check_new_version_available
     end
 
     private
@@ -59,6 +60,31 @@ class StimulusReflex::SanityChecker
         To update the Stimulus Reflex npm package:
             yarn upgrade stimulus_reflex@#{gem_version}
       WARN
+    end
+  end
+
+  def check_new_version_available
+    return unless Rails.env.development?
+    return if StimulusReflex.config.on_new_version_available == :ignore
+    if StimulusReflex::VERSION.match? /(\d+\.\d+\.\d+)/
+      begin
+        latest_version = open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
+        if latest_version != StimulusReflex::VERSION
+          puts <<~WARN
+
+          There is a new version of StimulusReflex available!
+          Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
+          It is very important that you update BOTH Gemfile and package.json
+          Run `bundle install && yarn install` to complete the upgrade.
+
+          WARN
+          exit if StimulusReflex.config.on_new_version_available == :exit
+        end
+      rescue
+        puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: connection timeout"
+      end
+    else
+      puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build"
     end
   end
 
