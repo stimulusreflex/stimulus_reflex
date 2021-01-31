@@ -33,7 +33,7 @@ class StimulusReflex::SanityChecker
   def check_caching_enabled
     unless caching_enabled?
       warn_and_exit <<~WARN
-        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+        StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         To enable caching in development, run:
             rails dev:cache
       WARN
@@ -41,7 +41,7 @@ class StimulusReflex::SanityChecker
 
     unless not_null_store?
       warn_and_exit <<~WARN
-        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+        StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         But your config.cache_store is set to :null_store, so it won't work.
       WARN
     end
@@ -57,8 +57,8 @@ class StimulusReflex::SanityChecker
 
     unless javascript_version_matches?
       warn_and_exit <<~WARN
-        The Stimulus Reflex javascript package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
-        To update the Stimulus Reflex npm package:
+        The StimulusReflex npm package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
+        To update the StimulusReflex npm package:
             yarn upgrade stimulus_reflex@#{gem_version}
       WARN
     end
