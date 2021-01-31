@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
-  LATEST_VERSION_FORMAT = /(\d+\.\d+\.\d+)/
+  LATEST_VERSION_FORMAT = /^(\d+\.\d+\.\d+)$/
   NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
   JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
@@ -67,25 +67,22 @@ class StimulusReflex::SanityChecker
   def check_new_version_available
     return unless Rails.env.development?
     return if StimulusReflex.config.on_new_version_available == :ignore
-    if not_prerelease
-      begin
-        latest_version = open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
-        if latest_version != StimulusReflex::VERSION
-          puts <<~WARN
+    return unless using_stable_release
+    begin
+      latest_version = URI.open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
+      if latest_version != StimulusReflex::VERSION
+        puts <<~WARN
 
-            There is a new version of StimulusReflex available!
-            Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
-            It is very important that you update BOTH Gemfile and package.json
-            Run `bundle install && yarn install` to complete the upgrade.
+          There is a new version of StimulusReflex available!
+          Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
+          It is very important that you update BOTH Gemfile and package.json
+          Run `bundle install && yarn install` to complete the upgrade.
 
-          WARN
-          exit if StimulusReflex.config.on_new_version_available == :exit
-        end
-      rescue
-        puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: connection timeout"
+        WARN
+        exit if StimulusReflex.config.on_new_version_available == :exit
       end
-    else
-      puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build"
+    rescue
+      puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: connection timeout"
     end
   end
 
@@ -103,9 +100,10 @@ class StimulusReflex::SanityChecker
     javascript_package_version == gem_version
   end
 
-  def not_prerelease
-    StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT) &&
-      StimulusReflex::VERSION.match(LATEST_VERSION_FORMAT).captures[0] == StimulusReflex::VERSION
+  def using_stable_release
+    stable = StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT)
+    puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" unless stable
+    stable
   end
 
   def gem_version
