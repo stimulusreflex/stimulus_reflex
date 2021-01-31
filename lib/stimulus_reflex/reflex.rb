@@ -134,4 +134,8 @@ class StimulusReflex::Reflex
     return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.class < ActiveRecord::Base
     [record.to_s, prefix].compact.join("_")
   end
+
+  def wrap(content, resource)
+    "<div id=\"#{dom_id(resource)}\">#{content}</div>"
+  end
 end

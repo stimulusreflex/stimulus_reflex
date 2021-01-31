@@ -7,8 +7,8 @@ module StimulusReflex
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
         updates.each do |key, value|
-          updates[key] = ApplicationController.render(key) if key.class < ActiveRecord::Base && value.nil?
-          updates[key] = wrap(key) if key.class < ActiveRecord::Relation && value.nil?
+          updates[key] = reflex.render(key) if key.class < ActiveRecord::Base && value.nil?
+          updates[key] = reflex.wrap(reflex.render(key), key) if key.class < ActiveRecord::Relation && value.nil?
         end.transform_keys { |key|
           key.class < ActiveRecord::Base || key.class < ActiveRecord::Relation ? reflex.dom_id(key) : key
         }.each do |selector, html|
@@ -61,12 +61,6 @@ module StimulusReflex
 
     def to_s
       "Selector"
-    end
-
-    private
-
-    def wrap(key)
-      "<div id=\"#{reflex.dom_id(key)}\">#{ApplicationController.render(key)}</div>"
     end
   end
 end
