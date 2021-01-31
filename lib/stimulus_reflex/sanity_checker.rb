@@ -50,7 +50,7 @@ class StimulusReflex::SanityChecker
   def check_javascript_package_version
     if javascript_package_version.nil?
       warn_and_exit <<~WARN
-        Can't locate the stimulus_reflex NPM package.
+        Can't locate the stimulus_reflex npm package.
         Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
       WARN
     end
