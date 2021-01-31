@@ -80,7 +80,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  def morph(selectors, html = "")
+  def morph(selectors, html = nil)
     case selectors
     when :page
       raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
@@ -129,7 +129,9 @@ class StimulusReflex::Reflex
     @_params ||= ActionController::Parameters.new(request.parameters)
   end
 
-  def dom_id(record_or_class, prefix = nil)
-    "#" + ActionView::RecordIdentifier.dom_id(record_or_class, prefix).to_s
+  def dom_id(record, prefix = nil)
+    return "#" + record.class.to_s.split("::")[0].pluralize.underscore if record.class < ActiveRecord::Relation
+    return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.class < ActiveRecord::Base
+    [record.to_s, prefix].compact.join("_")
   end
 end
