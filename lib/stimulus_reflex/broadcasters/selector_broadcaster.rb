@@ -6,7 +6,9 @@ module StimulusReflex
       morphs.each do |morph|
         selectors, html = morph
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
-        updates.each do |selector, html|
+        updates.transform_keys { |key|
+          key.class < ActiveRecord::Base ? reflex.dom_id(key) : key
+        }.each do |selector, html|
           html = html.to_s
           fragment = Nokogiri::HTML.fragment(html)
           match = fragment.at_css(selector)
