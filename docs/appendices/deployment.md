@@ -6,15 +6,11 @@ description: Dealing with the scaling concerns we are supposedly lucky to have
 
 ## Session Storage
 
-StimulusReflex configures :cache\_store to be the Rails session storage mechanism. In a production environment, you'll want to move beyond the Rails default :memory\_store cache in favor of a more robust solution.
+**Cookie-based session storage is not currently supported by StimulusReflex.** ActionCable does not have the ability to write cookies, so inside of a Reflex it was possible to read session values while any attempts to store them would silently fail! We called it the _bubble universe_. We have a strategy for restoring cookie session storage in mind, but it's not ready, yet.
 
-The recommended solution is to use Redis as your cache store, and `:cache_store` as your session store. Memcache is also an excellent cache store; we prefer Redis because it offers a far broader range of data structures and querying mechanisms. If you're not using Redis' advanced features, both tools are equally well-suited to key:value string caching.
+Instead, we make the best of things by enabling caching in the development environment. This allows us to assign our user session data to be managed by the cache store. We also frequently use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store stateful data that we consume in Reflexes. Once you consider that testing with caching off frequently hides bugs that might only come out in production, the argument for mandatory caching shifts from quirky requirement to exciting opportunity. 🎉
 
-{% hint style="warning" %}
-For session storage, make sure that your Redis instance is configured to use the `volatile-lru` key expiration strategy. It means that if your Redis instance gets full, it will start ejecting the session data for the users who have likely churned anyhow, while ensuring regular users stay logged in.
-{% endhint %}
-
-Many Rails projects are already using Redis for ActiveJob queues and Russian doll caching, making the decision to use it for session storage easy and incremental. Add the `redis` and `hiredis` gems to your Gemfile:
+We want to change the cache store to make use of Redis. First we should enable the `redis` gem, as well as `hiredis`, a native wrapper which is much faster than the Ruby gem alone.
 
 {% code title="Gemfile" %}
 ```ruby
@@ -23,16 +19,12 @@ gem "hiredis"
 ```
 {% endcode %}
 
-Then configure your environments to suit your caching strategy and pool size:
+Now that Redis is available to your application, you need to configure your development enviroment:
 
-{% code title="config/environments/production.rb" %}
+{% code title="config/environments/development.rb" %}
 ```ruby
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
-config.session_store :cache_store,
-  key: "_session",
-  compress: true,
-  pool_size: 5,
-  expire_after: 1.year
+config.session_store :cache_store, key: "_session_development", compress: true, pool_size: 5, expire_after: 1.year
 ```
 {% endcode %}
 
@@ -40,11 +32,11 @@ config.session_store :cache_store,
 Please note that `cache_store` is an accessor, while `session_store` is a method. Take care **not** to use an `=` when defining your `session_store`.
 {% endhint %}
 
-Another powerful option for session storage is to use the [activerecord-session\_store](https://github.com/rails/activerecord-session_store) gem and keep your sessions in the database. This technique requires some additional setup in the form of a migration that will create a `sessions` table in your database.
+Continue reading the [Deployment on Heroku](deployment.md#deployment-on-heroku) section below for tips on setting up Redis-backed sessions using the `redis-session-store` gem.
 
-Database-backed session storage offers a single source of truth in a production environment that might be preferable to a sharded Redis cluster for high-volume deployments. However, it's also important to weigh this against the additional strain this will put on your database server, especially in high-traffic scenarios.
-
-Regardless of which option you choose, keep an eye on your connection pools and memory usage.
+{% hint style="warning" %}
+For **caching and session storage**, make sure that your Redis instance is configured to use the `volatile-lru` key expiration strategy. It means that if your Redis instance gets full, it will start ejecting the session data for the users who have likely churned anyhow, while ensuring regular users stay logged in.
+{% endhint %}
 
 ## Deployment on Heroku
 
@@ -59,7 +51,7 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
 
 config.session_store :redis_session_store, {
-  key: Rails.application.credentials.app_session_key,
+  key: "_session_production,
   serializer: :json,
   redis: {
     expire_after: 1.year,

@@ -8,7 +8,7 @@ description: How to prepare your app to use StimulusReflex
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
-The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**.
+The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](https://app.gitbook.com/@stimulusreflex/s/stimulusreflex/~/drafts/-MSU6Biq0jCNSes9e6mx/appendices/deployment#session-storage).\)
 
 ```ruby
 bundle add stimulus_reflex
@@ -16,7 +16,7 @@ bundle exec rails stimulus_reflex:install
 ```
 
 {% hint style="warning" %}
-StimulusReflex requires Redis be installed and running. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
+StimulusReflex requires Redis be [installed and running](https://redis.io/topics/quickstart).
 {% endhint %}
 
 And that's it! You can start using StimulusReflex in your application.
@@ -28,7 +28,9 @@ And that's it! You can start using StimulusReflex in your application.
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
 {% hint style="warning" %}
-StimulusReflex requires Redis be installed and running. If you don't have Redis, you can [learn more on the Redis site](https://redis.io/topics/quickstart).
+StimulusReflex requires Redis be [installed and running](https://redis.io/topics/quickstart).
+
+You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
 {% endhint %}
 
 First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
@@ -58,6 +60,7 @@ import consumer from '../channels/consumer'
 const application = Application.start()
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
+application.consumer = consumer
 StimulusReflex.initialize(application, { consumer })
 ```
 {% endtab %}
@@ -69,13 +72,20 @@ The installation information presented by the [StimulusJS handbook](https://stim
 If you require your controllers in both 'application.js `and` index.js\` it's likely that your controllers will load twice, causing all sorts of strange behavior.  
 {% endhint %}
 
-Cookie-based session management is not currently supported by StimulusReflex. We will set our session management to be managed by the cache store, which in Rails defaults to the memory store.
+**Cookie-based session storage is not currently supported by StimulusReflex.** This is due to complications with ActionCable which we are working to circumvent.
+
+Instead, we enable caching in the development environment so that we can assign our user session data to be managed by the cache store. Later, we will also use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store stateful data.
+
+In Rails, the default cache store is the memory store. We want to change the cache store to make use of Redis:
 
 {% code title="config/environments/development.rb" %}
 ```ruby
 Rails.application.configure do
-  config.session_store :cache_store
-  # ....
+  # CHANGE the following line; it's :memory_store by default
+  config.cache_store = :redis_cache_store, {url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
+
+  # ADD the following line; it probably doesn't exist
+  config.session_store :cache_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
 end
 ```
 {% endcode %}
