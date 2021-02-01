@@ -72,9 +72,9 @@ The installation information presented by the [StimulusJS handbook](https://stim
 If you require your controllers in both 'application.js `and` index.js\` it's likely that your controllers will load twice, causing all sorts of strange behavior.  
 {% endhint %}
 
-**Cookie-based session storage is not currently supported by StimulusReflex.** This is due to complications with ActionCable which we are working to circumvent.
+**Cookie-based session storage is not currently supported by StimulusReflex.**
 
-Instead, we enable caching in the development environment so that we can assign our user session data to be managed by the cache store. Later, we will also use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store stateful data.
+Instead, we enable caching in the development environment so that we can assign our user session data to be managed by the cache store.
 
 In Rails, the default cache store is the memory store. We want to change the cache store to make use of Redis:
 
@@ -89,6 +89,8 @@ Rails.application.configure do
 end
 ```
 {% endcode %}
+
+You can read more about configuring Redis on the [Deployment](../appendices/deployment.md#session-storage) page.
 
 Configure ActionCable to use the Redis adapter in development mode:
 

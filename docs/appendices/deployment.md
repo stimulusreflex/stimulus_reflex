@@ -44,6 +44,12 @@ We have seen deployments where combining cache and session storage functions int
 
 Heroku allows you to provision multiple Redis instances to your application, both via their [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
 
+{% hint style="success" %}
+You could end up with separate Redis instances for: fragment caching, sessions, ActionCable and Sidekiq job queues.
+
+Remember, never store Sidekiq jobs with a `volatile-lru` key expiration strategy. If your job queue runs out of space, you want it sounding every alarm possible.
+{% endhint %}
+
 Install the `redis-session-store` gem into your project, and then in your `production.rb` you can change your session store:
 
 {% code title="config/environments/production.rb" %}
