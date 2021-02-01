@@ -130,8 +130,8 @@ class StimulusReflex::Reflex
   end
 
   def dom_id(record, prefix = nil)
-    return "#" + record.class.to_s.split("::")[0].pluralize.underscore if record.class < ActiveRecord::Relation
-    return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.class < ActiveRecord::Base
+    return "#" + record.model_name.plural if record.is_a?(ActiveRecord::Relation)
+    return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.is_a?(ActiveRecord::Base)
     [record.to_s, prefix].compact.join("_")
   end
 
