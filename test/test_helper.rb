@@ -39,6 +39,9 @@ end
 class TestModel
   include ActiveModel::Model
   attr_accessor :id
+  def is_a?(klass)
+    klass == ActiveRecord::Base
+  end
 end
 
 StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"
