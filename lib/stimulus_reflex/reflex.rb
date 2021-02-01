@@ -130,9 +130,9 @@ class StimulusReflex::Reflex
   end
 
   def dom_id(record, prefix = nil)
-    return "#" + record.model_name.plural if record.is_a?(ActiveRecord::Relation)
+    return "#" + [record.model_name.plural, prefix].compact.join("_") if record.is_a?(ActiveRecord::Relation)
     return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.is_a?(ActiveRecord::Base)
-    [record.to_s, prefix].compact.join("_")
+    "#" + [record.to_s, prefix].compact.join("_")
   end
 
   def wrap(content, resource)
