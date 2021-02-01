@@ -567,7 +567,6 @@
 **Implemented enhancements:**
 
 - Server initiated redirects [\#25](https://github.com/hopsoft/stimulus_reflex/issues/25)
-- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 
 **Fixed bugs:**
 
@@ -610,6 +609,7 @@
 **Implemented enhancements:**
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
+- Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -843,8 +843,8 @@
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
-- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
+- set working directory for GH actions [\#22](https://github.com/hopsoft/stimulus_reflex/pull/22) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -860,6 +860,7 @@
 
 **Implemented enhancements:**
 
+- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
