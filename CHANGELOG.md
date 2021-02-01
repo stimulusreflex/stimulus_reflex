@@ -67,6 +67,7 @@
 - Add dom\_id to the reflex [\#405](https://github.com/hopsoft/stimulus_reflex/pull/405) ([hopsoft](https://github.com/hopsoft))
 - Don't run sanity checker in production [\#404](https://github.com/hopsoft/stimulus_reflex/pull/404) ([joshleblanc](https://github.com/joshleblanc))
 - Check package version from yarn.lock if node\_modules folder is not av… [\#403](https://github.com/hopsoft/stimulus_reflex/pull/403) ([RolandStuder](https://github.com/RolandStuder))
+- Trigger piggy back operations after SR operations [\#395](https://github.com/hopsoft/stimulus_reflex/pull/395) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.4.0.pre8](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre8) (2020-12-02)
 
@@ -90,7 +91,6 @@
 
 **Merged pull requests:**
 
-- Trigger piggy back operations after SR operations [\#395](https://github.com/hopsoft/stimulus_reflex/pull/395) ([hopsoft](https://github.com/hopsoft))
 - `invokeLifecycleMethod\(\)`: handle undefined `element` parameter [\#393](https://github.com/hopsoft/stimulus_reflex/pull/393) ([marcoroth](https://github.com/marcoroth))
 - don't warn folks twice [\#392](https://github.com/hopsoft/stimulus_reflex/pull/392) ([leastbad](https://github.com/leastbad))
 
@@ -657,10 +657,6 @@
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/hopsoft/stimulus_reflex/issues/127)
 
-**Merged pull requests:**
-
-- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
-
 ## [v2.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.2) (2020-03-04)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.2.1...v2.2.2)
@@ -685,6 +681,10 @@
 **Implemented enhancements:**
 
 - Explicit and implicit registering of the ActionCable consumer [\#116](https://github.com/hopsoft/stimulus_reflex/pull/116) ([hopsoft](https://github.com/hopsoft))
+
+**Merged pull requests:**
+
+- Bump actionview from 6.0.2.1 to 6.0.2.2 [\#128](https://github.com/hopsoft/stimulus_reflex/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v2.1.9](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.9) (2020-02-20)
 
@@ -790,6 +790,10 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.0...v2.1.1)
 
+**Implemented enhancements:**
+
+- \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
+
 **Fixed bugs:**
 
 - Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
@@ -807,7 +811,6 @@
 - Add reflex name to the lifecycle args [\#62](https://github.com/hopsoft/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/hopsoft/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
 - Documentation update [\#58](https://github.com/hopsoft/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
-- \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
 - Stricter parsing of attributes [\#56](https://github.com/hopsoft/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
 - Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
@@ -843,8 +846,9 @@
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
+- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
-- set working directory for GH actions [\#22](https://github.com/hopsoft/stimulus_reflex/pull/22) ([andrewmcodes](https://github.com/andrewmcodes))
+- Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -860,9 +864,7 @@
 
 **Implemented enhancements:**
 
-- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - update github action triggers [\#29](https://github.com/hopsoft/stimulus_reflex/pull/29) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add support for declarative stimulus/reflex behavior [\#28](https://github.com/hopsoft/stimulus_reflex/pull/28) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
