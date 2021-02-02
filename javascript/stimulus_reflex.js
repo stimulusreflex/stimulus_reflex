@@ -40,7 +40,8 @@ let isolationMode
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  actionCableConsumer = actionCableConsumer || getConsumer()
+  actionCableConsumer =
+    actionCableConsumer || controller.application.consumer || getConsumer()
   const { channel } = controller.StimulusReflex
   const subscription = { channel, ...actionCableParams }
   const identifier = JSON.stringify(subscription)
@@ -450,7 +451,7 @@ const getReflexRoots = element => {
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (selectors.length === 0) {
+      if (Debug.enabled && selectors.length === 0) {
         console.error(
           `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
           element
@@ -480,6 +481,12 @@ const getReflexRoots = element => {
 const initialize = (application, initializeOptions = {}) => {
   const { controller, consumer, debug, params, isolate } = initializeOptions
   actionCableConsumer = consumer
+  setTimeout(() => {
+    if (Debug.enabled && consumer)
+      console.warn(
+        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js, while removing 'debug: true' and/or 'StimulusReflex.debug = true'."
+      )
+  })
   actionCableParams = params
   isolationMode = !!isolate
   stimulusApplication = application
