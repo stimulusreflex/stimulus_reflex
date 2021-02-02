@@ -60,6 +60,7 @@ config.session_store :redis_session_store, {
   key: "_session_production",
   serializer: :json,
   redis: {
+    driver: :hiredis,
     expire_after: 1.year,
     ttl: 1.year,
     key_prefix: "app:session:",
