@@ -1,4 +1,4 @@
-let deprecationWarnings = false
+let deprecationWarnings = true
 
 export default {
   get enabled () {

@@ -504,7 +504,7 @@ const initialize = (application, initializeOptions = {}) => {
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
-  Deprecate.set(typeof deprecate === 'undefined' ? true : deprecate)
+  if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
 }
 
 if (!document.stimulusReflexInitialized) {
