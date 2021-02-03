@@ -133,9 +133,13 @@ class StimulusReflex::Reflex
   def dom_id(record, prefix = nil)
     return "#" + [record.model_name.plural, prefix].compact.join("_") if record.is_a?(ActiveRecord::Relation)
     return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.is_a?(ActiveRecord::Base)
-    "#" + [record.to_s, prefix].compact.join("_")
+    "#" + [prefix, record.to_s].compact.join("_")
   end
 
+  # morphdom needs content to be wrapped in an element with the same id when children_only: true
+  # Oddly, it doesn't matter if the target element is a div! See: https://docs.stimulusreflex.com/appendices/troubleshooting#different-element-type-altogether-who-cares-so-long-as-the-css-selector-matches
+  # Used internally to allow automatic partial collection rendering, but also useful to library users
+  # eg. `morph dom_id(@posts), wrap(render(@posts), @posts)`
   def wrap(content, resource)
     tag.div(content.html_safe, id: dom_id(resource))
   end
