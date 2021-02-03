@@ -492,7 +492,7 @@ const initialize = (application, initializeOptions = {}) => {
   setTimeout(() => {
     if (Deprecate.enabled && consumer)
       console.warn(
-        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js, while removing 'debug: true' and/or 'StimulusReflex.debug = true'."
+        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established."
       )
   })
   actionCableParams = params
