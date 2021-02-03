@@ -5,6 +5,7 @@ ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath_controller,
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
+  include ActionView::Helpers::TagHelper
 
   attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
@@ -136,6 +137,6 @@ class StimulusReflex::Reflex
   end
 
   def wrap(content, resource)
-    "<div id=\"#{dom_id(resource)}\">#{content}</div>"
+    tag.div(content.html_safe, id: dom_id(resource))
   end
 end
