@@ -491,117 +491,108 @@ const initialize = (application, initializeOptions = {}) => {
   Debug.set(!!debug)
 }
 
-if (!document.stimulusReflexInitialized) {
-  document.stimulusReflexInitialized = true
-
-  window.addEventListener('load', () => {
-    setupDeclarativeReflexes()
-    const observer = new MutationObserver(setupDeclarativeReflexes)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      childList: true,
-      subtree: true
-    })
+window.addEventListener('load', () => {
+  setupDeclarativeReflexes()
+  const observer = new MutationObserver(setupDeclarativeReflexes)
+  observer.observe(document.documentElement, {
+    attributes: true,
+    childList: true,
+    subtree: true
   })
+})
 
-  const beforeDOMUpdate = event => {
-    const { stimulusReflex } = event.detail || {}
-    if (!stimulusReflex) return
-    const { reflexId, xpathElement, xpathController } = stimulusReflex
-    const controllerElement = XPathToElement(xpathController)
-    const reflexElement = XPathToElement(xpathElement)
-    const reflex = reflexes[reflexId]
-    const promise = reflex.promise
+const beforeDOMUpdate = event => {
+  const { stimulusReflex } = event.detail || {}
+  if (!stimulusReflex) return
+  const { reflexId, xpathElement, xpathController } = stimulusReflex
+  const controllerElement = XPathToElement(xpathController)
+  const reflexElement = XPathToElement(xpathElement)
+  const reflex = reflexes[reflexId]
+  const promise = reflex.promise
 
-    reflex.pendingOperations--
+  reflex.pendingOperations--
 
-    if (reflex.pendingOperations > 0) return
+  if (reflex.pendingOperations > 0) return
 
-    if (!stimulusReflex.resolveLate)
-      setTimeout(() =>
-        promise.resolve({ element: reflexElement, event, data: promise.data })
-      )
-
+  if (!stimulusReflex.resolveLate)
     setTimeout(() =>
-      dispatchLifecycleEvent(
-        'success',
-        reflexElement,
-        controllerElement,
-        reflexId
-      )
+      promise.resolve({ element: reflexElement, event, data: promise.data })
     )
-  }
 
-  document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
-  document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
-
-  const afterDOMUpdate = event => {
-    const { stimulusReflex } = event.detail || {}
-    if (!stimulusReflex) return
-    const { reflexId, xpathElement, xpathController } = stimulusReflex
-    const controllerElement = XPathToElement(xpathController)
-    const reflexElement = XPathToElement(xpathElement)
-    const reflex = reflexes[reflexId]
-    const promise = reflex.promise
-
-    reflex.completedOperations++
-
-    if (Debug.enabled) Log.success(event)
-
-    if (reflex.completedOperations < reflex.totalOperations) return
-
-    if (stimulusReflex.resolveLate)
-      setTimeout(() =>
-        promise.resolve({ element: reflexElement, event, data: promise.data })
-      )
-
-    setTimeout(() =>
-      dispatchLifecycleEvent(
-        'finalize',
-        reflexElement,
-        controllerElement,
-        reflexId
-      )
+  setTimeout(() =>
+    dispatchLifecycleEvent(
+      'success',
+      reflexElement,
+      controllerElement,
+      reflexId
     )
-  }
-
-  document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
-  document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-
-  document.addEventListener('stimulus-reflex:server-message', event => {
-    const { reflexId, serverMessage, xpathController, xpathElement } =
-      event.detail.stimulusReflex || {}
-    const { subject, body } = serverMessage
-    const controllerElement = XPathToElement(xpathController)
-    const reflexElement = XPathToElement(xpathElement)
-    const promise = reflexes[reflexId].promise
-    const subjects = { error: true, halted: true, nothing: true, success: true }
-
-    controllerElement.reflexError = controllerElement.reflexError || {}
-
-    if (controllerElement && subject === 'error')
-      controllerElement.reflexError[reflexId] = body
-
-    promise[subject === 'error' ? 'reject' : 'resolve']({
-      data: promise.data,
-      element: reflexElement,
-      event,
-      toString: () => body
-    })
-
-    reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'
-
-    if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
-
-    if (subjects[subject])
-      dispatchLifecycleEvent(
-        subject,
-        reflexElement,
-        controllerElement,
-        reflexId
-      )
-  })
+  )
 }
+
+document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
+document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
+
+const afterDOMUpdate = event => {
+  const { stimulusReflex } = event.detail || {}
+  if (!stimulusReflex) return
+  const { reflexId, xpathElement, xpathController } = stimulusReflex
+  const controllerElement = XPathToElement(xpathController)
+  const reflexElement = XPathToElement(xpathElement)
+  const reflex = reflexes[reflexId]
+  const promise = reflex.promise
+
+  reflex.completedOperations++
+
+  if (Debug.enabled) Log.success(event)
+
+  if (reflex.completedOperations < reflex.totalOperations) return
+
+  if (stimulusReflex.resolveLate)
+    setTimeout(() =>
+      promise.resolve({ element: reflexElement, event, data: promise.data })
+    )
+
+  setTimeout(() =>
+    dispatchLifecycleEvent(
+      'finalize',
+      reflexElement,
+      controllerElement,
+      reflexId
+    )
+  )
+}
+
+document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
+document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
+
+document.addEventListener('stimulus-reflex:server-message', event => {
+  const { reflexId, serverMessage, xpathController, xpathElement } =
+    event.detail.stimulusReflex || {}
+  const { subject, body } = serverMessage
+  const controllerElement = XPathToElement(xpathController)
+  const reflexElement = XPathToElement(xpathElement)
+  const promise = reflexes[reflexId].promise
+  const subjects = { error: true, halted: true, nothing: true, success: true }
+
+  controllerElement.reflexError = controllerElement.reflexError || {}
+
+  if (controllerElement && subject === 'error')
+    controllerElement.reflexError[reflexId] = body
+
+  promise[subject === 'error' ? 'reject' : 'resolve']({
+    data: promise.data,
+    element: reflexElement,
+    event,
+    toString: () => body
+  })
+
+  reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'
+
+  if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
+
+  if (subjects[subject])
+    dispatchLifecycleEvent(subject, reflexElement, controllerElement, reflexId)
+})
 
 export default {
   initialize,
