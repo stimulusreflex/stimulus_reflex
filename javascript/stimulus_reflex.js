@@ -7,6 +7,7 @@ import { allReflexControllers } from './controllers'
 import { uuidv4, debounce, emitEvent, serializeForm } from './utils'
 import Log from './log'
 import Debug from './debug'
+import Deprecate from './deprecate'
 import {
   attributeValue,
   attributeValues,
@@ -479,10 +480,17 @@ const getReflexRoots = element => {
 //   * isolate - [false] restrict Reflex playback to the tab which initiated it
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug, params, isolate } = initializeOptions
+  const {
+    controller,
+    consumer,
+    debug,
+    params,
+    isolate,
+    deprecate
+  } = initializeOptions
   actionCableConsumer = consumer
   setTimeout(() => {
-    if (Debug.enabled && consumer)
+    if (Deprecate.enabled && consumer)
       console.warn(
         "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js, while removing 'debug: true' and/or 'StimulusReflex.debug = true'."
       )
@@ -496,6 +504,7 @@ const initialize = (application, initializeOptions = {}) => {
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
+  Deprecate.set(typeof deprecate === 'undefined' ? true : deprecate)
 }
 
 if (!document.stimulusReflexInitialized) {
@@ -618,5 +627,11 @@ export default {
   },
   set debug (value) {
     Debug.set(!!value)
+  },
+  get deprecate () {
+    return Deprecate.value
+  },
+  set deprecate (value) {
+    Deprecate.set(!!value)
   }
 }
