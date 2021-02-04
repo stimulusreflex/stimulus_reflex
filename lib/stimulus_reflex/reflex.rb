@@ -131,13 +131,14 @@ class StimulusReflex::Reflex
   end
 
   def dom_id(record, prefix = nil, hash: "#")
-    hash + if record.is_a?(ActiveRecord::Relation)
+    id = if record.is_a?(ActiveRecord::Relation)
       [prefix, record.model_name.plural].compact.join("_")
     elsif record.is_a?(ActiveRecord::Base)
       ActionView::RecordIdentifier.dom_id(record, prefix).to_s
     else
-      [prefix, record.to_s.sub(/^#/, "")].compact.join("_")
+      [prefix, record.to_s].compact.join("_")
     end
+    (hash + id).squeeze("#")
   end
 
   # morphdom needs content to be wrapped in an element with the same id when children_only: true
