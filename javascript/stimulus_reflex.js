@@ -489,20 +489,20 @@ const initialize = (application, initializeOptions = {}) => {
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
+  const observer = new MutationObserver(setupDeclarativeReflexes)
+  observer.observe(document.documentElement, {
+    attributeFilter: [
+      stimulusApplication.schema.reflexAttribute,
+      stimulusApplication.schema.controllerAttribute,
+      stimulusApplication.schema.actionAttribute
+    ],
+    childList: true,
+    subtree: true
+  })
 }
 
 if (!document.stimulusReflexInitialized) {
   document.stimulusReflexInitialized = true
-
-  window.addEventListener('load', () => {
-    setupDeclarativeReflexes()
-    const observer = new MutationObserver(setupDeclarativeReflexes)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      childList: true,
-      subtree: true
-    })
-  })
 
   const beforeDOMUpdate = event => {
     const { stimulusReflex } = event.detail || {}
@@ -602,6 +602,8 @@ if (!document.stimulusReflexInitialized) {
       )
   })
 }
+
+window.addEventListener('load', setupDeclarativeReflexes)
 
 export default {
   initialize,
