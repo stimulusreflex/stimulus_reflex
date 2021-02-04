@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/hopsoft/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.1...HEAD)
+
+**Fixed bugs:**
+
+- cable\_ready method in Reflex class should support custom operations [\#419](https://github.com/hopsoft/stimulus_reflex/issues/419)
+- refactor declarative reflex observer [\#440](https://github.com/hopsoft/stimulus_reflex/pull/440) ([leastbad](https://github.com/leastbad))
+
 ## [v3.4.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.1) (2021-01-26)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0...v3.4.1)
@@ -49,7 +58,6 @@
 **Implemented enhancements:**
 
 - Allow StimulusReflex to process Rack middlewares [\#399](https://github.com/hopsoft/stimulus_reflex/pull/399) ([marcoroth](https://github.com/marcoroth))
-- Support for Stimulus 2 [\#398](https://github.com/hopsoft/stimulus_reflex/pull/398) ([marcoroth](https://github.com/marcoroth))
 
 **Fixed bugs:**
 
@@ -71,6 +79,10 @@
 ## [v3.4.0.pre8](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre8) (2020-12-02)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.0.pre7...v3.4.0.pre8)
+
+**Implemented enhancements:**
+
+- Support for Stimulus 2 [\#398](https://github.com/hopsoft/stimulus_reflex/pull/398) ([marcoroth](https://github.com/marcoroth))
 
 **Closed issues:**
 
@@ -270,6 +282,7 @@
 **Merged pull requests:**
 
 - Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
+- Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
 - Copyedits [\#306](https://github.com/hopsoft/stimulus_reflex/pull/306) ([CodingItWrong](https://github.com/CodingItWrong))
 - add redis to cable.yml in development mode [\#305](https://github.com/hopsoft/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
@@ -322,7 +335,6 @@
 
 **Merged pull requests:**
 
-- Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - Check if reflex exists before using it [\#293](https://github.com/hopsoft/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 - Add instructions for existing projects [\#291](https://github.com/hopsoft/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
@@ -475,7 +487,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
-- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
 
@@ -529,6 +540,7 @@
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
+- Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
 
@@ -556,7 +568,7 @@
 
 - prettier-standard: include all js files in the project [\#177](https://github.com/hopsoft/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Remove implicit permanent for text inputs [\#176](https://github.com/hopsoft/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
-- Support devise authenticated routes [\#172](https://github.com/hopsoft/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
+- 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/hopsoft/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
 - Fix compilation issue [\#168](https://github.com/hopsoft/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
 
