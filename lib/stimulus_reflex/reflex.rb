@@ -130,10 +130,15 @@ class StimulusReflex::Reflex
     @_params ||= ActionController::Parameters.new(request.parameters)
   end
 
-  def dom_id(record, prefix = nil)
-    return "#" + [prefix, record.model_name.plural].compact.join("_") if record.is_a?(ActiveRecord::Relation)
-    return "#" + ActionView::RecordIdentifier.dom_id(record, prefix).to_s if record.is_a?(ActiveRecord::Base)
-    "#" + [prefix, record.to_s].compact.join("_")
+  def dom_id(record, prefix = nil, hash: "#")
+    hash + case
+    when record.is_a?(ActiveRecord::Relation)
+      [prefix, record.model_name.plural].compact.join("_")
+    when record.is_a?(ActiveRecord::Base)
+      ActionView::RecordIdentifier.dom_id(record, prefix).to_s
+    else
+      [prefix, record.to_s.sub(/^#/, "")].compact.join("_")
+    end
   end
 
   # morphdom needs content to be wrapped in an element with the same id when children_only: true
@@ -141,6 +146,6 @@ class StimulusReflex::Reflex
   # Used internally to allow automatic partial collection rendering, but also useful to library users
   # eg. `morph dom_id(@posts), wrap(render(@posts), @posts)`
   def wrap(content, resource)
-    tag.div(content.html_safe, id: dom_id(resource))
+    tag.div(content.html_safe, id: dom_id(resource, hash: ""))
   end
 end
