@@ -5,6 +5,7 @@ ENV["RAILS_ENV"] ||= "test"
 require "minitest/mock"
 require "rails"
 require "active_model"
+require "active_record"
 require "action_controller"
 require "pry"
 require_relative "../lib/stimulus_reflex"
@@ -38,6 +39,9 @@ end
 class TestModel
   include ActiveModel::Model
   attr_accessor :id
+  def is_a?(klass)
+    klass == ActiveRecord::Base
+  end
 end
 
 StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"

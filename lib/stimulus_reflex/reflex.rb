@@ -5,6 +5,7 @@ ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath_controller,
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
+  include ActionView::Helpers::TagHelper
 
   attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
@@ -80,7 +81,7 @@ class StimulusReflex::Reflex
     end
   end
 
-  def morph(selectors, html = "")
+  def morph(selectors, html = nil)
     case selectors
     when :page
       raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
@@ -129,7 +130,22 @@ class StimulusReflex::Reflex
     @_params ||= ActionController::Parameters.new(request.parameters)
   end
 
-  def dom_id(record_or_class, prefix = nil)
-    "#" + ActionView::RecordIdentifier.dom_id(record_or_class, prefix).to_s
+  def dom_id(record, prefix = nil, hash: "#")
+    id = if record.is_a?(ActiveRecord::Relation)
+      [prefix, record.model_name.plural].compact.join("_")
+    elsif record.is_a?(ActiveRecord::Base)
+      ActionView::RecordIdentifier.dom_id(record, prefix).to_s
+    else
+      [prefix, record.to_s].compact.join("_")
+    end
+    (hash + id).squeeze("#")
+  end
+
+  # morphdom needs content to be wrapped in an element with the same id when children_only: true
+  # Oddly, it doesn't matter if the target element is a div! See: https://docs.stimulusreflex.com/appendices/troubleshooting#different-element-type-altogether-who-cares-so-long-as-the-css-selector-matches
+  # Used internally to allow automatic partial collection rendering, but also useful to library users
+  # eg. `morph dom_id(@posts), wrap(render(@posts), @posts)`
+  def wrap(content, resource)
+    tag.div(content.html_safe, id: dom_id(resource, hash: ""))
   end
 end
