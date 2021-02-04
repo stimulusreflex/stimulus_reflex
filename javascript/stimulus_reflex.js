@@ -489,17 +489,13 @@ const initialize = (application, initializeOptions = {}) => {
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
-}
-
-window.addEventListener('load', () => {
-  setupDeclarativeReflexes()
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributes: true,
+    attributeFilter: [stimulusApplication.schema.reflexAttribute],
     childList: true,
     subtree: true
   })
-})
+}
 
 const beforeDOMUpdate = event => {
   const { stimulusReflex } = event.detail || {}
@@ -528,9 +524,6 @@ const beforeDOMUpdate = event => {
     )
   )
 }
-
-document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
-document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 
 const afterDOMUpdate = event => {
   const { stimulusReflex } = event.detail || {}
@@ -562,10 +555,7 @@ const afterDOMUpdate = event => {
   )
 }
 
-document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
-document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-
-document.addEventListener('stimulus-reflex:server-message', event => {
+const serverMessage = event => {
   const { reflexId, serverMessage, xpathController, xpathElement } =
     event.detail.stimulusReflex || {}
   const { subject, body } = serverMessage
@@ -592,7 +582,14 @@ document.addEventListener('stimulus-reflex:server-message', event => {
 
   if (subjects[subject])
     dispatchLifecycleEvent(subject, reflexElement, controllerElement, reflexId)
-})
+}
+
+document.addEventListener('stimulus-reflex:server-message', serverMessage)
+document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
+document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
+document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
+document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
+window.addEventListener('load', setupDeclarativeReflexes)
 
 export default {
   initialize,
