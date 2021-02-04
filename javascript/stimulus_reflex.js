@@ -491,11 +491,7 @@ const initialize = (application, initializeOptions = {}) => {
   Debug.set(!!debug)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [
-      stimulusApplication.schema.reflexAttribute,
-      stimulusApplication.schema.controllerAttribute,
-      stimulusApplication.schema.actionAttribute
-    ],
+    attributeFilter: [stimulusApplication.schema.reflexAttribute],
     childList: true,
     subtree: true
   })
