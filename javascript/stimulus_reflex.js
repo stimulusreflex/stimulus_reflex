@@ -471,13 +471,14 @@ const getReflexRoots = element => {
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
-// - application - the Stimulus application
+// - application  - the Stimulus application
 // - options
 //   * controller - [optional] the default StimulusReflexController
-//   * consumer - [optional] the ActionCable consumer
-//   * debug - [false] log all Reflexes to the console
-//   * params - [{}] key/value parameters to send during channel subscription
-//   * isolate - [false] restrict Reflex playback to the tab which initiated it
+//   * consumer   - [optional] the ActionCable consumer
+//   * debug      - [false] log all Reflexes to the console
+//   * params     - [{}] key/value parameters to send during channel subscription
+//   * isolate    - [false] restrict Reflex playback to the tab which initiated it
+//   * deprecate  - [true] show warnings regarding upcoming changes to the library
 //
 const initialize = (application, initializeOptions = {}) => {
   const {
