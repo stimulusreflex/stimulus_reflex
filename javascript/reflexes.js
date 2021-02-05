@@ -2,7 +2,9 @@ import stimulus from './stimulus'
 import CableReady from 'cable_ready'
 import Debug from './debug'
 import { dispatchLifecycleEvent } from './lifecycle'
-import { XPathToElement } from './utils'
+import { XPathToElement, debounce, emitEvent } from './utils'
+import { allReflexControllers, findControllerByReflexName } from './controllers'
+import { attributeValue, attributeValues } from './attributes'
 
 const reflexes = {}
 
@@ -117,3 +119,89 @@ export const registerReflex = data => {
 
   return promise
 }
+
+// compute the DOM element(s) which will be the morph root
+// use the data-reflex-root attribute on the reflex or the controller
+// optional value is a CSS selector(s); comma-separated list
+// order of preference is data-reflex, data-controller, document body (default)
+export const getReflexRoots = element => {
+  let list = []
+  while (list.length === 0 && element) {
+    const reflexRoot = element.getAttribute(
+      stimulus.app.schema.reflexRootAttribute
+    )
+    if (reflexRoot) {
+      if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
+      const selectors = reflexRoot.split(',').filter(s => s.trim().length)
+      if (selectors.length === 0) {
+        console.error(
+          `No value found for ${stimulus.app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${application.schema.reflexRootAttribute}.`,
+          element
+        )
+      }
+      list = list.concat(selectors.filter(s => document.querySelector(s)))
+    }
+    element = element.parentElement
+      ? element.parentElement.closest(
+          `[${stimulus.app.schema.reflexRootAttribute}]`
+        )
+      : null
+  }
+  return list
+}
+
+// Sets up declarative reflex behavior.
+// Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
+//
+export const setupDeclarativeReflexes = debounce(() => {
+  document
+    .querySelectorAll(`[${stimulus.app.schema.reflexAttribute}]`)
+    .forEach(element => {
+      const controllers = attributeValues(
+        element.getAttribute(stimulus.app.schema.controllerAttribute)
+      )
+      const reflexAttributeNames = attributeValues(
+        element.getAttribute(stimulus.app.schema.reflexAttribute)
+      )
+      const actions = attributeValues(
+        element.getAttribute(stimulus.app.schema.actionAttribute)
+      )
+      reflexAttributeNames.forEach(reflexName => {
+        const controller = findControllerByReflexName(
+          reflexName,
+          allReflexControllers(stimulus.app, element)
+        )
+        let action
+        if (controller) {
+          action = `${reflexName.split('->')[0]}->${
+            controller.identifier
+          }#__perform`
+          if (!actions.includes(action)) actions.push(action)
+        } else {
+          action = `${reflexName.split('->')[0]}->stimulus-reflex#__perform`
+          if (!controllers.includes('stimulus-reflex')) {
+            controllers.push('stimulus-reflex')
+          }
+          if (!actions.includes(action)) actions.push(action)
+        }
+      })
+      const controllerValue = attributeValue(controllers)
+      const actionValue = attributeValue(actions)
+      if (
+        controllerValue &&
+        element.getAttribute(stimulus.app.schema.controllerAttribute) !=
+          controllerValue
+      ) {
+        element.setAttribute(
+          stimulus.app.schema.controllerAttribute,
+          controllerValue
+        )
+      }
+      if (
+        actionValue &&
+        element.getAttribute(stimulus.app.schema.actionAttribute) != actionValue
+      )
+        element.setAttribute(stimulus.app.schema.actionAttribute, actionValue)
+    })
+  emitEvent('stimulus-reflex:ready')
+}, 20)
