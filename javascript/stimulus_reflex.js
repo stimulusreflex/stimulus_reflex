@@ -16,7 +16,7 @@ import {
 } from './attributes'
 import Log from './log'
 import Debug from './debug'
-import stimulus from './stimulus'
+import reflexes from './reflexes'
 import isolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
 
@@ -46,16 +46,16 @@ const initialize = (application, initializeOptions = {}) => {
   actionCable.consumer = consumer
   actionCable.params = params
   isolationMode.set(!!isolate)
-  stimulus.app = application
-  stimulus.app.schema = { ...defaultSchema, ...application.schema }
-  stimulus.app.register(
+  reflexes.app = application
+  reflexes.app.schema = { ...defaultSchema, ...application.schema }
+  reflexes.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [stimulus.app.schema.reflexAttribute],
+    attributeFilter: [reflexes.app.schema.reflexAttribute],
     childList: true,
     subtree: true
   })
@@ -124,7 +124,7 @@ const register = (controller, options = {}) => {
       let selectors = options['selectors'] || getReflexRoots(reflexElement)
       if (typeof selectors === 'string') selectors = [selectors]
       const resolveLate = options['resolveLate'] || false
-      const datasetAttribute = stimulus.app.schema.reflexDatasetAttribute
+      const datasetAttribute = reflexes.app.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(reflexElement, datasetAttribute)
       const xpathController = elementToXPath(controllerElement)
       const xpathElement = elementToXPath(reflexElement)
@@ -140,7 +140,7 @@ const register = (controller, options = {}) => {
         xpathController,
         xpathElement,
         reflexController: this.identifier,
-        permanentAttributeName: stimulus.app.schema.reflexPermanentAttribute
+        permanentAttributeName: reflexes.app.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
 
@@ -207,7 +207,7 @@ const register = (controller, options = {}) => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(stimulus.app.schema.reflexAttribute)
+        reflex = element.getAttribute(reflexes.app.schema.reflexAttribute)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
