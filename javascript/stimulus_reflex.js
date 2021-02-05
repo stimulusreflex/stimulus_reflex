@@ -14,40 +14,23 @@ import {
   extractElementDataset
 } from './attributes'
 import { extractReflexName, elementToXPath, XPathToElement } from './utils'
-
-// A lambda that does nothing. Very zen; we are made of stars
-const NOOP = () => {}
-
-// A reference to the Stimulus application registered with: StimulusReflex.initialize
-let stimulusApplication
-
-// A reference to the ActionCable consumer registered with: StimulusReflex.initialize or getConsumer
-let actionCableConsumer
-
-// A reference to an optional object called params defined in the StimulusReflex.initialize and passed to channels
-let actionCableParams
-
-// Flag which will be false if the server does not accept the channel subscription
-let actionCableSubscriptionActive = false
-
-// A dictionary of all active Reflex operations, indexed by reflexId
-window.reflexes = {}
-
-// Should Reflex playback be restricted to the tab that called it?
-let isolationMode
+import reflexes from './reflexes'
+import stimulus from './stimulus'
+import isolationMode from './isolation_mode'
+import actionCable from './transports/action_cable'
 
 // Subscribes a StimulusReflex controller to an ActionCable channel.
 // controller - the StimulusReflex controller to subscribe
 //
 const createSubscription = controller => {
-  actionCableConsumer = actionCableConsumer || getConsumer()
+  actionCable.consumer = actionCable.consumer || getConsumer()
   const { channel } = controller.StimulusReflex
-  const subscription = { channel, ...actionCableParams }
+  const subscription = { channel, ...actionCable.params }
   const identifier = JSON.stringify(subscription)
 
   controller.StimulusReflex.subscription =
-    actionCableConsumer.subscriptions.findAll(identifier)[0] ||
-    actionCableConsumer.subscriptions.create(subscription, {
+    actionCable.consumer.subscriptions.findAll(identifier)[0] ||
+    actionCable.consumer.subscriptions.create(subscription, {
       received: data => {
         if (!data.cableReady) return
 
@@ -102,7 +85,7 @@ const createSubscription = controller => {
         if (reflexData) {
           const { reflexId } = reflexData
 
-          if (!reflexes[reflexId] && !isolationMode) {
+          if (!reflexes[reflexId] && isolationMode.disabled) {
             const controllerElement = XPathToElement(reflexData.xpathController)
             const reflexElement = XPathToElement(reflexData.xpathElement)
             controllerElement.reflexController =
@@ -112,7 +95,7 @@ const createSubscription = controller => {
 
             controllerElement.reflexController[
               reflexId
-            ] = stimulusApplication.getControllerForElementAndIdentifier(
+            ] = stimulus.app.getControllerForElementAndIdentifier(
               controllerElement,
               reflexData.reflexController
             )
@@ -139,16 +122,16 @@ const createSubscription = controller => {
         CableReady.perform(data.operations)
       },
       connected: () => {
-        actionCableSubscriptionActive = true
+        actionCable.subscriptionActive = true
         emitEvent('stimulus-reflex:connected')
       },
       rejected: () => {
-        actionCableSubscriptionActive = false
+        actionCable.subscriptionActive = false
         emitEvent('stimulus-reflex:rejected')
         if (Debug.enabled) console.warn('Channel subscription was rejected.')
       },
       disconnected: willAttemptReconnect => {
-        actionCableSubscriptionActive = false
+        actionCable.subscriptionActive = false
         emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
       }
     })
@@ -215,7 +198,7 @@ const extendStimulusController = controller => {
       let selectors = options['selectors'] || getReflexRoots(reflexElement)
       if (typeof selectors === 'string') selectors = [selectors]
       const resolveLate = options['resolveLate'] || false
-      const datasetAttribute = stimulusApplication.schema.reflexDatasetAttribute
+      const datasetAttribute = stimulus.app.schema.reflexDatasetAttribute
       const dataset = extractElementDataset(reflexElement, datasetAttribute)
       const xpathController = elementToXPath(controllerElement)
       const xpathElement = elementToXPath(reflexElement)
@@ -231,15 +214,14 @@ const extendStimulusController = controller => {
         xpathController,
         xpathElement,
         reflexController: this.identifier,
-        permanentAttributeName:
-          stimulusApplication.schema.reflexPermanentAttribute
+        permanentAttributeName: stimulus.app.schema.reflexPermanentAttribute
       }
       const { subscription } = this.StimulusReflex
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
-      if (!actionCableSubscriptionActive)
+      if (!actionCable.subscriptionActive)
         throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
 
       // lifecycle setup
@@ -299,9 +281,7 @@ const extendStimulusController = controller => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(
-          stimulusApplication.schema.reflexAttribute
-        )
+        reflex = element.getAttribute(stimulus.app.schema.reflexAttribute)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
@@ -332,7 +312,7 @@ const registerReflex = data => {
 
   promise.reflexId = reflexId
 
-  if (Debug.enabled) promise.catch(NOOP)
+  if (Debug.enabled) promise.catch(() => {})
 
   return promise
 }
@@ -365,21 +345,21 @@ class StimulusReflexController extends Controller {
 //
 const setupDeclarativeReflexes = debounce(() => {
   document
-    .querySelectorAll(`[${stimulusApplication.schema.reflexAttribute}]`)
+    .querySelectorAll(`[${stimulus.app.schema.reflexAttribute}]`)
     .forEach(element => {
       const controllers = attributeValues(
-        element.getAttribute(stimulusApplication.schema.controllerAttribute)
+        element.getAttribute(stimulus.app.schema.controllerAttribute)
       )
       const reflexAttributeNames = attributeValues(
-        element.getAttribute(stimulusApplication.schema.reflexAttribute)
+        element.getAttribute(stimulus.app.schema.reflexAttribute)
       )
       const actions = attributeValues(
-        element.getAttribute(stimulusApplication.schema.actionAttribute)
+        element.getAttribute(stimulus.app.schema.actionAttribute)
       )
       reflexAttributeNames.forEach(reflexName => {
         const controller = findControllerByReflexName(
           reflexName,
-          allReflexControllers(stimulusApplication, element)
+          allReflexControllers(stimulus.app, element)
         )
         let action
         if (controller) {
@@ -399,23 +379,19 @@ const setupDeclarativeReflexes = debounce(() => {
       const actionValue = attributeValue(actions)
       if (
         controllerValue &&
-        element.getAttribute(stimulusApplication.schema.controllerAttribute) !=
+        element.getAttribute(stimulus.app.schema.controllerAttribute) !=
           controllerValue
       ) {
         element.setAttribute(
-          stimulusApplication.schema.controllerAttribute,
+          stimulus.app.schema.controllerAttribute,
           controllerValue
         )
       }
       if (
         actionValue &&
-        element.getAttribute(stimulusApplication.schema.actionAttribute) !=
-          actionValue
+        element.getAttribute(stimulus.app.schema.actionAttribute) != actionValue
       )
-        element.setAttribute(
-          stimulusApplication.schema.actionAttribute,
-          actionValue
-        )
+        element.setAttribute(stimulus.app.schema.actionAttribute, actionValue)
     })
   emitEvent('stimulus-reflex:ready')
 }, 20)
@@ -445,14 +421,14 @@ const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
     const reflexRoot = element.getAttribute(
-      stimulusApplication.schema.reflexRootAttribute
+      stimulus.app.schema.reflexRootAttribute
     )
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
       if (selectors.length === 0) {
         console.error(
-          `No value found for ${stimulusApplication.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${stimulusApplication.schema.reflexRootAttribute}.`,
+          `No value found for ${stimulus.app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${application.schema.reflexRootAttribute}.`,
           element
         )
       }
@@ -460,7 +436,7 @@ const getReflexRoots = element => {
     }
     element = element.parentElement
       ? element.parentElement.closest(
-          `[${stimulusApplication.schema.reflexRootAttribute}]`
+          `[${stimulus.app.schema.reflexRootAttribute}]`
         )
       : null
   }
@@ -479,19 +455,19 @@ const getReflexRoots = element => {
 //
 const initialize = (application, initializeOptions = {}) => {
   const { controller, consumer, debug, params, isolate } = initializeOptions
-  actionCableConsumer = consumer
-  actionCableParams = params
-  isolationMode = !!isolate
-  stimulusApplication = application
-  stimulusApplication.schema = { ...defaultSchema, ...application.schema }
-  stimulusApplication.register(
+  actionCable.consumer = consumer
+  actionCable.params = params
+  isolationMode.set(!!isolate)
+  stimulus.app = application
+  stimulus.app.schema = { ...defaultSchema, ...application.schema }
+  stimulus.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [stimulusApplication.schema.reflexAttribute],
+    attributeFilter: [stimulus.app.schema.reflexAttribute],
     childList: true,
     subtree: true
   })
