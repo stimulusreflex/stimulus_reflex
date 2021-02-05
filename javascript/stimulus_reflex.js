@@ -70,16 +70,6 @@ const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
   actionCable.createSubscription(controller)
-  extendStimulusController(controller)
-}
-
-// Extends a regular Stimulus controller with StimulusReflex behavior.
-//
-// Methods added to the Stimulus controller:
-// - stimulate
-// - __perform
-//
-const extendStimulusController = controller => {
   Object.assign(controller, {
     // Indicates if the ActionCable web socket connection is open.
     // The connection must be open before calling stimulate.

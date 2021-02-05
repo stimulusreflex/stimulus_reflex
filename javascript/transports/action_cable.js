@@ -1,4 +1,4 @@
-import { getConsumer } from '../consumer'
+import { createConsumer } from '@rails/actioncable'
 import { performOperations } from '../reflexes'
 import { emitEvent } from '../utils'
 
@@ -7,7 +7,7 @@ let params
 let subscriptionActive
 
 const createSubscription = controller => {
-  consumer = consumer || getConsumer()
+  consumer = consumer || createConsumer()
   const { channel } = controller.StimulusReflex
   const subscription = { channel, ...params }
   const identifier = JSON.stringify(subscription)
