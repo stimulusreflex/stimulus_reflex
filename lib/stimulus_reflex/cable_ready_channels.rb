@@ -2,7 +2,7 @@
 
 module StimulusReflex
   class CableReadyChannels
-    delegate :[], to: "cable_ready_channels"
+    delegate :[], :broadcast, to: "cable_ready_channels"
 
     def initialize(stream_name)
       @stream_name = stream_name
