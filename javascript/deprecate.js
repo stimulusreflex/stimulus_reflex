@@ -13,7 +13,7 @@ export default {
   set (value) {
     deprecationWarnings = !!value
   },
-  set debug (value) {
+  set deprecate (value) {
     deprecationWarnings = !!value
   }
 }
