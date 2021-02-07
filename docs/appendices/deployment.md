@@ -57,9 +57,10 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
 
 config.session_store :redis_session_store, {
-  key: "_session_production,
+  key: "_session_production",
   serializer: :json,
   redis: {
+    driver: :hiredis,
     expire_after: 1.year,
     ttl: 1.year,
     key_prefix: "app:session:",
