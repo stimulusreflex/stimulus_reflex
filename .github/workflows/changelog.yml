@@ -32,8 +32,8 @@ jobs:
         github_changelog_generator -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} --token ${{ secrets.GITHUB_TOKEN }} --exclude-labels duplicate,question,invalid,wontfix,nodoc
     - name: Commit files
       run: |
-        git config --local user.email "github-actions@example.com"
-        git config --local user.name "GitHub Actions"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         git commit -am "[nodoc] Update Changelog" || echo "No changes to commit"
     - name: Push changes
       uses: ad-m/github-push-action@master
