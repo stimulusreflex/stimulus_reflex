@@ -3,15 +3,16 @@ name: Changelog
 on:
   workflow_dispatch:
   release:
-    types: [created]
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [opened, closed, reopened, labeled, unlabeled]
+  issues:
+    types: [opened, closed, reopened, labeled, unlabeled, deleted]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 4
+    if: github.ref == 'refs/heads/master'
     if: "!contains(github.event.head_commit.message, '[nodoc]')"
     steps:
     - uses: actions/checkout@master
