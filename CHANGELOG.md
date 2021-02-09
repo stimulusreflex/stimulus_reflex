@@ -10,12 +10,13 @@
 
 **Fixed bugs:**
 
+- reflexData missing on element in beforeReflex [\#443](https://github.com/hopsoft/stimulus_reflex/issues/443)
 - cable\_ready method in Reflex class should support custom operations [\#419](https://github.com/hopsoft/stimulus_reflex/issues/419)
 - refactor declarative reflex observer [\#440](https://github.com/hopsoft/stimulus_reflex/pull/440) ([leastbad](https://github.com/leastbad))
 
-**Merged pull requests:**
+**Closed issues:**
 
-- remove unnecessary gate [\#439](https://github.com/hopsoft/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
+- SR strips out @click attribute from elements passed to selector morph [\#435](https://github.com/hopsoft/stimulus_reflex/issues/435)
 
 ## [v3.4.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.1) (2021-01-26)
 
@@ -42,13 +43,13 @@
 
 **Merged pull requests:**
 
+- remove unnecessary gate [\#439](https://github.com/hopsoft/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
 - Extract callbacks to module [\#427](https://github.com/hopsoft/stimulus_reflex/pull/427) ([julianrubisch](https://github.com/julianrubisch))
 - Fixes bug where multiple inputs with the same name lost element value [\#426](https://github.com/hopsoft/stimulus_reflex/pull/426) ([jonsgreen](https://github.com/jonsgreen))
 - Add general policy for CoC enforcement [\#424](https://github.com/hopsoft/stimulus_reflex/pull/424) ([hopsoft](https://github.com/hopsoft))
 - Update to work with mutatable CR config [\#421](https://github.com/hopsoft/stimulus_reflex/pull/421) ([hopsoft](https://github.com/hopsoft))
 - Bump nokogiri from 1.10.10 to 1.11.1 [\#420](https://github.com/hopsoft/stimulus_reflex/pull/420) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Add matrix strategy to ruby tests [\#415](https://github.com/hopsoft/stimulus_reflex/pull/415) ([julianrubisch](https://github.com/julianrubisch))
-- fix 'operartion' typo [\#411](https://github.com/hopsoft/stimulus_reflex/pull/411) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0) (2020-12-18)
 
@@ -81,6 +82,7 @@
 
 **Merged pull requests:**
 
+- fix 'operartion' typo [\#411](https://github.com/hopsoft/stimulus_reflex/pull/411) ([marcoroth](https://github.com/marcoroth))
 - Add dom\_id to the reflex [\#405](https://github.com/hopsoft/stimulus_reflex/pull/405) ([hopsoft](https://github.com/hopsoft))
 - Don't run sanity checker in production [\#404](https://github.com/hopsoft/stimulus_reflex/pull/404) ([joshleblanc](https://github.com/joshleblanc))
 - Check package version from yarn.lock if node\_modules folder is not av… [\#403](https://github.com/hopsoft/stimulus_reflex/pull/403) ([RolandStuder](https://github.com/RolandStuder))
@@ -711,7 +713,6 @@
 
 - Add lifecycle events [\#114](https://github.com/hopsoft/stimulus_reflex/issues/114)
 - Setup DOM event based lifecycle [\#115](https://github.com/hopsoft/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
-- inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 
 ## [v2.1.8](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -758,13 +759,12 @@
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/hopsoft/stimulus_reflex/issues/91)
 - Add schema support [\#94](https://github.com/hopsoft/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
+- inherit stimulus schema [\#92](https://github.com/hopsoft/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/hopsoft/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
-- Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
 
 - Use application.js as fallback file path [\#82](https://github.com/hopsoft/stimulus_reflex/pull/82) ([julianrubisch](https://github.com/julianrubisch))
-- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -776,6 +776,10 @@
 ## [v2.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.4) (2019-10-19)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.3...v2.1.4)
+
+**Implemented enhancements:**
+
+- Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
 
@@ -804,6 +808,10 @@
 ## [v2.1.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.1) (2019-10-08)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.0...v2.1.1)
+
+**Fixed bugs:**
+
+- Fix issue in reflex root discovery [\#66](https://github.com/hopsoft/stimulus_reflex/pull/66) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.0](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.0) (2019-10-07)
 
@@ -860,6 +868,7 @@
 **Fixed bugs:**
 
 - Reflex is a reflex [\#38](https://github.com/hopsoft/stimulus_reflex/pull/38) ([leastbad](https://github.com/leastbad))
+- Fix GitHub Actions [\#20](https://github.com/hopsoft/stimulus_reflex/pull/20) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -891,10 +900,6 @@
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/hopsoft/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/hopsoft/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/hopsoft/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
-
-**Fixed bugs:**
-
-- Fix GitHub Actions [\#20](https://github.com/hopsoft/stimulus_reflex/pull/20) ([andrewmcodes](https://github.com/andrewmcodes))
 
 ## [v1.0.2](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.2) (2019-08-17)
 
