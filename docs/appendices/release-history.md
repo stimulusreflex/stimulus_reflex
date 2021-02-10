@@ -1,6 +1,10 @@
 # Release History
 
-## New Release: v3.4 - Developer Happiness Edition
+## New Release: v3.4.1
+
+
+
+## v3.4 - Developer Happiness Edition
 
 Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [12,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
 
@@ -32,9 +36,9 @@ More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn
 * OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
 * OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
 
-## Morphs
+## v3.3 Morphs
 
-v3.3 introduced the concept of **Morphs** to StimulusReflex.
+Introduces the concept of **Morphs** to StimulusReflex.
 
 {% embed url="https://www.youtube.com/watch?v=utxCm3uLhIE" caption="" %}
 

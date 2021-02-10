@@ -443,6 +443,10 @@ You can [setup webpack-dev-server to help](../rtfm/patterns.md#use-webpack-dev-s
 {% endhint %}
 
 {% hint style="info" %}
+If you're using HTTP Basic Auth and Page Morph Reflexes, you might need to specify a gatekeeper on your class method such as `unless: -> { @stimulus_reflex }`
+{% endhint %}
+
+{% hint style="info" %}
 If you're collaborating with a team during development, **make sure that they have caching turned on**. They just need to run `rails dev:cache` one time.
 {% endhint %}
 

@@ -39,7 +39,7 @@ Find out more and learn how to upgrade on the [Release History](appendices/relea
 
 Our over-the-wire JavaScript payload size is a tiny [**11.4kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
-While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
+While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here're the numbers:
 
 | Tool | Wire Size |
 | :--- | :--- |
