@@ -115,11 +115,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def delegate_call_to_reflex(reflex, method_name, arguments = [])
     method = reflex.method(method_name)
-    policy = ReflexMethodInvocationPolicy.new(method, arguments)
+    policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
-    if policy.arguments_empty_allowed?
+    if policy.no_arguments?
       reflex.process(method_name)
-    elsif policy.arguments_size_allowed?
+    elsif policy.arguments?
       reflex.process(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
@@ -141,24 +141,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   def fix_environment!
     ([ApplicationController] + ApplicationController.descendants).each do |controller|
       controller.renderer.instance_variable_set(:@env, connection.env.merge(controller.renderer.instance_variable_get(:@env)))
-    end
-  end
-
-  class ReflexMethodInvocationPolicy
-    attr_reader :arguments, :required_params, :optional_params
-
-    def initialize(method, arguments)
-      @arguments = arguments
-      @required_params = method.parameters.select { |(kind, _)| kind == :req }
-      @optional_params = method.parameters.select { |(kind, _)| kind == :opt }
-    end
-
-    def arguments_empty_allowed?
-      arguments.size == 0 && required_params.size == 0
-    end
-
-    def arguments_size_allowed?
-      arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
     end
   end
 end
