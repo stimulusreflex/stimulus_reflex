@@ -15,13 +15,13 @@ require "stimulus_reflex/configuration"
 require "stimulus_reflex/callbacks"
 require "stimulus_reflex/reflex"
 require "stimulus_reflex/element"
-require "stimulus_reflex/sanity_checker"
 require "stimulus_reflex/broadcasters/broadcaster"
 require "stimulus_reflex/broadcasters/nothing_broadcaster"
 require "stimulus_reflex/broadcasters/page_broadcaster"
 require "stimulus_reflex/broadcasters/selector_broadcaster"
 require "stimulus_reflex/utils/colorize"
-require "stimulus_reflex/logger"
+require "stimulus_reflex/utils/logger"
+require "stimulus_reflex/utils/sanity_checker"
 
 module StimulusReflex
   class Engine < Rails::Engine
