@@ -18,7 +18,7 @@ For those of you who were tired of getting endless warnings about missing contro
 
 Developer happiness is not a catch-phrase. We are actively working to improve the quality of life for the more than [13,000](https://www.npmjs.com/package/stimulus_reflex) people downloading StimulusReflex every week, because happy developers enjoy a [great surplus](https://www.youtube.com/watch?v=4PVViBjukAE).
 
-As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 800+ people on the [SR Discord](https://discord.gg/XveN625):
+As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/hopsoft/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 1000+ people on the [SR Discord](https://discord.gg/stimulus-reflex):
 
 * we completely overhauled the [client-side Reflex logging](troubleshooting.md#client-side-logging) with per-Morph granularity
 * a brand new and shockingly customizable [server-side Reflex](troubleshooting.md#stimulusreflex-logging) **colorized logging** module
