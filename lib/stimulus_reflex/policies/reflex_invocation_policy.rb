@@ -19,7 +19,10 @@ module StimulusReflex
     end
 
     def unknown?
-      # noop
+      return false if no_arguments?
+      return false if arguments?
+
+      true
     end
   end
 end
