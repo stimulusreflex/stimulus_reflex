@@ -62,5 +62,3 @@ There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-
 
 {% page-ref page="../rtfm/morph-modes.md" %}
 
-
-

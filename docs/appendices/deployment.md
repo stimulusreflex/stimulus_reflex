@@ -8,7 +8,13 @@ description: Dealing with the scaling concerns we are supposedly lucky to have
 
 **Cookie-based session storage is not currently supported by StimulusReflex.** ActionCable does not have the ability to write cookies, so inside of a Reflex it was possible to read session values while any attempts to store them would silently fail! We called it the _bubble universe_. We have a strategy for restoring cookie session storage in mind, but it's not ready, yet.
 
-Instead, we make the best of things by enabling caching in the development environment. This allows us to assign our user session data to be managed by the cache store. We also frequently use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store stateful data that we consume in Reflexes. Once you consider that testing with caching off frequently hides bugs that might only come out in production, the argument for mandatory caching shifts from quirky requirement to exciting opportunity. 🎉
+Instead, we make the best of things by enabling caching in the development environment. This allows us to:
+
+* assign our user session data to be managed by the cache store
+* use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store data that we access from Reflexes
+* catch bugs that otherwise might only occur in production
+
+### Use Redis as your cache store
 
 We want to change the cache store to make use of Redis. First we should enable the `redis` gem, as well as `hiredis`, a native wrapper which is much faster than the Ruby gem alone.
 
