@@ -35,7 +35,7 @@ One of the most common patterns in StimulusReflex is to pass instance variables 
 {% tabs %}
 {% tab title="example\_reflex.rb" %}
 ```ruby
-def updateValue
+def update_value
   @value = element[:value]
 end
 ```
@@ -57,7 +57,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->Example#updateValue">
+    data-reflex="input->Example#update_value">
   <p>The value is: <%= @value %>.</p>
 </div>
 ```
@@ -109,7 +109,7 @@ We can update our earlier example to use the session object, and it will now per
 {% tabs %}
 {% tab title="example\_reflex.rb" %}
 ```ruby
-def updateValue
+def update_value
   session[:value] = element[:value]
 end
 ```
@@ -131,7 +131,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->Example#updateValue">
+    data-reflex="input->Example#update_value">
   <p>The value is: <%= session[:value] %>.</p>
 </div>
 ```
