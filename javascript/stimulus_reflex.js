@@ -573,7 +573,8 @@ const serverMessage = event => {
     data: promise.data,
     element: reflexElement,
     event,
-    toString: () => body
+    toString: () => body,
+    returns: event.detail.returns
   })
 
   reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'
