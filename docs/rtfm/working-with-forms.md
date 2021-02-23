@@ -223,6 +223,59 @@ Note that this concept only applies to the active text input element. Any elemen
 {% hint style="warning" %}
 Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](morph-modes.md#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
 
-Similarly, CableReady operations launched by the developer do not respect `data-reflex-permanent` so please take care to understand the limitations of the approach.
+Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [morph](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
 {% endhint %}
+
+## Modifying Forms with Morphs
+
+If you need to change form elements in your document based on user input, you will find yourself needing to re-render partials inside of your Reflex. This raises the very good question of how to access the `form` context, since it's not just a simple view helper that you can include.
+
+You will need the controller's view context, as well as the parent resource used to create the form initially:
+
+```ruby
+class FormReflex < ApplicationReflex
+  delegate :view_context, to: :controller
+  
+  def swap
+    post = Post.find(123)
+
+    form = ActionView::Helpers::FormBuilder.new(
+      :post, post, view_context, {}
+    )
+    
+    html = render(partial: "path/to/partial", locals: {form: form})
+    
+    morph "#form_swap", html
+  end
+end
+```
+
+Depending on how your DOM hierarchy is set up, make sure that you're giving `morph` the HTML content required to successfully update the children of your target element. This requires that the outermost element of the supplied HTML matches the parent element:
+
+```markup
+<%= form_with model: @post do |form| %>
+  <%= form.text_field :title %>
+  <div id="form_swap">
+    <%= render "path/to/partial", locals: {form: form} %>
+  </div>
+  <%= form.text_area :body, size: "60x10" %>
+  <%= form.submit %>
+<% end %>
+```
+
+The partial might look something like this:
+
+```markup
+<%= form.text_field :summary %>
+```
+
+Since the partial does not include the parent `div`, in order to successfully replace the contents of "form\_swap" we'll need to wrap it ourselves:
+
+```ruby
+    html = render(partial: "path/to/partial", locals: {form: form})
+    
+    morph "#form_swap", "<div id='form_swap'>#{html}</div>"
+```
+
+You can learn more about why wrapping Morph replacement content is necessary [here](morph-modes.md#intelligent-defaults).
 
