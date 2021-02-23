@@ -14,6 +14,7 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
             "name" => "stimulus-reflex:server-message",
             "detail" => {
               "reflexId" => nil,
+              "returns" => nil,
               "stimulusReflex" => {
                 "some" => :data,
                 "morph" => :nothing,
