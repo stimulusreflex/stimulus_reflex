@@ -9,17 +9,23 @@ end
 ```
 {% endcode %}
 
-Setting a declarative data-reflex="click-&gt;Example\#increment" will call the increment Reflex action in the Example Reflex class, before passing any instance variables along to your controller action and re-rendering your page. You can do anything you like in a Reflex action, including database updates, launching ActiveJobs and even initiating CableReady broadcasts.
+Setting a declarative data-reflex="click-&gt;Example\#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
+
+You can do anything you like in a Reflex action, including [retrieving data from Redis](persistence.md#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](cableready.md#order-of-operations).
+
+You can get and set values on the `session` object, and if you're using the \(default\) Page Morph Reflexes, any instance variables that you set in your Reflex Action method will be available to the controller action before your page is re-rendered.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
-  def increment
-    @counter += 1 # @counter will be available inside your controller action if you're doing a Page Morph
+  def test
+    @id = element.dataset["id"] # @id will be available inside your controller action if you're doing a Page Morph
   end
 end
 ```
 {% endcode %}
+
+You will learn all about the `element` accessor in the [next section](reflex-classes.md#element).
 
 {% hint style="warning" %}
 Note that there's no correlation between the Reflex class or Reflex action and the page \(or its controller\) that you're on. Your `users#show` page can call `Example#increment`.
