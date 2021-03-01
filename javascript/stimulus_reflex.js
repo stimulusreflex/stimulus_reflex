@@ -566,10 +566,8 @@ const serverMessage = event => {
 
   if (controllerElement) {
     controllerElement.reflexError = controllerElement.reflexError || {}
+    if (subject === 'error') controllerElement.reflexError[reflexId] = body
   }
-
-  if (controllerElement && subject === 'error')
-    controllerElement.reflexError[reflexId] = body
 
   promise[subject === 'error' ? 'reject' : 'resolve']({
     data: promise.data,
