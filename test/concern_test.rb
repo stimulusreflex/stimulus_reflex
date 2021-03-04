@@ -2,20 +2,25 @@
 
 require_relative "test_helper"
 
-class StimulusReflex::CallbacksTest < ActiveSupport::TestCase
-  class TestReflex < StimulusReflex::Reflex
+class StimulusReflex::ConcernTest < ActiveSupport::TestCase
+  module TestConcern
     extend ActiveSupport::Concern
-    extend StimulusReflex::Concern
+    include StimulusReflex::Concern
   end
 
-  class TestController < ActiveRecord::Base
-    extend ActiveSupport::Concern
-    extend StimulusReflex::Concern
+  class TestReflex < StimulusReflex::Reflex
+    include TestConcern
+
+    def initialize
+    end
+  end
+
+  class TestController < ActionController::Base
+    include TestConcern
   end
 
   class TestModel < ActiveRecord::Base
-    extend ActiveSupport::Concern
-    extend StimulusReflex::Concern
+    include TestConcern
   end
 
   test "included in a reflex it stubs controller and model methods" do
@@ -27,17 +32,23 @@ class StimulusReflex::CallbacksTest < ActiveSupport::TestCase
     assert_nil TestReflex.before_save
     assert_nil TestReflex.around_save
     assert_nil TestReflex.after_save
+
+    refute_nil TestReflex.before_reflex
   end
 
   test "included in a controller it stubs reflex methods" do
     assert_nil TestController.before_reflex
     assert_nil TestController.around_reflex
     assert_nil TestController.after_reflex
+
+    refute_nil TestController.before_action
   end
 
   test "included in a model it stubs reflex methods" do
     assert_nil TestModel.before_reflex
     assert_nil TestModel.around_reflex
     assert_nil TestModel.after_reflex
+
+    refute_nil TestModel.after_save
   end
 end
