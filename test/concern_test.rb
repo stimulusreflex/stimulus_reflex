@@ -4,15 +4,18 @@ require_relative "test_helper"
 
 class StimulusReflex::CallbacksTest < ActiveSupport::TestCase
   class TestReflex < StimulusReflex::Reflex
-    include StimulusReflex::Concern
+    extend ActiveSupport::Concern
+    extend StimulusReflex::Concern
   end
 
   class TestController < ActiveRecord::Base
-    include StimulusReflex::Concern
+    extend ActiveSupport::Concern
+    extend StimulusReflex::Concern
   end
 
   class TestModel < ActiveRecord::Base
-    include StimulusReflex::Concern
+    extend ActiveSupport::Concern
+    extend StimulusReflex::Concern
   end
 
   test "included in a reflex it stubs controller and model methods" do
