@@ -23,6 +23,19 @@ module StimulusReflex
           else
             super
           end
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(name, include_all = false)
+        case ancestors
+        when ->(a) { !(a & [StimulusReflex::Reflex]).empty? }
+          (ActiveRecord::Base.public_methods + ActionController::Base.public_methods).include?(name) || super
+        when ->(a) { !(a & [ActiveRecord::Base, ActionController::Base]).empty? }
+          StimulusReflex::Reflex.public_methods.include?(name) || super
+        else
+          super
         end
       end
     end

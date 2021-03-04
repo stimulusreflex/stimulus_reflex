@@ -2,28 +2,17 @@
 
 require_relative "test_helper"
 
-class StimulusReflex::CallbacksTest < ActionCable::Channel::TestCase
-  tests StimulusReflex::Channel
-
+class StimulusReflex::CallbacksTest < ActiveSupport::TestCase
   class TestReflex < StimulusReflex::Reflex
     include StimulusReflex::Concern
   end
 
-  setup do
-    stub_connection(session_id: SecureRandom.uuid)
-    def connection.env
-      @env ||= {}
-    end
+  class TestController < ActiveRecord::Base
+    include StimulusReflex::Concern
+  end
 
-    @reflex = TestReflex.new(subscribe, url: "https://test.stimulusreflex.com")
-
-    TestController.class_eval do
-      include StimulusReflex::Concern
-    end
-
-    TestModel.class_eval do
-      include StimulusReflex::Concern
-    end
+  class TestModel < ActiveRecord::Base
+    include StimulusReflex::Concern
   end
 
   test "included in a reflex it stubs controller and model methods" do
