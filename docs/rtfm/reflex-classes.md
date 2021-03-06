@@ -69,7 +69,7 @@ end
 
 When using `identified_by` accessors such as `current_user`, it's important to remember that any ActiveRecord queries or associations you access will be cached by default, **even across multiple Reflexes**.
 
-The cache is cleared when theActionCable Connection is re-established (usually with a page refresh) or you manually force the accessor to reload its associations:
+The cache is cleared when the ActionCable Connection is re-established (usually with a page refresh) or you manually force the accessor to reload its associations:
 
 ```rb
 current_user.reload
