@@ -8,7 +8,7 @@ description: How to prepare your app to use StimulusReflex
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
-The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](https://app.gitbook.com/@stimulusreflex/s/stimulusreflex/~/drafts/-MSU6Biq0jCNSes9e6mx/appendices/deployment#session-storage).\)
+The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
 
 ```ruby
 bundle add stimulus_reflex

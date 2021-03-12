@@ -106,6 +106,7 @@ class StimulusReflex::Reflex
     end
   end
 
+  # Invoke the reflex action specified by `name` and run all callbacks
   def process(name, *args)
     reflex_invoked = false
     result = run_callbacks(:process) {

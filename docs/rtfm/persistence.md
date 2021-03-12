@@ -16,7 +16,7 @@ Imagine if you could focus almost all of your time and attention on the fun part
 
 Designing applications in the StimulusReflex mindset is far simpler than what we're used to, and we don't have to give up responsive client functionality to see our productivity shoot through the roof. It does, however, require some unlearning of old habits. You're about to rethink how you approach persisting the state of your application. This can be jarring at first! Even positive changes feel like work.
 
-### The life of a Reflex
+## The life of a Reflex
 
 When you access a page in a StimulusReflex application, you see the current state of your user interface for that URL. There is no mounting process and no fetching of JSON from an API. Your request goes through the Rails router to Action Pack where your controller renders your view template and sends HTML to the browser. This is Rails in all its server-rendered glory.
 
@@ -35,7 +35,7 @@ One of the most common patterns in StimulusReflex is to pass instance variables 
 {% tabs %}
 {% tab title="example\_reflex.rb" %}
 ```ruby
-def updateValue
+def update_value
   @value = element[:value]
 end
 ```
@@ -57,7 +57,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->Example#updateValue">
+    data-reflex="input->Example#update_value">
   <p>The value is: <%= @value %>.</p>
 </div>
 ```
@@ -109,7 +109,7 @@ We can update our earlier example to use the session object, and it will now per
 {% tabs %}
 {% tab title="example\_reflex.rb" %}
 ```ruby
-def updateValue
+def update_value
   session[:value] = element[:value]
 end
 ```
@@ -131,7 +131,7 @@ end
 ```markup
 <div data-controller="example">
   <input type="text" data-reflex-permanent
-    data-reflex="input->Example#updateValue">
+    data-reflex="input->Example#update_value">
   <p>The value is: <%= session[:value] %>.</p>
 </div>
 ```
@@ -200,7 +200,7 @@ The Reflex class makes use of the `session.id`, the `data-id` attributes from in
 
 If Redis is your Rails cache store, you're already one step ahead!
 
-Depending on your application and the kind of data you're working with, calling the Redis engine directly \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
+Depending on your application and the kind of data you're working with, [calling the Redis engine directly](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#use-redis-as-your-cache-store) \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
 
 Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis/)".
 
@@ -211,10 +211,16 @@ It is a common pattern to store the results of API calls or long-running databas
 {% endhint %}
 
 {% hint style="danger" %}
-If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://docs.stimulusreflex.com/deployment#deployment-on-heroku).
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#deployment-on-heroku).
 {% endhint %}
 
-{% hint style="success" %}
-To get the best mileage from Redis, make sure that your key expiration strategy is set to **LRU**. Least-Recently Used keys means that as your database storage fills up, Redis will automatically evict the keys most likely to be stale or expired. This means that you never have to worry about setting expiry dates or manually expiring old keys.
-{% endhint %}
+## Kredis
+
+[Kredis](https://github.com/rails/kredis) is an exciting new addition to the Rails family. It provides a higher-level abstraction over the low-level Redis commands, allowing developers to "interact with them as coherent objects rather than isolated procedural commands."
+
+Kredis also adds new methods to your ActiveRecord models, allowing you to treat Redis data structures as attributes on your model.
+
+If you're running Ruby 2.7 or later, Kredis is likely a superior option to using the Rails cache or calling the Redis gem directly.
+
+Since Kredis can optionally use its own separate Redis database instance, you might decide to use a different key expiration strategy from a cache. Caches can safely evict the least recently used keys, whereas model attributes and ActiveJob queues should be configured to scream as loudly as possible if they run out of room for more data.
 
