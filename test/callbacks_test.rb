@@ -2,6 +2,8 @@
 
 require_relative "test_helper"
 
+# standard:disable Lint/ConstantDefinitionInBlock
+
 class CallbacksTest < ActionCable::Channel::TestCase
   tests StimulusReflex::Channel
 
@@ -350,3 +352,5 @@ class CallbacksTest < ActionCable::Channel::TestCase
     assert_equal(-8, reflex.instance_variable_get("@count"))
   end
 end
+
+# standard:enable Lint/ConstantDefinitionInBlock
