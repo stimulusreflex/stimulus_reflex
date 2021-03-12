@@ -227,7 +227,7 @@ end
 {% tab title="index.html.erb" %}
 ```text
 <div data-controller="event">
-  <input type="text" data-action="keydown->Event#keydown">
+  <input type="text" data-action="keydown->event#keydown">
 </div>
 ```
 {% endtab %}

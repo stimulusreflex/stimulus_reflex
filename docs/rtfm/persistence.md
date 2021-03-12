@@ -200,7 +200,7 @@ The Reflex class makes use of the `session.id`, the `data-id` attributes from in
 
 If Redis is your Rails cache store, you're already one step ahead!
 
-Depending on your application and the kind of data you're working with, [calling the Redis engine directly](../appendices/deployment#use-redis-as-your-cache-store) \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
+Depending on your application and the kind of data you're working with, [calling the Redis engine directly](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#use-redis-as-your-cache-store) \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
 
 Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis/)".
 
@@ -211,7 +211,7 @@ It is a common pattern to store the results of API calls or long-running databas
 {% endhint %}
 
 {% hint style="danger" %}
-If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](../appendices/deployment#deployment-on-heroku).
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#deployment-on-heroku).
 {% endhint %}
 
 ## Kredis
@@ -223,5 +223,4 @@ Kredis also adds new methods to your ActiveRecord models, allowing you to treat 
 If you're running Ruby 2.7 or later, Kredis is likely a superior option to using the Rails cache or calling the Redis gem directly.
 
 Since Kredis can optionally use its own separate Redis database instance, you might decide to use a different key expiration strategy from a cache. Caches can safely evict the least recently used keys, whereas model attributes and ActiveJob queues should be configured to scream as loudly as possible if they run out of room for more data.
-
 

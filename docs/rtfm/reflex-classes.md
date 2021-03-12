@@ -69,9 +69,9 @@ end
 
 When using `identified_by` accessors such as `current_user`, it's important to remember that any ActiveRecord queries or associations you access will be cached by default, **even across multiple Reflexes**.
 
-The cache is cleared when the ActionCable Connection is re-established (usually with a page refresh) or you manually force the accessor to reload its associations:
+The cache is cleared when the ActionCable Connection is re-established \(usually with a page refresh\) or you manually force the accessor to reload its associations:
 
-```rb
+```ruby
 current_user.reload
 ```
 
@@ -79,7 +79,7 @@ You can also bust the cached value by running a different query, but Rails devel
 
 If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
 
-Likewise, if you keep this potential *gotcha* in the back of your mind, it's entirely fair to see this association caching behavior as a performance boost. After all, it's one less query to run! 😅
+Likewise, if you keep this potential _gotcha_ in the back of your mind, it's entirely fair to see this association caching behavior as a performance boost. After all, it's one less query to run! 😅
 
 ## Building your Reflex action
 
@@ -194,7 +194,7 @@ end
 
 ## Accessing `reflex_id`
 
-Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`. 
+Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`.
 
 ```ruby
 class ExampleReflex < ApplicationReflex
@@ -203,3 +203,4 @@ class ExampleReflex < ApplicationReflex
   end
 end
 ```
+
