@@ -93,7 +93,7 @@ If you're stuck with an element that just won't update, make sure that you're no
 {% endhint %}
 
 {% hint style="info" %}
-It's completely valid to for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
+It's completely valid for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
 {% endhint %}
 
 ### Permanent Elements
