@@ -351,6 +351,115 @@ class CallbacksTest < ActionCable::Channel::TestCase
     reflex.process(:decrement)
     assert_equal(-8, reflex.instance_variable_get("@count"))
   end
+
+
+  test "skip_before_reflex works" do
+    class SkipBeforeCallbackReflex < StimulusReflex::Reflex
+      before_reflex :blowup
+      before_reflex :init_counter
+      before_reflex :bonus
+
+      skip_before_reflex :blowup
+      skip_before_reflex :init_counter, if: -> { false }
+      skip_before_reflex :bonus, if: -> { true }
+
+      def increment
+        @count += 1
+      end
+
+      private
+
+      def blowup
+        raise StandardError
+      end
+
+      def init_counter
+        @count = 5
+      end
+
+      def bonus
+        @count += 100
+      end
+    end
+
+    reflex = SkipBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 6, reflex.instance_variable_get("@count")
+  end
+
+  test "skip_after_reflex works" do
+    class SkipAfterCallbackReflex < StimulusReflex::Reflex
+      after_reflex :blowup
+      after_reflex :reset
+      after_reflex :clear
+
+      skip_after_reflex :blowup
+      skip_after_reflex :reset, if: -> { false }
+      skip_after_reflex :clear, if: -> { true }
+
+      def increment
+        @count = 0
+      end
+
+      private
+
+      def blowup
+        raise StandardError
+      end
+
+      def reset
+        @count += 1
+      end
+
+      def clear
+        @count += 10
+      end
+    end
+
+    reflex = SkipAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 1, reflex.instance_variable_get("@count")
+  end
+
+  test "skip_around_reflex works" do
+    class SkipAroundCallbackReflex < StimulusReflex::Reflex
+      around_reflex :blowup
+      around_reflex :around
+      around_reflex :bonus
+
+      skip_around_reflex :blowup
+      skip_around_reflex :around, if: -> { false }
+      skip_around_reflex :bonus, if: -> { true }
+
+      def increment
+        @count += 2
+      end
+
+      private
+
+      def blowup
+        raise StandardError
+        yield
+        raise StandardError
+      end
+
+      def around
+        @count = 1
+        yield
+        @count += 4
+      end
+
+      def bonus
+        @count += 100
+        yield
+        @count += 1000
+      end
+    end
+
+    reflex = SkipAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 7, reflex.instance_variable_get("@count")
+  end
 end
 
 # standard:enable Lint/ConstantDefinitionInBlock
