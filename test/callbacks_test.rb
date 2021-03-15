@@ -457,6 +457,35 @@ class CallbacksTest < ActionCable::Channel::TestCase
     reflex.process(:increment)
     assert_equal 7, reflex.instance_variable_get("@count")
   end
+
+  test "skip_before_reflex works in inherited reflex" do
+    class SkipApplicationReflex < StimulusReflex::Reflex
+      before_reflex :blowup
+      before_reflex :init_counter
+
+      private
+
+      def blowup
+        raise StandardError
+      end
+
+      def init_counter
+        @count = 5
+      end
+    end
+
+    class InheritedSkipApplicationReflex < SkipApplicationReflex
+      skip_before_reflex :blowup
+
+      def increment
+        @count += 1
+      end
+    end
+
+    reflex = InheritedSkipApplicationReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 6, reflex.instance_variable_get("@count")
+  end
 end
 
 # standard:enable Lint/ConstantDefinitionInBlock
