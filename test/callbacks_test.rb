@@ -352,7 +352,6 @@ class CallbacksTest < ActionCable::Channel::TestCase
     assert_equal(-8, reflex.instance_variable_get("@count"))
   end
 
-
   test "skip_before_reflex works" do
     class SkipBeforeCallbackReflex < StimulusReflex::Reflex
       before_reflex :blowup
@@ -438,8 +437,6 @@ class CallbacksTest < ActionCable::Channel::TestCase
       private
 
       def blowup
-        raise StandardError
-        yield
         raise StandardError
       end
 
