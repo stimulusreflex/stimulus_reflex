@@ -564,10 +564,10 @@ const serverMessage = event => {
   const promise = reflexes[reflexId].promise
   const subjects = { error: true, halted: true, nothing: true, success: true }
 
-  controllerElement.reflexError = controllerElement.reflexError || {}
-
-  if (controllerElement && subject === 'error')
-    controllerElement.reflexError[reflexId] = body
+  if (controllerElement) {
+    controllerElement.reflexError = controllerElement.reflexError || {}
+    if (subject === 'error') controllerElement.reflexError[reflexId] = body
+  }
 
   promise[subject === 'error' ? 'reject' : 'resolve']({
     data: promise.data,

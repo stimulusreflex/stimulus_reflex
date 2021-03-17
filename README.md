@@ -75,7 +75,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 1000 of us on [Discord](https://discord.gg/XveN625) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 1000 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 
