@@ -9,23 +9,39 @@ end
 ```
 {% endcode %}
 
-Setting a declarative data-reflex="click-&gt;Example\#increment" will call the increment Reflex action in the Example Reflex class, before passing any instance variables along to your controller action and re-rendering your page. You can do anything you like in a Reflex action, including database updates, launching ActiveJobs and even initiating CableReady broadcasts.
+Setting a declarative data-reflex="click-&gt;Example\#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
+
+You can do anything you like in a Reflex action, including [retrieving data from Redis](persistence.md#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](cableready.md#order-of-operations).
+
+{% hint style="success" %}
+If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
+{% endhint %}
+
+You can get and set values on the `session` object, and if you're using the \(default\) Page Morph Reflexes, any instance variables that you set in your Reflex Action method will be available to the controller action before your page is re-rendered.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
-  def increment
-    @counter += 1 # @counter will be available inside your controller action if you're doing a Page Morph
+  def test
+    @id = element.dataset["id"] # @id will be available inside your controller action if you're doing a Page Morph
   end
 end
 ```
 {% endcode %}
 
+You will learn all about the `element` accessor in the [next section](reflex-classes.md#element).
+
 {% hint style="warning" %}
 Note that there's no correlation between the Reflex class or Reflex action and the page \(or its controller\) that you're on. Your `users#show` page can call `Example#increment`.
 {% endhint %}
 
-It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. The best way to achieve this is to delegate it to the ActionCable connection.
+## ActionCable Connection Identifiers
+
+It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. First, you'll need to make sure that your Connection is "identified" by your `current_user`. Since ActionCable is separate from the ActionController namespace, accessors need to be setup as part of your [authentication](authentication.md#current-user) process.
+
+Your Connection can have multiple accessors defined. For example, it's common to implement a [hybrid](authentication.md#hybrid-anonymous-authenticated-connections) technique to use the visitor's `session_id` before they authenticate, and then switch over to `current_user`.
+
+Once your connection is `identified_by :current_user`, you can delegate `current_user` to your ActionCable Connection:
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
@@ -39,7 +55,7 @@ end
 ```
 {% endcode %}
 
-If you plan to access `current_user` from all of your Reflex classes, it is common to delegate once in your ApplicationReflex.
+If you plan to access `current_user` from all of your Reflex classes, delegate it your ApplicationReflex:
 
 {% code title="app/reflexes/application\_reflex.rb" %}
 ```ruby
@@ -49,11 +65,23 @@ end
 ```
 {% endcode %}
 
-{% hint style="success" %}
-If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
-{% endhint %}
+### Queries and associations are cached
 
-### Building your Reflex action
+When using `identified_by` accessors such as `current_user`, it's important to remember that any ActiveRecord queries or associations you access will be cached by default, **even across multiple Reflexes**.
+
+The cache is cleared when the ActionCable Connection is re-established \(usually with a page refresh\) or you manually force the accessor to reload its associations:
+
+```ruby
+current_user.reload
+```
+
+You can also bust the cached value by running a different query, but Rails developers are used to thinking in terms of request/response cycles. They know controller actions are idempotent, and so it's reasonable to expect Reflex actions to also be idempotent. And they are... except for accessors on the Connection.
+
+If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
+
+Likewise, if you keep this potential _gotcha_ in the back of your mind, it's entirely fair to see this association caching behavior as a performance boost. After all, it's one less query to run! 😅
+
+## Building your Reflex action
 
 The following properties available to the developer inside Reflex actions:
 
@@ -71,7 +99,7 @@ The following properties available to the developer inside Reflex actions:
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
 {% endhint %}
 
-### `element`
+## `element`
 
 The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
 
@@ -125,7 +153,7 @@ When StimulusReflex is rendering your template, an instance variable named **@st
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
 {% endhint %}
 
-### Signed and unsigned Global ID accessors
+## Signed and unsigned Global ID accessors
 
 Rails has [a pair of cool features](https://github.com/rails/globalid) that allow developers to generate tokens from ActiveRecord models. These tokens can later be used to access those models, and in the case of signed Global IDs, obscure the model from prying eyes. They can even be set to expire after a period of time.
 
@@ -151,7 +179,7 @@ end
 
 While most developers default to using signed Global IDs, understand that the tradeoff is that signed tokens can be quite long, whereas unsigned tokens remain short.
 
-### Reflex exceptions are rescuable
+## Reflex exceptions are rescuable
 
 If you'd like to wire up 3rd-party exception handling services like Sentry or HoneyBadger to your Reflex classes, you can use `rescue_from` to respond to an errors raised.
 
@@ -164,9 +192,9 @@ class MyTestReflex < ApplicationReflex
 end
 ```
 
-### Accessing `reflex_id`
+## Accessing `reflex_id`
 
-Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`. 
+Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`.
 
 ```ruby
 class ExampleReflex < ApplicationReflex

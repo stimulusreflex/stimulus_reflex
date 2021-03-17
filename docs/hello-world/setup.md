@@ -16,7 +16,7 @@ bundle exec rails stimulus_reflex:install
 ```
 
 {% hint style="warning" %}
-StimulusReflex requires Redis be [installed and running](https://redis.io/topics/quickstart).
+StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
 {% endhint %}
 
 And that's it! You can start using StimulusReflex in your application.
@@ -28,7 +28,7 @@ And that's it! You can start using StimulusReflex in your application.
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
 {% hint style="warning" %}
-StimulusReflex requires Redis be [installed and running](https://redis.io/topics/quickstart).
+StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
 
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
 {% endhint %}
