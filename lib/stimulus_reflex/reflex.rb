@@ -106,6 +106,10 @@ class StimulusReflex::Reflex
     end
   end
 
+  def controller?
+    !!defined? @controller
+  end
+
   def process(name, *args)
     reflex_invoked = false
     result = run_callbacks(:process) {
