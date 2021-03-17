@@ -56,7 +56,7 @@ module StimulusReflex
       def normalize_callback_option!(options, from, to)
         if (from = options.delete(from))
           from_set = Array(from).map(&:to_s).to_set
-          from = proc { |reflex| from_set.include? reflex.method_name }
+          from = proc { |reflex| from_set.include? reflex.method_name.to_s }
           options[to] = Array(options[to]).unshift(from)
         end
       end
