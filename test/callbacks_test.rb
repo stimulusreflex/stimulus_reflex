@@ -486,6 +486,167 @@ class CallbacksTest < ActionCable::Channel::TestCase
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get("@count")
   end
+
+  test "basic prepend_before_reflex works" do
+    class SimplePrependBeforeCallbackReflex < StimulusReflex::Reflex
+      before_reflex :two
+      prepend_before_reflex :one
+
+      def increment
+        @count += 1 if @count == 2
+      end
+
+      private
+
+      def one
+        @count = 1
+      end
+
+      def two
+        @count += 1 if @count == 1
+      end
+    end
+
+    reflex = SimplePrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 3, reflex.instance_variable_get("@count")
+  end
+
+  test "prepend_before_reflex with block works" do
+    class BlockPrependBeforeCallbackReflex < StimulusReflex::Reflex
+      before_reflex do
+        @count += 1 if @count == 1
+      end
+
+      prepend_before_reflex do
+        @count = 1
+      end
+
+      def increment
+        @count += 1 if @count == 2
+      end
+    end
+
+    reflex = BlockPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 3, reflex.instance_variable_get("@count")
+  end
+
+  test "basic prepend_before_reflex works in inherited reflex" do
+    class PrependBeforeCallbackReflex < StimulusReflex::Reflex
+      before_reflex :two
+
+      def increment
+        @count += 5 if @count == 4
+      end
+
+      private
+
+      def two
+        @count += 3 if @count == 1
+      end
+    end
+
+    class InheritedPrependBeforeCallbackReflex < PrependBeforeCallbackReflex
+      prepend_before_reflex :one
+
+      private
+
+      def one
+        @count = 1
+      end
+    end
+
+    reflex = InheritedPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 9, reflex.instance_variable_get("@count")
+  end
+
+  test "basic prepend_around_reflex works" do
+    class SimplePrependAroundCallbackReflex < StimulusReflex::Reflex
+      around_reflex :two
+      prepend_around_reflex :one
+
+      def increment
+        @count += 10
+      end
+
+      private
+
+      def one
+        @count = 1
+        yield
+        @count += 3 if @count == 23
+      end
+
+      def two
+        @count += 5 if @count == 1
+        yield
+        @count += 7 if @count == 16
+      end
+    end
+
+    reflex = SimplePrependAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 26, reflex.instance_variable_get("@count")
+  end
+
+  test "basic prepend_after_reflex works" do
+    class SimplePrependAfterCallbackReflex < StimulusReflex::Reflex
+      after_reflex :two
+      prepend_after_reflex :one
+
+      def increment
+        @count = 1
+      end
+
+      private
+
+      def one
+        @count += 3 if @count == 6
+      end
+
+      def two
+        @count += 5 if @count == 1
+      end
+    end
+
+    reflex = SimplePrependAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 9, reflex.instance_variable_get("@count")
+  end
+
+  test "append before_, around_ and after_reflex works" do
+    class AppendCallbackReflex < StimulusReflex::Reflex
+      append_before_reflex :before
+      append_around_reflex :around
+      append_after_reflex :after
+
+      def increment
+        @count += 5 if @count == 4
+      end
+
+      private
+
+      def before
+        @count = 1 unless @counts
+      end
+
+      def around
+        @count += 3 if @count == 1
+        yield
+        @count += 9 if @count == 16
+      end
+
+      def after
+        @count += 7 if @count == 9
+      end
+    end
+
+    reflex = AppendCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment)
+    reflex.process(:increment)
+    assert_equal 25, reflex.instance_variable_get("@count")
+  end
 end
 
 # standard:enable Lint/ConstantDefinitionInBlock
