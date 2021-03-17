@@ -138,7 +138,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def report_failed_basic_auth(reflex)
     if reflex.controller.response.status == 401
-      message = "Reflex failed to process controller action due to HTTP basic auth. Consider adding: \"unless: -> { @stimulus_reflex }\""
+      message = "Reflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication."
       puts "\e[31m#{message}\e[0m"
     end
   end
