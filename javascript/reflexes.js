@@ -127,7 +127,7 @@ export const registerReflex = data => {
 export const getReflexRoots = element => {
   let list = []
   while (list.length === 0 && element) {
-    const reflexRoot = element.getAttribute(
+    let reflexRoot = element.getAttribute(
       reflexes.app.schema.reflexRootAttribute
     )
     if (reflexRoot) {
