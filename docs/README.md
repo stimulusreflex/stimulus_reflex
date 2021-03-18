@@ -13,7 +13,7 @@ We extend the capabilities of both [Rails](https://rubyonrails.org) and [Stimulu
 This architecture eliminates the complexity imposed by full-stack frontend frameworks without abandoning [high-performance reactive user experiences](https://www.youtube.com/watch?v=SWEts0rlezA&t=214s). With StimulusReflex, small teams can do big things faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** \(SPA\).
 
 {% hint style="success" %}
-**Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/XveN625)
+**Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/stimulus-reflex)
 
 [![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/hopsoft/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
@@ -39,7 +39,7 @@ Find out more and learn how to upgrade on the [Release History](appendices/relea
 
 Our over-the-wire JavaScript payload size is a tiny [**11.4kb** gzipped](https://bundlephobia.com/result?p=stimulus_reflex@3.4.0)... and that _includes_ StimulusReflex, ActionCable, morphdom and CableReady.
 
-While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here's the numbers:
+While StimulusReflex is a radically different approach that makes it hard to do a direct comparison to the popular SPA frameworks, the one thing everyone seems to agree on is how small their Todo List implementation is. Here're the numbers:
 
 | Tool | Wire Size |
 | :--- | :--- |

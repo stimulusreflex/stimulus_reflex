@@ -62,7 +62,7 @@ namespace :stimulus_reflex do
       lines.delete_at 1
       lines.insert 1, "  adapter: redis\n"
       lines.insert 2, "  url: <%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>\n"
-      lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).underscore + "_development\n"
+      lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).tr('\\', "").tr("-. ", "_").underscore + "_development\n"
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
