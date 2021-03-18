@@ -7,7 +7,7 @@ let params
 let subscriptionActive
 
 const createSubscription = controller => {
-  consumer = consumer || createConsumer()
+  consumer = consumer || controller.application.consumer || createConsumer()
   const { channel } = controller.StimulusReflex
   const subscription = { channel, ...params }
   const identifier = JSON.stringify(subscription)
