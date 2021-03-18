@@ -3,18 +3,21 @@ name: Changelog
 on:
   workflow_dispatch:
   release:
-    types: [created]
-  push:
-    branches:
-      - master
+    types: [released, prereleased, deleted]
+  pull_request:
+    types: [closed]
+  issues:
+    types: [closed, deleted]
 
 jobs:
-  build:
+  changelog:
     runs-on: ubuntu-latest
     timeout-minutes: 4
-    if: "!contains(github.event.head_commit.message, '[nodoc]')"
+    if: "!contains(github.event.head_commit.message, 'Update Changelog')"
     steps:
     - uses: actions/checkout@master
+      with:
+        ref: master
     - name: Set up Ruby 3.0
       uses: ruby/setup-ruby@v1
       with:
@@ -31,11 +34,11 @@ jobs:
         github_changelog_generator -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} --token ${{ secrets.GITHUB_TOKEN }} --exclude-labels duplicate,question,invalid,wontfix,nodoc
     - name: Commit files
       run: |
-        git config --local user.email "github-actions@example.com"
-        git config --local user.name "GitHub Actions"
-        git commit -am "[nodoc] Update Changelog" || echo "No changes to commit"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -am "Update Changelog" || echo "No changes to commit"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+        branch: master

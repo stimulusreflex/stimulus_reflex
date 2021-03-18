@@ -16,7 +16,7 @@ A Reflex action is a reaction to a user action that changes server-side state an
 A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
 {% endhint %}
 
-CableReady has 25 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 33 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
@@ -41,7 +41,11 @@ class ExampleReflex < ApplicationReflex
 end
 ```
 
-Of course, you're still free to call `cable_ready` with a different stream or resource, if you need your update to go to a wider audience.
+This is just like calling `cable_ready[stream_name]`. `stream_name` is the internal variable StimulusReflex uses to hold the stream identifier it uses to send updates to the current user.
+
+The only constaint imposed upon use of the special `cable_ready` method is that **`broadcast` methods must appear at the end of a method chain.** This is because calling `cable_ready.broadcast` without queueing any additional operations already has a function when using CableReady; it tells CableReady to broadcast any enqueued operations on all string-based identifier channels.
+
+You can still use CableReady "normally" inside of a Reflex, if you need to broadcast to more than just the current user. Just call `cable_ready` with a stream identifier in brackets.
 
 {% hint style="danger" %}
 Do not include `CableReady::Broadcaster` in your Reflex classes. It's already present in the Reflex scope and including it again will cause errors.

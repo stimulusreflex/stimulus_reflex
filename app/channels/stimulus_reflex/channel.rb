@@ -96,6 +96,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     ensure
       if reflex
         commit_session(reflex)
+        report_failed_basic_auth(reflex) if reflex.controller?
         reflex.logger.print
       end
     end
@@ -115,12 +116,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def delegate_call_to_reflex(reflex, method_name, arguments = [])
     method = reflex.method(method_name)
-    required_params = method.parameters.select { |(kind, _)| kind == :req }
-    optional_params = method.parameters.select { |(kind, _)| kind == :opt }
+    policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
-    if arguments.size == 0 && required_params.size == 0
+    if policy.no_arguments?
       reflex.process(method_name)
-    elsif arguments.size >= required_params.size && arguments.size <= required_params.size + optional_params.size
+    elsif policy.arguments?
       reflex.process(method_name, *arguments)
     else
       raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
@@ -133,6 +133,13 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   rescue => e
     message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
     puts "\e[31m#{message}\e[0m"
+  end
+
+  def report_failed_basic_auth(reflex)
+    if reflex.controller.response.status == 401
+      message = "Reflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication."
+      puts "\e[31m#{message}\e[0m"
+    end
   end
 
   def exception_message_with_backtrace(exception)
