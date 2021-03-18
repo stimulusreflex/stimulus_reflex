@@ -23,7 +23,7 @@ export const beforeDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        reflexReturnValue: event.detail.reflexReturnValue
+        payload: event.detail.payload
       })
     )
 
@@ -58,7 +58,7 @@ export const afterDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        reflexReturnValue: event.detail.reflexReturnValue
+        payload: event.detail.payload
       })
     )
 
@@ -91,7 +91,7 @@ export const serverMessage = event => {
     element: reflexElement,
     event,
     toString: () => body,
-    reflexReturnValue: event.detail.reflexReturnValue
+    payload: event.detail.payload
   })
 
   reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'

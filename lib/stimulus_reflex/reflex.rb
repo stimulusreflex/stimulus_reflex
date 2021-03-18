@@ -7,8 +7,7 @@ class StimulusReflex::Reflex
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
 
-  attr_accessor :return_value
-  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger, :payload
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -40,6 +39,7 @@ class StimulusReflex::Reflex
     @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
     @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
+    @payload = {}
     self.params
   end
 
