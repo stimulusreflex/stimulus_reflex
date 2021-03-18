@@ -7,6 +7,7 @@ class StimulusReflex::Reflex
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
 
+  attr_accessor :return_value
   attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
@@ -81,18 +82,17 @@ class StimulusReflex::Reflex
     end
   end
 
-  def morph(selectors, value = nil)
+  def morph(selectors, html = nil)
     case selectors
     when :page
       raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
     when :nothing
       raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
       @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
-      broadcaster.returns = value
     else
       raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
       @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
-      broadcaster.append_morph(selectors, value)
+      broadcaster.append_morph(selectors, html)
     end
   end
 

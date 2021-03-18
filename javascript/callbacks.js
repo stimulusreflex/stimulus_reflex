@@ -19,7 +19,12 @@ export const beforeDOMUpdate = event => {
 
   if (!stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({ element: reflexElement, event, data: promise.data })
+      promise.resolve({
+        element: reflexElement,
+        event,
+        data: promise.data,
+        reflexReturnValue: event.detail.reflexReturnValue
+      })
     )
 
   setTimeout(() =>
@@ -49,7 +54,12 @@ export const afterDOMUpdate = event => {
 
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({ element: reflexElement, event, data: promise.data })
+      promise.resolve({
+        element: reflexElement,
+        event,
+        data: promise.data,
+        reflexReturnValue: event.detail.reflexReturnValue
+      })
     )
 
   setTimeout(() =>
@@ -80,7 +90,8 @@ export const serverMessage = event => {
     data: promise.data,
     element: reflexElement,
     event,
-    toString: () => body
+    toString: () => body,
+    reflexReturnValue: event.detail.reflexReturnValue
   })
 
   reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'

@@ -16,6 +16,7 @@ module StimulusReflex
         cable_ready.morph(
           selector: selector,
           html: html,
+          reflexReturnValue: return_value,
           children_only: true,
           permanent_attribute_name: permanent_attribute_name,
           stimulus_reflex: data.merge({
