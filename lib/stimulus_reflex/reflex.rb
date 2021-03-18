@@ -73,7 +73,9 @@ class StimulusReflex::Reflex
 
       # fetch path params (controller, action, ...) and apply them
       request_params = StimulusReflex::RequestParameters.new(params: @params, req: req, url: url)
-      request_params.apply!
+      req = request_params.apply!
+
+      req
     end
   end
 
