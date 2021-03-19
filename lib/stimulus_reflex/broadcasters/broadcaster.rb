@@ -3,7 +3,7 @@
 module StimulusReflex
   class Broadcaster
     attr_reader :reflex, :logger, :operations
-    delegate :cable_ready, :permanent_attribute_name, to: :reflex
+    delegate :cable_ready, :permanent_attribute_name, :payload, to: :reflex
 
     def initialize(reflex)
       @reflex = reflex
@@ -30,6 +30,7 @@ module StimulusReflex
         name: "stimulus-reflex:server-message",
         detail: {
           reflexId: data["reflexId"],
+          payload: payload,
           stimulus_reflex: data.merge(
             morph: to_sym,
             server_message: {subject: subject, body: error&.to_s}

@@ -18,6 +18,7 @@ module StimulusReflex
             cable_ready.morph(
               selector: selector,
               html: match.inner_html,
+              payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge({
@@ -29,6 +30,7 @@ module StimulusReflex
             cable_ready.inner_html(
               selector: selector,
               html: fragment.to_html,
+              payload: payload,
               stimulus_reflex: data.merge({
                 morph: to_sym
               })

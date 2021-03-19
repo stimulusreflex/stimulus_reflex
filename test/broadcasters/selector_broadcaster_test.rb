@@ -14,6 +14,7 @@
 # {
 # "selector" => "#foo",
 # "html" => "<span>bar</span>",
+# "payload" => {},
 # "childrenOnly" => true,
 # "permanentAttributeName" => nil,
 # "stimulusReflex" => {
@@ -41,6 +42,7 @@
 # {
 # "selector" => "#foo",
 # "html" => "<div id=\"baz\"><span>bar</span></div>",
+# "payload" => {},
 # "stimulusReflex" => {
 # "some" => :data,
 # "morph" => :selector
