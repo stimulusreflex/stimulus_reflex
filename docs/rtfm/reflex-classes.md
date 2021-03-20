@@ -77,6 +77,12 @@ current_user.reload
 
 You can also bust the cached value by running a different query, but Rails developers are used to thinking in terms of request/response cycles. They know controller actions are idempotent, and so it's reasonable to expect Reflex actions to also be idempotent. And they are... except for accessors on the Connection.
 
+{% hint style="danger" %}
+**Don't use `current_user` or other Connection identifiers in templates or partials that will be rendered in a Reflex.**
+
+Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action_view_overview.html#render-without-partial-and-locals-options).
+{% endhint %}
+
 If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
 
 Likewise, if you keep this potential _gotcha_ in the back of your mind, it's entirely fair to see this association caching behavior as a performance boost. After all, it's one less query to run! 😅

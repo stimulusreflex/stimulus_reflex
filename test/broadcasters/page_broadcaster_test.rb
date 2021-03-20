@@ -25,6 +25,7 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
           {
             "selector" => "body",
             "html" => "New Content",
+            "payload" => {},
             "childrenOnly" => true,
             "permanentAttributeName" => nil,
             "stimulusReflex" => {
@@ -57,6 +58,7 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
           {
             "selector" => "#foo",
             "html" => "New Content",
+            "payload" => {},
             "childrenOnly" => true,
             "permanentAttributeName" => nil,
             "stimulusReflex" => {
