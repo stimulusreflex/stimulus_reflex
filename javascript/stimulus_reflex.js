@@ -61,6 +61,12 @@ const initialize = (application, initializeOptions = {}) => {
   })
   actionCable.params = params
   isolationMode.set(!!isolate)
+  setTimeout(() => {
+    if (Deprecate.enabled && isolationMode.disabled)
+      console.warn(
+        'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
+      )
+  })
   reflexes.app = application
   reflexes.app.schema = { ...defaultSchema, ...application.schema }
   reflexes.app.register(
@@ -184,10 +190,27 @@ const register = (controller, options = {}) => {
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
+        const serializeAttribute =
+          reflexElement.attributes[
+            reflexes.app.schema.reflexSerializeFormAttribute
+          ]
+        if (serializeAttribute) {
+          // not needed after v4 because this is only here for the deprecation warning
+          options['serializeForm'] = false
+          if (serializeAttribute.value === 'true')
+            options['serializeForm'] = true
+        }
+
+        const form = reflexElement.closest('form')
+
+        if (Deprecate.enabled && options['serializeForm'] === undefined && form)
+          console.warn(
+            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${reflexes.app.schema.reflexSerializeFormAttribute}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
+          )
         const formData =
           options['serializeForm'] === false
             ? ''
-            : serializeForm(reflexElement.closest('form'), {
+            : serializeForm(form, {
                 element: reflexElement
               })
 
