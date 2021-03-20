@@ -224,6 +224,10 @@ const register = (controller, options = {}) => {
   })
 }
 
+const useReflex = (controller, options = {}) => {
+  register(controller, options)
+}
+
 document.addEventListener('stimulus-reflex:server-message', serverMessage)
 document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
@@ -234,6 +238,7 @@ window.addEventListener('load', setupDeclarativeReflexes)
 export default {
   initialize,
   register,
+  useReflex,
   get debug () {
     return Debug.value
   },
