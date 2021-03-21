@@ -367,6 +367,22 @@ Just because you are authenticated as a user doesn't mean you should have access
 
 The `before_reflex` callback is the best place to handle privilege checks, because you can call `throw :abort` to prevent the Reflex if the user is making decisions above their pay grade.
 
+### CanCanCan
+
+If you are using [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization, you can access the `current_ability` using a delegate in your Reflex classes.
+
+```ruby
+delegate :current_ability, to: :controller
+```
+
+You can now use the `accessible_by` method from CanCanCan to ensure you are only getting permitted records for the current user.
+
+```ruby
+def change_school
+  @classrooms = element.value.present? ? School.find(element.value).classrooms.accessible_by(current_ability) : []
+end
+```
+
 ### Pundit
 
 The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. Reflexes are similar enough to controllers that if you include the `Pundit` module, you can take advantage of the `authorize` method.
