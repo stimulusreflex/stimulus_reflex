@@ -369,19 +369,18 @@ The `before_reflex` callback is the best place to handle privilege checks, becau
 
 ### CanCanCan
 
-If you are using [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization, you can access the `current_ability` using a delegate in your Reflex classes.
+If you are using [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization, you can [create an](https://github.com/CanCanCommunity/cancancan/blob/develop/docs/Defining-Abilities:-Best-Practices.md#split-your-abilityrb-file) `Ability` in your Reflex classes. You can use the `accessible_by` method to ensure you are only getting permitted records for the current user.
 
 ```ruby
-delegate :current_ability, to: :controller
-```
-
-You can now use the `accessible_by` method from CanCanCan to ensure you are only getting permitted records for the current user.
-
-```ruby
-def change_school
-  @classrooms = element.value.present? ? School.find(element.value).classrooms.accessible_by(current_ability) : []
+def change_classroom
+  ability = ClassroomAbility.new(current_user)
+  @classrooms = @school.classrooms.accessible_by(ability)
 end
 ```
+
+{% hint style="danger" %}
+If you're using Page Morph Reflexes, you cannot use `authorize!` or `accessible_by` methods in your Reflex action. Instead, move your CanCanCan logic into the controller action.
+{% endhint %}
 
 ### Pundit
 
