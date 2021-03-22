@@ -20,7 +20,7 @@ function request (
 
 function success (event) {
   const { detail } = event || {}
-  const { selector } = detail || {}
+  const { selector, payload } = detail || {}
   const { reflexId, target, morph, serverMessage } = detail.stimulusReflex || {}
   const reflex = reflexes[reflexId]
   const progress =
@@ -39,7 +39,7 @@ function success (event) {
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} ${duration}`,
-    { reflexId, morph, operation, halted }
+    { reflexId, morph, operation, halted, payload }
   )
 }
 
