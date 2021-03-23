@@ -418,7 +418,7 @@ class ClassroomsController < ApplicationController
 end
 ```
 
-While it is possible to create a solution for non-Page Morph Reflexes that involves creating a Controller instance and delegating `current_ability` to it, it's hard to justify documenting that approach here since there is already a viable, one-size-fits-all solution available and there is a performance hit when you create a Controller.
+While it is possible to create a solution for non-Page Morph Reflexes that involves [creating a Controller instance and delegating](https://dalezak.medium.com/using-cancancan-with-stimulusreflex-in-your-rails-app-c3d00ea0fe1b) `current_ability` to it, it's hard to justify documenting that approach here since there is already a viable, one-size-fits-all solution available and there is a performance hit when you create a Controller.
 
 {% hint style="warning" %}
 You cannot use the `authorize!` method in your Reflex action, because a Reflex is not a Controller.
