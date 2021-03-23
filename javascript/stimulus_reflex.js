@@ -43,8 +43,7 @@ class StimulusReflexController extends Controller {
 //
 const initialize = (application, initializeOptions = {}) => {
   const { controller, consumer, debug, params, isolate } = initializeOptions
-  actionCable.consumer = consumer
-  actionCable.params = params
+  actionCable.set(consumer, params)
   isolationMode.set(!!isolate)
   reflexes.app = application
   reflexes.app.schema = { ...defaultSchema, ...application.schema }
