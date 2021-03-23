@@ -396,7 +396,7 @@ Since Page Morphs create an ActionController instance to render your page templa
 
 ```ruby
 class ClassroomsReflex < ApplicationReflex
-  def change_school
+  def select_school
     @school = element.value.present? ?
       School.find(element.value) :
       nil
