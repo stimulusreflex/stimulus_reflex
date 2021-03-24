@@ -22,7 +22,8 @@ const invokeLifecycleMethod = (
   stage,
   reflexElement,
   controllerElement,
-  reflexId
+  reflexId,
+  payload
 ) => {
   if (!controllerElement || !controllerElement.reflexData[reflexId]) return
 
@@ -50,7 +51,8 @@ const invokeLifecycleMethod = (
       reflexElement,
       reflex,
       controllerElement.reflexError[reflexId],
-      reflexId
+      reflexId,
+      payload
     )
   }
 
@@ -60,7 +62,8 @@ const invokeLifecycleMethod = (
       reflexElement,
       reflex,
       controllerElement.reflexError[reflexId],
-      reflexId
+      reflexId,
+      payload
     )
   }
 
@@ -79,7 +82,8 @@ document.addEventListener(
       'before',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     ),
   true
 )
@@ -91,13 +95,15 @@ document.addEventListener(
       'success',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
     dispatchLifecycleEvent(
       'after',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
   },
   true
@@ -110,13 +116,15 @@ document.addEventListener(
       'success',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
     dispatchLifecycleEvent(
       'after',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
   },
   true
@@ -129,13 +137,15 @@ document.addEventListener(
       'error',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
     dispatchLifecycleEvent(
       'after',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     )
   },
   true
@@ -148,7 +158,8 @@ document.addEventListener(
       'halted',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     ),
   true
 )
@@ -160,7 +171,8 @@ document.addEventListener(
       'after',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     ),
   true
 )
@@ -172,7 +184,8 @@ document.addEventListener(
       'finalize',
       event.detail.element,
       event.detail.controller.element,
-      event.detail.reflexId
+      event.detail.reflexId,
+      event.detail.payload
     ),
   true
 )
@@ -197,7 +210,8 @@ export const dispatchLifecycleEvent = (
   stage,
   reflexElement,
   controllerElement,
-  reflexId
+  reflexId,
+  payload
 ) => {
   if (!controllerElement) {
     if (Debug.enabled && !reflexes[reflexId].warned) {
@@ -230,7 +244,8 @@ export const dispatchLifecycleEvent = (
     reflex: target,
     controller,
     reflexId,
-    element: reflexElement
+    element: reflexElement,
+    payload
   }
 
   controllerElement.dispatchEvent(
