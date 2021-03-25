@@ -1,5 +1,4 @@
-import { defaultSchema } from './schema'
-import Debug from './debug'
+import reflexes from './reflexes'
 
 const multipleInstances = element => {
   if (['checkbox', 'radio'].includes(element.type)) {
@@ -70,9 +69,9 @@ export const extractElementAttributes = element => {
 
 // Extracts the dataset of an element and combines it with the data attributes from all parents if requested.
 //
-export const extractElementDataset = (element, datasetAttribute = null) => {
+export const extractElementDataset = element => {
   let attrs = extractDataAttributes(element) || {}
-  const dataset = datasetAttribute && element.attributes[datasetAttribute]
+  const dataset = element.attributes[reflexes.app.schema.reflexDatasetAttribute]
 
   if (dataset && dataset.value === 'combined') {
     let parent = element.parentElement
