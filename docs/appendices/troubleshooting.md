@@ -237,6 +237,14 @@ StimulusReflex.configure do |config|
 end
 ```
 
+Finally, you can disable server-side logging if you wish:
+
+```ruby
+StimulusReflex.configure do |config|
+  config.logging = nil
+end
+```
+
 ## Anti-Patterns
 
 ### Don't use form serialization as a replacement for Rails remote forms
