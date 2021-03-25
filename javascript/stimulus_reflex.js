@@ -54,7 +54,7 @@ const initialize = (application, initializeOptions = {}) => {
   Debug.set(!!debug)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [reflexes.app.schema.reflexAttribute],
+    attributes: true,
     childList: true,
     subtree: true
   })
