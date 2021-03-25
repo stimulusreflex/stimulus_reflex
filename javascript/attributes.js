@@ -113,7 +113,7 @@ export const extractElementDataset = element => {
           elements = [...elements, ...XPathToArray(`${xPath}/descendant::*`)]
           break
         default:
-          elements = [...elements, ...XPathToArray(token)]
+          elements = [...elements, ...document.querySelectorAll(token)]
       }
     } catch (error) {
       if (Debug.enabled) console.error(error)
