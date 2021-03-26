@@ -13,6 +13,7 @@ class StimulusReflex::SanityChecker
       instance = new
       instance.check_caching_enabled
       instance.check_javascript_package_version
+      instance.check_default_url_config
     end
 
     private
@@ -39,8 +40,19 @@ class StimulusReflex::SanityChecker
 
     unless not_null_store?
       warn_and_exit <<~WARN
-        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
-        But your config.cache_store is set to :null_store, so it won't work.
+        stimulus reflex requires caching to be enabled. caching allows the session to be modified during actioncable requests.
+        but your config.cache_store is set to :null_store, so it won't work.
+      WARN
+    end
+  end
+
+  def check_default_url_config
+    unless default_url_config_set?
+      warn_and_exit <<~WARN
+        stimulus reflex requires default url options to be set in your environment config or your helpers will use example.com 
+        you can set your default urls in config/environment/{environment_name}.rb. 
+        Example in config/environments/development.rb 
+         config.action_controller.default_url_options = {host: "localhost", port: 3000}
       WARN
     end
   end
@@ -70,6 +82,10 @@ class StimulusReflex::SanityChecker
 
   def not_null_store?
     Rails.application.config.cache_store != :null_store
+  end
+
+  def default_url_config_set?
+    Rails.application.config.action_controller.default_url_options
   end
 
   def javascript_version_matches?
