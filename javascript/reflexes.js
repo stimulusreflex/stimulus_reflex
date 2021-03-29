@@ -64,45 +64,46 @@ export const performOperations = data => {
     }
   })
 
-  if (reflexData) {
-    const { reflexId, payload } = reflexData
-
-    if (!reflexes[reflexId] && isolationMode.disabled) {
-      const controllerElement = XPathToElement(reflexData.xpathController)
-      const reflexElement = XPathToElement(reflexData.xpathElement)
-      controllerElement.reflexController =
-        controllerElement.reflexController || {}
-      controllerElement.reflexData = controllerElement.reflexData || {}
-      controllerElement.reflexError = controllerElement.reflexError || {}
-
-      controllerElement.reflexController[
-        reflexId
-      ] = reflexes.app.getControllerForElementAndIdentifier(
-        controllerElement,
-        reflexData.reflexController
-      )
-
-      controllerElement.reflexData[reflexId] = reflexData
-      dispatchLifecycleEvent(
-        'before',
-        reflexElement,
-        controllerElement,
-        reflexId,
-        payload
-      )
-      registerReflex(reflexData)
-    }
-
-    if (reflexes[reflexId]) {
-      reflexes[reflexId].totalOperations = totalOperations
-      reflexes[reflexId].pendingOperations = totalOperations
-      reflexes[reflexId].completedOperations = 0
-      CableReady.perform(reflexOperations)
-    }
+  if (!reflexData) {
+    if (Debug.enabled) console.warn('Reflex aborted: no valid operations')
+    return
   }
 
-  // run piggy back operations after stimulus reflex behavior
-  CableReady.perform(data.operations)
+  const { reflexId, payload } = reflexData
+
+  if (!reflexes[reflexId] && isolationMode.disabled) {
+    const controllerElement = XPathToElement(reflexData.xpathController)
+    const reflexElement = XPathToElement(reflexData.xpathElement)
+    controllerElement.reflexController =
+      controllerElement.reflexController || {}
+    controllerElement.reflexData = controllerElement.reflexData || {}
+    controllerElement.reflexError = controllerElement.reflexError || {}
+
+    controllerElement.reflexController[
+      reflexId
+    ] = reflexes.app.getControllerForElementAndIdentifier(
+      controllerElement,
+      reflexData.reflexController
+    )
+
+    controllerElement.reflexData[reflexId] = reflexData
+    dispatchLifecycleEvent(
+      'before',
+      reflexElement,
+      controllerElement,
+      reflexId,
+      payload
+    )
+    registerReflex(reflexData)
+  }
+
+  if (reflexes[reflexId]) {
+    reflexes[reflexId].totalOperations = totalOperations
+    reflexes[reflexId].pendingOperations = totalOperations
+    reflexes[reflexId].completedOperations = 0
+    reflexes[reflexId].piggybackOperations = data.operations
+    CableReady.perform(reflexOperations)
+  }
 }
 
 export const registerReflex = data => {
