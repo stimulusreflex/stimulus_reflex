@@ -1,5 +1,5 @@
 module StimulusReflex
-  module Concern
+  module ConcernEnhancer
     extend ActiveSupport::Concern
 
     class_methods do

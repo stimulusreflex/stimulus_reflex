@@ -5,7 +5,7 @@ require_relative "test_helper"
 class StimulusReflex::ConcernTest < ActiveSupport::TestCase
   module TestConcern
     extend ActiveSupport::Concern
-    include StimulusReflex::Concern
+    include StimulusReflex::ConcernEnhancer
   end
 
   class TestReflex < StimulusReflex::Reflex
