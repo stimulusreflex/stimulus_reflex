@@ -101,6 +101,7 @@ export const performOperations = data => {
       CableReady.perform(reflexOperations)
     }
   } else {
+    console.log(reflexes)
     console.log(data.operations)
     if (reflexes[Object.entries(data.operations)[0][1][0].reflexId])
       CableReady.perform(data.operations)
