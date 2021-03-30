@@ -97,7 +97,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       if reflex
         commit_session(reflex)
         report_failed_basic_auth(reflex) if reflex.controller?
-        reflex.logger.print
+        reflex.logger&.print
       end
     end
   end
