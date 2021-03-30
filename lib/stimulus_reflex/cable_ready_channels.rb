@@ -19,7 +19,7 @@ module StimulusReflex
 
     def method_missing(name, *args)
       if stimulus_reflex_channel.respond_to?(name)
-        args[0].merge!(reflex_id: @reflex_id) if args.any?
+        args[0][:reflex_id] = @reflex_id if args.any?
         return stimulus_reflex_channel.public_send(name, *args)
       end
       super
