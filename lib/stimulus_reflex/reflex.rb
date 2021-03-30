@@ -39,7 +39,7 @@ class StimulusReflex::Reflex
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
-    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
     self.params
   end
