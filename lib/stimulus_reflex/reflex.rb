@@ -73,13 +73,11 @@ class StimulusReflex::Reflex
 
       req = ActionDispatch::Request.new(env)
 
-      path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
-      path_params[:controller] = path_params[:controller].force_encoding("UTF-8")
-      path_params[:action] = path_params[:action].force_encoding("UTF-8")
+      # fetch path params (controller, action, ...) and apply them
+      request_params = StimulusReflex::RequestParameters.new(params: @params, req: req, url: url)
+      req = request_params.apply!
 
-      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
-      req.tap { |r| r.session.send :load! }
+      req
     end
   end
 
