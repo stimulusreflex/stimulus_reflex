@@ -30,7 +30,7 @@ jobs:
 
     - name: Create Changelog
       run: |
-        gem install github_changelog_generator
+        gem install github_changelog_generator -v 1.15.2
         github_changelog_generator -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} --token ${{ secrets.GITHUB_TOKEN }} --exclude-labels duplicate,question,invalid,wontfix,nodoc
 
     - name: Commit files
