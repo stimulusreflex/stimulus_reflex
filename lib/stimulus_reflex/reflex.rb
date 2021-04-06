@@ -110,7 +110,7 @@ class StimulusReflex::Reflex
   end
 
   def render(*args)
-    controller_class.renderer.new(connection.env).render(*args)
+    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME": "")).render(*args)
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks
