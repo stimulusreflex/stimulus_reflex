@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
+  attr_reader :data
+
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
@@ -15,28 +17,15 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def receive(data)
-    url = data["url"].to_s
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
-    target = data["target"].to_s
-    reflex_name, method_name = target.split("#")
-    reflex_name = reflex_name.camelize
-    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
-    arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
-    element = StimulusReflex::Element.new(data)
-    permanent_attribute_name = data["permanentAttributeName"]
-    form_data = Rack::Utils.parse_nested_query(data["formData"])
-    params = form_data.deep_merge(data["params"] || {})
-
+    @data = data
     begin
       begin
-        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
         reflex = reflex_class.new(self,
           url: url,
           element: element,
           selectors: selectors,
           method_name: method_name,
-          params: params,
+          params: form_params,
           client_attributes: {
             reflex_id: data["reflexId"],
             xpath_controller: data["xpathController"],
@@ -44,7 +33,8 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
             reflex_controller: data["reflexController"],
             permanent_attribute_name: permanent_attribute_name
           })
-        delegate_call_to_reflex reflex, method_name, arguments
+
+        delegate_call_to_reflex reflex
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
         body = "Reflex #{target} failed: #{message} [#{url}]"
@@ -109,11 +99,15 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     object
   end
 
-  def is_reflex?(reflex_class)
-    reflex_class.ancestors.include? StimulusReflex::Reflex
+  def reflex_class
+    reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
   end
 
-  def delegate_call_to_reflex(reflex, method_name, arguments = [])
+  def is_reflex?(klass)
+    klass.ancestors.include? StimulusReflex::Reflex
+  end
+
+  def delegate_call_to_reflex(reflex)
     method = reflex.method(method_name)
     policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
@@ -143,5 +137,49 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def exception_message_with_backtrace(exception)
     "#{exception}\n#{exception.backtrace.first}"
+  end
+
+  def selectors
+    selectors = (data["selectors"] || []).select(&:present?)
+    selectors = data["selectors"] = ["body"] if selectors.blank?
+    selectors
+  end
+
+  def target
+    data["target"].to_s
+  end
+
+  def reflex_name
+    reflex_name = target.split("#").first
+    reflex_name = reflex_name.camelize
+    reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
+  end
+
+  def method_name
+    target.split("#").second
+  end
+
+  def arguments
+    (data["args"] || []).map { |arg| object_with_indifferent_access arg } || []
+  end
+
+  def url
+    data["url"].to_s
+  end
+
+  def element
+    StimulusReflex::Element.new(data)
+  end
+
+  def permanent_attribute_name
+    data["permanentAttributeName"]
+  end
+
+  def form_data
+    Rack::Utils.parse_nested_query(data["formData"])
+  end
+
+  def form_params
+    form_data.deep_merge(data["params"] || {})
   end
 end
