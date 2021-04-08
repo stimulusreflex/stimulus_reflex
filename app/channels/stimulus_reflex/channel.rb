@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
-  attr_reader :data
+  attr_reader :reflex_data
 
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
@@ -17,27 +17,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def receive(data)
-    @data = data
+    @reflex_data = StimulusReflex::ReflexData.new(data)
     begin
       begin
-        reflex = reflex_class.new(self,
-          url: url,
-          element: element,
-          selectors: selectors,
-          method_name: method_name,
-          params: form_params,
-          client_attributes: {
-            reflex_id: data["reflexId"],
-            xpath_controller: data["xpathController"],
-            xpath_element: data["xpathElement"],
-            reflex_controller: data["reflexController"],
-            permanent_attribute_name: permanent_attribute_name
-          })
-
+        reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
         delegate_call_to_reflex reflex
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
-        body = "Reflex #{target} failed: #{message} [#{url}]"
+        body = "Reflex #{reflex_data.target} failed: #{message} [#{reflex_data.url}]"
 
         if reflex
           reflex.rescue_with_handler(invoke_error)
@@ -73,11 +60,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         reflex.broadcast_message subject: "halted", data: data
       else
         begin
-          reflex.broadcast(selectors, data)
+          reflex.broadcast(reflex_data.selectors, data)
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
-          body = "Reflex failed to re-render: #{message} [#{url}]"
+          body = "Reflex failed to re-render: #{message} [#{reflex_data.url}]"
           reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
           puts "\e[31m#{body}\e[0m"
         end
@@ -99,16 +86,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     object
   end
 
-  def reflex_class
-    reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-  end
-
-  def is_reflex?(klass)
-    klass.ancestors.include? StimulusReflex::Reflex
-  end
-
   def delegate_call_to_reflex(reflex)
+    method_name = reflex_data.method_name
+    arguments = reflex_data.arguments
     method = reflex.method(method_name)
+
     policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
     if policy.no_arguments?
@@ -137,49 +119,5 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def exception_message_with_backtrace(exception)
     "#{exception}\n#{exception.backtrace.first}"
-  end
-
-  def selectors
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
-    selectors
-  end
-
-  def target
-    data["target"].to_s
-  end
-
-  def reflex_name
-    reflex_name = target.split("#").first
-    reflex_name = reflex_name.camelize
-    reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
-  end
-
-  def method_name
-    target.split("#").second
-  end
-
-  def arguments
-    (data["args"] || []).map { |arg| object_with_indifferent_access arg } || []
-  end
-
-  def url
-    data["url"].to_s
-  end
-
-  def element
-    StimulusReflex::Element.new(data)
-  end
-
-  def permanent_attribute_name
-    data["permanentAttributeName"]
-  end
-
-  def form_data
-    Rack::Utils.parse_nested_query(data["formData"])
-  end
-
-  def form_params
-    form_data.deep_merge(data["params"] || {})
   end
 end
