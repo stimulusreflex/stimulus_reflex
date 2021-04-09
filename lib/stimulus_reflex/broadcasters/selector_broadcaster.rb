@@ -3,7 +3,7 @@
 module StimulusReflex
   class SelectorBroadcaster < Broadcaster
     include CableReady::Identifiable
-    
+
     def broadcast(_, data = {})
       morphs.each do |morph|
         selectors, html = morph
