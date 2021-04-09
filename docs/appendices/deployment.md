@@ -62,7 +62,7 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 ```ruby
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
 
-config.session_store :redis_session_store, {
+config.session_store :redis_session_store,
   key: "_session_production",
   serializer: :json,
   redis: {
@@ -72,7 +72,6 @@ config.session_store :redis_session_store, {
     key_prefix: "app:session:",
     url: ENV.fetch("HEROKU_REDIS_MAROON_URL")
   }
-}
 ```
 {% endcode %}
 
