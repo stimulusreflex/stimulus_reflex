@@ -125,7 +125,7 @@ export default class extends ApplicationController {
 
 This is possible because `ApplicationController` imports the StimulusReflex Controller and calls `StimulusReflex.register(this)`. As a result, `ApplicationController` and all Stimulus Controllers  that extend it gain a method called `stimulate`.
 
-When you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method is called for you. 🤯 You will learn all about this process in [Understanding Reflex Controllers](reflexes.md#understanding-reflex-controllers).
+When you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method is called for you. 🤯 You will learn all about this process in [Understanding Reflex Controllers](reflexes.md#understanding-stimulusreflex-controllers).
 
 ### `stimulate` is extremely flexible
 
