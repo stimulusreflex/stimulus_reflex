@@ -41,7 +41,7 @@ You can use additional data attributes to pass variables as part of your Reflex 
 >Create</button>
 ```
 
-It's a recommended **best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. `id` is unique in a valid DOM, and  this is how StimulusReflex locates the controller which called the Reflex after a morph operation.
+It's a recommended **best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. `id` is unique in a valid DOM, and this is how StimulusReflex locates the controller which called the Reflex after a morph operation.
 
 If you have multiple identical elements calling Reflex actions, no life-cycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
 
@@ -123,7 +123,7 @@ export default class extends ApplicationController {
 ```
 {% endcode %}
 
-This is possible because `ApplicationController` imports the StimulusReflex Controller and calls `StimulusReflex.register(this)`. As a result, `ApplicationController` and all Stimulus Controllers  that extend it gain a method called `stimulate`.
+This is possible because `ApplicationController` imports the StimulusReflex Controller and calls `StimulusReflex.register(this)`. As a result, `ApplicationController` and all Stimulus Controllers that extend it gain a method called `stimulate`.
 
 When you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method is called for you. 🤯 You will learn all about this process in [Understanding Reflex Controllers](reflexes.md#understanding-stimulusreflex-controllers).
 
@@ -289,12 +289,12 @@ So, that's pretty cool, right? 🕶️ It knows to use `foo` instead of `stimulu
 
 The thing is... _where's our console message?_ It never happened, because we destroyed the Reflex Controller Element \(the `button`\) that was holding the instance of `foo` that was responsible for the Reflex. That includes the life-cycle events that make callbacks possible.
 
-{% embed url="https://www.youtube.com/watch?v=XZxzJGgox\_E" %}
+{% embed url="https://www.youtube.com/watch?v=XZxzJGgox\_E" caption="" %}
 
 Now, it's very common to use `data-reflex` and `data-controller` on the same element. There's nothing inherently wrong with doing so - in fact, it's a solid go-to strategy for handling callbacks - _unless_ your Reflex does something that results in the Reflex Controller Element being destroyed \(think: `innerHTML`\) or otherwise disconnected from your DOM.
 
 {% hint style="info" %}
-The **primary** reason StimulusReflex, Phoenix LiveView and Laravel LiveWire all use the morphdom library for updates is to avoid destroying large chunks of your DOM when there are very good reasons not to do so - such as not _Keyser Söze-_ing your Stimulus controllers.
+The **primary** reason StimulusReflex, Phoenix LiveView and Laravel LiveWire all use the morphdom library for updates is to avoid destroying large chunks of your DOM when there are very good reasons not to do so - such as not \_Keyser Söze-\_ing your Stimulus controllers.
 
 It's notable that [Hotwire](https://github.com/hotwired/turbo/blob/main/src/core/streams/stream_actions.ts) chooses to use `innerHTML` over morphdom, which could ultimately result in a great many frustrated Stimulus developers.
 {% endhint %}

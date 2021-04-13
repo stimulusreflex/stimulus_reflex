@@ -119,39 +119,48 @@ Here's an example that outlines how you can interact with the `element` property
 
 {% code title="app/views/examples/show.html.erb" %}
 ```markup
-<checkbox id="example" label="Example" checked
-  data-reflex="Example#work" data-value="123" />
+<input type="checkbox" id="example" label="Example" checked
+  data-reflex="change->Example#accessors" data-value="123" />
 ```
 {% endcode %}
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
-  def work()
+  def accessors
 
-    element.id      # => the HTML element's id in dot notation
-    element[:id]    # => the HTML element's id w/ symbol accessor
-    element["id"]   # => the HTML element's id w/ string accessor
+    element.id                  # => "example"
+    element[:id]                # => "example"
+    element["id"]               # => "example"
+    
+    element.value               # => "on" (checkbox is always "on", use checked)
+    element.values              # => nil, or Array for multiple values
 
-    element.dataset # => a Hash that represents the HTML element's dataset
-    element.values  # => [] only for multiple values
+    element[:tag_name]          # => "CHECKBOX"
+    element[:checked]           # => true
+    element["checked"]          # => true
+    element.checked             # => true
+    element.label               # => "Example"
 
-    element["id"]                # => "example"
-    element[:tag_name]           # => "CHECKBOX"
-    element[:checked]            # => true
-    element.label                # => "Example"
+    element.data_reflex         # => "change->Example#accessors"
+    element["data-reflex"]      # => "change->Example#accessors"
+    element.dataset[:reflex]    # => "change->Example#accessors"
 
-    element["data-reflex"]       # => "ExampleReflex#work"
-    element.dataset[:reflex]     # => "ExampleReflex#work"
-
-    element.value                # => "123"
-    element["data-value"]        # => "123"
-    element.dataset[:value]      # => "123"
+    element.dataset.value       # => "123"
+    element.data_value          # => "123"
+    element["data-value"]       # => "123"
+    element.dataset[:value]     # => "123"
 
   end
 end
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+Remember, `id` and `data-id` are different attributes. `id` can be used as a CSS selector, and  it must be unique in your DOM. It does not show up in your `dataset` accessor. `data-id` cannot be used as a CSS selector, does not have to be unique in your DOM and is part of your `dataset`. Similar names, entirely different concepts and functions.
+
+The same goes for other pairs, such as `value` and `data-value`. `value` has meaning to the browser and it's what gets processed in a form submission by Rails. `data-value` is just an arbitrary name that you made up, and it could have just as easily been `data-principle`.
+{% endhint %}
 
 {% hint style="success" %}
 When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
