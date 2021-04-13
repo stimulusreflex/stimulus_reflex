@@ -71,7 +71,7 @@ namespace :stimulus_reflex do
 
     puts
     puts "StimulusReflex and CableReady have been successfully installed!"
-    puts "Go to https://docs.stimulusreflex.com/quickstart if you need help getting started."
+    puts "Go to https://docs.stimulusreflex.com/hello-world/quickstart if you need help getting started."
     puts
   end
 end

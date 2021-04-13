@@ -103,7 +103,7 @@ One simple technique is to use a Stimulus controller to reset the form after the
 <% end %>
 ```
 
-This controller will make use of the [Promise](https://docs.stimulusreflex.com/lifecycle#promises) returned by the `stimulate` method:
+This controller will make use of the [Promise](https://docs.stimulusreflex.com/rtfm/lifecycle#promises) returned by the `stimulate` method:
 
 {% code title="app/javascript/controllers/reflex\_form\_controller.js" %}
 ```javascript
