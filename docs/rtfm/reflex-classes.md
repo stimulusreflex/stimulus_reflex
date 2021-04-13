@@ -145,11 +145,13 @@ class ExampleReflex < ApplicationReflex
     element.data_reflex         # => "change->Example#accessors"
     element["data-reflex"]      # => "change->Example#accessors"
     element.dataset[:reflex]    # => "change->Example#accessors"
+    element.dataset["reflex"]   # => "change->Example#accessors"
 
     element.dataset.value       # => "123"
     element.data_value          # => "123"
     element["data-value"]       # => "123"
     element.dataset[:value]     # => "123"
+    element.dataset["value"]    # => "123"
 
   end
 end
