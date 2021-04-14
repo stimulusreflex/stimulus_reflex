@@ -34,7 +34,7 @@ class StimulusReflex::Element < OpenStruct
   def method_missing(method_name, *arguments, &block)
     if cable_ready.respond_to?(method_name)
       xpath = selector ? selector.starts_with?("//") : false
-      args = { selector: selector, xpath: xpath }.merge(arguments.first.to_h)
+      args = {selector: selector, xpath: xpath}.merge(arguments.first.to_h)
 
       cable_ready.send(method_name.to_sym, args)
 
