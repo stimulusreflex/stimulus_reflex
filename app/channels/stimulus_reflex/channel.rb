@@ -19,6 +19,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     selectors = (data["selectors"] || []).select(&:present?)
     selectors = data["selectors"] = ["body"] if selectors.blank?
     target = data["target"].to_s
+    targets = data["targets"] || {}
     reflex_name, method_name = target.split("#")
     reflex_name = reflex_name.camelize
     reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
@@ -36,6 +37,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           data: data,
           selectors: selectors,
           method_name: method_name,
+          targets: targets,
           params: params,
           client_attributes: {
             reflex_id: data["reflexId"],

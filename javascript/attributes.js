@@ -140,3 +140,27 @@ export const extractDataAttributes = element => {
 
   return attrs
 }
+
+// Extracts all targets from a controller element.
+// Reflex targets are later available in the triggered reflex class
+//
+export const extractTargets = (controllerElement, schema) => {
+  let targets = {}
+
+  const targetElements = controllerElement.querySelectorAll(
+    `[${schema.reflexTargetAttribute}]`
+  )
+
+  targetElements.forEach(target => {
+    const targetName = target.dataset.reflexTarget.split('.')[1]
+
+    targets[targetName] = {
+      selector: elementToXPath(target),
+      name: targetName,
+      dataset: extractElementDataset(target, schema.reflexDatasetAttribute),
+      attrs: extractElementAttributes(target)
+    }
+  })
+
+  return targets
+}
