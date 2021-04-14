@@ -2,5 +2,6 @@ export const defaultSchema = {
   reflexAttribute: 'data-reflex',
   reflexPermanentAttribute: 'data-reflex-permanent',
   reflexRootAttribute: 'data-reflex-root',
-  reflexDatasetAttribute: 'data-reflex-dataset'
+  reflexDatasetAttribute: 'data-reflex-dataset',
+  reflexTargetAttribute: 'data-reflex-target'
 }

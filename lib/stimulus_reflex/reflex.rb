@@ -8,7 +8,7 @@ class StimulusReflex::Reflex
   include ActionView::Helpers::TagHelper
 
   attr_accessor :payload
-  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :cable_ready, :channel, :url, :element, :data, :selectors, :method_name, :broadcaster, :client_attributes, :logger, :targets
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -17,7 +17,7 @@ class StimulusReflex::Reflex
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
+  def initialize(channel, url: nil, data: nil, selectors: [], method_name: nil, params: {}, client_attributes: {}, targets: {})
     if is_a? CableReady::Broadcaster
       message = <<~MSG
 
@@ -31,8 +31,9 @@ class StimulusReflex::Reflex
 
     @channel = channel
     @url = url
-    @element = element
+    @data = data
     @selectors = selectors
+    @targets = targets
     @method_name = method_name
     @params = params
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
@@ -40,6 +41,27 @@ class StimulusReflex::Reflex
     @client_attributes = ClientAttributes.new(client_attributes)
     @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
     @payload = {}
+
+    @element = StimulusReflex::Element.new(
+      attrs: data["attrs"],
+      dataset: data["dataset"],
+      selector: data["xpathElement"],
+      cable_ready: @cable_ready
+    )
+
+    @targets.each do |name, details|
+      target_name = "#{name.to_s.underscore}_target".to_sym
+
+      define_singleton_method(target_name) do
+        StimulusReflex::Element.new(
+          selector: details["selector"],
+          attrs: details["attr"],
+          dataset: details["dataset"],
+          cable_ready: @cable_ready
+        )
+      end
+    end
+
     self.params
   end
 
@@ -103,6 +125,10 @@ class StimulusReflex::Reflex
         c.set_response! controller_class.make_response!(request)
       end
     end
+  end
+
+  def controller_element
+    @controller_element ||= StimulusReflex::Element.new(selector: xpath_controller, cable_ready: @cable_ready)
   end
 
   def controller?

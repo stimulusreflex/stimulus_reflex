@@ -12,7 +12,8 @@ import {
 import {
   attributeValues,
   extractElementAttributes,
-  extractElementDataset
+  extractElementDataset,
+  extractTargets
 } from './attributes'
 import Log from './log'
 import Debug from './debug'
@@ -126,8 +127,8 @@ const register = (controller, options = {}) => {
       let selectors = options['selectors'] || getReflexRoots(reflexElement)
       if (typeof selectors === 'string') selectors = [selectors]
       const resolveLate = options['resolveLate'] || false
-      const datasetAttribute = reflexes.app.schema.reflexDatasetAttribute
-      const dataset = extractElementDataset(reflexElement, datasetAttribute)
+      const dataset = extractElementDataset(reflexElement)
+      const targets = extractTargets(this.element, reflexes.app.schema)
       const xpathController = elementToXPath(controllerElement)
       const xpathElement = elementToXPath(reflexElement)
       const data = {
@@ -136,6 +137,7 @@ const register = (controller, options = {}) => {
         url,
         attrs,
         dataset,
+        targets,
         selectors,
         reflexId,
         resolveLate,
