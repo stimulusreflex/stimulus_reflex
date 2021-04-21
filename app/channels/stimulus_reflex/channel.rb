@@ -142,6 +142,10 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def exception_message_with_backtrace(exception)
-    "#{exception}\n#{exception.backtrace.first}"
+    message = "#{exception}\n"
+    exception.backtrace.each do |trace|
+      message += trace + "\n"
+    end
+    message
   end
 end
