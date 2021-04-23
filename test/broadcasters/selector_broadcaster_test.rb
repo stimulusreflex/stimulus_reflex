@@ -6,7 +6,7 @@ module StimulusReflex
   class SelectorBroadcasterTest < StimulusReflex::BroadcasterTestCase
     test "morphs the contents of an element if the selector(s) are present in both original and morphed html fragments" do
       broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
-      broadcaster.append_morph("#foo", '<div id="foo"><span>bar</span></div>')
+      broadcaster.append_morph("#foo", '<div id="foo"><div>bar</div><div>baz</div></div>')
 
       expected = {
         "cableReady" => true,
@@ -14,7 +14,7 @@ module StimulusReflex
           "morph" => [
             {
               "selector" => "#foo",
-              "html" => "<span>bar</span>",
+              "html" => "<div>bar</div><div>baz</div>",
               "payload" => {},
               "childrenOnly" => true,
               "permanentAttributeName" => nil,
