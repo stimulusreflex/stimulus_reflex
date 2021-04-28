@@ -97,12 +97,13 @@ export const performOperations = data => {
       reflexes[reflexId].totalOperations = totalOperations
       reflexes[reflexId].pendingOperations = totalOperations
       reflexes[reflexId].completedOperations = 0
+      reflexes[reflexId].piggybackOperations = data.operations
       CableReady.perform(reflexOperations)
     }
+  } else {
+    if (reflexes[Object.entries(data.operations)[0][1][0].reflexId])
+      CableReady.perform(data.operations)
   }
-
-  // run piggy back operations after stimulus reflex behavior
-  CableReady.perform(data.operations)
 }
 
 export const registerReflex = data => {

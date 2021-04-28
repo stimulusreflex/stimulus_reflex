@@ -31,7 +31,8 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
             "stimulusReflex" => {
               "some" => :data,
               "morph" => :page
-            }
+            },
+            "reflexId" => "666"
           }
         ]
       }
@@ -64,7 +65,8 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
             "stimulusReflex" => {
               "some" => :data,
               "morph" => :page
-            }
+            },
+            "reflexId" => "666"
           }
         ]
       }
