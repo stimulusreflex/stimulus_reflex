@@ -138,7 +138,7 @@ export const getReflexRoots = element => {
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (selectors.length === 0) {
+      if (Debug.enabled && selectors.length === 0) {
         console.error(
           `No value found for ${reflexes.app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${application.schema.reflexRootAttribute}.`,
           element

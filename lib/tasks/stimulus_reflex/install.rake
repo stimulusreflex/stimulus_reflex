@@ -44,7 +44,8 @@ namespace :stimulus_reflex do
     end
 
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    lines << "StimulusReflex.initialize(application, { consumer, controller, isolate: true })\n" unless initialize_line
+    lines << "application.consumer = consumer\n"
+    lines << "StimulusReflex.initialize(application, { controller, isolate: true })\n" unless initialize_line
     lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
