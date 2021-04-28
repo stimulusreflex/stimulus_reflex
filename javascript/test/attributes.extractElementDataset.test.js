@@ -12,7 +12,7 @@ describe('extractElementDataset', () => {
     const dom = new JSDOM('<a id="example">Test</a>')
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {}
     assert.deepStrictEqual(actual, expected)
   })
@@ -23,7 +23,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
@@ -38,7 +38,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
@@ -59,11 +59,6 @@ describe('extractElementDataset', () => {
       'data-info': '12345'
     }
     assert.deepStrictEqual(extractElementDataset(element), expected)
-    assert.deepStrictEqual(extractElementDataset(element, null), expected)
-    assert.deepStrictEqual(extractElementDataset(element, undefined), expected)
-    assert.deepStrictEqual(extractElementDataset(element, ''), expected)
-    assert.deepStrictEqual(extractElementDataset(element, 'blah'), expected)
-    assert.deepStrictEqual(extractElementDataset(element, {}), expected)
   })
 
   it('returns expected dataset for element with data-reflex-dataset without value', () => {
@@ -72,7 +67,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
@@ -88,7 +83,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
@@ -104,7 +99,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
@@ -123,7 +118,7 @@ describe('extractElementDataset', () => {
     )
     global.document = dom.window.document
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-info': 'this is the right one',
       'data-reflex-dataset': 'combined'
@@ -138,7 +133,7 @@ describe('extractElementDataset', () => {
     global.document = dom.window.document
 
     const button1 = dom.window.document.querySelector('#button1')
-    const actual_button1 = extractElementDataset(button1, 'data-reflex-dataset')
+    const actual_button1 = extractElementDataset(button1)
     const expected_button1 = {
       'data-parent-id': '123',
       'data-reflex-dataset': 'combined'
@@ -159,7 +154,7 @@ describe('extractElementDataset', () => {
     global.document = dom.window.document
     reflexes.app.schema.reflexDatasetAttribute = 'data-reflex-dataset-renamed'
     const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element, 'data-reflex-dataset-renamed')
+    const actual = extractElementDataset(element)
     const expected = {
       'data-controller': 'foo',
       'data-reflex': 'bar',
