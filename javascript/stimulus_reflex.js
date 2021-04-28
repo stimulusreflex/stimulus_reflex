@@ -52,14 +52,13 @@ const initialize = (application, initializeOptions = {}) => {
     isolate,
     deprecate
   } = initializeOptions
-  actionCable.consumer = consumer
+  actionCable.set(consumer, params)
   setTimeout(() => {
     if (Deprecate.enabled && consumer)
       console.warn(
         "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established."
       )
   })
-  actionCable.params = params
   isolationMode.set(!!isolate)
   setTimeout(() => {
     if (Deprecate.enabled && isolationMode.disabled)
@@ -77,7 +76,10 @@ const initialize = (application, initializeOptions = {}) => {
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [reflexes.app.schema.reflexAttribute],
+    attributeFilter: [
+      reflexes.app.schema.reflexAttribute,
+      reflexes.app.schema.actionAttribute
+    ],
     childList: true,
     subtree: true
   })

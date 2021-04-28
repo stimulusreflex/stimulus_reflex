@@ -12,6 +12,7 @@ export const beforeDOMUpdate = event => {
   const reflexElement = XPathToElement(xpathElement)
   const reflex = reflexes[reflexId]
   const promise = reflex.promise
+  const payload = event.detail.payload
 
   reflex.pendingOperations--
 
@@ -23,7 +24,7 @@ export const beforeDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        payload: event.detail.payload
+        payload
       })
     )
 
@@ -32,7 +33,8 @@ export const beforeDOMUpdate = event => {
       'success',
       reflexElement,
       controllerElement,
-      reflexId
+      reflexId,
+      payload
     )
   )
 }
@@ -45,6 +47,7 @@ export const afterDOMUpdate = event => {
   const reflexElement = XPathToElement(xpathElement)
   const reflex = reflexes[reflexId]
   const promise = reflex.promise
+  const payload = event.detail.payload
 
   reflex.completedOperations++
 
@@ -58,7 +61,7 @@ export const afterDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        payload: event.detail.payload
+        payload
       })
     )
 
@@ -67,7 +70,8 @@ export const afterDOMUpdate = event => {
       'finalize',
       reflexElement,
       controllerElement,
-      reflexId
+      reflexId,
+      payload
     )
   )
 }
@@ -80,18 +84,19 @@ export const serverMessage = event => {
   const reflexElement = XPathToElement(xpathElement)
   const promise = reflexes[reflexId].promise
   const subjects = { error: true, halted: true, nothing: true, success: true }
+  const payload = event.detail.payload
 
-  controllerElement.reflexError = controllerElement.reflexError || {}
-
-  if (controllerElement && subject === 'error')
-    controllerElement.reflexError[reflexId] = body
+  if (controllerElement) {
+    controllerElement.reflexError = controllerElement.reflexError || {}
+    if (subject === 'error') controllerElement.reflexError[reflexId] = body
+  }
 
   promise[subject === 'error' ? 'reject' : 'resolve']({
     data: promise.data,
     element: reflexElement,
     event,
     toString: () => body,
-    payload: event.detail.payload
+    payload
   })
 
   reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'
@@ -99,5 +104,11 @@ export const serverMessage = event => {
   if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
 
   if (subjects[subject])
-    dispatchLifecycleEvent(subject, reflexElement, controllerElement, reflexId)
+    dispatchLifecycleEvent(
+      subject,
+      reflexElement,
+      controllerElement,
+      reflexId,
+      payload
+    )
 }

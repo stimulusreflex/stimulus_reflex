@@ -47,5 +47,9 @@ export default {
   createSubscription,
   connected,
   rejected,
-  disconnected
+  disconnected,
+  set (consumerValue, paramsValue) {
+    consumer = consumerValue
+    params = paramsValue
+  }
 }

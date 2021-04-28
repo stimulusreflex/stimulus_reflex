@@ -367,6 +367,63 @@ Just because you are authenticated as a user doesn't mean you should have access
 
 The `before_reflex` callback is the best place to handle privilege checks, because you can call `throw :abort` to prevent the Reflex if the user is making decisions above their pay grade.
 
+### CanCanCan
+
+When using [CanCanCan](https://github.com/CanCanCommunity/cancancan) \(CCC\) for authorization, the `accessible_by` method ensures that you only access records permitted for the current user. Depending on your requirements, you might opt to use different strategies for Page Morphs than you do for other types of Reflexes. This is because the CCC `authorize!` method is designed to operate on the current ActionController instance. StimulusReflex only creates Controller instances for Page Morphs, as they incur a performance penalty.
+
+The first solution that you should consider is to create an Ability instance for your user in your Reflex class. This is a technique that the CCC documentation describes as "[working in a Pundit way](https://github.com/CanCanCommunity/cancancan/blob/develop/docs/Defining-Abilities:-Best-Practices.md#split-your-abilityrb-file)". While it might be a departure from how you use CCC in your Controllers, it does have the advantage of working with all Morph types and doesn't force the instantiation of an otherwise unused Controller instance:
+
+```ruby
+class ClassroomsReflex < ApplicationReflex
+  def select_school
+    if element.value.present?
+      abilties = Ability.new(current_user)
+      school = School.find(element.value)
+      classrooms = school.classrooms.accessible_by(abilities)
+    else
+      school = nil
+      classrooms = Classroom.none
+    end
+    # uncomment for a Selector Morph
+    # morph "#classrooms", render(partial: "classrooms/classrooms", locals: { school: school, classrooms: classrooms })
+  end
+end
+```
+
+#### Page Morphs
+
+Since Page Morphs create an ActionController instance to render your page template, it's possible to piggy-back on your existing Controller-based CCC logic by moving authorization calls out of your Reflex and into your Controller:
+
+```ruby
+class ClassroomsReflex < ApplicationReflex
+  def select_school
+    @school = element.value.present? ?
+      School.find(element.value) :
+      nil
+  end
+end
+```
+
+```ruby
+class ClassroomsController < ApplicationController
+  def index
+    authorize! :index, School
+    authorize! :index, Classroom
+    @school ||= School.find(params[:school_id)
+    @schools ||= School.accessible_by(current_ability)
+    @classrooms ||= @school.present? ?
+      @school.classrooms.accessible_by(current_ability) :
+      Classroom.none
+  end
+end
+```
+
+While it is possible to create a solution for non-Page Morph Reflexes that involves [creating a Controller instance and delegating](https://dalezak.medium.com/using-cancancan-with-stimulusreflex-in-your-rails-app-c3d00ea0fe1b) `current_ability` to it, it's hard to justify documenting that approach here since there is already a viable, one-size-fits-all solution available and there is a performance hit when you create a Controller.
+
+{% hint style="warning" %}
+You cannot use the `authorize!` method in your Reflex action, because a Reflex is not a Controller.
+{% endhint %}
+
 ### Pundit
 
 The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up policy classes that you can use to lock down Reflex action methods in a structured way. Reflexes are similar enough to controllers that if you include the `Pundit` module, you can take advantage of the `authorize` method.

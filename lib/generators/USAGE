@@ -11,4 +11,4 @@ Example:
         app/reflexes/application_reflex.rb
         app/reflexes/user_reflex.rb
 
-    Don't forget to setup the application: https://docs.stimulusreflex.com/setup
+    Don't forget to setup the application: https://docs.stimulusreflex.com/hello-world/setup

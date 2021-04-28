@@ -57,12 +57,15 @@ export const performOperations = data => {
         reflexData = operation[0].detail
           ? operation[0].detail.stimulusReflex
           : operation[0].stimulusReflex
+        reflexData.payload = operation[0].detail
+          ? operation[0].detail.payload
+          : operation[0].payload
       }
     }
   })
 
   if (reflexData) {
-    const { reflexId } = reflexData
+    const { reflexId, payload } = reflexData
 
     if (!reflexes[reflexId] && isolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
@@ -84,7 +87,8 @@ export const performOperations = data => {
         'before',
         reflexElement,
         controllerElement,
-        reflexId
+        reflexId,
+        payload
       )
       registerReflex(reflexData)
     }
