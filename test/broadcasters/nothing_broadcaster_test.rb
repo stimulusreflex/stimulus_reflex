@@ -13,24 +13,25 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
           {
             "name" => "stimulus-reflex:server-message",
             "detail" => {
-              "reflexId" => nil,
-              "payload" => {},
-              "stimulusReflex" => {
-                "some" => :data,
-                "morph" => :nothing,
-                "serverMessage" => {
-                  "subject" => "nothing",
-                  "body" => nil
+              reflexId: "666",
+              payload: {},
+              stimulusReflex: {
+                some: :data,
+                morph: :nothing,
+                serverMessage: {
+                  subject: "nothing",
+                  body: nil
                 }
               }
-            }
+            },
+            "reflex_id" => "666"
           }
         ]
       }
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
-      broadcaster.broadcast nil, some: :data
+      broadcaster.broadcast nil, {some: :data, "reflexId" => "666"}
     end
   end
 end
