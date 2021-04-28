@@ -1,7 +1,7 @@
 import reflexes from './reflexes'
 import { elementToXPath, XPathToArray } from './utils'
 import Debug from './debug'
-// import Deprecate from './deprecate'
+import Deprecate from './deprecate'
 
 const multipleInstances = element => {
   if (['checkbox', 'radio'].includes(element.type)) {
@@ -82,8 +82,10 @@ export const extractElementDataset = element => {
     try {
       switch (token) {
         case 'combined':
-          // uncomment when SR#438 is merged
-          // if (Deprecate.enabled) console.warn("In the next version of StimulusReflex, the 'combined' option to data-reflex-dataset will become 'ancestors'.")
+          if (Deprecate.enabled)
+            console.warn(
+              "In the next version of StimulusReflex, the 'combined' option to data-reflex-dataset will become 'ancestors'."
+            )
           elements = [
             ...elements,
             ...XPathToArray(`${xPath}/ancestor::*`, true)
