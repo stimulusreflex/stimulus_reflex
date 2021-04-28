@@ -13,18 +13,18 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
           {
             "name" => "stimulus-reflex:server-message",
             "detail" => {
-              reflexId: "666",
-              payload: {},
-              stimulusReflex: {
-                some: :data,
-                morph: :nothing,
-                serverMessage: {
-                  subject: "nothing",
-                  body: nil
+              "reflexId" => "666",
+              "payload" => {},
+              "stimulusReflex" => {
+                "some" => :data,
+                "morph" => :nothing,
+                "serverMessage" => {
+                  "subject" => "nothing",
+                  "body" => nil
                 }
               }
             },
-            "reflex_id" => "666"
+            "reflexId" => "666"
           }
         ]
       }
