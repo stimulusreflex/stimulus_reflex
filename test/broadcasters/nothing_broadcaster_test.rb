@@ -31,7 +31,7 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
-      broadcaster.broadcast nil, {some: :data, "reflexId" => "666"}
+      broadcaster.broadcast nil, {:some => :data, "reflexId" => "666"}
     end
   end
 end
