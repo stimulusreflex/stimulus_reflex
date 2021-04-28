@@ -22,7 +22,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #
   #   before_reflex do
   #     # throw :abort # this will prevent the Reflex from continuing
-  #     # learn more about callbacks at https://docs.stimulusreflex.com/lifecycle
+  #     # learn more about callbacks at https://docs.stimulusreflex.com/rtfm/lifecycle
   #   end
   #
   #   def example(argument=true)
@@ -30,7 +30,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #     # Any declared instance variables will be made available to the Rails controller and view.
   #   end
   #
-  # Learn more at: https://docs.stimulusreflex.com/reflexes#reflex-classes
+  # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
 
 <% actions.each do |action| -%>
   def <%= action %>

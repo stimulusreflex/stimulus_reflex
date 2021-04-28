@@ -10,7 +10,7 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
     def connection.env
       @env ||= {}
     end
-    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com")
+    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {reflex_id: "666"})
     @reflex.controller_class.view_paths << Rails.root.join("test/views")
   end
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
+  attr_reader :reflex_data
+
   def stream_name
     ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
     [
@@ -11,44 +13,18 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def subscribed
     super
-    fix_environment!
     stream_from stream_name
   end
 
   def receive(data)
-    url = data["url"].to_s
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
-    target = data["target"].to_s
-    reflex_name, method_name = target.split("#")
-    reflex_name = reflex_name.camelize
-    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
-    arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
-    element = StimulusReflex::Element.new(data)
-    permanent_attribute_name = data["permanentAttributeName"]
-    form_data = Rack::Utils.parse_nested_query(data["formData"])
-    params = form_data.deep_merge(data["params"] || {})
-
+    @reflex_data = StimulusReflex::ReflexData.new(data)
     begin
       begin
-        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-        reflex = reflex_class.new(self,
-          url: url,
-          element: element,
-          selectors: selectors,
-          method_name: method_name,
-          params: params,
-          client_attributes: {
-            reflex_id: data["reflexId"],
-            xpath_controller: data["xpathController"],
-            xpath_element: data["xpathElement"],
-            reflex_controller: data["reflexController"],
-            permanent_attribute_name: permanent_attribute_name
-          })
-        delegate_call_to_reflex reflex, method_name, arguments
+        reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
+        delegate_call_to_reflex reflex
       rescue => invoke_error
         message = exception_message_with_backtrace(invoke_error)
-        body = "Reflex #{target} failed: #{message} [#{url}]"
+        body = "Reflex #{reflex_data.target} failed: #{message} [#{reflex_data.url}]"
 
         if reflex
           reflex.rescue_with_handler(invoke_error)
@@ -84,11 +60,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         reflex.broadcast_message subject: "halted", data: data
       else
         begin
-          reflex.broadcast(selectors, data)
+          reflex.broadcast(reflex_data.selectors, data)
         rescue => render_error
           reflex.rescue_with_handler(render_error)
           message = exception_message_with_backtrace(render_error)
-          body = "Reflex failed to re-render: #{message} [#{url}]"
+          body = "Reflex failed to re-render: #{message} [#{reflex_data.url}]"
           reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
           puts "\e[31m#{body}\e[0m"
         end
@@ -97,7 +73,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       if reflex
         commit_session(reflex)
         report_failed_basic_auth(reflex) if reflex.controller?
-        reflex.logger.print
+        reflex.logger&.print
       end
     end
   end
@@ -110,12 +86,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     object
   end
 
-  def is_reflex?(reflex_class)
-    reflex_class.ancestors.include? StimulusReflex::Reflex
-  end
-
-  def delegate_call_to_reflex(reflex, method_name, arguments = [])
+  def delegate_call_to_reflex(reflex)
+    method_name = reflex_data.method_name
+    arguments = reflex_data.arguments
     method = reflex.method(method_name)
+
     policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
     if policy.no_arguments?
@@ -144,11 +119,5 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def exception_message_with_backtrace(exception)
     "#{exception}\n#{exception.backtrace.first}"
-  end
-
-  def fix_environment!
-    ([ApplicationController] + ApplicationController.descendants).each do |controller|
-      controller.renderer.instance_variable_set(:@env, connection.env.merge(controller.renderer.instance_variable_get(:@env)))
-    end
   end
 end

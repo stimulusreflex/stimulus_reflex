@@ -1,3 +1,4 @@
+import CableReady from 'cable_ready'
 import reflexes from './reflexes'
 import { XPathToElement } from './utils'
 import { dispatchLifecycleEvent } from './lifecycle'
@@ -74,6 +75,8 @@ export const afterDOMUpdate = event => {
       payload
     )
   )
+
+  CableReady.perform(reflex.piggybackOperations)
 }
 
 export const serverMessage = event => {
@@ -82,14 +85,15 @@ export const serverMessage = event => {
   const { subject, body } = serverMessage
   const controllerElement = XPathToElement(xpathController)
   const reflexElement = XPathToElement(xpathElement)
-  const promise = reflexes[reflexId].promise
+  const reflex = reflexes[reflexId]
+  const promise = reflex.promise
   const subjects = { error: true, halted: true, nothing: true, success: true }
   const payload = event.detail.payload
 
-  controllerElement.reflexError = controllerElement.reflexError || {}
-
-  if (controllerElement && subject === 'error')
-    controllerElement.reflexError[reflexId] = body
+  if (controllerElement) {
+    controllerElement.reflexError = controllerElement.reflexError || {}
+    if (subject === 'error') controllerElement.reflexError[reflexId] = body
+  }
 
   promise[subject === 'error' ? 'reject' : 'resolve']({
     data: promise.data,
@@ -99,7 +103,7 @@ export const serverMessage = event => {
     payload
   })
 
-  reflexes[reflexId].finalStage = subject === 'halted' ? 'halted' : 'after'
+  reflex.finalStage = subject === 'halted' ? 'halted' : 'after'
 
   if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
 
@@ -111,4 +115,6 @@ export const serverMessage = event => {
       reflexId,
       payload
     )
+
+  CableReady.perform(reflex.piggybackOperations)
 }

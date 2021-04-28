@@ -19,13 +19,13 @@ bundle exec rails stimulus_reflex:install
 StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
 {% endhint %}
 
-And that's it! You can start using StimulusReflex in your application.
+And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
 
 {% page-ref page="quickstart.md" %}
 
 ## Manual Configuration
 
-Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project in the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md). For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
 {% hint style="warning" %}
 StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
@@ -131,7 +131,7 @@ end
 ```
 {% endcode %}
 
-### Upgrading to v3.4.0
+### Upgrading to v3.4.0+
 
 * make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
 * it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
