@@ -16,7 +16,6 @@ class StimulusReflex::Reflex
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
   delegate :reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
-  delegate :render, to: :controller_class
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
@@ -73,13 +72,11 @@ class StimulusReflex::Reflex
 
       req = ActionDispatch::Request.new(env)
 
-      path_params = Rails.application.routes.recognize_path_with_request(req, url, req.env[:extras] || {})
-      path_params[:controller] = path_params[:controller].force_encoding("UTF-8")
-      path_params[:action] = path_params[:action].force_encoding("UTF-8")
+      # fetch path params (controller, action, ...) and apply them
+      request_params = StimulusReflex::RequestParameters.new(params: @params, req: req, url: url)
+      req = request_params.apply!
 
-      req.env.merge(ActionDispatch::Http::Parameters::PARAMETERS_KEY => path_params)
-      req.env["action_dispatch.request.parameters"] = req.parameters.merge(@params)
-      req.tap { |r| r.session.send :load! }
+      req
     end
   end
 
@@ -110,6 +107,10 @@ class StimulusReflex::Reflex
 
   def controller?
     !!defined? @controller
+  end
+
+  def render(*args)
+    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME": "")).render(*args)
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks

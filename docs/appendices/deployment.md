@@ -62,7 +62,7 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 ```ruby
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
 
-config.session_store :redis_session_store, {
+config.session_store :redis_session_store,
   key: "_session_production",
   serializer: :json,
   redis: {
@@ -72,7 +72,6 @@ config.session_store :redis_session_store, {
     key_prefix: "app:session:",
     url: ENV.fetch("HEROKU_REDIS_MAROON_URL")
   }
-}
 ```
 {% endcode %}
 
@@ -91,6 +90,16 @@ If you plan to use the paid "Premium" tier Heroku Redis addons, they use Redis 6
 ```bash
 heroku addons:create heroku-redis:premium-0 --version 5
 ```
+
+### Build packs
+
+Generally, only the `heroku/ruby` buildpack is required to successfully deploy a StimulusReflex app on Heroku. However, if you see the error:
+
+`(WARNING: Can't locate the stimulus_reflex npm package [...])`
+
+... we recommend that you try installing the `heroku/nodejs` buildpack as well, and making sure that it's set to run **first**.
+
+Please let us know on Discord if you run into trouble with this.
 
 ## Cloudflare DNS
 

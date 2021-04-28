@@ -1,6 +1,6 @@
 # Troubleshooting
 
-![](https://cdn.vox-cdn.com/thumbor/2q97YCXcLOlkoR2jKKEMQ-wkG9k=/0x0:900x500/1200x800/filters:focal%28378x178:522x322%29/cdn.vox-cdn.com/uploads/chorus_image/image/49493993/this-is-fine.0.jpg)
+![](../.gitbook/assets/fine.jpg)
 
 ## Verify ActionCable
 
@@ -522,6 +522,10 @@ Are `ActionController::RoutingError Exception: No route matches`errors getting y
 
 {% hint style="info" %}
 Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [default\_url\_options](troubleshooting.md#modifying-the-default-data-attribute-schema).
+{% endhint %}
+
+{% hint style="info" %}
+Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when you deploy to Heroku? Try adding the `heroku/nodejs` buildpack in the first position.
 {% endhint %}
 
 {% hint style="info" %}
