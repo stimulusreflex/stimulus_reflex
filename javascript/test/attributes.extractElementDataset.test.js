@@ -1,8 +1,13 @@
 import assert from 'assert'
 import { JSDOM } from 'jsdom'
 import { extractElementDataset } from '../attributes'
+import reflexes from '../reflexes'
+import { defaultSchema } from '../schema'
 
 describe('extractElementDataset', () => {
+  reflexes.app = {}
+  reflexes.app.schema = defaultSchema
+
   it('returns expected dataset for element without data attributes', () => {
     const dom = new JSDOM('<a id="example">Test</a>')
     global.document = dom.window.document
@@ -152,6 +157,7 @@ describe('extractElementDataset', () => {
       '<body data-body-id="body"><div data-grandparent-id="456"><div data-parent-id="123"><a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset-renamed="combined">Test</a></div></div></body>'
     )
     global.document = dom.window.document
+    reflexes.app.schema.reflexDatasetAttribute = 'data-reflex-dataset-renamed'
     const element = dom.window.document.querySelector('a')
     const actual = extractElementDataset(element, 'data-reflex-dataset-renamed')
     const expected = {
