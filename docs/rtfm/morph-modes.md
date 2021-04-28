@@ -30,17 +30,17 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 ## Page Morphs
 
-Full-page Reflexes are described in great detail on the Reflexes page. Page morphs are the default behavior of StimulusReflex and they are what will occur if you don't call `morph` in your Reflex.
+Page morphs are the default behavior of StimulusReflex and they are what will occur if you don't call `morph` in your Reflex.
 
 All Reflexes are, in fact, Page morphs - until they are not. 👴⚗️
+
+What makes Page Morphs interesting and distinct from other Morph types is that they are the only one that re-runs the page's controller action before rendering the new HTML markup.
+
+Any instance variables that you set in your Reflex action method are available to your controller action. In addition, there is a special `@stimulus_reflex` variable that is set to `true` when a controller action is being run by a Reflex.
 
 {% hint style="info" %}
 StimulusReflex does not support using redirect\_to in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
 {% endhint %}
-
-If you've already been using Page morphs, nothing below changes what you know about them, with the possible exception that the `data-reflex-permanent` attribute is not all-powerful and can be defeated if you aren't careful with your Selector morphs.
-
-{% page-ref page="reflexes.md" %}
 
 ### Scoping Page Morphs
 

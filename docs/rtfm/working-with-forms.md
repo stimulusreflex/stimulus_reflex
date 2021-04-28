@@ -31,7 +31,7 @@ It's very likely that in a future version of StimulusReflex, form serialization 
 
 ## Modifying `params` before its sent to the server
 
-On the client, you can modify `params` in your `beforeReflex` callback by modifying  `element.reflexData[reflexId]` before it is sent to the server.
+On the client, you can modify `params` in your `beforeReflex` callback by modifying `element.reflexData[reflexId]` before it is sent to the server.
 
 ```javascript
 export default class extends ApplicationController {
@@ -235,16 +235,16 @@ You will need the controller's view context, as well as the parent resource used
 ```ruby
 class FormReflex < ApplicationReflex
   delegate :view_context, to: :controller
-  
+
   def swap
     post = Post.find(123)
 
     form = ActionView::Helpers::FormBuilder.new(
       :post, post, view_context, {}
     )
-    
+
     html = render(partial: "path/to/partial", locals: {form: form})
-    
+
     morph "#form_swap", html
   end
 end
@@ -273,7 +273,7 @@ Since the partial does not include the parent `div`, in order to successfully re
 
 ```ruby
     html = render(partial: "path/to/partial", locals: {form: form})
-    
+
     morph "#form_swap", "<div id='form_swap'>#{html}</div>"
 ```
 

@@ -525,6 +525,10 @@ Are you using `ApplicationController.render` to regenerate partials that make us
 {% endhint %}
 
 {% hint style="info" %}
+Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when you deploy to Heroku? Try adding the `heroku/nodejs` buildpack in the first position.
+{% endhint %}
+
+{% hint style="info" %}
 If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` \(see the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist)\)
 {% endhint %}
 
