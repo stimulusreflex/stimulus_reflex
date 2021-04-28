@@ -97,9 +97,7 @@ Generally, only the `heroku/ruby` buildpack is required to successfully deploy a
 
 `(WARNING: Can't locate the stimulus_reflex npm package [...])`
 
-... we recommend that you try installing the `heroku/nodejs` buildpack as well, and making sure that it's set to run **first**.
-
-Please let us know on Discord if you run into trouble with this.
+... we recommend that you try updating your Cedar stack to the latest version. This should be fixed as of Cedar-20.
 
 ## Cloudflare DNS
 

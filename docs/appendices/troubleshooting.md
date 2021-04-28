@@ -525,7 +525,7 @@ Are you using `ApplicationController.render` to regenerate partials that make us
 {% endhint %}
 
 {% hint style="info" %}
-Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when you deploy to Heroku? Try adding the `heroku/nodejs` buildpack in the first position.
+Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when you deploy to Heroku? Try updating to the most recent Cedar stack version. This appears to be fixed as of Cedar-20.
 {% endhint %}
 
 {% hint style="info" %}
