@@ -52,7 +52,8 @@ namespace :stimulus_reflex do
     filepath = Rails.root.join("config/environments/development.rb")
     lines = File.open(filepath, "r") { |f| f.readlines }
     unless lines.find { |line| line.include?("config.session_store") }
-      lines.insert 3, "  config.session_store :cache_store\n\n"
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
