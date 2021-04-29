@@ -167,7 +167,6 @@ class StimulusReflex::SanityChecker
   def exit_with_info
     puts
 
-    # bundle exec rails generate stimulus_reflex:config
     if File.exist?(initializer_path)
       puts <<~INFO
         If you know what you are doing and you want to start the application anyway,
