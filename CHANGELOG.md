@@ -33,9 +33,11 @@
 - ActiveRecord queries and associations are cached, leading to non-idempotent Reflexes [\#446](https://github.com/hopsoft/stimulus_reflex/issues/446)
 - SR strips out @click attribute from elements passed to selector morph [\#435](https://github.com/hopsoft/stimulus_reflex/issues/435)
 - SR+CR version checks on startup in development [\#433](https://github.com/hopsoft/stimulus_reflex/issues/433)
+- Installer can insert session\_store config in wrong place [\#429](https://github.com/hopsoft/stimulus_reflex/issues/429)
 
 **Merged pull requests:**
 
+- Prevent install script from choking on magic comments via hard-coded line numbers [\#494](https://github.com/hopsoft/stimulus_reflex/pull/494) ([leastbad](https://github.com/leastbad))
 - Fix broken link in docs [\#488](https://github.com/hopsoft/stimulus_reflex/pull/488) ([asmega](https://github.com/asmega))
 - Factor reflex creation and reflex data management out of channel [\#486](https://github.com/hopsoft/stimulus_reflex/pull/486) ([julianrubisch](https://github.com/julianrubisch))
 - prevent /cable from being prepended to ActiveStorage route helpers [\#484](https://github.com/hopsoft/stimulus_reflex/pull/484) ([leastbad](https://github.com/leastbad))
@@ -538,7 +540,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
-- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -591,6 +592,7 @@
 **Merged pull requests:**
 
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
@@ -675,6 +677,7 @@
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
+- Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -713,7 +716,6 @@
 
 **Implemented enhancements:**
 
-- Reload session prior to each reflex accessing it [\#131](https://github.com/hopsoft/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/hopsoft/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
@@ -959,6 +961,10 @@
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
+
+**Implemented enhancements:**
+
+- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
