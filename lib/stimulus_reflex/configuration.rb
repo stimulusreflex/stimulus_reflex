@@ -14,12 +14,13 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :on_failed_sanity_checks, :parent_channel, :logging, :middleware
+    attr_accessor :on_failed_sanity_checks, :on_new_version_available, :parent_channel, :logging, :middleware
 
     DEFAULT_LOGGING = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
     def initialize
       @on_failed_sanity_checks = :exit
+      @on_new_version_available = :ignore
       @parent_channel = "ApplicationCable::Channel"
       @logging = DEFAULT_LOGGING
       @middleware = ActionDispatch::MiddlewareStack.new

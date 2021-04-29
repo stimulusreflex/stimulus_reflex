@@ -29,7 +29,7 @@ module StimulusReflex
       cable_ready.dispatch_event(
         name: "stimulus-reflex:server-message",
         detail: {
-          reflexId: data["reflexId"],
+          reflexId: data.delete("reflexId"),
           payload: payload,
           stimulus_reflex: data.merge(
             morph: to_sym,
