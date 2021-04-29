@@ -27,7 +27,7 @@ class StimulusReflex::SanityChecker
     end
 
     def called_by_generate_config?
-      ARGV.include? "stimulus_reflex:config"
+      ARGV.include? "stimulus_reflex:initializer"
     end
   end
 
