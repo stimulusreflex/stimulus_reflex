@@ -71,8 +71,8 @@ class StimulusReflex::SanityChecker
 
     unless javascript_version_matches?
       warn_and_exit <<~WARN
-        The StimulusReflex npm package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
-        To update the StimulusReflex npm package:
+        The stimulus_reflex npm package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
+        To update the stimulus_reflex npm package:
           yarn upgrade stimulus_reflex@#{gem_version}
       WARN
     end
