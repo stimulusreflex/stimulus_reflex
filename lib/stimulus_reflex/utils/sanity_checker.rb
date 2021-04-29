@@ -187,7 +187,7 @@ class StimulusReflex::SanityChecker
 
         Then open your initializer at
 
-        <RAILS_ROOT>/config/initializers/stimulus_reflex.rb
+        #{initializer_path}
 
         and then add the following directive:
 
