@@ -14,6 +14,7 @@ class StimulusReflex::SanityChecker
       instance = new
       instance.check_caching_enabled
       instance.check_javascript_package_version
+      instance.check_default_url_config
       instance.check_new_version_available
     end
 
@@ -43,6 +44,19 @@ class StimulusReflex::SanityChecker
       warn_and_exit <<~WARN
         StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         But your config.cache_store is set to :null_store, so it won't work.
+      WARN
+    end
+  end
+
+  def check_default_url_config
+    unless default_url_config_set?
+      warn_and_exit <<~WARN
+        StimulusReflex strongly suggests that you set default_url_options in your environment files.
+        Otherwise, ActionController and ActionMailer will default to example.com when rendering route helpers.
+        You can set your URL options in config/environments/#{Rails.env}.rb
+          config.action_controller.default_url_options = {host: "localhost", port: 3000}
+          config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+        Please update every environment with the appropriate URL. Typically, no port is necessary in production.
       WARN
     end
   end
@@ -95,6 +109,10 @@ class StimulusReflex::SanityChecker
 
   def not_null_store?
     Rails.application.config.cache_store != :null_store
+  end
+
+  def default_url_config_set?
+    Rails.application.config.action_controller.default_url_options
   end
 
   def javascript_version_matches?
