@@ -22,13 +22,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       begin
         reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
         delegate_call_to_reflex reflex
-      rescue => invoke_error
-        message = exception_message_with_backtrace(invoke_error)
-        body = "Reflex #{reflex_data.target} failed: #{message} [#{reflex_data.url}]"
+      rescue => exception
+        error = exception_with_backtrace(exception)
+        body = "Reflex #{reflex_data.target} failed: #{error[:message]} [#{reflex_data.url}]\n#{error[:stack]}"
 
         if reflex
-          reflex.rescue_with_handler(invoke_error)
-          reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
+          reflex.rescue_with_handler(exception)
+          puts "\e[31m#{body}\e[0m"
+          reflex.broadcast_message subject: "error", data: data, error: exception
         else
           puts "\e[31m#{body}\e[0m"
 
@@ -61,11 +62,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       else
         begin
           reflex.broadcast(reflex_data.selectors, data)
-        rescue => render_error
-          reflex.rescue_with_handler(render_error)
-          message = exception_message_with_backtrace(render_error)
-          body = "Reflex failed to re-render: #{message} [#{reflex_data.url}]"
-          reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
+        rescue => exception
+          reflex.rescue_with_handler(exception)
+          error = exception_with_backtrace(exception)
+          reflex.broadcast_message subject: "error", data: data, error: exception
+          body = "Reflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\n#{error[:stack]}"
           puts "\e[31m#{body}\e[0m"
         end
       end
@@ -105,9 +106,10 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   def commit_session(reflex)
     store = reflex.request.session.instance_variable_get("@by")
     store.commit_session reflex.request, reflex.controller.response
-  rescue => e
-    message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
-    puts "\e[31m#{message}\e[0m"
+  rescue => exception
+    error = exception_with_backtrace(exception)
+    output = "Failed to commit session! #{error[:message]}\n#{error[:backtrace]}"
+    puts "\e[31m#{output}\e[0m"
   end
 
   def report_failed_basic_auth(reflex)
@@ -117,11 +119,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     end
   end
 
-  def exception_message_with_backtrace(exception)
-    message = "#{exception}\n"
-    exception.backtrace.each do |trace|
-      message += trace + "\n"
-    end
-    message
+  def exception_with_backtrace(exception)
+    {
+      message: exception.to_s,
+      backtrace: exception.backtrace.first,
+      stack: exception.backtrace.join("\n")
+    }
   end
 end
