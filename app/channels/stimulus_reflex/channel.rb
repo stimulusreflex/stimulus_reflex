@@ -24,14 +24,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         delegate_call_to_reflex reflex
       rescue => exception
         error = exception_with_backtrace(exception)
-        body = "Reflex #{reflex_data.target} failed: #{error[:message]} [#{reflex_data.url}]\n#{error[:stack]}"
+        error_message = "\e[31mReflex #{reflex_data.target} failed: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
 
         if reflex
           reflex.rescue_with_handler(exception)
-          puts "\e[31m#{body}\e[0m"
+          puts error_message
           reflex.broadcast_message subject: "error", data: data, error: exception
         else
-          puts "\e[31m#{body}\e[0m"
+          puts error_message
 
           if body.to_s.include? "No route matches"
             initializer_path = Rails.root.join("config", "initializers", "stimulus_reflex.rb")
@@ -66,8 +66,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           reflex.rescue_with_handler(exception)
           error = exception_with_backtrace(exception)
           reflex.broadcast_message subject: "error", data: data, error: exception
-          body = "Reflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\n#{error[:stack]}"
-          puts "\e[31m#{body}\e[0m"
+          puts "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
         end
       end
     ensure
@@ -108,14 +107,12 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     store.commit_session reflex.request, reflex.controller.response
   rescue => exception
     error = exception_with_backtrace(exception)
-    output = "Failed to commit session! #{error[:message]}\n#{error[:backtrace]}"
-    puts "\e[31m#{output}\e[0m"
+    puts "\e[31mFailed to commit session! #{error[:message]}\e[0m\n#{error[:backtrace]}"
   end
 
   def report_failed_basic_auth(reflex)
     if reflex.controller.response.status == 401
-      message = "Reflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication."
-      puts "\e[31m#{message}\e[0m"
+      puts "\e[31mReflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication.\e[0m"
     end
   end
 
