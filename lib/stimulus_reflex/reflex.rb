@@ -98,11 +98,12 @@ class StimulusReflex::Reflex
     @controller ||= begin
       controller_class.new.tap do |c|
         c.instance_variable_set :"@stimulus_reflex", true
-        instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
         c.set_request! request
         c.set_response! controller_class.make_response!(request)
       end
     end
+    instance_variables.each { |name| @controller.instance_variable_set name, instance_variable_get(name) }
+    @controller
   end
 
   def controller?
