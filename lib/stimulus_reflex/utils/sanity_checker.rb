@@ -35,7 +35,7 @@ class StimulusReflex::SanityChecker
       warn_and_exit <<~WARN
         StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         To enable caching in development, run:
-            rails dev:cache
+          rails dev:cache
       WARN
     end
 
@@ -59,7 +59,7 @@ class StimulusReflex::SanityChecker
       warn_and_exit <<~WARN
         The StimulusReflex npm package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
         To update the StimulusReflex npm package:
-            yarn upgrade stimulus_reflex@#{gem_version}
+          yarn upgrade stimulus_reflex@#{gem_version}
       WARN
     end
   end
@@ -75,8 +75,9 @@ class StimulusReflex::SanityChecker
 
           There is a new version of StimulusReflex available!
           Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
-          It is very important that you update BOTH Gemfile and package.json
-          Run `bundle install && yarn install` to complete the upgrade.
+
+          If you upgrade, it is very important that you update BOTH Gemfile and package.json
+          Then, run `bundle install && yarn install` to update to #{latest_version}.
 
         WARN
         exit if StimulusReflex.config.on_new_version_available == :exit
