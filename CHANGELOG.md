@@ -25,6 +25,7 @@
 **Closed issues:**
 
 - Re-assignment of constant `reflexRoot` [\#473](https://github.com/hopsoft/stimulus_reflex/issues/473)
+- Warn developers about example.com [\#468](https://github.com/hopsoft/stimulus_reflex/issues/468)
 - "No route matches" in production [\#465](https://github.com/hopsoft/stimulus_reflex/issues/465)
 - Uncaught exception when morph removes controllerElement [\#459](https://github.com/hopsoft/stimulus_reflex/issues/459)
 - Link for "read more about why we enable caching here" is broken [\#455](https://github.com/hopsoft/stimulus_reflex/issues/455)
@@ -40,6 +41,7 @@
 - prevent /cable from being prepended to ActiveStorage route helpers [\#484](https://github.com/hopsoft/stimulus_reflex/pull/484) ([leastbad](https://github.com/leastbad))
 - Fix Changelog Action [\#483](https://github.com/hopsoft/stimulus_reflex/pull/483) ([marcoroth](https://github.com/marcoroth))
 - Reinitialize controller\_class renderer with connection.env [\#481](https://github.com/hopsoft/stimulus_reflex/pull/481) ([leastbad](https://github.com/leastbad))
+- feature: add check for default url options [\#480](https://github.com/hopsoft/stimulus_reflex/pull/480) ([nachiket87](https://github.com/nachiket87))
 - Mutation observer wouldn't fire in certain situations [\#479](https://github.com/hopsoft/stimulus_reflex/pull/479) ([joshleblanc](https://github.com/joshleblanc))
 - Reflex return payloads for events and callbacks [\#477](https://github.com/hopsoft/stimulus_reflex/pull/477) ([leastbad](https://github.com/leastbad))
 - Log reflex payloads client-side [\#476](https://github.com/hopsoft/stimulus_reflex/pull/476) ([julianrubisch](https://github.com/julianrubisch))
@@ -186,7 +188,6 @@
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
-- Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 
 ## [v3.4.0.pre4](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
 
@@ -207,13 +208,13 @@
 **Merged pull requests:**
 
 - use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/hopsoft/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
+- Improve logged post\_install.js message [\#372](https://github.com/hopsoft/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/hopsoft/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
 - fix: rip out microbundle [\#369](https://github.com/hopsoft/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 - Add tests for broadcasters [\#364](https://github.com/hopsoft/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
 - Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/hopsoft/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/hopsoft/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/hopsoft/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
-- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 
 ## [v3.4.0.pre3](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre3) (2020-11-11)
 
@@ -221,12 +222,13 @@
 
 **Merged pull requests:**
 
+- Allow to supress warnings for sanity checks [\#359](https://github.com/hopsoft/stimulus_reflex/pull/359) ([RolandStuder](https://github.com/RolandStuder))
 - serializeForm: only append given input if element is submit button [\#357](https://github.com/hopsoft/stimulus_reflex/pull/357) ([marcoroth](https://github.com/marcoroth))
 - Update package.json to 3.4.0-pre2 [\#356](https://github.com/hopsoft/stimulus_reflex/pull/356) ([marcoroth](https://github.com/marcoroth))
 - Fix elementToXPath import [\#355](https://github.com/hopsoft/stimulus_reflex/pull/355) ([julianrubisch](https://github.com/julianrubisch))
 - Add guard clause to return valid empty form data [\#354](https://github.com/hopsoft/stimulus_reflex/pull/354) ([julianrubisch](https://github.com/julianrubisch))
+- simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
 - pass reflex id to reflex [\#352](https://github.com/hopsoft/stimulus_reflex/pull/352) ([joshleblanc](https://github.com/joshleblanc))
-- Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
 
 ## [v3.4.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre2) (2020-11-06)
 
@@ -240,7 +242,6 @@
 
 - move `cable\_ready` to development dependencies [\#351](https://github.com/hopsoft/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
 - Fix serializeForm initialization [\#349](https://github.com/hopsoft/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
-- \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
 
 ## [v3.4.0.pre1](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
 
@@ -273,8 +274,9 @@
 
 **Merged pull requests:**
 
-- simplify xpath functions [\#353](https://github.com/hopsoft/stimulus_reflex/pull/353) ([leastbad](https://github.com/leastbad))
+- \[docs\] StimulusReflex.debug= on left hand side [\#348](https://github.com/hopsoft/stimulus_reflex/pull/348) ([drnic](https://github.com/drnic))
 - Fix page morphs inside Rails engines [\#344](https://github.com/hopsoft/stimulus_reflex/pull/344) ([leastbad](https://github.com/leastbad))
+- Use Webpacker folder if available [\#343](https://github.com/hopsoft/stimulus_reflex/pull/343) ([coorasse](https://github.com/coorasse))
 - feat: create a more robust package.json [\#340](https://github.com/hopsoft/stimulus_reflex/pull/340) ([ParamagicDev](https://github.com/ParamagicDev))
 - Make StimulusReflex configurable and add an initializer [\#339](https://github.com/hopsoft/stimulus_reflex/pull/339) ([RolandStuder](https://github.com/RolandStuder))
 - Aliases method\_name to action\_name [\#338](https://github.com/hopsoft/stimulus_reflex/pull/338) ([obie](https://github.com/obie))
@@ -312,6 +314,7 @@
 
 - fixes and tweaks to client logging subsystem [\#313](https://github.com/hopsoft/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
+- Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
 
 ## [v3.3.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre5) (2020-09-18)
 
@@ -329,7 +332,6 @@
 
 **Merged pull requests:**
 
-- Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
 - Support IE11 msCrypto \(\#308\) [\#310](https://github.com/hopsoft/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/hopsoft/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - ActionCable connectivity events [\#307](https://github.com/hopsoft/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
@@ -536,6 +538,7 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -588,7 +591,6 @@
 **Merged pull requests:**
 
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
-- Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/hopsoft/stimulus_reflex/tree/v3.1.4) (2020-04-27)
@@ -957,10 +959,6 @@
 ## [v1.0.1](https://github.com/hopsoft/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v1.0.0...v1.0.1)
-
-**Implemented enhancements:**
-
-- Add support for rooms [\#11](https://github.com/hopsoft/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
