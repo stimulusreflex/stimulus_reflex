@@ -54,12 +54,14 @@ export const performOperations = data => {
       totalOperations += operation.length
 
       if (!reflexData) {
-        reflexData = operation[0].detail
-          ? operation[0].detail.stimulusReflex
-          : operation[0].stimulusReflex
-        reflexData.payload = operation[0].detail
-          ? operation[0].detail.payload
-          : operation[0].payload
+        if (operation[0].detail) {
+          reflexData = operation[0].detail.stimulusReflex
+          reflexData.payload = operation[0].detail.payload
+          reflexData.reflexId = operation[0].detail.reflexId
+        } else {
+          reflexData = operation[0].stimulusReflex
+          reflexData.payload = operation[0].payload
+        }
       }
     }
   })
