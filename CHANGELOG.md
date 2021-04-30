@@ -176,7 +176,6 @@
 - don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
 - Setup a proxy object that wraps CableReady::Channels [\#382](https://github.com/hopsoft/stimulus_reflex/pull/382) ([hopsoft](https://github.com/hopsoft))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
-- make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
 
@@ -189,6 +188,7 @@
 **Merged pull requests:**
 
 - Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
+- make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
@@ -395,7 +395,6 @@
 - Fix argument of type object always being assigned to options [\#279](https://github.com/hopsoft/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
 - Simplify devise authentication logic \(in docs\) [\#276](https://github.com/hopsoft/stimulus_reflex/pull/276) ([inner-whisper](https://github.com/inner-whisper))
 - Bump lodash from 4.17.15 to 4.17.19 in /javascript [\#275](https://github.com/hopsoft/stimulus_reflex/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Smarter warnings when element not found [\#274](https://github.com/hopsoft/stimulus_reflex/pull/274) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.3.0.pre2](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre2) (2020-07-17)
 
@@ -409,6 +408,8 @@
 
 **Merged pull requests:**
 
+- Smarter warnings when element not found [\#274](https://github.com/hopsoft/stimulus_reflex/pull/274) ([hopsoft](https://github.com/hopsoft))
+- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 - Update find element to ignore SR attrs [\#272](https://github.com/hopsoft/stimulus_reflex/pull/272) ([hopsoft](https://github.com/hopsoft))
 - Refactor of the morph feature [\#270](https://github.com/hopsoft/stimulus_reflex/pull/270) ([hopsoft](https://github.com/hopsoft))
 - coerce html arguments to string type [\#268](https://github.com/hopsoft/stimulus_reflex/pull/268) ([leastbad](https://github.com/leastbad))
@@ -420,7 +421,6 @@
 
 **Merged pull requests:**
 
-- Add the attributes to the warning message when element not found [\#273](https://github.com/hopsoft/stimulus_reflex/pull/273) ([hopsoft](https://github.com/hopsoft))
 - Fix selector morphs for updating partials and ViewComponents [\#262](https://github.com/hopsoft/stimulus_reflex/pull/262) ([leastbad](https://github.com/leastbad))
 
 ## [v3.3.0.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre0) (2020-07-04)
@@ -481,10 +481,6 @@
 
 - "Uncaught \(in promise\)" error after failed declarative reflex [\#170](https://github.com/hopsoft/stimulus_reflex/issues/170)
 
-**Merged pull requests:**
-
-- Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
-
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre1...v3.2.2)
@@ -504,6 +500,7 @@
 
 **Merged pull requests:**
 
+- Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
 - Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
@@ -541,7 +538,6 @@
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
-- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -593,6 +589,7 @@
 
 **Merged pull requests:**
 
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
@@ -877,6 +874,7 @@
 - \# Support for data-reflex-permanent [\#57](https://github.com/hopsoft/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
 - Stricter parsing of attributes [\#56](https://github.com/hopsoft/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/hopsoft/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
+- Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/hopsoft/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
 - Scoped Stimulus Reflex controllers [\#43](https://github.com/hopsoft/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 
@@ -890,8 +888,8 @@
 
 **Implemented enhancements:**
 
-- Trim values before attribute assignment [\#54](https://github.com/hopsoft/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - Add support to configure room via register option [\#52](https://github.com/hopsoft/stimulus_reflex/pull/52) ([hopsoft](https://github.com/hopsoft))
+- Move gitbook files to docs [\#49](https://github.com/hopsoft/stimulus_reflex/pull/49) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -904,13 +902,11 @@
 **Implemented enhancements:**
 
 - Provide before/after callbacks for calls delegated to server side Stimulus controllers [\#4](https://github.com/hopsoft/stimulus_reflex/issues/4)
-- Move gitbook files to docs [\#49](https://github.com/hopsoft/stimulus_reflex/pull/49) ([hopsoft](https://github.com/hopsoft))
 - Updated Minimal Javascript Example in README.md [\#47](https://github.com/hopsoft/stimulus_reflex/pull/47) ([kobaltz](https://github.com/kobaltz))
 - Setup StimulusReflex controller callbacks [\#45](https://github.com/hopsoft/stimulus_reflex/pull/45) ([hopsoft](https://github.com/hopsoft))
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
-- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
