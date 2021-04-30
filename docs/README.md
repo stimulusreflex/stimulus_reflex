@@ -29,9 +29,9 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 * [x] Facilitate simple, concise, and clear code 🤸
 * [x] Integrate seamlessly with Ruby on Rails 🚝
 
-## New Release: v3.4 - Developer Happiness Edition
+## New Release: v3.5 - ChillRope Edition
 
-![](.gitbook/assets/kittens.jpg)
+![](.gitbook/assets/netflix_and_chill.jpg)
 
 Find out more and learn how to upgrade on the [Release History](appendices/release-history.md) page.
 
