@@ -70,13 +70,16 @@ export const extractElementAttributes = element => {
   return attrs
 }
 
-// Extracts the dataset of an element and combines it with the data attributes from all specified tokens
+// Returns an array of elements for the provided tokens.
+// Tokens is an array of space separated string coming from the `data-reflex-dataset`
+// or `data-reflex-dataset-array` attribute.
 //
-export const extractElementDataset = element => {
+const getElementsFromTokens = (element, tokens) => {
+  if (!tokens || tokens.length === 0) return []
+
   let elements = [element]
+
   const xPath = elementToXPath(element)
-  const dataset = element.attributes[reflexes.app.schema.reflexDatasetAttribute]
-  const tokens = (dataset && dataset.value.split(' ')) || []
 
   tokens.forEach(token => {
     try {
@@ -122,9 +125,62 @@ export const extractElementDataset = element => {
     }
   })
 
-  return elements.reduce((acc, ele) => {
+  return elements
+}
+
+// Extracts the dataset of an element and combines it with the data attributes from all specified tokens
+//
+export const extractElementDataset = element => {
+  const dataset = element.attributes[reflexes.app.schema.reflexDatasetAttribute]
+  const arrayDataset =
+    element.attributes[reflexes.app.schema.reflexDatasetArrayAttribute]
+
+  const tokens = (dataset && dataset.value.split(' ')) || []
+  const arrayTokens = (arrayDataset && arrayDataset.value.split(' ')) || []
+
+  const datasetElements = getElementsFromTokens(element, tokens)
+  const datasetArrayElements = getElementsFromTokens(element, arrayTokens)
+
+  const datasetAttribtues = datasetElements.reduce((acc, ele) => {
     return { ...extractDataAttributes(ele), ...acc }
   }, {})
+
+  let datasetArrayAttribtues = {}
+
+  datasetArrayElements.forEach(element => {
+    const elementAttributes = extractDataAttributes(element)
+
+    Object.keys(elementAttributes).forEach(key => {
+      const value = elementAttributes[key]
+      const pluralKey = `${key}s`
+
+      if (
+        datasetArrayAttribtues[pluralKey] &&
+        Array.isArray(datasetArrayAttribtues[pluralKey])
+      ) {
+        datasetArrayAttribtues[pluralKey].push(value)
+      } else {
+        datasetArrayAttribtues[pluralKey] = [value]
+      }
+
+      if (pluralKey.endsWith('ss')) {
+        if (
+          datasetArrayAttribtues[key] &&
+          Array.isArray(datasetArrayAttribtues[key])
+        ) {
+          datasetArrayAttribtues[key].push(value)
+        } else {
+          datasetArrayAttribtues[key] = [value]
+        }
+      }
+    })
+  })
+
+  return {
+    ...extractDataAttributes(element),
+    ...datasetAttribtues,
+    ...datasetArrayAttribtues
+  }
 }
 
 // Extracts all data attributes from a DOM element.
