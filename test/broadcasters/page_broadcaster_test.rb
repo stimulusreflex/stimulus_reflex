@@ -12,7 +12,7 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
   test "performs a page morph on body" do
     class << @reflex.controller.response
       def body
-        "<html><head></head><body>New Content</body></html>"
+        "<html><head></head><body><div>New Content</div><div>Another Content</div></body></html>"
       end
     end
 
@@ -24,7 +24,7 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
         "morph" => [
           {
             "selector" => "body",
-            "html" => "New Content",
+            "html" => "<div>New Content</div><div>Another Content</div>",
             "payload" => {},
             "childrenOnly" => true,
             "permanentAttributeName" => nil,
