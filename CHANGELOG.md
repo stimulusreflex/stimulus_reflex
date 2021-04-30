@@ -4,8 +4,14 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.1...HEAD)
 
+**Breaking changes:**
+
+- isolation mode should be enabled by default [\#423](https://github.com/hopsoft/stimulus_reflex/issues/423)
+- form serialization should be optional [\#422](https://github.com/hopsoft/stimulus_reflex/issues/422)
+
 **Implemented enhancements:**
 
+- Stop adding whitespace when parsing our html [\#492](https://github.com/hopsoft/stimulus_reflex/pull/492) ([lmatiolis](https://github.com/lmatiolis))
 - report failed basic auth [\#454](https://github.com/hopsoft/stimulus_reflex/pull/454) ([leastbad](https://github.com/leastbad))
 - deprecation warnings \(consumer, form serialization, isolation mode\) [\#438](https://github.com/hopsoft/stimulus_reflex/pull/438) ([leastbad](https://github.com/leastbad))
 - implicit dom\_id for morph selectors [\#436](https://github.com/hopsoft/stimulus_reflex/pull/436) ([leastbad](https://github.com/leastbad))
@@ -13,6 +19,7 @@
 
 **Fixed bugs:**
 
+- Nokogiri usage to process HTML adds whitespace nodes, causing unneeded morphdom updates [\#487](https://github.com/hopsoft/stimulus_reflex/issues/487)
 - reflexData missing on element in beforeReflex [\#443](https://github.com/hopsoft/stimulus_reflex/issues/443)
 - cable\_ready method in Reflex class should support custom operations [\#419](https://github.com/hopsoft/stimulus_reflex/issues/419)
 - only run piggybacked operations after SR is finished, and isolate them [\#482](https://github.com/hopsoft/stimulus_reflex/pull/482) ([leastbad](https://github.com/leastbad))
@@ -28,10 +35,12 @@
 - Lost Instance Variables [\#471](https://github.com/hopsoft/stimulus_reflex/issues/471)
 - Warn developers about example.com [\#468](https://github.com/hopsoft/stimulus_reflex/issues/468)
 - "No route matches" in production [\#465](https://github.com/hopsoft/stimulus_reflex/issues/465)
+- Reflex replaced with a new instance for some reason [\#463](https://github.com/hopsoft/stimulus_reflex/issues/463)
 - Uncaught exception when morph removes controllerElement [\#459](https://github.com/hopsoft/stimulus_reflex/issues/459)
 - Link for "read more about why we enable caching here" is broken [\#455](https://github.com/hopsoft/stimulus_reflex/issues/455)
 - Page morphs fail to refresh \(blank operations hash\) in Safari/Edge on staging [\#453](https://github.com/hopsoft/stimulus_reflex/issues/453)
 - ActiveRecord queries and associations are cached, leading to non-idempotent Reflexes [\#446](https://github.com/hopsoft/stimulus_reflex/issues/446)
+- When devise uses `timeoutable` there is a session error authenticating a stimulus web socket. [\#437](https://github.com/hopsoft/stimulus_reflex/issues/437)
 - SR strips out @click attribute from elements passed to selector morph [\#435](https://github.com/hopsoft/stimulus_reflex/issues/435)
 - SR+CR version checks on startup in development [\#433](https://github.com/hopsoft/stimulus_reflex/issues/433)
 - Installer can insert session\_store config in wrong place [\#429](https://github.com/hopsoft/stimulus_reflex/issues/429)
@@ -97,7 +106,6 @@
 - Add general policy for CoC enforcement [\#424](https://github.com/hopsoft/stimulus_reflex/pull/424) ([hopsoft](https://github.com/hopsoft))
 - Update to work with mutatable CR config [\#421](https://github.com/hopsoft/stimulus_reflex/pull/421) ([hopsoft](https://github.com/hopsoft))
 - Bump nokogiri from 1.10.10 to 1.11.1 [\#420](https://github.com/hopsoft/stimulus_reflex/pull/420) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Add matrix strategy to ruby tests [\#415](https://github.com/hopsoft/stimulus_reflex/pull/415) ([julianrubisch](https://github.com/julianrubisch))
 - fix 'operartion' typo [\#411](https://github.com/hopsoft/stimulus_reflex/pull/411) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0) (2020-12-18)
@@ -131,6 +139,7 @@
 
 **Merged pull requests:**
 
+- Add matrix strategy to ruby tests [\#415](https://github.com/hopsoft/stimulus_reflex/pull/415) ([julianrubisch](https://github.com/julianrubisch))
 - Add dom\_id to the reflex [\#405](https://github.com/hopsoft/stimulus_reflex/pull/405) ([hopsoft](https://github.com/hopsoft))
 - Don't run sanity checker in production [\#404](https://github.com/hopsoft/stimulus_reflex/pull/404) ([joshleblanc](https://github.com/joshleblanc))
 - Check package version from yarn.lock if node\_modules folder is not av… [\#403](https://github.com/hopsoft/stimulus_reflex/pull/403) ([RolandStuder](https://github.com/RolandStuder))
@@ -481,6 +490,10 @@
 
 - "Uncaught \(in promise\)" error after failed declarative reflex [\#170](https://github.com/hopsoft/stimulus_reflex/issues/170)
 
+**Merged pull requests:**
+
+- Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+
 ## [v3.2.2](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.2.2.pre1...v3.2.2)
@@ -500,7 +513,6 @@
 
 **Merged pull requests:**
 
-- Fix typos in the documentation [\#228](https://github.com/hopsoft/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
 - Always commit session [\#222](https://github.com/hopsoft/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
@@ -538,6 +550,7 @@
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -589,7 +602,6 @@
 
 **Merged pull requests:**
 
-- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
@@ -907,6 +919,7 @@
 - add .vscode directory to .gitignore [\#42](https://github.com/hopsoft/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/hopsoft/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/hopsoft/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
+- update github templates [\#35](https://github.com/hopsoft/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
 - Tighten up security of remote invocation [\#32](https://github.com/hopsoft/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
