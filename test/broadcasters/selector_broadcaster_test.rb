@@ -19,9 +19,10 @@ module StimulusReflex
               "childrenOnly" => true,
               "permanentAttributeName" => nil,
               "stimulusReflex" => {
-                "some" => :data,
-                "morph" => :selector
-              }
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
             }
           ]
         }
@@ -45,9 +46,10 @@ module StimulusReflex
               "html" => '<div id="baz"><span>bar</span></div>',
               "payload" => {},
               "stimulusReflex" => {
-                "some" => :data,
-                "morph" => :selector
-              }
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
             }
           ]
         }
