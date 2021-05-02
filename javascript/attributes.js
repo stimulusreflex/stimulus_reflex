@@ -145,42 +145,31 @@ export const extractElementDataset = element => {
     return { ...extractDataAttributes(ele), ...acc }
   }, {})
 
-  let datasetArrayAttribtues = {}
+  const reflexElementAttribtues = extractDataAttributes(element)
+
+  const elementDataset = {
+    dataset: { ...reflexElementAttribtues, ...datasetAttribtues },
+    datasetArray: {}
+  }
 
   datasetArrayElements.forEach(element => {
     const elementAttributes = extractDataAttributes(element)
 
     Object.keys(elementAttributes).forEach(key => {
       const value = elementAttributes[key]
-      const pluralKey = `${key}s`
 
       if (
-        datasetArrayAttribtues[pluralKey] &&
-        Array.isArray(datasetArrayAttribtues[pluralKey])
+        elementDataset.datasetArray[key] &&
+        Array.isArray(elementDataset.datasetArray[key])
       ) {
-        datasetArrayAttribtues[pluralKey].push(value)
+        elementDataset.datasetArray[key].push(value)
       } else {
-        datasetArrayAttribtues[pluralKey] = [value]
-      }
-
-      if (pluralKey.endsWith('ss')) {
-        if (
-          datasetArrayAttribtues[key] &&
-          Array.isArray(datasetArrayAttribtues[key])
-        ) {
-          datasetArrayAttribtues[key].push(value)
-        } else {
-          datasetArrayAttribtues[key] = [value]
-        }
+        elementDataset.datasetArray[key] = [value]
       }
     })
   })
 
-  return {
-    ...extractDataAttributes(element),
-    ...datasetAttribtues,
-    ...datasetArrayAttribtues
-  }
+  return elementDataset
 }
 
 // Extracts all data attributes from a DOM element.
