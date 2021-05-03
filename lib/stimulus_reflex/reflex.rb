@@ -158,4 +158,18 @@ class StimulusReflex::Reflex
     content = render(resource) unless content
     tag.div(content.html_safe, id: dom_id(resource, hash: ""))
   end
+
+  def wrap(content, resource)
+    puts "DEPRECIATION WARNING! This method has been renamed to render_collection, and the method signature is reversed:"
+    puts
+    puts "render_collection(resource, content)"
+    puts
+    puts "Or, if you were calling wrap(render(@posts), @posts), you can now just call:"
+    puts
+    puts "render_collection(@posts)"
+    puts
+    puts "We're making this message as long and obnoxious as possible because soon, we're going to exit if you're still calling wrap."
+    render_collection(resource, content)
+  end
+
 end
