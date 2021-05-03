@@ -155,7 +155,7 @@ class StimulusReflex::Reflex
   # Used internally to allow automatic partial collection rendering, but also useful to library users
   # eg. `morph dom_id(@posts), render_collection(@posts)`
   def render_collection(resource, content = nil)
-    content = render(resource) unless content
+    content ||= render(resource)
     tag.div(content.html_safe, id: dom_id(resource, hash: ""))
   end
 
@@ -171,5 +171,4 @@ class StimulusReflex::Reflex
     puts "We're making this message as long and obnoxious as possible because soon, we're going to exit if you're still calling wrap."
     render_collection(resource, content)
   end
-
 end
