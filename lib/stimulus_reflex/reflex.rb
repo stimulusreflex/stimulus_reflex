@@ -154,11 +154,8 @@ class StimulusReflex::Reflex
   # Oddly, it doesn't matter if the target element is a div! See: https://docs.stimulusreflex.com/appendices/troubleshooting#different-element-type-altogether-who-cares-so-long-as-the-css-selector-matches
   # Used internally to allow automatic partial collection rendering, but also useful to library users
   # eg. `morph dom_id(@posts), render_collection(@posts)`
-  def render_collection(content, resource = nil)
-    if resource.nil?
-      resource = content
-      content = render(content)
-    end
+  def render_collection(resource, content = nil)
+    content = render(resource) unless content
     tag.div(content.html_safe, id: dom_id(resource, hash: ""))
   end
 end
