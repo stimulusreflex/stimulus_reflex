@@ -39,7 +39,7 @@ class StimulusReflex::Reflex
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
-    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
     self.params
   end
@@ -99,11 +99,12 @@ class StimulusReflex::Reflex
     @controller ||= begin
       controller_class.new.tap do |c|
         c.instance_variable_set :"@stimulus_reflex", true
-        instance_variables.each { |name| c.instance_variable_set name, instance_variable_get(name) }
         c.set_request! request
         c.set_response! controller_class.make_response!(request)
       end
     end
+    instance_variables.each { |name| @controller.instance_variable_set name, instance_variable_get(name) }
+    @controller
   end
 
   def controller?
@@ -142,8 +143,9 @@ class StimulusReflex::Reflex
   # morphdom needs content to be wrapped in an element with the same id when children_only: true
   # Oddly, it doesn't matter if the target element is a div! See: https://docs.stimulusreflex.com/appendices/troubleshooting#different-element-type-altogether-who-cares-so-long-as-the-css-selector-matches
   # Used internally to allow automatic partial collection rendering, but also useful to library users
-  # eg. `morph dom_id(@posts), wrap(render(@posts), @posts)`
-  def wrap(content, resource)
+  # eg. `morph dom_id(@posts), render_collection(@posts)`
+  def render_collection(resource, content = nil)
+    content ||= render(resource)
     tag.div(content.html_safe, id: dom_id(resource).from(1))
   end
 end

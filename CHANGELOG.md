@@ -4,15 +4,25 @@
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v3.4.1...HEAD)
 
+**Breaking changes:**
+
+- isolation mode should be enabled by default [\#423](https://github.com/hopsoft/stimulus_reflex/issues/423)
+- form serialization should be optional [\#422](https://github.com/hopsoft/stimulus_reflex/issues/422)
+
 **Implemented enhancements:**
 
+- Stop adding whitespace when parsing our html [\#492](https://github.com/hopsoft/stimulus_reflex/pull/492) ([lmatiolis](https://github.com/lmatiolis))
 - report failed basic auth [\#454](https://github.com/hopsoft/stimulus_reflex/pull/454) ([leastbad](https://github.com/leastbad))
+- deprecation warnings \(consumer, form serialization, isolation mode\) [\#438](https://github.com/hopsoft/stimulus_reflex/pull/438) ([leastbad](https://github.com/leastbad))
 - implicit dom\_id for morph selectors [\#436](https://github.com/hopsoft/stimulus_reflex/pull/436) ([leastbad](https://github.com/leastbad))
+- version check [\#434](https://github.com/hopsoft/stimulus_reflex/pull/434) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
 
+- Nokogiri usage to process HTML adds whitespace nodes, causing unneeded morphdom updates [\#487](https://github.com/hopsoft/stimulus_reflex/issues/487)
 - reflexData missing on element in beforeReflex [\#443](https://github.com/hopsoft/stimulus_reflex/issues/443)
 - cable\_ready method in Reflex class should support custom operations [\#419](https://github.com/hopsoft/stimulus_reflex/issues/419)
+- only run piggybacked operations after SR is finished, and isolate them [\#482](https://github.com/hopsoft/stimulus_reflex/pull/482) ([leastbad](https://github.com/leastbad))
 - refactor declarative reflex observer [\#440](https://github.com/hopsoft/stimulus_reflex/pull/440) ([leastbad](https://github.com/leastbad))
 
 **Removed:**
@@ -22,20 +32,33 @@
 **Closed issues:**
 
 - Re-assignment of constant `reflexRoot` [\#473](https://github.com/hopsoft/stimulus_reflex/issues/473)
+- Lost Instance Variables [\#471](https://github.com/hopsoft/stimulus_reflex/issues/471)
+- Warn developers about example.com [\#468](https://github.com/hopsoft/stimulus_reflex/issues/468)
 - "No route matches" in production [\#465](https://github.com/hopsoft/stimulus_reflex/issues/465)
+- Reflex replaced with a new instance for some reason [\#463](https://github.com/hopsoft/stimulus_reflex/issues/463)
 - Uncaught exception when morph removes controllerElement [\#459](https://github.com/hopsoft/stimulus_reflex/issues/459)
 - Link for "read more about why we enable caching here" is broken [\#455](https://github.com/hopsoft/stimulus_reflex/issues/455)
 - Page morphs fail to refresh \(blank operations hash\) in Safari/Edge on staging [\#453](https://github.com/hopsoft/stimulus_reflex/issues/453)
 - ActiveRecord queries and associations are cached, leading to non-idempotent Reflexes [\#446](https://github.com/hopsoft/stimulus_reflex/issues/446)
+- When devise uses `timeoutable` there is a session error authenticating a stimulus web socket. [\#437](https://github.com/hopsoft/stimulus_reflex/issues/437)
 - SR strips out @click attribute from elements passed to selector morph [\#435](https://github.com/hopsoft/stimulus_reflex/issues/435)
+- SR+CR version checks on startup in development [\#433](https://github.com/hopsoft/stimulus_reflex/issues/433)
+- Installer can insert session\_store config in wrong place [\#429](https://github.com/hopsoft/stimulus_reflex/issues/429)
 
 **Merged pull requests:**
 
+- Prevent install script from choking on magic comments via hard-coded line numbers [\#494](https://github.com/hopsoft/stimulus_reflex/pull/494) ([leastbad](https://github.com/leastbad))
+- Always pick up instance variables when accessing controller [\#493](https://github.com/hopsoft/stimulus_reflex/pull/493) ([leastbad](https://github.com/leastbad))
+- Fix broken link in docs [\#488](https://github.com/hopsoft/stimulus_reflex/pull/488) ([asmega](https://github.com/asmega))
+- Factor reflex creation and reflex data management out of channel [\#486](https://github.com/hopsoft/stimulus_reflex/pull/486) ([julianrubisch](https://github.com/julianrubisch))
+- prevent /cable from being prepended to ActiveStorage route helpers [\#484](https://github.com/hopsoft/stimulus_reflex/pull/484) ([leastbad](https://github.com/leastbad))
 - Fix Changelog Action [\#483](https://github.com/hopsoft/stimulus_reflex/pull/483) ([marcoroth](https://github.com/marcoroth))
 - Reinitialize controller\_class renderer with connection.env [\#481](https://github.com/hopsoft/stimulus_reflex/pull/481) ([leastbad](https://github.com/leastbad))
+- feature: add check for default url options [\#480](https://github.com/hopsoft/stimulus_reflex/pull/480) ([nachiket87](https://github.com/nachiket87))
 - Mutation observer wouldn't fire in certain situations [\#479](https://github.com/hopsoft/stimulus_reflex/pull/479) ([joshleblanc](https://github.com/joshleblanc))
 - Reflex return payloads for events and callbacks [\#477](https://github.com/hopsoft/stimulus_reflex/pull/477) ([leastbad](https://github.com/leastbad))
 - Log reflex payloads client-side [\#476](https://github.com/hopsoft/stimulus_reflex/pull/476) ([julianrubisch](https://github.com/julianrubisch))
+- add `useReflex` js function to "support" the composable pattern [\#475](https://github.com/hopsoft/stimulus_reflex/pull/475) ([marcoroth](https://github.com/marcoroth))
 - fix changelog workflow and optimize triggers [\#474](https://github.com/hopsoft/stimulus_reflex/pull/474) ([marcoroth](https://github.com/marcoroth))
 - add support for prepend and append reflex callbacks [\#472](https://github.com/hopsoft/stimulus_reflex/pull/472) ([marcoroth](https://github.com/marcoroth))
 - Callback tests [\#470](https://github.com/hopsoft/stimulus_reflex/pull/470) ([marcoroth](https://github.com/marcoroth))
@@ -83,7 +106,6 @@
 - Add general policy for CoC enforcement [\#424](https://github.com/hopsoft/stimulus_reflex/pull/424) ([hopsoft](https://github.com/hopsoft))
 - Update to work with mutatable CR config [\#421](https://github.com/hopsoft/stimulus_reflex/pull/421) ([hopsoft](https://github.com/hopsoft))
 - Bump nokogiri from 1.10.10 to 1.11.1 [\#420](https://github.com/hopsoft/stimulus_reflex/pull/420) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Add matrix strategy to ruby tests [\#415](https://github.com/hopsoft/stimulus_reflex/pull/415) ([julianrubisch](https://github.com/julianrubisch))
 - fix 'operartion' typo [\#411](https://github.com/hopsoft/stimulus_reflex/pull/411) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0) (2020-12-18)
@@ -117,6 +139,7 @@
 
 **Merged pull requests:**
 
+- Add matrix strategy to ruby tests [\#415](https://github.com/hopsoft/stimulus_reflex/pull/415) ([julianrubisch](https://github.com/julianrubisch))
 - Add dom\_id to the reflex [\#405](https://github.com/hopsoft/stimulus_reflex/pull/405) ([hopsoft](https://github.com/hopsoft))
 - Don't run sanity checker in production [\#404](https://github.com/hopsoft/stimulus_reflex/pull/404) ([joshleblanc](https://github.com/joshleblanc))
 - Check package version from yarn.lock if node\_modules folder is not av… [\#403](https://github.com/hopsoft/stimulus_reflex/pull/403) ([RolandStuder](https://github.com/RolandStuder))
@@ -305,7 +328,6 @@
 - fixes and tweaks to client logging subsystem [\#313](https://github.com/hopsoft/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/hopsoft/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/hopsoft/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
-- Bump rack from 2.2.2 to 2.2.3 [\#244](https://github.com/hopsoft/stimulus_reflex/pull/244) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v3.3.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.3.0.pre5) (2020-09-18)
 
@@ -446,6 +468,7 @@
 - Update deployment.md [\#248](https://github.com/hopsoft/stimulus_reflex/pull/248) ([user073](https://github.com/user073))
 - Update reflexes.md [\#247](https://github.com/hopsoft/stimulus_reflex/pull/247) ([user073](https://github.com/user073))
 - Bump actionpack from 6.0.3.1 to 6.0.3.2 [\#245](https://github.com/hopsoft/stimulus_reflex/pull/245) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rack from 2.2.2 to 2.2.3 [\#244](https://github.com/hopsoft/stimulus_reflex/pull/244) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/hopsoft/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/hopsoft/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/hopsoft/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
@@ -663,6 +686,7 @@
 
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
+- Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/hopsoft/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
@@ -689,7 +713,6 @@
 
 **Implemented enhancements:**
 
-- Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - update install script to set session store [\#134](https://github.com/hopsoft/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
 - update package.json and readme [\#133](https://github.com/hopsoft/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -721,6 +744,7 @@
 **Implemented enhancements:**
 
 - Commit session after rerendering page [\#124](https://github.com/hopsoft/stimulus_reflex/pull/124) ([hopsoft](https://github.com/hopsoft))
+- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v2.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
@@ -778,7 +802,6 @@
 
 **Implemented enhancements:**
 
-- Propose post install message [\#122](https://github.com/hopsoft/stimulus_reflex/pull/122) ([julianrubisch](https://github.com/julianrubisch))
 - StimulusReflex::Channel - Error messages include stack trace info [\#100](https://github.com/hopsoft/stimulus_reflex/pull/100) ([szTheory](https://github.com/szTheory))
 
 **Closed issues:**
@@ -815,6 +838,10 @@
 
 - Add CodeFund sponsorship [\#75](https://github.com/hopsoft/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
+**Fixed bugs:**
+
+- Don't assume that connection identifiers are model instances [\#77](https://github.com/hopsoft/stimulus_reflex/pull/77) ([hopsoft](https://github.com/hopsoft))
+
 ## [v2.1.3](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.3) (2019-10-16)
 
 [Full Changelog](https://github.com/hopsoft/stimulus_reflex/compare/v2.1.2...v2.1.3)
@@ -829,7 +856,6 @@
 **Fixed bugs:**
 
 - too many afterReflex/reflexSuccess callbacks [\#68](https://github.com/hopsoft/stimulus_reflex/issues/68)
-- Don't assume that connection identifiers are model instances [\#77](https://github.com/hopsoft/stimulus_reflex/pull/77) ([hopsoft](https://github.com/hopsoft))
 - Prevent redundant `after` lifecycle callbacks [\#70](https://github.com/hopsoft/stimulus_reflex/pull/70) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.2](https://github.com/hopsoft/stimulus_reflex/tree/v2.1.2) (2019-10-09)

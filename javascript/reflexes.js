@@ -54,12 +54,14 @@ export const performOperations = data => {
       totalOperations += operation.length
 
       if (!reflexData) {
-        reflexData = operation[0].detail
-          ? operation[0].detail.stimulusReflex
-          : operation[0].stimulusReflex
-        reflexData.payload = operation[0].detail
-          ? operation[0].detail.payload
-          : operation[0].payload
+        if (operation[0].detail) {
+          reflexData = operation[0].detail.stimulusReflex
+          reflexData.payload = operation[0].detail.payload
+          reflexData.reflexId = operation[0].detail.reflexId
+        } else {
+          reflexData = operation[0].stimulusReflex
+          reflexData.payload = operation[0].payload
+        }
       }
     }
   })
@@ -97,12 +99,13 @@ export const performOperations = data => {
       reflexes[reflexId].totalOperations = totalOperations
       reflexes[reflexId].pendingOperations = totalOperations
       reflexes[reflexId].completedOperations = 0
+      reflexes[reflexId].piggybackOperations = data.operations
       CableReady.perform(reflexOperations)
     }
+  } else {
+    if (reflexes[Object.entries(data.operations)[0][1][0].reflexId])
+      CableReady.perform(data.operations)
   }
-
-  // run piggy back operations after stimulus reflex behavior
-  CableReady.perform(data.operations)
 }
 
 export const registerReflex = data => {
@@ -137,7 +140,7 @@ export const getReflexRoots = element => {
     if (reflexRoot) {
       if (reflexRoot.length === 0 && element.id) reflexRoot = `#${element.id}`
       const selectors = reflexRoot.split(',').filter(s => s.trim().length)
-      if (selectors.length === 0) {
+      if (Debug.enabled && selectors.length === 0) {
         console.error(
           `No value found for ${reflexes.app.schema.reflexRootAttribute}. Add an #id to the element or provide a value for ${application.schema.reflexRootAttribute}.`,
           element

@@ -44,14 +44,16 @@ namespace :stimulus_reflex do
     end
 
     initialize_line = lines.find { |line| line.start_with?("StimulusReflex.initialize") }
-    lines << "StimulusReflex.initialize(application, { consumer, controller, isolate: true })\n" unless initialize_line
+    lines << "application.consumer = consumer\n"
+    lines << "StimulusReflex.initialize(application, { controller, isolate: true })\n" unless initialize_line
     lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
     File.open(filepath, "w") { |f| f.write lines.join }
 
     filepath = Rails.root.join("config/environments/development.rb")
     lines = File.open(filepath, "r") { |f| f.readlines }
     unless lines.find { |line| line.include?("config.session_store") }
-      lines.insert 3, "  config.session_store :cache_store\n\n"
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
@@ -71,7 +73,7 @@ namespace :stimulus_reflex do
 
     puts
     puts "StimulusReflex and CableReady have been successfully installed!"
-    puts "Go to https://docs.stimulusreflex.com/quickstart if you need help getting started."
+    puts "Go to https://docs.stimulusreflex.com/hello-world/quickstart if you need help getting started."
     puts
   end
 end

@@ -16,6 +16,7 @@ import {
 } from './attributes'
 import Log from './log'
 import Debug from './debug'
+import Deprecate from './deprecate'
 import reflexes from './reflexes'
 import isolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
@@ -33,18 +34,38 @@ class StimulusReflexController extends Controller {
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
-// - application - the Stimulus application
+// - application  - the Stimulus application
 // - options
 //   * controller - [optional] the default StimulusReflexController
-//   * consumer - [optional] the ActionCable consumer
-//   * debug - [false] log all Reflexes to the console
-//   * params - [{}] key/value parameters to send during channel subscription
-//   * isolate - [false] restrict Reflex playback to the tab which initiated it
+//   * consumer   - [optional] the ActionCable consumer
+//   * debug      - [false] log all Reflexes to the console
+//   * params     - [{}] key/value parameters to send during channel subscription
+//   * isolate    - [false] restrict Reflex playback to the tab which initiated it
+//   * deprecate  - [true] show warnings regarding upcoming changes to the library
 //
 const initialize = (application, initializeOptions = {}) => {
-  const { controller, consumer, debug, params, isolate } = initializeOptions
+  const {
+    controller,
+    consumer,
+    debug,
+    params,
+    isolate,
+    deprecate
+  } = initializeOptions
   actionCable.set(consumer, params)
+  setTimeout(() => {
+    if (Deprecate.enabled && consumer)
+      console.warn(
+        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
+      )
+  })
   isolationMode.set(!!isolate)
+  setTimeout(() => {
+    if (Deprecate.enabled && isolationMode.disabled)
+      console.warn(
+        'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
+      )
+  })
   reflexes.app = application
   reflexes.app.schema = { ...defaultSchema, ...application.schema }
   reflexes.app.register(
@@ -52,6 +73,7 @@ const initialize = (application, initializeOptions = {}) => {
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
+  if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
     attributeFilter: [
@@ -170,10 +192,27 @@ const register = (controller, options = {}) => {
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
+        const serializeAttribute =
+          reflexElement.attributes[
+            reflexes.app.schema.reflexSerializeFormAttribute
+          ]
+        if (serializeAttribute) {
+          // not needed after v4 because this is only here for the deprecation warning
+          options['serializeForm'] = false
+          if (serializeAttribute.value === 'true')
+            options['serializeForm'] = true
+        }
+
+        const form = reflexElement.closest('form')
+
+        if (Deprecate.enabled && options['serializeForm'] === undefined && form)
+          console.warn(
+            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${reflexes.app.schema.reflexSerializeFormAttribute}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
+          )
         const formData =
           options['serializeForm'] === false
             ? ''
-            : serializeForm(reflexElement.closest('form'), {
+            : serializeForm(form, {
                 element: reflexElement
               })
 
@@ -226,6 +265,10 @@ const register = (controller, options = {}) => {
   })
 }
 
+const useReflex = (controller, options = {}) => {
+  register(controller, options)
+}
+
 document.addEventListener('stimulus-reflex:server-message', serverMessage)
 document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
@@ -236,10 +279,17 @@ window.addEventListener('load', setupDeclarativeReflexes)
 export default {
   initialize,
   register,
+  useReflex,
   get debug () {
     return Debug.value
   },
   set debug (value) {
     Debug.set(!!value)
+  },
+  get deprecate () {
+    return Deprecate.value
+  },
+  set deprecate (value) {
+    Deprecate.set(!!value)
   }
 }

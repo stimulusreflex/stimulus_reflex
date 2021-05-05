@@ -6,6 +6,11 @@ StimulusReflex.configure do |config|
 
   # config.on_failed_sanity_checks = :exit
 
+  # Enable/disable exiting / warning when there's a new StimulusReflex release
+  # `:exit` or `:warn` or `:ignore`
+
+  # config.on_new_version_available = :ignore
+
   # Override the parent class that the StimulusReflex ActionCable channel inherits from
 
   # config.parent_channel = "ApplicationCable::Channel"
@@ -15,7 +20,7 @@ StimulusReflex.configure do |config|
   # Available colors: red, green, yellow, blue, magenta, cyan, white
   # You can also use attributes from your ActionCable Connection's identifiers that resolve to valid ActiveRecord models
   # eg. if your connection is `identified_by :current_user` and your User model has an email attribute, you can access r.email (it will display `-` if the user isn't logged in)
-  # Learn more at: https://docs.stimulusreflex.com/troubleshooting#stimulusreflex-logging
+  # Learn more at: https://docs.stimulusreflex.com/appendices/troubleshooting#stimulusreflex-logging
 
   # config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 

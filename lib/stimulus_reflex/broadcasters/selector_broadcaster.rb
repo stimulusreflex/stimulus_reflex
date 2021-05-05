@@ -10,7 +10,7 @@ module StimulusReflex
         updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
         updates.each do |key, value|
           html = reflex.render(key) if key.is_a?(ActiveRecord::Base) && value.nil?
-          html = reflex.wrap(reflex.render(key), key) if key.is_a?(ActiveRecord::Relation) && value.nil?
+          html = reflex.render_collection(key) if key.is_a?(ActiveRecord::Relation) && value.nil?
           fragment = Nokogiri::HTML.fragment(html&.to_s || "")
 
           selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? dom_id(key) : key
@@ -19,7 +19,7 @@ module StimulusReflex
             operations << [selector, :morph]
             cable_ready.morph(
               selector: selector,
-              html: match.inner_html,
+              html: match.inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT),
               payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,

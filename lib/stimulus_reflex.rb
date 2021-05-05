@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "uri"
+require "open-uri"
 require "rack"
 require "rails/engine"
 require "active_support/all"
@@ -16,6 +17,8 @@ require "stimulus_reflex/configuration"
 require "stimulus_reflex/callbacks"
 require "stimulus_reflex/request_parameters"
 require "stimulus_reflex/reflex"
+require "stimulus_reflex/reflex_data"
+require "stimulus_reflex/reflex_factory"
 require "stimulus_reflex/element"
 require "stimulus_reflex/broadcasters/broadcaster"
 require "stimulus_reflex/broadcasters/nothing_broadcaster"

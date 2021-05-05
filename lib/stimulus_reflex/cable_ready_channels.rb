@@ -4,8 +4,9 @@ module StimulusReflex
   class CableReadyChannels
     delegate :[], to: "cable_ready_channels"
 
-    def initialize(stream_name)
+    def initialize(stream_name, reflex_id)
       @stream_name = stream_name
+      @reflex_id = reflex_id
     end
 
     def cable_ready_channels
@@ -17,7 +18,10 @@ module StimulusReflex
     end
 
     def method_missing(name, *args)
-      return stimulus_reflex_channel.public_send(name, *args) if stimulus_reflex_channel.respond_to?(name)
+      if stimulus_reflex_channel.respond_to?(name)
+        args[0][:reflex_id] = @reflex_id if args.any?
+        return stimulus_reflex_channel.public_send(name, *args)
+      end
       super
     end
 
