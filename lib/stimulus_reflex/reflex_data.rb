@@ -64,4 +64,12 @@ class StimulusReflex::ReflexData
   def reflex_controller
     data["reflexController"]
   end
+
+  private
+
+  def object_with_indifferent_access(object)
+    return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
+    object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
+    object
+  end
 end

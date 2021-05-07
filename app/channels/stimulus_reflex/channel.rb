@@ -80,12 +80,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   private
 
-  def object_with_indifferent_access(object)
-    return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
-    object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
-    object
-  end
-
   def delegate_call_to_reflex(reflex)
     method_name = reflex_data.method_name
     arguments = reflex_data.arguments
