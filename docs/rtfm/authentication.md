@@ -24,6 +24,7 @@ module ApplicationCable
 
     def connect
       self.session_id = request.session.id
+      reject_unauthorized_connection unless session_id
     end
   end
 end
