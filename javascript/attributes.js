@@ -72,7 +72,7 @@ export const extractElementAttributes = element => {
 
 // Returns an array of elements for the provided tokens.
 // Tokens is an array of space separated string coming from the `data-reflex-dataset`
-// or `data-reflex-dataset-array` attribute.
+// or `data-reflex-dataset-all` attribute.
 //
 const getElementsFromTokens = (element, tokens) => {
   if (!tokens || tokens.length === 0) return []
@@ -132,14 +132,14 @@ const getElementsFromTokens = (element, tokens) => {
 //
 export const extractElementDataset = element => {
   const dataset = element.attributes[reflexes.app.schema.reflexDatasetAttribute]
-  const arrayDataset =
-    element.attributes[reflexes.app.schema.reflexDatasetArrayAttribute]
+  const allDataset =
+    element.attributes[reflexes.app.schema.reflexDatasetAllAttribute]
 
   const tokens = (dataset && dataset.value.split(' ')) || []
-  const arrayTokens = (arrayDataset && arrayDataset.value.split(' ')) || []
+  const allTokens = (allDataset && allDataset.value.split(' ')) || []
 
   const datasetElements = getElementsFromTokens(element, tokens)
-  const datasetArrayElements = getElementsFromTokens(element, arrayTokens)
+  const datasetAllElements = getElementsFromTokens(element, allTokens)
 
   const datasetAttribtues = datasetElements.reduce((acc, ele) => {
     return { ...extractDataAttributes(ele), ...acc }
@@ -149,22 +149,22 @@ export const extractElementDataset = element => {
 
   const elementDataset = {
     dataset: { ...reflexElementAttribtues, ...datasetAttribtues },
-    datasetArray: {}
+    datasetAll: {}
   }
 
-  datasetArrayElements.forEach(element => {
+  datasetAllElements.forEach(element => {
     const elementAttributes = extractDataAttributes(element)
 
     Object.keys(elementAttributes).forEach(key => {
       const value = elementAttributes[key]
 
       if (
-        elementDataset.datasetArray[key] &&
-        Array.isArray(elementDataset.datasetArray[key])
+        elementDataset.datasetAll[key] &&
+        Array.isArray(elementDataset.datasetAll[key])
       ) {
-        elementDataset.datasetArray[key].push(value)
+        elementDataset.datasetAll[key].push(value)
       } else {
-        elementDataset.datasetArray[key] = [value]
+        elementDataset.datasetAll[key] = [value]
       }
     })
   })

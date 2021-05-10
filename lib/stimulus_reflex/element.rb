@@ -6,8 +6,8 @@ class StimulusReflex::Element < OpenStruct
   def initialize(data = {})
     @attrs = HashWithIndifferentAccess.new(data["attrs"] || {})
     datasets = data["dataset"] || {}
-    regualar_dataset = datasets["dataset"] || {}
-    @data_attrs = build_data_attrs(regualar_dataset, datasets["datasetArray"] || {})
+    regular_dataset = datasets["dataset"] || {}
+    @data_attrs = build_data_attrs(regular_dataset, datasets["datasetAll"] || {})
     all_attributes = @attrs.merge(@data_attrs)
     super build_underscored(all_attributes)
     @data_attrs.transform_keys! { |key| key.delete_prefix "data-" }
@@ -33,12 +33,12 @@ class StimulusReflex::Element < OpenStruct
 
   private
 
-  def build_data_attrs(dataset, dataset_array)
-    dataset_array.transform_keys! { |key| "data-#{key.delete_prefix("data-").pluralize}" }
+  def build_data_attrs(dataset, dataset_all)
+    dataset_all.transform_keys! { |key| "data-#{key.delete_prefix("data-").pluralize}" }
 
-    dataset.each { |key, value| dataset_array[key]&.prepend(value) }
+    dataset.each { |key, value| dataset_all[key]&.prepend(value) }
 
-    data_attrs = dataset.merge(dataset_array)
+    data_attrs = dataset.merge(dataset_all)
 
     HashWithIndifferentAccess.new(data_attrs || {})
   end

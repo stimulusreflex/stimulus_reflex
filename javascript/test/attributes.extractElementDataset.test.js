@@ -18,7 +18,7 @@ describe('extractElementDataset', () => {
     const actual = extractElementDataset(element)
     const expected = {
       dataset: {},
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -36,7 +36,7 @@ describe('extractElementDataset', () => {
         'data-reflex': 'bar',
         'data-info': '12345'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -58,7 +58,7 @@ describe('extractElementDataset', () => {
         'data-reflex': 'bar',
         'data-info': '12345'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -79,7 +79,7 @@ describe('extractElementDataset', () => {
         'data-reflex': 'bar',
         'data-info': '12345'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(extractElementDataset(element), expected)
 
@@ -117,7 +117,7 @@ describe('extractElementDataset', () => {
         'data-info': '12345',
         'data-reflex-dataset': ''
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -140,7 +140,7 @@ describe('extractElementDataset', () => {
         'data-info': '12345',
         'data-reflex-dataset': 'whut'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -168,7 +168,7 @@ describe('extractElementDataset', () => {
         'data-body-id': 'body',
         'data-reflex-dataset': 'combined'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -189,7 +189,7 @@ describe('extractElementDataset', () => {
         'data-info': 'this is the inner one',
         'data-reflex-dataset': 'combined'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -212,14 +212,14 @@ describe('extractElementDataset', () => {
         'data-parent-id': '123',
         'data-reflex-dataset': 'combined'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
 
     const button2 = dom.window.document.querySelector('#button2')
     const actual_button2 = extractElementDataset(button2)
     const expected_button2 = {
       dataset: {},
-      datasetArray: {}
+      datasetAll: {}
     }
 
     assert.deepStrictEqual(actual_button1, expected_button1)
@@ -251,7 +251,7 @@ describe('extractElementDataset', () => {
         'data-body-id': 'body',
         'data-reflex-dataset-renamed': 'combined'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -272,7 +272,7 @@ describe('extractElementDataset', () => {
         'data-age': '12',
         'data-reflex-dataset': '#timmy'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -297,7 +297,7 @@ describe('extractElementDataset', () => {
         'data-span-two': '2',
         'data-reflex-dataset': 'span'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -324,7 +324,7 @@ describe('extractElementDataset', () => {
         'data-span-two': '2',
         'data-reflex-dataset': 'span.post'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -347,7 +347,7 @@ describe('extractElementDataset', () => {
         'data-two': '2',
         'data-reflex-dataset': '#timmy'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -374,7 +374,7 @@ describe('extractElementDataset', () => {
         'data-four-id': '4',
         'data-reflex-dataset': '#post1 #post2 #post3 #post4'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -396,7 +396,7 @@ describe('extractElementDataset', () => {
         'data-job': 'clerk',
         'data-reflex-dataset': '.sarah'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -420,7 +420,7 @@ describe('extractElementDataset', () => {
         'data-two-id': '2',
         'data-reflex-dataset': '.post'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -448,7 +448,7 @@ describe('extractElementDataset', () => {
         'data-four-id': '4',
         'data-reflex-dataset': '.post1 .post2 .post3 .post4'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -456,7 +456,7 @@ describe('extractElementDataset', () => {
   it('should return dataset for first occurence and stack data values if they overlap', () => {
     const dom = new JSDOM(
       `
-      <div id="element" data-controller="posts" data-id="1" data-reflex-dataset=".post" data-reflex-dataset-array=".post">
+      <div id="element" data-controller="posts" data-id="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
         <div class="post" data-post-id="1"></div>
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
@@ -473,23 +473,23 @@ describe('extractElementDataset', () => {
         'data-id': '1',
         'data-post-id': '1',
         'data-reflex-dataset': '.post',
-        'data-reflex-dataset-array': '.post'
+        'data-reflex-dataset-all': '.post'
       },
-      datasetArray: {
+      datasetAll: {
         'data-controller': ['posts'],
         'data-id': ['1'],
         'data-post-id': ['1', '2', '3', '4'],
         'data-reflex-dataset': ['.post'],
-        'data-reflex-dataset-array': ['.post']
+        'data-reflex-dataset-all': ['.post']
       }
     }
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return dataset for data-reflex-dataset-array', () => {
+  it('should return dataset for data-reflex-dataset-all', () => {
     const dom = new JSDOM(
       `
-      <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset-array=".post">
+      <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset-all=".post">
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
         <div class="post" data-post-id="4"></div>
@@ -503,21 +503,21 @@ describe('extractElementDataset', () => {
       dataset: {
         'data-controller': 'posts',
         'data-post-id': '1',
-        'data-reflex-dataset-array': '.post'
+        'data-reflex-dataset-all': '.post'
       },
-      datasetArray: {
+      datasetAll: {
         'data-controller': ['posts'],
         'data-post-id': ['1', '2', '3', '4'],
-        'data-reflex-dataset-array': ['.post']
+        'data-reflex-dataset-all': ['.post']
       }
     }
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return dataset if the plural of overlapped value is also used with data-reflex-dataset-array', () => {
+  it('should return dataset if the plural of overlapped value is also used with data-reflex-dataset-all', () => {
     const dom = new JSDOM(
       `
-      <div id="element" data-controller="posts" data-post-ids="1" data-reflex-dataset=".post" data-reflex-dataset-array=".post">
+      <div id="element" data-controller="posts" data-post-ids="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
         <div class="post" data-post-id="4"></div>
@@ -533,20 +533,20 @@ describe('extractElementDataset', () => {
         'data-post-id': '2',
         'data-post-ids': '1',
         'data-reflex-dataset': '.post',
-        'data-reflex-dataset-array': '.post'
+        'data-reflex-dataset-all': '.post'
       },
-      datasetArray: {
+      datasetAll: {
         'data-controller': ['posts'],
         'data-post-id': ['2', '3', '4'],
         'data-post-ids': ['1'],
         'data-reflex-dataset': ['.post'],
-        'data-reflex-dataset-array': ['.post']
+        'data-reflex-dataset-all': ['.post']
       }
     }
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return dataset if both singular and plural key exists but no data-reflex-dataset-array is passed', () => {
+  it('should return dataset if both singular and plural key exists but no data-reflex-dataset-all is passed', () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset=".post">
@@ -566,7 +566,7 @@ describe('extractElementDataset', () => {
         'data-post-ids': '4',
         'data-reflex-dataset': '.post'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -594,7 +594,7 @@ describe('extractElementDataset', () => {
         'data-child-id': '2',
         'data-reflex-dataset': 'parent'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -625,7 +625,7 @@ describe('extractElementDataset', () => {
         'data-child-id': '3',
         'data-reflex-dataset': 'ancestors'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -657,7 +657,7 @@ describe('extractElementDataset', () => {
         'data-child-two-id': '2',
         'data-reflex-dataset': 'children'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
@@ -689,7 +689,7 @@ describe('extractElementDataset', () => {
         'data-sibling-two-id': '2',
         'data-reflex-dataset': 'siblings'
       },
-      datasetArray: {}
+      datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })

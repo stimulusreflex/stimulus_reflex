@@ -13,7 +13,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
         "data-post" => "The Post",
         "data-post-id" => "2"
       },
-      "datasetArray" => {}
+      "datasetAll" => {}
     }
   })
 
@@ -71,14 +71,14 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
     assert_equal "2", element.data_attributes[:post_id]
   end
 
-  test "should pluralize keys from datasetArray" do
+  test "should pluralize keys from datasetAll" do
     data = {
       "dataset" => {
         "dataset" => {
           "data-reflex" => "click",
           "data-sex" => "male"
         },
-        "datasetArray" => {
+        "datasetAll" => {
           "data-reflex" => ["click"],
           "data-post-id" => ["1", "2", "3", "4"],
           "data-name" => ["steve", "bill", "steve", "mike"]
@@ -86,21 +86,21 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
       }
     }
 
-    dataset_array_element = StimulusReflex::Element.new(data)
+    dataset_all_element = StimulusReflex::Element.new(data)
 
-    assert_equal "click", dataset_array_element.dataset.reflex
-    assert_equal "male", dataset_array_element.dataset.sex
+    assert_equal "click", dataset_all_element.dataset.reflex
+    assert_equal "male", dataset_all_element.dataset.sex
 
-    assert_equal ["steve", "bill", "steve", "mike"], dataset_array_element.dataset.names
-    assert_equal ["1", "2", "3", "4"], dataset_array_element.dataset.post_ids
-    assert_equal ["click"], dataset_array_element.dataset.reflexes
+    assert_equal ["steve", "bill", "steve", "mike"], dataset_all_element.dataset.names
+    assert_equal ["1", "2", "3", "4"], dataset_all_element.dataset.post_ids
+    assert_equal ["click"], dataset_all_element.dataset.reflexes
   end
 
-  test "should pluralize irregular words from datasetArray" do
+  test "should pluralize irregular words from datasetAll" do
     data = {
       "dataset" => {
         "dataset" => {},
-        "datasetArray" => {
+        "datasetAll" => {
           "data-cat" => ["cat"],
           "data-child" => ["child"],
           "data-women" => ["woman"],
@@ -126,7 +126,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   test "should not pluralize plural key" do
     data = {
       "dataset" => {
-        "datasetArray" => {
+        "datasetAll" => {
           "data-ids" => ["1", "2"]
         }
       }
@@ -159,7 +159,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-duplicate-value" => "19",
           "data-duplicate-values" => "20"
         },
-        "datasetArray" => {
+        "datasetAll" => {
           "data-id" => ["3", "4"],
           "data-post-ids" => ["11", "12"],
           "data-duplicate-value" => ["20", "21", "22"]
