@@ -59,5 +59,115 @@ module StimulusReflex
         broadcaster.broadcast nil, some: :data
       end
     end
+
+    test "morphs the contents of an element to an empty string if no content specified" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph("#foo", nil)
+
+      expected = {
+        "cableReady" => true,
+        "operations" => {
+          "innerHtml" => [
+            {
+              "selector" => "#foo",
+              "html" => "",
+              "payload" => {},
+              "stimulusReflex" => {
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
+            }
+          ]
+        }
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
+    test "morphs the contents of an element to an empty string if empty specified" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph("#foo", "")
+
+      expected = {
+        "cableReady" => true,
+        "operations" => {
+          "innerHtml" => [
+            {
+              "selector" => "#foo",
+              "html" => "",
+              "payload" => {},
+              "stimulusReflex" => {
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
+            }
+          ]
+        }
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
+    test "morphs the contents of an element to an empty string if no content specified, hash form" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph({"#foo": nil}, nil)
+
+      expected = {
+        "cableReady" => true,
+        "operations" => {
+          "innerHtml" => [
+            {
+              "selector" => "#foo",
+              "html" => "",
+              "payload" => {},
+              "stimulusReflex" => {
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
+            }
+          ]
+        }
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
+    test "morphs the contents of an element to specified HTML, hash form" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph({"#foo": '<div id="foo"><div>bar</div><div>baz</div></div>'}, nil)
+
+      expected = {
+        "cableReady" => true,
+        "operations" => {
+          "morph" => [
+            {
+              "selector" => "#foo",
+              "html" => "<div>bar</div><div>baz</div>",
+              "payload" => {},
+              "childrenOnly" => true,
+              "permanentAttributeName" => nil,
+              "stimulusReflex" => {
+                "some" => "data",
+                "morph" => "selector"
+              },
+              "reflexId" => "666"
+            }
+          ]
+        }
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
   end
 end
