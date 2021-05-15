@@ -11,9 +11,9 @@ module StimulusReflex
         updates.each do |key, value|
           html = reflex.render(key) if key.is_a?(ActiveRecord::Base) && value.nil?
           html = reflex.render_collection(key) if key.is_a?(ActiveRecord::Relation) && value.nil?
-          fragment = Nokogiri::HTML.fragment(html&.to_s || "")
-
-          selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? dom_id(key) : key
+          html ||= value
+          fragment = Nokogiri::HTML.fragment(html.to_s)
+          selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? dom_id(key) : key.to_s
           match = fragment.at_css(selector)
           if match.present?
             operations << [selector, :morph]

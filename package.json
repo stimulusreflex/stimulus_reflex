@@ -34,7 +34,7 @@
     "postinstall": "node ./javascript/scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check ./javascript/*.js ./javascript/**/*.js",
     "prettier-standard:format": "yarn run prettier-standard ./javascript/*.js ./javascript/**/*.js",
-    "test": "yarn run mocha --require @babel/register --require esm ./javascript/test"
+    "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
   },
   "peerDependencies": {
     "stimulus": ">= 1.1"
@@ -50,6 +50,7 @@
     "assert": "^2.0.0",
     "esm": "^3.2.25",
     "jsdom": "^16.0.1",
+    "jsdom-global": "^3.0.2",
     "mocha": "^8.0.1",
     "prettier-standard": "^16.1.0",
     "stimulus": ">= 1.1"
