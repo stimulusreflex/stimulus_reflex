@@ -23,8 +23,13 @@
 - Nokogiri usage to process HTML adds whitespace nodes, causing unneeded morphdom updates [\#487](https://github.com/hopsoft/stimulus_reflex/issues/487)
 - reflexData missing on element in beforeReflex [\#443](https://github.com/hopsoft/stimulus_reflex/issues/443)
 - cable\_ready method in Reflex class should support custom operations [\#419](https://github.com/hopsoft/stimulus_reflex/issues/419)
+- convert symbol keys, ensure fragment html exists [\#503](https://github.com/hopsoft/stimulus_reflex/pull/503) ([leastbad](https://github.com/leastbad))
 - only run piggybacked operations after SR is finished, and isolate them [\#482](https://github.com/hopsoft/stimulus_reflex/pull/482) ([leastbad](https://github.com/leastbad))
 - refactor declarative reflex observer [\#440](https://github.com/hopsoft/stimulus_reflex/pull/440) ([leastbad](https://github.com/leastbad))
+
+**Deprecated:**
+
+- data-reflex-dataset and data-reflex-dataset-all [\#478](https://github.com/hopsoft/stimulus_reflex/pull/478) ([leastbad](https://github.com/leastbad))
 
 **Removed:**
 
@@ -32,6 +37,7 @@
 
 **Closed issues:**
 
+- Logging issue when using Morphing Multiplicity with Symbol keys [\#502](https://github.com/hopsoft/stimulus_reflex/issues/502)
 - Re-assignment of constant `reflexRoot` [\#473](https://github.com/hopsoft/stimulus_reflex/issues/473)
 - Lost Instance Variables [\#471](https://github.com/hopsoft/stimulus_reflex/issues/471)
 - Warn developers about example.com [\#468](https://github.com/hopsoft/stimulus_reflex/issues/468)
@@ -48,6 +54,10 @@
 
 **Merged pull requests:**
 
+- Bump nokogiri from 1.11.3 to 1.11.4 [\#507](https://github.com/hopsoft/stimulus_reflex/pull/507) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump lodash from 4.17.20 to 4.17.21 [\#504](https://github.com/hopsoft/stimulus_reflex/pull/504) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump handlebars from 4.7.6 to 4.7.7 [\#501](https://github.com/hopsoft/stimulus_reflex/pull/501) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Move object\_with\_indifferent\_access to ReflexData [\#500](https://github.com/hopsoft/stimulus_reflex/pull/500) ([erlingur](https://github.com/erlingur))
 - Bump actionpack from 6.1.3 to 6.1.3.2 [\#499](https://github.com/hopsoft/stimulus_reflex/pull/499) ([dependabot[bot]](https://github.com/apps/dependabot))
 - render\_collection [\#498](https://github.com/hopsoft/stimulus_reflex/pull/498) ([leastbad](https://github.com/leastbad))
 - Bump rexml from 3.2.4 to 3.2.5 [\#495](https://github.com/hopsoft/stimulus_reflex/pull/495) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -189,7 +199,6 @@
 - don't show findElement warnings unless debugging [\#384](https://github.com/hopsoft/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
 - Setup a proxy object that wraps CableReady::Channels [\#382](https://github.com/hopsoft/stimulus_reflex/pull/382) ([hopsoft](https://github.com/hopsoft))
 - non-SR cable\_ready operation pass-through [\#381](https://github.com/hopsoft/stimulus_reflex/pull/381) ([leastbad](https://github.com/leastbad))
-- fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre5](https://github.com/hopsoft/stimulus_reflex/tree/v3.4.0.pre5) (2020-11-25)
 
@@ -203,6 +212,7 @@
 
 - Move package.json to root of project [\#380](https://github.com/hopsoft/stimulus_reflex/pull/380) ([hopsoft](https://github.com/hopsoft))
 - make element.reflexController a dictionary [\#379](https://github.com/hopsoft/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
+- fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/hopsoft/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/hopsoft/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
 - Exit with nonzero status code [\#375](https://github.com/hopsoft/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
 
@@ -554,6 +564,7 @@
 - Loosen Rails requirement to 5.2 with instructions [\#205](https://github.com/hopsoft/stimulus_reflex/pull/205) ([jasoncharnes](https://github.com/jasoncharnes))
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/hopsoft/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/hopsoft/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
+- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - 147 extract multiple checkbox values [\#175](https://github.com/hopsoft/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/hopsoft/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -592,7 +603,6 @@
 - Replace uuid4 dependency with function in repo [\#181](https://github.com/hopsoft/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/hopsoft/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/hopsoft/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
-- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 
 **Fixed bugs:**
 
@@ -605,7 +615,6 @@
 
 **Merged pull requests:**
 
-- Add halted lifecycle event [\#193](https://github.com/hopsoft/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
 - Some housekeeping [\#189](https://github.com/hopsoft/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/hopsoft/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/hopsoft/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
@@ -688,6 +697,7 @@
 
 **Implemented enhancements:**
 
+- add reflex callbacks [\#160](https://github.com/hopsoft/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/hopsoft/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/hopsoft/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/hopsoft/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
