@@ -53,6 +53,10 @@ class StimulusReflex::ReflexData
     data["reflexId"]
   end
 
+  def tab_id
+    data["tabId"]
+  end
+
   def xpath_controller
     data["xpathController"]
   end
