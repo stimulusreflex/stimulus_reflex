@@ -2,6 +2,8 @@
 
 module StimulusReflex
   class SelectorBroadcaster < Broadcaster
+    include CableReady::Identifiable
+
     def broadcast(_, data = {})
       morphs.each do |morph|
         selectors, html = morph
@@ -11,7 +13,7 @@ module StimulusReflex
           html = reflex.render_collection(key) if key.is_a?(ActiveRecord::Relation) && value.nil?
           html ||= value
           fragment = Nokogiri::HTML.fragment(html.to_s)
-          selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? reflex.dom_id(key) : key.to_s
+          selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? dom_id(key) : key.to_s
           match = fragment.at_css(selector)
           if match.present?
             operations << [selector, :morph]
