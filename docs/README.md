@@ -15,7 +15,7 @@ This architecture eliminates the complexity imposed by full-stack frontend frame
 {% hint style="success" %}
 **Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/stimulus-reflex)
 
-[![GitHub stars](https://img.shields.io/github/stars/hopsoft/stimulus_reflex?style=social)](https://github.com/stimulusreflex/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/hopsoft/stimulus_reflex?style=social)](https://github.com/stimulusreflex/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
+[![GitHub stars](https://img.shields.io/github/stars/stimulusreflex/stimulus_reflex?style=social)](https://github.com/stimulusreflex/stimulus_reflex) [![GitHub forks](https://img.shields.io/github/forks/stimulusreflex/stimulus_reflex?style=social)](https://github.com/stimulusreflex/stimulus_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
 {% endhint %}
 
 ## Why should I use StimulusReflex?
