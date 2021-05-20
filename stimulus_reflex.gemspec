@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.version = StimulusReflex::VERSION
   gem.authors = ["Nathan Hopkins"]
   gem.email = ["natehop@gmail.com"]
-  gem.homepage = "https://github.com/hopsoft/stimulus_reflex"
+  gem.homepage = "https://github.com/stimulusreflex/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
   gem.post_install_message = <<~MESSAGE
     Friendly reminder: When updating the stimulus_reflex gem,
@@ -18,8 +18,8 @@ Gem::Specification.new do |gem|
   MESSAGE
 
   gem.metadata = {
-    "bug_tracker_uri" => "https://github.com/hopsoft/stimulus_reflex/issues",
-    "changelog_uri" => "https://github.com/hopsoft/stimulus_reflex/CHANGELOG.md",
+    "bug_tracker_uri" => "https://github.com/stimulusreflex/stimulus_reflex/issues",
+    "changelog_uri" => "https://github.com/stimulusreflex/stimulus_reflex/CHANGELOG.md",
     "documentation_uri" => "https://docs.stimulusreflex.com",
     "homepage_uri" => gem.homepage,
     "source_code_uri" => gem.homepage

@@ -7,7 +7,7 @@
     <a href="https://www.npmjs.com/package/stimulus_reflex">
       <img alt="downloads" src="https://img.shields.io/npm/dm/stimulus_reflex.svg?color=blue" target="_blank" />
     </a>
-    <a href="https://github.com/hopsoft/stimulus_reflex/blob/master/LICENSE">
+    <a href="https://github.com/stimulusreflex/stimulus_reflex/blob/master/LICENSE">
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
@@ -30,14 +30,14 @@
     <a href="https://www.codacy.com/manual/hopsoft/stimulus_reflex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hopsoft/stimulus_reflex&amp;utm_campaign=Badge_Grade" target="_blank">
       <img alt="Code Quality" src="https://app.codacy.com/project/badge/Grade/d1d72a7060f5467b8696884351cf477f"/>
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg" alt="StandardRB" style="max-width:100%;">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg" alt="StandardRB" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
     </a>
   </p>
 </p>
@@ -104,7 +104,7 @@ and [Prettier-Standard](https://github.com/sheerun/prettier-standard) for JavaSc
 
 Please run `./bin/standardize` prior to submitting pull requests.
 
-View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
+View the [wiki](https://github.com/stimulusreflex/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
 
 ## 📦 Releasing
 

@@ -83,7 +83,7 @@ class StimulusReflex::SanityChecker
     return if StimulusReflex.config.on_new_version_available == :ignore
     return unless using_stable_release
     begin
-      latest_version = URI.open("https://raw.githubusercontent.com/hopsoft/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
+      latest_version = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
       if latest_version != StimulusReflex::VERSION
         puts <<~WARN
 

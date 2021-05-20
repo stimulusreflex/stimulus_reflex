@@ -184,7 +184,7 @@ Getting to this point required significant effort and cooperation between member
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
 
-Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/hopsoft/stimulus_reflex/issues/46).
+Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/stimulusreflex/stimulus_reflex/issues/46).
 
 {% hint style="info" %}
 If you're looking to authenticate AnyCable connections with Devise, the documentation for that process is [here](https://docs.anycable.io/v1/#/ruby/authentication), and there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
