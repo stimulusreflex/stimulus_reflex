@@ -96,13 +96,12 @@ class StimulusReflex::Reflex
   end
 
   def controller
-    @controller ||= begin
-      controller_class.new.tap do |c|
-        c.instance_variable_set :"@stimulus_reflex", true
-        c.set_request! request
-        c.set_response! controller_class.make_response!(request)
-      end
+    @controller ||= controller_class.new.tap do |c|
+      c.instance_variable_set :@stimulus_reflex, true
+      c.set_request! request
+      c.set_response! controller_class.make_response!(request)
     end
+
     instance_variables.each { |name| @controller.instance_variable_set name, instance_variable_get(name) }
     @controller
   end
@@ -112,7 +111,7 @@ class StimulusReflex::Reflex
   end
 
   def render(*args)
-    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME": "")).render(*args)
+    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks

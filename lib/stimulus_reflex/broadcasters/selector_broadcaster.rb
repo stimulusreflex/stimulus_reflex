@@ -7,7 +7,7 @@ module StimulusReflex
     def broadcast(_, data = {})
       morphs.each do |morph|
         selectors, html = morph
-        updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
+        updates = selectors.is_a?(Hash) ? selectors : {selectors => html}
         updates.each do |key, value|
           html = reflex.render(key) if key.is_a?(ActiveRecord::Base) && value.nil?
           html = reflex.render_collection(key) if key.is_a?(ActiveRecord::Relation) && value.nil?
