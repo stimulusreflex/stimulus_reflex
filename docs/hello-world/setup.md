@@ -40,7 +40,7 @@ yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 bundle exec rails webpacker:install:stimulus
 bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:config
+bundle exec rails stimulus_reflex:install
 ```
 
 {% hint style="info" %}

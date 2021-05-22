@@ -554,6 +554,7 @@ To remove spring **forever**, here is the process we recommend:
 1. `pkill -f spring`
 2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub --remove --all`
+4. Comment out the line in `bin/rails` which says: `load File.expandpath("spring", _dir)`
 {% endhint %}
 
 ## Be realistic
