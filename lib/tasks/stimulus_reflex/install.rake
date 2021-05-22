@@ -69,7 +69,7 @@ namespace :stimulus_reflex do
 
     system "bundle exec rails generate stimulus_reflex example"
     puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
-    system "bundle exec rails generate stimulus_reflex:config"
+    system "bundle exec rails generate stimulus_reflex:initializer"
 
     puts
     puts "StimulusReflex and CableReady have been successfully installed!"
