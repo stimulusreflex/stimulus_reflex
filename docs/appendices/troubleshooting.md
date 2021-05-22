@@ -442,7 +442,7 @@ There are some things that we'd very much like to fix, but we simply haven't bee
 
 #### iFrame gets refreshed despite data-reflex-permanent
 
-Depending on how your DOM is structured, it's possible to have an iframe element which has been marked with `data-reflex-permanent` get morphed. [We're aware of it, and we've tried to fix it.](https://github.com/stimulusreflex/stimulus_reflex/issues/452)
+Depending on how your DOM is structured, it's possible to have an iframe element which has been marked with `data-reflex-permanent` get morphed. [We're aware of it, and we've tried to fix it.](https://github.com/hopsoft/stimulus_reflex/issues/452)
 
 ## Flight Safety Card
 
@@ -554,6 +554,7 @@ To remove spring **forever**, here is the process we recommend:
 1. `pkill -f spring`
 2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub --remove --all`
+4. Comment out the line in `bin/rails` which says: `load File.expandpath("spring", _dir)`
 {% endhint %}
 
 ## Be realistic

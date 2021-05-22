@@ -40,7 +40,7 @@ yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 bundle exec rails webpacker:install:stimulus
 bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:config
+bundle exec rails generate stimulus_reflex:initializer
 ```
 
 {% hint style="info" %}
@@ -245,14 +245,14 @@ If you are interested in running the latest version of StimulusReflex, you can p
 {% code title="package.json" %}
 ```javascript
 "dependencies": {
-  "stimulus_reflex": "stimulusreflex/stimulus_reflex#master"
+  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
 }
 ```
 {% endcode %}
 
 {% code title="Gemfile" %}
 ```ruby
-gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex", branch: "master"
+gem "stimulus_reflex", github: "hopsoft/stimulus_reflex", branch: "master"
 ```
 {% endcode %}
 
@@ -266,7 +266,7 @@ It is really important to **always make sure that your Ruby and JavaScript packa
 
 Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
 
-Using [\#335 - tab isolation mode v2](https://github.com/stimulusreflex/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+Using [\#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
 
 {% code title="package.json" %}
 ```javascript

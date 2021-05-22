@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/stimulusreflex/stimulus_reflex/tree/HEAD)
+## [v3.5.0.pre0](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre0) (2021-05-21)
 
-[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.4.1...HEAD)
+[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.4.1...v3.5.0.pre0)
 
 **Breaking changes:**
 
@@ -11,8 +11,10 @@
 
 **Implemented enhancements:**
 
+- tab\_id accessor [\#506](https://github.com/stimulusreflex/stimulus_reflex/pull/506) ([leastbad](https://github.com/leastbad))
 - Stop adding whitespace when parsing our html [\#492](https://github.com/stimulusreflex/stimulus_reflex/pull/492) ([lmatiolis](https://github.com/lmatiolis))
 - Log the full exception trace [\#491](https://github.com/stimulusreflex/stimulus_reflex/pull/491) ([rmckayfleming](https://github.com/rmckayfleming))
+- delegate dom\_id to CableReady::Identifiable [\#485](https://github.com/stimulusreflex/stimulus_reflex/pull/485) ([leastbad](https://github.com/leastbad))
 - report failed basic auth [\#454](https://github.com/stimulusreflex/stimulus_reflex/pull/454) ([leastbad](https://github.com/leastbad))
 - deprecation warnings \(consumer, form serialization, isolation mode\) [\#438](https://github.com/stimulusreflex/stimulus_reflex/pull/438) ([leastbad](https://github.com/leastbad))
 - implicit dom\_id for morph selectors [\#436](https://github.com/stimulusreflex/stimulus_reflex/pull/436) ([leastbad](https://github.com/leastbad))
@@ -181,7 +183,7 @@
 **Merged pull requests:**
 
 - Trigger piggy back operations after SR operations [\#395](https://github.com/stimulusreflex/stimulus_reflex/pull/395) ([hopsoft](https://github.com/hopsoft))
-- `invokeLifecycleMethod\(\)`: handle undefined `element` parameter [\#393](https://github.com/stimulusreflex/stimulus_reflex/pull/393) ([marcoroth](https://github.com/marcoroth))
+- `invokeLifecycleMethod()`: handle undefined `element` parameter [\#393](https://github.com/stimulusreflex/stimulus_reflex/pull/393) ([marcoroth](https://github.com/marcoroth))
 - don't warn folks twice [\#392](https://github.com/stimulusreflex/stimulus_reflex/pull/392) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.0.pre6](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.0.pre6) (2020-11-29)
@@ -193,7 +195,7 @@
 - Update templates for new stage etc [\#390](https://github.com/stimulusreflex/stimulus_reflex/pull/390) ([leastbad](https://github.com/leastbad))
 - reflexError and received refactor [\#389](https://github.com/stimulusreflex/stimulus_reflex/pull/389) ([leastbad](https://github.com/leastbad))
 - add jQuery support to SR library events [\#388](https://github.com/stimulusreflex/stimulus_reflex/pull/388) ([leastbad](https://github.com/leastbad))
-- dont exit in sanity checker on `stimulus\_reflex:install` [\#387](https://github.com/stimulusreflex/stimulus_reflex/pull/387) ([marcoroth](https://github.com/marcoroth))
+- dont exit in sanity checker on `stimulus_reflex:install` [\#387](https://github.com/stimulusreflex/stimulus_reflex/pull/387) ([marcoroth](https://github.com/marcoroth))
 - Allow `success` and `after` lifecycle methods on replaced elements [\#386](https://github.com/stimulusreflex/stimulus_reflex/pull/386) ([marcoroth](https://github.com/marcoroth))
 - split SR operations from data.operations [\#385](https://github.com/stimulusreflex/stimulus_reflex/pull/385) ([leastbad](https://github.com/leastbad))
 - don't show findElement warnings unless debugging [\#384](https://github.com/stimulusreflex/stimulus_reflex/pull/384) ([leastbad](https://github.com/leastbad))
@@ -222,12 +224,12 @@
 
 **Fixed bugs:**
 
-- Fix fatal error in `stimulus\_reflex:install` task with Rails 5.2 [\#371](https://github.com/stimulusreflex/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
+- Fix fatal error in `stimulus_reflex:install` task with Rails 5.2 [\#371](https://github.com/stimulusreflex/stimulus_reflex/pull/371) ([Matt-Yorkley](https://github.com/Matt-Yorkley))
 - fix nothing morphs and error messages [\#368](https://github.com/stimulusreflex/stimulus_reflex/pull/368) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
-- `stimulus\_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/stimulusreflex/stimulus_reflex/issues/367)
+- `stimulus_reflex:install` fails to complete in Rails 5.2 [\#367](https://github.com/stimulusreflex/stimulus_reflex/issues/367)
 - Form data still not captured [\#366](https://github.com/stimulusreflex/stimulus_reflex/issues/366)
 - Console exception when reflex does not update a page that didn't trigger the reflex [\#363](https://github.com/stimulusreflex/stimulus_reflex/issues/363)
 - Improve server-side logging options [\#264](https://github.com/stimulusreflex/stimulus_reflex/issues/264)
@@ -239,7 +241,7 @@
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/stimulusreflex/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
 - fix: rip out microbundle [\#369](https://github.com/stimulusreflex/stimulus_reflex/pull/369) ([ParamagicDev](https://github.com/ParamagicDev))
 - Add tests for broadcasters [\#364](https://github.com/stimulusreflex/stimulus_reflex/pull/364) ([julianrubisch](https://github.com/julianrubisch))
-- Do not run sanity check on `rails generate stimulus\_reflex:config` [\#362](https://github.com/stimulusreflex/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
+- Do not run sanity check on `rails generate stimulus_reflex:config` [\#362](https://github.com/stimulusreflex/stimulus_reflex/pull/362) ([RolandStuder](https://github.com/RolandStuder))
 - fix: revert CR and @rails/actioncable to dependencies [\#361](https://github.com/stimulusreflex/stimulus_reflex/pull/361) ([ParamagicDev](https://github.com/ParamagicDev))
 - xpath fix [\#360](https://github.com/stimulusreflex/stimulus_reflex/pull/360) ([leastbad](https://github.com/leastbad))
 
@@ -263,11 +265,11 @@
 
 **Closed issues:**
 
-- Regression in version 3.4.0-pre1: Cannot find module `cable\_ready` [\#350](https://github.com/stimulusreflex/stimulus_reflex/issues/350)
+- Regression in version 3.4.0-pre1: Cannot find module `cable_ready` [\#350](https://github.com/stimulusreflex/stimulus_reflex/issues/350)
 
 **Merged pull requests:**
 
-- move `cable\_ready` to development dependencies [\#351](https://github.com/stimulusreflex/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
+- move `cable_ready` to development dependencies [\#351](https://github.com/stimulusreflex/stimulus_reflex/pull/351) ([marcoroth](https://github.com/marcoroth))
 - Fix serializeForm initialization [\#349](https://github.com/stimulusreflex/stimulus_reflex/pull/349) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.4.0.pre1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.0.pre1) (2020-11-03)
@@ -603,6 +605,7 @@
 - Replace uuid4 dependency with function in repo [\#181](https://github.com/stimulusreflex/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/stimulusreflex/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
 - add console log messages for every reflex call [\#163](https://github.com/stimulusreflex/stimulus_reflex/pull/163) ([marcoroth](https://github.com/marcoroth))
+- add reflex callbacks [\#160](https://github.com/stimulusreflex/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 
 **Fixed bugs:**
 
@@ -610,7 +613,7 @@
 
 **Closed issues:**
 
--  The ActionCable connection is not open! `this.isActionCableConnectionOpen\(\)` must return true before calling `this.stimulate\(\)` [\#187](https://github.com/stimulusreflex/stimulus_reflex/issues/187)
+-  The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()` [\#187](https://github.com/stimulusreflex/stimulus_reflex/issues/187)
 - Promises just resolve with last Partial DOM update [\#171](https://github.com/stimulusreflex/stimulus_reflex/issues/171)
 
 **Merged pull requests:**
@@ -697,7 +700,6 @@
 
 **Implemented enhancements:**
 
-- add reflex callbacks [\#160](https://github.com/stimulusreflex/stimulus_reflex/pull/160) ([websebdev](https://github.com/websebdev))
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/stimulusreflex/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/stimulusreflex/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/stimulusreflex/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
