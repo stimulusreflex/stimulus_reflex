@@ -61,7 +61,7 @@ namespace :stimulus_reflex do
     unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      File.write(filepath, lines.join)
     end
 
     lines = File.open(filepath, "r") { |f| f.readlines }
