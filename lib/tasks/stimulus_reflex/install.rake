@@ -86,7 +86,7 @@ namespace :stimulus_reflex do
     system "bundle exec rails generate stimulus_reflex:initializer"
     system "bundle exec rails generate cable_ready:initializer"
     system "bundle exec rails generate cable_ready:stream_from"
-    
+
     puts
     puts "Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller."
     system "bundle exec rails generate stimulus_reflex example"
