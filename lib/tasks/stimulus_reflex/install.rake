@@ -57,6 +57,20 @@ namespace :stimulus_reflex do
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
+    lines = File.open(filepath, "r") { |f| f.readlines }
+    unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
+      File.open(filepath, "w") { |f| f.write lines.join }
+    end
+
+    lines = File.open(filepath, "r") { |f| f.readlines }
+    unless lines.find { |line| line.include?("config.action_controller.default_url_options") }
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "  config.action_controller.default_url_options = {host: \"localhost\", port: 3000}\n"
+      File.open(filepath, "w") { |f| f.write lines.join }
+    end
+
     filepath = Rails.root.join("config/cable.yml")
     lines = File.open(filepath, "r") { |f| f.readlines }
     if lines[1].include?("adapter: async")
@@ -67,13 +81,22 @@ namespace :stimulus_reflex do
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
-    system "bundle exec rails generate stimulus_reflex example"
-    puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
+    puts
+    puts "Generating default StimulusReflex and CableReady configuration files in config/initializers."
     system "bundle exec rails generate stimulus_reflex:initializer"
+    system "bundle exec rails generate cable_ready:initializer"
+    system "bundle exec rails generate cable_ready:stream_from"
+    
+    puts
+    puts "Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller."
+    system "bundle exec rails generate stimulus_reflex example"
 
     puts
-    puts "StimulusReflex and CableReady have been successfully installed!"
+    puts "StimulusReflex and CableReady have been successfully installed! 🎉"
     puts "Go to https://docs.stimulusreflex.com/hello-world/quickstart if you need help getting started."
+    puts
+    puts "Come say hello on Discord: https://discord.gg/stimulus-reflex"
+    puts "The fastest way to get support is to prepare an MVCE git repo that you can share."
     puts
   end
 end
