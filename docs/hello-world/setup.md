@@ -123,21 +123,22 @@ Since mismatched versions are the first step on the path to hell, by default Sti
 
 If you have special needs, you can override this setting in your initializer. `:warn` will emit the same text-based warning but not prevent the server process from starting. `:ignore` will silence all mismatched version warnings, if you really just DGAF. ¯\\_\(ツ\)\_/¯
 
+StimulusReflex can also let you know when new stable versions are released during the application start-up process. This opt-in behaviour is `:ignore` by default, but you can set it to `:warn` or `:exit`.
+
 {% code title="config/initializers/stimulus\_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.on_failed_sanity_checks = :warn
+  config.on_new_version_available = :warn
 end
 ```
 {% endcode %}
 
-### Upgrading to v3.4.0+
+### Upgrading to v3.5.0
 
 * make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
-* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* OPTIONAL: enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
-* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
-* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
+* enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* generate an initializer with `rails g stimulus_reflex:initializer` if required
 
 ## Authentication
 
