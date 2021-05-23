@@ -19,7 +19,11 @@ module StimulusReflex
 
     def method_missing(name, *args)
       if stimulus_reflex_channel.respond_to?(name)
-        args[0][:reflex_id] = @reflex_id if args.any?
+        if (options = args.find_index { |a| a.is_a? Hash })
+          args[options][:reflex_id] = @reflex_id
+        elsif args.any?
+          args << {reflex_id: @reflex_id}
+        end
         return stimulus_reflex_channel.public_send(name, *args)
       end
       super
