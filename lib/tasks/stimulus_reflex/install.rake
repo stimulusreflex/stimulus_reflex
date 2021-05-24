@@ -26,7 +26,7 @@ namespace :stimulus_reflex do
       .first
 
     puts "Updating #{filepath}"
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
 
     unless lines.find { |line| line.start_with?("import StimulusReflex") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
@@ -47,14 +47,14 @@ namespace :stimulus_reflex do
     lines << "application.consumer = consumer\n"
     lines << "StimulusReflex.initialize(application, { controller, isolate: true })\n" unless initialize_line
     lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
-    File.open(filepath, "w") { |f| f.write lines.join }
+    File.write(filepath, lines.join)
 
     filepath = Rails.root.join("config/environments/development.rb")
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.session_store") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      File.write(filepath, lines.join)
     end
 
     lines = File.readlines(filepath)
@@ -64,21 +64,21 @@ namespace :stimulus_reflex do
       File.write(filepath, lines.join)
     end
 
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.action_controller.default_url_options") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.action_controller.default_url_options = {host: \"localhost\", port: 3000}\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      File.write(filepath, lines.join)
     end
 
     filepath = Rails.root.join("config/cable.yml")
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
     if lines[1].include?("adapter: async")
       lines.delete_at 1
       lines.insert 1, "  adapter: redis\n"
       lines.insert 2, "  url: <%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>\n"
       lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).tr("\\", "").tr("-. ", "_").underscore + "_development\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      File.write(filepath, lines.join)
     end
 
     puts
