@@ -49,11 +49,14 @@ namespace :stimulus_reflex do
     lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
     File.write(filepath, lines.join)
 
+    puts
+    puts "Updating config/environments/development.rb"
     filepath = Rails.root.join("config/environments/development.rb")
     lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.session_store") }
-      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+    matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
+      puts "Using :cache_store for session storage. We recommend switching to Redis for cache and session storage, when you're ready. Find out more: https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
       File.write(filepath, lines.join)
     end
 
@@ -71,6 +74,8 @@ namespace :stimulus_reflex do
       File.write(filepath, lines.join)
     end
 
+    puts
+    puts "Updating config/cable.yml"
     filepath = Rails.root.join("config/cable.yml")
     lines = File.readlines(filepath)
     if lines[1].include?("adapter: async")
