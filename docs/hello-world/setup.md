@@ -163,7 +163,9 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 
 We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, there are some inherent limitations to the way cookies are communicated via websockets that make it difficult to use cookies for session storage in production.
 
-We default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared. Many developers switch to using the [redis-session-store gem](https://github.com/roidrage/redis-session-store), especially in production.
+We default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared.
+
+Most developers switch to using `:redis_cache_store` for the cache store. The [redis-session-store gem](https://github.com/roidrage/redis-session-store) is a popular choice for the session store, especially in production.
 
 Learn about configuring Redis for cache and session storage on the [Deployment](../appendices/deployment.md#use-redis-as-your-cache-store) page.
 
