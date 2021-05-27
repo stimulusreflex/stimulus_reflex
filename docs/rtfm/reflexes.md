@@ -238,7 +238,7 @@ These three attributes contain everything required to call the `remove` Reflex a
 StimulusReflex scans all content inserted into the DOM for `data-reflex` attributes, regardless of whether that content is there when the page loads or if it comes from a Reflex, an Ajax fetch, or your own local JavaScript logic. You don't have to do anything special to ensure that your UI is Reflex-enabled.
 {% endhint %}
 
-What's really interesting about this is that you'll notice we don't have to add the `foo` Stimulus controller to the `button` element in order to be able to call `Foo` Reflexes. We are _not_ doing it magically in the background, either; there simply doesn't need to be a `foo` StimulusReflex Controller on the element in order for a declared Reflex to call `FooReflex#remove` on the server.
+What's really interesting about this is that you'll notice we don't have to add the `foo` Stimulus controller to the `button` element in order to be able to call `Foo` Reflexes. We are _not_ doing it magically in the background, either; there doesn't need to be a `foo` StimulusReflex Controller on the element in order for a declared Reflex to call `FooReflex#remove` on the server.
 
 **There might not even be a** `foo_controller.js`**,** **and that's okay.**
 
