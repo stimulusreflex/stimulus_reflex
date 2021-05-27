@@ -122,7 +122,7 @@ StimulusReflex controllers automatically support five generic life-cycle callbac
 6. `finalizeReflex`
 
 {% hint style="warning" %}
-While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
+While this is perfect for basic Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
 {% endhint %}
 
 In this example, we update each anchor's text before invoking the server side Reflex:

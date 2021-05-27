@@ -155,7 +155,7 @@ end
 ### Tokens \(Subscription-based\)
 
 {% hint style="success" %}
-You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
+You can clone [a bare bones but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
 {% endhint %}
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.

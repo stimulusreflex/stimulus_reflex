@@ -438,7 +438,7 @@ Do you have any more weird edge cases? Please let us know!
 
 ## Open Issues
 
-There are some things that we'd very much like to fix, but we simply haven't been able to or the responsibility falls to an upstream dependency we don't have direct access to.
+There are some things that we'd very much like to fix, but we haven't been able to or the responsibility falls to an upstream dependency we don't have direct access to.
 
 #### iFrame gets refreshed despite data-reflex-permanent
 

@@ -26,7 +26,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 * [x] Enable small teams to do big things, faster 🏃🏽‍♀️
 * [x] Increase developer happiness ❤️❤️❤️
-* [x] Facilitate simple, concise, and clear code 🤸
+* [x] Facilitate readable, concise, and reusable code 🤸
 * [x] Integrate seamlessly with Ruby on Rails 🚝
 
 ## New Release: v3.5 - ChillRope Edition

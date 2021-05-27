@@ -55,7 +55,7 @@ Do not include `CableReady::Broadcaster` in your Reflex classes. It's already pr
 
 Since StimulusReflex uses CableReady's `morph` and `inner_html` operations, you might be wondering when or if to just use CableReady operations directly instead of calling StimulusReflex's `morph`.
 
-The simple answer is that you should use StimulusReflex when you need life-cycle management; callbacks, events and promises. Reflexes have a transactional life-cycle, where each one is assigned a UUID and the client will have the opportunity to respond if something goes wrong.
+The answer is that you should use StimulusReflex when you need life-cycle management; callbacks, events and promises. Reflexes have a transactional life-cycle, where each one is assigned a UUID and the client will have the opportunity to respond if something goes wrong.
 
 CableReady operations raise their own events, but StimulusReflex won't know if they are successful or not. Any CableReady operations you broadcast in a Reflex will be executed immediately.
 

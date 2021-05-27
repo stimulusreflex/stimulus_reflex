@@ -72,7 +72,7 @@ params.require(:post).permit(:name, comments_attributes: [:id, :_destroy, :name]
 
 Your `@post` object is instantiated from `params` so if model validations fail, your Post model instance is still in scope when the page re-renders. The model's `errors` collection is available in the view. 🐛
 
-One benefit of this design is that implementing an auto-save feature becomes as simple as adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all inputs are automatically serialized and sent to your Reflex class.
+One benefit of this design is that you can implement an auto-save feature by adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all inputs are automatically serialized and sent to your Reflex class.
 
 Working with `has_many` associations? No sweat! Building a new record for a nested model requires **no JavaScript**. Your Reflex calls `@post.comments.build` and because Rails knows about the association, any re-renders populate the empty form field as normal.
 
@@ -228,7 +228,7 @@ Similarly, custom CableReady operations broadcast by the developer do not automa
 
 ## Modifying Forms with Morphs
 
-If you need to change form elements in your document based on user input, you will find yourself needing to re-render partials inside of your Reflex. This raises the very good question of how to access the `form` context, since it's not just a simple view helper that you can include.
+If you need to change form elements in your document based on user input, you will find yourself needing to re-render partials inside of your Reflex. This raises the very good question of how to access the `form` context, since it's not just a view helper that you can include.
 
 You will need the controller's view context, as well as the parent resource used to create the form initially:
 
