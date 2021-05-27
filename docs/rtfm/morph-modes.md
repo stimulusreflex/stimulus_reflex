@@ -116,7 +116,7 @@ We have encountered scenarios where the `data-reflex-permanent` attribute is ign
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
-¯\**\(ツ\)\**/¯
+¯\*_\(ツ\)\*_/¯
 {% endhint %}
 
 {% hint style="danger" %}
