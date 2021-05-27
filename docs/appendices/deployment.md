@@ -247,7 +247,7 @@ end
 
 On the face, serving raw HTML to the client means a smaller download, there's no SPA dynamically rendering a page from JSON \(slow\) and draining the battery. However, the question deserves a more nuanced treatment - and not just because **some devices might not even support Websockets**.
 
-It's simply true that the team developing StimulusReflex is working on relatively recent, non-mobile computers with subjectively fast, reliable connections to the internet. None of us are actively testing on legacy hardware.
+It's true that the team developing StimulusReflex is working on relatively recent, non-mobile computers with subjectively fast, reliable connections to the internet. None of us are actively testing on legacy hardware.
 
 Raw Websockets has more in common with UDP than TCP, in that there's no retry logic or acknowledgement of delivery. Messages can arrive out of order, or not at all.
 
