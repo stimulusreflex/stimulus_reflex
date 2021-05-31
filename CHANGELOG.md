@@ -10,6 +10,8 @@
 
 **Merged pull requests:**
 
+- Update reflexes.js [\#515](https://github.com/stimulusreflex/stimulus_reflex/pull/515) ([julianrubisch](https://github.com/julianrubisch))
+- Fix cross-tab errors for piggybacked operations [\#514](https://github.com/stimulusreflex/stimulus_reflex/pull/514) ([julianrubisch](https://github.com/julianrubisch))
 - Bump ws from 7.4.5 to 7.4.6 [\#513](https://github.com/stimulusreflex/stimulus_reflex/pull/513) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v3.5.0.pre0](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre0) (2021-05-21)
@@ -153,7 +155,6 @@
 **Implemented enhancements:**
 
 - Allow StimulusReflex to process Rack middlewares [\#399](https://github.com/stimulusreflex/stimulus_reflex/pull/399) ([marcoroth](https://github.com/marcoroth))
-- Support for Stimulus 2 [\#398](https://github.com/stimulusreflex/stimulus_reflex/pull/398) ([marcoroth](https://github.com/marcoroth))
 
 **Fixed bugs:**
 
@@ -187,6 +188,10 @@
 ## [v3.4.0.pre7](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.0.pre7) (2020-12-01)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.4.0.pre6...v3.4.0.pre7)
+
+**Implemented enhancements:**
+
+- Support for Stimulus 2 [\#398](https://github.com/stimulusreflex/stimulus_reflex/pull/398) ([marcoroth](https://github.com/marcoroth))
 
 **Closed issues:**
 
@@ -579,7 +584,6 @@
 - Fix undefined is not an object for Object.keys in log.js [\#201](https://github.com/stimulusreflex/stimulus_reflex/pull/201) ([marcoroth](https://github.com/marcoroth))
 - Small typo/grammar fix in quickstart doc. [\#198](https://github.com/stimulusreflex/stimulus_reflex/pull/198) ([acoffman](https://github.com/acoffman))
 - Add halted lifecycle event [\#193](https://github.com/stimulusreflex/stimulus_reflex/pull/193) ([websebdev](https://github.com/websebdev))
-- Allow to call stimulate without a reflex target [\#188](https://github.com/stimulusreflex/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
 - 147 extract multiple checkbox values [\#175](https://github.com/stimulusreflex/stimulus_reflex/pull/175) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.2.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.1) (2020-05-09)
@@ -632,6 +636,8 @@
 **Merged pull requests:**
 
 - Some housekeeping [\#189](https://github.com/stimulusreflex/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
+- Allow to call stimulate without a reflex target [\#188](https://github.com/stimulusreflex/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
+- prettier-standard: include all js files in the project [\#177](https://github.com/stimulusreflex/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Fix bug in super documentation [\#174](https://github.com/stimulusreflex/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.1.4) (2020-04-27)
@@ -658,7 +664,6 @@
 
 **Merged pull requests:**
 
-- prettier-standard: include all js files in the project [\#177](https://github.com/stimulusreflex/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
 - Remove implicit permanent for text inputs [\#176](https://github.com/stimulusreflex/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
 - Support devise authenticated routes [\#172](https://github.com/stimulusreflex/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/stimulusreflex/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
@@ -757,10 +762,6 @@
 - Reload session prior to each reflex accessing it [\#131](https://github.com/stimulusreflex/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/stimulusreflex/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
-**Fixed bugs:**
-
-- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/stimulusreflex/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
-
 **Closed issues:**
 
 - Cannot read property 'stimulusReflexController' of null [\#127](https://github.com/stimulusreflex/stimulus_reflex/issues/127)
@@ -781,6 +782,10 @@
 ## [v2.2.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.2.1) (2020-02-28)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/stimulusreflex/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.2.0](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
@@ -832,10 +837,6 @@
 
 - StimulusReflex::Channel - Error messages include stack trace info [\#100](https://github.com/stimulusreflex/stimulus_reflex/pull/100) ([szTheory](https://github.com/szTheory))
 
-**Fixed bugs:**
-
-- Use application.js as fallback file path [\#82](https://github.com/stimulusreflex/stimulus_reflex/pull/82) ([julianrubisch](https://github.com/julianrubisch))
-
 **Closed issues:**
 
 - Demo appears to be broken [\#101](https://github.com/stimulusreflex/stimulus_reflex/issues/101)
@@ -850,6 +851,10 @@
 - Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/stimulusreflex/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
+
+**Fixed bugs:**
+
+- Use application.js as fallback file path [\#82](https://github.com/stimulusreflex/stimulus_reflex/pull/82) ([julianrubisch](https://github.com/julianrubisch))
 
 **Closed issues:**
 
@@ -879,6 +884,7 @@
 - Create Rails generators [\#3](https://github.com/stimulusreflex/stimulus_reflex/issues/3)
 - Update installer [\#71](https://github.com/stimulusreflex/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 - Tweak generators [\#69](https://github.com/stimulusreflex/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
+- add generators [\#67](https://github.com/stimulusreflex/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -906,7 +912,6 @@
 - Move ActionCable room configuration to controller registration [\#51](https://github.com/stimulusreflex/stimulus_reflex/issues/51)
 - Client side call-backs? [\#34](https://github.com/stimulusreflex/stimulus_reflex/issues/34)
 - Scoped register\(\)? [\#26](https://github.com/stimulusreflex/stimulus_reflex/issues/26)
-- add generators [\#67](https://github.com/stimulusreflex/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
 - Add guard to verify same URL prior to morph [\#63](https://github.com/stimulusreflex/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
 - Add reflex name to the lifecycle args [\#62](https://github.com/stimulusreflex/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/stimulusreflex/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
@@ -981,7 +986,6 @@
 
 **Implemented enhancements:**
 
-- Implicitly send DOM attributes to reflex methods [\#21](https://github.com/stimulusreflex/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/stimulusreflex/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/stimulusreflex/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -1043,6 +1047,7 @@
 
 **Implemented enhancements:**
 
+- Implicitly send DOM attributes to reflex methods [\#21](https://github.com/stimulusreflex/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Explicit opt-in for ActionCable connection [\#6](https://github.com/stimulusreflex/stimulus_reflex/pull/6) ([hopsoft](https://github.com/hopsoft))
 
 ## [v0.1.12](https://github.com/stimulusreflex/stimulus_reflex/tree/v0.1.12) (2018-11-03)
