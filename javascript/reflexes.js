@@ -103,7 +103,10 @@ export const performOperations = data => {
       CableReady.perform(reflexOperations)
     }
   } else {
-    if (reflexes[Object.entries(data.operations)[0][1][0].reflexId])
+    if (
+      data.operations.length > 0 &&
+      reflexes[Object.entries(data.operations)[0][1][0].reflexId]
+    )
       CableReady.perform(data.operations)
   }
 }
