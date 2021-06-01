@@ -10,7 +10,7 @@ const reflexes = {}
 
 export default reflexes
 
-export const performOperations = data => {
+export const received = data => {
   if (!data.cableReady) return
 
   let reflexOperations = {}
