@@ -283,6 +283,7 @@ export default {
   initialize,
   register,
   useReflex,
+  uuidv4,
   get debug () {
     return Debug.value
   },
