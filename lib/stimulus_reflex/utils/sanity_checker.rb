@@ -57,17 +57,30 @@ class StimulusReflex::SanityChecker
 
   def check_default_url_config
     unless default_url_config_set?
-      warn_and_exit <<~WARN
-        StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController and ActionMailer will default to example.com when rendering route helpers.
+      if defined?(ActionMailer)
+        warn_and_exit <<~WARN
+          StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController and ActionMailer will default to example.com when rendering route helpers.
 
-        You can set your URL options in config/environments/#{Rails.env}.rb
+          You can set your URL options in config/environments/#{Rails.env}.rb
 
-          config.action_controller.default_url_options = {host: "localhost", port: 3000}
-          config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+            config.action_controller.default_url_options = {host: "localhost", port: 3000}
+            config.action_mailer.default_url_options = {host: "localhost", port: 3000}
 
-        Please update every environment with the appropriate URL. Typically, no port is necessary in production.
+          Please update every environment with the appropriate URL. Typically, no port is necessary in production.
 
-      WARN
+        WARN
+      else
+        warn_and_exit <<~WARN
+          StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController will default to example.com when rendering route helpers.
+
+          You can set your URL options in config/environments/#{Rails.env}.rb
+
+            config.action_controller.default_url_options = {host: "localhost", port: 3000}
+
+          Please update every environment with the appropriate URL. Typically, no port is necessary in production.
+
+        WARN
+      end
     end
   end
 
