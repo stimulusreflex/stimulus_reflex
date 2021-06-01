@@ -103,10 +103,8 @@ export const received = data => {
       CableReady.perform(reflexOperations)
     }
   } else {
-    if (
-      Object.keys(data.operations).length > 0 &&
-      reflexes[Object.entries(data.operations)[0][1][0].reflexId]
-    )
+    const operations = Object.entries(data.operations)
+    if (operations.length && reflexes[operations[0][1][0].reflexId])
       CableReady.perform(data.operations)
   }
 }
