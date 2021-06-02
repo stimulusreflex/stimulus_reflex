@@ -1348,10 +1348,10 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
-cable_ready@5.0.0-pre0:
-  version "5.0.0-pre0"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre0.tgz#eeca1305f83e06ada44d95690c073df084719fef"
-  integrity sha512-hBeCg2wjfa4PSfNo6uHaVTVgTDi0wPUqBBf/pJpAoEjj94BVVLShGnBIe3n0I/f4FClcOQePd8CXl8p2hDj2bw==
+cable_ready@5.0.0-pre1:
+  version "5.0.0-pre1"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre1.tgz#9a78834a99c4eeecd8e4a81ab90b0d2f0fcb04c7"
+  integrity sha512-rwF/jZfh/5Zsab2G567o8A8sEerNotUNiAi+i3N2FGMuaCOp0WpLKo2DhVRU9qrT6fZzFYMnoDiBoKdijPDw+A==
   dependencies:
     morphdom "^2.6.1"
 

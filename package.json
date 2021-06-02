@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.5.0-pre0",
+  "version": "3.5.0-pre1",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -31,7 +31,6 @@
   "main": "./javascript/stimulus_reflex.js",
   "module": "./javascript/stimulus_reflex.js",
   "scripts": {
-    "postinstall": "node ./javascript/scripts/post_install.js",
     "prettier-standard:check": "yarn run prettier-standard --check ./javascript/*.js ./javascript/**/*.js",
     "prettier-standard:format": "yarn run prettier-standard ./javascript/*.js ./javascript/**/*.js",
     "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
@@ -41,7 +40,7 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "5.0.0-pre0"
+    "cable_ready": "5.0.0-pre1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

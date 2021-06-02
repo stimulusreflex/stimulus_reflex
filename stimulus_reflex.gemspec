@@ -11,11 +11,11 @@ Gem::Specification.new do |gem|
   gem.homepage = "https://github.com/stimulusreflex/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
   gem.post_install_message = <<~MESSAGE
-    Friendly reminder: When updating the stimulus_reflex gem,
-    don't forget to update your npm package as well.
+    Get support for StimulusReflex and CableReady on Discord:
 
-    See https://www.npmjs.com/package/stimulus_reflex
-  MESSAGE
+    https://discord.gg/stimulus-reflex
+
+    MESSAGE
 
   gem.metadata = {
     "bug_tracker_uri" => "https://github.com/stimulusreflex/stimulus_reflex/issues",
@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "nokogiri"
   gem.add_dependency "rails", ">= 5.2"
   gem.add_dependency "redis"
-  gem.add_dependency "cable_ready", "5.0.0.pre0"
+  gem.add_dependency "cable_ready", "5.0.0.pre1"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "pry-nav"
