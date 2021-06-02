@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
 
     https://discord.gg/stimulus-reflex
 
-    MESSAGE
+  MESSAGE
 
   gem.metadata = {
     "bug_tracker_uri" => "https://github.com/stimulusreflex/stimulus_reflex/issues",
