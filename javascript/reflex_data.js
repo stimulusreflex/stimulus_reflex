@@ -1,39 +1,41 @@
-import { extractElementAttributes, extractElementDataset } from './attributes'
-import { getReflexRoots } from './reflexes'
-import { uuidv4 } from './utils'
-import { elementToXPath } from './utils'
+import { extractElementAttributes, extractElementDataset } from "./attributes";
+import { getReflexRoots } from "./reflexes";
+import { uuidv4 } from "./utils";
+import { elementToXPath } from "./utils";
 
 export default class ReflexData {
-  constructor (options, reflexElement, controllerElement) {
-    this.options = options
-    this.reflexElement = reflexElement
-    this.controllerElement = controllerElement
+  constructor(options, reflexElement, controllerElement) {
+    this.options = options;
+    this.reflexElement = reflexElement;
+    this.controllerElement = controllerElement;
   }
 
-  get attrs () {
-    return this.options['attrs'] || extractElementAttributes(this.reflexElement)
+  get attrs() {
+    return (
+      this.options["attrs"] || extractElementAttributes(this.reflexElement)
+    );
   }
 
-  get reflexId () {
-    return this.options['reflexId'] || uuidv4()
+  get reflexId() {
+    return this.options["reflexId"] || uuidv4();
   }
 
-  get selectors () {
+  get selectors() {
     const selectors =
-      this.options['selectors'] || getReflexRoots(this.reflexElement)
-    if (typeof selectors === 'string') {
-      return [selectors]
+      this.options["selectors"] || getReflexRoots(this.reflexElement);
+    if (typeof selectors === "string") {
+      return [selectors];
     } else {
-      return selectors
+      return selectors;
     }
   }
 
-  get resolveLate () {
-    return this.options['resolveLate'] || false
+  get resolveLate() {
+    return this.options["resolveLate"] || false;
   }
 
-  get dataset () {
-    return extractElementDataset(this.reflexElement)
+  get dataset() {
+    return extractElementDataset(this.reflexElement);
   }
 
   get innerHTML() {
@@ -41,10 +43,6 @@ export default class ReflexData {
   }
 
   get textContent() {
-    console.log(
-      this.options["includeTextContent"],
-      this.reflexElement.textContent
-    );
     return this.options["includeTextContent"]
       ? this.reflexElement.textContent
       : "";
@@ -54,11 +52,11 @@ export default class ReflexData {
     return elementToXPath(this.controllerElement);
   }
 
-  get xpathElement () {
-    return elementToXPath(this.reflexElement)
+  get xpathElement() {
+    return elementToXPath(this.reflexElement);
   }
 
-  valueOf () {
+  valueOf() {
     return {
       attrs: this.attrs,
       dataset: this.dataset,
