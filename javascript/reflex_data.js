@@ -39,13 +39,11 @@ export default class ReflexData {
   }
 
   get innerHTML() {
-    return this.options["includeInnerHTML"] ? this.reflexElement.innerHTML : "";
+    return this.includeHTML ? this.reflexElement.innerHTML : "";
   }
 
   get textContent() {
-    return this.options["includeTextContent"]
-      ? this.reflexElement.textContent
-      : "";
+    return this.includeText ? this.reflexElement.textContent : "";
   }
 
   get xpathController() {
@@ -54,6 +52,20 @@ export default class ReflexData {
 
   get xpathElement() {
     return elementToXPath(this.reflexElement);
+  }
+
+  get includeHTML() {
+    return (
+      this.options["includeInnerHTML"] ||
+      "reflexIncludeHtml" in this.reflexElement.dataset
+    );
+  }
+
+  get includeText() {
+    return (
+      this.options["includeTextContent"] ||
+      "reflexIncludeText" in this.reflexElement.dataset
+    );
   }
 
   valueOf() {

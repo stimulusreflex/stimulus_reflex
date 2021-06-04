@@ -142,6 +142,8 @@ const register = (controller, options = {}) => {
         controllerElement
       )
 
+      const reflexId = reflexData.reflexId
+
       const data = {
         target,
         args,
