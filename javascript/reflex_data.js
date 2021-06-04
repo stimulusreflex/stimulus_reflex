@@ -1,74 +1,73 @@
-import { extractElementAttributes, extractElementDataset } from "./attributes";
-import { getReflexRoots } from "./reflexes";
-import { uuidv4 } from "./utils";
-import { elementToXPath } from "./utils";
+import { extractElementAttributes, extractElementDataset } from './attributes'
+import { getReflexRoots } from './reflexes'
+import { uuidv4 } from './utils'
+import { elementToXPath } from './utils'
 
 export default class ReflexData {
-  constructor(options, reflexElement, controllerElement) {
-    this.options = options;
-    this.reflexElement = reflexElement;
-    this.controllerElement = controllerElement;
+  constructor (options, reflexElement, controllerElement) {
+    this.options = options
+    this.reflexElement = reflexElement
+    this.controllerElement = controllerElement
   }
 
-  get attrs() {
-    return (
-      this.options["attrs"] || extractElementAttributes(this.reflexElement)
-    );
+  get attrs () {
+    return this.options['attrs'] || extractElementAttributes(this.reflexElement)
   }
 
-  get reflexId() {
-    return this.options["reflexId"] || uuidv4();
+  get reflexId () {
+    this._reflexId = this._reflexId || this.options['reflexId'] || uuidv4()
+    return this._reflexId
   }
 
-  get selectors() {
+  get selectors () {
     const selectors =
-      this.options["selectors"] || getReflexRoots(this.reflexElement);
-    if (typeof selectors === "string") {
-      return [selectors];
+      this.options['selectors'] || getReflexRoots(this.reflexElement)
+    if (typeof selectors === 'string') {
+      return [selectors]
     } else {
-      return selectors;
+      return selectors
     }
   }
 
-  get resolveLate() {
-    return this.options["resolveLate"] || false;
+  get resolveLate () {
+    return this.options['resolveLate'] || false
   }
 
-  get dataset() {
-    return extractElementDataset(this.reflexElement);
+  get dataset () {
+    return extractElementDataset(this.reflexElement)
   }
 
-  get innerHTML() {
-    return this.includeHTML ? this.reflexElement.innerHTML : "";
+  get innerHTML () {
+    return this.includeHTML ? this.reflexElement.innerHTML : ''
   }
 
-  get textContent() {
-    return this.includeText ? this.reflexElement.textContent : "";
+  get textContent () {
+    return this.includeText ? this.reflexElement.textContent : ''
   }
 
-  get xpathController() {
-    return elementToXPath(this.controllerElement);
+  get xpathController () {
+    return elementToXPath(this.controllerElement)
   }
 
-  get xpathElement() {
-    return elementToXPath(this.reflexElement);
+  get xpathElement () {
+    return elementToXPath(this.reflexElement)
   }
 
-  get includeHTML() {
+  get includeHTML () {
     return (
-      this.options["includeInnerHTML"] ||
-      "reflexIncludeHtml" in this.reflexElement.dataset
-    );
+      this.options['includeInnerHTML'] ||
+      'reflexIncludeHtml' in this.reflexElement.dataset
+    )
   }
 
-  get includeText() {
+  get includeText () {
     return (
-      this.options["includeTextContent"] ||
-      "reflexIncludeText" in this.reflexElement.dataset
-    );
+      this.options['includeTextContent'] ||
+      'reflexIncludeText' in this.reflexElement.dataset
+    )
   }
 
-  valueOf() {
+  valueOf () {
     return {
       attrs: this.attrs,
       dataset: this.dataset,
@@ -79,6 +78,6 @@ export default class ReflexData {
       xpathElement: this.xpathElement,
       inner_html: this.innerHTML,
       text_content: this.textContent
-    };
+    }
   }
 }
