@@ -128,7 +128,9 @@ const register = (controller, options = {}) => {
             'selectors',
             'reflexId',
             'resolveLate',
-            'serializeForm'
+            'serializeForm',
+            'includeInnerHTML',
+            'includeTextContent'
           ].includes(key)
         ).length
       ) {
