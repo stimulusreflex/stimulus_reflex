@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/stimulusreflex/stimulus_reflex/tree/HEAD)
+
+[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre1...HEAD)
+
+**Closed issues:**
+
+- Web Components Breaking In Stimulus Reflex Morph [\#511](https://github.com/stimulusreflex/stimulus_reflex/issues/511)
+
 ## [v3.5.0.pre1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre1) (2021-06-02)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre0...v3.5.0.pre1)
@@ -638,6 +646,7 @@
 
 - Some housekeeping [\#189](https://github.com/stimulusreflex/stimulus_reflex/pull/189) ([hopsoft](https://github.com/hopsoft))
 - Allow to call stimulate without a reflex target [\#188](https://github.com/stimulusreflex/stimulus_reflex/pull/188) ([marcoroth](https://github.com/marcoroth))
+- Remove implicit permanent for text inputs [\#176](https://github.com/stimulusreflex/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
 - Fix bug in super documentation [\#174](https://github.com/stimulusreflex/stimulus_reflex/pull/174) ([silva96](https://github.com/silva96))
 
 ## [v3.1.4](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.1.4) (2020-04-27)
@@ -665,7 +674,6 @@
 **Merged pull requests:**
 
 - prettier-standard: include all js files in the project [\#177](https://github.com/stimulusreflex/stimulus_reflex/pull/177) ([marcoroth](https://github.com/marcoroth))
-- Remove implicit permanent for text inputs [\#176](https://github.com/stimulusreflex/stimulus_reflex/pull/176) ([hopsoft](https://github.com/hopsoft))
 - Support devise authenticated routes [\#172](https://github.com/stimulusreflex/stimulus_reflex/pull/172) ([db0sch](https://github.com/db0sch))
 - setupDeclarativeReflexes export with UJS support [\#169](https://github.com/stimulusreflex/stimulus_reflex/pull/169) ([leastbad](https://github.com/leastbad))
 - Fix compilation issue [\#168](https://github.com/stimulusreflex/stimulus_reflex/pull/168) ([jonathan-s](https://github.com/jonathan-s))
@@ -812,7 +820,6 @@
 **Implemented enhancements:**
 
 - More defense in the received handler [\#107](https://github.com/stimulusreflex/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
-- Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -850,6 +857,7 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/stimulusreflex/stimulus_reflex/issues/91)
+- Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/stimulusreflex/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
