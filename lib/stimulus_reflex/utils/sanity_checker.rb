@@ -14,7 +14,7 @@ class StimulusReflex::SanityChecker
 
       instance = new
       instance.check_caching_enabled
-      instance.check_javascript_package_version
+      instance.check_npm_version
       instance.check_default_url_config
       instance.check_new_version_available
     end
@@ -37,27 +37,25 @@ class StimulusReflex::SanityChecker
   end
 
   def check_caching_enabled
-    unless caching_enabled?
+    if caching_not_enabled?
       warn_and_exit <<~WARN
         StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         To enable caching in development, run:
           rails dev:cache
-
       WARN
     end
 
-    unless not_null_store?
+    if using_null_store?
       warn_and_exit <<~WARN
         StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
         But your config.cache_store is set to :null_store, so it won't work.
-
       WARN
     end
   end
 
   def check_default_url_config
     return if StimulusReflex.config.on_missing_default_urls == :ignore
-    unless default_url_config_set?
+    if default_url_config_set? == false
       puts <<~WARN
         StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{ "and ActionMailer " if defined?(ActionMailer) }will default to example.com when rendering route helpers.
 
@@ -71,29 +69,27 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def check_javascript_package_version
-    if javascript_package_version.nil?
+  def check_npm_version
+    if npm_version.nil?
       warn_and_exit <<~WARN
         Can't locate the stimulus_reflex npm package.
         Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
-
       WARN
     end
 
-    unless javascript_version_matches?
+    if package_version_mismatch?
       warn_and_exit <<~WARN
-        The stimulus_reflex npm package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
+        The stimulus_reflex npm package version (#{npm_version}) does not match the Rubygem version (#{gem_version}).
         To update the stimulus_reflex npm package:
           yarn upgrade stimulus_reflex@#{gem_version}
-
       WARN
     end
   end
 
   def check_new_version_available
-    return unless Rails.env.development?
     return if StimulusReflex.config.on_new_version_available == :ignore
-    return unless using_stable_release
+    return if Rails.env.development? == false
+    return if using_preview_release?
     begin
       latest_version = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
       if latest_version != StimulusReflex::VERSION
@@ -113,12 +109,12 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def caching_enabled?
-    Rails.application.config.action_controller.perform_caching
+  def caching_not_enabled?
+    Rails.application.config.action_controller.perform_caching == false
   end
 
-  def not_null_store?
-    Rails.application.config.cache_store != :null_store
+  def using_null_store?
+    Rails.application.config.cache_store == :null_store
   end
 
   def default_url_config_set?
@@ -129,25 +125,25 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def javascript_version_matches?
-    javascript_package_version == gem_version
+  def package_version_mismatch?
+    npm_version != gem_version
   end
 
-  def using_stable_release
-    stable = StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT)
-    puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" unless stable
-    stable
+  def using_preview_release?
+    preview = StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT) == false
+    puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" if preview
+    preview
   end
 
   def gem_version
     @_gem_version ||= StimulusReflex::VERSION.gsub(".pre", "-pre")
   end
 
-  def javascript_package_version
-    @_js_version ||= find_javascript_package_version
+  def npm_version
+    @_npm_version ||= find_npm_version
   end
 
-  def find_javascript_package_version
+  def find_npm_version
     if (match = search_file(package_json_path, regex: /version/))
       match[JSON_VERSION_FORMAT, 1]
     elsif (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
@@ -156,7 +152,7 @@ class StimulusReflex::SanityChecker
   end
 
   def search_file(path, regex:)
-    return unless File.exist?(path)
+    return if File.exist?(path) == false
     File.foreach(path).grep(regex).first
   end
 
@@ -166,6 +162,10 @@ class StimulusReflex::SanityChecker
 
   def yarn_lock_path
     Rails.root.join("yarn.lock")
+  end
+
+  def initializer_missing?
+    File.exist?(Rails.root.join("config", "initializers", "stimulus_reflex.rb")) == false
   end
 
   def warn_and_exit(text)
@@ -182,11 +182,15 @@ class StimulusReflex::SanityChecker
             config.on_failed_sanity_checks = :warn
           end
 
-        You can create a StimulusReflex initializer with the command:
-
-          bundle exec rails generate stimulus_reflex:initializer
-
       INFO
+      if initializer_missing?
+        puts <<~INFO
+          You can create a StimulusReflex initializer with the command:
+
+            bundle exec rails generate stimulus_reflex:initializer
+
+        INFO
+      end
       exit false
     end
   end
