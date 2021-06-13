@@ -14,7 +14,7 @@ class StimulusReflex::SanityChecker
 
       instance = new
       instance.check_caching_enabled
-      instance.check_npm_version
+      instance.check_package_versions_match
       instance.check_default_url_config
       instance.check_new_version_available
     end
@@ -69,7 +69,7 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def check_npm_version
+  def check_package_versions_match
     if npm_version.nil?
       warn_and_exit <<~WARN
         Can't locate the stimulus_reflex npm package.
