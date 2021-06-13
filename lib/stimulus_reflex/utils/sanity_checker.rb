@@ -191,7 +191,7 @@ class StimulusReflex::SanityChecker
 
         INFO
       end
-      exit false
+      exit false unless Rails.env.test?
     end
   end
 end
