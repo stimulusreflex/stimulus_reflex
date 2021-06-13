@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "5.0.0-pre0"
+    "cable_ready": "5.0.0-pre1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

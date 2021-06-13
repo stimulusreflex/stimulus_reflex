@@ -16,6 +16,11 @@ StimulusReflex.configure do |config|
 
   # config.on_new_version_available = :ignore
 
+  # Enable/disable exiting / warning when there is no default URLs specified in environment config
+  # `:warn` or `:ignore`
+
+  # config.on_missing_default_urls = :warn
+
   # Override the parent class that the StimulusReflex ActionCable channel inherits from
 
   # config.parent_channel = "ApplicationCable::Channel"

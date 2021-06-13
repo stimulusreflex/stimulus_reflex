@@ -56,31 +56,18 @@ class StimulusReflex::SanityChecker
   end
 
   def check_default_url_config
+    return if StimulusReflex.config.on_missing_default_urls == :ignore
     unless default_url_config_set?
-      if defined?(ActionMailer)
-        warn_and_exit <<~WARN
-          StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController and ActionMailer will default to example.com when rendering route helpers.
+      puts <<~WARN
+        StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{ "and ActionMailer " if defined?(ActionMailer) }will default to example.com when rendering route helpers.
 
-          You can set your URL options in config/environments/#{Rails.env}.rb
+        You can set your URL options in config/environments/#{Rails.env}.rb
 
-            config.action_controller.default_url_options = {host: "localhost", port: 3000}
-            config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+          config.action_controller.default_url_options = {host: "localhost", port: 3000}
+          #{ "config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n" if defined?(ActionMailer) }
+        Please update every environment with the appropriate URL. Typically, no port is necessary in production.
 
-          Please update every environment with the appropriate URL. Typically, no port is necessary in production.
-
-        WARN
-      else
-        warn_and_exit <<~WARN
-          StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController will default to example.com when rendering route helpers.
-
-          You can set your URL options in config/environments/#{Rails.env}.rb
-
-            config.action_controller.default_url_options = {host: "localhost", port: 3000}
-
-          Please update every environment with the appropriate URL. Typically, no port is necessary in production.
-
-        WARN
-      end
+      WARN
     end
   end
 
@@ -126,8 +113,6 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  private
-
   def caching_enabled?
     Rails.application.config.action_controller.perform_caching
   end
@@ -137,7 +122,11 @@ class StimulusReflex::SanityChecker
   end
 
   def default_url_config_set?
-    Rails.application.config.action_controller.default_url_options
+    if defined?(ActionMailer)
+      Rails.application.config.action_controller.default_url_options && Rails.application.config.action_mailer.default_url_options
+    else
+      Rails.application.config.action_controller.default_url_options
+    end
   end
 
   def javascript_version_matches?
@@ -179,48 +168,26 @@ class StimulusReflex::SanityChecker
     Rails.root.join("yarn.lock")
   end
 
-  def initializer_path
-    @_initializer_path ||= Rails.root.join("config", "initializers", "stimulus_reflex.rb")
-  end
-
   def warn_and_exit(text)
-    puts
+    puts 
     puts "Heads up! 🔥"
     puts
     puts text
-    exit_with_info if StimulusReflex.config.on_failed_sanity_checks == :exit
-  end
-
-  def exit_with_info
     puts
-
-    if File.exist?(initializer_path)
+    if StimulusReflex.config.on_failed_sanity_checks == :exit
       puts <<~INFO
-        If you know what you are doing and you want to start the application anyway, you can add the following directive to the StimulusReflex initializer, which is located at #{initializer_path}
+        If you know what you are doing and you want to start the application anyway, you can add the following directive to the StimulusReflex initializer:
 
           StimulusReflex.configure do |config|
             config.on_failed_sanity_checks = :warn
           end
 
-      INFO
-    else
-      puts <<~INFO
-        If you know what you are doing and you want to start the application anyway, you can create a StimulusReflex initializer with the command:
+        You can create a StimulusReflex initializer with the command:
 
-        bundle exec rails generate stimulus_reflex:initializer
-
-        Then open your initializer at
-
-        #{initializer_path}
-
-        and then add the following directive:
-
-          StimulusReflex.configure do |config|
-            config.on_failed_sanity_checks = :warn
-          end
+          bundle exec rails generate stimulus_reflex:initializer
 
       INFO
+      exit false
     end
-    exit false
   end
 end
