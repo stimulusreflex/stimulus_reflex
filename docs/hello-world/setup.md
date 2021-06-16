@@ -22,6 +22,10 @@ bundle add stimulus_reflex
 bundle exec rails stimulus_reflex:install
 ```
 
+{% hint style="danger" %}
+For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
+{% endhint %}
+
 That's it! An example Reflex class and Stimulus controller will be created for you. 🎉
 
 {% page-ref page="quickstart.md" %}
@@ -31,6 +35,10 @@ That's it! An example Reflex class and Stimulus controller will be created for y
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in the _development_ environment.
 
 We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration.
+
+{% hint style="danger" %}
+For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
+{% endhint %}
 
 ```ruby
 bundle add stimulus_reflex --version "~> 3.5.0"
