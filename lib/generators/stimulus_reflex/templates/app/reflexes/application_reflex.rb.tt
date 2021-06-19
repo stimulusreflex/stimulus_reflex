@@ -8,5 +8,17 @@ class ApplicationReflex < StimulusReflex::Reflex
   #   # If your ActionCable connection is: `identified_by :current_user`
   #   delegate :current_user, to: :connection
   #
+  # If you need localization in your reflexes you can also set
+  # the I18n locale here like so:
+  #
+  #   before_reflex :set_locale
+  #
+  #   def set_locale
+  #     I18n.locale = session[:locale]
+  #   end
+  #
+  # For this to work you will need to set `session[:locale]` in
+  # your ApplicationController.
+  #
   # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
 end
