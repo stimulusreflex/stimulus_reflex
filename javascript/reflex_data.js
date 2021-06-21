@@ -4,10 +4,26 @@ import { uuidv4 } from './utils'
 import { elementToXPath } from './utils'
 
 export default class ReflexData {
-  constructor (options, reflexElement, controllerElement) {
+  constructor (
+    options,
+    reflexElement,
+    controllerElement,
+    reflexController,
+    permanentAttributeName,
+    target,
+    args,
+    url,
+    tabId
+  ) {
     this.options = options
     this.reflexElement = reflexElement
     this.controllerElement = controllerElement
+    this.reflexController = reflexController
+    this.permanentAttributeName = permanentAttributeName
+    this.target = target
+    this.args = args
+    this.url = url
+    this.tabId = tabId
   }
 
   get attrs () {
@@ -77,7 +93,13 @@ export default class ReflexData {
       xpathController: this.xpathController,
       xpathElement: this.xpathElement,
       inner_html: this.innerHTML,
-      text_content: this.textContent
+      text_content: this.textContent,
+      reflexController: this.reflexController,
+      permanentAttributeName: this.permanentAttributeName,
+      target: this.target,
+      args: this.args,
+      url: this.url,
+      tabId: this.tabId
     }
   }
 }

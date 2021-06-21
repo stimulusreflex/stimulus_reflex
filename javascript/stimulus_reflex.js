@@ -141,20 +141,17 @@ const register = (controller, options = {}) => {
       const reflexData = new ReflexData(
         options,
         reflexElement,
-        controllerElement
+        controllerElement,
+        this.identifier,
+        reflexes.app.schema.reflexPermanentAttribute,
+        target,
+        args,
+        url,
+        tabId
       )
 
       const reflexId = reflexData.reflexId
 
-      const data = {
-        target,
-        args,
-        url,
-        tabId,
-        ...reflexData.valueOf(),
-        reflexController: this.identifier,
-        permanentAttributeName: reflexes.app.schema.reflexPermanentAttribute
-      }
       const { subscription } = this.StimulusReflex
 
       if (!this.isActionCableConnectionOpen())
@@ -170,7 +167,7 @@ const register = (controller, options = {}) => {
       controllerElement.reflexError = controllerElement.reflexError || {}
 
       controllerElement.reflexController[reflexId] = this
-      controllerElement.reflexData[reflexId] = data
+      controllerElement.reflexData[reflexId] = reflexData.valueOf()
 
       dispatchLifecycleEvent(
         'before',
@@ -206,7 +203,7 @@ const register = (controller, options = {}) => {
               })
 
         controllerElement.reflexData[reflexId] = {
-          ...data,
+          ...reflexData.valueOf(),
           params,
           formData
         }
@@ -214,7 +211,7 @@ const register = (controller, options = {}) => {
         subscription.send(controllerElement.reflexData[reflexId])
       })
 
-      const promise = registerReflex(data)
+      const promise = registerReflex(reflexData.valueOf())
 
       if (Debug.enabled) {
         Log.request(
