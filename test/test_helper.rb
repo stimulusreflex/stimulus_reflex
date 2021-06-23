@@ -62,7 +62,7 @@ module ActionCable
       end
     end
   end
-end    
+end
 
 StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"
 ActionCable::Server::Base.config.cable = {adapter: "test"}
