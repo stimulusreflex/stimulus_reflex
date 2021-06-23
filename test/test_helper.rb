@@ -44,6 +44,26 @@ class TestModel
   end
 end
 
+module ActionCable
+  module Channel
+    class ConnectionStub
+      def connection_identifier
+        connection_gid identifiers.filter_map { |id| instance_variable_get("@#{id}") }
+      end
+
+      def connection_gid(ids)
+        ids.map do |o|
+          if o.respond_to? :to_gid_param
+            o.to_gid_param
+          else
+            o.to_s
+          end
+        end.sort.join(":")
+      end
+    end
+  end
+end    
+
 StimulusReflex.configuration.parent_channel = "ActionCable::Channel::Base"
 ActionCable::Server::Base.config.cable = {adapter: "test"}
 ActionCable::Server::Base.config.logger = Logger.new(nil)
