@@ -52,13 +52,7 @@ module ActionCable
       end
 
       def connection_gid(ids)
-        ids.map do |o|
-          if o.respond_to? :to_gid_param
-            o.to_gid_param
-          else
-            o.to_s
-          end
-        end.sort.join(":")
+        ids.map { |o| o.respond_to?(:to_gid_param) ? o.to_gid_param : o.to_s }.sort.join(":")
       end
     end
   end
