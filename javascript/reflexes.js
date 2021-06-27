@@ -9,9 +9,7 @@ import { attributeValue, attributeValues } from './attributes'
 
 const reflexes = {}
 
-export default reflexes
-
-export const received = data => {
+const received = data => {
   if (!data.cableReady) return
 
   let reflexOperations = {}
@@ -199,9 +197,4 @@ const setupDeclarativeReflexes = debounce(() => {
 }, 20)
 
 export default reflexes
-export {
-  performOperations,
-  registerReflex,
-  getReflexRoots,
-  setupDeclarativeReflexes
-}
+export { received, registerReflex, getReflexRoots, setupDeclarativeReflexes }
