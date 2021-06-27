@@ -105,8 +105,8 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% code title="index.html.erb" %}
 ```markup
 <div data-reflex-permanent>
-  <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
-  <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
+  <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
+  <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
 </div>
 ```
 {% endcode %}
@@ -116,7 +116,7 @@ We have encountered scenarios where the `data-reflex-permanent` attribute is ign
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
-¯\**\(ツ\)\**/¯
+¯\*_\(ツ\)\*_/¯
 {% endhint %}
 
 {% hint style="danger" %}

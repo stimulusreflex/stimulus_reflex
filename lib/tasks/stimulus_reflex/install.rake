@@ -63,13 +63,13 @@ namespace :stimulus_reflex do
       lines.delete_at 1
       lines.insert 1, "  adapter: redis\n"
       lines.insert 2, "  url: <%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>\n"
-      lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).tr('\\', "").tr("-. ", "_").underscore + "_development\n"
+      lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).tr("\\", "").tr("-. ", "_").underscore + "_development\n"
       File.open(filepath, "w") { |f| f.write lines.join }
     end
 
     system "bundle exec rails generate stimulus_reflex example"
     puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
-    system "bundle exec rails generate stimulus_reflex:config"
+    system "bundle exec rails generate stimulus_reflex:initializer"
 
     puts
     puts "StimulusReflex and CableReady have been successfully installed!"

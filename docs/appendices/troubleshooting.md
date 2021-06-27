@@ -541,7 +541,7 @@ If your `data-reflex-permanent` isn't being respected, try adding a unique `id` 
 {% endhint %}
 
 {% hint style="info" %}
-If you're supporting an older application that is using Webpacker v3, we have had some reports of issues. Is it possible to upgrade to v4?
+StimulusReflex works best with Webpacker v5.4.
 {% endhint %}
 
 {% hint style="info" %}
@@ -554,6 +554,7 @@ To remove spring **forever**, here is the process we recommend:
 1. `pkill -f spring`
 2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub --remove --all`
+4. Comment out the line in `bin/rails` which says: `load File.expandpath("spring", _dir)`
 {% endhint %}
 
 ## Be realistic

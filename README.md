@@ -7,11 +7,11 @@
     <a href="https://www.npmjs.com/package/stimulus_reflex">
       <img alt="downloads" src="https://img.shields.io/npm/dm/stimulus_reflex.svg?color=blue" target="_blank" />
     </a>
-    <a href="https://github.com/hopsoft/stimulus_reflex/blob/master/LICENSE">
+    <a href="https://github.com/stimulusreflex/stimulus_reflex/blob/master/LICENSE">
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">
-      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-1726-brightgreen.svg?style=flat" />
+      <img alt="Lines of Code" src="https://img.shields.io/badge/lines_of_code-2190-brightgreen.svg?style=flat" />
     </a>
     <a href="https://docs.stimulusreflex.com/" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -30,14 +30,14 @@
     <a href="https://www.codacy.com/manual/hopsoft/stimulus_reflex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hopsoft/stimulus_reflex&amp;utm_campaign=Badge_Grade" target="_blank">
       <img alt="Code Quality" src="https://app.codacy.com/project/badge/Grade/d1d72a7060f5467b8696884351cf477f"/>
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/StandardRB/badge.svg" alt="StandardRB" style="max-width:100%;">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg" alt="StandardRB" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg">
-      <img src="https://github.com/hopsoft/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg">
+      <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
     </a>
   </p>
 </p>
@@ -75,7 +75,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 1000 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 1300 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 
@@ -104,15 +104,15 @@ and [Prettier-Standard](https://github.com/sheerun/prettier-standard) for JavaSc
 
 Please run `./bin/standardize` prior to submitting pull requests.
 
-View the [wiki](https://github.com/hopsoft/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
+View the [wiki](https://github.com/stimulusreflex/stimulus_reflex/wiki/Editor-Configuration) to see recommendations for configuring your editor to work best with the project.
 
 ## 📦 Releasing
 
 1. Bump version number at `lib/stimulus_reflex/version.rb`
-1. Run `rake build`
-1. Run `rake release`
-1. Run `yarn publish --no-git-tag-version`
-1. Commit and push changes to the `package.json` file
+2. Run `rake build`
+3. Run `rake release`
+4. Run `yarn publish --no-git-tag-version`
+5. Commit and push changes to the `package.json` file
 
 ## 📝 License
 

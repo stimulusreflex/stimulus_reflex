@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-ClientAttributes = Struct.new(:reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, keyword_init: true)
+ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, keyword_init: true)
 
 class StimulusReflex::Reflex
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
+  include CableReady::Identifiable
 
   attr_accessor :payload
   attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
@@ -15,7 +16,7 @@ class StimulusReflex::Reflex
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_message, to: :broadcaster
-  delegate :reflex_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
+  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
@@ -95,13 +96,12 @@ class StimulusReflex::Reflex
   end
 
   def controller
-    @controller ||= begin
-      controller_class.new.tap do |c|
-        c.instance_variable_set :"@stimulus_reflex", true
-        c.set_request! request
-        c.set_response! controller_class.make_response!(request)
-      end
+    @controller ||= controller_class.new.tap do |c|
+      c.instance_variable_set :@stimulus_reflex, true
+      c.set_request! request
+      c.set_response! controller_class.make_response!(request)
     end
+
     instance_variables.each { |name| @controller.instance_variable_set name, instance_variable_get(name) }
     @controller
   end
@@ -111,7 +111,7 @@ class StimulusReflex::Reflex
   end
 
   def render(*args)
-    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME": "")).render(*args)
+    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks
@@ -139,23 +139,12 @@ class StimulusReflex::Reflex
     @_params ||= ActionController::Parameters.new(request.parameters)
   end
 
-  def dom_id(record, prefix = nil, hash: "#")
-    id = if record.is_a?(ActiveRecord::Relation)
-      [prefix, record.model_name.plural].compact.join("_")
-    elsif record.is_a?(ActiveRecord::Base)
-      ActionView::RecordIdentifier.dom_id(record, prefix).to_s
-    else
-      [prefix, record.to_s].compact.join("_")
-    end
-    (hash + id).squeeze("#")
-  end
-
   # morphdom needs content to be wrapped in an element with the same id when children_only: true
   # Oddly, it doesn't matter if the target element is a div! See: https://docs.stimulusreflex.com/appendices/troubleshooting#different-element-type-altogether-who-cares-so-long-as-the-css-selector-matches
   # Used internally to allow automatic partial collection rendering, but also useful to library users
   # eg. `morph dom_id(@posts), render_collection(@posts)`
   def render_collection(resource, content = nil)
     content ||= render(resource)
-    tag.div(content.html_safe, id: dom_id(resource, hash: ""))
+    tag.div(content.html_safe, id: dom_id(resource).from(1))
   end
 end

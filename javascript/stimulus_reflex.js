@@ -153,6 +153,7 @@ const register = (controller, options = {}) => {
         target,
         args,
         url,
+        tabId,
         attrs,
         dataset,
         selectors,
@@ -257,6 +258,9 @@ const register = (controller, options = {}) => {
     }
   })
 }
+
+// Uniquely identify this browser tab in each Reflex
+const tabId = uuidv4()
 
 const useReflex = (controller, options = {}) => {
   register(controller, options)

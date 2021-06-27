@@ -1,5 +1,5 @@
 import { createConsumer } from '@rails/actioncable'
-import { performOperations } from '../reflexes'
+import { received } from '../reflexes'
 import { emitEvent } from '../utils'
 
 let consumer
@@ -15,7 +15,7 @@ const createSubscription = controller => {
   controller.StimulusReflex.subscription =
     consumer.subscriptions.findAll(identifier)[0] ||
     consumer.subscriptions.create(subscription, {
-      received: performOperations,
+      received,
       connected,
       rejected,
       disconnected

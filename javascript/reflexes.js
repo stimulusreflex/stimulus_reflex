@@ -9,7 +9,10 @@ import { attributeValue, attributeValues } from './attributes'
 
 const reflexes = {}
 
-const performOperations = data => {
+export default reflexes
+
+export const received = data => {
+
   if (!data.cableReady) return
 
   let reflexOperations = {}
@@ -102,7 +105,8 @@ const performOperations = data => {
       CableReady.perform(reflexOperations)
     }
   } else {
-    if (reflexes[Object.entries(data.operations)[0][1][0].reflexId])
+    const operations = Object.entries(data.operations)
+    if (operations.length && reflexes[operations[0][1][0].reflexId])
       CableReady.perform(data.operations)
   }
 }
