@@ -27,7 +27,12 @@ export default class ReflexData {
   }
 
   get attrs () {
-    return this.options['attrs'] || extractElementAttributes(this.reflexElement)
+    this._attrs =
+      this._attrs ||
+      this.options['attrs'] ||
+      extractElementAttributes(this.reflexElement)
+
+    return this._attrs
   }
 
   get reflexId () {
@@ -36,12 +41,14 @@ export default class ReflexData {
   }
 
   get selectors () {
-    const selectors =
-      this.options['selectors'] || getReflexRoots(this.reflexElement)
-    if (typeof selectors === 'string') {
-      return [selectors]
+    this._selectors =
+      this._selectors ||
+      this.options['selectors'] ||
+      getReflexRoots(this.reflexElement)
+    if (typeof this._selectors === 'string') {
+      return [this._selectors]
     } else {
-      return selectors
+      return this._selectors
     }
   }
 
@@ -50,7 +57,8 @@ export default class ReflexData {
   }
 
   get dataset () {
-    return extractElementDataset(this.reflexElement)
+    this._dataset = this._dataset || extractElementDataset(this.reflexElement)
+    return this._dataset
   }
 
   get innerHTML () {
