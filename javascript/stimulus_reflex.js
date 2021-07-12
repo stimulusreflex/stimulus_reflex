@@ -12,6 +12,8 @@ import ReflexData from './reflex_data'
 import isolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
 
+import './activity'
+
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
 // i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController);
