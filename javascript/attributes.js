@@ -141,14 +141,14 @@ export const extractElementDataset = element => {
   const datasetElements = getElementsFromTokens(element, tokens)
   const datasetAllElements = getElementsFromTokens(element, allTokens)
 
-  const datasetAttribtues = datasetElements.reduce((acc, ele) => {
+  const datasetAttributes = datasetElements.reduce((acc, ele) => {
     return { ...extractDataAttributes(ele), ...acc }
   }, {})
 
-  const reflexElementAttribtues = extractDataAttributes(element)
+  const reflexElementAttributes = extractDataAttributes(element)
 
   const elementDataset = {
-    dataset: { ...reflexElementAttribtues, ...datasetAttribtues },
+    dataset: { ...reflexElementAttributes, ...datasetAttributes },
     datasetAll: {}
   }
 

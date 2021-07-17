@@ -28,6 +28,7 @@
   },
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
+  "sideEffects": false,
   "main": "./javascript/stimulus_reflex.js",
   "module": "./javascript/stimulus_reflex.js",
   "scripts": {

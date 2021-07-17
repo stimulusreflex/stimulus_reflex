@@ -6,8 +6,16 @@
 
 **Closed issues:**
 
+- Calling Reflex with data-action and data-reflex-dataset='combined' send combined dataset with event.currentTarget only [\#525](https://github.com/stimulusreflex/stimulus_reflex/issues/525)
 - HAML code with form tag connect controller twice [\#520](https://github.com/stimulusreflex/stimulus_reflex/issues/520)
 - Web Components Breaking In Stimulus Reflex Morph [\#511](https://github.com/stimulusreflex/stimulus_reflex/issues/511)
+
+**Merged pull requests:**
+
+- Fix two minor typos [\#526](https://github.com/stimulusreflex/stimulus_reflex/pull/526) ([julianrubisch](https://github.com/julianrubisch))
+- chore: add sideEffects false to make Webpack happy [\#523](https://github.com/stimulusreflex/stimulus_reflex/pull/523) ([ParamagicDev](https://github.com/ParamagicDev))
+- Add localization example to ApplicationReflex template [\#521](https://github.com/stimulusreflex/stimulus_reflex/pull/521) ([erlingur](https://github.com/erlingur))
+- refactor stream\_name [\#519](https://github.com/stimulusreflex/stimulus_reflex/pull/519) ([leastbad](https://github.com/leastbad))
 
 ## [v3.5.0.pre1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre1) (2021-06-02)
 
@@ -117,7 +125,6 @@
 - Extract RequestParameters class [\#451](https://github.com/stimulusreflex/stimulus_reflex/pull/451) ([julianrubisch](https://github.com/julianrubisch))
 - run changelog action not on every single push to master [\#450](https://github.com/stimulusreflex/stimulus_reflex/pull/450) ([marcoroth](https://github.com/marcoroth))
 - Extract method invocation policy [\#448](https://github.com/stimulusreflex/stimulus_reflex/pull/448) ([julianrubisch](https://github.com/julianrubisch))
-- remove unnecessary gate [\#439](https://github.com/stimulusreflex/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.1) (2021-01-26)
 
@@ -130,7 +137,6 @@
 **Fixed bugs:**
 
 - life-cycle callbacks return correct element reference [\#431](https://github.com/stimulusreflex/stimulus_reflex/pull/431) ([leastbad](https://github.com/leastbad))
-- encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
 - Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - Prefix dom\_id with hash/pound [\#410](https://github.com/stimulusreflex/stimulus_reflex/pull/410) ([hopsoft](https://github.com/hopsoft))
 
@@ -144,6 +150,7 @@
 
 **Merged pull requests:**
 
+- remove unnecessary gate [\#439](https://github.com/stimulusreflex/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
 - Extract callbacks to module [\#427](https://github.com/stimulusreflex/stimulus_reflex/pull/427) ([julianrubisch](https://github.com/julianrubisch))
 - Fixes bug where multiple inputs with the same name lost element value [\#426](https://github.com/stimulusreflex/stimulus_reflex/pull/426) ([jonsgreen](https://github.com/jonsgreen))
 - Add general policy for CoC enforcement [\#424](https://github.com/stimulusreflex/stimulus_reflex/pull/424) ([hopsoft](https://github.com/hopsoft))
@@ -172,6 +179,7 @@
 
 **Fixed bugs:**
 
+- encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
 - fix up install task [\#401](https://github.com/stimulusreflex/stimulus_reflex/pull/401) ([leastbad](https://github.com/leastbad))
 - Fix multiple broadcasts from within the same reflex [\#400](https://github.com/stimulusreflex/stimulus_reflex/pull/400) ([hopsoft](https://github.com/hopsoft))
 
@@ -488,6 +496,7 @@
 **Fixed bugs:**
 
 - Limit MutationObserver mutations [\#256](https://github.com/stimulusreflex/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+- Add more smarts to \_\_perform [\#235](https://github.com/stimulusreflex/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -524,7 +533,6 @@
 
 **Fixed bugs:**
 
-- Add more smarts to \_\_perform [\#235](https://github.com/stimulusreflex/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
 - \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/stimulusreflex/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 - merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/stimulusreflex/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
 
@@ -535,6 +543,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/stimulusreflex/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Always commit session [\#222](https://github.com/stimulusreflex/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
@@ -814,10 +823,6 @@
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.1.7...v2.1.8)
 
-**Implemented enhancements:**
-
-- More defense in the received handler [\#107](https://github.com/stimulusreflex/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
-
 **Fixed bugs:**
 
 - Fix bug related to trailing slash in URL path [\#111](https://github.com/stimulusreflex/stimulus_reflex/pull/111) ([hopsoft](https://github.com/hopsoft))
@@ -876,6 +881,7 @@
 
 **Implemented enhancements:**
 
+- More defense in the received handler [\#107](https://github.com/stimulusreflex/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 - Add CodeFund sponsorship [\#75](https://github.com/stimulusreflex/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**
