@@ -119,9 +119,9 @@ class StimulusReflex::SanityChecker
 
   def default_url_config_set?
     if defined?(ActionMailer)
-      Rails.application.config.action_controller.default_url_options && Rails.application.config.action_mailer.default_url_options
+      Rails.application.config.action_controller.default_url_options.blank? && Rails.application.config.action_mailer.default_url_options.blank?
     else
-      Rails.application.config.action_controller.default_url_options
+      Rails.application.config.action_controller.default_url_options.blank?
     end
   end
 
