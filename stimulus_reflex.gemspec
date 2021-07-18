@@ -11,10 +11,10 @@ Gem::Specification.new do |gem|
   gem.homepage = "https://github.com/stimulusreflex/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
   gem.post_install_message = <<~MESSAGE
-    Friendly reminder: When updating the stimulus_reflex gem,
-    don't forget to update your npm package as well.
+    Get support for StimulusReflex and CableReady on Discord:
 
-    See https://www.npmjs.com/package/stimulus_reflex
+    https://discord.gg/stimulus-reflex
+
   MESSAGE
 
   gem.metadata = {

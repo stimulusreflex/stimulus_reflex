@@ -4,11 +4,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   attr_reader :reflex_data
 
   def stream_name
-    ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
-    [
-      params[:channel],
-      ids.select(&:present?).join(";")
-    ].select(&:present?).join(":")
+    [params[:channel], connection.connection_identifier].join(":")
   end
 
   def subscribed
@@ -92,7 +88,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     elsif policy.arguments?
       reflex.process(method_name, *arguments)
     else
-      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
+      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{policy.required_params.inspect}, optional #{policy.optional_params.inspect})")
     end
   end
 

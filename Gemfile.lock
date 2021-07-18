@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.5.0.pre0)
+    stimulus_reflex (3.5.0.pre1)
       cable_ready (= 5.0.0.pre1)
       nokogiri
       rack
@@ -176,7 +176,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   bundler (~> 2.0)
