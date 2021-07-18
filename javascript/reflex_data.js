@@ -92,10 +92,9 @@ export default class ReflexData {
   }
 
   get formSelector () {
-    return (
-      this.options['formSelector'] ||
-      this.reflexElement.dataset.reflexFormSelector
-    )
+    const attr =
+      this.reflexElement.attributes[Schema.reflexFormSelector] || false
+    return this.options['formSelector'] || attr ? attr.value !== 'false' : false
   }
 
   valueOf () {

@@ -4,5 +4,6 @@ export const defaultSchema = {
   reflexRootAttribute: 'data-reflex-root',
   reflexDatasetAttribute: 'data-reflex-dataset',
   reflexDatasetAllAttribute: 'data-reflex-dataset-all',
-  reflexSerializeFormAttribute: 'data-reflex-serialize-form'
+  reflexSerializeFormAttribute: 'data-reflex-serialize-form',
+  reflexFormSelectorAttribute: 'data-reflex-form-selector'
 }
