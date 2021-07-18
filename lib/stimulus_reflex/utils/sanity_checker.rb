@@ -31,7 +31,7 @@ class StimulusReflex::SanityChecker
     def called_by_generate_config?
       if ARGV.include? "stimulus_reflex:initializer"
         puts
-        puts "You are running the Stimulus Reflex initializer, which is not"
+        puts "👉 You are running the Stimulus Reflex initializer, which is not"
         puts
       end
       ARGV.include? "stimulus_reflex:initializer"
@@ -45,7 +45,8 @@ class StimulusReflex::SanityChecker
   def check_caching_enabled
     if caching_not_enabled?
       warn_and_exit <<~WARN
-        StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+        👉 StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+
         To enable caching in development, run:
           rails dev:cache
       WARN
@@ -53,8 +54,9 @@ class StimulusReflex::SanityChecker
 
     if using_null_store?
       warn_and_exit <<~WARN
-        StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
-        But your config.cache_store is set to :null_store, so it won't work.
+        👉 StimulusReflex requires caching to be enabled.
+        
+        Caching allows the session to be modified during ActionCable requests. Your config.cache_store is set to :null_store, so it won't work.
       WARN
     end
   end
@@ -63,7 +65,7 @@ class StimulusReflex::SanityChecker
     return if StimulusReflex.config.on_missing_default_urls == :ignore
     if default_url_config_set? == false
       puts <<~WARN
-        StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{"and ActionMailer " if defined?(ActionMailer)}will default to example.com when rendering route helpers.
+        👉 StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{"and ActionMailer " if defined?(ActionMailer)}will default to example.com when rendering route helpers.
 
         You can set your URL options in config/environments/#{Rails.env}.rb
 
@@ -78,14 +80,16 @@ class StimulusReflex::SanityChecker
   def check_package_versions_match
     if npm_version.nil?
       warn_and_exit <<~WARN
-        Can't locate the stimulus_reflex npm package.
+        👉 Can't locate the stimulus_reflex npm package.
+
         Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
       WARN
     end
 
     if package_version_mismatch?
       warn_and_exit <<~WARN
-        The stimulus_reflex npm package version (#{npm_version}) does not match the Rubygem version (#{gem_version}).
+        👉 The stimulus_reflex npm package version (#{npm_version}) does not match the Rubygem version (#{gem_version}).
+
         To update the stimulus_reflex npm package:
           yarn upgrade stimulus_reflex@#{gem_version}
       WARN
@@ -101,7 +105,7 @@ class StimulusReflex::SanityChecker
       if latest_version != StimulusReflex::VERSION
         puts <<~WARN
 
-          There is a new version of StimulusReflex available!
+          👉 There is a new version of StimulusReflex available!
           Current: #{StimulusReflex::VERSION} Latest: #{latest_version}
 
           If you upgrade, it is very important that you update BOTH Gemfile and package.json
@@ -111,7 +115,7 @@ class StimulusReflex::SanityChecker
         exit if StimulusReflex.config.on_new_version_available == :exit
       end
     rescue
-      puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: connection timeout"
+      puts "👉 StimulusReflex #{StimulusReflex::VERSION} update check skipped: connection timeout"
     end
   end
 
@@ -137,7 +141,7 @@ class StimulusReflex::SanityChecker
 
   def using_preview_release?
     preview = StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT) == false
-    puts "StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" if preview
+    puts "👉 StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" if preview
     preview
   end
 
