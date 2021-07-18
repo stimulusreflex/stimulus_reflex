@@ -1,6 +1,17 @@
 import assert from 'assert'
 import { JSDOM } from 'jsdom'
 import ReflexData from '../reflex_data'
+import Schema from '../schema'
+
+Schema.set({
+  schema: {
+    controllerAttribute: 'data-controller',
+    actionAttribute: 'data-action',
+    targetAttribute: 'data-target',
+    reflexIncludeInnerHtmlAttribute: 'data-reflex-include-inner-html',
+    reflexIncludeTextContentAttribute: 'data-reflex-include-text-content'
+  }
+})
 
 describe('ReflexData', () => {
   it('returns an array of selectors', () => {
@@ -28,7 +39,7 @@ describe('ReflexData', () => {
 
   it("attaches the element's innerHTML if includeInnerHTML is declared on the reflexElement", () => {
     const dom = new JSDOM(
-      '<div data-reflex-include-html><ul><li>First Item</li><li>Last Item</li></ul></div>'
+      '<div data-reflex-include-inner-html><ul><li>First Item</li><li>Last Item</li></ul></div>'
     )
     const element = dom.window.document.querySelector('div')
 
@@ -60,7 +71,7 @@ describe('ReflexData', () => {
 
   it("attaches the element's textContent if includeTextContent is declared on the reflex element", () => {
     const dom = new JSDOM(
-      '<div data-reflex-include-text><p>Some Text <a>with a link</a></p></div>'
+      '<div data-reflex-include-text-content><p>Some Text <a>with a link</a></p></div>'
     )
     const element = dom.window.document.querySelector('div')
 

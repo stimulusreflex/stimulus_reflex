@@ -5,7 +5,9 @@ const defaultSchema = {
   reflexDatasetAttribute: 'data-reflex-dataset',
   reflexDatasetAllAttribute: 'data-reflex-dataset-all',
   reflexSerializeFormAttribute: 'data-reflex-serialize-form',
-  reflexFormSelectorAttribute: 'data-reflex-form-selector'
+  reflexFormSelectorAttribute: 'data-reflex-form-selector',
+  reflexIncludeInnerHtmlAttribute: 'data-reflex-include-inner-html',
+  reflexIncludeTextContentAttribute: 'data-reflex-include-text-content'
 }
 
 let schema = {}

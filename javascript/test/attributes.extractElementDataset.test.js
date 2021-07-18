@@ -5,14 +5,6 @@ import reflexes from '../reflexes'
 import Schema from '../schema'
 
 describe('extractElementDataset', () => {
-  Schema.set({
-    schema: {
-      controllerAttribute: 'data-controller',
-      actionAttribute: 'data-action',
-      targetAttribute: 'data-target'
-    }
-  })
-
   it('should return dataset for element without data attributes', () => {
     const dom = new JSDOM('<a id="example">Test</a>')
     global.document = dom.window.document

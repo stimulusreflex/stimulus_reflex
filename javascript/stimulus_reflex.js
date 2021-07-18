@@ -2,13 +2,13 @@ import { Controller } from 'stimulus'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, serverMessage } from './callbacks'
-import { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import reflexes, { registerReflex, setupDeclarativeReflexes } from './reflexes'
 import { attributeValues } from './attributes'
+import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
 import ReflexData from './reflex_data'
-import reflexes from './reflexes'
 import isolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
 
@@ -139,7 +139,7 @@ const register = (controller, options = {}) => {
         reflexElement,
         controllerElement,
         this.identifier,
-        reflexes.app.schema.reflexPermanentAttribute,
+        Schema.reflexPermanent,
         target,
         args,
         url,
@@ -175,8 +175,7 @@ const register = (controller, options = {}) => {
         const check = reflexElement.attributes[Schema.reflexSerializeForm]
         if (check) {
           // not needed after v4 because this is only here for the deprecation warning
-          options['serializeForm'] = false
-          if (check.value === 'true') options['serializeForm'] = true
+          options['serializeForm'] = check.value !== 'false'
         }
 
         const form =
@@ -200,8 +199,9 @@ const register = (controller, options = {}) => {
           formData
         }
 
-        const { subscription } = this.StimulusReflex
-        subscription.send(controllerElement.reflexData[reflexId])
+        this.StimulusReflex.subscription.send(
+          controllerElement.reflexData[reflexId]
+        )
       })
 
       const promise = registerReflex(reflexData.valueOf())

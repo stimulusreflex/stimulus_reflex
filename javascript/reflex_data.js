@@ -2,6 +2,7 @@ import { extractElementAttributes, extractElementDataset } from './attributes'
 import { getReflexRoots } from './reflexes'
 import { uuidv4 } from './utils'
 import { elementToXPath } from './utils'
+import Schema from './schema'
 
 export default class ReflexData {
   constructor (
@@ -45,11 +46,10 @@ export default class ReflexData {
       this._selectors ||
       this.options['selectors'] ||
       getReflexRoots(this.reflexElement)
-    if (typeof this._selectors === 'string') {
-      return [this._selectors]
-    } else {
-      return this._selectors
-    }
+
+    return typeof this._selectors === 'string'
+      ? [this._selectors]
+      : this._selectors
   }
 
   get resolveLate () {
@@ -62,11 +62,11 @@ export default class ReflexData {
   }
 
   get innerHTML () {
-    return this.includeHTML ? this.reflexElement.innerHTML : ''
+    return this.includeInnerHtml ? this.reflexElement.innerHTML : ''
   }
 
   get textContent () {
-    return this.includeText ? this.reflexElement.textContent : ''
+    return this.includeTextContent ? this.reflexElement.textContent : ''
   }
 
   get xpathController () {
@@ -77,24 +77,25 @@ export default class ReflexData {
     return elementToXPath(this.reflexElement)
   }
 
-  get includeHTML () {
-    return (
-      this.options['includeInnerHTML'] ||
-      'reflexIncludeHtml' in this.reflexElement.dataset
-    )
-  }
-
-  get includeText () {
-    return (
-      this.options['includeTextContent'] ||
-      'reflexIncludeText' in this.reflexElement.dataset
-    )
-  }
-
   get formSelector () {
     const attr =
       this.reflexElement.attributes[Schema.reflexFormSelector] || false
     return this.options['formSelector'] || attr ? attr.value !== 'false' : false
+
+  get includeInnerHtml () {
+    const attr =
+      this.reflexElement.attributes[Schema.reflexIncludeInnerHtml] || false
+    return this.options['includeInnerHTML'] || attr
+      ? attr.value !== 'false'
+      : false
+  }
+
+  get includeTextContent () {
+    const attr =
+      this.reflexElement.attributes[Schema.reflexIncludeTextContent] || false
+    return this.options['includeTextContent'] || attr
+      ? attr.value !== 'false'
+      : false
   }
 
   valueOf () {
