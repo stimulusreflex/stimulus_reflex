@@ -1,5 +1,4 @@
 import { Controller } from 'stimulus'
-import { defaultSchema } from './schema'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, serverMessage } from './callbacks'
@@ -59,7 +58,7 @@ const initialize = (application, initializeOptions = {}) => {
       )
   })
   reflexes.app = application
-  reflexes.app.schema = { ...defaultSchema, ...application.schema }
+  Schema.set(application)
   reflexes.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
@@ -68,10 +67,7 @@ const initialize = (application, initializeOptions = {}) => {
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [
-      reflexes.app.schema.reflexAttribute,
-      reflexes.app.schema.actionAttribute
-    ],
+    attributeFilter: [Schema.reflex, Schema.action],
     childList: true,
     subtree: true
   })
@@ -152,8 +148,6 @@ const register = (controller, options = {}) => {
 
       const reflexId = reflexData.reflexId
 
-      const { subscription } = this.StimulusReflex
-
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
@@ -178,15 +172,11 @@ const register = (controller, options = {}) => {
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
-        const serializeAttribute =
-          reflexElement.attributes[
-            reflexes.app.schema.reflexSerializeFormAttribute
-          ]
-        if (serializeAttribute) {
+        const check = reflexElement.attributes[Schema.reflexSerializeForm]
+        if (check) {
           // not needed after v4 because this is only here for the deprecation warning
           options['serializeForm'] = false
-          if (serializeAttribute.value === 'true')
-            options['serializeForm'] = true
+          if (check.value === 'true') options['serializeForm'] = true
         }
 
         const form =
@@ -195,7 +185,7 @@ const register = (controller, options = {}) => {
 
         if (Deprecate.enabled && options['serializeForm'] === undefined && form)
           console.warn(
-            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${reflexes.app.schema.reflexSerializeFormAttribute}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
+            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${Schema.reflexSerializeForm}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
           )
         const formData =
           options['serializeForm'] === false
@@ -210,6 +200,7 @@ const register = (controller, options = {}) => {
           formData
         }
 
+        const { subscription } = this.StimulusReflex
         subscription.send(controllerElement.reflexData[reflexId])
       })
 
@@ -236,7 +227,7 @@ const register = (controller, options = {}) => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(reflexes.app.schema.reflexAttribute)
+        reflex = element.getAttribute(Schema.reflex)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
