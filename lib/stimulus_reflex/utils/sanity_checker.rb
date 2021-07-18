@@ -32,7 +32,7 @@ class StimulusReflex::SanityChecker
     end
 
     def called_by_rake?
-      caller.find { |c| c.include?("/gems/rake-") }
+      File.basename($PROGRAM_NAME) == "rake"
     end
   end
 
@@ -57,12 +57,12 @@ class StimulusReflex::SanityChecker
     return if StimulusReflex.config.on_missing_default_urls == :ignore
     if default_url_config_set? == false
       puts <<~WARN
-        StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{ "and ActionMailer " if defined?(ActionMailer) }will default to example.com when rendering route helpers.
+        StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{"and ActionMailer " if defined?(ActionMailer)}will default to example.com when rendering route helpers.
 
         You can set your URL options in config/environments/#{Rails.env}.rb
 
           config.action_controller.default_url_options = {host: "localhost", port: 3000}
-          #{ "config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n" if defined?(ActionMailer) }
+          #{"config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n" if defined?(ActionMailer)}
         Please update every environment with the appropriate URL. Typically, no port is necessary in production.
 
       WARN
@@ -169,7 +169,7 @@ class StimulusReflex::SanityChecker
   end
 
   def warn_and_exit(text)
-    puts 
+    puts
     puts "Heads up! 🔥"
     puts
     puts text

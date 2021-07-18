@@ -54,7 +54,7 @@ namespace :stimulus_reflex do
     filepath = Rails.root.join("config/environments/development.rb")
     lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.session_store") }
-    matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
       puts "Using :cache_store for session storage. We recommend switching to Redis for cache and session storage, when you're ready. Find out more: https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
       File.write(filepath, lines.join)
