@@ -48,6 +48,7 @@ class StimulusReflex::SanityChecker
         👉 StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
 
         To enable caching in development, run:
+        
           rails dev:cache
       WARN
     end
@@ -91,6 +92,7 @@ class StimulusReflex::SanityChecker
         👉 The stimulus_reflex npm package version (#{npm_version}) does not match the Rubygem version (#{gem_version}).
 
         To update the stimulus_reflex npm package:
+
           yarn upgrade stimulus_reflex@#{gem_version}
       WARN
     end
