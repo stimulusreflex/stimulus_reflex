@@ -81,6 +81,7 @@ export default class ReflexData {
     const attr =
       this.reflexElement.attributes[Schema.reflexFormSelector] || false
     return this.options['formSelector'] || attr ? attr.value !== 'false' : false
+  }
 
   get includeInnerHtml () {
     const attr =
