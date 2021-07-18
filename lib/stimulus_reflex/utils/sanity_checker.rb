@@ -7,6 +7,7 @@ class StimulusReflex::SanityChecker
 
   class << self
     def check!
+      return if ENV["SKIP_SANITY_CHECK"]
       return if StimulusReflex.config.on_failed_sanity_checks == :ignore
       return if called_by_installer?
       return if called_by_generate_config?
@@ -28,6 +29,11 @@ class StimulusReflex::SanityChecker
     end
 
     def called_by_generate_config?
+      if ARGV.include? "stimulus_reflex:initializer"
+        puts
+        puts "You are running the Stimulus Reflex initializer, which is not"
+        puts
+      end
       ARGV.include? "stimulus_reflex:initializer"
     end
 
@@ -176,7 +182,11 @@ class StimulusReflex::SanityChecker
     puts
     if StimulusReflex.config.on_failed_sanity_checks == :exit
       puts <<~INFO
-        If you know what you are doing and you want to start the application anyway, you can add the following directive to the StimulusReflex initializer:
+        To ignore any warnings and start the application anyway, you can set the SKIP_SANITY_CHECK environment variable:
+
+          SKIP_SANITY_CHECK=true rails s
+
+        To do this permanently, add the following directive to the StimulusReflex initializer:
 
           StimulusReflex.configure do |config|
             config.on_failed_sanity_checks = :warn
