@@ -179,6 +179,7 @@ const register = (controller, options = {}) => {
         }
 
         const form =
+          reflexElement.closest(reflexData.formSelector) ||
           document.querySelector(reflexData.formSelector) ||
           reflexElement.closest('form')
 
