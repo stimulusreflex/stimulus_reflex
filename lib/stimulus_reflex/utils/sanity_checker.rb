@@ -16,7 +16,7 @@ class StimulusReflex::SanityChecker
       instance = new
       instance.check_caching_enabled
       instance.check_package_versions_match
-      instance.check_default_url_config
+      # instance.check_default_url_config
       instance.check_new_version_available
     end
 
@@ -29,11 +29,6 @@ class StimulusReflex::SanityChecker
     end
 
     def called_by_generate_config?
-      if ARGV.include? "stimulus_reflex:initializer"
-        puts
-        puts "👉 You are running the Stimulus Reflex initializer, which is not"
-        puts
-      end
       ARGV.include? "stimulus_reflex:initializer"
     end
 
@@ -48,7 +43,7 @@ class StimulusReflex::SanityChecker
         👉 StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
 
         To enable caching in development, run:
-        
+
           rails dev:cache
       WARN
     end
@@ -82,6 +77,8 @@ class StimulusReflex::SanityChecker
     if npm_version.nil?
       warn_and_exit <<~WARN
         👉 Can't locate the stimulus_reflex npm package.
+
+          yarn add stimulus_reflex@#{gem_version}
 
         Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
       WARN

@@ -56,15 +56,18 @@ namespace :stimulus_reflex do
     unless lines.find { |line| line.include?("config.session_store") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
-      puts "Using :cache_store for session storage. We recommend switching to Redis for cache and session storage, when you're ready. Find out more: https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
+      puts
+      puts "Using :cache_store for session storage. We recommend switching to Redis for cache and session storage. Find out more: https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
       File.write(filepath, lines.join)
     end
 
-    lines = File.readlines(filepath)
-    unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
-      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
-      lines.insert lines.index(matches.last).to_i + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
-      File.write(filepath, lines.join)
+    if defined?(ActionMailer)
+      lines = File.readlines(filepath)
+      unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
+        matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+        lines.insert lines.index(matches.last).to_i + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
+        File.write(filepath, lines.join)
+      end
     end
 
     lines = File.readlines(filepath)
@@ -75,7 +78,7 @@ namespace :stimulus_reflex do
     end
 
     puts
-    puts "Updating config/cable.yml"
+    puts "Updating config/cable.yml to use Redis in development"
     filepath = Rails.root.join("config/cable.yml")
     lines = File.readlines(filepath)
     if lines[1].include?("adapter: async")
@@ -87,21 +90,25 @@ namespace :stimulus_reflex do
     end
 
     puts
-    puts "Generating default StimulusReflex and CableReady configuration files in config/initializers."
+    puts "Generating default StimulusReflex and CableReady configuration files"
+    puts
     system "bundle exec rails generate stimulus_reflex:initializer"
     system "bundle exec rails generate cable_ready:initializer"
     system "bundle exec rails generate cable_ready:stream_from"
 
     puts
-    puts "Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller."
+    puts "Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller"
+    puts
     system "bundle exec rails generate stimulus_reflex example"
 
     puts
     puts "StimulusReflex and CableReady have been successfully installed! 🎉"
-    puts "Go to https://docs.stimulusreflex.com/hello-world/quickstart if you need help getting started."
     puts
-    puts "Come say hello on Discord: https://discord.gg/stimulus-reflex"
-    puts "The fastest way to get support is to prepare an MVCE git repo that you can share."
+    puts "https://docs.stimulusreflex.com/hello-world/quickstart is a great place to get started."
+    puts
+    puts "The fastest way to get support is to say hello on Discord:"
+    puts
+    puts "https://discord.gg/stimulus-reflex"
     puts
   end
 end
