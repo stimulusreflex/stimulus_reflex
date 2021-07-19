@@ -77,6 +77,13 @@ export default class ReflexData {
     return elementToXPath(this.reflexElement)
   }
 
+  get formSelector () {
+    const attr = this.reflexElement.attributes[Schema.reflexFormSelector]
+      ? this.reflexElement.attributes[Schema.reflexFormSelector].value
+      : undefined
+    return this.options['formSelector'] || attr
+  }
+
   get includeInnerHtml () {
     const attr =
       this.reflexElement.attributes[Schema.reflexIncludeInnerHtml] || false
@@ -104,6 +111,7 @@ export default class ReflexData {
       xpathElement: this.xpathElement,
       inner_html: this.innerHTML,
       text_content: this.textContent,
+      formSelector: this.formSelector,
       reflexController: this.reflexController,
       permanentAttributeName: this.permanentAttributeName,
       target: this.target,
