@@ -185,28 +185,6 @@ Russian Doll caching is just stacking cache fragments inside each other, and the
 
 Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html)" is one of the best resources on the topic - and the source of the above examples. It's a half-hour incredibly well-spent.
 
-### Delegate render
-
-{% hint style="warning" %}
-Since StimulusReflex v3.4, this is now done automatically. This section will be removed when the next major release arrives.
-{% endhint %}
-
-If you are planning to render a lot of partials or ViewComponents in your Reflex action methods, you can delegate the `render` keyword to `ApplicationController`.
-
-{% code title="app/reflexes/application\_reflex.rb" %}
-```ruby
-class ApplicationReflex < StimulusReflex::Reflex
-  delegate :render, to: ApplicationController
-end
-```
-{% endcode %}
-
-This means that you can now call `morph` with a more terse syntax:
-
-```ruby
-morph "#foo", render(partial: "path/to/foo")
-```
-
 ### Speed up page morphs
 
 Depending on what parts of your DOM are being morphed, it's possible that you don't need to render your layout template every time you run a Reflex. If your menus and sidebar are mostly static, you might want to experiment with constraining your update to just the template for the current action.
@@ -219,7 +197,7 @@ if @stimulus_reflex
 end
 ```
 
-Then make sure that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
+Then **make sure** that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
 
 ```markup
 <div id="pow" data-reflex-root="#pow" data-reflex="click->Biff#pow">Pow.</div>

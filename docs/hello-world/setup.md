@@ -19,7 +19,7 @@ The [install task](https://github.com/stimulusreflex/stimulus_reflex/blob/master
 
 ```ruby
 bundle add stimulus_reflex
-bundle exec rails stimulus_reflex:install
+bundle exec rake stimulus_reflex:install
 ```
 
 {% hint style="danger" %}

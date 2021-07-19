@@ -67,7 +67,7 @@ You can control the order in which CableReady and StimulusReflex operations exec
 2. StimulusReflex `morph` operations
 3. CableReady operations that haven't been `broadcast`ed
 
-CableReady operations that have `broadcast` called on them well be immediately delivered to the client, while any CableReady operations queued in a Page or Selector Morph Reflex action that aren't broadcast by the end of the action will be broadcast along with the StimulusReflex-specific `morph` operations. The StimulusReflex operations execute first, followed by any remaining CableReady operations.
+CableReady operations that have `broadcast` called on them will be immediately delivered to the client, while any CableReady operations queued in a Page or Selector Morph Reflex action that aren't broadcast by the end of the action will be broadcast along with the StimulusReflex-specific `morph` operations. The StimulusReflex operations execute first, followed by any remaining CableReady operations.
 
 {% hint style="warning" %}
 If you have CableReady operations that haven't been broadcasted followed by another set of operations that do get broadcasted... the former group of operations will go out with the latter. If you want some operations to be sent with the StimulusReflex operations, make sure that they occur after any calls to `broadcast`.
