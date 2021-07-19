@@ -4,7 +4,7 @@ require "fileutils"
 require "stimulus_reflex/version"
 
 namespace :stimulus_reflex do
-  desc "Install StimulusReflex in this application"
+  desc "✨ Install StimulusReflex in this application"
   task install: :environment do
     system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
@@ -25,7 +25,7 @@ namespace :stimulus_reflex do
       .map { |path| Rails.root.join(path) }
       .first
 
-    puts "Updating #{filepath}"
+    puts "✨ Updating #{filepath}"
     lines = File.readlines(filepath)
 
     unless lines.find { |line| line.start_with?("import StimulusReflex") }
@@ -50,14 +50,16 @@ namespace :stimulus_reflex do
     File.write(filepath, lines.join)
 
     puts
-    puts "Updating config/environments/development.rb"
+    puts "✨ Updating config/environments/development.rb"
     filepath = Rails.root.join("config/environments/development.rb")
     lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.session_store") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
       puts
-      puts "Using :cache_store for session storage. We recommend switching to Redis for cache and session storage. Find out more: https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
+      puts "✨ Using :cache_store for session storage. We recommend switching to Redis for cache and session storage."
+      puts
+      puts "https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
       File.write(filepath, lines.join)
     end
 
@@ -78,7 +80,7 @@ namespace :stimulus_reflex do
     end
 
     puts
-    puts "Updating config/cable.yml to use Redis in development"
+    puts "✨ Updating config/cable.yml to use Redis in development"
     filepath = Rails.root.join("config/cable.yml")
     lines = File.readlines(filepath)
     if lines[1].include?("adapter: async")
@@ -90,23 +92,23 @@ namespace :stimulus_reflex do
     end
 
     puts
-    puts "Generating default StimulusReflex and CableReady configuration files"
+    puts "✨ Generating default StimulusReflex and CableReady configuration files"
     puts
     system "bundle exec rails generate stimulus_reflex:initializer"
     system "bundle exec rails generate cable_ready:initializer"
     system "bundle exec rails generate cable_ready:stream_from"
 
     puts
-    puts "Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller"
+    puts "✨ Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller"
     puts
     system "bundle exec rails generate stimulus_reflex example"
 
     puts
-    puts "StimulusReflex and CableReady have been successfully installed! 🎉"
+    puts "🎉 StimulusReflex and CableReady have been successfully installed! 🎉"
     puts
-    puts "https://docs.stimulusreflex.com/hello-world/quickstart is a great place to get started."
+    puts "https://docs.stimulusreflex.com/hello-world/quickstart"
     puts
-    puts "The fastest way to get support is to say hello on Discord:"
+    puts "😊 The fastest way to get support is to say hello on Discord:"
     puts
     puts "https://discord.gg/stimulus-reflex"
     puts
