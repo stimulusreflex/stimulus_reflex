@@ -4,7 +4,7 @@ require "fileutils"
 require "stimulus_reflex/version"
 
 namespace :stimulus_reflex do
-  desc "Install StimulusReflex in this application"
+  desc "✨ Install StimulusReflex in this application"
   task install: :environment do
     system "rails dev:cache" unless Rails.root.join("tmp", "caching-dev.txt").exist?
     gem_version = StimulusReflex::VERSION.gsub(".pre", "-pre")
@@ -25,8 +25,8 @@ namespace :stimulus_reflex do
       .map { |path| Rails.root.join(path) }
       .first
 
-    puts "Updating #{filepath}"
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    puts "✨ Updating #{filepath}"
+    lines = File.readlines(filepath)
 
     unless lines.find { |line| line.start_with?("import StimulusReflex") }
       matches = lines.select { |line| line =~ /\A(require|import)/ }
@@ -47,33 +47,70 @@ namespace :stimulus_reflex do
     lines << "application.consumer = consumer\n"
     lines << "StimulusReflex.initialize(application, { controller, isolate: true })\n" unless initialize_line
     lines << "StimulusReflex.debug = process.env.RAILS_ENV === 'development'\n" unless initialize_line
-    File.open(filepath, "w") { |f| f.write lines.join }
+    File.write(filepath, lines.join)
 
+    puts
+    puts "✨ Updating config/environments/development.rb"
     filepath = Rails.root.join("config/environments/development.rb")
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
     unless lines.find { |line| line.include?("config.session_store") }
       matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
       lines.insert lines.index(matches.last).to_i + 1, "  config.session_store :cache_store\n\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      puts
+      puts "✨ Using :cache_store for session storage. We recommend switching to Redis for cache and session storage."
+      puts
+      puts "https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
+      File.write(filepath, lines.join)
     end
 
+    if defined?(ActionMailer)
+      lines = File.readlines(filepath)
+      unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
+        matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+        lines.insert lines.index(matches.last).to_i + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
+        File.write(filepath, lines.join)
+      end
+    end
+
+    lines = File.readlines(filepath)
+    unless lines.find { |line| line.include?("config.action_controller.default_url_options") }
+      matches = lines.select { |line| line =~ /\A(Rails.application.configure do)/ }
+      lines.insert lines.index(matches.last).to_i + 1, "  config.action_controller.default_url_options = {host: \"localhost\", port: 3000}\n"
+      File.write(filepath, lines.join)
+    end
+
+    puts
+    puts "✨ Updating config/cable.yml to use Redis in development"
     filepath = Rails.root.join("config/cable.yml")
-    lines = File.open(filepath, "r") { |f| f.readlines }
+    lines = File.readlines(filepath)
     if lines[1].include?("adapter: async")
       lines.delete_at 1
       lines.insert 1, "  adapter: redis\n"
       lines.insert 2, "  url: <%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>\n"
       lines.insert 3, "  channel_prefix: " + File.basename(Rails.root.to_s).tr("\\", "").tr("-. ", "_").underscore + "_development\n"
-      File.open(filepath, "w") { |f| f.write lines.join }
+      File.write(filepath, lines.join)
     end
 
-    system "bundle exec rails generate stimulus_reflex example"
-    puts "Generating default StimulusReflex configuration file into your application config/initializers directory"
+    puts
+    puts "✨ Generating default StimulusReflex and CableReady configuration files"
+    puts
     system "bundle exec rails generate stimulus_reflex:initializer"
+    system "bundle exec rails generate cable_ready:initializer"
+    system "bundle exec rails generate cable_ready:stream_from"
 
     puts
-    puts "StimulusReflex and CableReady have been successfully installed!"
-    puts "Go to https://docs.stimulusreflex.com/hello-world/quickstart if you need help getting started."
+    puts "✨ Generating ApplicationReflex class and Stimulus controllers, plus an example Reflex class and controller"
+    puts
+    system "bundle exec rails generate stimulus_reflex example"
+
+    puts
+    puts "🎉 StimulusReflex and CableReady have been successfully installed! 🎉"
+    puts
+    puts "https://docs.stimulusreflex.com/hello-world/quickstart"
+    puts
+    puts "😊 The fastest way to get support is to say hello on Discord:"
+    puts
+    puts "https://discord.gg/stimulus-reflex"
     puts
   end
 end
