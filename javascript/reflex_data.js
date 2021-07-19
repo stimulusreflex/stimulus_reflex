@@ -100,6 +100,14 @@ export default class ReflexData {
       : false
   }
 
+  get displayProgress () {
+    const attr =
+      this.reflexElement.attributes[Schema.reflexDisplayProgress] || false
+    return this.options['displayProgress'] || attr
+      ? attr.value !== 'false'
+      : false
+  }
+
   valueOf () {
     return {
       attrs: this.attrs,
