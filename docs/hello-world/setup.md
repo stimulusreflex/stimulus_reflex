@@ -9,24 +9,22 @@ description: How to prepare your app to use StimulusReflex
 * StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart) on your development machine.
 * **Cookie-based** [**session storage**](setup.md#session-storage) **is not currently supported by StimulusReflex.**
 * StimulusReflex works out of the box with new and existing projects running Rails 6 or later. For Rails 5.2, see [here](setup.md#rails-5-2-support).
-* StimulusReflex supports Stimulus v1.1 or v2. Examples will use the v2 syntax.
-* We recommend Webpacker v5.4 or later, but suggest passing on v6 for now.
+* StimulusReflex supports Stimulus v1.1 or later. Examples will use the v2 syntax.
+* **Use Webpacker 5.4**, as v6.0 is still in beta.
 * Setting up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md) environments are covered in their own sections.
 
 ## Command-Line Install
 
-The [install task](https://github.com/stimulusreflex/stimulus_reflex/blob/master/lib/tasks/stimulus_reflex/install.rake) below will install both Stimulus and StimulusReflex. It will modify some configuration settings and [enable caching](https://app.gitbook.com/@stimulusreflex/s/stimulusreflex/~/drafts/-MaWBaQc4XjCMkXohIGk/v/pre-release/appendices/deployment#session-storage) in your development environment.
+The [install task](https://github.com/stimulusreflex/stimulus_reflex/blob/master/lib/tasks/stimulus_reflex/install.rake) below will install Stimulus, StimulusReflex and CableReady. It will modify some configuration settings and [enable caching](https://app.gitbook.com/@stimulusreflex/s/stimulusreflex/~/drafts/-MaWBaQc4XjCMkXohIGk/v/pre-release/appendices/deployment#session-storage) in your development environment.
+
+If possible, **use the `rake` command**. Using `rails` might result in a prompt to install the `cable_ready` npm package, first.
 
 ```ruby
 bundle add stimulus_reflex
-bundle exec rake stimulus_reflex:install
+rake stimulus_reflex:install
 ```
 
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
-{% endhint %}
-
-That's it! An example Reflex class and Stimulus controller will be created for you. 🎉
+All done! An `ExampleReflex` class has been created for you. 🎉
 
 {% page-ref page="quickstart.md" %}
 
@@ -34,17 +32,13 @@ That's it! An example Reflex class and Stimulus controller will be created for y
 
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in the _development_ environment.
 
-We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration.
-
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
-{% endhint %}
+We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Make sure we have [Stimulus ](https://stimulusjs.org)installed and using Webpacker v5.4.
 
 ```ruby
 bundle add stimulus_reflex --version "~> 3.5.0"
 yarn add stimulus_reflex@3.5.0
 rails dev:cache # caching needs to be enabled
-bundle exec rails webpacker:install:stimulus
+rake webpacker:install:stimulus
 ```
 
 Modify your Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer.
@@ -69,7 +63,7 @@ StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 {% endtabs %}
 
 {% hint style="danger" %}
-The installation information presented by the [StimulusJS handbook](https://stimulus.hotwire.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex recommends that you are follow the Rails webpacker flow. Your application pack should ideally `import 'controllers'`.
+The installation information presented by the [StimulusJS handbook](https://stimulus.hotwired.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default Webpacker v5.4 Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex recommends that you are follow the Rails webpacker flow. Your application pack should ideally `import 'controllers'`.
 
 If you require your controllers in both 'application.js `and` index.js\` it's likely that your controllers will load twice, causing all sorts of strange behavior.  
 {% endhint %}
@@ -83,7 +77,7 @@ Instead, we enable caching in the development environment so that we can assign 
 Rails.application.configure do
   config.session_store :cache_store
   config.action_controller.default_url_options = {host: "localhost", port: 3000}
-  config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+  config.action_mailer.default_url_options = {host: "localhost", port: 3000} # only if using ActionMailer
 end
 ```
 {% endcode %}
@@ -102,10 +96,10 @@ development:
 Finally, StimulusReflex provides several generators that you should run to complete your setup process. They will create initializers for both StimulusReflex and CableReady, enable `stream_from` support for CableReady and create the `application_controller.js` Stimulus controller and an example Reflex class.
 
 ```text
-bundle exec rails generate stimulus_reflex:initializer
-bundle exec rails generate cable_ready:initializer
-bundle exec rails generate cable_ready:stream_from
-bundle exec rails generate stimulus_reflex example
+rails g stimulus_reflex:initializer
+rails g cable_ready:initializer
+rails g cable_ready:stream_from
+rails g stimulus_reflex example
 ```
 
 ## Upgrading, package versions and sanity
@@ -149,6 +143,10 @@ When the time comes, it's easy to configure your application to support authenti
 
 ## Tab isolation
 
+{% hint style="info" %}
+Tab Isolation is deprecated in v3.5 and will be removed in v4 when all tabs will be isolated. Use CableReady to broadcast operations to other tabs.
+{% endhint %}
+
 One of the most universally surprising aspects of real-time UI updates is that by default, Morph operations intended for the current user execute in all of the current user's open tabs. Since the early days of StimulusReflex, this behavior has shifted from being an interesting edge case curiosity to something many developers need to prevent. Meanwhile, others built applications that rely on it.
 
 The solution has arrived in the form of **isolation mode**.
@@ -169,9 +167,9 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 
 ## Session Storage
 
-We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, there are some inherent limitations to the way cookies are communicated via websockets that make it difficult to use cookies for session storage in production.
+We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, secure cookies cannot be updated via WebSockets, making it undesirable to use cookies for session storage when working with StimulusReflex.
 
-We default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared.
+The install script configures `:cache_store` for `config.session_store` - and enables caching - in the development environment.
 
 Most developers switch to using `:redis_cache_store` for the cache store. The [redis-session-store gem](https://github.com/roidrage/redis-session-store) is a popular choice for the session store, especially in production.
 

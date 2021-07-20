@@ -154,7 +154,7 @@ In a typical Rails app, we would set the value of `@count` after fetching it fro
 We provide a generator that performs a scaffold-like functionality for StimulusReflex. It will generate files and classes appropriate to whether you specify a singular or pluralized name for your reflex class. For example, `user` and `users` are both valid and useful in different situations.
 
 ```bash
-bundle exec rails generate stimulus_reflex user
+rails g stimulus_reflex user
 ```
 
 This will create but not overwrite the following files:
@@ -165,7 +165,7 @@ This will create but not overwrite the following files:
 4. `app/reflexes/user_reflex.rb`
 
 {% hint style="info" %}
-If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
+If you later destroy a stimulus\_reflex "scaffold" using `rails d stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
 {% endhint %}
 
 ## StimulusReflex Cheatsheet
