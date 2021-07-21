@@ -1,105 +1,105 @@
-import { JSDOM } from 'jsdom'
-import { extractElementDataset } from '../attributes'
-import assert from 'assert'
-import reflexes from '../reflexes'
-import Schema from '../schema'
+import { JSDOM } from "jsdom";
+import { extractElementDataset } from "../attributes";
+import assert from "assert";
+import reflexes from "../reflexes";
+import Schema from "../schema";
 
-describe('extractElementDataset', () => {
-  it('should return dataset for element without data attributes', () => {
-    const dom = new JSDOM('<a id="example">Test</a>')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+describe("extractElementDataset", () => {
+  it("should return dataset for element without data attributes", () => {
+    const dom = new JSDOM('<a id="example">Test</a>');
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {},
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for element', () => {
+  it("should return dataset for element", () => {
     const dom = new JSDOM(
       '<a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345'
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for element without combining dataset from parent', () => {
+  it("should return dataset for element without combining dataset from parent", () => {
     const dom = new JSDOM(
       `
       <div data-parent-id="should not be included">
         <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345'
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for element but without providing the dataset attribute', () => {
+  it("should return dataset for element but without providing the dataset attribute", () => {
     const dom = new JSDOM(
       `
       <div data-parent-id="should not be included">
         <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345'
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(extractElementDataset(element), expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(extractElementDataset(element), expected);
+  });
 
-  it('should return dataset for element with data-reflex-dataset without value', () => {
+  it("should return dataset for element with data-reflex-dataset without value", () => {
     const dom = new JSDOM(
       `
       <div data-parent-id="should not be included">
         <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset>Test</a>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345',
-        'data-reflex-dataset': ''
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
+        "data-reflex-dataset": "",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
   it('should return dataset for element with data-reflex-dataset and other value than "combined"', () => {
     const dom = new JSDOM(
@@ -108,21 +108,21 @@ describe('extractElementDataset', () => {
         <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset="whut">Test</a>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345',
-        'data-reflex-dataset': 'whut'
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
+        "data-reflex-dataset": "whut",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
   it('should return dataset for element with data-reflex-dataset="combined"', () => {
     const dom = new JSDOM(
@@ -133,47 +133,47 @@ describe('extractElementDataset', () => {
         </div>
       </body>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-reflex': 'bar',
-        'data-info': '12345',
-        'data-grandparent-id': '456',
-        'data-parent-id': '123',
-        'data-body-id': 'body',
-        'data-reflex-dataset': 'combined'
+        "data-controller": "foo",
+        "data-reflex": "bar",
+        "data-info": "12345",
+        "data-grandparent-id": "456",
+        "data-parent-id": "123",
+        "data-body-id": "body",
+        "data-reflex-dataset": "combined",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for element with overloaded data attributes', () => {
+  it("should return dataset for element with overloaded data attributes", () => {
     const dom = new JSDOM(
       `
       <div data-info="this is the outer one">
         <a data-info="this is the inner one" data-reflex-dataset="combined">Test</a>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("a");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-info': 'this is the inner one',
-        'data-reflex-dataset': 'combined'
+        "data-info": "this is the inner one",
+        "data-reflex-dataset": "combined",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return with combined parent attributes only for elements with data-reflex-dataset', () => {
+  it("should return with combined parent attributes only for elements with data-reflex-dataset", () => {
     const dom = new JSDOM(
       `
       <div data-parent-id="123">
@@ -181,29 +181,29 @@ describe('extractElementDataset', () => {
         <button id="button2">Another thing</button>
       </div>
       `
-    )
-    global.document = dom.window.document
+    );
+    global.document = dom.window.document;
 
-    const button1 = dom.window.document.querySelector('#button1')
-    const actual_button1 = extractElementDataset(button1)
+    const button1 = dom.window.document.querySelector("#button1");
+    const actual_button1 = extractElementDataset(button1);
     const expected_button1 = {
       dataset: {
-        'data-parent-id': '123',
-        'data-reflex-dataset': 'combined'
+        "data-parent-id": "123",
+        "data-reflex-dataset": "combined",
       },
-      datasetAll: {}
-    }
+      datasetAll: {},
+    };
 
-    const button2 = dom.window.document.querySelector('#button2')
-    const actual_button2 = extractElementDataset(button2)
+    const button2 = dom.window.document.querySelector("#button2");
+    const actual_button2 = extractElementDataset(button2);
     const expected_button2 = {
       dataset: {},
-      datasetAll: {}
-    }
+      datasetAll: {},
+    };
 
-    assert.deepStrictEqual(actual_button1, expected_button1)
-    assert.deepStrictEqual(actual_button2, expected_button2)
-  })
+    assert.deepStrictEqual(actual_button1, expected_button1);
+    assert.deepStrictEqual(actual_button2, expected_button2);
+  });
 
   // no way to test this because Schema object doesn't support dynamically renaming attribute keys
   // it('should return dataset for element with different renamed data-reflex-dataset attribute', () => {
@@ -236,28 +236,28 @@ describe('extractElementDataset', () => {
   //   assert.deepStrictEqual(actual, expected)
   // })
 
-  it('should return dataset for id', () => {
+  it("should return dataset for id", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-reflex-dataset="#timmy"></div>
       <div id="timmy" data-age="12"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-age': '12',
-        'data-reflex-dataset': '#timmy'
+        "data-controller": "foo",
+        "data-age": "12",
+        "data-reflex-dataset": "#timmy",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for tag name', () => {
+  it("should return dataset for tag name", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-reflex-dataset="span"></div>
@@ -266,23 +266,23 @@ describe('extractElementDataset', () => {
       <div data-div="other"></div>
       <div data-div="other"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-span-one': '1',
-        'data-span-two': '2',
-        'data-reflex-dataset': 'span'
+        "data-controller": "foo",
+        "data-span-one": "1",
+        "data-span-two": "2",
+        "data-reflex-dataset": "span",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for tag name with class', () => {
+  it("should return dataset for tag name with class", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-reflex-dataset="span.post"></div>
@@ -293,46 +293,46 @@ describe('extractElementDataset', () => {
       <div data-div="other"></div>
       <div data-div="other"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-span-one': '1',
-        'data-span-two': '2',
-        'data-reflex-dataset': 'span.post'
+        "data-controller": "foo",
+        "data-span-one": "1",
+        "data-span-two": "2",
+        "data-reflex-dataset": "span.post",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for multiple elements with the same ids', () => {
+  it("should return dataset for multiple elements with the same ids", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-reflex-dataset="#timmy"></div>
       <div id="timmy" data-one="1"></div>
       <div id="timmy" data-two="2"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-one': '1',
-        'data-two': '2',
-        'data-reflex-dataset': '#timmy'
+        "data-controller": "foo",
+        "data-one": "1",
+        "data-two": "2",
+        "data-reflex-dataset": "#timmy",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for multiple different ids', () => {
+  it("should return dataset for multiple different ids", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-reflex-dataset="#post1 #post2 #post3 #post4"></div>
@@ -341,71 +341,71 @@ describe('extractElementDataset', () => {
       <div id="post3" data-three-id="3"></div>
       <div id="post4" data-four-id="4"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-one-id': '1',
-        'data-two-id': '2',
-        'data-three-id': '3',
-        'data-four-id': '4',
-        'data-reflex-dataset': '#post1 #post2 #post3 #post4'
+        "data-controller": "foo",
+        "data-one-id": "1",
+        "data-two-id": "2",
+        "data-three-id": "3",
+        "data-four-id": "4",
+        "data-reflex-dataset": "#post1 #post2 #post3 #post4",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for class', () => {
+  it("should return dataset for class", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".sarah"></div>
       <div class="sarah" data-job="clerk"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-id': '1',
-        'data-job': 'clerk',
-        'data-reflex-dataset': '.sarah'
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-job": "clerk",
+        "data-reflex-dataset": ".sarah",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for multiple elements with the same class', () => {
+  it("should return dataset for multiple elements with the same class", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".post"></div>
       <div class="post" data-one-id="1"></div>
       <div class="post" data-two-id="2"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-id': '1',
-        'data-one-id': '1',
-        'data-two-id': '2',
-        'data-reflex-dataset': '.post'
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-one-id": "1",
+        "data-two-id": "2",
+        "data-reflex-dataset": ".post",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for multiple different classes', () => {
+  it("should return dataset for multiple different classes", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".post1 .post2 .post3 .post4"></div>
@@ -414,26 +414,26 @@ describe('extractElementDataset', () => {
       <div class="post3" data-three-id="3"></div>
       <div class="post4" data-four-id="4"></div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-id': '1',
-        'data-one-id': '1',
-        'data-two-id': '2',
-        'data-three-id': '3',
-        'data-four-id': '4',
-        'data-reflex-dataset': '.post1 .post2 .post3 .post4'
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-one-id": "1",
+        "data-two-id": "2",
+        "data-three-id": "3",
+        "data-four-id": "4",
+        "data-reflex-dataset": ".post1 .post2 .post3 .post4",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for first occurence and stack data values if they overlap', () => {
+  it("should return dataset for first occurence and stack data values if they overlap", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="posts" data-id="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
@@ -443,30 +443,30 @@ describe('extractElementDataset', () => {
         <div class="post" data-post-id="4"></div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'posts',
-        'data-id': '1',
-        'data-post-id': '1',
-        'data-reflex-dataset': '.post',
-        'data-reflex-dataset-all': '.post'
+        "data-controller": "posts",
+        "data-id": "1",
+        "data-post-id": "1",
+        "data-reflex-dataset": ".post",
+        "data-reflex-dataset-all": ".post",
       },
       datasetAll: {
-        'data-controller': ['posts'],
-        'data-id': ['1'],
-        'data-post-id': ['1', '2', '3', '4'],
-        'data-reflex-dataset': ['.post'],
-        'data-reflex-dataset-all': ['.post']
-      }
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+        "data-controller": ["posts"],
+        "data-id": ["1"],
+        "data-post-id": ["1", "2", "3", "4"],
+        "data-reflex-dataset": [".post"],
+        "data-reflex-dataset-all": [".post"],
+      },
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for data-reflex-dataset-all', () => {
+  it("should return dataset for data-reflex-dataset-all", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset-all=".post">
@@ -475,26 +475,26 @@ describe('extractElementDataset', () => {
         <div class="post" data-post-id="4"></div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'posts',
-        'data-post-id': '1',
-        'data-reflex-dataset-all': '.post'
+        "data-controller": "posts",
+        "data-post-id": "1",
+        "data-reflex-dataset-all": ".post",
       },
       datasetAll: {
-        'data-controller': ['posts'],
-        'data-post-id': ['1', '2', '3', '4'],
-        'data-reflex-dataset-all': ['.post']
-      }
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+        "data-controller": ["posts"],
+        "data-post-id": ["1", "2", "3", "4"],
+        "data-reflex-dataset-all": [".post"],
+      },
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset if the plural of overlapped value is also used with data-reflex-dataset-all', () => {
+  it("should return dataset if the plural of overlapped value is also used with data-reflex-dataset-all", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="posts" data-post-ids="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
@@ -503,30 +503,30 @@ describe('extractElementDataset', () => {
         <div class="post" data-post-id="4"></div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'posts',
-        'data-post-id': '2',
-        'data-post-ids': '1',
-        'data-reflex-dataset': '.post',
-        'data-reflex-dataset-all': '.post'
+        "data-controller": "posts",
+        "data-post-id": "2",
+        "data-post-ids": "1",
+        "data-reflex-dataset": ".post",
+        "data-reflex-dataset-all": ".post",
       },
       datasetAll: {
-        'data-controller': ['posts'],
-        'data-post-id': ['2', '3', '4'],
-        'data-post-ids': ['1'],
-        'data-reflex-dataset': ['.post'],
-        'data-reflex-dataset-all': ['.post']
-      }
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+        "data-controller": ["posts"],
+        "data-post-id": ["2", "3", "4"],
+        "data-post-ids": ["1"],
+        "data-reflex-dataset": [".post"],
+        "data-reflex-dataset-all": [".post"],
+      },
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset if both singular and plural key exists but no data-reflex-dataset-all is passed', () => {
+  it("should return dataset if both singular and plural key exists but no data-reflex-dataset-all is passed", () => {
     const dom = new JSDOM(
       `
       <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset=".post">
@@ -535,23 +535,23 @@ describe('extractElementDataset', () => {
         <div class="post" data-post-ids="4"></div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'posts',
-        'data-post-id': '1',
-        'data-post-ids': '4',
-        'data-reflex-dataset': '.post'
+        "data-controller": "posts",
+        "data-post-id": "1",
+        "data-post-ids": "4",
+        "data-reflex-dataset": ".post",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for parent', () => {
+  it("should return dataset for parent", () => {
     const dom = new JSDOM(
       `
       <div data-dont-include="me">
@@ -563,23 +563,23 @@ describe('extractElementDataset', () => {
         </div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-parent-id': '1',
-        'data-child-id': '2',
-        'data-reflex-dataset': 'parent'
+        "data-controller": "foo",
+        "data-parent-id": "1",
+        "data-child-id": "2",
+        "data-reflex-dataset": "parent",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for ancestors', () => {
+  it("should return dataset for ancestors", () => {
     const dom = new JSDOM(
       `
       <div data-dont-include="me"></div>
@@ -593,24 +593,51 @@ describe('extractElementDataset', () => {
         </div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-grandparent-id': '1',
-        'data-parent-id': '2',
-        'data-child-id': '3',
-        'data-reflex-dataset': 'ancestors'
+        "data-controller": "foo",
+        "data-grandparent-id": "1",
+        "data-parent-id": "2",
+        "data-child-id": "3",
+        "data-reflex-dataset": "ancestors",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for children', () => {
+  it("should return dataset for descendants", () => {
+    const dom = new JSDOM(
+      `
+      <div data-dont-include="me"></div>
+      <div data-controller="foo" id="element" data-id="1" data-reflex-dataset="descendants">
+        <div data-child-id="2">
+          <div data-grandchild-id="3"></div>
+        </div>
+      </div>
+      `
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.getElementById("element");
+    const actual = extractElementDataset(element);
+    const expected = {
+      dataset: {
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-child-id": "2",
+        "data-grandchild-id": "3",
+        "data-reflex-dataset": "descendants",
+      },
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it("should return dataset for children", () => {
     const dom = new JSDOM(
       `
       <div data-dont-include="me">
@@ -625,24 +652,24 @@ describe('extractElementDataset', () => {
         </div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-id': '1',
-        'data-child-one-id': '1',
-        'data-child-two-id': '2',
-        'data-reflex-dataset': 'children'
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-child-one-id": "1",
+        "data-child-two-id": "2",
+        "data-reflex-dataset": "children",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 
-  it('should return dataset for siblings', () => {
+  it("should return dataset for siblings", () => {
     const dom = new JSDOM(
       `
       <div data-dont-include="me">
@@ -657,20 +684,20 @@ describe('extractElementDataset', () => {
         </div>
       </div>
       `
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('#element')
-    const actual = extractElementDataset(element)
+    );
+    global.document = dom.window.document;
+    const element = dom.window.document.querySelector("#element");
+    const actual = extractElementDataset(element);
     const expected = {
       dataset: {
-        'data-controller': 'foo',
-        'data-id': '1',
-        'data-sibling-one-id': '1',
-        'data-sibling-two-id': '2',
-        'data-reflex-dataset': 'siblings'
+        "data-controller": "foo",
+        "data-id": "1",
+        "data-sibling-one-id": "1",
+        "data-sibling-two-id": "2",
+        "data-reflex-dataset": "siblings",
       },
-      datasetAll: {}
-    }
-    assert.deepStrictEqual(actual, expected)
-  })
-})
+      datasetAll: {},
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
+});
