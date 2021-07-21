@@ -64,20 +64,8 @@ module StimulusReflex
     def create_update_collection(selectors, html)
       updates = selectors.is_a?(Hash) ? selectors : {selectors => html}
       updates.map do |key, value|
-        Update.new(key, value, reflex)
+        StimulusReflex::Broadcasters::Update.new(key, value, reflex)
       end
     end
-
-    StimulusReflex::SelectorBroadcaster::Update = Struct.new(:key, :value, :reflex) do
-      def selector
-        @selector ||= identifiable?(key) ? dom_id(key) : key.to_s
-      end
-
-      def html
-        html = reflex.render(key) if key.is_a?(ActiveRecord::Base) && value.nil?
-        html = reflex.render_collection(key) if key.is_a?(ActiveRecord::Relation) && value.nil?
-        html || value
-      end
-    end.include(CableReady::Identifiable)
   end
 end
