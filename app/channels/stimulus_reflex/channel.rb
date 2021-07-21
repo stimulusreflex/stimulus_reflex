@@ -25,7 +25,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         if reflex
           reflex.rescue_with_handler(exception)
           puts error_message
-          reflex.broadcast_message subject: "error", data: data, error: exception
+          reflex.broadcast_message subject: "error", data: data, error: "#{exception} #{exception.backtrace.first if Rails.env.development?}"
         else
           puts error_message
 
