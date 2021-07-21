@@ -33,6 +33,12 @@ class StimulusReflex::Element < OpenStruct
     @dataset ||= OpenStruct.new(build_underscored(data_attrs))
   end
 
+  def to_dom_id
+    raise NoIDError.new "The element `morph` is called on must have a valid DOM ID" if id.blank?
+
+    "##{id}"
+  end
+
   alias_method :data_attributes, :dataset
 
   private
@@ -53,5 +59,8 @@ class StimulusReflex::Element < OpenStruct
 
   def build_underscored(attrs)
     attrs.merge(attrs.transform_keys(&:underscore))
+  end
+
+  class NoIDError < StandardError
   end
 end
