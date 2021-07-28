@@ -34,15 +34,10 @@ class StimulusReflexController extends Controller {
 //   * isolate    - [false] restrict Reflex playback to the tab which initiated it
 //   * deprecate  - [true] show warnings regarding upcoming changes to the library
 //
-const initialize = (application, initializeOptions = {}) => {
-  const {
-    controller,
-    consumer,
-    debug,
-    params,
-    isolate,
-    deprecate
-  } = initializeOptions
+const initialize = (
+  application,
+  { controller, consumer, debug, params, isolate, deprecate } = {}
+) => {
   actionCable.set(consumer, params)
   setTimeout(() => {
     if (Deprecate.enabled && consumer)
