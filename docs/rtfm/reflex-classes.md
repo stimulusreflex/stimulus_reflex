@@ -99,7 +99,7 @@ The following properties available to the developer inside Reflex actions:
 * `url` - the URL of the page that triggered the reflex
 * `params` - an `ActionController::Parameters` of the closest form
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
-* `reflex_id` - a UUIDv4 that uniquely identies each Reflex
+* `reflex_id` - a UUIDv4 that uniquely identifies each Reflex
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
