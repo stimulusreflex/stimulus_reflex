@@ -19,9 +19,7 @@ module StimulusReflex
           payload: payload,
           children_only: true,
           permanent_attribute_name: permanent_attribute_name,
-          stimulus_reflex: data.merge({
-            morph: to_sym
-          })
+          stimulus_reflex: data.merge(morph: to_sym)
         )
       end
       cable_ready.broadcast

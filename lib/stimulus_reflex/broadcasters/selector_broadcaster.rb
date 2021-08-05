@@ -17,9 +17,7 @@ module StimulusReflex
               payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
-              stimulus_reflex: data.merge({
-                morph: to_sym
-              })
+              stimulus_reflex: data.merge(morph: to_sym)
             )
           else
             operations << [update.selector, :inner_html]
@@ -27,9 +25,7 @@ module StimulusReflex
               selector: update.selector,
               html: fragment.to_html,
               payload: payload,
-              stimulus_reflex: data.merge({
-                morph: to_sym
-              })
+              stimulus_reflex: data.merge(morph: to_sym)
             )
           end
         end

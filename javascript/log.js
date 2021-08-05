@@ -18,10 +18,10 @@ const request = (
   })
 }
 
-const success = event => {
+const success = (event, halted) => {
   const { detail } = event || {}
   const { selector, payload } = detail || {}
-  const { reflexId, target, morph, serverMessage } = detail.stimulusReflex || {}
+  const { reflexId, target, morph } = detail.stimulusReflex || {}
   const reflex = reflexes[reflexId]
   const progress =
     reflex.totalOperations > 1
@@ -35,7 +35,6 @@ const success = event => {
     .split('-')
     .slice(1)
     .join('_')
-  const halted = (serverMessage && serverMessage.subject === 'halted') || false
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} ${duration}`,
@@ -45,14 +44,13 @@ const success = event => {
 
 const error = event => {
   const { detail } = event || {}
-  const { reflexId, target, serverMessage } = detail.stimulusReflex || {}
+  const { reflexId, target, payload } = detail.stimulusReflex || {}
   const reflex = reflexes[reflexId]
   const duration = reflex.timestamp
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
-  const payload = detail.stimulusReflex
   console.log(
-    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${serverMessage.body}`,
+    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${event.detail.body}`,
     'color: #f00;',
     { reflexId, payload }
   )

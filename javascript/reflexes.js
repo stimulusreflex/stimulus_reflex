@@ -15,7 +15,7 @@ const received = data => {
   let reflexOperations = []
 
   for (let i = data.operations.length - 1; i >= 0; i--) {
-    if (isReflex(data.operations[i])) {
+    if (data.operations[i].stimulusReflex) {
       reflexOperations.push(data.operations[i])
       data.operations.splice(i, 1)
     }
@@ -23,11 +23,7 @@ const received = data => {
 
   if (
     reflexOperations.some(operation => {
-      return (
-        (operation.detail
-          ? operation.detail.stimulusReflex.url
-          : operation.stimulusReflex.url) !== location.href
-      )
+      return operation.stimulusReflex.url !== location.href
     })
   )
     return
@@ -35,14 +31,8 @@ const received = data => {
   let reflexData
 
   if (reflexOperations.length) {
-    if (reflexOperations[0].detail) {
-      reflexData = reflexOperations[0].detail.stimulusReflex
-      reflexData.payload = reflexOperations[0].detail.payload
-      reflexData.reflexId = reflexOperations[0].detail.reflexId
-    } else {
-      reflexData = reflexOperations[0].stimulusReflex
-      reflexData.payload = reflexOperations[0].payload
-    }
+    reflexData = reflexOperations[0].stimulusReflex
+    reflexData.payload = reflexOperations[0].payload
   }
 
   if (reflexData) {
@@ -85,13 +75,6 @@ const received = data => {
     if (data.operations.length && reflexes[data.operations[0].reflexId])
       CableReady.perform(data.operations)
   }
-}
-
-const isReflex = operation => {
-  return (
-    operation.stimulusReflex ||
-    (operation.detail && operation.detail.stimulusReflex)
-  )
 }
 
 const registerReflex = data => {

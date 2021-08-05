@@ -6,14 +6,13 @@ import Log from './log'
 import Debug from './debug'
 
 const beforeDOMUpdate = event => {
-  const { stimulusReflex } = event.detail || {}
+  const { stimulusReflex, payload } = event.detail || {}
   if (!stimulusReflex) return
   const { reflexId, xpathElement, xpathController } = stimulusReflex
   const controllerElement = XPathToElement(xpathController)
   const reflexElement = XPathToElement(xpathElement)
   const reflex = reflexes[reflexId]
-  const promise = reflex.promise
-  const payload = event.detail.payload
+  const { promise } = reflex
 
   reflex.pendingOperations--
 
@@ -41,18 +40,17 @@ const beforeDOMUpdate = event => {
 }
 
 const afterDOMUpdate = event => {
-  const { stimulusReflex } = event.detail || {}
+  const { stimulusReflex, payload } = event.detail || {}
   if (!stimulusReflex) return
   const { reflexId, xpathElement, xpathController } = stimulusReflex
   const controllerElement = XPathToElement(xpathController)
   const reflexElement = XPathToElement(xpathElement)
   const reflex = reflexes[reflexId]
-  const promise = reflex.promise
-  const payload = event.detail.payload
+  const { promise } = reflex
 
   reflex.completedOperations++
 
-  if (Debug.enabled) Log.success(event)
+  if (Debug.enabled) Log.success(event, false)
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
@@ -68,7 +66,7 @@ const afterDOMUpdate = event => {
 
   setTimeout(() =>
     dispatchLifecycleEvent(
-      'finalize',
+      'success',
       reflexElement,
       controllerElement,
       reflexId,
@@ -79,44 +77,92 @@ const afterDOMUpdate = event => {
   CableReady.perform(reflex.piggybackOperations)
 }
 
-const serverMessage = event => {
-  const { reflexId, serverMessage, xpathController, xpathElement } =
-    event.detail.stimulusReflex || {}
-  const { subject, body } = serverMessage
-  const controllerElement = XPathToElement(xpathController)
+const routeReflexEvent = event => {
+  const { stimulusReflex, payload, name, body } = event.detail || {}
+  const eventType = name.split('-')[2]
+  if (!stimulusReflex || !['nothing', 'halted', 'error'].includes(eventType))
+    return
+
+  const { reflexId, xpathElement, xpathController } = stimulusReflex
   const reflexElement = XPathToElement(xpathElement)
+  const controllerElement = XPathToElement(xpathController)
   const reflex = reflexes[reflexId]
-  const promise = reflex.promise
-  const subjects = { error: true, halted: true, nothing: true, success: true }
-  const payload = event.detail.payload
+  const { promise } = reflex
 
   if (controllerElement) {
     controllerElement.reflexError = controllerElement.reflexError || {}
-    if (subject === 'error') controllerElement.reflexError[reflexId] = body
+    if (eventType === 'error') controllerElement.reflexError[reflexId] = body
   }
 
-  promise[subject === 'error' ? 'reject' : 'resolve']({
-    data: promise.data,
-    element: reflexElement,
-    event,
-    toString: () => body,
-    payload
-  })
+  switch (eventType) {
+    case 'nothing':
+      nothing(event, payload, promise, reflex, reflexElement)
+      break
+    case 'error':
+      error(event, payload, promise, reflex, reflexElement)
+      break
+    case 'halted':
+      halted(event, payload, promise, reflex, reflexElement)
+      break
+  }
 
-  reflex.finalStage = subject === 'halted' ? 'halted' : 'after'
-
-  if (Debug.enabled) Log[subject === 'error' ? 'error' : 'success'](event)
-
-  if (subjects[subject])
+  setTimeout(() =>
     dispatchLifecycleEvent(
-      subject,
+      eventType,
       reflexElement,
       controllerElement,
       reflexId,
       payload
     )
+  )
 
   CableReady.perform(reflex.piggybackOperations)
 }
 
-export { beforeDOMUpdate, afterDOMUpdate, serverMessage }
+const nothing = (event, payload, promise, reflex, reflexElement) => {
+  reflex.finalStage = 'after'
+
+  if (Debug.enabled) Log.success(event, false)
+
+  setTimeout(() =>
+    promise.resolve({
+      data: promise.data,
+      element: reflexElement,
+      event,
+      payload
+    })
+  )
+}
+
+const halted = (event, payload, promise, reflex, reflexElement) => {
+  reflex.finalStage = 'halted'
+
+  if (Debug.enabled) Log.success(event, true)
+
+  setTimeout(() =>
+    promise.resolve({
+      data: promise.data,
+      element: reflexElement,
+      event,
+      payload
+    })
+  )
+}
+
+const error = (event, payload, promise, reflex, reflexElement) => {
+  reflex.finalStage = 'after'
+
+  if (Debug.enabled) Log.error(event)
+
+  setTimeout(() =>
+    promise.reject({
+      data: promise.data,
+      element: reflexElement,
+      event,
+      payload,
+      toString: () => event.detail.body
+    })
+  )
+}
+
+export { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent }

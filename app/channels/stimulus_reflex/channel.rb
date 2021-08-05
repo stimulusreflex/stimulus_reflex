@@ -25,7 +25,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         if reflex
           reflex.rescue_with_handler(exception)
           puts error_message
-          reflex.broadcast_message subject: "error", data: data, error: "#{exception} #{exception.backtrace.first if Rails.env.development?}"
+          reflex.error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
           puts error_message
 
@@ -54,14 +54,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       end
 
       if reflex.halted?
-        reflex.broadcast_message subject: "halted", data: data
+        reflex.halted data: data
       else
         begin
           reflex.broadcast(reflex_data.selectors, data)
         rescue => exception
           reflex.rescue_with_handler(exception)
           error = exception_with_backtrace(exception)
-          reflex.broadcast_message subject: "error", data: data, error: exception
+          reflex.error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
           puts "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
         end
       end
@@ -109,7 +109,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   def exception_with_backtrace(exception)
     {
       message: exception.to_s,
-      backtrace: exception.backtrace.first,
+      backtrace: exception.backtrace.first.split(":in ")[0],
       stack: exception.backtrace.join("\n")
     }
   end
