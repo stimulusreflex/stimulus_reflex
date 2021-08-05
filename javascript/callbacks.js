@@ -66,7 +66,7 @@ const afterDOMUpdate = event => {
 
   setTimeout(() =>
     dispatchLifecycleEvent(
-      'success',
+      'finalize',
       reflexElement,
       controllerElement,
       reflexId,
