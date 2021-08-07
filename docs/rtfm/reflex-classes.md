@@ -99,7 +99,7 @@ The following properties available to the developer inside Reflex actions:
 * `url` - the URL of the page that triggered the reflex
 * `params` - an `ActionController::Parameters` of the closest form
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
-* `reflex_id` - a UUIDv4 that uniquely identies each Reflex
+* `reflex_id` - a UUIDv4 that uniquely identifies each Reflex
 
 {% hint style="danger" %}
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
@@ -209,14 +209,17 @@ class MyTestReflex < ApplicationReflex
 end
 ```
 
-## Accessing `reflex_id`
+## Accessing `reflex_id` and `tab_id`
 
 Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`.
+
+Similarly, if you're developing an application where a user might have multiple browser tabs open, it might be helpful to be able to tell those tabs apart. Look no further than `tab_id`.
 
 ```ruby
 class ExampleReflex < ApplicationReflex
   def foo
     puts reflex_id
+    puts tab_id
   end
 end
 ```

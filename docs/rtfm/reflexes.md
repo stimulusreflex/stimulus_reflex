@@ -32,7 +32,7 @@ The fastest way to enable Reflex actions by using the `data-reflex` attribute. T
 <button data-reflex="click->Comment#create">Create</button>
 ```
 
-You can use additional data attributes to pass variables as part of your Reflex payload.
+You can use additional data attributes to pass variables as part of your Reflex:
 
 ```markup
 <button 
@@ -71,7 +71,7 @@ Also, you can only specify one action per event; this means `data-reflex="click-
 
 ### Inheriting data-attributes from parent elements
 
-You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
+You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex.
 
 ```markup
 <div data-post-id="<%= @post.id %>">
@@ -179,16 +179,6 @@ export default class extends ApplicationController {
   }
 }
 ```
-
-### Aborting a Reflex
-
-It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
-
-We'll go into much deeper detail on life-cycle callbacks on the [Life-cycle](lifecycle.md) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
-
-{% hint style="warning" %}
-Halted Reflexes do not execute afterReflex callbacks on the server or client.
-{% endhint %}
 
 ### Requesting a "refresh"
 

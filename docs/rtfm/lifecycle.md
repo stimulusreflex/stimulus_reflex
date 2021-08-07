@@ -10,7 +10,6 @@ StimulusReflex gives you a set of callback events to control how your Reflex act
 
 * `before_reflex`, `around_reflex` , `after_reflex`
 * All callbacks can receive multiple symbols representing Reflex actions, an optional block and the following options: `only`, `except`, `if`, `unless`
-* You can abort a Reflex - prevent it from executing - by placing `throw :abort` in a `before_reflex` callback. An aborted Reflex will trigger the `halted` life-cycle stage on the client.
 
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
@@ -72,6 +71,16 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
+
+### Aborting a Reflex
+
+It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
+
+To do so, place `throw: abort` in a `before_reflex` callback on your Reflex class. An aborted Reflex will trigger the `halted` life-cycle stage on the client.
+
+{% hint style="warning" %}
+Halted Reflexes do not execute `after` or `finalize` callbacks.
+{% endhint %}
 
 ## Client-Side Reflex Callbacks
 
@@ -255,7 +264,7 @@ document.addEventListener('stimulus-reflex:before', event => {
   event.detail.reflex // the name of the invoked Reflex
   event.detail.reflexId // the UUID4 or developer-provided unique identifier for each Reflex
   event.detail.controller // the controller that invoked the stimuluate method
-  event.target.reflexData[event.detail.reflexId] // the data payload that will be delivered to the server
+  event.target.reflexData[event.detail.reflexId] // the data that will be delivered to the server
   event.target.reflexData[event.detail.reflexId].params // the serialized form data for this Reflex
 })
 ```
@@ -288,25 +297,21 @@ You can get a sense of the possibilities:
 
 ```javascript
 this.stimulate('Post#publish')
-  .then(payload => {
-    const { data, element, event } = payload
+  .then(promise => {
+    const { data, element, event, payload } = promise
     const { attrs, reflexId } = data
-    // * attrs - an object that represents the attributes of the element that triggered the reflex
-    // * data - the data sent from the client to the server over the web socket to invoke the reflex
+    // * data - the data sent from the client to the server over the web socket to invoke the reflex    
     // * element - the element that triggered the reflex
     // * event - the source event
+    // * payload - optional return data passed from the Reflex method
+    // * attrs - an object that represents the attributes of the element that triggered the reflex
     // * reflexId - a unique identifier for this specific reflex invocation
   })
-  .catch(payload => {
-    const { data, element, event } = payload
+  .catch(promise => {
+    const { data, element, event, payload } = promise
     const { attrs, reflexId } = data
     const { error } = event.detail.stimulusReflex
-    // * attrs - an object that represents the attributes of the element that triggered the reflex
-    // * data - the data sent from the client to the server over the web socket to invoke the reflex
-    // * element - the element that triggered the reflex
     // * error - the error message from the server
-    // * event - the source event
-    // * reflexId - a unique identifier for this specific reflex invocation
   })
 ```
 
@@ -331,6 +336,12 @@ this.stimulate('Example#foo', { resolveLate: true }).then(() => {
   console.log('The Reflex has been finalized.')
 }
 ```
+
+{% hint style="danger" %}
+Trying to create an element to be morphed by a Reflex in the Promise is not a viable strategy, as the `finalize` stage is not waiting for the promise to complete.
+
+Take care to design your application such that you're always targeting elements that exist. 🦉
+{% endhint %}
 
 ## StimulusReflex Library Events
 
