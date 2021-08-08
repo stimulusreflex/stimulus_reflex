@@ -184,7 +184,7 @@ Getting to this point required significant effort and cooperation between member
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
 
-Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/stimulusreflex/stimulus_reflex/issues/46).
+Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/hopsoft/stimulus_reflex/issues/46).
 
 {% hint style="info" %}
 If you're looking to authenticate AnyCable connections with Devise, the documentation for that process is [here](https://docs.anycable.io/v1/#/ruby/authentication), and there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
@@ -247,7 +247,7 @@ end
 
 On the face, serving raw HTML to the client means a smaller download, there's no SPA dynamically rendering a page from JSON \(slow\) and draining the battery. However, the question deserves a more nuanced treatment - and not just because **some devices might not even support Websockets**.
 
-It's simply true that the team developing StimulusReflex is working on relatively recent, non-mobile computers with subjectively fast, reliable connections to the internet. None of us are actively testing on legacy hardware.
+It's true that the team developing StimulusReflex is working on relatively recent, non-mobile computers with subjectively fast, reliable connections to the internet. None of us are actively testing on legacy hardware.
 
 Raw Websockets has more in common with UDP than TCP, in that there's no retry logic or acknowledgement of delivery. Messages can arrive out of order, or not at all.
 

@@ -4,58 +4,44 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
+## The small print
+
+* StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart) on your development machine.
+* **Cookie-based** [**session storage**](setup.md#session-storage) **is not currently supported by StimulusReflex.**
+* StimulusReflex works out of the box with new and existing projects running Rails 6 or later. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+* StimulusReflex supports Stimulus v1.1 or later. Examples will use the v2 syntax.
+* **Use Webpacker 5.4**, as v6.0 is still in beta.
+* Setting up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md) environments are covered in their own sections.
+
 ## Command-Line Install
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+The [install task](https://github.com/stimulusreflex/stimulus_reflex/blob/master/lib/tasks/stimulus_reflex/install.rake) below will install Stimulus, StimulusReflex and CableReady. It will modify some configuration settings and [enable caching](https://app.gitbook.com/@stimulusreflex/s/stimulusreflex/~/drafts/-MaWBaQc4XjCMkXohIGk/v/pre-release/appendices/deployment#session-storage) in your development environment.
 
-The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
+If possible, **use the `rake` command**. Using `rails` might result in a prompt to install the `cable_ready` npm package, first.
 
 ```ruby
 bundle add stimulus_reflex
-bundle exec rails stimulus_reflex:install
+rake stimulus_reflex:install
 ```
 
-{% hint style="warning" %}
-StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
-{% endhint %}
-
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
-{% endhint %}
-
-And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
+All done! An `ExampleReflex` class has been created for you. 🎉
 
 {% page-ref page="quickstart.md" %}
 
 ## Manual Configuration
 
-Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project in the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md). For Rails 5.2, see [here](setup.md#rails-5-2-support).
+Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in the _development_ environment.
 
-{% hint style="warning" %}
-StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
-
-You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
-{% endhint %}
-
-First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
+We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Make sure we have [Stimulus ](https://stimulusjs.org)installed and using Webpacker v5.4.
 
 ```ruby
-yarn add stimulus_reflex
+bundle add stimulus_reflex --version "~> 3.5.0"
+yarn add stimulus_reflex@3.5.0
 rails dev:cache # caching needs to be enabled
-bundle exec rails webpacker:install:stimulus
-bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:initializer
+rake webpacker:install:stimulus
 ```
 
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
-{% endhint %}
-
-{% hint style="info" %}
-StimulusReflex happily supports both Stimulus v1.1 and v2.
-{% endhint %}
-
-We need to modify our Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer. A new websocket connection is created if the consumer isn't found.
+Modify your Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer.
 
 {% tabs %}
 {% tab title="app/javascript/controllers/index.js" %}
@@ -64,41 +50,37 @@ import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import StimulusReflex from 'stimulus_reflex'
 import consumer from '../channels/consumer'
+import controller from '../controllers/application_controller'
 
 const application = Application.start()
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 application.consumer = consumer
-StimulusReflex.initialize(application, { consumer })
+StimulusReflex.initialize(application, { controller, isolate: true })
+StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 ```
 {% endtab %}
 {% endtabs %}
 
 {% hint style="danger" %}
-The installation information presented by the [StimulusJS handbook](https://stimulusjs.org/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex assumes that you are following the Rails webpacker flow. Your application pack should simply `import 'controllers'`.
+The installation information presented by the [StimulusJS handbook](https://stimulus.hotwired.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default Webpacker v5.4 Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex recommends that you are follow the Rails webpacker flow. Your application pack should ideally `import 'controllers'`.
 
 If you require your controllers in both 'application.js `and` index.js\` it's likely that your controllers will load twice, causing all sorts of strange behavior.  
 {% endhint %}
 
 **Cookie-based session storage is not currently supported by StimulusReflex.**
 
-Instead, we enable caching in the development environment so that we can assign our user session data to be managed by the cache store.
-
-In Rails, the default cache store is the memory store. We want to change the cache store to make use of Redis:
+Instead, we enable caching in the development environment so that we can assign our user session data to be managed by the cache store. We also want to set default URL options for partials to render route helpers properly inside of Reflexes.
 
 {% code title="config/environments/development.rb" %}
 ```ruby
 Rails.application.configure do
-  # CHANGE the following line; it's :memory_store by default
-  config.cache_store = :redis_cache_store, {url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
-
-  # ADD the following line; it probably doesn't exist
-  config.session_store :cache_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
+  config.session_store :cache_store
+  config.action_controller.default_url_options = {host: "localhost", port: 3000}
+  config.action_mailer.default_url_options = {host: "localhost", port: 3000} # only if using ActionMailer
 end
 ```
 {% endcode %}
-
-You can read more about configuring Redis on the [Deployment](../appendices/deployment.md#session-storage) page.
 
 Configure ActionCable to use the Redis adapter in development mode:
 
@@ -111,17 +93,14 @@ development:
 ```
 {% endcode %}
 
-You should also add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
+Finally, StimulusReflex provides several generators that you should run to complete your setup process. They will create initializers for both StimulusReflex and CableReady, enable `stream_from` support for CableReady and create the `application_controller.js` Stimulus controller and an example Reflex class.
 
-{% code title="app/views/layouts/application.html.erb" %}
-```markup
-  <head>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= action_cable_meta_tag %>
-  </head>
+```text
+rails g stimulus_reflex:initializer
+rails g cable_ready:initializer
+rails g cable_ready:stream_from
+rails g stimulus_reflex example
 ```
-{% endcode %}
 
 ## Upgrading, package versions and sanity
 
@@ -131,21 +110,22 @@ Since mismatched versions are the first step on the path to hell, by default Sti
 
 If you have special needs, you can override this setting in your initializer. `:warn` will emit the same text-based warning but not prevent the server process from starting. `:ignore` will silence all mismatched version warnings, if you really just DGAF. ¯\\_\(ツ\)\_/¯
 
+StimulusReflex can also let you know when new stable versions are released during the application start-up process. This opt-in behaviour is `:ignore` by default, but you can set it to `:warn` or `:exit`.
+
 {% code title="config/initializers/stimulus\_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.on_failed_sanity_checks = :warn
+  config.on_new_version_available = :warn
 end
 ```
 {% endcode %}
 
-### Upgrading to v3.4.0+
+### Upgrading to v3.5.0
 
 * make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
-* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* OPTIONAL: enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
-* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
-* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
+* enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
+* generate an initializer with `rails g stimulus_reflex:initializer` if required
 
 ## Authentication
 
@@ -162,6 +142,10 @@ When the time comes, it's easy to configure your application to support authenti
 {% page-ref page="../rtfm/authentication.md" %}
 
 ## Tab isolation
+
+{% hint style="info" %}
+Tab Isolation is deprecated in v3.5 and will be removed in v4 when all tabs will be isolated. Use CableReady to broadcast operations to other tabs.
+{% endhint %}
 
 One of the most universally surprising aspects of real-time UI updates is that by default, Morph operations intended for the current user execute in all of the current user's open tabs. Since the early days of StimulusReflex, this behavior has shifted from being an interesting edge case curiosity to something many developers need to prevent. Meanwhile, others built applications that rely on it.
 
@@ -183,13 +167,13 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 
 ## Session Storage
 
-We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, there are some inherent limitations to the way cookies are communicated via websockets that make it difficult to use cookies for session storage in production.
+We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, secure cookies cannot be updated via WebSockets, making it undesirable to use cookies for session storage when working with StimulusReflex.
 
-We default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared. Many developers switch to using the [redis-session-store gem](https://github.com/roidrage/redis-session-store), especially in production.
+The install script configures `:cache_store` for `config.session_store` - and enables caching - in the development environment.
 
-You can learn more about session storage on the Deployment page.
+Most developers switch to using `:redis_cache_store` for the cache store. The [redis-session-store gem](https://github.com/roidrage/redis-session-store) is a popular choice for the session store, especially in production.
 
-{% page-ref page="../appendices/deployment.md" %}
+Learn about configuring Redis for cache and session storage on the [Deployment](../appendices/deployment.md#use-redis-as-your-cache-store) page.
 
 ## Rack middleware support
 

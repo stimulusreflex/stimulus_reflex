@@ -6,7 +6,7 @@ The name of this project. It has a JS client and a Ruby based server component t
 
 ### Stimulus
 
-An incredibly simple yet powerful JS framework by the creators of Rails.
+A powerful JS framework by the creators of Rails.
 
 ### "a Reflex"
 

@@ -10,10 +10,9 @@ StimulusReflex gives you a set of callback events to control how your Reflex act
 
 * `before_reflex`, `around_reflex` , `after_reflex`
 * All callbacks can receive multiple symbols representing Reflex actions, an optional block and the following options: `only`, `except`, `if`, `unless`
-* You can abort a Reflex - prevent it from executing - by placing `throw :abort` in a `before_reflex` callback. An aborted Reflex will trigger the `halted` life-cycle stage on the client.
 
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   # will run only if the element has the step attribute, can use "unless" instead of "if" for opposite condition
   before_reflex :do_stuff, if: proc { |reflex| reflex.element.dataset[:step] }
 
@@ -73,30 +72,46 @@ class ExampleReflex < StimulusReflex::Reflex
 end
 ```
 
-## Client-Side Reflex Callbacks
+### Aborting a Reflex
 
-StimulusReflex gives you the ability to inject custom JavaScript at five distinct moments **around** sending an event to the server and updating the DOM. These hooks allow you to improve the user experience and handle edge cases.
+It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
 
-1. **`before`** prior to sending a request over the web socket
-2. **`success`** after the server side Reflex succeeds and the DOM has been updated
-3. **`error`** whenever the server side Reflex raises an error
-4. **`halted`** Reflex canceled by developer with `throw :abort` in the `before_reflex` callback
-5. **`after`** follows either `success` or `error` immediately before DOM manipulations
+An aborted Reflex will trigger the `halted` life-cycle stage instead of the `after` and `finalize` stages on the client. You can learn more about how aborted Reflexes behave in different scenarios in [Understanding Stages](lifecycle.md#understanding-stages).
+
+To abort a Reflex, call `throw :abort` inside of a `before_reflex` callback on your Reflex class.
+
+{% hint style="info" %}
+Please note that all statements run before a Reflex is aborted have already happened; there is no "roll-back" of database updates, CableReady broadcasts or other changes. Even setting a Reflex Morph type or Reflex Payload will survive an abort, so long as they happen before `throw :abort` occurs.
+{% endhint %}
+
+## Client-Side Reflex Life-Cycle
+
+StimulusReflex gives you the ability to inject custom JavaScript at six distinct moments **around** the life-cycle of a Reflex. Developers can use a combination of **callback methods**, **event handlers** and **Promise resolution** to improve the user experience and handle edge cases.
+
+1. **`before`** prior to sending a Reflex over the WebSocket
+2. **`success`** after the server-side Reflex processes successfully
+3. **`error`** after the server-side Reflex raises an error
+4. **`halted`** Reflex canceled by developer with `throw :abort` in a `before_reflex` callback
+5. **`after`** follows _either_ `success` or `error` immediately before DOM manipulations
 6. **`finalize`** occurs immediately after all DOM manipulations are complete
 
 {% hint style="info" %}
-**Using life-cycle callback methods is not a requirement.**
+**Using life-cycle stages is not a requirement.**
 
 Think of them as power tools that can help you build more sophisticated results. 👷
 {% endhint %}
 
-If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that extend `ApplicationController` or have called `StimulusReflex.register(this)` in their `connect()` function.
+#### Order of operations
 
-There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
+The order of operations for life-cycle management techniques is:
 
-StimulusReflex also emits life-cycle events which can be captured in other Stimulus controllers, [jQuery plugins](https://github.com/leastbad/jquery-events-to-dom-events) or even the console.
+1. Promise resolution
+2. Callback methods
+3. Event handlers
 
-### Understanding Stages
+There is no "best" way to handle life-cycle stages, and most developers use a blend of the available tools depending on the situation and their preferred development style. While the APIs are different, we've worked hard to make sure that each mechanism has access to all of the Reflex data available at each stage of the process.
+
+#### Understanding Stages
 
 Most of the time, it's reasonable to expect that your Reflexes will follow a predictable cycle: `before` -&gt; `success` -&gt; `after` -&gt; `finalize`.
 
@@ -106,13 +121,27 @@ There are, however, several important exceptions to the norm.
 2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; \[`finalize`\]
 3. **Nothing Morphs end early**: `before` -&gt; \[`success`\] -&gt; `after`
 
-Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`. A Nothing Morph with an error will not have a `finalize` stage.
+Event handlers for the `after` stage will fire _before_ `success` and `error`. 
 
-Nothing Morphs support `success` methods but do not emit `success` events.
+Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`.
 
-### Generic Life-cycle Methods
+A Reflex with an error will not have a `finalize` stage.
 
-StimulusReflex controllers automatically support five generic life-cycle callback methods. These methods fire for every Reflex action handled by the controller.
+Nothing Morphs support `success` callback methods but do not emit `success` events. 🤷
+
+### Callback Methods
+
+If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that extend `ApplicationController` or have called `StimulusReflex.register(this)` in their `connect()` function.
+
+{% hint style="warning" %}
+Unlike ActiveSupport callbacks, if you define the same callback in a parent class \(such as `ApplicationController`\) and a class that extends it, only the one in the extended class will execute.
+{% endhint %}
+
+There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
+
+#### Generic Life-cycle Methods
+
+StimulusReflex controllers automatically support six generic life-cycle callback methods. These methods fire for every Reflex action handled by the controller.
 
 1. `beforeReflex`
 2. `reflexSuccess`
@@ -122,7 +151,7 @@ StimulusReflex controllers automatically support five generic life-cycle callbac
 6. `finalizeReflex`
 
 {% hint style="warning" %}
-While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
+While this is perfect for basic Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every Reflex action.
 {% endhint %}
 
 In this example, we update each anchor's text before invoking the server side Reflex:
@@ -150,7 +179,7 @@ export default class extends ApplicationController {
 ```
 {% endcode %}
 
-### Custom Life-cycle Methods
+#### Custom Life-cycle Methods
 
 StimulusReflex controllers can define up to six custom life-cycle callback methods for **each** Reflex action. These methods use a naming convention **based on the name of the Reflex**. The naming follows the pattern `<actionName>Success` and matches the camelCased name of the action.
 
@@ -188,17 +217,15 @@ export default class extends ApplicationController {
 ```
 {% endcode %}
 
-Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
+Adapting the Generic example, we've refactored our controller to execute the `before` callback methods for each anchor individually.
 
 {% hint style="info" %}
 **It's not required to implement all life-cycle methods.** Pick and choose which life-cycle callback methods make sense for your application. The answer is frequently **none**.
 {% endhint %}
 
-### Conventions
-
 #### Method Names
 
-Life-cycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will produce the following camel-cased life-cycle callback methods.
+Life-cycle callback methods apply a naming convention based on your Reflex actions. For example, the Reflex `ExampleReflex#do_stuff` will search for the following camel-cased life-cycle callback methods:
 
 1. `beforeDoStuff`
 2. `doStuffSuccess`
@@ -226,7 +253,7 @@ Both generic and custom life-cycle callback methods share the same arguments:
 
 **reflexId** - a UUID4 or developer-provided unique identifier for each Reflex
 
-### Life-cycle Events
+### Event Handlers
 
 If you need to know when a Reflex method is called, but you're working outside of the Stimulus controller that initiated it, you can subscribe to receive DOM events.
 
@@ -243,8 +270,6 @@ Events are dispatched on the same element that triggered the Reflex. Events bubb
 * `stimulus-reflex:after`
 * `stimulus-reflex:finalize`
 
-Nothing Morphs do not emit `stimulus-reflex:success` events.
-
 #### Event Metadata
 
 When an event is captured, you can obtain all of the data required to respond to a Reflex action:
@@ -255,7 +280,7 @@ document.addEventListener('stimulus-reflex:before', event => {
   event.detail.reflex // the name of the invoked Reflex
   event.detail.reflexId // the UUID4 or developer-provided unique identifier for each Reflex
   event.detail.controller // the controller that invoked the stimuluate method
-  event.target.reflexData[event.detail.reflexId] // the data payload that will be delivered to the server
+  event.target.reflexData[event.detail.reflexId] // the data that will be delivered to the server
   event.target.reflexData[event.detail.reflexId].params // the serialized form data for this Reflex
 })
 ```
@@ -274,39 +299,31 @@ In addition to DOM events, StimulusReflex will also emits duplicate [jQuery even
 
 These jQuery events have the same name and `details` accessors as the DOM events.
 
-### Promises
+### Promise Resolution
 
 Are you a hardcore JavaScript developer? A props power-lifter? Then you'll be pleased to know that in addition to life-cycle methods and events, StimulusReflex allows you to write promise resolver functions:
 
 ```javascript
 this.stimulate('Comments#create')
-  .then(() => this.doSomething())
-  .catch(() => this.handleError())
+  .then(this.handleSuccess)
+  .catch(this.handleError)
 ```
 
 You can get a sense of the possibilities:
 
 ```javascript
 this.stimulate('Post#publish')
-  .then(payload => {
-    const { data, element, event } = payload
-    const { attrs, reflexId } = data
-    // * attrs - an object that represents the attributes of the element that triggered the reflex
-    // * data - the data sent from the client to the server over the web socket to invoke the reflex
+  .then(promise => {
+    const { data, element, event, payload, reflexId } = promise
+    // * data - the data sent from the client to the server over the web socket to invoke the reflex    
     // * element - the element that triggered the reflex
     // * event - the source event
+    // * payload - optional return data passed from the Reflex method
     // * reflexId - a unique identifier for this specific reflex invocation
   })
-  .catch(payload => {
-    const { data, element, event } = payload
-    const { attrs, reflexId } = data
-    const { error } = event.detail.stimulusReflex
-    // * attrs - an object that represents the attributes of the element that triggered the reflex
-    // * data - the data sent from the client to the server over the web socket to invoke the reflex
-    // * element - the element that triggered the reflex
+  .catch(promise => {
+    const { data, element, event, payload, reflexId, error } = promise
     // * error - the error message from the server
-    // * event - the source event
-    // * reflexId - a unique identifier for this specific reflex invocation
   })
 ```
 
@@ -315,7 +332,7 @@ You can get the `reflexId` of an unresolved promise:
 ```javascript
 const snail = this.stimulate('Snail#secrete')
 console.log(snail.reflexId)
-snail.then(trail => {})
+snail.then(trail => console.log)
 ```
 
 #### Configuring Promise resolution timing
@@ -332,14 +349,26 @@ this.stimulate('Example#foo', { resolveLate: true }).then(() => {
 }
 ```
 
+{% hint style="danger" %}
+Trying to create an element to be morphed by a Reflex in the Promise is not a viable strategy, as the `finalize` stage is not waiting for the Promise to complete.
+
+Take care to design your application such that you're always targeting elements that exist. 🦉
+{% endhint %}
+
 ## StimulusReflex Library Events
 
 In addition to the Reflex life-cycle mechanisms, the StimulusReflex client library emits its own set of handy DOM events which you can hook into and use in your applications.
 
+* `stimulus-reflex:action-cable:connected`
+* `stimulus-reflex:action-cable:disconnected`
+* `stimulus-reflex:action-cable:rejected`
+* `stimulus-reflex:ready`
+
+In previous versions, ActionCable was assumed; in future versions of the library, other transport mechanisms will be available. **Legacy library events are now deprecated** and **will be removed** in the future:
+
 * `stimulus-reflex:connected`
 * `stimulus-reflex:disconnected`
 * `stimulus-reflex:rejected`
-* `stimulus-reflex:ready`
 
 All four events fire on `document`.
 

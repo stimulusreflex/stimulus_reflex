@@ -1,14 +1,14 @@
 # Integrating CableReady
 
-[CableReady](https://cableready.stimulusreflex.com/) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1&ck_subscriber_id=646293602)?
+[CableReady](https://cableready.stimulusreflex.com/) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and how does it relate to what you're building?
 
 | Library | Responsibility |
 | :--- | :--- |
 | StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**. |
 | CableReady | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
 
-⬆️ StimulusReflex is for **sending** commands. 📡  
-⬇️ CableReady is for **receiving** updates. 👽
+⬆️ StimulusReflex is for sending commands to the server. 📡  
+⬇️ CableReady is for sending commands to the browser. 👽
 
 {% hint style="info" %}
 A Reflex action is a reaction to a user action that changes server-side state and re-renders the current page \(or a subset of the current page\) for that particular user in the background, provided that they are still on the same page.
@@ -16,7 +16,7 @@ A Reflex action is a reaction to a user action that changes server-side state an
 A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
 {% endhint %}
 
-CableReady has 33 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 35 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
@@ -55,7 +55,7 @@ Do not include `CableReady::Broadcaster` in your Reflex classes. It's already pr
 
 Since StimulusReflex uses CableReady's `morph` and `inner_html` operations, you might be wondering when or if to just use CableReady operations directly instead of calling StimulusReflex's `morph`.
 
-The simple answer is that you should use StimulusReflex when you need life-cycle management; callbacks, events and promises. Reflexes have a transactional life-cycle, where each one is assigned a UUID and the client will have the opportunity to respond if something goes wrong.
+The answer is that you should use StimulusReflex when you need life-cycle management; callbacks, events and promises. Reflexes have a transactional life-cycle, where each one is assigned a UUID and the client will have the opportunity to respond if something goes wrong.
 
 CableReady operations raise their own events, but StimulusReflex won't know if they are successful or not. Any CableReady operations you broadcast in a Reflex will be executed immediately.
 
@@ -67,7 +67,7 @@ You can control the order in which CableReady and StimulusReflex operations exec
 2. StimulusReflex `morph` operations
 3. CableReady operations that haven't been `broadcast`ed
 
-CableReady operations that have `broadcast` called on them well be immediately delivered to the client, while any CableReady operations queued in a Page or Selector Morph Reflex action that aren't broadcast by the end of the action will be broadcast along with the StimulusReflex-specific `morph` operations. The StimulusReflex operations execute first, followed by any remaining CableReady operations.
+CableReady operations that have `broadcast` called on them will be immediately delivered to the client, while any CableReady operations queued in a Page or Selector Morph Reflex action that aren't broadcast by the end of the action will be broadcast along with the StimulusReflex-specific `morph` operations. The StimulusReflex operations execute first, followed by any remaining CableReady operations.
 
 {% hint style="warning" %}
 If you have CableReady operations that haven't been broadcasted followed by another set of operations that do get broadcasted... the former group of operations will go out with the latter. If you want some operations to be sent with the StimulusReflex operations, make sure that they occur after any calls to `broadcast`.
