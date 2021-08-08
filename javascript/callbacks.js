@@ -24,7 +24,9 @@ const beforeDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        payload
+        payload,
+        reflexId,
+        toString: () => ''
       })
     )
 
@@ -60,7 +62,9 @@ const afterDOMUpdate = event => {
         element: reflexElement,
         event,
         data: promise.data,
-        payload
+        payload,
+        reflexId,
+        toString: () => ''
       })
     )
 
@@ -129,7 +133,9 @@ const nothing = (event, payload, promise, reflex, reflexElement) => {
       data: promise.data,
       element: reflexElement,
       event,
-      payload
+      payload,
+      reflexId: promise.data.reflexId,
+      toString: () => ''
     })
   )
 }
@@ -144,7 +150,9 @@ const halted = (event, payload, promise, reflex, reflexElement) => {
       data: promise.data,
       element: reflexElement,
       event,
-      payload
+      payload,
+      reflexId: promise.data.reflexId,
+      toString: () => ''
     })
   )
 }
@@ -160,6 +168,8 @@ const error = (event, payload, promise, reflex, reflexElement) => {
       element: reflexElement,
       event,
       payload,
+      reflexId: promise.data.reflexId,
+      error: event.detail.body,
       toString: () => event.detail.body
     })
   )
