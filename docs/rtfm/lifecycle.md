@@ -12,7 +12,7 @@ StimulusReflex gives you a set of callback events to control how your Reflex act
 * All callbacks can receive multiple symbols representing Reflex actions, an optional block and the following options: `only`, `except`, `if`, `unless`
 
 ```ruby
-class ExampleReflex < StimulusReflex::Reflex
+class ExampleReflex < ApplicationReflex
   # will run only if the element has the step attribute, can use "unless" instead of "if" for opposite condition
   before_reflex :do_stuff, if: proc { |reflex| reflex.element.dataset[:step] }
 
@@ -95,6 +95,12 @@ StimulusReflex gives you the ability to inject custom JavaScript at six distinct
 5. **`after`** follows _either_ `success` or `error` immediately before DOM manipulations
 6. **`finalize`** occurs immediately after all DOM manipulations are complete
 
+{% hint style="info" %}
+**Using life-cycle stages is not a requirement.**
+
+Think of them as power tools that can help you build more sophisticated results. 👷
+{% endhint %}
+
 #### Order of operations
 
 The order of operations for life-cycle management techniques is:
@@ -104,12 +110,6 @@ The order of operations for life-cycle management techniques is:
 3. Event handlers
 
 There is no "best" way to handle life-cycle stages, and most developers use a blend of the available tools depending on the situation and their preferred development style. While the APIs are different, we've worked hard to make sure that each mechanism has access to all of the Reflex data available at each stage of the process.
-
-{% hint style="info" %}
-**Using life-cycle stages is not a requirement.**
-
-Think of them as power tools that can help you build more sophisticated results. 👷
-{% endhint %}
 
 #### Understanding Stages
 
@@ -121,16 +121,20 @@ There are, however, several important exceptions to the norm.
 2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; \[`finalize`\]
 3. **Nothing Morphs end early**: `before` -&gt; \[`success`\] -&gt; `after`
 
-Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`. A Nothing Morph with an error will not have a `finalize` stage.
+Event handlers for the `after` stage will fire _before_ `success` and `error`. 
 
-Nothing Morphs support `success` methods but do not emit `success` events.
+Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`.
+
+A Reflex with an error will not have a `finalize` stage.
+
+Nothing Morphs support `success` callback methods but do not emit `success` events. 🤷
 
 ### Callback Methods
 
 If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that extend `ApplicationController` or have called `StimulusReflex.register(this)` in their `connect()` function.
 
 {% hint style="warning" %}
-Unlike ActiveSupport callbacks, if you define the same callback in a parent class \(like `ApplicationController`\) and a class that extends it, only the one in the extended class will execute.
+Unlike ActiveSupport callbacks, if you define the same callback in a parent class \(such as `ApplicationController`\) and a class that extends it, only the one in the extended class will execute.
 {% endhint %}
 
 There are two kinds of callback methods: **generic** and **custom**. Generic callback methods are invoked for every Reflex action on a controller. Custom callback methods are only invoked for specific Reflex actions.
@@ -266,8 +270,6 @@ Events are dispatched on the same element that triggered the Reflex. Events bubb
 * `stimulus-reflex:after`
 * `stimulus-reflex:finalize`
 
-Nothing Morphs do not emit `stimulus-reflex:success` events.
-
 #### Event Metadata
 
 When an event is captured, you can obtain all of the data required to respond to a Reflex action:
@@ -348,7 +350,7 @@ this.stimulate('Example#foo', { resolveLate: true }).then(() => {
 ```
 
 {% hint style="danger" %}
-Trying to create an element to be morphed by a Reflex in the Promise is not a viable strategy, as the `finalize` stage is not waiting for the promise to complete.
+Trying to create an element to be morphed by a Reflex in the Promise is not a viable strategy, as the `finalize` stage is not waiting for the Promise to complete.
 
 Take care to design your application such that you're always targeting elements that exist. 🦉
 {% endhint %}
