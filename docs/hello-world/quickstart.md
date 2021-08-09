@@ -18,6 +18,14 @@ It might strike you as odd that we would start by questioning whether you need t
 
 Instead of _"Which Single Page App framework should I use?"_ we believe that StimulusReflex can empower people to wonder "**Do we still need React, given what we now know is possible?**" 🤯
 
+## Video Tutorial: Introduction to StimulusReflex
+
+[Chris ](https://twitter.com/excid3)from [GoRails ](https://gorails.com)has released the first of hopefully many tutorial videos demonstrating how to get up and running with StimulusReflex in about ten minutes: ⏱️👍
+
+![](https://gblobscdn.gitbook.com/assets%2F-Lpnm81iPOBUa9lAmLxg%2F-M6sksqaSV7fV1MX_89U%2F-M6slxV1wY8azS1XCRxn%2Fgorails.jpg)
+
+{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" caption="" %}
+
 ## Hello, Reflex World!
 
 There are two ways to enable StimulusReflex in your projects: use the `data-reflex` attribute to declare a reflex without any code, or call the `stimulate` method inside of a Stimulus controller. We can use these techniques interchangeably, and both of them trigger a server-side _"Reflex action"_ in response to users interacting with your UI.
@@ -45,7 +53,7 @@ The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 {% hint style="success" %}
 While `click` and `change` are two of the most common events used to initiate Reflex actions, you can use `mouseover`, `drop`, `play` and [any others](https://developer.mozilla.org/en-US/docs/Web/Events) that makes sense for your application.
 
-We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](../appendices/events.md#throttle-and-debounce) to reduce how many events are emitted. 
+We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](../appendices/events.md#throttle-and-debounce) to reduce how many events are emitted.
 {% endhint %}
 
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
@@ -154,7 +162,7 @@ In a typical Rails app, we would set the value of `@count` after fetching it fro
 We provide a generator that performs a scaffold-like functionality for StimulusReflex. It will generate files and classes appropriate to whether you specify a singular or pluralized name for your reflex class. For example, `user` and `users` are both valid and useful in different situations.
 
 ```bash
-rails g stimulus_reflex user
+bundle exec rails generate stimulus_reflex user
 ```
 
 This will create but not overwrite the following files:
@@ -165,7 +173,7 @@ This will create but not overwrite the following files:
 4. `app/reflexes/user_reflex.rb`
 
 {% hint style="info" %}
-If you later destroy a stimulus\_reflex "scaffold" using `rails d stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
+If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
 {% endhint %}
 
 ## StimulusReflex Cheatsheet

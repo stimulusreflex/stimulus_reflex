@@ -25,40 +25,45 @@ StimulusReflex uses `form` elements as a familiar way to group related elements 
 * forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
 * there's no reason to set up a route or controller action for a form intended for SR
 
-{% hint style="warning" %}
-It's very likely that in a future version of StimulusReflex, form serialization will be both optional and configurable to use any container element.
-{% endhint %}
+## Remote forms in Rails 6.1
 
-## Modifying `params` before its sent to the server
+The behaviour of form helpers changed slightly in Rails 6.1, as forms are no longer automatically set to be `remote: true` by default. This catches many developers off-guard!
 
-On the client, you can modify `params` in your `beforeReflex` callback by modifying `element.reflexData[reflexId]` before it is sent to the server.
+### UJS -&gt; Mrujs
 
-```javascript
-export default class extends ApplicationController {
-  beforeReflex(element, reflex, noop, reflexId) {
-    const { params } = element.reflexData[reflexId]
-    element.reflexData[reflexId].params = { ...params, foo: true, bar: false }
-  }
-}
-```
+We are big fans of asynchronous form submission, and have long recommended UJS as a powerful solution. Recently, [Mrujs](https://mrujs.com/) has emerged as the spiritual successor to the original `rails-ujs` library.
 
-Or, if you prefer working with events:
+Mrujs is a drop-in replacement for `rails-ujs` for most Rails developers.
 
-```javascript
-document.addEventListener('stimulus-reflex:before', event => {
-  const reflexId = event.detail.reflexId
-  const { params } = event.target.reflexData[reflexId]
-  event.target.reflexData[reflexId].params = { ...params, foo: true, bar: false }
-})
-```
+Not only does it support CableReady operations, it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. 🎉
 
-### Disabling params serialization for a Reflex
+### Firefox considerations
+
+Firefox has a history of quirky behaviour when it comes to form submission with JavaScript. When you submit a form with an HTTP POST, Firefox appears to reload the page, disrupting the WebSocket connection.
+
+Our recommended mitigation for most Firefox form issues is to make sure that you're using `remote: true`.
+
+### `.submit` vs `.requestSubmit`
+
+While not directly SR-specific, we've noticed that a lot of developers get tripped up with the subtle differences between these two form submission methods. Many developers have never heard of [`requestSubmit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit) or have no idea why it exists.
+
+Quoting from MDN:
+
+> `submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event) event is sent back to the form object.
+
+## Disabling params serialization for a Reflex
 
 It's possible that you want to disable form parameter serialization, and you can do this by passing `serializeForm: false` as one of the possible optional arguments to the `stimulate` method.
 
 ```javascript
 this.stimulate('Example#foo', { serializeForm: false })
 ```
+
+{% hint style="warning" %}
+Form serialization will not be enabled by default in StimulusReflex v4.
+
+v3.5 developers will see a deprecation warning suggesting that they explicitly set `serializeForm: true` for forms that they would like to be serialized.
+{% endhint %}
 
 ## Working with the `params` accessor in your Reflex class
 
@@ -72,7 +77,7 @@ params.require(:post).permit(:name, comments_attributes: [:id, :_destroy, :name]
 
 Your `@post` object is instantiated from `params` so if model validations fail, your Post model instance is still in scope when the page re-renders. The model's `errors` collection is available in the view. 🐛
 
-One benefit of this design is that you can implement an auto-save feature by adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all inputs are automatically serialized and sent to your Reflex class.
+One benefit of this design is that implementing an auto-save feature becomes as simple as adding `data-reflex="change->Post#update"` to each field. Since the field is inside the parent `form` element, all inputs are automatically serialized and sent to your Reflex class.
 
 Working with `has_many` associations? No sweat! Building a new record for a nested model requires **no JavaScript**. Your Reflex calls `@post.comments.build` and because Rails knows about the association, any re-renders populate the empty form field as normal.
 
@@ -228,9 +233,9 @@ Unfortunately, it's not possible to protect elements from being replaced with a 
 Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [morph](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
 {% endhint %}
 
-## Modifying Forms with Morphs
+## Modifying forms with Morphs
 
-If you need to change form elements in your document based on user input, you will find yourself needing to re-render partials inside of your Reflex. This raises the very good question of how to access the `form` context, since it's not just a view helper that you can include.
+If you need to change form elements in your document based on user input, you will find yourself needing to re-render partials inside of your Reflex. This raises the very good question of how to access the `form` context, since it's not just a simple view helper that you can include.
 
 You will need the controller's view context, as well as the parent resource used to create the form initially:
 
@@ -280,4 +285,27 @@ Since the partial does not include the parent `div`, in order to successfully re
 ```
 
 You can learn more about why wrapping Morph replacement content is necessary [here](morph-modes.md#intelligent-defaults).
+
+## Modifying `params` before a Reflex
+
+On the client, you can modify `params` in your `beforeReflex` callback by modifying `element.reflexData[reflexId]` before it is sent to the server.
+
+```javascript
+export default class extends ApplicationController {
+  beforeReflex(element, reflex, noop, reflexId) {
+    const { params } = element.reflexData[reflexId]
+    element.reflexData[reflexId].params = { ...params, foo: true, bar: false }
+  }
+}
+```
+
+Or, if you prefer working with events:
+
+```javascript
+document.addEventListener('stimulus-reflex:before', event => {
+  const reflexId = event.detail.reflexId
+  const { params } = event.target.reflexData[reflexId]
+  event.target.reflexData[reflexId].params = { ...params, foo: true, bar: false }
+})
+```
 

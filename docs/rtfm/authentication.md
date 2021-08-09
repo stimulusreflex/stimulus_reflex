@@ -6,11 +6,7 @@ description: How to secure your StimulusReflex application
 
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
-TODO: write about [https://cableready.stimulusreflex.com/v/pre-release/usage\#disconnect-a-user-from-their-actioncable-connection](https://cableready.stimulusreflex.com/v/pre-release/usage#disconnect-a-user-from-their-actioncable-connection)
-
 {% hint style="info" %}
-TODO: revise this, deprecated
-
 Since StimulusReflex v3.4, there is now an additional concept that you should understand - [Tab Isolation](reflexes.md#tab-isolation) - which is adjacent to but not the same as authentication. Authentication is about who sees what, while Tab Isolation is about what **you** see if you open the same thing, twice.
 {% endhint %}
 
@@ -159,7 +155,7 @@ end
 ### Tokens \(Subscription-based\)
 
 {% hint style="success" %}
-You can clone [a bare bones but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
+You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
 {% endhint %}
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.
@@ -449,7 +445,7 @@ end
 ```ruby
 class SongReflex < ApplicationReflex
   include Pundit
-  
+
   def sing
     @song = Song.find(params[:song_id])
     authorize @song
@@ -563,7 +559,7 @@ module ApplicationCable
       @notifications = params[:notifications]
       puts @notifications # "default", "granted" or "denied" 
     end
-    
+
   end
 end
 ```
