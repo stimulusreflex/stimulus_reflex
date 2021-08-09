@@ -29,6 +29,15 @@ StimulusReflex uses `form` elements as a familiar way to group related elements 
 
 The behaviour of form helpers changed slightly in Rails 6.1, as forms are no longer automatically set to be `remote: true` by default. This catches many developers off-guard!
 
+We recommend that Rails developers use remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster \(no more ugly screen refreshes!\) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
+
+```markup
+<%= form_with model: @foo, local: false %>
+<%= form_with model: @foo, data: { remote: "true" } %>
+<%= form_for @foo, remote: true %>
+<form action="/foo" data-remote="true" method="post"></form>
+```
+
 ### UJS -&gt; Mrujs
 
 We are big fans of asynchronous form submission, and have long recommended UJS as a powerful solution. Recently, [Mrujs](https://mrujs.com/) has emerged as the spiritual successor to the original `rails-ujs` library.
@@ -41,7 +50,7 @@ Not only does it support CableReady operations, it uses Morphdom - the same libr
 
 Firefox has a history of quirky behaviour when it comes to form submission with JavaScript. When you submit a form with an HTTP POST, Firefox appears to reload the page, disrupting the WebSocket connection.
 
-Our recommended mitigation for most Firefox form issues is to make sure that you're using `remote: true`.
+Our recommended mitigation for most Firefox form issues is to make sure that you're using `local: false`.
 
 ### `.submit` vs `.requestSubmit`
 
