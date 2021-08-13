@@ -88,7 +88,7 @@ const register = (controller, options = {}) => {
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
-    // - controllerElement - [optional] the element that triggered the reflex, defaults to this.element
+    // - reflexElement - [optional] the element that triggered the reflex, defaults to this.element
     // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, serializeForm
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
