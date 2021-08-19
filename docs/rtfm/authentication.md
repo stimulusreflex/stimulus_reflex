@@ -7,7 +7,7 @@ description: How to secure your StimulusReflex application
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
 {% hint style="info" %}
-Since StimulusReflex v3.4, there is now an additional concept that you should understand - [Tab Isolation](reflexes.md#tab-isolation) - which is adjacent to but not the same as authentication. Authentication is about who sees what, while Tab Isolation is about what **you** see if you open the same thing, twice.
+StimulusReflex v3.5 deprecates [Tab Isolation](reflexes.md#tab-isolation), which will be removed in v4. Each tab will be fully isolated from others.
 {% endhint %}
 
 ## Authentication Schemes

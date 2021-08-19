@@ -16,7 +16,7 @@ A Reflex action is a reaction to a user action that changes server-side state an
 A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
 {% endhint %}
 
-CableReady has 33 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 36 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
 {% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
 
