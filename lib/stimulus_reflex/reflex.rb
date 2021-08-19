@@ -8,7 +8,7 @@ class StimulusReflex::Reflex
   include ActionView::Helpers::TagHelper
   include CableReady::Identifiable
 
-  attr_accessor :payload
+  attr_accessor :payload, :headers
   attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
@@ -41,6 +41,7 @@ class StimulusReflex::Reflex
     @client_attributes = ClientAttributes.new(client_attributes)
     @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
+    @headers = {}
     self.params
   end
 
@@ -97,6 +98,7 @@ class StimulusReflex::Reflex
 
   def controller
     @controller ||= controller_class.new.tap do |c|
+      request.headers.merge!(headers)
       c.instance_variable_set :@stimulus_reflex, true
       c.set_request! request
       c.set_response! controller_class.make_response!(request)
