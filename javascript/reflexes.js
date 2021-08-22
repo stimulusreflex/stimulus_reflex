@@ -12,58 +12,28 @@ const reflexes = {}
 const received = data => {
   if (!data.cableReady) return
 
-  let reflexOperations = {}
+  let reflexOperations = []
 
-  for (let name in data.operations) {
-    if (data.operations.hasOwnProperty(name)) {
-      for (let i = data.operations[name].length - 1; i >= 0; i--) {
-        if (
-          data.operations[name][i].stimulusReflex ||
-          (data.operations[name][i].detail &&
-            data.operations[name][i].detail.stimulusReflex)
-        ) {
-          reflexOperations[name] = reflexOperations[name] || []
-          reflexOperations[name].push(data.operations[name][i])
-          data.operations[name].splice(i, 1)
-        }
-      }
-      if (!data.operations[name].length)
-        Reflect.deleteProperty(data.operations, name)
+  for (let i = data.operations.length - 1; i >= 0; i--) {
+    if (data.operations[i].stimulusReflex) {
+      reflexOperations.push(data.operations[i])
+      data.operations.splice(i, 1)
     }
   }
 
-  let totalOperations = 0
+  if (
+    reflexOperations.some(operation => {
+      return operation.stimulusReflex.url !== location.href
+    })
+  )
+    return
+
   let reflexData
 
-  const dispatchEvent = reflexOperations['dispatchEvent']
-  const morph = reflexOperations['morph']
-  const innerHtml = reflexOperations['innerHtml']
-
-  ;[dispatchEvent, morph, innerHtml].forEach(operation => {
-    if (operation && operation.length) {
-      const urls = Array.from(
-        new Set(
-          operation.map(m =>
-            m.detail ? m.detail.stimulusReflex.url : m.stimulusReflex.url
-          )
-        )
-      )
-
-      if (urls.length !== 1 || urls[0] !== location.href) return
-      totalOperations += operation.length
-
-      if (!reflexData) {
-        if (operation[0].detail) {
-          reflexData = operation[0].detail.stimulusReflex
-          reflexData.payload = operation[0].detail.payload
-          reflexData.reflexId = operation[0].detail.reflexId
-        } else {
-          reflexData = operation[0].stimulusReflex
-          reflexData.payload = operation[0].payload
-        }
-      }
-    }
-  })
+  if (reflexOperations.length) {
+    reflexData = reflexOperations[0].stimulusReflex
+    reflexData.payload = reflexOperations[0].payload
+  }
 
   if (reflexData) {
     const { reflexId, payload } = reflexData
@@ -95,15 +65,14 @@ const received = data => {
     }
 
     if (reflexes[reflexId]) {
-      reflexes[reflexId].totalOperations = totalOperations
-      reflexes[reflexId].pendingOperations = totalOperations
+      reflexes[reflexId].totalOperations = reflexOperations.length
+      reflexes[reflexId].pendingOperations = reflexOperations.length
       reflexes[reflexId].completedOperations = 0
       reflexes[reflexId].piggybackOperations = data.operations
       CableReady.perform(reflexOperations)
     }
   } else {
-    const operations = Object.entries(data.operations)
-    if (operations.length && reflexes[operations[0][1][0].reflexId])
+    if (data.operations.length && reflexes[data.operations[0].reflexId])
       CableReady.perform(data.operations)
   }
 }

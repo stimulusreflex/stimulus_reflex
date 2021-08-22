@@ -115,15 +115,8 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:nothing',
   event => {
-    invokeLifecycleMethod(
-      'success',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
     dispatchLifecycleEvent(
-      'after',
+      'success',
       event.detail.element,
       event.detail.controller.element,
       event.detail.reflexId,

@@ -24,18 +24,21 @@ const createSubscription = controller => {
 
 const connected = () => {
   subscriptionActive = true
-  emitEvent('stimulus-reflex:connected')
+  emitEvent('stimulus-reflex:connected') // DEPRECATED and will be removed in the future
+  emitEvent('stimulus-reflex:action-cable:connected')
 }
 
 const rejected = () => {
   subscriptionActive = false
-  emitEvent('stimulus-reflex:rejected')
+  emitEvent('stimulus-reflex:rejected') // DEPRECATED and will be removed in the future
+  emitEvent('stimulus-reflex:action-cable:rejected')
   if (Debug.enabled) console.warn('Channel subscription was rejected.')
 }
 
 const disconnected = willAttemptReconnect => {
   subscriptionActive = false
-  emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
+  emitEvent('stimulus-reflex:disconnected', willAttemptReconnect) // DEPRECATED and will be removed in the future
+  emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
 }
 
 export default {

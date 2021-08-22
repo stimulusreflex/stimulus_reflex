@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
-import { beforeDOMUpdate, afterDOMUpdate, serverMessage } from './callbacks'
+import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
 import reflexes, { registerReflex, setupDeclarativeReflexes } from './reflexes'
 import { attributeValues } from './attributes'
 import Schema from './schema'
@@ -247,7 +247,7 @@ const useReflex = (controller, options = {}) => {
   register(controller, options)
 }
 
-document.addEventListener('stimulus-reflex:server-message', serverMessage)
+document.addEventListener('cable-ready:after-dispatch-event', routeReflexEvent)
 document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)

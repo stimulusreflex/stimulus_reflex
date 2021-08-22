@@ -26,33 +26,34 @@ module StimulusReflex
       false
     end
 
-    def broadcast_message(subject:, data: {}, error: nil)
+    def halted(data: {})
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
-        name: "stimulus-reflex:server-message",
-        detail: {
-          reflexId: data.delete("reflexId"),
-          payload: payload,
-          stimulus_reflex: data.merge(
-            morph: to_sym,
-            server_message: {subject: subject, body: error&.to_s}
-          )
-        }
-      )
-      cable_ready.broadcast
+        name: "stimulus-reflex:morph-halted",
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym)
+      ).broadcast
     end
 
-    # abstract method to be implemented by subclasses
+    def error(data: {}, body: nil)
+      operations << ["document", :dispatch_event]
+      cable_ready.dispatch_event(
+        name: "stimulus-reflex:morph-error",
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym),
+        body: body&.to_s
+      ).broadcast
+    end
+
+    # abstract methods to be implemented by subclasses
     def broadcast(*args)
       raise NotImplementedError
     end
 
-    # abstract method to be implemented by subclasses
     def to_sym
       raise NotImplementedError
     end
 
-    # abstract method to be implemented by subclasses
     def to_s
       raise NotImplementedError
     end

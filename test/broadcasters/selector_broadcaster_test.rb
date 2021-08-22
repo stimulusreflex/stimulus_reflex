@@ -10,22 +10,21 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "morph" => [
-            {
-              "selector" => "#foo",
-              "html" => "<div>bar</div><div>baz</div>",
-              "payload" => {},
-              "childrenOnly" => true,
-              "permanentAttributeName" => nil,
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => "<div>bar</div><div>baz</div>",
+            "payload" => {},
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "morph"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -39,20 +38,19 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "innerHtml" => [
-            {
-              "selector" => "#foo",
-              "html" => '<div id="baz"><span>bar</span></div>',
-              "payload" => {},
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => '<div id="baz"><span>bar</span></div>',
+            "payload" => {},
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "innerHtml"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -66,20 +64,19 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "innerHtml" => [
-            {
-              "selector" => "#foo",
-              "html" => "",
-              "payload" => {},
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => "",
+            "payload" => {},
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "innerHtml"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -93,20 +90,19 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "innerHtml" => [
-            {
-              "selector" => "#foo",
-              "html" => "",
-              "payload" => {},
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => "",
+            "payload" => {},
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "innerHtml"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -120,20 +116,19 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "innerHtml" => [
-            {
-              "selector" => "#foo",
-              "html" => "",
-              "payload" => {},
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => "",
+            "payload" => {},
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "innerHtml"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -147,22 +142,21 @@ module StimulusReflex
 
       expected = {
         "cableReady" => true,
-        "operations" => {
-          "morph" => [
-            {
-              "selector" => "#foo",
-              "html" => "<div>bar</div><div>baz</div>",
-              "payload" => {},
-              "childrenOnly" => true,
-              "permanentAttributeName" => nil,
-              "stimulusReflex" => {
-                "some" => "data",
-                "morph" => "selector"
-              },
-              "reflexId" => "666"
-            }
-          ]
-        }
+        "operations" => [
+          {
+            "selector" => "#foo",
+            "html" => "<div>bar</div><div>baz</div>",
+            "payload" => {},
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "morph"
+          }
+        ]
       }
 
       assert_broadcast_on @reflex.stream_name, expected do

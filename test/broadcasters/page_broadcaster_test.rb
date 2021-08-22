@@ -20,22 +20,21 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
 
     expected = {
       "cableReady" => true,
-      "operations" => {
-        "morph" => [
-          {
-            "selector" => "body",
-            "html" => "<div>New Content</div><div>Another Content</div>",
-            "payload" => {},
-            "childrenOnly" => true,
-            "permanentAttributeName" => nil,
-            "stimulusReflex" => {
-              "some" => :data,
-              "morph" => :page
-            },
-            "reflexId" => "666"
-          }
-        ]
-      }
+      "operations" => [
+        {
+          "selector" => "body",
+          "html" => "<div>New Content</div><div>Another Content</div>",
+          "payload" => {},
+          "childrenOnly" => true,
+          "permanentAttributeName" => nil,
+          "stimulusReflex" => {
+            "some" => :data,
+            "morph" => :page
+          },
+          "reflexId" => "666",
+          "operation" => "morph"
+        }
+      ]
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
@@ -54,22 +53,21 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
 
     expected = {
       "cableReady" => true,
-      "operations" => {
-        "morph" => [
-          {
-            "selector" => "#foo",
-            "html" => "New Content",
-            "payload" => {},
-            "childrenOnly" => true,
-            "permanentAttributeName" => nil,
-            "stimulusReflex" => {
-              "some" => :data,
-              "morph" => :page
-            },
-            "reflexId" => "666"
-          }
-        ]
-      }
+      "operations" => [
+        {
+          "selector" => "#foo",
+          "html" => "New Content",
+          "payload" => {},
+          "childrenOnly" => true,
+          "permanentAttributeName" => nil,
+          "stimulusReflex" => {
+            "some" => :data,
+            "morph" => :page
+          },
+          "reflexId" => "666",
+          "operation" => "morph"
+        }
+      ]
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
