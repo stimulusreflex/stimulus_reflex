@@ -6,10 +6,14 @@
 
 **Implemented enhancements:**
 
+- specify env headers for page morph controller [\#538](https://github.com/stimulusreflex/stimulus_reflex/pull/538) ([leastbad](https://github.com/leastbad))
+- New CR wire format + reworked server message events [\#536](https://github.com/stimulusreflex/stimulus_reflex/pull/536) ([leastbad](https://github.com/leastbad))
 - reflex render layout defaults to false [\#534](https://github.com/stimulusreflex/stimulus_reflex/pull/534) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
+- Controller action being re-run is different from expected. [\#540](https://github.com/stimulusreflex/stimulus_reflex/issues/540)
+- The ActionCable channel subscription for StimulusReflex gets rejected when interacting too fast  [\#539](https://github.com/stimulusreflex/stimulus_reflex/issues/539)
 - Stimulus reflex not working making server to stop on ruby on rails [\#533](https://github.com/stimulusreflex/stimulus_reflex/issues/533)
 
 **Merged pull requests:**
@@ -433,6 +437,7 @@
 - add redis to cable.yml in development mode [\#305](https://github.com/stimulusreflex/stimulus_reflex/pull/305) ([leastbad](https://github.com/leastbad))
 - Update morph-modes.md [\#302](https://github.com/stimulusreflex/stimulus_reflex/pull/302) ([scottbarrow](https://github.com/scottbarrow))
 - Enhance controller templates docs [\#300](https://github.com/stimulusreflex/stimulus_reflex/pull/300) ([pinzonjulian](https://github.com/pinzonjulian))
+- Avoid mismatching client and server versions [\#297](https://github.com/stimulusreflex/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
 
 ## [v3.3.0.pre4](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.3.0.pre4) (2020-09-13)
 
@@ -479,7 +484,6 @@
 
 **Merged pull requests:**
 
-- Avoid mismatching client and server versions [\#297](https://github.com/stimulusreflex/stimulus_reflex/pull/297) ([piotrwodz](https://github.com/piotrwodz))
 - Check if reflex exists before using it [\#293](https://github.com/stimulusreflex/stimulus_reflex/pull/293) ([joshleblanc](https://github.com/joshleblanc))
 - Add instructions for existing projects [\#291](https://github.com/stimulusreflex/stimulus_reflex/pull/291) ([gerrywastaken](https://github.com/gerrywastaken))
 - Fix argument of type object always being assigned to options [\#279](https://github.com/stimulusreflex/stimulus_reflex/pull/279) ([shawnleong](https://github.com/shawnleong))
@@ -553,6 +557,7 @@
 - Revert "Revert "Add instructions for pulling the user id out of session storage"" [\#240](https://github.com/stimulusreflex/stimulus_reflex/pull/240) ([leastbad](https://github.com/leastbad))
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/stimulusreflex/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/stimulusreflex/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
+- adds params documentation [\#230](https://github.com/stimulusreflex/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Fix calling wrong controller lifecycle methods [\#226](https://github.com/stimulusreflex/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/stimulusreflex/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
@@ -608,6 +613,7 @@
 - Form parameters [\#204](https://github.com/stimulusreflex/stimulus_reflex/pull/204) ([jasoncharnes](https://github.com/jasoncharnes))
 - Map hashes in incoming arguments using with\_indifferent\_access [\#203](https://github.com/stimulusreflex/stimulus_reflex/pull/203) ([jaredcwhite](https://github.com/jaredcwhite))
 - Combine dataset with data-attributes from parent elements on reflex call [\#200](https://github.com/stimulusreflex/stimulus_reflex/pull/200) ([marcoroth](https://github.com/marcoroth))
+- Setup mutation aware declarative reflexes [\#197](https://github.com/stimulusreflex/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -621,7 +627,6 @@
 
 **Merged pull requests:**
 
-- adds params documentation [\#230](https://github.com/stimulusreflex/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
 - Bump activesupport from 6.0.3 to 6.0.3.1 [\#217](https://github.com/stimulusreflex/stimulus_reflex/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump activestorage from 6.0.3 to 6.0.3.1 [\#216](https://github.com/stimulusreflex/stimulus_reflex/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actionpack from 6.0.3 to 6.0.3.1 [\#215](https://github.com/stimulusreflex/stimulus_reflex/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -665,7 +670,6 @@
 
 - Stimulate without a reflex target [\#179](https://github.com/stimulusreflex/stimulus_reflex/issues/179)
 - Reflex callbacks [\#155](https://github.com/stimulusreflex/stimulus_reflex/issues/155)
-- Setup mutation aware declarative reflexes [\#197](https://github.com/stimulusreflex/stimulus_reflex/pull/197) ([hopsoft](https://github.com/hopsoft))
 - Replace camelize with homegrown version [\#184](https://github.com/stimulusreflex/stimulus_reflex/pull/184) ([jonathan-s](https://github.com/jonathan-s))
 - Replace uuid4 dependency with function in repo [\#181](https://github.com/stimulusreflex/stimulus_reflex/pull/181) ([jonathan-s](https://github.com/jonathan-s))
 - Allow channel exceptions to be rescuable [\#180](https://github.com/stimulusreflex/stimulus_reflex/pull/180) ([dark-panda](https://github.com/dark-panda))
@@ -746,10 +750,6 @@
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.1.0...v3.1.1)
 
-**Implemented enhancements:**
-
-- add funding file [\#141](https://github.com/stimulusreflex/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
-
 **Fixed bugs:**
 
 - Cannot read property 'removeEventListener' of undefined after updating to 3.1.0 [\#151](https://github.com/stimulusreflex/stimulus_reflex/issues/151)
@@ -772,6 +772,7 @@
 - Check the ActionCable connection on stimuluate [\#148](https://github.com/stimulusreflex/stimulus_reflex/pull/148) ([hopsoft](https://github.com/hopsoft))
 - Attach element.tagName to extracted attributes [\#146](https://github.com/stimulusreflex/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/stimulusreflex/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
+- add funding file [\#141](https://github.com/stimulusreflex/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -853,7 +854,6 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/stimulusreflex/stimulus_reflex/issues/114)
-- Setup DOM event based lifecycle [\#115](https://github.com/stimulusreflex/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -899,6 +899,7 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/stimulusreflex/stimulus_reflex/issues/91)
+- Setup DOM event based lifecycle [\#115](https://github.com/stimulusreflex/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 - Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/stimulusreflex/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
@@ -1056,10 +1057,6 @@
 ## [v1.0.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v1.0.0...v1.0.1)
-
-**Implemented enhancements:**
-
-- Add support for rooms [\#11](https://github.com/stimulusreflex/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
