@@ -99,6 +99,18 @@ Generally, only the `heroku/ruby` buildpack is required to successfully deploy a
 
 ... we recommend that you try updating your Cedar stack to the latest version. This should be fixed as of Cedar-20.
 
+## Deployment on Render
+
+Some users have noted that ActionCable can take a long time to connect. This is because Render is setting the `X-Forwarded-Proto` header to use `wss`, which was not supported by Rack until [this commit](https://github.com/rack/rack/commit/8be612ab949cf2eba7f4231ef17052a68315f911) in April 2021.
+
+The latest release of the Rack gem \(2.2.3 as of the time of this writing\) came out in June 2020, so the fix is to add `rack` to your Gemfile and point to this specific commit:
+
+{% code title="Gemfile" %}
+```ruby
+gem "rack", git: "https://github.com/rack/rack.git", ref: "8be612a"
+```
+{% endcode %}
+
 ## Cloudflare DNS
 
 Cloudflare's infrastructure is nothing short of impressive, and they are a great choice for free DNS hosting. However, the default behaviour of their DNS product is to proxy all traffic to your domain. **This includes websocket traffic.**
