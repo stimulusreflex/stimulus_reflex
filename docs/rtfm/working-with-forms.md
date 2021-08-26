@@ -14,7 +14,7 @@ UJS-powered remote forms are great, especially now that we have [mrujs](https://
 
 * it provide a nearly 1:1 drop-in replacement for `rails-ujs`
 * it makes use of modern browser features like `fetch` \(instead of XMLHttpRequest\)
-* it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. 🎉
+* it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. **This makes the Optimism gem obsolete**, as it was created to provide functionality that was missing in `rails-ujs` 🎉
 * it has a great plugin ecosystem... including support for CableReady's [CableCar](https://cableready.stimulusreflex.com/cable-car) operation builder
 
 Don't believe the hype: **UJS is alive and well!**
@@ -121,7 +121,7 @@ If you call a full-page update Reflex outside of a form that has unsaved data, y
 
 At the time of this writing, **forms that upload files are unsupported by StimulusReflex**. We suggest that you design your UI in such a way that files can be uploaded directly, making use of the standard Rails UJS form upload techniques. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
 
-You can explore using Optimism for live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com/) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
+You can explore using CableReady and/or mrujs to provide live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com/) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
 
 As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active_storage_overview.html).
 
