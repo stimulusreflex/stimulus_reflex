@@ -105,8 +105,8 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% code title="index.html.erb" %}
 ```markup
 <div data-reflex-permanent>
-  <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
-  <iframe src="https://ghbtns.com/github-btn.html?user=hopsoft&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
+  <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
+  <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
 </div>
 ```
 {% endcode %}
@@ -116,7 +116,7 @@ We have encountered scenarios where the `data-reflex-permanent` attribute is ign
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
-¯\**\(ツ\)\**/¯
+¯\*_\(ツ\)\*_/¯
 {% endhint %}
 
 {% hint style="danger" %}
@@ -151,7 +151,7 @@ Behold! For this is the `foo` partial. It is an example of perfection:
 ```
 {% endcode %}
 
-You create a Selector morph by calling the `morph` method. Typically, it takes two parameters: **selector** and **html**. We pass any valid CSS DOM selector that returns a reference to the first matching element, as well as the value we're updating it with.
+You create a Selector morph by calling the `morph` method. In its simplest form, it takes two parameters: **selector** and **html**. We pass any valid CSS DOM selector that returns a reference to the first matching element, as well as the value we're updating it with.
 
 {% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
@@ -249,7 +249,7 @@ That's great - if that's what you want. 🤨
 Ultimately, we've optimized for two primary use cases for morph functionality:
 
 1. Updating a partial or ViewComponent to reflect a state change.
-2. Updating a container element with a new value or HTML fragment.
+2. Updating a container element with a new simple value or HTML fragment.
 
 ### Real-world example: Pagy refactoring
 
@@ -431,7 +431,7 @@ cable_ready[stream_name].morph({ final update... }).broadcast
 
 ### ActiveJob Example
 
-Let's step through creating an ActiveJob that will be triggered by a Nothing morph. Upon completion, the job will increment a counter and direct CableReady to update the browser. Note that you'll have to ensure that your ActiveJob infrastructure is up and running, ideally backed by Sidekiq and Redis.
+Let's step through creating a simple ActiveJob that will be triggered by a Nothing morph. Upon completion, the job will increment a counter and direct CableReady to update the browser. Note that you'll have to ensure that your ActiveJob infrastructure is up and running, ideally backed by Sidekiq and Redis.
 
 First, some quick housekeeping: you need to create an ActionCable channel. Running `rails generate channel counter` should do the trick. We want to stream updates to anyone listening in on the `counter` stream.
 
@@ -458,7 +458,7 @@ consumer.subscriptions.create("CounterChannel", {
 ```
 {% endcode %}
 
-Create a view template that contains a `button` to launch the Reflex as well as a `span` to hold the current value. We'll pull in the current value of the counter key in the Rails cache. If it doesn't yet exist, set the value to 0.
+Create a simple view template that contains a `button` to launch the Reflex as well as a `span` to hold the current value. We'll pull in the current value of the counter key in the Rails cache. If it doesn't yet exist, set the value to 0.
 
 {% code title="index.html.erb" %}
 ```markup

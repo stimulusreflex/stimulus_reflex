@@ -4,32 +4,75 @@ description: Forms fly business class on StimulusReflex Airways ✈️
 
 # Forms
 
-When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](../hello-world/quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
+When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer.
 
-{% hint style="warning" %}
-Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
+The simple answer is... you don't! **Form submission in Rails is already really well-designed and powerful**. You get ActiveRecord model validations, the Flash message system, allowed and blocked parameters, HTTP caching and of course, UJS remote form submission. UJS was introduced in Rails 3.2 and provided an easy way to submit forms via Ajax.
+
+## StimulusReflex + mrujs = 🥰
+
+UJS-powered remote forms are great, especially now that we have [mrujs](https://mrujs.com), the spiritual successor to the classic `rails-ujs` library that shipped with Rails until recently. `mrujs` is excellent:
+
+* it provide a nearly 1:1 drop-in replacement for `rails-ujs`
+* it makes use of modern browser features like `fetch` \(instead of XMLHttpRequest\)
+* it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. 🎉
+* it has a great plugin ecosystem... including support for CableReady's [CableCar](https://cableready.stimulusreflex.com/cable-car) operation builder
+
+Don't believe the hype: **UJS is alive and well!**
+
+{% hint style="info" %}
+When you POST a form to a boilerplate Rails resource controller and your create attempt fails, the URL will appear to show the `new` template _content_ but the URL will appear to be `/` \(aka the `index` action\). This will make it impossible for StimulusReflex Page Morphs to update the page.
+
+The recommended mitigation for this behaviour is to **use Mrujs**.
 {% endhint %}
 
-StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](reflexes.md#combined-data-attributes-with-stimulate). This leaves form submission in the cold, though... doesn't it? 🥶
+## StimulusReflex form processing
 
-_Heck no!_ If a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form will be serialized and made available to the Reflex action method as the `params` accessor.
+StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](reflexes.md#combined-data-attributes-with-stimulate). This is very different from the mechanics of a form submission.
+
+However, if a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form can **optionally** be serialized and made available to the server-side Reflex action method as the `params` accessor.
+
+{% hint style="warning" %}
+Form serialization will not be enabled by default in StimulusReflex v4.
+
+v3.5 developers will see a deprecation warning suggesting that they explicitly set `serializeForm: true` for forms that they would like to be serialized.
+{% endhint %}
 
 `params` is an instance of `ActionController::Parameters` which you can manipulate the same way you would with a real form submitted via a normal POST action, with `require` and `permit`. This is useful for validating models and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
-## Forms are not actually forms
+To enable this form serialization in a Reflex, either set the `serializeForm: true` option when calling `stimulate()` or make sure that there's a `data-reflex-serialize-form` data attribute on the element which initiates your Reflex action.
 
-StimulusReflex uses `form` elements as a familiar way to group related elements together. However, a lot of newcomers get attached to the idea that the form they are serializing is being used _as_ an HTML form, which it is **not**.
+{% tabs %}
+{% tab title="JavaScript" %}
+```javascript
+this.stimulate('Example#foo', { serializeForm: true })
+```
+{% endtab %}
+
+{% tab title="HTML" %}
+```markup
+<form data-reflex="submit->Example#foo" data-reflex-serialize-form></form>
+```
+{% endtab %}
+{% endtabs %}
+
+## When forms are not actually forms
+
+StimulusReflex uses `form` elements as a familiar way to group related elements together. However, a lot of newcomers get attached to the idea that the form they are serializing is being POSTed _as_ an HTML form, which it is **not**.
 
 * forms are usually submitted via a classic POST operation or an Ajax fetch; this is _not the case_ when working with StimulusReflex
 * forms usually have action and method attributes; we recommend against them - you really **can** just use `<form></form>` with no other mechanism or configuration required
 * forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
 * there's no reason to set up a route or controller action for a form intended for SR
 
+{% hint style="info" %}
+You might be wondering why to even use forms at all. One significant reason is that many CSS frameworks like Bootstrap expect forms to be forms.
+{% endhint %}
+
 ## Remote forms in Rails 6.1
 
 The behaviour of form helpers changed slightly in Rails 6.1, as forms are no longer automatically set to be `remote: true` by default. This catches many developers off-guard!
 
-We recommend that Rails developers use remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster \(no more ugly screen refreshes!\) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
+We recommend that Rails developers use UJS/mrujs remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster \(no more ugly screen refreshes!\) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
 
 ```markup
 <%= form_with model: @foo, local: false %>
@@ -37,14 +80,6 @@ We recommend that Rails developers use remote forms wherever possible, especiall
 <%= form_for @foo, remote: true %>
 <form action="/foo" data-remote="true" method="post"></form>
 ```
-
-### UJS -&gt; Mrujs
-
-We are big fans of asynchronous form submission, and have long recommended UJS as a powerful solution. Recently, [Mrujs](https://mrujs.com/) has emerged as the spiritual successor to the original `rails-ujs` library.
-
-Mrujs is a drop-in replacement for `rails-ujs` for most Rails developers.
-
-Not only does it support CableReady operations, it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. 🎉
 
 ### Firefox considerations
 
@@ -59,20 +94,6 @@ While not directly SR-specific, we've noticed that a lot of developers get tripp
 Quoting from MDN:
 
 > `submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event) event is sent back to the form object.
-
-## Disabling params serialization for a Reflex
-
-It's possible that you want to disable form parameter serialization, and you can do this by passing `serializeForm: false` as one of the possible optional arguments to the `stimulate` method.
-
-```javascript
-this.stimulate('Example#foo', { serializeForm: false })
-```
-
-{% hint style="warning" %}
-Form serialization will not be enabled by default in StimulusReflex v4.
-
-v3.5 developers will see a deprecation warning suggesting that they explicitly set `serializeForm: true` for forms that they would like to be serialized.
-{% endhint %}
 
 ## Working with the `params` accessor in your Reflex class
 

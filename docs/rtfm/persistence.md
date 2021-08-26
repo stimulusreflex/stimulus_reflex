@@ -14,7 +14,7 @@ We estimate that 80% of the pain points in web development are the direct result
 
 Imagine if you could focus almost all of your time and attention on the fun parts of web development again. Exploring the best way to implement features instead of worrying about data serialization and forgotten user flows. Smaller teams working smarter and faster, then going home on time.
 
-Designing applications in the StimulusReflex mindset is easier than the request/response  we're used to, and we don't have to give up responsive client functionality to see our productivity shoot through the roof. It does, however, require some unlearning of old habits. You're about to rethink how you approach persisting the state of your application. This can be jarring at first! Even positive changes feel like work.
+Designing applications in the StimulusReflex mindset is far simpler than what we're used to, and we don't have to give up responsive client functionality to see our productivity shoot through the roof. It does, however, require some unlearning of old habits. You're about to rethink how you approach persisting the state of your application. This can be jarring at first! Even positive changes feel like work.
 
 ## The life of a Reflex
 
@@ -168,7 +168,7 @@ Rails.cache.fetch("preferences:colors:foreground:#{session.id}") {"blue"}
 
 If no key exists, it will evaluate the block, store the value for that key and return the value in one convenient, atomic action. Bam!
 
-If you're planning to do more than set an initial value for the fetch default, it's good idiomatic Ruby to move to the `do..end` form of block declaration:
+If you're planning to do more than set an initial simple value for the fetch default, it's good idiomatic Ruby to move to the `do..end` form of block declaration:
 
 {% tabs %}
 {% tab title="fortune.html.erb" %}
@@ -190,17 +190,17 @@ In order to use the Rails cache store in development, you'll have to run `rails 
 
 The most common and powerful persistence mechanism you'll call from a Reflex method is also the most familiar.
 
-An excellent reference example of StimulusReflex best practices is [todos\_reflex.rb](https://github.com/hopsoft/stimulus_reflex_todomvc/blob/master/app/reflexes/todos_reflex.rb) from the [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com/) sample application.
+An excellent reference example of StimulusReflex best practices is [todos\_reflex.rb](https://github.com/stimulusreflex/stimulus_reflex_todomvc/blob/master/app/reflexes/todos_reflex.rb) from the [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com/) sample application.
 
 The Reflex class makes use of the `session.id`, the `data-id` attributes from individual Todo model instances, and the new Rails `&` [safe navigation operator](http://mitrev.net/ruby/2015/11/13/the-operator-in-ruby/) \(available since Ruby 2.3\) to make short work of mapping events on the client to your permanent data store.
 
-[todos\_controller.rb](https://github.com/hopsoft/stimulus_reflex_todomvc/blob/master/app/controllers/todos_controller.rb) only makes a single ActiveRecord query to render the current state of the view template. Well-designed StimulusReflex applications **leave the heavy-lifting associated with state changes to the Reflex class.**
+[todos\_controller.rb](https://github.com/stimulusreflex/stimulus_reflex_todomvc/blob/master/app/controllers/todos_controller.rb) only makes a single ActiveRecord query to render the current state of the view template. Well-designed StimulusReflex applications **leave the heavy-lifting associated with state changes to the Reflex class.**
 
 ## Redis
 
 If Redis is your Rails cache store, you're already one step ahead!
 
-Depending on your application and the kind of data you're working with, [calling the Redis engine directly](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#use-redis-as-your-cache-store) \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
+Depending on your application and the kind of data you're working with, [calling the Redis engine directly](https://github.com/stimulusreflex/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#use-redis-as-your-cache-store) \(through the `redis` gem, in tandem with the `hiredis` gem for optimal performance\) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
 
 Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis/)".
 
@@ -211,7 +211,7 @@ It is a common pattern to store the results of API calls or long-running databas
 {% endhint %}
 
 {% hint style="danger" %}
-If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://github.com/hopsoft/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#deployment-on-heroku).
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://github.com/stimulusreflex/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#deployment-on-heroku).
 {% endhint %}
 
 ## Kredis
