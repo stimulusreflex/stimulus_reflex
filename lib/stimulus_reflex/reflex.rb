@@ -114,6 +114,7 @@ class StimulusReflex::Reflex
 
   def render(*args)
     options = args.extract_options!
+    (options[:locals] ||= {}).reverse_merge!(params: params)
     args << options.reverse_merge(layout: false)
     controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
   end
