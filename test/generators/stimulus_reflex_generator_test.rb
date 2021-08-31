@@ -25,7 +25,7 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
     assert_file "app/reflexes/posts_reflex.rb", /PostsReflex/
   end
 
-  test "skips stimulus controller and applicatoin reflex if option provided" do
+  test "skips stimulus controller and application reflex if option provided" do
     run_generator %w[users --skip-stimulus --skip-application-reflex]
     assert_file "app/javascript/controllers/application_controller.js"
     assert_no_file "app/javascript/controllers/users_controller.js"
