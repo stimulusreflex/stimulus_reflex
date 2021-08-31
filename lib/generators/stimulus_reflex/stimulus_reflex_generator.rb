@@ -7,6 +7,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, banner: "NAME"
   argument :actions, type: :array, default: [], banner: "action action"
+  class_options skip_stimulus: false, skip_application_reflex: false
 
   def execute
     actions.map!(&:underscore)
@@ -14,13 +15,13 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     copy_application_files if behavior == :invoke
 
     template "app/reflexes/%file_name%_reflex.rb"
-    template "app/javascript/controllers/%file_name%_controller.js"
+    template "app/javascript/controllers/%file_name%_controller.js" unless options[:skip_stimulus]
   end
 
   private
 
   def copy_application_files
-    template "app/reflexes/application_reflex.rb"
+    template "app/reflexes/application_reflex.rb" unless options[:skip_application_reflex]
     template "app/javascript/controllers/application_controller.js"
   end
 end
