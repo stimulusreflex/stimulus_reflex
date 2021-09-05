@@ -197,6 +197,11 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
     assert element_with_truthy_attributes.truthy?[:long]
     assert element_with_truthy_attributes.truthy?[:num]
     assert element_with_truthy_attributes.truthy?[:empty]
+
+    assert element_with_truthy_attributes.dataset.truthy?[:short]
+    assert element_with_truthy_attributes.dataset.truthy?[:long]
+    assert element_with_truthy_attributes.dataset.truthy?[:num]
+    assert element_with_truthy_attributes.dataset.truthy?[:empty]
   end
 
   test "should return false for falsey data attributes" do
@@ -215,6 +220,10 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
     refute element_with_falsey_attributes.truthy?[:short]
     refute element_with_falsey_attributes.truthy?[:long]
     refute element_with_falsey_attributes.truthy?[:num]
+
+    refute element_with_falsey_attributes.dataset.truthy?[:short]
+    refute element_with_falsey_attributes.dataset.truthy?[:long]
+    refute element_with_falsey_attributes.dataset.truthy?[:num]
   end
 
   test "should return numeric values" do
@@ -234,6 +243,12 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
     assert_equal 123.456, element_with_numeric_attributes.numeric[:float]
     assert_raises do
       element_with_numeric_attributes.numeric[:string]
+    end
+
+    assert_equal 123.0, element_with_numeric_attributes.dataset.numeric[:int]
+    assert_equal 123.456, element_with_numeric_attributes.dataset.numeric[:float]
+    assert_raises do
+      element_with_numeric_attributes.dataset.numeric[:string]
     end
   end
 end
