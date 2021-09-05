@@ -12,6 +12,8 @@
 
 **Merged pull requests:**
 
+- Fix two minor typos [\#526](https://github.com/stimulusreflex/stimulus_reflex/pull/526) ([julianrubisch](https://github.com/julianrubisch))
+- chore: add sideEffects false to make Webpack happy [\#523](https://github.com/stimulusreflex/stimulus_reflex/pull/523) ([ParamagicDev](https://github.com/ParamagicDev))
 - Add localization example to ApplicationReflex template [\#521](https://github.com/stimulusreflex/stimulus_reflex/pull/521) ([erlingur](https://github.com/erlingur))
 - refactor stream\_name [\#519](https://github.com/stimulusreflex/stimulus_reflex/pull/519) ([leastbad](https://github.com/leastbad))
 
@@ -123,7 +125,6 @@
 - Extract RequestParameters class [\#451](https://github.com/stimulusreflex/stimulus_reflex/pull/451) ([julianrubisch](https://github.com/julianrubisch))
 - run changelog action not on every single push to master [\#450](https://github.com/stimulusreflex/stimulus_reflex/pull/450) ([marcoroth](https://github.com/marcoroth))
 - Extract method invocation policy [\#448](https://github.com/stimulusreflex/stimulus_reflex/pull/448) ([julianrubisch](https://github.com/julianrubisch))
-- remove unnecessary gate [\#439](https://github.com/stimulusreflex/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
 
 ## [v3.4.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.1) (2021-01-26)
 
@@ -136,7 +137,6 @@
 **Fixed bugs:**
 
 - life-cycle callbacks return correct element reference [\#431](https://github.com/stimulusreflex/stimulus_reflex/pull/431) ([leastbad](https://github.com/leastbad))
-- encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
 - Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - Prefix dom\_id with hash/pound [\#410](https://github.com/stimulusreflex/stimulus_reflex/pull/410) ([hopsoft](https://github.com/hopsoft))
 
@@ -150,6 +150,7 @@
 
 **Merged pull requests:**
 
+- remove unnecessary gate [\#439](https://github.com/stimulusreflex/stimulus_reflex/pull/439) ([leastbad](https://github.com/leastbad))
 - Extract callbacks to module [\#427](https://github.com/stimulusreflex/stimulus_reflex/pull/427) ([julianrubisch](https://github.com/julianrubisch))
 - Fixes bug where multiple inputs with the same name lost element value [\#426](https://github.com/stimulusreflex/stimulus_reflex/pull/426) ([jonsgreen](https://github.com/jonsgreen))
 - Add general policy for CoC enforcement [\#424](https://github.com/stimulusreflex/stimulus_reflex/pull/424) ([hopsoft](https://github.com/hopsoft))
@@ -178,6 +179,7 @@
 
 **Fixed bugs:**
 
+- encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
 - fix up install task [\#401](https://github.com/stimulusreflex/stimulus_reflex/pull/401) ([leastbad](https://github.com/leastbad))
 - Fix multiple broadcasts from within the same reflex [\#400](https://github.com/stimulusreflex/stimulus_reflex/pull/400) ([hopsoft](https://github.com/hopsoft))
 
@@ -362,6 +364,10 @@
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.3.0.pre5...v3.3.0.pre6)
 
+**Implemented enhancements:**
+
+- Support for token-based authentication [\#243](https://github.com/stimulusreflex/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
+
 **Closed issues:**
 
 - Authorization [\#292](https://github.com/stimulusreflex/stimulus_reflex/issues/292)
@@ -370,7 +376,6 @@
 
 **Merged pull requests:**
 
-- fixes and tweaks to client logging subsystem [\#313](https://github.com/stimulusreflex/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/stimulusreflex/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/stimulusreflex/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
 
@@ -390,6 +395,7 @@
 
 **Merged pull requests:**
 
+- fixes and tweaks to client logging subsystem [\#313](https://github.com/stimulusreflex/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - Support IE11 msCrypto \(\#308\) [\#310](https://github.com/stimulusreflex/stimulus_reflex/pull/310) ([chooselife22](https://github.com/chooselife22))
 - Print warning and exit if caching is disabled or npm/gem versions are mismatched [\#309](https://github.com/stimulusreflex/stimulus_reflex/pull/309) ([excid3](https://github.com/excid3))
 - ActionCable connectivity events [\#307](https://github.com/stimulusreflex/stimulus_reflex/pull/307) ([leastbad](https://github.com/leastbad))
@@ -490,6 +496,7 @@
 **Fixed bugs:**
 
 - Limit MutationObserver mutations [\#256](https://github.com/stimulusreflex/stimulus_reflex/pull/256) ([jasoncharnes](https://github.com/jasoncharnes))
+- Add more smarts to \_\_perform [\#235](https://github.com/stimulusreflex/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -518,20 +525,14 @@
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/stimulusreflex/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/stimulusreflex/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/stimulusreflex/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
-- Fix calling wrong controller lifecycle methods [\#226](https://github.com/stimulusreflex/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/stimulusreflex/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.3) (2020-06-15)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.2.2...v3.2.3)
 
-**Implemented enhancements:**
-
-- Support for token-based authentication [\#243](https://github.com/stimulusreflex/stimulus_reflex/pull/243) ([leastbad](https://github.com/leastbad))
-
 **Fixed bugs:**
 
-- Add more smarts to \_\_perform [\#235](https://github.com/stimulusreflex/stimulus_reflex/pull/235) ([hopsoft](https://github.com/hopsoft))
 - \_\_perform had a bug where it was only ever calling the first event [\#234](https://github.com/stimulusreflex/stimulus_reflex/pull/234) ([leastbad](https://github.com/leastbad))
 - merges insteads of overwrites params for reflex actions with form data [\#231](https://github.com/stimulusreflex/stimulus_reflex/pull/231) ([RolandStuder](https://github.com/RolandStuder))
 
@@ -542,6 +543,7 @@
 **Merged pull requests:**
 
 - Fix typos in the documentation [\#228](https://github.com/stimulusreflex/stimulus_reflex/pull/228) ([dlt](https://github.com/dlt))
+- Always commit session [\#222](https://github.com/stimulusreflex/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.2) (2020-06-06)
 
@@ -562,6 +564,7 @@
 
 **Merged pull requests:**
 
+- Fix calling wrong controller lifecycle methods [\#226](https://github.com/stimulusreflex/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Always commit session [\#222](https://github.com/stimulusreflex/stimulus_reflex/pull/222) ([hopsoft](https://github.com/hopsoft))
 
 ## [v3.2.2.pre0](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.2.pre0) (2020-05-27)
@@ -668,6 +671,7 @@
 - Possible bug when about to perform cableready operations [\#166](https://github.com/stimulusreflex/stimulus_reflex/issues/166)
 - Reflex not binding to ajax loaded content [\#161](https://github.com/stimulusreflex/stimulus_reflex/issues/161)
 - Input field values sometimes remain [\#159](https://github.com/stimulusreflex/stimulus_reflex/issues/159)
+- remove changelog rake task [\#150](https://github.com/stimulusreflex/stimulus_reflex/pull/150) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -717,7 +721,6 @@
 **Fixed bugs:**
 
 - Cannot read property 'removeEventListener' of undefined after updating to 3.1.0 [\#151](https://github.com/stimulusreflex/stimulus_reflex/issues/151)
-- remove changelog rake task [\#150](https://github.com/stimulusreflex/stimulus_reflex/pull/150) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -799,10 +802,6 @@
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.2.0...v2.2.1)
 
-**Fixed bugs:**
-
-- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/stimulusreflex/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
-
 ## [v2.2.0](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.2.0) (2020-02-28)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.1.9...v2.2.0)
@@ -819,15 +818,10 @@
 
 - Add lifecycle events [\#114](https://github.com/stimulusreflex/stimulus_reflex/issues/114)
 - Setup DOM event based lifecycle [\#115](https://github.com/stimulusreflex/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
-- Support devise authenticated routes [\#105](https://github.com/stimulusreflex/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.1.7...v2.1.8)
-
-**Implemented enhancements:**
-
-- More defense in the received handler [\#107](https://github.com/stimulusreflex/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -836,6 +830,10 @@
 ## [v2.1.7](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.1.7) (2019-12-28)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.1.6...v2.1.7)
+
+**Implemented enhancements:**
+
+- Support devise authenticated routes [\#105](https://github.com/stimulusreflex/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
@@ -867,6 +865,7 @@
 
 **Fixed bugs:**
 
+- Cleanup and fixes around lifecycle dispatch [\#121](https://github.com/stimulusreflex/stimulus_reflex/pull/121) ([hopsoft](https://github.com/hopsoft))
 - Use application.js as fallback file path [\#82](https://github.com/stimulusreflex/stimulus_reflex/pull/82) ([julianrubisch](https://github.com/julianrubisch))
 
 **Closed issues:**
@@ -882,6 +881,7 @@
 
 **Implemented enhancements:**
 
+- More defense in the received handler [\#107](https://github.com/stimulusreflex/stimulus_reflex/pull/107) ([hopsoft](https://github.com/hopsoft))
 - Add CodeFund sponsorship [\#75](https://github.com/stimulusreflex/stimulus_reflex/pull/75) ([coderberry](https://github.com/coderberry))
 
 **Fixed bugs:**

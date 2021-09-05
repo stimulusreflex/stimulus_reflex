@@ -23,4 +23,10 @@ class StimulusReflex::Element < OpenStruct
   def attributes
     @attributes ||= OpenStruct.new(build_underscored(attrs))
   end
+
+  def to_dom_id
+    raise NoIDError.new "The element `morph` is called on must have a valid DOM ID" if id.blank?
+
+    "##{id}"
+  end
 end

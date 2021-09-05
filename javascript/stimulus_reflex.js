@@ -1,23 +1,14 @@
 import { Controller } from 'stimulus'
-import { defaultSchema } from './schema'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
-import { elementToXPath } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, serverMessage } from './callbacks'
-import {
-  registerReflex,
-  getReflexRoots,
-  setupDeclarativeReflexes
-} from './reflexes'
-import {
-  attributeValues,
-  extractElementAttributes,
-  extractElementDataset
-} from './attributes'
+import reflexes, { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import { attributeValues } from './attributes'
+import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
-import reflexes from './reflexes'
+import ReflexData from './reflex_data'
 import isolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
 
@@ -67,7 +58,7 @@ const initialize = (application, initializeOptions = {}) => {
       )
   })
   reflexes.app = application
-  reflexes.app.schema = { ...defaultSchema, ...application.schema }
+  Schema.set(application)
   reflexes.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
@@ -76,10 +67,7 @@ const initialize = (application, initializeOptions = {}) => {
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
-    attributeFilter: [
-      reflexes.app.schema.reflexAttribute,
-      reflexes.app.schema.actionAttribute
-    ],
+    attributeFilter: [Schema.reflex, Schema.action],
     childList: true,
     subtree: true
   })
@@ -136,37 +124,29 @@ const register = (controller, options = {}) => {
             'selectors',
             'reflexId',
             'resolveLate',
-            'serializeForm'
+            'serializeForm',
+            'includeInnerHTML',
+            'includeTextContent'
           ].includes(key)
         ).length
       ) {
         const opts = args.shift()
         Object.keys(opts).forEach(o => (options[o] = opts[o]))
       }
-      const attrs = options['attrs'] || extractElementAttributes(reflexElement)
-      const reflexId = options['reflexId'] || uuidv4()
-      let selectors = options['selectors'] || getReflexRoots(reflexElement)
-      if (typeof selectors === 'string') selectors = [selectors]
-      const resolveLate = options['resolveLate'] || false
-      const dataset = extractElementDataset(reflexElement)
-      const xpathController = elementToXPath(controllerElement)
-      const xpathElement = elementToXPath(reflexElement)
-      const data = {
+
+      const reflexData = new ReflexData(
+        options,
+        reflexElement,
+        controllerElement,
+        this.identifier,
+        Schema.reflexPermanent,
         target,
         args,
         url,
-        tabId,
-        attrs,
-        dataset,
-        selectors,
-        reflexId,
-        resolveLate,
-        xpathController,
-        xpathElement,
-        reflexController: this.identifier,
-        permanentAttributeName: reflexes.app.schema.reflexPermanentAttribute
-      }
-      const { subscription } = this.StimulusReflex
+        tabId
+      )
+
+      const reflexId = reflexData.reflexId
 
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
@@ -181,7 +161,7 @@ const register = (controller, options = {}) => {
       controllerElement.reflexError = controllerElement.reflexError || {}
 
       controllerElement.reflexController[reflexId] = this
-      controllerElement.reflexData[reflexId] = data
+      controllerElement.reflexData[reflexId] = reflexData.valueOf()
 
       dispatchLifecycleEvent(
         'before',
@@ -192,22 +172,20 @@ const register = (controller, options = {}) => {
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
-        const serializeAttribute =
-          reflexElement.attributes[
-            reflexes.app.schema.reflexSerializeFormAttribute
-          ]
-        if (serializeAttribute) {
+        const check = reflexElement.attributes[Schema.reflexSerializeForm]
+        if (check) {
           // not needed after v4 because this is only here for the deprecation warning
-          options['serializeForm'] = false
-          if (serializeAttribute.value === 'true')
-            options['serializeForm'] = true
+          options['serializeForm'] = check.value !== 'false'
         }
 
-        const form = reflexElement.closest('form')
+        const form =
+          reflexElement.closest(reflexData.formSelector) ||
+          document.querySelector(reflexData.formSelector) ||
+          reflexElement.closest('form')
 
         if (Deprecate.enabled && options['serializeForm'] === undefined && form)
           console.warn(
-            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${reflexes.app.schema.reflexSerializeFormAttribute}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
+            `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${Schema.reflexSerializeForm}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
           )
         const formData =
           options['serializeForm'] === false
@@ -217,15 +195,17 @@ const register = (controller, options = {}) => {
               })
 
         controllerElement.reflexData[reflexId] = {
-          ...data,
+          ...reflexData.valueOf(),
           params,
           formData
         }
 
-        subscription.send(controllerElement.reflexData[reflexId])
+        this.StimulusReflex.subscription.send(
+          controllerElement.reflexData[reflexId]
+        )
       })
 
-      const promise = registerReflex(data)
+      const promise = registerReflex(reflexData.valueOf())
 
       if (Debug.enabled) {
         Log.request(
@@ -248,7 +228,7 @@ const register = (controller, options = {}) => {
       let reflex
 
       while (element && !reflex) {
-        reflex = element.getAttribute(reflexes.app.schema.reflexAttribute)
+        reflex = element.getAttribute(Schema.reflex)
         if (!reflex || !reflex.trim().length) element = element.parentElement
       }
 
