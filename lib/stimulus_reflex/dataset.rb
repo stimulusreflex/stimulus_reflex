@@ -24,8 +24,8 @@ class StimulusReflex::Dataset < OpenStruct
     @unsigned ||= ->(accessor) { GlobalID::Locator.locate(self[accessor]) }
   end
 
-  def truthy?
-    @truthy ||= ->(accessor) { ActiveModel::Type::Boolean.new.cast(self[accessor]) || self[accessor].blank? }
+  def boolean
+    @boolean ||= ->(accessor) { ActiveModel::Type::Boolean.new.cast(self[accessor]) || self[accessor].blank? }
   end
 
   def numeric

@@ -10,7 +10,7 @@ class StimulusReflex::Element < OpenStruct
 
   alias_method :data_attributes, :dataset
 
-  delegate :signed, :unsigned, :numeric, :truthy?, :data_attrs, to: :dataset
+  delegate :signed, :unsigned, :numeric, :boolean, :data_attrs, to: :dataset
 
   def initialize(data = {})
     @attrs = HashWithIndifferentAccess.new(data["attrs"] || {})

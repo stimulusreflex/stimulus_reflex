@@ -179,7 +179,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
     assert_equal ["20", "20", "21", "22"], overlapping_keys_element.dataset.duplicate_values
   end
 
-  test "should return true for truthy data attributes" do
+  test "should return true for boolean data attributes" do
     data = {
       "dataset" => {
         "dataset" => {
@@ -191,17 +191,17 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
       }
     }
 
-    element_with_truthy_attributes = StimulusReflex::Element.new(data)
+    element_with_boolean_attributes = StimulusReflex::Element.new(data)
 
-    assert element_with_truthy_attributes.truthy?[:short]
-    assert element_with_truthy_attributes.truthy?[:long]
-    assert element_with_truthy_attributes.truthy?[:num]
-    assert element_with_truthy_attributes.truthy?[:empty]
+    assert element_with_boolean_attributes.boolean[:short]
+    assert element_with_boolean_attributes.boolean[:long]
+    assert element_with_boolean_attributes.boolean[:num]
+    assert element_with_boolean_attributes.boolean[:empty]
 
-    assert element_with_truthy_attributes.dataset.truthy?[:short]
-    assert element_with_truthy_attributes.dataset.truthy?[:long]
-    assert element_with_truthy_attributes.dataset.truthy?[:num]
-    assert element_with_truthy_attributes.dataset.truthy?[:empty]
+    assert element_with_boolean_attributes.dataset.boolean[:short]
+    assert element_with_boolean_attributes.dataset.boolean[:long]
+    assert element_with_boolean_attributes.dataset.boolean[:num]
+    assert element_with_boolean_attributes.dataset.boolean[:empty]
   end
 
   test "should return false for falsey data attributes" do
@@ -217,13 +217,13 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
 
     element_with_falsey_attributes = StimulusReflex::Element.new(data)
 
-    refute element_with_falsey_attributes.truthy?[:short]
-    refute element_with_falsey_attributes.truthy?[:long]
-    refute element_with_falsey_attributes.truthy?[:num]
+    refute element_with_falsey_attributes.boolean[:short]
+    refute element_with_falsey_attributes.boolean[:long]
+    refute element_with_falsey_attributes.boolean[:num]
 
-    refute element_with_falsey_attributes.dataset.truthy?[:short]
-    refute element_with_falsey_attributes.dataset.truthy?[:long]
-    refute element_with_falsey_attributes.dataset.truthy?[:num]
+    refute element_with_falsey_attributes.dataset.boolean[:short]
+    refute element_with_falsey_attributes.dataset.boolean[:long]
+    refute element_with_falsey_attributes.dataset.boolean[:num]
   end
 
   test "should return numeric values" do
