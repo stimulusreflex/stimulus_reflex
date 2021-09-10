@@ -92,8 +92,11 @@ GEM
     method_source (0.9.2)
     mini_mime (1.1.0)
     minitest (5.14.4)
+    mocha (1.13.0)
     nio4r (2.5.8)
     nokogiri (1.12.3-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.12.3-x86_64-linux)
       racc (~> 1.4)
@@ -179,10 +182,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  x86_64-darwin-19
   x86_64-linux
 
 DEPENDENCIES
   bundler (~> 2.0)
+  mocha
   pry
   pry-nav
   rake
