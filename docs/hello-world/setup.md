@@ -26,7 +26,7 @@ The terminal commands below will ensure that both Stimulus and StimulusReflex ar
 
 ```ruby
 bundle add stimulus_reflex
-bundle exec rails stimulus_reflex:install
+rake stimulus_reflex:install
 ```
 
 {% hint style="warning" %}
@@ -56,9 +56,9 @@ First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.or
 ```ruby
 yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
-bundle exec rails webpacker:install:stimulus
+rake webpacker:install:stimulus
 bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:initializer
+rake generate stimulus_reflex:initializer
 ```
 
 {% hint style="danger" %}
