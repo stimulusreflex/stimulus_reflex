@@ -26,6 +26,7 @@ The terminal commands below will ensure that both Stimulus and StimulusReflex ar
 
 ```ruby
 bundle add stimulus_reflex
+yarn add cable_ready@5.0.0-pre3
 rake stimulus_reflex:install
 ```
 
