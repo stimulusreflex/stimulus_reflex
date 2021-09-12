@@ -22,18 +22,10 @@ The mitigation for this issue is to lock your `devDependencies` to only use `web
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
-First, add the `stimulus_reflex` gem to your `Gemfile` and specify that it should download directly from GitHub:
-
-{% code title="Gemfile" %}
-```ruby
-gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex"
-```
-{% endcode %}
-
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
 
 ```ruby
-bundle
+bundle add stimulus_reflex --git "https://github.com/stimulusreflex/stimulus_reflex"
 yarn add cable_ready@5.0.0-pre3
 rake stimulus_reflex:install
 ```
