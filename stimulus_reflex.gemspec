@@ -11,6 +11,10 @@ Gem::Specification.new do |gem|
   gem.homepage = "https://github.com/stimulusreflex/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
   gem.post_install_message = <<~MESSAGE
+    Finish installation by running:
+
+    rake stimulus_reflex:install
+
     Get support for StimulusReflex and CableReady on Discord:
 
     https://discord.gg/stimulus-reflex
