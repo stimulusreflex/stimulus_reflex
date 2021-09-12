@@ -267,14 +267,14 @@ If you are interested in running the latest version of StimulusReflex, you can p
 {% code title="package.json" %}
 ```javascript
 "dependencies": {
-  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
+  "stimulus_reflex": "stimulusreflex/stimulus_reflex#master"
 }
 ```
 {% endcode %}
 
 {% code title="Gemfile" %}
 ```ruby
-gem "stimulus_reflex", github: "hopsoft/stimulus_reflex", branch: "master"
+gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex", branch: "master"
 ```
 {% endcode %}
 
