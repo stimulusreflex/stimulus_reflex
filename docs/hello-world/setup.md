@@ -4,7 +4,7 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
-## Heads-up: issue with Webpacker
+## Heads-up: issue with `webpack-dev-server`
 
 There appears to be a recent incompatibility introduced where the latest version of `webpack-dev-server` doesn't work with a new Rails 6.1 app, which will be running Webpacker `5.4.2` by default.
 
