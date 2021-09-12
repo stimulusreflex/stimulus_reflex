@@ -52,17 +52,10 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
 {% endhint %}
 
-First, the easy stuff: install the `stimulus_reflex` gem and make sure that it's pointing directly to GitHub:
-
-{% code title="Gemfile" %}
-```ruby
-gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex"
-```
-{% endcode %}
-
-Next, make sure [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
+We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
+bundle add stimulus_reflex --git "https://github.com/stimulusreflex/stimulus_reflex"
 yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
