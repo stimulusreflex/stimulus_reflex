@@ -4,6 +4,20 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
+## Heads-up: issue with `webpack-dev-server`
+
+There appears to be a recent incompatibility introduced where the latest version of `webpack-dev-server` doesn't work with a new Rails 6.1 app, which will be running Webpacker `5.4.2` by default.
+
+The mitigation for this issue is to lock your `devDependencies` to only use `webpack-dev-server` **v3**:
+
+{% code title="package.json" %}
+```javascript
+"devDependencies": {
+  "webpack-dev-server": "~3"
+}
+```
+{% endcode %}
+
 ## Command-Line Install
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
@@ -40,11 +54,11 @@ You can learn more about optimizing your Redis configuration, why we enable cach
 First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
-yarn add stimulus_reflex
+yarn add stimulus_reflex@3.4.1
 rails dev:cache # caching needs to be enabled
-bundle exec rails webpacker:install:stimulus
+rake webpacker:install:stimulus
 bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:initializer
+rails generate stimulus_reflex:initializer
 ```
 
 {% hint style="danger" %}
@@ -253,14 +267,14 @@ If you are interested in running the latest version of StimulusReflex, you can p
 {% code title="package.json" %}
 ```javascript
 "dependencies": {
-  "stimulus_reflex": "hopsoft/stimulus_reflex#master"
+  "stimulus_reflex": "stimulusreflex/stimulus_reflex#master"
 }
 ```
 {% endcode %}
 
 {% code title="Gemfile" %}
 ```ruby
-gem "stimulus_reflex", github: "hopsoft/stimulus_reflex", branch: "master"
+gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex", branch: "master"
 ```
 {% endcode %}
 
