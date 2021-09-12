@@ -54,11 +54,11 @@ You can learn more about optimizing your Redis configuration, why we enable cach
 First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
-yarn add stimulus_reflex
+yarn add stimulus_reflex@3.4.1
 rails dev:cache # caching needs to be enabled
-bundle exec rails webpacker:install:stimulus
+rake webpacker:install:stimulus
 bundle add stimulus_reflex
-bundle exec rails generate stimulus_reflex:initializer
+rails generate stimulus_reflex:initializer
 ```
 
 {% hint style="danger" %}
