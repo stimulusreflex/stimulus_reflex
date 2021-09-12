@@ -33,6 +33,7 @@ gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex"
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
 
 ```ruby
+bundle
 yarn add cable_ready@5.0.0-pre3
 rake stimulus_reflex:install
 ```
