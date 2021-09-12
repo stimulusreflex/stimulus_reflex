@@ -22,10 +22,17 @@ The mitigation for this issue is to lock your `devDependencies` to only use `web
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
+First, add the `stimulus_reflex` gem to your `Gemfile` and specify that it should download directly from GitHub:
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex"
+```
+{% endcode %}
+
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
 
 ```ruby
-bundle add stimulus_reflex
 yarn add cable_ready@5.0.0-pre3
 rake stimulus_reflex:install
 ```
@@ -52,14 +59,21 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
 {% endhint %}
 
-First, the easy stuff: let's make sure we have [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
+First, the easy stuff: install the `stimulus_reflex` gem and make sure that it's pointing directly to GitHub:
+
+{% code title="Gemfile" %}
+```ruby
+gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex"
+```
+{% endcode %}
+
+Next, make sure [Stimulus ](https://stimulusjs.org)installed as part of our project's Webpack configuration. We'll also install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
 yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
-bundle add stimulus_reflex
-rake generate stimulus_reflex:initializer
+rails generate stimulus_reflex:initializer
 ```
 
 {% hint style="danger" %}
