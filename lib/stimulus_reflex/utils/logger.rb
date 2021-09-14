@@ -2,18 +2,22 @@
 
 module StimulusReflex
   class Logger
+    attr_reader :logger
     attr_accessor :reflex, :current_operation
+
+    delegate :debug, :info, :warn, :error, :fatal, :unknown, to: :logger
 
     def initialize(reflex)
       @reflex = reflex
       @current_operation = 1
+      @logger = StimulusReflex.config.logger
     end
 
-    def print
+    def log_all_operations
       return unless config_logging.instance_of?(Proc)
 
       reflex.broadcaster.operations.each do
-        puts instance_eval(&config_logging) + "\e[0m"
+        logger.info instance_eval(&config_logging) + "\e[0m"
         @current_operation += 1
       end
     end
