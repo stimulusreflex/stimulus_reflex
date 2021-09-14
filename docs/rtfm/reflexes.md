@@ -26,7 +26,7 @@ The rest of this page generally assumes that you're working with a Page Morph. S
 
 ## Declaring a Reflex in HTML with data attributes
 
-The fastest way to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
+The fastest way to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[event]->[ReflexClass]#[action]`
 
 ```markup
 <button data-reflex="click->Comment#create">Create</button>
@@ -50,6 +50,10 @@ Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/do
 
 This means that if you parse a client-side markup format that has declarative Reflexes contained within, they will be connected to StimulusReflex in less than a millisecond.
 {% endhint %}
+
+### Trigger a Reflex on a custom event
+
+TODO
 
 ### Declaring multiple Reflex events on an element
 
