@@ -53,7 +53,13 @@ This means that if you parse a client-side markup format that has declarative Re
 
 ### Trigger a Reflex on a custom event
 
-TODO
+While `click` `input` and `change` are the most common browser events to catch, Reflexes can be initiated in response to any event supported by the Stimulus [event syntax](https://stimulus.hotwired.dev/reference/actions#global-events).
+
+This means that custom events, such as `ajax:success`, are valid. It also means that you can listen for events on `window` and `document`, making `resize@window->Foo#resize` a valid declared Reflex.
+
+{% hint style="danger" %}
+The Stimulus [event shorthand](https://stimulus.hotwired.dev/reference/actions#event-shorthand) syntax is **not** supported.
+{% endhint %}
 
 ### Declaring multiple Reflex events on an element
 
