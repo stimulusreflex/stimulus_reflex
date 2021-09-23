@@ -60,6 +60,8 @@ const initialize = (
   )
   Debug.set(!!debug)
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
+  document.body.classList.remove('sr-connected')
+  document.body.classList.add('sr-disconnected')
   const observer = new MutationObserver(setupDeclarativeReflexes)
   observer.observe(document.documentElement, {
     attributeFilter: [Schema.reflex, Schema.action],
