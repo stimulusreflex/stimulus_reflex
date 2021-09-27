@@ -211,7 +211,7 @@ It is a common pattern to store the results of API calls or long-running databas
 {% endhint %}
 
 {% hint style="danger" %}
-If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](https://github.com/stimulusreflex/stimulus_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#deployment-on-heroku).
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](../appendices/deployment.md#deployment-on-heroku).
 {% endhint %}
 
 ## Kredis
