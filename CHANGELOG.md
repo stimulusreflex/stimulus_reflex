@@ -6,6 +6,8 @@
 
 **Implemented enhancements:**
 
+- Allow to skip stages in the generator [\#541](https://github.com/stimulusreflex/stimulus_reflex/issues/541)
+- reverse merge params into locals [\#542](https://github.com/stimulusreflex/stimulus_reflex/pull/542) ([leastbad](https://github.com/leastbad))
 - specify env headers for page morph controller [\#538](https://github.com/stimulusreflex/stimulus_reflex/pull/538) ([leastbad](https://github.com/leastbad))
 - New CR wire format + reworked server message events [\#536](https://github.com/stimulusreflex/stimulus_reflex/pull/536) ([leastbad](https://github.com/leastbad))
 - reflex render layout defaults to false [\#534](https://github.com/stimulusreflex/stimulus_reflex/pull/534) ([leastbad](https://github.com/leastbad))
@@ -18,9 +20,13 @@
 
 **Merged pull requests:**
 
+- Bump nokogiri from 1.12.3 to 1.12.5 [\#548](https://github.com/stimulusreflex/stimulus_reflex/pull/548) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add test for param behavior [\#545](https://github.com/stimulusreflex/stimulus_reflex/pull/545) ([julianrubisch](https://github.com/julianrubisch))
+- Add generator options to skip reflex and stimulus [\#543](https://github.com/stimulusreflex/stimulus_reflex/pull/543) ([nachiket87](https://github.com/nachiket87))
 - Fix comment [\#537](https://github.com/stimulusreflex/stimulus_reflex/pull/537) ([julianrubisch](https://github.com/julianrubisch))
 - add first line of stacktrace to console.log error in dev environment [\#532](https://github.com/stimulusreflex/stimulus_reflex/pull/532) ([RolandStuder](https://github.com/RolandStuder))
 - Add test for `data-reflex-dataset="descendants"` [\#531](https://github.com/stimulusreflex/stimulus_reflex/pull/531) ([assuntaw](https://github.com/assuntaw))
+- Provide proxy methods boolean and numeric on Element [\#528](https://github.com/stimulusreflex/stimulus_reflex/pull/528) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.5.0.pre2](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre2) (2021-07-21)
 
@@ -173,7 +179,6 @@
 
 - life-cycle callbacks return correct element reference [\#431](https://github.com/stimulusreflex/stimulus_reflex/pull/431) ([leastbad](https://github.com/leastbad))
 - encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
-- Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - Prefix dom\_id with hash/pound [\#410](https://github.com/stimulusreflex/stimulus_reflex/pull/410) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
@@ -214,6 +219,7 @@
 
 **Fixed bugs:**
 
+- Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - fix up install task [\#401](https://github.com/stimulusreflex/stimulus_reflex/pull/401) ([leastbad](https://github.com/leastbad))
 - Fix multiple broadcasts from within the same reflex [\#400](https://github.com/stimulusreflex/stimulus_reflex/pull/400) ([hopsoft](https://github.com/hopsoft))
 
@@ -854,6 +860,7 @@
 **Implemented enhancements:**
 
 - Add lifecycle events [\#114](https://github.com/stimulusreflex/stimulus_reflex/issues/114)
+- Setup DOM event based lifecycle [\#115](https://github.com/stimulusreflex/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 
 ## [v2.1.8](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.1.8) (2020-01-27)
 
@@ -899,7 +906,6 @@
 **Implemented enhancements:**
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/stimulusreflex/stimulus_reflex/issues/91)
-- Setup DOM event based lifecycle [\#115](https://github.com/stimulusreflex/stimulus_reflex/pull/115) ([hopsoft](https://github.com/hopsoft))
 - Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
 - inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/stimulusreflex/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
@@ -1057,6 +1063,10 @@
 ## [v1.0.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v1.0.1) (2019-08-10)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v1.0.0...v1.0.1)
+
+**Implemented enhancements:**
+
+- Add support for rooms [\#11](https://github.com/stimulusreflex/stimulus_reflex/pull/11) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
 
