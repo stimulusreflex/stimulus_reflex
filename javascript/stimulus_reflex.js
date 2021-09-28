@@ -39,18 +39,22 @@ const initialize = (
   { controller, consumer, debug, params, isolate, deprecate } = {}
 ) => {
   actionCable.set(consumer, params)
-  setTimeout(() => {
-    document.body.classList.remove('stimulus-reflex-connected')
-    document.body.classList.add('stimulus-reflex-disconnected')
-    if (Deprecate.enabled && consumer)
-      console.warn(
-        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
-      )
-    if (Deprecate.enabled && isolationMode.disabled)
-      console.warn(
-        'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
-      )
-  })
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+      document.body.classList.remove('stimulus-reflex-connected')
+      document.body.classList.add('stimulus-reflex-disconnected')
+      if (Deprecate.enabled && consumer)
+        console.warn(
+          "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
+        )
+      if (Deprecate.enabled && isolationMode.disabled)
+        console.warn(
+          'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
+        )
+    },
+    { once: true }
+  )
   isolationMode.set(!!isolate)
   reflexes.app = application
   Schema.set(application)
