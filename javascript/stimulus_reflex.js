@@ -40,8 +40,8 @@ const initialize = (
 ) => {
   actionCable.set(consumer, params)
   setTimeout(() => {
-    document.body.classList.remove('sr-connected')
-    document.body.classList.add('sr-disconnected')
+    document.body.classList.remove('stimulus-reflex-connected')
+    document.body.classList.add('stimulus-reflex-disconnected')
     if (Deprecate.enabled && consumer)
       console.warn(
         "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."

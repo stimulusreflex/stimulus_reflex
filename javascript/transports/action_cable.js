@@ -24,14 +24,20 @@ const createSubscription = controller => {
 
 const connected = () => {
   subscriptionActive = true
-  document.body.classList.replace('sr-disconnected', 'sr-connected')
+  document.body.classList.replace(
+    'stimulus-reflex-disconnected',
+    'stimulus-reflex-connected'
+  )
   emitEvent('stimulus-reflex:connected')
   emitEvent('stimulus-reflex:action-cable:connected')
 }
 
 const rejected = () => {
   subscriptionActive = false
-  document.body.classList.replace('sr-connected', 'sr-disconnected')
+  document.body.classList.replace(
+    'stimulus-reflex-connected',
+    'stimulus-reflex-disconnected'
+  )
   emitEvent('stimulus-reflex:rejected')
   emitEvent('stimulus-reflex:action-cable:rejected')
   if (Debug.enabled) console.warn('Channel subscription was rejected.')
@@ -39,7 +45,10 @@ const rejected = () => {
 
 const disconnected = willAttemptReconnect => {
   subscriptionActive = false
-  document.body.classList.replace('srconnected', 'sr-disconnected')
+  document.body.classList.replace(
+    'stimulus-reflex-connected',
+    'stimulus-reflex-disconnected'
+  )
   emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
   emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
 }
