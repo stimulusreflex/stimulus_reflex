@@ -257,7 +257,7 @@ If you want to provide handlers for life-cycle events, you will need to create a
 
 {% code title="app/javascript/controllers/foo\_controller.js" %}
 ```javascript
-import ApplicationController from './application_controller.js'
+import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
   // Remember, Nothing Morphs end on the "after" stage
