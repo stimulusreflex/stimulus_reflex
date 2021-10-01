@@ -4,20 +4,6 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
-## Heads-up: issue with `webpack-dev-server`
-
-There appears to be a recent incompatibility introduced where the latest version of `webpack-dev-server` doesn't work with a new Rails 6.1 app, which will be running Webpacker `5.4.2` by default. **`5.4.3` has been released and should mitigate the issue.**
-
-The mitigation for this issue is to lock your `devDependencies` to only use `webpack-dev-server` **v3**:
-
-{% code title="package.json" %}
-```javascript
-"devDependencies": {
-  "webpack-dev-server": "~3"
-}
-```
-{% endcode %}
-
 ## Command-Line Install
 
 StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
@@ -25,8 +11,7 @@ StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent libra
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
 
 ```ruby
-bundle add stimulus_reflex --git "https://github.com/stimulusreflex/stimulus_reflex"
-yarn add cable_ready@5.0.0-pre3
+bundle add stimulus_reflex --version 3.5.0.pre3
 rake stimulus_reflex:install
 ```
 
@@ -35,7 +20,7 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 {% endhint %}
 
 {% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
+For now, we recommend that you use **Webpacker 5.4.3**, since the 6.0 branch is still in beta and changes how things are set up.
 {% endhint %}
 
 And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
@@ -55,7 +40,7 @@ You can learn more about optimizing your Redis configuration, why we enable cach
 We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
-bundle add stimulus_reflex --git "https://github.com/stimulusreflex/stimulus_reflex"
+bundle add stimulus_reflex --version 3.5.0.pre3
 yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
@@ -63,11 +48,11 @@ rails generate stimulus_reflex:initializer
 ```
 
 {% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.x**, since the 6.0 branch is still in beta and changes how things are set up.
+For now, we recommend that you use **Webpacker 5.4.3**, since the 6.0 branch is still in beta and changes how things are set up.
 {% endhint %}
 
 {% hint style="info" %}
-StimulusReflex happily supports both Stimulus v1.1 and v2.
+StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
 {% endhint %}
 
 We need to modify our Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer. A new websocket connection is created if the consumer isn't found.
