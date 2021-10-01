@@ -69,13 +69,14 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## ✨ Demos
 
-- [StimulusReflex Expo](http://expo.stimulusreflex.com) - part showcase, part learning tool
 - [Build a Twitter Clone in 10 Minutes](https://youtu.be/F5hA79vKE_E) (video)
+- [BeastMode](https://beastmode.leastbad.com/) - faceted search, with filtering, sorting and pagination
+- [StimulusReflex Patterns](https://www.stimulusreflexpatterns.com/patterns/) - single-file SR apps hosted on Glitch
 - [BoxDrop](https://dropbox-clone-rails.herokuapp.com/) - a Dropbox-inspired [concept demo](https://github.com/marcoroth/boxdrop/)
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 1300 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 1500 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 
@@ -89,7 +90,7 @@ Please note that we are not actively providing support on Stack Overflow. If you
 
 ## 🚀 Installation and upgrading
 
-CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup). For information on upgrading existing projects to v3.4, read [this](https://docs.stimulusreflex.com/setup#upgrading-to-v-3-4-0).
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup). For information on upgrading existing projects to v3.4, read [this](https://docs.stimulusreflex.com/hello-world/setup#upgrading-to-v-3-4-0).
 
 ## 🙏 Contributing
 
