@@ -1318,10 +1318,10 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
-cable_ready@5.0.0-pre4:
-  version "5.0.0-pre4"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre4.tgz#19e6720fcdc9e2614a4df0b7347ec4f2d126d249"
-  integrity sha512-1GdK/kcWPpk7yJWfCgKNaU/KlcTO4oOBiuYWXq+V7k9JYDrXFc07A4CzzxKj/0NRSwVFX1+QSyFgMnU5nZFLZA==
+cable_ready@5.0.0-pre5:
+  version "5.0.0-pre5"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre5.tgz#e28c2d4de5a70c9d7d7b31b631d2ebc8cfb21b51"
+  integrity sha512-nbyrxEObIgK9zHD9hI1AR2W80wlhtSxO5m0LtpQjbE1KbcaS9kuXeBYM6Rlqvsi9K0VMJs11VOHzMIOjYw475g==
   dependencies:
     morphdom "^2.6.1"
 
@@ -3569,7 +3569,7 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier-standard@^16.1.0:
+prettier-standard@^16.4.1:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/prettier-standard/-/prettier-standard-16.4.1.tgz#964e7e3f3029427ab8e01bdffb72dea9a87f62c8"
   integrity sha512-IW3Sct4GOdqc1s4+1HZjH2HegzLZQ6mDMl2xz6i6KHCac7kCM+obLbvm2e0zp8PytKkLQCdOpj0cWWa48Ruetw==
