@@ -2,11 +2,21 @@
 
 ## [Unreleased](https://github.com/stimulusreflex/stimulus_reflex/tree/HEAD)
 
-[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre2...HEAD)
+[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre3...HEAD)
+
+**Closed issues:**
+
+- Rails 7 Alpha Incompatibility [\#552](https://github.com/stimulusreflex/stimulus_reflex/issues/552)
+
+## [v3.5.0.pre3](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre3) (2021-10-01)
+
+[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre2...v3.5.0.pre3)
 
 **Implemented enhancements:**
 
 - Allow to skip stages in the generator [\#541](https://github.com/stimulusreflex/stimulus_reflex/issues/541)
+- document body connection status classes [\#547](https://github.com/stimulusreflex/stimulus_reflex/pull/547) ([leastbad](https://github.com/leastbad))
+- overhaul Reflex logging [\#546](https://github.com/stimulusreflex/stimulus_reflex/pull/546) ([leastbad](https://github.com/leastbad))
 - reverse merge params into locals [\#542](https://github.com/stimulusreflex/stimulus_reflex/pull/542) ([leastbad](https://github.com/leastbad))
 - specify env headers for page morph controller [\#538](https://github.com/stimulusreflex/stimulus_reflex/pull/538) ([leastbad](https://github.com/leastbad))
 - New CR wire format + reworked server message events [\#536](https://github.com/stimulusreflex/stimulus_reflex/pull/536) ([leastbad](https://github.com/leastbad))
@@ -179,6 +189,7 @@
 
 - life-cycle callbacks return correct element reference [\#431](https://github.com/stimulusreflex/stimulus_reflex/pull/431) ([leastbad](https://github.com/leastbad))
 - encode form data for chars like '&' and '=' [\#418](https://github.com/stimulusreflex/stimulus_reflex/pull/418) ([RolandStuder](https://github.com/RolandStuder))
+- Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - Prefix dom\_id with hash/pound [\#410](https://github.com/stimulusreflex/stimulus_reflex/pull/410) ([hopsoft](https://github.com/hopsoft))
 
 **Closed issues:**
@@ -219,7 +230,6 @@
 
 **Fixed bugs:**
 
-- Bug fix: Updating changelog generator to push to master, not main [\#416](https://github.com/stimulusreflex/stimulus_reflex/pull/416) ([MikeRogers0](https://github.com/MikeRogers0))
 - fix up install task [\#401](https://github.com/stimulusreflex/stimulus_reflex/pull/401) ([leastbad](https://github.com/leastbad))
 - Fix multiple broadcasts from within the same reflex [\#400](https://github.com/stimulusreflex/stimulus_reflex/pull/400) ([hopsoft](https://github.com/hopsoft))
 
@@ -542,7 +552,6 @@
 - beforeUpdate/updateSuccess/updateError functions deprecated? [\#255](https://github.com/stimulusreflex/stimulus_reflex/issues/255)
 - Error handling will fail if reflex is not defined [\#253](https://github.com/stimulusreflex/stimulus_reflex/issues/253)
 - Select with data-reflex in Firefox flickers [\#251](https://github.com/stimulusreflex/stimulus_reflex/issues/251)
-- data-reflex-attributes vs data-reflex-dataset [\#237](https://github.com/stimulusreflex/stimulus_reflex/issues/237)
 - Shorthand action notations corresponding to stimulus [\#233](https://github.com/stimulusreflex/stimulus_reflex/issues/233)
 - Lifecycle methods only called for one reflex [\#225](https://github.com/stimulusreflex/stimulus_reflex/issues/225)
 - Tweak the generator so we can specify reflex actions [\#219](https://github.com/stimulusreflex/stimulus_reflex/issues/219)
