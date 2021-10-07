@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.5.0.pre4)
-      cable_ready (= 5.0.0.pre4)
+    stimulus_reflex (3.5.0.pre5)
+      cable_ready (= 5.0.0.pre5)
       nokogiri
       rack
       rails (>= 5.2)
@@ -72,7 +72,7 @@ GEM
       zeitwerk (~> 2.3)
     ast (2.4.2)
     builder (3.2.4)
-    cable_ready (5.0.0.pre4)
+    cable_ready (5.0.0.pre5)
       rails (>= 5.2)
       thread-local (>= 1.1.0)
     coderay (1.1.3)
