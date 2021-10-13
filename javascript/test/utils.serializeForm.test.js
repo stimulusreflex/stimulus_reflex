@@ -304,6 +304,21 @@ describe('formSerialize', () => {
         'people%5B2%5D%5Bname%5D=bubba&people%5B2%5D%5Bage%5D=15&people%5B0%5D%5Bname%5D=fred&people%5B0%5D%5Bage%5D=12&people%5B1%5D%5Bname%5D=bob&people%5B1%5D%5Bage%5D=14&people%5B%5D%5Bname%5D=frank&people%5B3%5D%5Bage%5D=2'
       assert.equal(actual, expected)
     })
+
+    it('should serialize forms with multiple, non-unique array elements', () => {
+      const dom = new JSDOM(
+        '<form>' +
+          '<input type="text" name="post[test][]" value="a"/>' +
+          '<input type="text" name="post[test][]" value="a"/>' +
+          '<input type="text" name="post[test][]" value="b"/>' +
+          '</form>'
+      )
+      const form = dom.window.document.querySelector('form')
+      const actual = serializeForm(form, { w: dom.window })
+      const expected =
+        'post%5Btest%5D%5B%5D=a&post%5Btest%5D%5B%5D=a&post%5Btest%5D%5B%5D=b'
+      assert.equal(actual, expected)
+    })
   })
 
   context('<select>', () => {
