@@ -35,8 +35,7 @@ const serializeForm = (form, options = {}) => {
       )}`
     )
   }
-
-  return Array.from(new Set(data)).join('&')
+  return Array.from(data).join('&')
 }
 
 const camelize = (value, uppercaseFirstLetter = true) => {
