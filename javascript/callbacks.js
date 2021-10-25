@@ -78,7 +78,8 @@ const afterDOMUpdate = event => {
     )
   )
 
-  CableReady.perform(reflex.piggybackOperations)
+  if (reflex.piggybackOperations.length)
+    CableReady.perform(reflex.piggybackOperations)
 }
 
 const routeReflexEvent = event => {
@@ -120,7 +121,8 @@ const routeReflexEvent = event => {
     )
   )
 
-  CableReady.perform(reflex.piggybackOperations)
+  if (reflex.piggybackOperations.length)
+    CableReady.perform(reflex.piggybackOperations)
 }
 
 const nothing = (event, payload, promise, reflex, reflexElement) => {
