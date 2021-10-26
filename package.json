@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.5.0-pre6",
+  "version": "3.5.0-pre7",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",

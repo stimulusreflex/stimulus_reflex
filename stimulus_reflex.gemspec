@@ -39,9 +39,10 @@ Gem::Specification.new do |gem|
   gem.add_dependency "cable_ready", "5.0.0.pre7"
 
   gem.add_development_dependency "bundler", "~> 2.0"
-  gem.add_development_dependency "pry-nav"
-  gem.add_development_dependency "pry"
-  gem.add_development_dependency "rake"
+  gem.add_development_dependency "github_changelog_generator"
   gem.add_development_dependency "mocha"
+  gem.add_development_dependency "pry"
+  gem.add_development_dependency "pry-nav"
+  gem.add_development_dependency "rake"
   gem.add_development_dependency "standardrb", "~> 1.0"
 end

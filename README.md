@@ -114,6 +114,7 @@ View the [wiki](https://github.com/stimulusreflex/stimulus_reflex/wiki/Editor-Co
 1. Make sure that you run `yarn` and `bundle` to pick up the latest.
 1. Bump version number at `lib/stimulus_reflex/version.rb`. Pre-release versions use `.preN`
 1. Run `rake build`
+1. Run `bin/standardize`
 1. Commit and push changes to github
 1. Run `rake release`
 1. Run `yarn publish --no-git-tag-version`
