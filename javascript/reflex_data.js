@@ -2,6 +2,7 @@ import { extractElementAttributes, extractElementDataset } from './attributes'
 import { getReflexRoots } from './reflexes'
 import { uuidv4 } from './utils'
 import { elementToXPath } from './utils'
+import { version } from '../package.json'
 import Schema from './schema'
 
 export default class ReflexData {
@@ -117,7 +118,8 @@ export default class ReflexData {
       target: this.target,
       args: this.args,
       url: this.url,
-      tabId: this.tabId
+      tabId: this.tabId,
+      version
     }
   }
 }

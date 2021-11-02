@@ -2,7 +2,6 @@ import CableReady from 'cable_ready'
 import Debug from './debug'
 import Schema from './schema'
 import isolationMode from './isolation_mode'
-import { dependencies } from '../package.json'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { XPathToElement, debounce, emitEvent } from './utils'
 import { allReflexControllers, findControllerByReflexName } from './controllers'
@@ -13,10 +12,10 @@ const reflexes = {}
 const received = data => {
   if (!data.cableReady) return
 
-  if (data.version !== dependencies['cable_ready']) {
+  if (data.version.replace('.pre', '-pre') !== CableReady.version) {
     if (Debug.enabled)
       console.error(
-        'Reflex failed due to CableReady gem/npm package version mismatch.'
+        `Reflex failed due to cable_ready gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the "x.y.z.preN" version format, while NPM packages use "x.y.z-preN".\n\ncable_ready gem: ${data.version}\ncable_ready NPM: ${CableReady.version}`
       )
     return
   }

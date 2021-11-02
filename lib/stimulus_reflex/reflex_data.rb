@@ -69,6 +69,10 @@ class StimulusReflex::ReflexData
     data["reflexController"]
   end
 
+  def version
+    data["version"].gsub("-pre", ".pre")
+  end
+
   private
 
   def object_with_indifferent_access(object)

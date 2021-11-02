@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, keyword_init: true)
+ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, keyword_init: true)
 
 class StimulusReflex::Reflex
+  class VersionMismatchError < StandardError; end
+
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
@@ -16,7 +18,7 @@ class StimulusReflex::Reflex
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :halted, :error, to: :broadcaster
-  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, to: :client_attributes
+  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
@@ -42,6 +44,11 @@ class StimulusReflex::Reflex
     @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
     @headers = {}
+
+    if version != StimulusReflex::VERSION && StimulusReflex.config.on_failed_sanity_checks != :ignore
+      raise VersionMismatchError.new("stimulus_reflex gem / NPM package version mismatch")
+    end
+
     self.params
   end
 
