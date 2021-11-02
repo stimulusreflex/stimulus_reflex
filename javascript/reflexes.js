@@ -2,6 +2,7 @@ import CableReady from 'cable_ready'
 import Debug from './debug'
 import Schema from './schema'
 import isolationMode from './isolation_mode'
+import { dependencies } from '../package.json'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { XPathToElement, debounce, emitEvent } from './utils'
 import { allReflexControllers, findControllerByReflexName } from './controllers'
@@ -11,6 +12,14 @@ const reflexes = {}
 
 const received = data => {
   if (!data.cableReady) return
+
+  if (data.version !== dependencies['cable_ready']) {
+    if (Debug.enabled)
+      console.error(
+        'Reflex failed due to CableReady gem/npm package version mismatch.'
+      )
+    return
+  }
 
   let reflexOperations = []
 
