@@ -37,7 +37,7 @@ const findControllerByReflexName = (reflexName, controllers) => {
 
     return (
       extractReflexName(reflexName).toLowerCase() ===
-      controller.identifier.toLowerCase()
+      controller.identifier.replace('-', '').toLowerCase()
     )
   })
 
