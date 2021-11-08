@@ -202,6 +202,8 @@ document.addEventListener(
 //
 // - reflexId - the UUIDv4 which uniquely identifies the Reflex
 //
+// - payload - optional Reflex return value
+//
 const dispatchLifecycleEvent = (
   stage,
   reflexElement,
