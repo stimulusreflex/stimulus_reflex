@@ -11,6 +11,7 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
       "operations" => [
         {
           "name" => "stimulus-reflex:morph-nothing",
+          "selector" => nil,
           "payload" => {},
           "stimulusReflex" => {
             "some" => "data",
