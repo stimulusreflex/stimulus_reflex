@@ -6,6 +6,7 @@
 
 **Closed issues:**
 
+- Disable warning when using with importmap-rails [\#563](https://github.com/stimulusreflex/stimulus_reflex/issues/563)
 - Unexplained error with basic scenario [\#562](https://github.com/stimulusreflex/stimulus_reflex/issues/562)
 
 **Merged pull requests:**
@@ -73,6 +74,7 @@
 - add first line of stacktrace to console.log error in dev environment [\#532](https://github.com/stimulusreflex/stimulus_reflex/pull/532) ([RolandStuder](https://github.com/RolandStuder))
 - Add test for `data-reflex-dataset="descendants"` [\#531](https://github.com/stimulusreflex/stimulus_reflex/pull/531) ([assuntaw](https://github.com/assuntaw))
 - Provide proxy methods boolean and numeric on Element [\#528](https://github.com/stimulusreflex/stimulus_reflex/pull/528) ([julianrubisch](https://github.com/julianrubisch))
+- Specify form selector [\#527](https://github.com/stimulusreflex/stimulus_reflex/pull/527) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.5.0.pre2](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre2) (2021-07-21)
 
@@ -95,7 +97,6 @@
 
 **Merged pull requests:**
 
-- Specify form selector [\#527](https://github.com/stimulusreflex/stimulus_reflex/pull/527) ([julianrubisch](https://github.com/julianrubisch))
 - Fix two minor typos [\#526](https://github.com/stimulusreflex/stimulus_reflex/pull/526) ([julianrubisch](https://github.com/julianrubisch))
 - chore: add sideEffects false to make Webpack happy [\#523](https://github.com/stimulusreflex/stimulus_reflex/pull/523) ([ParamagicDev](https://github.com/ParamagicDev))
 - Morph stimulus reflex element AKA "single element page morph" [\#522](https://github.com/stimulusreflex/stimulus_reflex/pull/522) ([julianrubisch](https://github.com/julianrubisch))
@@ -438,7 +439,6 @@
 - introduce tab isolation mode [\#324](https://github.com/stimulusreflex/stimulus_reflex/pull/324) ([leastbad](https://github.com/leastbad))
 - Force request encodings to be UTF-8 instead of ASCII-8BIT after a reflex [\#320](https://github.com/stimulusreflex/stimulus_reflex/pull/320) ([marcoroth](https://github.com/marcoroth))
 - Append short section about resetting a form [\#319](https://github.com/stimulusreflex/stimulus_reflex/pull/319) ([julianrubisch](https://github.com/julianrubisch))
-- lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/stimulusreflex/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - Update events.md [\#316](https://github.com/stimulusreflex/stimulus_reflex/pull/316) ([gahia](https://github.com/gahia))
 - Proposal: Reduce bundle size and add a bundler for Stimulus Reflex javascript [\#315](https://github.com/stimulusreflex/stimulus_reflex/pull/315) ([ParamagicDev](https://github.com/ParamagicDev))
 
@@ -462,6 +462,7 @@
 
 **Merged pull requests:**
 
+- lifecycle refactor: introduce new finalize stage, global reflexes dictionary [\#317](https://github.com/stimulusreflex/stimulus_reflex/pull/317) ([leastbad](https://github.com/leastbad))
 - fixes and tweaks to client logging subsystem [\#313](https://github.com/stimulusreflex/stimulus_reflex/pull/313) ([leastbad](https://github.com/leastbad))
 - add ready event after setupDeclarativeReflexes [\#312](https://github.com/stimulusreflex/stimulus_reflex/pull/312) ([leastbad](https://github.com/leastbad))
 - Refactor sanity checks on boot [\#311](https://github.com/stimulusreflex/stimulus_reflex/pull/311) ([excid3](https://github.com/excid3))
@@ -610,6 +611,7 @@
 - Revert "Add instructions for pulling the user id out of session storage" [\#239](https://github.com/stimulusreflex/stimulus_reflex/pull/239) ([leastbad](https://github.com/leastbad))
 - Add instructions for pulling the user id out of session storage [\#238](https://github.com/stimulusreflex/stimulus_reflex/pull/238) ([mtomov](https://github.com/mtomov))
 - adds params documentation [\#230](https://github.com/stimulusreflex/stimulus_reflex/pull/230) ([RolandStuder](https://github.com/RolandStuder))
+- Fix calling wrong controller lifecycle methods [\#226](https://github.com/stimulusreflex/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Allow to pass reflex action names to reflex generator [\#224](https://github.com/stimulusreflex/stimulus_reflex/pull/224) ([marcoroth](https://github.com/marcoroth))
 
 ## [v3.2.3](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.2.3) (2020-06-15)
@@ -678,7 +680,6 @@
 
 **Merged pull requests:**
 
-- Fix calling wrong controller lifecycle methods [\#226](https://github.com/stimulusreflex/stimulus_reflex/pull/226) ([davidalejandroaguilar](https://github.com/davidalejandroaguilar))
 - Bump activesupport from 6.0.3 to 6.0.3.1 [\#217](https://github.com/stimulusreflex/stimulus_reflex/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump activestorage from 6.0.3 to 6.0.3.1 [\#216](https://github.com/stimulusreflex/stimulus_reflex/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actionpack from 6.0.3 to 6.0.3.1 [\#215](https://github.com/stimulusreflex/stimulus_reflex/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -825,7 +826,6 @@
 - Attach element.tagName to extracted attributes [\#146](https://github.com/stimulusreflex/stimulus_reflex/pull/146) ([julianrubisch](https://github.com/julianrubisch))
 - Create dynamic changelog [\#143](https://github.com/stimulusreflex/stimulus_reflex/pull/143) ([andrewmcodes](https://github.com/andrewmcodes))
 - add funding file [\#141](https://github.com/stimulusreflex/stimulus_reflex/pull/141) ([andrewmcodes](https://github.com/andrewmcodes))
-- update package.json and readme [\#133](https://github.com/stimulusreflex/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Fixed bugs:**
 
@@ -852,6 +852,7 @@
 **Implemented enhancements:**
 
 - update install script to set session store [\#134](https://github.com/stimulusreflex/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
+- update package.json and readme [\#133](https://github.com/stimulusreflex/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -927,7 +928,6 @@
 **Implemented enhancements:**
 
 - Support devise authenticated routes [\#105](https://github.com/stimulusreflex/stimulus_reflex/pull/105) ([hopsoft](https://github.com/hopsoft))
-- inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 
 **Closed issues:**
 
@@ -954,6 +954,7 @@
 
 - Custom Stimulus schema breaks Reflex [\#91](https://github.com/stimulusreflex/stimulus_reflex/issues/91)
 - Add schema support [\#94](https://github.com/stimulusreflex/stimulus_reflex/pull/94) ([hopsoft](https://github.com/hopsoft))
+- inherit stimulus schema [\#92](https://github.com/stimulusreflex/stimulus_reflex/pull/92) ([nickyvanurk](https://github.com/nickyvanurk))
 - Single source of truth [\#76](https://github.com/stimulusreflex/stimulus_reflex/pull/76) ([leastbad](https://github.com/leastbad))
 
 **Fixed bugs:**
@@ -989,7 +990,6 @@
 - Update installer [\#71](https://github.com/stimulusreflex/stimulus_reflex/pull/71) ([hopsoft](https://github.com/hopsoft))
 - Tweak generators [\#69](https://github.com/stimulusreflex/stimulus_reflex/pull/69) ([hopsoft](https://github.com/hopsoft))
 - add generators [\#67](https://github.com/stimulusreflex/stimulus_reflex/pull/67) ([andrewmcodes](https://github.com/andrewmcodes))
-- Add reflex name to the lifecycle args [\#62](https://github.com/stimulusreflex/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -1003,6 +1003,10 @@
 ## [v2.1.1](https://github.com/stimulusreflex/stimulus_reflex/tree/v2.1.1) (2019-10-08)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v2.1.0...v2.1.1)
+
+**Implemented enhancements:**
+
+- Stricter parsing of attributes [\#56](https://github.com/stimulusreflex/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -1018,10 +1022,10 @@
 - Client side call-backs? [\#34](https://github.com/stimulusreflex/stimulus_reflex/issues/34)
 - Scoped register\(\)? [\#26](https://github.com/stimulusreflex/stimulus_reflex/issues/26)
 - Add guard to verify same URL prior to morph [\#63](https://github.com/stimulusreflex/stimulus_reflex/pull/63) ([hopsoft](https://github.com/hopsoft))
+- Add reflex name to the lifecycle args [\#62](https://github.com/stimulusreflex/stimulus_reflex/pull/62) ([hopsoft](https://github.com/hopsoft))
 - Refactor some helper methods out of main file [\#61](https://github.com/stimulusreflex/stimulus_reflex/pull/61) ([hopsoft](https://github.com/hopsoft))
 - Documentation update [\#58](https://github.com/stimulusreflex/stimulus_reflex/pull/58) ([leastbad](https://github.com/leastbad))
 - \# Support for data-reflex-permanent [\#57](https://github.com/stimulusreflex/stimulus_reflex/pull/57) ([hopsoft](https://github.com/hopsoft))
-- Stricter parsing of attributes [\#56](https://github.com/stimulusreflex/stimulus_reflex/pull/56) ([hopsoft](https://github.com/hopsoft))
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/stimulusreflex/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
 - Trim values before attribute assignment [\#54](https://github.com/stimulusreflex/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/stimulusreflex/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
@@ -1057,7 +1061,6 @@
 - Allow override of default controller [\#37](https://github.com/stimulusreflex/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/stimulusreflex/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
 - update github templates [\#35](https://github.com/stimulusreflex/stimulus_reflex/pull/35) ([andrewmcodes](https://github.com/andrewmcodes))
-- Tighten up security of remote invocation [\#32](https://github.com/stimulusreflex/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 
 **Fixed bugs:**
 
@@ -1090,6 +1093,7 @@
 
 **Implemented enhancements:**
 
+- Tighten up security of remote invocation [\#32](https://github.com/stimulusreflex/stimulus_reflex/pull/32) ([hopsoft](https://github.com/hopsoft))
 - Implicitly send DOM attributes to reflex methods [\#21](https://github.com/stimulusreflex/stimulus_reflex/pull/21) ([hopsoft](https://github.com/hopsoft))
 - Add Ruby magic comment [\#18](https://github.com/stimulusreflex/stimulus_reflex/pull/18) ([dixpac](https://github.com/dixpac))
 - Add GitHub Actions for Linters [\#17](https://github.com/stimulusreflex/stimulus_reflex/pull/17) ([andrewmcodes](https://github.com/andrewmcodes))
