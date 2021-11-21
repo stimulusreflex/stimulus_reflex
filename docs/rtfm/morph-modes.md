@@ -1,12 +1,12 @@
 ---
-description: How to update everything, nothing or something in-between 🧘
+description: "How to update everything, nothing or something in-between \U0001F9D8"
 ---
 
 # Morphs
 
 By default, StimulusReflex updates your entire page. After re-processing your controller action, rendering your view template, and sending the raw HTML to your browser, StimulusReflex uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
 
-Most real-world applications are more sophisticated, though. You think of your site in terms of sections, components and content areas. We reason about our functionality with abstractions like _"sidebar"_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we need to surgically swap out one of those containers with something new. Sending the entire page to the client seems like massive overkill. We need to update just part of the DOM without disturbing the rest of the tree... _and we need it to happen in \~10ms_.
+Most real-world applications are more sophisticated, though. You think of your site in terms of sections, components and content areas. We reason about our functionality with abstractions like _"sidebar"_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we need to surgically swap out one of those containers with something new. Sending the entire page to the client seems like massive overkill. We need to update just part of the DOM without disturbing the rest of the tree... _and we need it to happen in ~10ms_.
 
 Other times... we just need to hit a button which feeds a cat which may or may not still be alive in a steel box. 🐈
 
@@ -20,13 +20,13 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](<../.gitbook/assets/power-rangers (1).jpg>)
+![Each Morph is useful in different scenarios.](../.gitbook/assets/power-rangers.jpg)
 
-| What are you replacing?                | Process Controller Action? | Typical Round-Trip Speed |
-| -------------------------------------- | -------------------------- | ------------------------ |
-| The full **page** (default)            | Yes                        | \~50ms                   |
-| All children of a CSS DOM **selector** | No                         | \~15ms                   |
-| **Nothing** at all                     | No                         | \~6ms                    |
+| What are you replacing? | Process Controller Action? | Typical Round-Trip Speed |
+| :--- | :--- | :--- |
+| The full **page** \(default\) | Yes | ~50ms |
+| All children of a CSS DOM **selector** | No | ~15ms |
+| **Nothing** at all | No | ~6ms |
 
 ## Page Morphs
 
@@ -60,7 +60,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 
 {% tabs %}
 {% tab title="index.html.erb" %}
-```
+```text
 <div data-reflex-root="[forward],[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>
@@ -69,7 +69,7 @@ Here is a simple example: the user is presented with a text box. Anything they t
 ```
 {% endtab %}
 
-{% tab title="example_reflex.rb" %}
+{% tab title="example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
   def words
@@ -87,9 +87,9 @@ One interesting detail of this example is that by assigning the root to `[forwar
 {% hint style="warning" %}
 In StimulusReflex, morphdom is called with the **childrenOnly** flag set to _true_.
 
-This means that \<body> or the custom parent selector(s) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
+This means that &lt;body&gt; or the custom parent selector\(s\) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
 
-If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an \<a>.
+If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an &lt;a&gt;.
 {% endhint %}
 
 {% hint style="info" %}
@@ -112,11 +112,11 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 {% endcode %}
 
 {% hint style="warning" %}
-We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org) editor ([ActionText](https://guides.rubyonrails.org/action\_text\_overview.html)) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org/) editor \([ActionText](https://guides.rubyonrails.org/action_text_overview.html)\) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
-¯\*_(ツ)\*_/¯
+¯\*_\(ツ\)\*_/¯
 {% endhint %}
 
 {% hint style="danger" %}
@@ -131,7 +131,7 @@ Updating a target element with a Selector morph does _not_ invoke ActionDispatch
 
 ### Tutorial
 
-Let's first establish a baseline HTML sample to modify. Our attention will focus primarily on the `div` known colloquially as **#foo**.
+Let's first establish a baseline HTML sample to modify. Our attention will focus primarily on the `div` known colloquially as **\#foo**.
 
 {% code title="show.html.erb" %}
 ```markup
@@ -143,7 +143,7 @@ Let's first establish a baseline HTML sample to modify. Our attention will focus
 
 Behold! For this is the `foo` partial. It is an example of perfection:
 
-{% code title="_foo.html.erb" %}
+{% code title="\_foo.html.erb" %}
 ```markup
 <div id="foo">
   <span class="spa"><%= message %></span>
@@ -153,7 +153,7 @@ Behold! For this is the `foo` partial. It is an example of perfection:
 
 You create a Selector morph by calling the `morph` method. In its simplest form, it takes two parameters: **selector** and **html**. We pass any valid CSS DOM selector that returns a reference to the first matching element, as well as the value we're updating it with.
 
-{% code title="app/reflexes/example_reflex.rb" %}
+{% code title="app/reflexes/example\_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
   def change
@@ -163,7 +163,7 @@ end
 ```
 {% endcode %}
 
-If you consult your Elements Inspector, you'll now see that #foo now contains a text node and your `header` has gained some attributes. This is just how StimulusReflex makes the magic happen.
+If you consult your Elements Inspector, you'll now see that \#foo now contains a text node and your `header` has gained some attributes. This is just how StimulusReflex makes the magic happen.
 
 ```markup
 <header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
@@ -171,14 +171,14 @@ If you consult your Elements Inspector, you'll now see that #foo now contains a 
 </header>
 ```
 
-**Morphs only replace the children of the element that you are targeting.** If you need to update the target element (as you would with `outerHTML`) consider targeting the parent of the element you need to change. You could, for example, call `morph "header", "No more #foo."` and start fresh.
+**Morphs only replace the children of the element that you are targeting.** If you need to update the target element \(as you would with `outerHTML`\) consider targeting the parent of the element you need to change. You could, for example, call `morph "header", "No more #foo."` and start fresh.
 
 {% hint style="info" %}
 Cool, but _where did the span go_? We're glad you asked!
 
 The truth is that a lot of complexity and nasty edge cases are being hidden away, while presenting you intelligent defaults and generally trying to follow the _principle of least surprise_.
 
-There's no sugar coating the fact that there's a happy path for all of the typical use cases, and lots of gotchas to be mindful of otherwise. We're going to tackle this by showing you best practices first. Start by #winning now and later there will be a section with all of the logic behind the decisions so you can troubleshoot if things go awry / [Charlie Sheen](https://www.youtube.com/watch?v=pipTwjwrQYQ).
+There's no sugar coating the fact that there's a happy path for all of the typical use cases, and lots of gotchas to be mindful of otherwise. We're going to tackle this by showing you best practices first. Start by \#winning now and later there will be a section with all of the logic behind the decisions so you can troubleshoot if things go awry / [Charlie Sheen](https://www.youtube.com/watch?v=pipTwjwrQYQ).
 {% endhint %}
 
 ### Intelligent defaults
@@ -202,7 +202,7 @@ If ViewComponents are your thing, we have you covered:
 morph "#foo", render(FooComponent.new(message: "React is making your muscles sore."))
 ```
 
-The `foo` partial (listed in the [Tutorial ](morph-modes.md#tutorial)section above) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
+The `foo` partial \(listed in the [Tutorial ](morph-modes.md#tutorial)section above\) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
 
 * it has a **single** top-level container element with the same CSS selector as the target
 * inside that container element is another [element node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), **not a text node**
@@ -211,7 +211,7 @@ If you can follow those two guidelines, you will see several important benefits 
 
 * DOM changes will be performed by the morphdom library, which is highly efficient
 * morph will respect elements with the `data-reflex-permanent` attribute
-* any event handlers set on contents should remain intact (unless they no longer exist)
+* any event handlers set on contents should remain intact \(unless they no longer exist\)
 
 As you have already seen, it's **okay** to morph a container with a string, or a container element that has a different CSS selector. However, `morph` will treat these updates _slightly_ differently:
 
@@ -220,19 +220,19 @@ As you have already seen, it's **okay** to morph a container with a string, or a
 * any event handlers on replaced elements are immediately de-referenced
 * you could end up with a nested container that might be jarring if you're not expecting it
 
-Let's say that you update #foo with the following morph:
+Let's say that you update \#foo with the following morph:
 
 ```ruby
 morph "#foo", "<div id=\"foo\">Let's do something about those muscles.</div>"
 ```
 
-This update will use morphdom to update the existing #foo div. However, because #foo contains a [text node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), `data-reflex-permanent` is ignored. (Sorry! We just work here.)
+This update will use morphdom to update the existing \#foo div. However, because \#foo contains a [text node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), `data-reflex-permanent` is ignored. \(Sorry! We just work here.\)
 
 ```ruby
 morph "#foo", "<div id=\"baz\"><span>Just breathe in... and out.</span></div>"
 ```
 
-Now your content is contained in a `span` element node. All set... except that you changed #foo to #baz.
+Now your content is contained in a `span` element node. All set... except that you changed \#foo to \#baz.
 
 ```markup
 <header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
@@ -341,7 +341,7 @@ The `paginator` partial is only rendered one time, so this one is easy: we have 
 {% endtab %}
 {% endtabs %}
 
-The `posts` partial (not listed) is rendered as a collection, and so it must be handled differently. You cannot put the top-level div into each element of the collection!
+The `posts` partial \(not listed\) is rendered as a collection, and so it must be handled differently. You cannot put the top-level div into each element of the collection!
 
 Instead, simply wrap the `render` call itself with markup for the top-level div:
 
@@ -353,7 +353,7 @@ Now, both `paginator` and `posts` are being updated using `morphdom`.
 
 ### Morphing Multiplicity
 
-What fun is morphing if you can't [stretch out a little](https://www.youtube.com/watch?v=J5G\_rdNQLFU)?
+What fun is morphing if you can't [stretch out a little](https://www.youtube.com/watch?v=J5G_rdNQLFU)?
 
 ```ruby
 morph "#username": "hopsoft", "#notification_count": 5
@@ -374,7 +374,7 @@ Inside a Reflex class, you might find yourself typing code like:
 morph "#user_#{user.id}", user.name
 ```
 
-The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom\_id) helper is available inside Reflex classes and supports the optional prefix argument:
+The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_id) helper is available inside Reflex classes and supports the optional prefix argument:
 
 ```ruby
 morph dom_id(user), user.name
@@ -382,7 +382,7 @@ morph dom_id(user), user.name
 
 ### View Helpers that emit URLs
 
-If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](../appendices/deployment.md#set-your-default\_url\_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
+If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](../appendices/deployment.md#set-your-default_url_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
 
 You'll know that you forgot this step if your URLs are coming out as **example.com**.
 
@@ -396,7 +396,7 @@ If you're not getting the results you expect, please consult the [Morphing Sanit
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.
 
-Nothing morphs are [Remote Procedure Calls](https://en.wikipedia.org/wiki/Remote\_procedure\_call), implemented on top of ActionCable.
+Nothing morphs are [Remote Procedure Calls](https://en.wikipedia.org/wiki/Remote_procedure_call), implemented on top of ActionCable.
 
 Sometimes you want to take advantage of the chasis and infrastructure of StimulusReflex, without any assumptions or expectations about changing your DOM afterwards. The bare metal nature of Nothing morphs means that the time between initiating a Reflex and receiving a confirmation can be low single-digit milliseconds, if you don't do anything to slow it down.
 
@@ -435,7 +435,7 @@ Let's step through creating a simple ActiveJob that will be triggered by a Nothi
 
 First, some quick housekeeping: you need to create an ActionCable channel. Running `rails generate channel counter` should do the trick. We want to stream updates to anyone listening in on the `counter` stream.
 
-{% code title="app/channels/counter_channel.rb" %}
+{% code title="app/channels/counter\_channel.rb" %}
 ```ruby
 class CounterChannel < ApplicationCable::Channel
   def subscribed
@@ -447,7 +447,7 @@ end
 
 When the channel client receives data, send it to CableReady for processing.
 
-{% code title="app/javascript/channels/counter_channel.js" %}
+{% code title="app/javascript/channels/counter\_channel.js" %}
 ```javascript
 import consumer from "./consumer"
 consumer.subscriptions.create("CounterChannel", {
@@ -468,11 +468,11 @@ The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter",
 ```
 {% endcode %}
 
-This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active\_job\_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active\_job\_basics.html#globalid) system behind the scenes.
+This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active_job_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active_job_basics.html#globalid) system behind the scenes.
 
-You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, make sure to pass the user resource (ActiveRecord model instance) to the ActiveJob.
+You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, make sure to pass the user resource \(ActiveRecord model instance\) to the ActiveJob.
 
-{% code title="app/reflexes/counter_reflex.rb" %}
+{% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
 class CounterReflex < ApplicationReflex
   def increment
@@ -485,7 +485,7 @@ end
 
 Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We then use CableReady to queue up a text\_content operation with the newly incremented value before ultimately sending the broadcast.
 
-{% code title="app/jobs/increment_job.rb" %}
+{% code title="app/jobs/increment\_job.rb" %}
 ```ruby
 class IncrementJob < ApplicationJob
   include CableReady::Broadcaster
@@ -503,3 +503,4 @@ This setup might seem like overkill to increment a number on your page, but you 
 {% hint style="info" %}
 There's an amazing resource on best practices with ActiveJob and Sidekiq [available here](https://github.com/toptal/active-job-style-guide).
 {% endhint %}
+

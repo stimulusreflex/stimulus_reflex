@@ -6,7 +6,7 @@ description: StimulusReflex rocks because it stands on the shoulders of Stimulus
 
 It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David squirm, but compared to the bad old days of IE6 - long a _nevergreen_ browser default on Windows - there's usually a correct answer to most problems.
 
-The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix\_live\_view/Phoenix.LiveView.html#module-key-events).
+The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-key-events).
 
 A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulusjs.org), a lightweight library that provides powerful event handling.
 
@@ -24,7 +24,7 @@ Other times, you might just want to exercise fine control over exactly when some
 
 For these use cases, we can use a technique known as a **debounce**. The classic mental model is holding open the elevator door for people to board. The elevator can't leave until a few seconds after you let go of the button.
 
-Debounce is flexible. In addition to specifying a delay, additional options can indicate whether the first ("_leading_") event is fired and whether the last ("_trailing_") event is fired. Much like an angry, beeping elevator there is also _maxWait_ to provide the amount of time to wait before an interim event is fired, even if new events are still arriving.
+Debounce is flexible. In addition to specifying a delay, additional options can indicate whether the first \("_leading_"\) event is fired and whether the last \("_trailing_"\) event is fired. Much like an angry, beeping elevator there is also _maxWait_ to provide the amount of time to wait before an interim event is fired, even if new events are still arriving.
 
 {% hint style="info" %}
 LiveView's **debounce** implementation accepts **blur** as a delay value, effectively saying "don't do this until the user leaves this input element".
@@ -32,7 +32,7 @@ LiveView's **debounce** implementation accepts **blur** as a delay value, effect
 With Stimulus, we can just define a handler for the **blur** event and keep the concepts separate.
 {% endhint %}
 
-While you can find many implementations of throttle and debounce on the web, one of the most commonly used implementations can be found in the [Lodash](https://lodash.com) library. Lodash has dozens of functions that are flexible, well-tested and optimised. They also_ _return new functions that you can assign to replace your existing functions.
+While you can find many implementations of throttle and debounce on the web, one of the most commonly used implementations can be found in the [Lodash](https://lodash.com/) library. Lodash has dozens of functions that are flexible, well-tested and optimised. They also __return new functions that you can assign to replace your existing functions.
 
 {% hint style="info" %}
 Lodash implementation of **debounce** is so flexible that **throttle** is actually implemented using debounce.
@@ -49,7 +49,7 @@ Tree shaking will not work if you attempt to use `{ debounce }` or forget to spe
 Let's set up a simple example: we will debounce your page scroll events while keeping your server up-to-date on how far down your user is.
 
 {% tabs %}
-{% tab title="scroll_controller.js" %}
+{% tab title="scroll\_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 import debounce from 'lodash/debounce'
@@ -72,7 +72,7 @@ export default class extends ApplicationController {
 ```
 {% endtab %}
 
-{% tab title="event_reflex.rb" %}
+{% tab title="event\_reflex.rb" %}
 ```ruby
 class EventReflex < ApplicationReflex
   def scroll(value)
@@ -83,7 +83,7 @@ end
 {% endtab %}
 
 {% tab title="index.html.erb" %}
-```
+```text
 <div data-controller="scroll" style="height: 5000px"></div>
 ```
 {% endtab %}
@@ -119,21 +119,21 @@ The lowest-level key capture events are also the only events that can pick up co
 
 If you press the Escape key, this is the granularity of data you can obtain:
 
-| key      | value    |
-| -------- | -------- |
-| altKey   | false    |
-| charCode | 0        |
-| code     | "Escape" |
-| ctrlKey  | false    |
-| key      | "Escape" |
-| keyCode  | 27       |
-| location | 0        |
-| metaKey  | false    |
-| repeat   | false    |
-| shiftKey | false    |
-| which    | 27       |
+| key | value |
+| :--- | :--- |
+| altKey | false |
+| charCode | 0 |
+| code | "Escape" |
+| ctrlKey | false |
+| key | "Escape" |
+| keyCode | 27 |
+| location | 0 |
+| metaKey | false |
+| repeat | false |
+| shiftKey | false |
+| which | 27 |
 
-While very useful for game development, it doesn't see a lot of use in normal web development because if you access `event.target.value` it gives you the value of the element (usually a text box) **before the key was pressed**. Many developers have lost many hairs trying to hunt down bugs on their `keydown` handlers; don't make the same mistake.
+While very useful for game development, it doesn't see a lot of use in normal web development because if you access `event.target.value` it gives you the value of the element \(usually a text box\) **before the key was pressed**. Many developers have lost many hairs trying to hunt down bugs on their `keydown` handlers; don't make the same mistake.
 
 It's common to throttle the rate of events fired when the user holds down a key. In the examples below, we'll look at how to throttle on `keydown` by testing the `repeat` attribute to see if one key is being held down.
 
@@ -143,19 +143,19 @@ Similar to `keydown`, `keypress` returns the previous value when you access `eve
 
 Here's the event data obtained by pressing `w`one time:
 
-| key      | value  |
-| -------- | ------ |
-| altKey   | false  |
-| charCode | 119    |
-| code     | "KeyW" |
-| ctrlKey  | false  |
-| key      | "w"    |
-| keyCode  | 119    |
-| location | 0      |
-| metaKey  | false  |
-| repeat   | false  |
-| shiftKey | false  |
-| which    | 119    |
+| key | value |
+| :--- | :--- |
+| altKey | false |
+| charCode | 119 |
+| code | "KeyW" |
+| ctrlKey | false |
+| key | "w" |
+| keyCode | 119 |
+| location | 0 |
+| metaKey | false |
+| repeat | false |
+| shiftKey | false |
+| which | 119 |
 
 {% hint style="warning" %}
 Note that the `keypress` event is technically deprecated even if it's still widely used.
@@ -179,18 +179,18 @@ A close cousin of `change` and `blur`, `input` events can be used to manage the 
 
 Like `keypress`, `input` cannot give you access to non-character keycodes such as Escape. It should not require debounce because the event is not fired until after any change has occurred. You can access `event.target.value` and see the current value of the element.
 
-However, the real power of `input` (and it's sister event `beforeinput`) is that they give you **boss powers**: the `data` attribute on the event is a string containing the change made, which could be a single character or a pasted novel. Meanwhile, the `inputType` attribute tells you what kind of change was responsible for the event being fired. With this information, you have the ability to create a timeline log of all changes to a document and even replay them in either direction later.
+However, the real power of `input` \(and it's sister event `beforeinput`\) is that they give you **boss powers**: the `data` attribute on the event is a string containing the change made, which could be a single character or a pasted novel. Meanwhile, the `inputType` attribute tells you what kind of change was responsible for the event being fired. With this information, you have the ability to create a timeline log of all changes to a document and even replay them in either direction later.
 
 Getting into the details of how `contenteditable` works is far beyond the scope of this document, but you can find more information on what's possible in the [W3C Input Events spec](https://www.w3.org/TR/input-events-1/#interface-InputEvent-Attributes).
 
-You might also consider checking out [Trix](https://trix-editor.org), the editor library created by the team behind Rails, Stimulus, Turbo Drive and ActionCable.
+You might also consider checking out [Trix](https://trix-editor.org/), the editor library created by the team behind Rails, Stimulus, Turbo Drive and ActionCable.
 
 ## keydown throttle example
 
 First, let's tackle a creative use of `throttle`. We're going to allow the user to mash their keyboard without spamming the server with Reflex updates. However, **we only want to throttle if they are holding down a single key**:
 
 {% tabs %}
-{% tab title="event_controller.js" %}
+{% tab title="event\_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 import throttle from 'lodash/throttle'
@@ -214,7 +214,7 @@ export default class extends ApplicationController {
 ```
 {% endtab %}
 
-{% tab title="event_reflex.rb" %}
+{% tab title="event\_reflex.rb" %}
 ```ruby
 class EventReflex < ApplicationReflex
   def keydown(key)
@@ -225,7 +225,7 @@ end
 {% endtab %}
 
 {% tab title="index.html.erb" %}
-```
+```text
 <div data-controller="event">
   <input type="text" data-action="keydown->event#keydown">
 </div>
@@ -242,7 +242,7 @@ If you've ever developed games, simulations or visualisations, chances are that 
 requestAnimationFrame is the mechanism used to control screen draw operations. When paired with keydown and mouse/touch events, complete games with GPU-accelerated graphics are possible. New browser APIs such as [HTML5 Bluetooth](https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web) mean that you could use your Xbox controllers.
 
 {% hint style="info" %}
-It can be intimidating to start out from nothing with requestAnimationFrame, which is why excellent libraries such as [Greensock](https://greensock.com) are so popular.
+It can be intimidating to start out from nothing with requestAnimationFrame, which is why excellent libraries such as [Greensock](https://greensock.com/) are so popular.
 
 While a paid version is available, you can get amazingly far with the free version, specifically if you check out their [Timeline](https://greensock.com/docs/v3/GSAP/Timeline) primative, which offers an impressive selection of callbacks.
 
@@ -250,3 +250,4 @@ We're living in an era when you can use a high accuracy animation timeline to la
 {% endhint %}
 
 What might come as a surprise is that clever use of StimulusReflex is theoretically fast enough to keep your game state running live on the server while your client is updating at 60fps. We leave this as an exercise for the reader, but please tell us if you achieve cold fusion.
+

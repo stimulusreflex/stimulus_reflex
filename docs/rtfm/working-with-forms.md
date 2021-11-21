@@ -12,7 +12,7 @@ The simple answer is... you don't! **Form submission in Rails is already really 
 
 UJS-powered remote forms are great, especially now that we have [mrujs](https://mrujs.com), the spiritual successor to the classic `rails-ujs` library that shipped with Rails until recently. `mrujs` is excellent:
 
-* it provide a nearly 1:1 drop-in replacement for `rails-ujs`
+* it provides a nearly 1:1 drop-in replacement for `rails-ujs`
 * it makes use of modern browser features like `fetch` (instead of XMLHttpRequest)
 * it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. **This makes the Optimism gem obsolete**, as it was created to provide functionality that was missing in `rails-ujs` 🎉
 * it has a great plugin ecosystem... including support for CableReady's [CableCar](https://cableready.stimulusreflex.com/cable-car) operation builder

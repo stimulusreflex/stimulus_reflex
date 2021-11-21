@@ -6,7 +6,7 @@ description: How to use StimulusReflex in your app
 
 ## Before you begin...
 
-**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working\_with\_javascript\_in\_rails.html#remote-elements), [Stimulus](https://stimulusjs.org), and [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
+**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulusjs.org/), and [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
 
 {% hint style="warning" %}
 We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods. 👨‍👨‍👧‍👧🎨🌲
@@ -22,9 +22,9 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 [Chris ](https://twitter.com/excid3)from [GoRails ](https://gorails.com)has released the first of hopefully many tutorial videos demonstrating how to get up and running with StimulusReflex in about ten minutes: ⏱️👍
 
-![](https://gblobscdn.gitbook.com/assets%2F-Lpnm81iPOBUa9lAmLxg%2F-M6sksqaSV7fV1MX\_89U%2F-M6slxV1wY8azS1XCRxn%2Fgorails.jpg)
+![](https://gblobscdn.gitbook.com/assets%2F-Lpnm81iPOBUa9lAmLxg%2F-M6sksqaSV7fV1MX_89U%2F-M6slxV1wY8azS1XCRxn%2Fgorails.jpg)
 
-{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" %}
+{% embed url="https://gorails.com/episodes/stimulus-reflex-basics" caption="" %}
 
 ## Hello, Reflex World!
 
@@ -37,7 +37,7 @@ Let's dig into it!
 This example updates the page with the latest count when the link is clicked:
 
 {% code title="app/views/pages/index.html.erb" %}
-```
+```text
 <a href="#"
   data-reflex="click->Counter#increment"
   data-step="1" 
@@ -58,7 +58,7 @@ We do caution you to be careful with events that can trigger many times in a sho
 
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
 
-{% code title="app/reflexes/counter_reflex.rb" %}
+{% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
 class CounterReflex < ApplicationReflex
   def increment
@@ -96,7 +96,7 @@ Let's build on our increment counter example by adding a Stimulus controller and
 We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](../appendices/troubleshooting.md#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
 
 {% code title="app/views/pages/index.html.erb" %}
-```
+```text
 <a href="#"
   data-controller="counter"
   data-action="click->counter#increment"
@@ -106,7 +106,7 @@ We can use the standard Stimulus `data-controller` and `data-action` attributes,
 
 Now we can create a simple Stimulus controller that extends `ApplicationController`, which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `stimulate` method:
 
-{% code title="app/javascript/controllers/counter_controller.js" %}
+{% code title="app/javascript/controllers/counter\_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 
@@ -126,10 +126,10 @@ If you extend `ApplicationController` and need to create a `connect` method, mak
 When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ReflexClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
 
 {% hint style="warning" %}
-If you're responding to an event like click on an element that would have a default action (such as an anchor, button or submit element) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
+If you're responding to an event like click on an element that would have a default action \(such as an anchor, button or submit element\) it's very important that you call `preventDefault()` on that event, or else you will experience undesirable side effects such as page navigation or form submission.
 {% endhint %}
 
-{% code title="app/reflexes/counter_reflex.rb" %}
+{% code title="app/reflexes/counter\_reflex.rb" %}
 ```ruby
 class CounterReflex < ApplicationReflex
   def increment(step = 1)
@@ -141,7 +141,7 @@ end
 
 Here, you can see how we accept a `step` argument to our `increment` Reflex action. We're also now switching to using the Rails session object to persist our values across multiple page load operations. Note that you can only provide parameters to Reflex actions by calling the `stimulate` method with arguments; there is no equivalent for Reflexes declared with data attributes.
 
-{% code title="app/controllers/pages_controller.rb" %}
+{% code title="app/controllers/pages\_controller.rb" %}
 ```ruby
 class PagesController < ApplicationController
   def index
@@ -179,3 +179,4 @@ If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails dest
 ## StimulusReflex Cheatsheet
 
 If you're going to be working with StimulusReflex, you might want to bookmark [Rafe Rosen](https://github.com/existentialmutt)'s excellent reference for frequently used method names and callbacks: [https://devhints.io/stimulus-reflex](https://devhints.io/stimulus-reflex)
+
