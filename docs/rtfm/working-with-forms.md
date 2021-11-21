@@ -13,14 +13,14 @@ The simple answer is... you don't! **Form submission in Rails is already really 
 UJS-powered remote forms are great, especially now that we have [mrujs](https://mrujs.com), the spiritual successor to the classic `rails-ujs` library that shipped with Rails until recently. `mrujs` is excellent:
 
 * it provide a nearly 1:1 drop-in replacement for `rails-ujs`
-* it makes use of modern browser features like `fetch` \(instead of XMLHttpRequest\)
+* it makes use of modern browser features like `fetch` (instead of XMLHttpRequest)
 * it uses Morphdom - the same library powering StimulusReflex Morphs - to show validation errors on your forms. **This makes the Optimism gem obsolete**, as it was created to provide functionality that was missing in `rails-ujs` 🎉
 * it has a great plugin ecosystem... including support for CableReady's [CableCar](https://cableready.stimulusreflex.com/cable-car) operation builder
 
 Don't believe the hype: **UJS is alive and well!**
 
 {% hint style="info" %}
-When you POST a form to a boilerplate Rails resource controller and your create attempt fails, the URL will appear to show the `new` template _content_ but the URL will appear to be `/` \(aka the `index` action\). This will make it impossible for StimulusReflex Page Morphs to update the page.
+When you POST a form to a boilerplate Rails resource controller and your create attempt fails, the URL will appear to show the `new` template _content_ but the URL will appear to be `/` (aka the `index` action). This will make it impossible for StimulusReflex Page Morphs to update the page.
 
 The recommended mitigation for this behaviour is to **use Mrujs**.
 {% endhint %}
@@ -72,7 +72,7 @@ You might be wondering why to even use forms at all. One significant reason is t
 
 The behaviour of form helpers changed slightly in Rails 6.1, as forms are no longer automatically set to be `remote: true` by default. This catches many developers off-guard!
 
-We recommend that Rails developers use UJS/mrujs remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster \(no more ugly screen refreshes!\) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
+We recommend that Rails developers use UJS/mrujs remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster (no more ugly screen refreshes!) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
 
 ```markup
 <%= form_with model: @foo, local: false %>
@@ -93,7 +93,7 @@ While not directly SR-specific, we've noticed that a lot of developers get tripp
 
 Quoting from MDN:
 
-> `submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event) event is sent back to the form object.
+> &#x20;`submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit\_event) event is sent back to the form object.
 
 ## Working with the `params` accessor in your Reflex class
 
@@ -121,9 +121,9 @@ If you call a full-page update Reflex outside of a form that has unsaved data, y
 
 At the time of this writing, **forms that upload files are unsupported by StimulusReflex**. We suggest that you design your UI in such a way that files can be uploaded directly, making use of the standard Rails UJS form upload techniques. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
 
-You can explore using CableReady and/or mrujs to provide live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com/) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
+You can explore using CableReady and/or mrujs to provide live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
 
-As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active_storage_overview.html).
+As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active\_storage\_overview.html).
 
 ### Resetting a submitted form
 
@@ -140,7 +140,7 @@ One simple technique is to use a Stimulus controller to reset the form after the
 
 This controller will make use of the [Promise](https://docs.stimulusreflex.com/rtfm/lifecycle#promises) returned by the `stimulate` method:
 
-{% code title="app/javascript/controllers/reflex\_form\_controller.js" %}
+{% code title="app/javascript/controllers/reflex_form_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller'
 
@@ -338,4 +338,3 @@ document.addEventListener('stimulus-reflex:before', event => {
   event.target.reflexData[reflexId].params = { ...params, foo: true, bar: false }
 })
 ```
-

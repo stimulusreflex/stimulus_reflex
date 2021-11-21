@@ -6,12 +6,12 @@ description: How to prepare your app to use StimulusReflex
 
 ## Command-Line Install
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org/), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+StimulusReflex relies on [Stimulus](https://stimulusjs.org), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
 
-The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. \(You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).\)
+The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).)
 
 ```ruby
-bundle add stimulus_reflex --version 3.5.0.pre3
+bundle add stimulus_reflex --version 3.5.0.pre7
 rake stimulus_reflex:install
 ```
 
@@ -25,7 +25,9 @@ For now, we recommend that you use **Webpacker 5.4.3**, since the 6.0 branch is 
 
 And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
 
-{% page-ref page="quickstart.md" %}
+{% content-ref url="quickstart.md" %}
+[quickstart.md](quickstart.md)
+{% endcontent-ref %}
 
 ## Manual Configuration
 
@@ -40,8 +42,8 @@ You can learn more about optimizing your Redis configuration, why we enable cach
 We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
-bundle add stimulus_reflex --version 3.5.0.pre3
-yarn add stimulus_reflex
+bundle add stimulus_reflex --version 3.5.0.pre7
+yarn add stimulus_reflex@3.5.0.pre7
 rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
 rails generate stimulus_reflex:initializer
@@ -69,7 +71,7 @@ const application = Application.start()
 const context = require.context('controllers', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 application.consumer = consumer
-StimulusReflex.initialize(application, { consumer })
+StimulusReflex.initialize(application, { isolate: true })
 ```
 {% endtab %}
 {% endtabs %}
@@ -129,9 +131,9 @@ In the future, should you ever upgrade your version of StimulusReflex, it's very
 
 Since mismatched versions are the first step on the path to hell, by default StimulusReflex won't allow the server to start if your versions are mismatched.
 
-If you have special needs, you can override this setting in your initializer. `:warn` will emit the same text-based warning but not prevent the server process from starting. `:ignore` will silence all mismatched version warnings, if you really just DGAF. ¯\_\(ツ\)\_/¯
+If you have special needs, you can override this setting in your initializer. `:warn` will emit the same text-based warning but not prevent the server process from starting. `:ignore` will silence all mismatched version warnings, if you really just DGAF. ¯\\_(ツ)\\_/¯
 
-{% code title="config/initializers/stimulus\_reflex.rb" %}
+{% code title="config/initializers/stimulus_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.on_failed_sanity_checks = :warn
@@ -159,7 +161,9 @@ Out of the box, ActionCable doesn't give StimulusReflex the ability to distingui
 
 When the time comes, it's easy to configure your application to support authenticating users by their Rails session or current\_user scope. Just check out the Authentication page and choose your own adventure.
 
-{% page-ref page="../rtfm/authentication.md" %}
+{% content-ref url="../rtfm/authentication.md" %}
+[authentication.md](../rtfm/authentication.md)
+{% endcontent-ref %}
 
 ## Tab isolation
 
@@ -185,11 +189,13 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 
 We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, there are some inherent limitations to the way cookies are communicated via websockets that make it difficult to use cookies for session storage in production.
 
-We default to using the `:cache_store` for `config.session_store` \(and enabling caching\) in the development environment if no other option has been declared. Many developers switch to using the [redis-session-store gem](https://github.com/roidrage/redis-session-store), especially in production.
+We default to using the `:cache_store` for `config.session_store` (and enabling caching) in the development environment if no other option has been declared. Many developers switch to using the [redis-session-store gem](https://github.com/roidrage/redis-session-store), especially in production.
 
 You can learn more about session storage on the Deployment page.
 
-{% page-ref page="../appendices/deployment.md" %}
+{% content-ref url="../appendices/deployment.md" %}
+[deployment.md](../appendices/deployment.md)
+{% endcontent-ref %}
 
 ## Rack middleware support
 
@@ -197,7 +203,7 @@ While StimulusReflex is optimized for speed, some developers might be using Rack
 
 You can add any middleware you need in your initializer:
 
-{% code title="config/initializers/stimulus\_reflex.rb" %}
+{% code title="config/initializers/stimulus_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.middleware.use FirstRackMiddleware
@@ -207,14 +213,14 @@ end
 {% endcode %}
 
 {% hint style="info" %}
-Users of [Jumpstart Pro](https://jumpstartrails.com/) are advised to add the `Jumpstart::AccountMiddleware` middleware if they are doing path-based multitenancy.
+Users of [Jumpstart Pro](https://jumpstartrails.com) are advised to add the `Jumpstart::AccountMiddleware` middleware if they are doing path-based multitenancy.
 {% endhint %}
 
 ## ViewComponent Integration
 
-There is no special process required for using [view\_component](https://github.com/github/view_component) with StimulusReflex. If ViewComponent is setup and running properly, you're already able to use them in your Reflex-enabled views.
+There is no special process required for using [view\_component](https://github.com/github/view\_component) with StimulusReflex. If ViewComponent is setup and running properly, you're already able to use them in your Reflex-enabled views.
 
-Many StimulusReflex + ViewComponent developers are enjoying using the [view\_component\_reflex](https://github.com/joshleblanc/view_component_reflex) gem, which automatically persists component state to your session between Reflexes.
+Many StimulusReflex + ViewComponent developers are enjoying using the [view\_component\_reflex](https://github.com/joshleblanc/view\_component\_reflex) gem, which automatically persists component state to your session between Reflexes.
 
 ## Rails 5.2+ Support
 
@@ -264,7 +270,7 @@ gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex", branch: "master
 ```
 {% endcode %}
 
-Restart your server\(s\) and refresh your page to see the latest.
+Restart your server(s) and refresh your page to see the latest.
 
 {% hint style="success" %}
 It is really important to **always make sure that your Ruby and JavaScript package versions are the same**!
@@ -274,7 +280,7 @@ It is really important to **always make sure that your Ruby and JavaScript packa
 
 Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
 
-Using [\#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus\_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
 
 {% code title="package.json" %}
 ```javascript
@@ -290,5 +296,4 @@ gem "stimulus_reflex", github: "leastbad/stimulus_reflex", branch: "isolation_op
 ```
 {% endcode %}
 
-Restart your server\(s\) and refresh your page to see the latest.
-
+Restart your server(s) and refresh your page to see the latest.

@@ -12,7 +12,7 @@ First, run `rails generate channel test` in your Rails project folder. This will
 
 Next, **copy and paste** the following into the two specified files, replacing their contents.
 
-{% code title="app/channels/test\_channel.rb" %}
+{% code title="app/channels/test_channel.rb" %}
 ```ruby
 class TestChannel < ApplicationCable::Channel
   def subscribed
@@ -27,7 +27,7 @@ end
 ```
 {% endcode %}
 
-{% code title="app/javascript/channels/test\_channel.js" %}
+{% code title="app/javascript/channels/test_channel.js" %}
 ```javascript
 import consumer from './consumer'
 
@@ -51,7 +51,7 @@ You can feel free to remove both of these files after you're done, but leave `ap
 
 Seeing that your Reflexes are called, including which elements are being updated by which operations, is an invaluable tool. StimulusReflex provides granular console logging designed to give you everything you need to know at a glance.
 
-![A Reflex with two Selector Morph operations](../.gitbook/assets/chrome_ap8v8v5gsq.png)
+![A Reflex with two Selector Morph operations](../.gitbook/assets/chrome\_ap8v8v5gsq.png)
 
 There are two ways to enable client debugging in your StimulusReflex instance. You can provide `debug: true` to the initialize options like this:
 
@@ -72,16 +72,16 @@ StimulusReflex.debug = process.env.RAILS_ENV === 'development'
 
 ### The Reflex request
 
-![](../.gitbook/assets/chrome_pep9ucqub2.png)
+![](../.gitbook/assets/chrome\_pep9ucqub2.png)
 
-The log for the Reflex request \(which starts with `↑ stimulus ↑`\) shows the **target** "Pagy\#paginate" \(name of the Reflex class and the Reflex action being called\) as well as an object containing the reflexId, any `args` \(arguments\) being passed to `stimulate()`, the Stimulus `controller` that invoked the Reflex, and the `element` that the Stimulus controller instance was placed on.
+The log for the Reflex request (which starts with `↑ stimulus ↑`) shows the **target** "Pagy#paginate" (name of the Reflex class and the Reflex action being called) as well as an object containing the reflexId, any `args` (arguments) being passed to `stimulate()`, the Stimulus `controller` that invoked the Reflex, and the `element` that the Stimulus controller instance was placed on.
 
 {% hint style="info" %}
-Remember, the Morph mode \(Page, Selector or Nothing\) is decided on the server, so there's no way to know which one it will be at the time the Reflex is initiated.
+Remember, the Morph mode (Page, Selector or Nothing) is decided on the server, so there's no way to know which one it will be at the time the Reflex is initiated.
 {% endhint %}
 
 {% hint style="info" %}
-In the example above, the controller is "pagy" because the triggering element \(in this case, an anchor\) has an ancestor element with the `pagy` Stimulus controller on it, matching the name of the Reflex class, `Pagy`. This means any callbacks defined in the `pagy` Stimulus controller will be called.
+In the example above, the controller is "pagy" because the triggering element (in this case, an anchor) has an ancestor element with the `pagy` Stimulus controller on it, matching the name of the Reflex class, `Pagy`. This means any callbacks defined in the `pagy` Stimulus controller will be called.
 
 If there was no ancestor element with the `pagy` Stimulus controller on it, the controller would be the default controller for all Reflexes, `stimulus-reflex`. If you inspect your DOM, you'll see that all elements with a `data-reflex` attribute have gained a `data-controller="stimulus-reflex"`. Knowing is half the battle!
 {% endhint %}
@@ -90,9 +90,9 @@ Once the Reflex action has completed, you should receive one or more **replies**
 
 ### Page Morph reply
 
-![](../.gitbook/assets/chrome_kj3sivvhk1.png)
+![](../.gitbook/assets/chrome\_kj3sivvhk1.png)
 
-Page Morphs reply with the target \("User\#rails"\) as well as the destination for the content and how long the Reflex took to complete, start to finish. Page Morphs run the controller action for the current page, so they tend to be significantly slower than Selector Morphs. CableReady `morph` operations are always used for Page Morphs.
+Page Morphs reply with the target ("User#rails") as well as the destination for the content and how long the Reflex took to complete, start to finish. Page Morphs run the controller action for the current page, so they tend to be significantly slower than Selector Morphs. CableReady `morph` operations are always used for Page Morphs.
 
 ![](../.gitbook/assets/page.png)
 
@@ -100,31 +100,31 @@ Page Morphs reply with the target \("User\#rails"\) as well as the destination f
 
 ### Selector Morph reply
 
-![](../.gitbook/assets/chrome_lqwseqeawe.png)
+![](../.gitbook/assets/chrome\_lqwseqeawe.png)
 
 Selector Morphs reply with the target as well as the destination for each `morph` operation. They tend to be extremely fast because they do not need to go through the ActionDispatch controller stack. There could be a blend of `morph` and `inner_html` CableReady operations in one Reflex.
 
 ### Nothing Morph reply
 
-![](../.gitbook/assets/chrome_nhffsjb2zj.png)
+![](../.gitbook/assets/chrome\_nhffsjb2zj.png)
 
 Nothing Morphs reply with the target, but the destination is either infinity or a God particle, depending on how your OS is configured. Since Nothing Morphs don't render any HTML, they can be very fast.
 
 ### Halted Reflex reply
 
-![](../.gitbook/assets/chrome_qc1ngo9y4f.png)
+![](../.gitbook/assets/chrome\_qc1ngo9y4f.png)
 
 Even aborted Reflexes have life-cycle callback events. When a Reflex is halted on the server, it means that the Reflex action was not executed.
 
 ### Reflex error reply
 
-![](../.gitbook/assets/chrome_mpg1ueidtp.png)
+![](../.gitbook/assets/chrome\_mpg1ueidtp.png)
 
 Similar to a halted Reflex, an error means that something went wrong in the processing of the Reflex action or, in the case of a Page Morph, potentially something in the controller action.
 
 ### Cloned Reflex reply
 
-![](../.gitbook/assets/chrome_vqhlnjrzze.png)
+![](../.gitbook/assets/chrome\_vqhlnjrzze.png)
 
 If you have multiple tabs open and isolation mode is disabled, you will see that Reflexes are being cloned across tabs. Everything behaves normally in the tab in which the Reflex was initiated, but other tabs do not know a Reflex is happening until the server sends instructions. This means that you will not see the Reflex request logged on non-active tabs, but you will see any replies. They will be marked as `CLONED` instead of showing a duration, because non-active tabs have no way of knowing when the Reflex was started.
 
@@ -160,7 +160,7 @@ config.log_level = :warn
 
 You can disable ActionCable logs at the framework level. In addition to likely performance gains, you will likely have your logging needs better covered by StimulusReflex logging, which works even when ActionCable logging is disabled.
 
-{% code title="config/initializers/action\_cable.rb" %}
+{% code title="config/initializers/action_cable.rb" %}
 ```ruby
 ActionCable.server.config.logger = Logger.new(nil)
 ```
@@ -174,11 +174,11 @@ We have received reports that for some developers, silencing their ActionCable l
 
 StimulusReflex provides an intelligent default for its highly customizable logging mechanism:
 
-![](../.gitbook/assets/windowsterminal_dqpv6fcnzm.png)
+![](../.gitbook/assets/windowsterminal\_dqpv6fcnzm.png)
 
-This is the first 8 characters of the current user's session id, the operation counter, the target \(Reflex class name \# Reflex action\), the destination CSS selector, the Morph mode and finally, which CableReady operation was used. This was all generated as if the following was in your initializer:
+This is the first 8 characters of the current user's session id, the operation counter, the target (Reflex class name # Reflex action), the destination CSS selector, the Morph mode and finally, which CableReady operation was used. This was all generated as if the following was in your initializer:
 
-{% code title="config/initializers/stimulus\_reflex.rb" %}
+{% code title="config/initializers/stimulus_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.logging = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
@@ -190,20 +190,20 @@ You can customize the contents, order, formatting and even color of the logging 
 
 * `session_id` - the first 8 characters of the current user's session id
 * `session_id_full` - the current user's session id
-* `reflex_info` - the Reflex Class \# the Reflex action
+* `reflex_info` - the Reflex Class # the Reflex action
 * `operation` - the CableReady operation used to execute the current Morph
-* `reflex_id` - the first 8 characters of the unique [UUIDv4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_%28random%29) identifying the Reflex
+* `reflex_id` - the first 8 characters of the unique [UUIDv4](https://en.wikipedia.org/wiki/Universally\_unique\_identifier#Version\_4\_%28random%29) identifying the Reflex
 * `reflex_id_full` - the unique UUIDv4 identifying the Reflex
 * `mode` - whether the current Morph is Page, Selector or Nothing
 * `selector` - the destination CSS selector for the content to be updated
 * `operation_counter` - shows the current and total Morph count for this Reflex
 * `connection_id` - the first 8 characters of the ActionCable Connection identifier
 * `connection_id_full` - the ActionCable Connection identifier
-* `timestamp` - Time.now.[strftime](https://apidock.com/ruby/Time/strftime)\("%Y-%m-%d %H:%M:%S"\)
+* `timestamp` - Time.now.[strftime](https://apidock.com/ruby/Time/strftime)("%Y-%m-%d %H:%M:%S")
 
 You can also use attributes from your ActionCable Connection's identifiers that resolve to valid ActiveRecord models. Let's say that your connection is identified by the current Devise user:
 
-{% code title="app/channels/application\_cable/connection.rb" %}
+{% code title="app/channels/application_cable/connection.rb" %}
 ```ruby
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
@@ -219,7 +219,7 @@ end
 
 Assuming that your User model has an `email` attribute, you could include the current user's email in your new log string:
 
-{% code title="config/initializers/stimulus\_reflex.rb" %}
+{% code title="config/initializers/stimulus_reflex.rb" %}
 ```ruby
 StimulusReflex.configure do |config|
   config.logging = proc { "#{email} just called another Reflex!" }
@@ -259,12 +259,12 @@ As features go, it is literally named: it's a shortcut to scooping up all of the
 
 ### Don't use CableReady from a Rails controller action
 
-In Rails, the order of operations is Request -&gt; Controller Action -&gt; View Render -&gt; Response. If you broadcast a CableReady operation targeting the current user during the Controller Action phase, it will transmit to the browser and execute before the HTML has even been rendered. This leads to an unfortunate scenario where it appears that "nothing happened."
+In Rails, the order of operations is Request -> Controller Action -> View Render -> Response. If you broadcast a CableReady operation targeting the current user during the Controller Action phase, it will transmit to the browser and execute before the HTML has even been rendered. This leads to an unfortunate scenario where it appears that "nothing happened."
 
 {% hint style="danger" %}
 Don't attempt to use `sleep` in your Controller Action to "slow down" a CableReady broadcast. Not only will this not work - the same problem will happen, slower - but freezing the Ruby thread means the application server has fewer resources to respond to other requests.
 
-You never want to use `sleep` in a primary execution thread. Chances are, you should use an [ActiveJob](https://guides.rubyonrails.org/active_job_basics.html) with a delayed start.
+You never want to use `sleep` in a primary execution thread. Chances are, you should use an [ActiveJob](https://guides.rubyonrails.org/active\_job\_basics.html) with a delayed start.
 {% endhint %}
 
 There is a partial exception to the rule: if your controller action has created an event that should be broadcast to multiple people, such as an event notification, it makes sense to broadcast that data as soon as it's relevant - ideally, via an ActiveJob so you can return your HTML faster.
@@ -287,7 +287,7 @@ What we recommend instead is that you make use of the `finalizeReflex` callback 
 
 ### Don't change the URL rendered by a Reflex
 
-While this comes up far less frequently now that we have Selector Morphs, we still occasionally get people asking to be able to change the URL which is used to morph the page. This is solidly in the **\#wontfix** category because the correct thing to do is just navigate to a new page.
+While this comes up far less frequently now that we have Selector Morphs, we still occasionally get people asking to be able to change the URL which is used to morph the page. This is solidly in the **#wontfix** category because the correct thing to do is just navigate to a new page.
 
 When you do a Page Morph, StimulusReflex goes through a full Rails controller action + view rendering cycle before taking the result and passing it to morphdom. While the notion of changing which route is regenerated is seductive, it is really just another expression of the desire to see StimulusReflex as a shiny new hammer. In reality, StimulusReflex exists replace the need for reactive Single Page Applications - that's your clue. With StimulusReflex, you can design each page as though it's its own application. When you want to move to a new application, the browser should go to the new URL.
 
@@ -297,7 +297,7 @@ If you need more control, you could also use CableReady's `dispatch_event` metho
 
 ### Don't initiate a Reflex when your page has finished loading
 
-Regardless of whether you're talking about a Stimulus controller's `connect` method, jQuery's `load` event, a Turbo Drive visit event or your own [pageshow](https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event) event handler, we recommend that you don't attempt to immediate call a Reflex operation as soon as the page loads. This advice is especially important in the context of Page Morphs.
+Regardless of whether you're talking about a Stimulus controller's `connect` method, jQuery's `load` event, a Turbo Drive visit event or your own [pageshow](https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow\_event) event handler, we recommend that you don't attempt to immediate call a Reflex operation as soon as the page loads. This advice is especially important in the context of Page Morphs.
 
 Best case, it's an extremely inefficient way to build your UI, since you should **just render the HTML you want to see** the first time. Worst case, you can find yourself in an infinite loop that wastes extraordinary bandwidth and resources.
 
@@ -332,9 +332,9 @@ In the above example, you have now configured your application to parse your DOM
 
 ## Rails 5.2, revisited
 
-The transition from asset pipeline \(Sprockets\) to webpacker hasn't been smooth for a lot of developers. Indeed, the need to address conversion growing pains was one of the [top](https://discuss.rubyonrails.org/t/sprockets-abandonment/74371/15) [complaints](https://discuss.rubyonrails.org/t/webpacker-presents-a-more-difficult-oob-experience-for-js-sprinkles-than-sprockets-did/75345/2) expressed during the May of WTFs. If you are among those trying to get StimulusReflex working in a 5.2 app that is floundering because the whole sprockets-&gt;webpacker thing is ruining your day, you are in great company.
+The transition from asset pipeline (Sprockets) to webpacker hasn't been smooth for a lot of developers. Indeed, the need to address conversion growing pains was one of the [top](https://discuss.rubyonrails.org/t/sprockets-abandonment/74371/15) [complaints](https://discuss.rubyonrails.org/t/webpacker-presents-a-more-difficult-oob-experience-for-js-sprinkles-than-sprockets-did/75345/2) expressed during the May of WTFs. If you are among those trying to get StimulusReflex working in a 5.2 app that is floundering because the whole sprockets->webpacker thing is ruining your day, you are in great company.
 
-While every project is different, we helped a developer configure his 5.2 project so that their JavaScript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/stimulus_reflex_poc/pull/1/files), which reads like a checklist for those who might be struggling.
+While every project is different, we helped a developer configure his 5.2 project so that their JavaScript was being processed by webpacker. The changes required are neatly captured in [this Pull Request](https://github.com/rvermootenct/stimulus\_reflex\_poc/pull/1/files), which reads like a checklist for those who might be struggling.
 
 ## Morphing Sanity Checklist
 
@@ -342,13 +342,13 @@ We want to stress that if you follow the happy path explained on the [Morphs](..
 
 #### You cannot change the attributes of your morph target.
 
-Even if you maintain the same CSS selector, you cannot modify any attributes \(including data attributes\) of the container element with the `morph` method.
+Even if you maintain the same CSS selector, you cannot modify any attributes (including data attributes) of the container element with the `morph` method.
 
 ```ruby
 morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
 ```
 
-You might consider one of the other [CableReady](https://cableready.stimulusreflex.com/) operations like `outer_html` or `set_attribute`.
+You might consider one of the other [CableReady](https://cableready.stimulusreflex.com) operations like `outer_html` or `set_attribute`.
 
 #### Your top-level content needs to be an element.
 
@@ -374,7 +374,7 @@ Go ahead, turn your `div` into a `span`. morphdom just doesn't care.
 morph "#foo", "<span id=\"foo\">Are these muscles or rocks? lol</span>"
 ```
 
-#### A new CSS selector \(or no CSS selector\) will be processed with innerHTML
+#### A new CSS selector (or no CSS selector) will be processed with innerHTML
 
 Changing the CSS selector will result in some awkward nesting issues.
 
@@ -442,7 +442,7 @@ There are some things that we'd very much like to fix, but we simply haven't bee
 
 #### iFrame gets refreshed despite data-reflex-permanent
 
-Depending on how your DOM is structured, it's possible to have an iframe element which has been marked with `data-reflex-permanent` get morphed. [We're aware of it, and we've tried to fix it.](https://github.com/hopsoft/stimulus_reflex/issues/452)
+Depending on how your DOM is structured, it's possible to have an iframe element which has been marked with `data-reflex-permanent` get morphed. [We're aware of it, and we've tried to fix it.](https://github.com/hopsoft/stimulus\_reflex/issues/452)
 
 ## Flight Safety Card
 
@@ -467,7 +467,7 @@ If you're collaborating with a team during development, **make sure that they ha
 {% endhint %}
 
 {% hint style="info" %}
-Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` Stimulus controller \(if indeed one exists\).
+Remember: putting `data-reflex="Foo#action"` on an element does **not** automatically attach an instance of the `foo` Stimulus controller (if indeed one exists).
 
 If you need `foo` or any other Stimulus controllers on your elements, you have to attach them yourself.
 {% endhint %}
@@ -489,7 +489,7 @@ Are you experiencing weird behavior in your production environment where your us
 {% endhint %}
 
 {% hint style="info" %}
-Make sure that your [Allowed Request Origins](https://guides.rubyonrails.org/action_cable_overview.html#allowed-request-origins) is properly configured for your environment, or else ActionCable won't be able to connect.
+Make sure that your [Allowed Request Origins](https://guides.rubyonrails.org/action\_cable\_overview.html#allowed-request-origins) is properly configured for your environment, or else ActionCable won't be able to connect.
 {% endhint %}
 
 {% hint style="info" %}
@@ -501,7 +501,7 @@ Working with subdomains? Make sure your application layout view calls `action_ca
 {% endhint %}
 
 {% hint style="info" %}
-Are you having trouble with [Shoelace](https://shoelace.style/) web components not Morphing properly? [This discusson](https://discordapp.com/channels/629472241427415060/725845575278264340/787094162981388329) on Discord might help.
+Are you having trouble with [Shoelace](https://shoelace.style) web components not Morphing properly? [This discusson](https://discordapp.com/channels/629472241427415060/725845575278264340/787094162981388329) on Discord might help.
 {% endhint %}
 
 {% hint style="info" %}
@@ -513,7 +513,7 @@ StimulusReflex does not support using `redirect_to` in a Page Morph. If you try 
 {% endhint %}
 
 {% hint style="info" %}
-Are you using [Phusion Passenger](https://www.phusionpassenger.com/) but seeing your server appear to freeze up? Make sure your [configuration](deployment.md#nginx-passenger) is correct.
+Are you using [Phusion Passenger](https://www.phusionpassenger.com) but seeing your server appear to freeze up? Make sure your [configuration](deployment.md#nginx-passenger) is correct.
 {% endhint %}
 
 {% hint style="info" %}
@@ -521,7 +521,7 @@ Getting weird Console Inspector errors? Make sure that your `stimulus_reflex` **
 {% endhint %}
 
 {% hint style="info" %}
-Do you have your `config/cable.yml` set up properly? You must [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing_redis.html) as the adapter in development mode.
+Do you have your `config/cable.yml` set up properly? You must [install Redis](http://tutorials.jumpstartlab.com/topics/performance/installing\_redis.html) as the adapter in development mode.
 {% endhint %}
 
 {% hint style="info" %}
@@ -537,7 +537,7 @@ Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when yo
 {% endhint %}
 
 {% hint style="info" %}
-If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` \(see the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist)\)
+If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` (see the [Morphing Sanity Checklist](troubleshooting.md#morphing-sanity-checklist))
 {% endhint %}
 
 {% hint style="info" %}
@@ -563,9 +563,8 @@ We're very proud of StimulusReflex and CableReady, which are both standing on th
 
 However, we want to be the first to recognize that there are limitations and constraints you should consider before using these technologies in your applications. After all, Rails itself does not claim to be immune from side effects, though huge amounts of effort are being invested into improving Ruby's concurrency story even while you read this.
 
-There are edge cases where data could become out of date in between the time a Reflex queries the database and the resulting DOM update is applied in the browser. While there are mitigation strategies \(such as tracking versions on everything\) which you could employ, it's important to remember that you could be opening a can of worms that leads to sadness and/or madness.
+There are edge cases where data could become out of date in between the time a Reflex queries the database and the resulting DOM update is applied in the browser. While there are mitigation strategies (such as tracking versions on everything) which you could employ, it's important to remember that you could be opening a can of worms that leads to sadness and/or madness.
 
 Please don't use StimulusReflex or CableReady to drive mission-critical and/or life-threatening situations. It is a terrible choice to re-write your laser vision correction servo motor controls with StimulusReflex. Don't pilot drones or operate heavy machinery that is controlled with StimulusReflex.
 
 The only exception to the above is [Guntron](https://pbfcomics.com/comics/guntron/). StimulusReflex is perfect for [Guntron](https://pbfcomics.com/comics/guntron/).
-
