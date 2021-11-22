@@ -202,6 +202,8 @@ document.addEventListener(
 //
 // - reflexId - the UUIDv4 which uniquely identifies the Reflex
 //
+// - payload - optional Reflex return value
+//
 const dispatchLifecycleEvent = (
   stage,
   reflexElement,
@@ -236,6 +238,7 @@ const dispatchLifecycleEvent = (
   const { target } = controllerElement.reflexData[reflexId] || {}
   const controller = controllerElement.reflexController[reflexId] || {}
   const event = `stimulus-reflex:${stage}`
+  const action = `${event}:${target.split('#')[1]}`
   const detail = {
     reflex: target,
     controller,
@@ -243,11 +246,15 @@ const dispatchLifecycleEvent = (
     element: reflexElement,
     payload
   }
+  const options = { bubbles: true, cancelable: false, detail }
 
-  controllerElement.dispatchEvent(
-    new CustomEvent(event, { bubbles: true, cancelable: false, detail })
-  )
-  if (window.jQuery) window.jQuery(controllerElement).trigger(event, detail)
+  controllerElement.dispatchEvent(new CustomEvent(event, options))
+  controllerElement.dispatchEvent(new CustomEvent(action, options))
+
+  if (window.jQuery) {
+    window.jQuery(controllerElement).trigger(event, detail)
+    window.jQuery(controllerElement).trigger(action, detail)
+  }
 }
 
 export { dispatchLifecycleEvent }
