@@ -1,4 +1,5 @@
 import reflexes from './reflexes'
+import Debug from './debug'
 
 const request = (
   reflexId,
@@ -8,7 +9,9 @@ const request = (
   element,
   controllerElement
 ) => {
-  reflexes[reflexId].timestamp = new Date()
+  const reflex = reflexes[reflexId]
+  if (Debug.disabled || reflex.promise.data.suppressLogging) return
+  reflex.timestamp = new Date()
   console.log(`\u2191 stimulus \u2191 ${target}`, {
     reflexId,
     args,
@@ -23,6 +26,7 @@ const success = (event, halted) => {
   const { selector, payload } = detail || {}
   const { reflexId, target, morph } = detail.stimulusReflex || {}
   const reflex = reflexes[reflexId]
+  if (Debug.disabled || reflex.promise.data.suppressLogging) return
   const progress =
     reflex.totalOperations > 1
       ? ` ${reflex.completedOperations}/${reflex.totalOperations}`
@@ -46,6 +50,7 @@ const error = event => {
   const { detail } = event || {}
   const { reflexId, target, payload } = detail.stimulusReflex || {}
   const reflex = reflexes[reflexId]
+  if (Debug.disabled || reflex.promise.data.suppressLogging) return
   const duration = reflex.timestamp
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'

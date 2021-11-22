@@ -2,6 +2,7 @@ const defaultSchema = {
   reflexAttribute: 'data-reflex',
   reflexPermanentAttribute: 'data-reflex-permanent',
   reflexRootAttribute: 'data-reflex-root',
+  reflexSuppressLoggingAttribute: 'data-reflex-suppress-logging',
   reflexDatasetAttribute: 'data-reflex-dataset',
   reflexDatasetAllAttribute: 'data-reflex-dataset-all',
   reflexSerializeFormAttribute: 'data-reflex-serialize-form',
