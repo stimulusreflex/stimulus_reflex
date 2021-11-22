@@ -36,7 +36,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "nokogiri"
   gem.add_dependency "rails", ">= 5.2"
   gem.add_dependency "redis"
-  gem.add_dependency "cable_ready", "5.0.0.pre7"
+  gem.add_dependency "cable_ready", "5.0.0.pre8"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "github_changelog_generator"
