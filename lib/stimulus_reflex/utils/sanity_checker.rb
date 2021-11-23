@@ -2,8 +2,6 @@
 
 class StimulusReflex::SanityChecker
   LATEST_VERSION_FORMAT = /^(\d+\.\d+\.\d+)$/
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
-  JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
 
   class << self
     def check!
@@ -15,7 +13,6 @@ class StimulusReflex::SanityChecker
 
       instance = new
       instance.check_caching_enabled
-      instance.check_package_versions_match
       # instance.check_default_url_config
       instance.check_new_version_available
     end
@@ -73,28 +70,6 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def check_package_versions_match
-    if npm_version.nil?
-      warn_and_exit <<~WARN
-        👉 Can't locate the stimulus_reflex npm package.
-
-          yarn add stimulus_reflex@#{gem_version}
-
-        Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
-      WARN
-    end
-
-    if package_version_mismatch?
-      warn_and_exit <<~WARN
-        👉 The stimulus_reflex npm package version (#{npm_version}) does not match the Rubygem version (#{gem_version}).
-
-        To update the stimulus_reflex npm package:
-
-          yarn upgrade stimulus_reflex@#{gem_version}
-      WARN
-    end
-  end
-
   def check_new_version_available
     return if StimulusReflex.config.on_new_version_available == :ignore
     return if Rails.env.development? == false
@@ -134,43 +109,10 @@ class StimulusReflex::SanityChecker
     end
   end
 
-  def package_version_mismatch?
-    npm_version != gem_version
-  end
-
   def using_preview_release?
     preview = StimulusReflex::VERSION.match?(LATEST_VERSION_FORMAT) == false
     puts "👉 StimulusReflex #{StimulusReflex::VERSION} update check skipped: pre-release build" if preview
     preview
-  end
-
-  def gem_version
-    @_gem_version ||= StimulusReflex::VERSION.gsub(".pre", "-pre")
-  end
-
-  def npm_version
-    @_npm_version ||= find_npm_version
-  end
-
-  def find_npm_version
-    if (match = search_file(package_json_path, regex: /version/))
-      match[JSON_VERSION_FORMAT, 1]
-    elsif (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
-      match[NODE_VERSION_FORMAT, 1]
-    end
-  end
-
-  def search_file(path, regex:)
-    return if File.exist?(path) == false
-    File.foreach(path).grep(regex).first
-  end
-
-  def package_json_path
-    Rails.root.join("node_modules", "stimulus_reflex", "package.json")
-  end
-
-  def yarn_lock_path
-    Rails.root.join("yarn.lock")
   end
 
   def initializer_missing?

@@ -12,6 +12,14 @@ const reflexes = {}
 const received = data => {
   if (!data.cableReady) return
 
+  if (data.version.replace('.pre', '-pre') !== CableReady.version) {
+    if (Debug.enabled)
+      console.error(
+        `Reflex failed due to cable_ready gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the "x.y.z.preN" version format, while NPM packages use "x.y.z-preN".\n\ncable_ready gem: ${data.version}\ncable_ready NPM: ${CableReady.version}`
+      )
+    return
+  }
+
   let reflexOperations = []
 
   for (let i = data.operations.length - 1; i >= 0; i--) {

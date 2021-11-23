@@ -17,7 +17,8 @@ class StimulusReflex::ReflexFactory
           xpath_element: reflex_data.xpath_element,
           reflex_controller: reflex_data.reflex_controller,
           permanent_attribute_name: reflex_data.permanent_attribute_name,
-          suppress_logging: reflex_data.suppress_logging
+          suppress_logging: reflex_data.suppress_logging,
+          version: reflex_data.version
         })
     end
 
