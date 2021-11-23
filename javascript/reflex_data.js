@@ -101,6 +101,14 @@ export default class ReflexData {
       : false
   }
 
+  get suppressLogging () {
+    return (
+      this.options['suppressLogging'] ||
+      this.reflexElement.attributes[Schema.reflexSuppressLogging] ||
+      false
+    )
+  }
+
   valueOf () {
     return {
       attrs: this.attrs,
@@ -108,6 +116,7 @@ export default class ReflexData {
       selectors: this.selectors,
       reflexId: this.reflexId,
       resolveLate: this.resolveLate,
+      suppressLogging: this.suppressLogging,
       xpathController: this.xpathController,
       xpathElement: this.xpathElement,
       inner_html: this.innerHTML,

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, keyword_init: true)
+ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
   class VersionMismatchError < StandardError; end
@@ -18,7 +18,7 @@ class StimulusReflex::Reflex
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :halted, :error, to: :broadcaster
-  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, to: :client_attributes
+  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
@@ -39,8 +39,8 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
-    @logger = StimulusReflex::Logger.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
+    @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
     @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
     @headers = {}

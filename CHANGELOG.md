@@ -1,5 +1,23 @@
 # Changelog
 
+## [v3.5.0.pre8](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre8) (2021-11-22)
+
+[Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre7...v3.5.0.pre8)
+
+**Implemented enhancements:**
+
+- suppress logging [\#560](https://github.com/stimulusreflex/stimulus_reflex/pull/560) ([leastbad](https://github.com/leastbad))
+- emit custom life-cycle events [\#559](https://github.com/stimulusreflex/stimulus_reflex/pull/559) ([leastbad](https://github.com/leastbad))
+
+**Closed issues:**
+
+- Disable warning when using with importmap-rails [\#563](https://github.com/stimulusreflex/stimulus_reflex/issues/563)
+- Unexplained error with basic scenario [\#562](https://github.com/stimulusreflex/stimulus_reflex/issues/562)
+
+**Merged pull requests:**
+
+- When searching a controller based off a reflex name, ignore hyphens [\#558](https://github.com/stimulusreflex/stimulus_reflex/pull/558) ([g-gagnon](https://github.com/g-gagnon))
+
 ## [v3.5.0.pre7](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.5.0.pre7) (2021-10-26)
 
 [Full Changelog](https://github.com/stimulusreflex/stimulus_reflex/compare/v3.5.0.pre6...v3.5.0.pre7)

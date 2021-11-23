@@ -124,6 +124,7 @@ const register = (controller, options = {}) => {
             'reflexId',
             'resolveLate',
             'serializeForm',
+            'suppressLogging',
             'includeInnerHTML',
             'includeTextContent'
           ].includes(key)
@@ -206,16 +207,14 @@ const register = (controller, options = {}) => {
 
       const promise = registerReflex(reflexData.valueOf())
 
-      if (Debug.enabled) {
-        Log.request(
-          reflexId,
-          target,
-          args,
-          this.context.scope.identifier,
-          reflexElement,
-          controllerElement
-        )
-      }
+      Log.request(
+        reflexId,
+        target,
+        args,
+        this.context.scope.identifier,
+        reflexElement,
+        controllerElement
+      )
 
       return promise
     },

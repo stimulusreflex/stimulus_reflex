@@ -3,7 +3,6 @@ import reflexes from './reflexes'
 import { XPathToElement } from './utils'
 import { dispatchLifecycleEvent } from './lifecycle'
 import Log from './log'
-import Debug from './debug'
 
 const beforeDOMUpdate = event => {
   const { stimulusReflex, payload } = event.detail || {}
@@ -52,7 +51,7 @@ const afterDOMUpdate = event => {
 
   reflex.completedOperations++
 
-  if (Debug.enabled) Log.success(event, false)
+  Log.success(event, false)
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
@@ -128,7 +127,7 @@ const routeReflexEvent = event => {
 const nothing = (event, payload, promise, reflex, reflexElement) => {
   reflex.finalStage = 'after'
 
-  if (Debug.enabled) Log.success(event, false)
+  Log.success(event, false)
 
   setTimeout(() =>
     promise.resolve({
@@ -145,7 +144,7 @@ const nothing = (event, payload, promise, reflex, reflexElement) => {
 const halted = (event, payload, promise, reflex, reflexElement) => {
   reflex.finalStage = 'halted'
 
-  if (Debug.enabled) Log.success(event, true)
+  Log.success(event, true)
 
   setTimeout(() =>
     promise.resolve({
@@ -162,7 +161,7 @@ const halted = (event, payload, promise, reflex, reflexElement) => {
 const error = (event, payload, promise, reflex, reflexElement) => {
   reflex.finalStage = 'after'
 
-  if (Debug.enabled) Log.error(event)
+  Log.error(event)
 
   setTimeout(() =>
     promise.reject({

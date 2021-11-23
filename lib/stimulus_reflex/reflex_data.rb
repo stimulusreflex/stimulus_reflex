@@ -41,6 +41,10 @@ class StimulusReflex::ReflexData
     data["permanentAttributeName"]
   end
 
+  def suppress_logging
+    data["suppressLogging"]
+  end
+
   def form_data
     Rack::Utils.parse_nested_query(data["formData"])
   end
