@@ -4,7 +4,7 @@ description: Forms fly business class on StimulusReflex Airways ✈️
 
 # Forms
 
-When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](../hello-world/quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com/) gem delivering validation errors over the wire. 🦸🏽
+When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](../hello-world/quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com) gem delivering validation errors over the wire. 🦸🏽
 
 {% hint style="warning" %}
 Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
@@ -86,9 +86,9 @@ If you call a full-page update Reflex outside of a form that has unsaved data, y
 
 At the time of this writing, **forms that upload files are unsupported by StimulusReflex**. We suggest that you design your UI in such a way that files can be uploaded directly, making use of the standard Rails UJS form upload techniques. You might need to use `data-reflex-permanent` so that you don't lose UI state when a Reflex is triggered.
 
-You can explore using Optimism for live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com/) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
+You can explore using Optimism for live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
 
-As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active_storage_overview.html).
+As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active\_storage\_overview.html).
 
 ### Resetting a submitted form
 
@@ -105,7 +105,7 @@ One simple technique is to use a Stimulus controller to reset the form after the
 
 This controller will make use of the [Promise](https://docs.stimulusreflex.com/rtfm/lifecycle#promises) returned by the `stimulate` method:
 
-{% code title="app/javascript/controllers/reflex\_form\_controller.js" %}
+{% code title="app/javascript/controllers/reflex_form_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller'
 
@@ -280,4 +280,3 @@ Since the partial does not include the parent `div`, in order to successfully re
 ```
 
 You can learn more about why wrapping Morph replacement content is necessary [here](morph-modes.md#intelligent-defaults).
-

@@ -1,5 +1,5 @@
 ---
-description: "Reflex classes are full of Reflex actions. Reflex actions are full of love. \U0001F3E9"
+description: Reflex classes are full of Reflex actions. Reflex actions are full of love. 🏩
 ---
 
 # Calling Reflexes
@@ -18,11 +18,13 @@ StimulusReflex features three distinct modes of operation, and you can use all t
 
 Every Reflex starts off life as a Page Morph. You can change it to a different kind of Morph inside of your Reflex action; there's no way to set a Morph type on the client.
 
-You can learn more about the control flow of each Morph by consulting [this flowchart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0).
+You can learn more about the control flow of each Morph by consulting [this flowchart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0\_0).
 
 The rest of this page generally assumes that you're working with a Page Morph. Selector and Nothing Morphs are described in detail on their own page:
 
-{% page-ref page="morph-modes.md" %}
+{% content-ref url="morph-modes.md" %}
+[morph-modes.md](morph-modes.md)
+{% endcontent-ref %}
 
 ## Declaring a Reflex in HTML with data attributes
 
@@ -43,7 +45,7 @@ You can use additional data attributes to pass variables as part of your Reflex 
 
 It's a recommended **best practice** to put an `id` attribute on any element that has a `data-reflex` attribute on it. `id` is unique in a valid DOM, and this is how StimulusReflex locates the controller which called the Reflex after a morph operation.
 
-If you have multiple identical elements calling Reflex actions, no life-cycle mechanisms \(afterReflex callbacks, success events etc\) will be run.
+If you have multiple identical elements calling Reflex actions, no life-cycle mechanisms (afterReflex callbacks, success events etc) will be run.
 
 {% hint style="info" %}
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
@@ -111,7 +113,7 @@ In addition to declared Reflexes, you can also initiate a Reflex with JavaScript
 
 Note that there is no relation between the name or action on the Stimulus controller, and the Reflex being called in the event handler:
 
-{% code title="app/javascript/controllers/foo\_controller.js" %}
+{% code title="app/javascript/controllers/foo_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 
@@ -131,13 +133,13 @@ When you use declarative Reflex calls via `data-reflex` attributes in your HTML,
 
 `this.stimulate(string target, [DOMElement element], [Object options], ...[JSONObject argument])`
 
-**target** \[required\] \(exception: see "Requesting a Refresh" below\): a string containing the server Reflex class and method, in the form `Example#increment`.
+**target** \[required] (exception: see "Requesting a Refresh" below): a string containing the server Reflex class and method, in the form `Example#increment`.
 
-**element** \[optional\]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in JavaScript. **Defaults to the DOM element of the controller in scope**.
+**element** \[optional]: a reference to a DOM element which will provide both attributes and scoping selectors. Frequently pointed to `event.target` in JavaScript. **Defaults to the DOM element of the controller in scope**.
 
-**options** \[optional\]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors, resolveLate, serializeForm** or **attrs**. Can be used to override the ID of a given Reflex or override the selector\(s\) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
+**options** \[optional]: an optional object containing _at least one of_ **reflexId**_**,**_ **selectors, resolveLate, serializeForm** or **attrs**. Can be used to override the ID of a given Reflex or override the selector(s) to be used for Page or Selector morphs. Advanced users might wish to modify the attributes sent to the server for the current Reflex.
 
-**argument** \[optional\]: a **splat** of JSON-compliant JavaScript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
+**argument** \[optional]: a **splat** of JSON-compliant JavaScript datatypes - array, object, string, numeric or boolean - will be received by the Reflex action as ordered arguments.
 
 ### Receiving arguments
 
@@ -244,7 +246,7 @@ What's really interesting about this is that you'll notice we don't have to add 
 
 If we click the button, we'll see that the StimulusReflex Controller used to handle the Reflex was `stimulus-reflex` as expected:
 
-![](../.gitbook/assets/chrome_rtkq7h4grp.png)
+![](../.gitbook/assets/chrome\_rtkq7h4grp.png)
 
 You should interpret this as "my Reflex was handled by the ApplicationController" - that is, `application_controller.js` - which was installed during setup. Any generic Reflex callbacks defined in the `ApplicationController` itself will be run, but this is usually limited to spinners and other "meta" UI effects.
 
@@ -255,7 +257,7 @@ If you want to provide handlers for life-cycle events, you will need to create a
         data-controller="foo">Remove this button</button>
 ```
 
-{% code title="app/javascript/controllers/foo\_controller.js" %}
+{% code title="app/javascript/controllers/foo_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller'
 
@@ -270,7 +272,7 @@ export default class extends ApplicationController {
 
 When you click the button, it calls the `Foo` Reflex - and removes the `button` from the DOM:
 
-{% code title="app/reflexes/foo\_reflex.rb" %}
+{% code title="app/reflexes/foo_reflex.rb" %}
 ```ruby
 class FooReflex < ApplicationReflex
   def remove
@@ -283,20 +285,20 @@ end
 
 And you can see that the StimulusReflex Controller responsible for the Reflex was `foo`:
 
-![](../.gitbook/assets/chrome_rbev7gok4j.png)
+![](../.gitbook/assets/chrome\_rbev7gok4j.png)
 
 So, that's pretty cool, right? 🕶️ It knows to use `foo` instead of `stimulus-reflex`.
 
-The thing is... _where's our console message?_ It never happened, because we destroyed the Reflex Controller Element \(the `button`\) that was holding the instance of `foo` that was responsible for the Reflex. That includes the life-cycle events that make callbacks possible.
+The thing is... _where's our console message?_ It never happened, because we destroyed the Reflex Controller Element (the `button`) that was holding the instance of `foo` that was responsible for the Reflex. That includes the life-cycle events that make callbacks possible.
 
-{% embed url="https://www.youtube.com/watch?v=XZxzJGgox\_E" caption="" %}
+{% embed url="https://www.youtube.com/watch?v=XZxzJGgox_E" %}
 
-Now, it's very common to use `data-reflex` and `data-controller` on the same element. There's nothing inherently wrong with doing so - in fact, it's a solid go-to strategy for handling callbacks - _unless_ your Reflex does something that results in the Reflex Controller Element being destroyed \(think: `innerHTML`\) or otherwise disconnected from your DOM.
+Now, it's very common to use `data-reflex` and `data-controller` on the same element. There's nothing inherently wrong with doing so - in fact, it's a solid go-to strategy for handling callbacks - _unless_ your Reflex does something that results in the Reflex Controller Element being destroyed (think: `innerHTML`) or otherwise disconnected from your DOM.
 
 {% hint style="info" %}
 The **primary** reason StimulusReflex, Phoenix LiveView and Laravel LiveWire all use the morphdom library for updates is to avoid destroying large chunks of your DOM when there are very good reasons not to do so - such as not \_Keyser Söze-\_ing your Stimulus controllers.
 
-It's notable that [Hotwire](https://github.com/hotwired/turbo/blob/main/src/core/streams/stream_actions.ts) chooses to use `innerHTML` over morphdom, which could ultimately result in a great many frustrated Stimulus developers.
+It's notable that [Hotwire](https://github.com/hotwired/turbo/blob/main/src/core/streams/stream\_actions.ts) chooses to use `innerHTML` over morphdom, which could ultimately result in a great many frustrated Stimulus developers.
 {% endhint %}
 
 It's just a reality of UI design that sometimes when you present a table of rows that represent model records, clicking on the "Delete" button makes the row it lives on _go away_. We need the ability to delegate the responsibility for the Reflex and its life-cycle events to one of the Reflex Controller Element's ancestors; specifically, an ancestor that will survive whatever DOM mutations are caused by the Reflex. This brings us back full-circle to the original `foo` example:
@@ -311,9 +313,9 @@ It's just a reality of UI design that sometimes when you present a table of rows
 
 With the ancestor `div` safely out of harm's way, we now see the desired console message:
 
-![](../.gitbook/assets/chrome_th99linxf7.png)
+![](../.gitbook/assets/chrome\_th99linxf7.png)
 
-As you can see, it's now possible to remove the Reflex Controller Element \(the `button`\) without losing your ability to have your StimulusReflex Controller still generating life-cycle events.
+As you can see, it's now possible to remove the Reflex Controller Element (the `button`) without losing your ability to have your StimulusReflex Controller still generating life-cycle events.
 
 **If your StimulusReflex Controller is getting** _**Sözed**_**, you need to move further up your DOM.**
 
@@ -327,4 +329,3 @@ Now that you are a StimulusReflex Controller expert 🧙‍♂️, you understan
 * Delegating the StimulusReflex Controller element to an ancestor would be impossible 😱
 
 It's not _just_ that we prioritize flexibility over magic. To force automatic StimulusReflex Controllers would make most of the techniques described in this chapter impossible.
-

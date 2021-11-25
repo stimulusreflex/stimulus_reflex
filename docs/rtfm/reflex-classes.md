@@ -2,14 +2,14 @@
 
 Regardless of whether you use declared Reflexes in your HTML markup or call `stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `ApplicationReflex`.
 
-{% code title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
 end
 ```
 {% endcode %}
 
-Setting a declarative data-reflex="click-&gt;Example\#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
+Setting a declarative data-reflex="click->Example#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
 
 You can do anything you like in a Reflex action, including [retrieving data from Redis](persistence.md#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](cableready.md#order-of-operations).
 
@@ -17,9 +17,9 @@ You can do anything you like in a Reflex action, including [retrieving data from
 If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
 {% endhint %}
 
-You can get and set values on the `session` object, and if you're using the \(default\) Page Morph Reflexes, any instance variables that you set in your Reflex Action method will be available to the controller action before your page is re-rendered.
+You can get and set values on the `session` object, and if you're using the (default) Page Morph Reflexes, any instance variables that you set in your Reflex Action method will be available to the controller action before your page is re-rendered.
 
-{% code title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
   def test
@@ -32,7 +32,7 @@ end
 You will learn all about the `element` accessor in the [next section](reflex-classes.md#element).
 
 {% hint style="warning" %}
-Note that there's no correlation between the Reflex class or Reflex action and the page \(or its controller\) that you're on. Your `users#show` page can call `Example#increment`.
+Note that there's no correlation between the Reflex class or Reflex action and the page (or its controller) that you're on. Your `users#show` page can call `Example#increment`.
 {% endhint %}
 
 ## ActionCable Connection Identifiers
@@ -43,7 +43,7 @@ Your Connection can have multiple accessors defined. For example, it's common to
 
 Once your connection is `identified_by :current_user`, you can delegate `current_user` to your ActionCable Connection:
 
-{% code title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
@@ -57,7 +57,7 @@ end
 
 If you plan to access `current_user` from all of your Reflex classes, delegate it your ApplicationReflex:
 
-{% code title="app/reflexes/application\_reflex.rb" %}
+{% code title="app/reflexes/application_reflex.rb" %}
 ```ruby
 class ApplicationReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
@@ -69,7 +69,7 @@ end
 
 When using `identified_by` accessors such as `current_user`, it's important to remember that any ActiveRecord queries or associations you access will be cached by default, **even across multiple Reflexes**.
 
-The cache is cleared when the ActionCable Connection is re-established \(usually with a page refresh\) or you manually force the accessor to reload its associations:
+The cache is cleared when the ActionCable Connection is re-established (usually with a page refresh) or you manually force the accessor to reload its associations:
 
 ```ruby
 current_user.reload
@@ -80,7 +80,7 @@ You can also bust the cached value by running a different query, but Rails devel
 {% hint style="danger" %}
 **Don't use `current_user` or other Connection identifiers in templates or partials that will be rendered in a Reflex.**
 
-Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action_view_overview.html#render-without-partial-and-locals-options).
+Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action\_view\_overview.html#render-without-partial-and-locals-options).
 {% endhint %}
 
 If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
@@ -124,7 +124,7 @@ Here's an example that outlines how you can interact with the `element` property
 ```
 {% endcode %}
 
-{% code title="app/reflexes/example\_reflex.rb" %}
+{% code title="app/reflexes/example_reflex.rb" %}
 ```ruby
 class ExampleReflex < ApplicationReflex
   def accessors
@@ -220,4 +220,3 @@ class ExampleReflex < ApplicationReflex
   end
 end
 ```
-
