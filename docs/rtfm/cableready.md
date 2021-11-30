@@ -1,24 +1,24 @@
 # Integrating CableReady
 
-[CableReady](https://cableready.stimulusreflex.com/) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1&ck_subscriber_id=646293602)?
+[CableReady](https://cableready.stimulusreflex.com) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1\&ck\_subscriber\_id=646293602)?
 
-| Library | Responsibility |
-| :--- | :--- |
-| StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**. |
-| CableReady | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
+| Library        | Responsibility                                                                                                                                                                                     |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**.                                                 |
+| CableReady     | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
 
-⬆️ StimulusReflex is for **sending** commands. 📡  
+⬆️ StimulusReflex is for **sending** commands. 📡\
 ⬇️ CableReady is for **receiving** updates. 👽
 
 {% hint style="info" %}
-A Reflex action is a reaction to a user action that changes server-side state and re-renders the current page \(or a subset of the current page\) for that particular user in the background, provided that they are still on the same page.
+A Reflex action is a reaction to a user action that changes server-side state and re-renders the current page (or a subset of the current page) for that particular user in the background, provided that they are still on the same page.
 
-A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
+A CableReady method is a reaction to some server-side code (which must be imperatively called) that makes some change for some set of users in the background.
 {% endhint %}
 
-CableReady has 36 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
+CableReady has 36 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents (Twilio fees are not included.)
 
-{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
+{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" %}
 
 StimulusReflex uses CableReady's `morph` for Page Morphs and some Selector Morphs, `inner_html` for Selector Morphs that don't use `morph` , and `dispatch_event` for Nothing Morphs, as well as aborted/halted Reflexes and sending errors that occur in a Reflex action.
 
@@ -43,7 +43,7 @@ end
 
 This is just like calling `cable_ready[stream_name]`. `stream_name` is the internal variable StimulusReflex uses to hold the stream identifier it uses to send updates to the current user.
 
-The only constaint imposed upon use of the special `cable_ready` method is that **`broadcast` methods must appear at the end of a method chain.** This is because calling `cable_ready.broadcast` without queueing any additional operations already has a function when using CableReady; it tells CableReady to broadcast any enqueued operations on all string-based identifier channels.
+The only constraint imposed upon use of the special `cable_ready` method is that **`broadcast` methods must appear at the end of a method chain.** This is because calling `cable_ready.broadcast` without queueing any additional operations already has a function when using CableReady; it tells CableReady to broadcast any enqueued operations on all string-based identifier channels.
 
 You can still use CableReady "normally" inside of a Reflex, if you need to broadcast to more than just the current user. Just call `cable_ready` with a stream identifier in brackets.
 
@@ -61,7 +61,7 @@ CableReady operations raise their own events, but StimulusReflex won't know if t
 
 ## Order of operations
 
-You can control the order in which CableReady and StimulusReflex operations execute in the client through strategic use \(and non-use\) of `broadcast`.
+You can control the order in which CableReady and StimulusReflex operations execute in the client through strategic use (and non-use) of `broadcast`.
 
 1. CableReady operations that are `broadcast`ed
 2. StimulusReflex `morph` operations
@@ -96,4 +96,3 @@ Keeping your DOM hierarchy consistent through the lifetime of a Reflex is critic
 ## radiolabel
 
 If you're making extensive use of StimulusReflex `morph` and CableReady operations, you might consider installing [radiolabel](https://github.com/leastbad/radiolabel). It's a powerful visual aid that allows you to see your CableReady operations happen.
-

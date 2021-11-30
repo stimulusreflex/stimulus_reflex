@@ -11,7 +11,7 @@ StimulusReflex relies on [Stimulus](https://stimulusjs.org), an excellent librar
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).)
 
 ```ruby
-bundle add stimulus_reflex --version 3.5.0.pre7
+bundle add stimulus_reflex --version 3.5.0.pre8
 rake stimulus_reflex:install
 ```
 
@@ -42,8 +42,8 @@ You can learn more about optimizing your Redis configuration, why we enable cach
 We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
 
 ```ruby
-bundle add stimulus_reflex --version 3.5.0.pre7
-yarn add stimulus_reflex@3.5.0.pre7
+bundle add stimulus_reflex --version 3.5.0.pre8
+yarn add stimulus_reflex@3.5.0.pre8
 rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
 rails generate stimulus_reflex:initializer
@@ -140,14 +140,6 @@ StimulusReflex.configure do |config|
 end
 ```
 {% endcode %}
-
-### Upgrading to v3.4.0+
-
-* make sure that you update `stimulus_reflex` in **both** your Gemfile and package.json
-* it's **very important** to remove any `include CableReady::Broadcaster` statements from your Reflex classes
-* OPTIONAL: enable [isolation mode](../rtfm/reflexes.md#tab-isolation) by adding `isolate: true` to the initialize options
-* OPTIONAL: generate an initializer with `rails g stimulus_reflex:config`
-* OPTIONAL: `bundle remove cable_ready && yarn remove cable_ready`
 
 ## Authentication
 
