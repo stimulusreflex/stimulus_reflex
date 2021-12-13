@@ -85,7 +85,7 @@ const elementToXPath = element => {
   if (element === document.body) return '/html/body'
 
   let ix = 0
-  const siblings = element.parentNode.childNodes
+  const siblings = element.parentNode ? element.parentNode.childNodes : []
 
   for (var i = 0; i < siblings.length; i++) {
     const sibling = siblings[i]
