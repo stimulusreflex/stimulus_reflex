@@ -2,10 +2,13 @@ PATH
   remote: .
   specs:
     stimulus_reflex (3.5.0.pre8)
+      actioncable (>= 5.2)
+      actionpack (>= 5.2)
+      actionview (>= 5.2)
+      activesupport (>= 5.2)
       cable_ready (= 5.0.0.pre8)
       nokogiri
       rack
-      rails (>= 5.2)
       redis
 
 GEM
@@ -256,9 +259,10 @@ DEPENDENCIES
   mocha
   pry
   pry-nav
+  rails (>= 5.2)
   rake
   standardrb (~> 1.0)
   stimulus_reflex!
 
 BUNDLED WITH
-   2.2.31
+   2.2.33
