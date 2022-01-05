@@ -20,7 +20,8 @@ class StimulusReflex::NothingBroadcasterTest < StimulusReflex::BroadcasterTestCa
           "reflexId" => "666",
           "operation" => "dispatchEvent"
         }
-      ]
+      ],
+      "version" => CableReady::VERSION
     }
 
     assert_broadcast_on @reflex.stream_name, expected do

@@ -34,7 +34,8 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
           "reflexId" => "666",
           "operation" => "morph"
         }
-      ]
+      ],
+      "version" => CableReady::VERSION
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
@@ -67,7 +68,8 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
           "reflexId" => "666",
           "operation" => "morph"
         }
-      ]
+      ],
+      "version" => CableReady::VERSION
     }
 
     assert_broadcast_on @reflex.stream_name, expected do

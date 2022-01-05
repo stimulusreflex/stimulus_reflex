@@ -24,7 +24,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "morph"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -50,7 +51,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "innerHtml"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -76,7 +78,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "innerHtml"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -102,7 +105,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "innerHtml"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -128,7 +132,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "innerHtml"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
@@ -156,7 +161,8 @@ module StimulusReflex
             "reflexId" => "666",
             "operation" => "morph"
           }
-        ]
+        ],
+        "version" => CableReady::VERSION
       }
 
       assert_broadcast_on @reflex.stream_name, expected do
