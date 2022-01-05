@@ -4,6 +4,7 @@ PATH
     stimulus_reflex (3.5.0.pre8)
       actioncable (>= 5.2)
       actionpack (>= 5.2)
+      actionview (>= 5.2)
       activesupport (>= 5.2)
       cable_ready (= 5.0.0.pre8)
       nokogiri
