@@ -4,9 +4,34 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
+## First: set up Webpacker
+
+**StimulusReflex was designed with Webpacker in mind.** It's possible to configure it to work with asset pipeline/Sprockets, import maps, Vite Rails, ESBuild and probably several other tools which will be directly supported by StimulusReflex 3.5 **when it is released**.
+
+_For now_, we recommend that you use the **webpacker 5.4.3** gem:
+
+```ruby
+gem "webpacker", "~> 5.4.3"
+```
+
+And set up your `package.json`:
+
+```json
+"dependencies": {
+  "@rails/webpacker": "5.4.3",
+},
+"devDependencies": {
+  "webpack-dev-server": "^3.11.2"
+}
+```
+
 ## Command-Line Install
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6 projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+StimulusReflex relies on [Stimulus](https://stimulusjs.org), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6+ projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+
+{% hint style="warning" %}
+StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
+{% endhint %}
 
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).)
 
@@ -16,11 +41,7 @@ rake stimulus_reflex:install
 ```
 
 {% hint style="warning" %}
-StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
-{% endhint %}
-
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.3**, since the 6.0 branch is still in beta and changes how things are set up.
+There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](../appendices/troubleshooting.md#safari-nsurlsession-websocket-bug).
 {% endhint %}
 
 And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
@@ -48,10 +69,6 @@ rails dev:cache # caching needs to be enabled
 rake webpacker:install:stimulus
 rails generate stimulus_reflex:initializer
 ```
-
-{% hint style="danger" %}
-For now, we recommend that you use **Webpacker 5.4.3**, since the 6.0 branch is still in beta and changes how things are set up.
-{% endhint %}
 
 {% hint style="info" %}
 StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
@@ -124,6 +141,10 @@ You should also add the `action_cable_meta_tag`helper to your application templa
   </head>
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](../appendices/troubleshooting.md#safari-nsurlsession-websocket-bug).
+{% endhint %}
 
 ## Upgrading, package versions and sanity
 
