@@ -47,6 +47,19 @@ If ActionCable is running properly, you should see `ActionCable is connected` in
 
 You can feel free to remove both of these files after you're done, but leave `app/javascript/channels/consumer.js` where it is so that you can pass it to `StimulusReflex.initialize()` and share one ActionCable connection.
 
+### Safari NSURLSession WebSocket bug
+
+Users of recent versions of the Safari browser have reported that it occasionally drops Action Cable connections. This can be mitigated by including the following hotfix in your `app/javascript/packs/application.js` pack file:
+
+```javascript
+const originalWebSocketClose = WebSocket.prototype.close
+WebSocket.prototype.close = function () {
+  if (this.readyState != WebSocket.CONNECTING) {
+    originalWebSocketClose.apply(this, arguments)
+  }
+}
+```
+
 ## Client-side logging
 
 Seeing that your Reflexes are called, including which elements are being updated by which operations, is an invaluable tool. StimulusReflex provides granular console logging designed to give you everything you need to know at a glance.
