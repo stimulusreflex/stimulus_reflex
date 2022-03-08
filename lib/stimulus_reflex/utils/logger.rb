@@ -27,6 +27,8 @@ module StimulusReflex
     def config_logging
       return @config_logging if @config_logging
 
+      return unless StimulusReflex.config.logging.instance_of?(Proc)
+
       StimulusReflex.config.logging.binding.eval("using StimulusReflex::Utils::Colorize")
       @config_logging = StimulusReflex.config.logging
     end
