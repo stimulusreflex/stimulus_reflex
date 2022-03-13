@@ -45,18 +45,17 @@
     "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
   },
   "peerDependencies": {
-    "@hotwired/stimulus": ">= 3.0",
-    "stimulus": ">= 3.0"
+    "@hotwired/stimulus": ">= 3.0"
   },
   "dependencies": {
+    "@hotwired/stimulus": ">= 3.0",
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "https://github.com/cableready/dev-builds/archive/cable_ready/1bded05.tar.gz"
+    "cable_ready": "https://github.com/cableready/dev-builds/archive/cable_ready/161ca09.tar.gz"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@hotwired/stimulus": ">= 3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
