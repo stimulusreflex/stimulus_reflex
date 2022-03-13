@@ -38,7 +38,8 @@
     "lint": "yarn prettier-standard:check",
     "format": "yarn prettier-standard:format",
     "build": "yarn rollup -c",
-    "watch": "yarn rollup -wc",
+    "build:watch": "yarn rollup -wc",
+    "watch": "yarn build:watch",
     "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
     "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
     "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
@@ -65,6 +66,7 @@
     "jsdom-global": "^3.0.2",
     "mocha": "^9.2.0",
     "prettier-standard": "^16.4.1",
-    "rollup": "^2.66.1"
+    "rollup": "^2.66.1",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }
