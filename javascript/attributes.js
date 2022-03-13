@@ -1,7 +1,8 @@
-import { elementToXPath, XPathToArray } from './utils'
 import Schema from './schema'
 import Debug from './debug'
 import Deprecate from './deprecate'
+
+import { elementToXPath, XPathToArray } from './utils'
 
 const multipleInstances = element => {
   if (['checkbox', 'radio'].includes(element.type)) {

@@ -1,17 +1,19 @@
 import { Controller } from '@hotwired/stimulus'
-import { dispatchLifecycleEvent } from './lifecycle'
-import { uuidv4, serializeForm } from './utils'
-import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
-import { registerReflex, setupDeclarativeReflexes } from './reflexes'
-import { reflexes } from './reflex_store'
-import { attributeValues } from './attributes'
+
 import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
 import ReflexData from './reflex_data'
 import IsolationMode from './isolation_mode'
-import actionCable from './transports/action_cable'
+import ActionCableTransport from './transports/action_cable'
+
+import { dispatchLifecycleEvent } from './lifecycle'
+import { uuidv4, serializeForm } from './utils'
+import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
+import { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import { reflexes } from './reflex_store'
+import { attributeValues } from './attributes'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
@@ -39,7 +41,7 @@ const initialize = (
   application,
   { controller, consumer, debug, params, isolate, deprecate } = {}
 ) => {
-  actionCable.set(consumer, params)
+  ActionCableTransport.set(consumer, params)
   document.addEventListener(
     'DOMContentLoaded',
     () => {
@@ -81,7 +83,7 @@ const initialize = (
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  actionCable.createSubscription(controller)
+  ActionCableTransport.createSubscription(controller)
   Object.assign(controller, {
     // Indicates if the ActionCable web socket connection is open.
     // The connection must be open before calling stimulate.
@@ -152,7 +154,7 @@ const register = (controller, options = {}) => {
       if (!this.isActionCableConnectionOpen())
         throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
 
-      if (!actionCable.subscriptionActive)
+      if (!ActionCableTransport.subscriptionActive)
         throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
 
       // lifecycle setup
