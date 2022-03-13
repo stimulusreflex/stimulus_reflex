@@ -1,13 +1,13 @@
 import CableReady from 'cable_ready'
 import Debug from './debug'
 import Schema from './schema'
-import isolationMode from './isolation_mode'
+import IsolationMode from './isolation_mode'
+
+import { reflexes } from './reflex_store'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { XPathToElement, debounce, emitEvent } from './utils'
 import { allReflexControllers, findControllerByReflexName } from './controllers'
 import { attributeValue, attributeValues } from './attributes'
-
-const reflexes = {}
 
 const received = data => {
   if (!data.cableReady) return
@@ -29,12 +29,9 @@ const received = data => {
     }
   }
 
-  if (
-    reflexOperations.some(operation => {
-      return operation.stimulusReflex.url !== location.href
-    })
-  )
+  if (reflexOperations.some(operation => operation.stimulusReflex.url !== location.href)) {
     return
+  }
 
   let reflexData
 
@@ -46,22 +43,21 @@ const received = data => {
   if (reflexData) {
     const { reflexId, payload } = reflexData
 
-    if (!reflexes[reflexId] && isolationMode.disabled) {
+    if (!reflexes[reflexId] && IsolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
       const reflexElement = XPathToElement(reflexData.xpathElement)
-      controllerElement.reflexController =
-        controllerElement.reflexController || {}
+
+      controllerElement.reflexController = controllerElement.reflexController || {}
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      controllerElement.reflexController[
-        reflexId
-      ] = reflexes.app.getControllerForElementAndIdentifier(
+      controllerElement.reflexController[reflexId] = reflexes.app.getControllerForElementAndIdentifier(
         controllerElement,
         reflexData.reflexController
       )
 
       controllerElement.reflexData[reflexId] = reflexData
+
       dispatchLifecycleEvent(
         'before',
         reflexElement,
@@ -69,6 +65,7 @@ const received = data => {
         reflexId,
         payload
       )
+
       registerReflex(reflexData)
     }
 
@@ -80,8 +77,9 @@ const received = data => {
       CableReady.perform(reflexOperations)
     }
   } else {
-    if (data.operations.length && reflexes[data.operations[0].reflexId])
+    if (data.operations.length && reflexes[data.operations[0].reflexId]) {
       CableReady.perform(data.operations)
+    }
   }
 }
 
@@ -173,5 +171,4 @@ const setupDeclarativeReflexes = debounce(() => {
   emitEvent('stimulus-reflex:ready')
 }, 20)
 
-export default reflexes
 export { received, registerReflex, getReflexRoots, setupDeclarativeReflexes }

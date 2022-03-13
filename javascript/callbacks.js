@@ -1,5 +1,5 @@
 import CableReady from 'cable_ready'
-import reflexes from './reflexes'
+import { reflexes } from './reflex_store'
 import { XPathToElement } from './utils'
 import { dispatchLifecycleEvent } from './lifecycle'
 import Log from './log'

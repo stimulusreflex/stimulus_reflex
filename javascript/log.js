@@ -1,4 +1,4 @@
-import reflexes from './reflexes'
+import { reflexes } from './reflex_store'
 import Debug from './debug'
 
 const request = (

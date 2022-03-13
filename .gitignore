@@ -9,4 +9,5 @@ tmp/
 node_modules
 .vscode
 /javascript/dist
+/dist
 *~

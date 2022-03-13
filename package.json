@@ -28,30 +28,43 @@
   },
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./javascript/stimulus_reflex.js",
-  "module": "./javascript/stimulus_reflex.js",
+  "main": "./dist/stimulus_reflex.umd.js",
+  "module": "./dist/stimulus_reflex.module.js",
+  "files": [
+    "dist/*",
+    "javascript/*"
+  ],
   "scripts": {
-    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/*.js ./javascript/**/*.js",
-    "prettier-standard:format": "yarn run prettier-standard ./javascript/*.js ./javascript/**/*.js",
+    "lint": "yarn prettier-standard:check",
+    "format": "yarn prettier-standard:format",
+    "build": "yarn rollup -c",
+    "watch": "yarn rollup -wc",
+    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
+    "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
     "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
   },
   "peerDependencies": {
-    "stimulus": ">= 1.1"
+    "@hotwired/stimulus": ">= 3.0",
+    "stimulus": ">= 3.0"
   },
   "dependencies": {
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "5.0.0-pre8"
+    "cable_ready": "https://github.com/cableready/dev-builds/archive/cable_ready/1bded05.tar.gz"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
+    "@hotwired/stimulus": ">= 3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
     "assert": "^2.0.0",
     "esm": "^3.2.25",
-    "jsdom": "^16.0.1",
+    "jsdom": "^19.0.0",
     "jsdom-global": "^3.0.2",
-    "mocha": "^8.0.1",
+    "mocha": "^9.2.0",
     "prettier-standard": "^16.4.1",
-    "stimulus": ">= 1.1"
+    "rollup": "^2.66.1"
   }
 }

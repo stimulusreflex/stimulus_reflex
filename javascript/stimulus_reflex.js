@@ -1,15 +1,16 @@
-import { Controller } from 'stimulus'
+import { Controller } from '@hotwired/stimulus'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
-import reflexes, { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import { reflexes } from './reflex_store'
 import { attributeValues } from './attributes'
 import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
 import ReflexData from './reflex_data'
-import isolationMode from './isolation_mode'
+import IsolationMode from './isolation_mode'
 import actionCable from './transports/action_cable'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
@@ -48,14 +49,14 @@ const initialize = (
         console.warn(
           "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
         )
-      if (Deprecate.enabled && isolationMode.disabled)
+      if (Deprecate.enabled && IsolationMode.disabled)
         console.warn(
           'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
         )
     },
     { once: true }
   )
-  isolationMode.set(!!isolate)
+  IsolationMode.set(!!isolate)
   reflexes.app = application
   Schema.set(application)
   reflexes.app.register(
