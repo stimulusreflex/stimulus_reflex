@@ -30,7 +30,11 @@ const received = data => {
     }
   }
 
-  if (reflexOperations.some(operation => operation.stimulusReflex.url !== location.href)) {
+  if (
+    reflexOperations.some(
+      operation => operation.stimulusReflex.url !== location.href
+    )
+  ) {
     return
   }
 
@@ -48,11 +52,14 @@ const received = data => {
       const controllerElement = XPathToElement(reflexData.xpathController)
       const reflexElement = XPathToElement(reflexData.xpathElement)
 
-      controllerElement.reflexController = controllerElement.reflexController || {}
+      controllerElement.reflexController =
+        controllerElement.reflexController || {}
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      controllerElement.reflexController[reflexId] = reflexes.app.getControllerForElementAndIdentifier(
+      controllerElement.reflexController[
+        reflexId
+      ] = reflexes.app.getControllerForElementAndIdentifier(
         controllerElement,
         reflexData.reflexController
       )

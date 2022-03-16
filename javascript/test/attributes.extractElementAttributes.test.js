@@ -1,10 +1,14 @@
-import { html, fixture, assert } from '@open-wc/testing';
+import { html, fixture, assert } from '@open-wc/testing'
 
 import { extractElementAttributes } from '../attributes'
 
 describe('extractElementAttributes', () => {
   it('returns expected attributes for empty anchor', async () => {
-    const element = await fixture(html`<a>Test</a>`)
+    const element = await fixture(
+      html`
+        <a>Test</a>
+      `
+    )
     const actual = extractElementAttributes(element)
     const expected = {
       value: undefined,
@@ -17,7 +21,9 @@ describe('extractElementAttributes', () => {
 
   it('returns expected attributes for anchor', async () => {
     const element = await fixture(html`
-      <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
+      <a id="example" data-controller="foo" data-reflex="bar" data-info="12345"
+        >Test</a
+      >
     `)
     const actual = extractElementAttributes(element)
     const expected = {
@@ -34,7 +40,11 @@ describe('extractElementAttributes', () => {
   })
 
   it('returns expected attributes for textarea', async () => {
-    const element = await fixture(html`<textarea id="example">StimulusReflex</textarea>`)
+    const element = await fixture(
+      html`
+        <textarea id="example">StimulusReflex</textarea>
+      `
+    )
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'example',
@@ -65,8 +75,18 @@ describe('extractElementAttributes', () => {
   it('returns expected attributes for textbox when multiple inputs with same name', async () => {
     const dom = await fixture(html`
       <div>
-        <input name="repeated" type="text" id="another" value="StimulusReflex" />
-        <input name="repeated" type="text" id="example" value="StimulusReflex" />
+        <input
+          name="repeated"
+          type="text"
+          id="another"
+          value="StimulusReflex"
+        />
+        <input
+          name="repeated"
+          type="text"
+          id="example"
+          value="StimulusReflex"
+        />
       </div>
     `)
     const element = dom.querySelector('input#example')
@@ -84,7 +104,11 @@ describe('extractElementAttributes', () => {
   })
 
   it('returns expected attributes for unchecked checkbox', async () => {
-    const element = await fixture(html`<input type="checkbox" id="example" />`)
+    const element = await fixture(
+      html`
+        <input type="checkbox" id="example" />
+      `
+    )
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'checkbox',
@@ -98,7 +122,11 @@ describe('extractElementAttributes', () => {
   })
 
   it('returns expected attributes for checked checkbox', async () => {
-    const element = await fixture(html`<input type="checkbox" id="example" checked />`)
+    const element = await fixture(
+      html`
+        <input type="checkbox" id="example" checked />
+      `
+    )
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'checkbox',
@@ -157,13 +185,30 @@ describe('extractElementAttributes', () => {
   it('returns multiple values for a checkbox list', async () => {
     const dom = await fixture(html`
       <div>
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3" value="three">
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked>
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked>
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-3"
+          value="three"
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-1"
+          value="one"
+          checked
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-2"
+          value="two"
+          checked
+        />
       </div>
     `)
 
-    const element = dom.querySelector("input#my-checkbox-collection-1")
+    const element = dom.querySelector('input#my-checkbox-collection-1')
     const actual = extractElementAttributes(element)
 
     const expected = {

@@ -39,44 +39,32 @@ export default [
         exports: 'named',
         globals: {
           morphdom: 'morphdom',
-          'cable_ready': 'CableReady'
+          cable_ready: 'CableReady'
         },
-        plugins: [
-          pretty()
-        ]
+        plugins: [pretty()]
       },
       {
         file: 'dist/stimulus_reflex.module.js',
         format: 'es',
         sourcemap: true,
         inlineDynamicImports: true,
-        plugins: [
-          pretty()
-        ]
+        plugins: [pretty()]
       },
       {
         file: 'app/assets/javascripts/stimulus_reflex.js',
         format: 'es',
         inlineDynamicImports: true,
-        plugins: [
-          pretty()
-        ]
+        plugins: [pretty()]
       },
       {
         file: 'app/assets/javascripts/stimulus_reflex.min.js',
         format: 'es',
         sourcemap: true,
         inlineDynamicImports: true,
-        plugins: [
-          minify()
-        ]
-      },
+        plugins: [minify()]
+      }
     ],
-    plugins: [
-      commonjs(),
-      resolve(),
-      json()
-    ],
+    plugins: [commonjs(), resolve(), json()],
     watch: {
       include: 'javascript/**'
     }

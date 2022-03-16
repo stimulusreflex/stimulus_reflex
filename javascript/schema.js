@@ -13,10 +13,7 @@ const defaultSchema = {
 
 let schema = {}
 
-export {
-  schema,
-  defaultSchema
-}
+export { schema, defaultSchema }
 
 export default {
   set (application) {

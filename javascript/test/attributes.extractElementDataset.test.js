@@ -1,20 +1,24 @@
 import { html, fixture, assert } from '@open-wc/testing'
 
 import { extractElementDataset } from '../attributes'
-import Schema, {defaultSchema} from '../schema'
+import Schema, { defaultSchema } from '../schema'
 
 Schema.set({
   schema: {
     ...defaultSchema,
     controllerAttribute: 'data-controller',
     actionAttribute: 'data-action',
-    targetAttribute: 'data-target',
+    targetAttribute: 'data-target'
   }
 })
 
 describe('extractElementDataset', () => {
   it('should return dataset for element without data attributes', async () => {
-    const element = await fixture(html`<a id="example">Test</a>`)
+    const element = await fixture(
+      html`
+        <a id="example">Test</a>
+      `
+    )
     const actual = extractElementDataset(element)
     const expected = {
       dataset: {},
@@ -25,7 +29,9 @@ describe('extractElementDataset', () => {
 
   it('should return dataset for element', async () => {
     const element = await fixture(html`
-      <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
+      <a id="example" data-controller="foo" data-reflex="bar" data-info="12345"
+        >Test</a
+      >
     `)
     const actual = extractElementDataset(element)
     const expected = {
@@ -42,7 +48,13 @@ describe('extractElementDataset', () => {
   it('should return dataset for element without combining dataset from parent', async () => {
     const parent = await fixture(html`
       <div data-parent-id="should not be included">
-        <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
+        <a
+          id="example"
+          data-controller="foo"
+          data-reflex="bar"
+          data-info="12345"
+          >Test</a
+        >
       </div>
     `)
 
@@ -62,7 +74,13 @@ describe('extractElementDataset', () => {
   it('should return dataset for element but without providing the dataset attribute', async () => {
     const parent = await fixture(html`
       <div data-parent-id="should not be included">
-        <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
+        <a
+          id="example"
+          data-controller="foo"
+          data-reflex="bar"
+          data-info="12345"
+          >Test</a
+        >
       </div>
     `)
 
@@ -81,7 +99,14 @@ describe('extractElementDataset', () => {
   it('should return dataset for element with data-reflex-dataset without value', async () => {
     const parent = await fixture(html`
       <div data-parent-id="should not be included">
-        <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset>Test</a>
+        <a
+          id="example"
+          data-controller="foo"
+          data-reflex="bar"
+          data-info="12345"
+          data-reflex-dataset
+          >Test</a
+        >
       </div>
     `)
 
@@ -102,7 +127,14 @@ describe('extractElementDataset', () => {
   it('should return dataset for element with data-reflex-dataset and other value than "combined"', async () => {
     const parent = await fixture(html`
       <div data-parent-id="should not be included">
-        <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset="whut">Test</a>
+        <a
+          id="example"
+          data-controller="foo"
+          data-reflex="bar"
+          data-info="12345"
+          data-reflex-dataset="whut"
+          >Test</a
+        >
       </div>
     `)
 
@@ -125,7 +157,14 @@ describe('extractElementDataset', () => {
       <div data-body-id="body">
         <div data-grandparent-id="456">
           <div data-parent-id="123">
-            <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset="combined">Test</a>
+            <a
+              id="example"
+              data-controller="foo"
+              data-reflex="bar"
+              data-info="12345"
+              data-reflex-dataset="combined"
+              >Test</a
+            >
           </div>
         </div>
       </div>
@@ -151,7 +190,9 @@ describe('extractElementDataset', () => {
   it('should return dataset for element with overloaded data attributes', async () => {
     const parent = await fixture(html`
       <div data-info="this is the outer one">
-        <a data-info="this is the inner one" data-reflex-dataset="combined">Test</a>
+        <a data-info="this is the inner one" data-reflex-dataset="combined"
+          >Test</a
+        >
       </div>
     `)
 
@@ -230,7 +271,11 @@ describe('extractElementDataset', () => {
   it('should return dataset for id', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-reflex-dataset="#timmy"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-reflex-dataset="#timmy"
+        ></div>
         <div id="timmy" data-age="12"></div>
       </div>
     `)
@@ -250,7 +295,11 @@ describe('extractElementDataset', () => {
   it('should return dataset for tag name', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-reflex-dataset="span"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-reflex-dataset="span"
+        ></div>
         <span data-span-one="1"></span>
         <span data-span-two="2"></span>
         <div data-div="other"></div>
@@ -275,7 +324,11 @@ describe('extractElementDataset', () => {
   it('should return dataset for tag name with class', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-reflex-dataset="span.post"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-reflex-dataset="span.post"
+        ></div>
         <span class="post" data-span-one="1"></span>
         <span class="post" data-span-two="2"></span>
         <span data-span="other"></span>
@@ -302,7 +355,11 @@ describe('extractElementDataset', () => {
   it('should return dataset for multiple elements with the same ids', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-reflex-dataset="#timmy"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-reflex-dataset="#timmy"
+        ></div>
         <div id="timmy" data-one="1"></div>
         <div id="timmy" data-two="2"></div>
       </div>
@@ -325,7 +382,11 @@ describe('extractElementDataset', () => {
   it('should return dataset for multiple different ids', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-reflex-dataset="#post1 #post2 #post3 #post4"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-reflex-dataset="#post1 #post2 #post3 #post4"
+        ></div>
         <div id="post1" data-one-id="1"></div>
         <div id="post2" data-two-id="2"></div>
         <div id="post3" data-three-id="3"></div>
@@ -352,7 +413,12 @@ describe('extractElementDataset', () => {
   it('should return dataset for class', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".sarah"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-id="1"
+          data-reflex-dataset=".sarah"
+        ></div>
         <div class="sarah" data-job="clerk"></div>
       </div>
     `)
@@ -374,7 +440,12 @@ describe('extractElementDataset', () => {
   it('should return dataset for multiple elements with the same class', async () => {
     const parent = await fixture(html`
       <div>
-        <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".post"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-id="1"
+          data-reflex-dataset=".post"
+        ></div>
         <div class="post" data-one-id="1"></div>
         <div class="post" data-two-id="2"></div>
       </div>
@@ -397,9 +468,13 @@ describe('extractElementDataset', () => {
 
   it('should return dataset for multiple different classes', async () => {
     const parent = await fixture(html`
-
       <div>
-        <div id="element" data-controller="foo" data-id="1" data-reflex-dataset=".post1 .post2 .post3 .post4"></div>
+        <div
+          id="element"
+          data-controller="foo"
+          data-id="1"
+          data-reflex-dataset=".post1 .post2 .post3 .post4"
+        ></div>
         <div class="post1" data-one-id="1"></div>
         <div class="post2" data-two-id="2"></div>
         <div class="post3" data-three-id="3"></div>
@@ -426,7 +501,13 @@ describe('extractElementDataset', () => {
 
   it('should return dataset for first occurence and stack data values if they overlap', async () => {
     const element = await fixture(html`
-      <div id="element" data-controller="posts" data-id="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
+      <div
+        id="element"
+        data-controller="posts"
+        data-id="1"
+        data-reflex-dataset=".post"
+        data-reflex-dataset-all=".post"
+      >
         <div class="post" data-post-id="1"></div>
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
@@ -456,7 +537,12 @@ describe('extractElementDataset', () => {
 
   it('should return dataset for data-reflex-dataset-all', async () => {
     const element = await fixture(html`
-      <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset-all=".post">
+      <div
+        id="element"
+        data-controller="posts"
+        data-post-id="1"
+        data-reflex-dataset-all=".post"
+      >
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
         <div class="post" data-post-id="4"></div>
@@ -481,7 +567,13 @@ describe('extractElementDataset', () => {
 
   it('should return dataset if the plural of overlapped value is also used with data-reflex-dataset-all', async () => {
     const element = await fixture(html`
-      <div id="element" data-controller="posts" data-post-ids="1" data-reflex-dataset=".post" data-reflex-dataset-all=".post">
+      <div
+        id="element"
+        data-controller="posts"
+        data-post-ids="1"
+        data-reflex-dataset=".post"
+        data-reflex-dataset-all=".post"
+      >
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
         <div class="post" data-post-id="4"></div>
@@ -510,7 +602,12 @@ describe('extractElementDataset', () => {
 
   it('should return dataset if both singular and plural key exists but no data-reflex-dataset-all is passed', async () => {
     const element = await fixture(html`
-      <div id="element" data-controller="posts" data-post-id="1" data-reflex-dataset=".post">
+      <div
+        id="element"
+        data-controller="posts"
+        data-post-id="1"
+        data-reflex-dataset=".post"
+      >
         <div class="post" data-post-id="2"></div>
         <div class="post" data-post-id="3"></div>
         <div class="post" data-post-ids="4"></div>
@@ -591,7 +688,12 @@ describe('extractElementDataset', () => {
     const parent = await fixture(html`
       <div>
         <div data-dont-include="me"></div>
-        <div data-controller="foo" id="element" data-id="1" data-reflex-dataset="descendants">
+        <div
+          data-controller="foo"
+          id="element"
+          data-id="1"
+          data-reflex-dataset="descendants"
+        >
           <div data-child-id="2">
             <div data-grandchild-id="3"></div>
           </div>
@@ -618,7 +720,12 @@ describe('extractElementDataset', () => {
     const parent = await fixture(html`
       <div data-dont-include="me">
         <div data-dont-include="me"></div>
-        <div id="element" data-controller="foo" data-id="1" data-reflex-dataset="children">
+        <div
+          id="element"
+          data-controller="foo"
+          data-id="1"
+          data-reflex-dataset="children"
+        >
           <div data-child-one-id="1">
             <div data-dont-include="me"></div>
           </div>
@@ -647,7 +754,12 @@ describe('extractElementDataset', () => {
   it('should return dataset for siblings', async () => {
     const parent = await fixture(html`
       <div data-dont-include="me">
-        <div id="element" data-controller="foo" data-id="1" data-reflex-dataset="siblings">
+        <div
+          id="element"
+          data-controller="foo"
+          data-id="1"
+          data-reflex-dataset="siblings"
+        >
           <div data-dont-include="me"></div>
         </div>
         <div data-sibling-one-id="1">

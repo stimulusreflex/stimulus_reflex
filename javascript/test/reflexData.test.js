@@ -18,59 +18,102 @@ describe('ReflexData', () => {
   })
 
   it("attaches the element's innerHTML if includeInnerHTML is true", async () => {
-    const element = await fixture(html`
-      <div><ul><li>First Item</li><li>Last Item</li></ul></div>
-    `)
-    // const element = dom.window.document.querySelector('div')
+    const element = await fixture(
+      html`
+        <div>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
+    )
 
     assert.equal(
-      new ReflexData({ includeInnerHTML: true }, element, element).innerHTML,
-      '<ul><li>First Item</li><li>Last Item</li></ul>'
+      new ReflexData(
+        { includeInnerHTML: true },
+        element,
+        element
+      ).innerHTML.replace(/\s+/g, ''),
+      '<ul><li>First</li><li>Last</li></ul>'
     )
   })
 
   it("attaches the element's innerHTML if includeInnerHTML is declared on the reflexElement", async () => {
-    const element = await fixture(html`
-      <div data-reflex-include-inner-html><ul><li>First Item</li><li>Last Item</li></ul></div>
-    `)
+    const element = await fixture(
+      html`
+        <div data-reflex-include-inner-html>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
+    )
 
     assert.equal(
-      new ReflexData({}, element, element).innerHTML,
-      '<ul><li>First Item</li><li>Last Item</li></ul>'
+      new ReflexData({}, element, element).innerHTML.replace(/\s+/g, ''),
+      '<ul><li>First</li><li>Last</li></ul>'
     )
   })
 
   it("doesn't attach the element's innerHTML if includeInnerHTML is falsey", async () => {
-    const element = await fixture(html`
-      <div><ul><li>First Item</li><li>Last Item</li></ul></div>
-    `)
+    const element = await fixture(
+      html`
+        <div>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
+    )
 
     assert.equal(new ReflexData({}, element, element).innerHTML, '')
   })
 
   it("attaches the element's textContent if includeTextContent is true", async () => {
-    const element = await fixture(html`<div><p>Some Text <a>with a link</a></p></div>`)
+    const element = await fixture(
+      html`
+        <div>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
+    )
 
     assert.equal(
-      new ReflexData({ includeTextContent: true }, element, element).textContent,
+      new ReflexData({ includeTextContent: true }, element, element).textContent
+        .replace(/\s+/g, ' ')
+        .trim(),
       'Some Text with a link'
     )
   })
 
   it("attaches the element's textContent if includeTextContent is declared on the reflex element", async () => {
-    const element = await fixture(html`
-      <div data-reflex-include-text-content><p>Some Text <a>with a link</a></p></div>
-    `)
-    // const element = dom.window.document.querySelector('div')
+    const element = await fixture(
+      html`
+        <div data-reflex-include-text-content>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
+    )
 
     assert.equal(
-      new ReflexData({}, element, element).textContent,
+      new ReflexData({}, element, element).textContent
+        .replace(/\s+/g, ' ')
+        .trim(),
       'Some Text with a link'
     )
   })
 
   it("doesn't attach the element's textContent if includeTextContent is falsey", async () => {
-    const element = await fixture(html`<div><p>Some Text <a>with a link</a></p></div>`)
+    const element = await fixture(
+      html`
+        <div>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
+    )
 
     assert.equal(new ReflexData({}, element, element).textContent, '')
   })
@@ -78,9 +121,26 @@ describe('ReflexData', () => {
   it('preserves multiple values from a checkbox list', async () => {
     const dom = await fixture(html`
       <div>
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3" value="three">
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked>
-        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked>
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-3"
+          value="three"
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-1"
+          value="one"
+          checked
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-2"
+          value="two"
+          checked
+        />
       </div>
     `)
 

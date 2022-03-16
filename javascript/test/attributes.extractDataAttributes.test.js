@@ -22,7 +22,11 @@ describe('extractDataAttributes', () => {
   })
 
   it('returns empty object for an element without attributes', async () => {
-    const element = await fixture(html`<div>Test</div>`)
+    const element = await fixture(
+      html`
+        <div>Test</div>
+      `
+    )
     const actual = extractDataAttributes(element)
     const expected = {}
     assert.deepStrictEqual(actual, expected)
@@ -30,7 +34,15 @@ describe('extractDataAttributes', () => {
 
   it('returns expected data attributes for an element', async () => {
     const element = await fixture(html`
-      <div id="example" class="should not appear" data-controller="foo" data-reflex="bar" data-info="12345">Test</div>
+      <div
+        id="example"
+        class="should not appear"
+        data-controller="foo"
+        data-reflex="bar"
+        data-info="12345"
+      >
+        Test
+      </div>
     `)
     const actual = extractDataAttributes(element)
     const expected = {

@@ -6,9 +6,7 @@ const json = fromRollup(rollupJson)
 export default {
   nodeResolve: true,
   mimeTypes: {
-    '**/*.json': 'js',
+    '**/*.json': 'js'
   },
-  plugins: [
-    json({})
-  ],
+  plugins: [json({})]
 }
