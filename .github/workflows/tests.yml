@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [10, 12]
+        node: [12, 14, 16]
     steps:
     - uses: actions/checkout@master
     - name: Setup Node
@@ -32,7 +32,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-${{ matrix.node }}-yarn-
 
-    - uses: microsoft/playwright-github-action@v1
+    - name: Install Playwright
+      uses: microsoft/playwright-github-action@v1
+
     - name: Yarn install
       run: yarn
     - name: Run JavaScript Tests
@@ -43,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [2.6.6, 2.7.2, '3.0']
+        ruby-version: [2.6.6, 2.7.2, '3.0', 3.1]
     steps:
     - uses: actions/checkout@master
     - name: Set up Ruby ${{ matrix.ruby-version }}
