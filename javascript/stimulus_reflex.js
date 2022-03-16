@@ -260,20 +260,8 @@ document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 window.addEventListener('load', setupDeclarativeReflexes)
 
-export default {
+export {
   initialize,
   register,
-  useReflex,
-  get debug () {
-    return Debug.value
-  },
-  set debug (value) {
-    Debug.set(!!value)
-  },
-  get deprecate () {
-    return Deprecate.value
-  },
-  set deprecate (value) {
-    Deprecate.set(!!value)
-  }
+  useReflex
 }
