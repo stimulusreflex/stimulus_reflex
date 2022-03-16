@@ -1,5 +1,6 @@
-import assert from 'assert'
+import { assert } from '@open-wc/testing'
 import refute from './refute'
+
 import { attributeValue } from '../attributes'
 
 describe('attributeValue', () => {

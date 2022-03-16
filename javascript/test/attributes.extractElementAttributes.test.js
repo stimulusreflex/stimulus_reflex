@@ -1,12 +1,10 @@
-import assert from 'assert'
-import { JSDOM } from 'jsdom'
+import { html, fixture, assert } from '@open-wc/testing';
+
 import { extractElementAttributes } from '../attributes'
 
 describe('extractElementAttributes', () => {
-  it('returns expected attributes for empty anchor', () => {
-    const dom = new JSDOM('<a>Test</a>')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
+  it('returns expected attributes for empty anchor', async () => {
+    const element = await fixture(html`<a>Test</a>`)
     const actual = extractElementAttributes(element)
     const expected = {
       value: undefined,
@@ -17,12 +15,10 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for anchor', () => {
-    const dom = new JSDOM(
-      '<a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('a')
+  it('returns expected attributes for anchor', async () => {
+    const element = await fixture(html`
+      <a id="example" data-controller="foo" data-reflex="bar" data-info="12345">Test</a>
+    `)
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'example',
@@ -37,10 +33,8 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for textarea', () => {
-    const dom = new JSDOM('<textarea id="example">StimulusReflex</textarea>')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('textarea')
+  it('returns expected attributes for textarea', async () => {
+    const element = await fixture(html`<textarea id="example">StimulusReflex</textarea>`)
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'example',
@@ -52,12 +46,10 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for textbox', () => {
-    const dom = new JSDOM(
-      '<input type="text" id="example" value="StimulusReflex" />'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('input')
+  it('returns expected attributes for textbox', async () => {
+    const element = await fixture(html`
+      <input type="text" id="example" value="StimulusReflex" />
+    `)
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'text',
@@ -70,13 +62,14 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for textbox when multiple inputs with same name', () => {
-    const dom = new JSDOM(`
-      <input name="repeated" type="text" id="example" value="StimulusReflex" />
-      <input name="repeated" type="text" id="another" value="StimulusReflex" />
+  it('returns expected attributes for textbox when multiple inputs with same name', async () => {
+    const dom = await fixture(html`
+      <div>
+        <input name="repeated" type="text" id="another" value="StimulusReflex" />
+        <input name="repeated" type="text" id="example" value="StimulusReflex" />
+      </div>
     `)
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('input#example')
+    const element = dom.querySelector('input#example')
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'text',
@@ -90,10 +83,8 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for unchecked checkbox', () => {
-    const dom = new JSDOM('<input type="checkbox" id="example" />')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('input')
+  it('returns expected attributes for unchecked checkbox', async () => {
+    const element = await fixture(html`<input type="checkbox" id="example" />`)
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'checkbox',
@@ -106,10 +97,8 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected attributes for checked checkbox', () => {
-    const dom = new JSDOM('<input type="checkbox" id="example" checked />')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('input')
+  it('returns expected attributes for checked checkbox', async () => {
+    const element = await fixture(html`<input type="checkbox" id="example" checked />`)
     const actual = extractElementAttributes(element)
     const expected = {
       type: 'checkbox',
@@ -122,12 +111,14 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns multiple values for a select', () => {
-    const dom = new JSDOM(
-      '<select name="my-select" id="my-select"><option value="one">One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('select')
+  it('returns multiple values for a select', async () => {
+    const element = await fixture(html`
+      <select name="my-select" id="my-select">
+        <option value="one">One</option>
+        <option value="two" selected>Two</option>
+        <option value="three">Three</option>
+      </select>
+    `)
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'my-select',
@@ -141,12 +132,14 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns multiple values for a multiple select', () => {
-    const dom = new JSDOM(
-      '<select name="my-select" id="my-select" multiple><option value="one" selected>One</option><option value="two" selected>Two</option><option value="three">Three</option></select>'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('select')
+  it('returns multiple values for a multiple select', async () => {
+    const element = await fixture(html`
+      <select name="my-select" id="my-select" multiple>
+        <option value="one" selected>One</option>
+        <option value="two" selected>Two</option>
+        <option value="three">Three</option>
+      </select>
+    `)
     const actual = extractElementAttributes(element)
     const expected = {
       id: 'my-select',
@@ -161,15 +154,18 @@ describe('extractElementAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns multiple values for a checkbox list', () => {
-    const dom = new JSDOM(
-      '<input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3 value="three">'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector(
-      '#my-checkbox-collection-1'
-    )
+  it('returns multiple values for a checkbox list', async () => {
+    const dom = await fixture(html`
+      <div>
+        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3" value="three">
+        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked>
+        <input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked>
+      </div>
+    `)
+
+    const element = dom.querySelector("input#my-checkbox-collection-1")
     const actual = extractElementAttributes(element)
+
     const expected = {
       id: 'my-checkbox-collection-1',
       value: 'one,two',

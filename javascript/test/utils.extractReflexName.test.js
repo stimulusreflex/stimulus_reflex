@@ -1,4 +1,5 @@
-import assert from 'assert'
+import { assert } from '@open-wc/testing'
+
 import { extractReflexName } from '../utils'
 
 describe('extractReflexName', () => {
