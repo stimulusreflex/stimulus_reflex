@@ -44,6 +44,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "actionpack", rails_version
   gem.add_dependency "actionview", rails_version
   gem.add_dependency "activesupport", rails_version
+  gem.add_dependency "railties", rails_version
 
   gem.add_dependency "cable_ready", "5.0.0.pre8"
   gem.add_dependency "nokogiri"

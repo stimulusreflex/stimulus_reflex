@@ -9,6 +9,7 @@ PATH
       cable_ready (= 5.0.0.pre8)
       nokogiri
       rack
+      railties (>= 5.2)
       redis
 
 GEM
@@ -207,7 +208,7 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.6)
-    redis (4.5.1)
+    redis (4.6.0)
     regexp_parser (2.1.1)
     rexml (3.2.5)
     rubocop (1.22.3)
