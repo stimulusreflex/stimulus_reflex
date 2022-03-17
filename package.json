@@ -41,7 +41,7 @@
     "build:watch": "yarn rollup -wc",
     "watch": "yarn build:watch",
     "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
-    "prettier-standard:format": "yarn run prettier-standard **/*.js *.js",
+    "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
     "test": "web-test-runner javascript/test/**/*.test.js"
   },
   "peerDependencies": {

@@ -29,7 +29,14 @@ Gem::Specification.new do |gem|
     "source_code_uri" => gem.homepage
   }
 
-  gem.files = Dir["app/**/*", "lib/**/*", "bin/*", "[A-Z]*"]
+  gem.files = Dir[
+    "lib/**/*.rb",
+    "app/**/*.rb",
+    "app/assets/javascripts/*",
+    "bin/*",
+    "[A-Z]*"
+  ]
+
   gem.test_files = Dir["test/**/*.rb"]
 
   rails_version = ">= 5.2"
