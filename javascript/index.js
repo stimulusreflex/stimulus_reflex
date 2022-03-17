@@ -5,7 +5,7 @@ import * as StimulusReflex from './stimulus_reflex'
 import Debug from './debug'
 import Deprecate from './deprecate'
 
-export default {
+const global = {
   ...StimulusReflex,
   get debug () {
     return Debug.value
@@ -20,3 +20,7 @@ export default {
     Deprecate.set(!!value)
   }
 }
+
+window.StimulusReflex = global
+
+export default global
