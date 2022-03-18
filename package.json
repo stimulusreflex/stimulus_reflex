@@ -28,8 +28,8 @@
   },
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./dist/stimulus_reflex.umd.js",
-  "module": "./dist/stimulus_reflex.module.js",
+  "main": "./dist/stimulus_reflex.umd.min.js",
+  "module": "./dist/stimulus_reflex.min.js",
   "files": [
     "dist/*",
     "javascript/*"

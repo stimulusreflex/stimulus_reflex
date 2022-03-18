@@ -21,6 +21,52 @@ const minify = () => {
   })
 }
 
+const esConfig = {
+  format: 'es',
+  inlineDynamicImports: true
+}
+
+const umdConfig = {
+  name: 'StimulusReflex',
+  format: 'umd',
+  exports: 'named',
+  globals: {
+    morphdom: 'morphdom',
+    cable_ready: 'CableReady',
+    '@hotwired/stimulus': 'Stimulus'
+  }
+}
+
+const distFolders = ['dist/', 'app/assets/javascripts/']
+
+const output = distFolders
+  .map(distFolder => [
+    {
+      ...umdConfig,
+      file: `${distFolder}/stimulus_reflex.umd.js`,
+      plugins: [pretty()]
+    },
+    {
+      ...umdConfig,
+      file: `${distFolder}/stimulus_reflex.umd.min.js`,
+      sourcemap: true,
+      plugins: [pretty()]
+    },
+    {
+      ...esConfig,
+      file: `${distFolder}/stimulus_reflex.js`,
+      format: 'es',
+      plugins: [pretty()]
+    },
+    {
+      ...esConfig,
+      file: `${distFolder}/stimulus_reflex.min.js`,
+      sourcemap: true,
+      plugins: [minify()]
+    }
+  ])
+  .flat()
+
 export default [
   {
     external: [
@@ -30,40 +76,7 @@ export default [
       '@rails/actioncable'
     ],
     input: 'javascript/index.js',
-    output: [
-      {
-        name: 'StimulusReflex',
-        file: 'dist/stimulus_reflex.umd.js',
-        format: 'umd',
-        sourcemap: true,
-        exports: 'named',
-        globals: {
-          morphdom: 'morphdom',
-          cable_ready: 'CableReady'
-        },
-        plugins: [pretty()]
-      },
-      {
-        file: 'dist/stimulus_reflex.module.js',
-        format: 'es',
-        sourcemap: true,
-        inlineDynamicImports: true,
-        plugins: [pretty()]
-      },
-      {
-        file: 'app/assets/javascripts/stimulus_reflex.js',
-        format: 'es',
-        inlineDynamicImports: true,
-        plugins: [pretty()]
-      },
-      {
-        file: 'app/assets/javascripts/stimulus_reflex.min.js',
-        format: 'es',
-        sourcemap: true,
-        inlineDynamicImports: true,
-        plugins: [minify()]
-      }
-    ],
+    output,
     plugins: [commonjs(), resolve(), json()],
     watch: {
       include: 'javascript/**'

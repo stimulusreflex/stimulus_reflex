@@ -113,14 +113,14 @@ View the [wiki](https://github.com/stimulusreflex/stimulus_reflex/wiki/Editor-Co
 1. Update the `cable_ready` dependency version in `stimulus_reflex.gemspec` and `package.json`
 1. Make sure that you run `yarn` and `bundle` to pick up the latest.
 1. Bump version number at `lib/stimulus_reflex/version.rb`. Pre-release versions use `.preN`
-1. Run `rake build`
+1. Run `rake build` and `yarn build`
 1. Run `bin/standardize`
-1. Commit and push changes to github
+1. Commit and push changes to GitHub
 1. Run `rake release`
 1. Run `yarn publish --no-git-tag-version`
 1. Yarn will prompt you for the new version. Pre-release versions use `-preN`
 1. Run `GITHUB_CHANGELOG_GENERATOR_TOKEN=SECRET rake changelog`
-1. Commit and push changes to github
+1. Commit and push changes to GitHub
 
 ## 📝 License
 
