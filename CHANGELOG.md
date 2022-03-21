@@ -10,11 +10,14 @@
 
 **Closed issues:**
 
+- Add example with locales to documentation [\#578](https://github.com/stimulusreflex/stimulus_reflex/issues/578)
+- `StimulusReflex.config.logging = nil` raises errors [\#574](https://github.com/stimulusreflex/stimulus_reflex/issues/574)
 - Reflex modifying ActionDispatch::Request before Rails Controller is instantiated  [\#570](https://github.com/stimulusreflex/stimulus_reflex/issues/570)
 - Can't integrate with alpine js  [\#567](https://github.com/stimulusreflex/stimulus_reflex/issues/567)
 
 **Merged pull requests:**
 
+- Fix logger when :logging is nil [\#573](https://github.com/stimulusreflex/stimulus_reflex/pull/573) ([ni3t](https://github.com/ni3t))
 - Bump nokogiri from 1.12.5 to 1.13.3 [\#572](https://github.com/stimulusreflex/stimulus_reflex/pull/572) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Temporarily fix OpenStruct with fix for `class` and `method` attributes [\#569](https://github.com/stimulusreflex/stimulus_reflex/pull/569) ([marcoroth](https://github.com/marcoroth))
 - Updated gemspec to specific Rails gems [\#568](https://github.com/stimulusreflex/stimulus_reflex/pull/568) ([paul](https://github.com/paul))
@@ -111,6 +114,7 @@
 **Fixed bugs:**
 
 - Sanity checker should not abort stimulus\_reflex install task [\#508](https://github.com/stimulusreflex/stimulus_reflex/issues/508)
+- Improve install experience [\#510](https://github.com/stimulusreflex/stimulus_reflex/pull/510) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -134,7 +138,6 @@
 
 **Fixed bugs:**
 
-- Improve install experience [\#510](https://github.com/stimulusreflex/stimulus_reflex/pull/510) ([leastbad](https://github.com/leastbad))
 - handle operations that have string-defined selector argument [\#509](https://github.com/stimulusreflex/stimulus_reflex/pull/509) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
@@ -363,6 +366,7 @@
 - make element.reflexController a dictionary [\#379](https://github.com/stimulusreflex/stimulus_reflex/pull/379) ([existentialmutt](https://github.com/existentialmutt))
 - fixed bug preventing callbacks for multiple morphs [\#378](https://github.com/stimulusreflex/stimulus_reflex/pull/378) ([leastbad](https://github.com/leastbad))
 - Handles to mitigate race conditions when running reflexes in quick succession on the same element [\#377](https://github.com/stimulusreflex/stimulus_reflex/pull/377) ([existentialmutt](https://github.com/existentialmutt))
+- Exit with nonzero status code [\#375](https://github.com/stimulusreflex/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
 
 ## [v3.4.0.pre4](https://github.com/stimulusreflex/stimulus_reflex/tree/v3.4.0.pre4) (2020-11-19)
 
@@ -382,7 +386,6 @@
 
 **Merged pull requests:**
 
-- Exit with nonzero status code [\#375](https://github.com/stimulusreflex/stimulus_reflex/pull/375) ([julianrubisch](https://github.com/julianrubisch))
 - use puts instead of ActionCable.logger to sidestep silenced AC logs [\#373](https://github.com/stimulusreflex/stimulus_reflex/pull/373) ([leastbad](https://github.com/leastbad))
 - Improve logged post\_install.js message [\#372](https://github.com/stimulusreflex/stimulus_reflex/pull/372) ([forsbergplustwo](https://github.com/forsbergplustwo))
 - Pass additional reflex-related data to reflex from data [\#370](https://github.com/stimulusreflex/stimulus_reflex/pull/370) ([joshleblanc](https://github.com/joshleblanc))
@@ -877,7 +880,6 @@
 **Implemented enhancements:**
 
 - update install script to set session store [\#134](https://github.com/stimulusreflex/stimulus_reflex/pull/134) ([leastbad](https://github.com/leastbad))
-- update package.json and readme [\#133](https://github.com/stimulusreflex/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 
 **Closed issues:**
 
@@ -889,6 +891,7 @@
 
 **Implemented enhancements:**
 
+- update package.json and readme [\#133](https://github.com/stimulusreflex/stimulus_reflex/pull/133) ([andrewmcodes](https://github.com/andrewmcodes))
 - Reload session prior to each reflex accessing it [\#131](https://github.com/stimulusreflex/stimulus_reflex/pull/131) ([hopsoft](https://github.com/hopsoft))
 - tweak prettier-standard and add actions caching [\#125](https://github.com/stimulusreflex/stimulus_reflex/pull/125) ([andrewmcodes](https://github.com/andrewmcodes))
 
@@ -1051,6 +1054,7 @@
 - \# Use inner\_html to avoid reliance on HTMLTemplateElement behavior [\#55](https://github.com/stimulusreflex/stimulus_reflex/pull/55) ([hopsoft](https://github.com/hopsoft))
 - Trim values before attribute assignment [\#54](https://github.com/stimulusreflex/stimulus_reflex/pull/54) ([hopsoft](https://github.com/hopsoft))
 - add test action [\#53](https://github.com/stimulusreflex/stimulus_reflex/pull/53) ([andrewmcodes](https://github.com/andrewmcodes))
+- Scoped Stimulus Reflex controllers [\#43](https://github.com/stimulusreflex/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 
 **Closed issues:**
 
@@ -1078,7 +1082,6 @@
 - Provide before/after callbacks for calls delegated to server side Stimulus controllers [\#4](https://github.com/stimulusreflex/stimulus_reflex/issues/4)
 - Updated Minimal Javascript Example in README.md [\#47](https://github.com/stimulusreflex/stimulus_reflex/pull/47) ([kobaltz](https://github.com/kobaltz))
 - Setup StimulusReflex controller callbacks [\#45](https://github.com/stimulusreflex/stimulus_reflex/pull/45) ([hopsoft](https://github.com/hopsoft))
-- Scoped Stimulus Reflex controllers [\#43](https://github.com/stimulusreflex/stimulus_reflex/pull/43) ([leastbad](https://github.com/leastbad))
 - add .vscode directory to .gitignore [\#42](https://github.com/stimulusreflex/stimulus_reflex/pull/42) ([andrewmcodes](https://github.com/andrewmcodes))
 - Allow override of default controller [\#37](https://github.com/stimulusreflex/stimulus_reflex/pull/37) ([hopsoft](https://github.com/hopsoft))
 - update the name of the actions per feedback [\#36](https://github.com/stimulusreflex/stimulus_reflex/pull/36) ([andrewmcodes](https://github.com/andrewmcodes))
