@@ -39,6 +39,8 @@ Gem::Specification.new do |gem|
 
   gem.test_files = Dir["test/**/*.rb"]
 
+  gem.required_ruby_version = ">= 2.7.0"
+
   rails_version = ">= 5.2"
   gem.add_dependency "actioncable", rails_version
   gem.add_dependency "actionpack", rails_version
