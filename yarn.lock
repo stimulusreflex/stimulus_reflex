@@ -1879,9 +1879,10 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-"cable_ready@https://github.com/cableready/dev-builds/archive/cable_ready/161ca09.tar.gz":
-  version "5.0.0-pre8"
-  resolved "https://github.com/cableready/dev-builds/archive/cable_ready/161ca09.tar.gz#3390f7207b249d982d8d775d91e920d1b042be28"
+"cable_ready@>= 5.0.0-pre9":
+  version "5.0.0-pre9"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre9.tgz#9c082b796f7b7add7965ce637a8d8717726be5ab"
+  integrity sha512-m7XggG+LRPFLsbH78G603F3AAYpkv+VfGCouN6RrP20Mgz9H0+xr7v2DN2F1CeJBBAliYPKcAt/48uTGjSrBaA==
   dependencies:
     morphdom "^2.6.1"
 

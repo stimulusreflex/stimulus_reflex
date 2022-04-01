@@ -50,7 +50,7 @@
   "dependencies": {
     "@hotwired/stimulus": ">= 3.0",
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "https://github.com/cableready/dev-builds/archive/cable_ready/161ca09.tar.gz"
+    "cable_ready": ">= 5.0.0-pre9"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
