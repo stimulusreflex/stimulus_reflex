@@ -44,7 +44,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "redis"
 
   gem.add_development_dependency "bundler", "~> 2.0"
-  gem.add_development_dependency "github_changelog_generator"
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "pry"
   gem.add_development_dependency "pry-nav"
