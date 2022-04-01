@@ -90,7 +90,41 @@ Please note that we are not actively providing support on Stack Overflow. If you
 
 ## 🚀 Installation and upgrading
 
-CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup). For information on upgrading existing projects to v3.4, read [this](https://docs.stimulusreflex.com/hello-world/setup#upgrading-to-v-3-4-0).
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup).
+
+### Rubygem
+
+```sh
+bundle add cable_ready
+```
+
+### JavaScript
+
+There are a few ways to install the StimulusReflex JavaScript client, depending on your application setup.
+
+#### ESBuild / Webpacker
+
+```sh
+yarn add stimulus_reflex
+```
+
+#### Importmaps
+
+```ruby
+# config/importmap.rb
+
+# ...
+
+pin 'stimulus_reflex', to: 'stimulus_reflex.min.js', preload: true
+```
+
+#### Rails Asset pipeline (Sprockets):
+
+```html+erb
+<!-- app/views/layouts/application.html.erb -->
+
+<%= javascript_include_tag "stimulus_reflex.umd.min.js", "data-turbo-track": "reload" %>
+```
 
 ## 🙏 Contributing
 
