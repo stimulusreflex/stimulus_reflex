@@ -119,8 +119,8 @@ View the [wiki](https://github.com/stimulusreflex/stimulus_reflex/wiki/Editor-Co
 1. Run `rake release`
 1. Run `yarn publish --no-git-tag-version`
 1. Yarn will prompt you for the new version. Pre-release versions use `-preN`
-1. Run `GITHUB_CHANGELOG_GENERATOR_TOKEN=SECRET rake changelog`
 1. Commit and push changes to GitHub
+1. Create a new release on GitHub ([here](https://github.com/stimulusreflex/stimulus_reflex/releases)) and generate the changelog for the stable release for it
 
 ## 📝 License
 
