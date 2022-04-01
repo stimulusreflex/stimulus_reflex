@@ -46,22 +46,15 @@ jobs:
     strategy:
       matrix:
         ruby-version: [2.6.6, 2.7.2, '3.0', 3.1]
+
     steps:
     - uses: actions/checkout@master
+
     - name: Set up Ruby ${{ matrix.ruby-version }}
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
-    - uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - name: Bundle install
-      run: |
-        gem install bundler
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
+        bundler-cache: true
+
     - name: Run ruby tests
       run: bundle exec rake test_ruby
