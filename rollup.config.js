@@ -37,7 +37,7 @@ const umdConfig = {
   }
 }
 
-const distFolders = ['dist/', 'app/assets/javascripts/']
+const distFolders = ['dist', 'app/assets/javascripts']
 
 const output = distFolders
   .map(distFolder => [
