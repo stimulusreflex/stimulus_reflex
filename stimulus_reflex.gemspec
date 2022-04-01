@@ -29,16 +29,26 @@ Gem::Specification.new do |gem|
     "source_code_uri" => gem.homepage
   }
 
-  gem.files = Dir["app/**/*", "lib/**/*", "bin/*", "[A-Z]*"]
+  gem.files = Dir[
+    "lib/**/*.rb",
+    "app/**/*.rb",
+    "app/assets/javascripts/*",
+    "bin/*",
+    "[A-Z]*"
+  ]
+
   gem.test_files = Dir["test/**/*.rb"]
+
+  gem.required_ruby_version = ">= 2.7.0"
 
   rails_version = ">= 5.2"
   gem.add_dependency "actioncable", rails_version
   gem.add_dependency "actionpack", rails_version
   gem.add_dependency "actionview", rails_version
   gem.add_dependency "activesupport", rails_version
+  gem.add_dependency "railties", rails_version
 
-  gem.add_dependency "cable_ready", "5.0.0.pre8"
+  gem.add_dependency "cable_ready", ">= 5.0.0.pre9"
   gem.add_dependency "nokogiri"
   gem.add_dependency "rack"
   gem.add_dependency "redis"

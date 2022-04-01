@@ -1,6 +1,7 @@
-import { camelize } from './utils'
 import Debug from './debug'
-import reflexes from './reflexes'
+
+import { camelize } from './utils'
+import { reflexes } from './reflex_store'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
 //

@@ -28,30 +28,40 @@
   },
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./javascript/stimulus_reflex.js",
-  "module": "./javascript/stimulus_reflex.js",
+  "main": "./dist/stimulus_reflex.umd.min.js",
+  "module": "./dist/stimulus_reflex.min.js",
+  "files": [
+    "dist/*",
+    "javascript/*"
+  ],
   "scripts": {
-    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/*.js ./javascript/**/*.js",
-    "prettier-standard:format": "yarn run prettier-standard ./javascript/*.js ./javascript/**/*.js",
-    "test": "yarn run mocha --require @babel/register --require jsdom-global/register --require esm ./javascript/test"
+    "lint": "yarn prettier-standard:check",
+    "format": "yarn prettier-standard:format",
+    "build": "yarn rollup -c",
+    "build:watch": "yarn rollup -wc",
+    "watch": "yarn build:watch",
+    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
+    "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
+    "test": "web-test-runner javascript/test/**/*.test.js"
   },
   "peerDependencies": {
-    "stimulus": ">= 1.1"
+    "@hotwired/stimulus": ">= 3.0"
   },
   "dependencies": {
+    "@hotwired/stimulus": ">= 3.0",
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": "5.0.0-pre8"
+    "cable_ready": ">= 5.0.0-pre9"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/register": "^7.6.2",
-    "assert": "^2.0.0",
-    "esm": "^3.2.25",
-    "jsdom": "^16.0.1",
-    "jsdom-global": "^3.0.2",
-    "mocha": "^8.0.1",
+    "@open-wc/testing": "^3.1.2",
+    "@rollup/plugin-commonjs": "^21.0.3",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@web/dev-server-esbuild": "^0.3.0",
+    "@web/dev-server-rollup": "^0.3.15",
+    "@web/test-runner": "^0.13.27",
     "prettier-standard": "^16.4.1",
-    "stimulus": ">= 1.1"
+    "rollup": "^2.70.1",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }

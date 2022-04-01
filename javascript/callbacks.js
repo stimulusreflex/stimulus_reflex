@@ -1,8 +1,10 @@
 import CableReady from 'cable_ready'
-import reflexes from './reflexes'
-import { XPathToElement } from './utils'
-import { dispatchLifecycleEvent } from './lifecycle'
+
 import Log from './log'
+
+import { reflexes } from './reflex_store'
+import { dispatchLifecycleEvent } from './lifecycle'
+import { XPathToElement } from './utils'
 
 const beforeDOMUpdate = event => {
   const { stimulusReflex, payload } = event.detail || {}

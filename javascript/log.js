@@ -1,5 +1,6 @@
-import reflexes from './reflexes'
 import Debug from './debug'
+
+import { reflexes } from './reflex_store'
 
 const request = (
   reflexId,

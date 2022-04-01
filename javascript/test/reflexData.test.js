@@ -1,17 +1,9 @@
-import assert from 'assert'
-import { JSDOM } from 'jsdom'
-import ReflexData from '../reflex_data'
-import Schema from '../schema'
+import { fixture, html, expect, assert } from '@open-wc/testing'
 
-Schema.set({
-  schema: {
-    controllerAttribute: 'data-controller',
-    actionAttribute: 'data-action',
-    targetAttribute: 'data-target',
-    reflexIncludeInnerHtmlAttribute: 'data-reflex-include-inner-html',
-    reflexIncludeTextContentAttribute: 'data-reflex-include-text-content'
-  }
-})
+import ReflexData from '../reflex_data'
+import Schema, { defaultSchema } from '../schema'
+
+Schema.set(defaultSchema)
 
 describe('ReflexData', () => {
   it('returns an array of selectors', () => {
@@ -25,77 +17,134 @@ describe('ReflexData', () => {
     )
   })
 
-  it("attaches the element's innerHTML if includeInnerHTML is true", () => {
-    const dom = new JSDOM(
-      '<div><ul><li>First Item</li><li>Last Item</li></ul></div>'
+  it("attaches the element's innerHTML if includeInnerHTML is true", async () => {
+    const element = await fixture(
+      html`
+        <div>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
     )
-    const element = dom.window.document.querySelector('div')
 
     assert.equal(
-      new ReflexData({ includeInnerHTML: true }, element, element).innerHTML,
-      '<ul><li>First Item</li><li>Last Item</li></ul>'
+      new ReflexData(
+        { includeInnerHTML: true },
+        element,
+        element
+      ).innerHTML.replace(/\s+/g, ''),
+      '<ul><li>First</li><li>Last</li></ul>'
     )
   })
 
-  it("attaches the element's innerHTML if includeInnerHTML is declared on the reflexElement", () => {
-    const dom = new JSDOM(
-      '<div data-reflex-include-inner-html><ul><li>First Item</li><li>Last Item</li></ul></div>'
+  it("attaches the element's innerHTML if includeInnerHTML is declared on the reflexElement", async () => {
+    const element = await fixture(
+      html`
+        <div data-reflex-include-inner-html>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
     )
-    const element = dom.window.document.querySelector('div')
 
     assert.equal(
-      new ReflexData({}, element, element).innerHTML,
-      '<ul><li>First Item</li><li>Last Item</li></ul>'
+      new ReflexData({}, element, element).innerHTML.replace(/\s+/g, ''),
+      '<ul><li>First</li><li>Last</li></ul>'
     )
   })
 
-  it("doesn't attach the element's innerHTML if includeInnerHTML is falsey", () => {
-    const dom = new JSDOM(
-      '<div><ul><li>First Item</li><li>Last Item</li></ul></div>'
+  it("doesn't attach the element's innerHTML if includeInnerHTML is falsey", async () => {
+    const element = await fixture(
+      html`
+        <div>
+          <ul>
+            <li>First</li>
+            <li>Last</li>
+          </ul>
+        </div>
+      `
     )
-    const element = dom.window.document.querySelector('div')
 
     assert.equal(new ReflexData({}, element, element).innerHTML, '')
   })
 
-  it("attaches the element's textContent if includeTextContent is true", () => {
-    const dom = new JSDOM('<div><p>Some Text <a>with a link</a></p></div>')
-    const element = dom.window.document.querySelector('div')
+  it("attaches the element's textContent if includeTextContent is true", async () => {
+    const element = await fixture(
+      html`
+        <div>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
+    )
 
     assert.equal(
-      new ReflexData({ includeTextContent: true }, element, element)
-        .textContent,
+      new ReflexData({ includeTextContent: true }, element, element).textContent
+        .replace(/\s+/g, ' ')
+        .trim(),
       'Some Text with a link'
     )
   })
 
-  it("attaches the element's textContent if includeTextContent is declared on the reflex element", () => {
-    const dom = new JSDOM(
-      '<div data-reflex-include-text-content><p>Some Text <a>with a link</a></p></div>'
+  it("attaches the element's textContent if includeTextContent is declared on the reflex element", async () => {
+    const element = await fixture(
+      html`
+        <div data-reflex-include-text-content>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
     )
-    const element = dom.window.document.querySelector('div')
 
     assert.equal(
-      new ReflexData({}, element, element).textContent,
+      new ReflexData({}, element, element).textContent
+        .replace(/\s+/g, ' ')
+        .trim(),
       'Some Text with a link'
     )
   })
 
-  it("doesn't attach the element's textContent if includeTextContent is falsey", () => {
-    const dom = new JSDOM('<div><p>Some Text <a>with a link</a></p></div>')
-    const element = dom.window.document.querySelector('div')
+  it("doesn't attach the element's textContent if includeTextContent is falsey", async () => {
+    const element = await fixture(
+      html`
+        <div>
+          <p>Some Text <a>with a link</a></p>
+        </div>
+      `
+    )
 
     assert.equal(new ReflexData({}, element, element).textContent, '')
   })
 
-  it('preserves multiple values from a checkbox list', () => {
-    const dom = new JSDOM(
-      '<input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-1" value="one" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-2" value="two" checked><input type="checkbox" name="my-checkbox-collection" id="my-checkbox-collection-3 value="three">'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector(
-      '#my-checkbox-collection-1'
-    )
+  it('preserves multiple values from a checkbox list', async () => {
+    const dom = await fixture(html`
+      <div>
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-3"
+          value="three"
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-1"
+          value="one"
+          checked
+        />
+        <input
+          type="checkbox"
+          name="my-checkbox-collection"
+          id="my-checkbox-collection-2"
+          value="two"
+          checked
+        />
+      </div>
+    `)
+
+    const element = document.querySelector('#my-checkbox-collection-1')
 
     assert.equal(new ReflexData({}, element, element).attrs.value, 'one,two')
     assert.deepStrictEqual(new ReflexData({}, element, element).attrs.values, [

@@ -1,6 +1,7 @@
+import Schema from './schema'
+
 import { attributeValues } from './attributes'
 import { extractReflexName } from './utils'
-import Schema from './schema'
 
 // Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
