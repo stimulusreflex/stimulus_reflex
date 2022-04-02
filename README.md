@@ -95,7 +95,7 @@ CLI and manual setup procedures are fully detailed in the [official docs](https:
 ### Rubygem
 
 ```sh
-bundle add cable_ready
+bundle add stimulus_reflex
 ```
 
 ### JavaScript
