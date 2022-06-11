@@ -74,6 +74,8 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
       if reflex.halted?
         reflex.halted data: data
+      elsif reflex.forbidden?
+        reflex.forbidden data: data
       else
         begin
           reflex.broadcast(reflex_data.selectors, data)

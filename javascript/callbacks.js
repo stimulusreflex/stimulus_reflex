@@ -86,8 +86,15 @@ const afterDOMUpdate = event => {
 const routeReflexEvent = event => {
   const { stimulusReflex, payload, name, body } = event.detail || {}
   const eventType = name.split('-')[2]
-  if (!stimulusReflex || !['nothing', 'halted', 'error'].includes(eventType))
-    return
+
+  const eventTypes = {
+    nothing: nothing,
+    halted: halted,
+    forbidden: forbidden,
+    error: error
+  }
+
+  if (!stimulusReflex || !Object.keys(eventTypes).includes(eventType)) return
 
   const { reflexId, xpathElement, xpathController } = stimulusReflex
   const reflexElement = XPathToElement(xpathElement)
@@ -100,17 +107,7 @@ const routeReflexEvent = event => {
     if (eventType === 'error') controllerElement.reflexError[reflexId] = body
   }
 
-  switch (eventType) {
-    case 'nothing':
-      nothing(event, payload, promise, reflex, reflexElement)
-      break
-    case 'error':
-      error(event, payload, promise, reflex, reflexElement)
-      break
-    case 'halted':
-      halted(event, payload, promise, reflex, reflexElement)
-      break
-  }
+  eventTypes[eventType](event, payload, promise, reflex, reflexElement)
 
   setTimeout(() =>
     dispatchLifecycleEvent(
@@ -129,7 +126,7 @@ const routeReflexEvent = event => {
 const nothing = (event, payload, promise, reflex, reflexElement) => {
   reflex.finalStage = 'after'
 
-  Log.success(event, false)
+  Log.success(event)
 
   setTimeout(() =>
     promise.resolve({
@@ -146,7 +143,24 @@ const nothing = (event, payload, promise, reflex, reflexElement) => {
 const halted = (event, payload, promise, reflex, reflexElement) => {
   reflex.finalStage = 'halted'
 
-  Log.success(event, true)
+  Log.halted(event)
+
+  setTimeout(() =>
+    promise.resolve({
+      data: promise.data,
+      element: reflexElement,
+      event,
+      payload,
+      reflexId: promise.data.reflexId,
+      toString: () => ''
+    })
+  )
+}
+
+const forbidden = (event, payload, promise, reflex, reflexElement) => {
+  reflex.finalStage = 'forbidden'
+
+  Log.forbidden(event)
 
   setTimeout(() =>
     promise.resolve({

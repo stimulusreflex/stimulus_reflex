@@ -10,6 +10,7 @@ import { reflexes } from './reflex_store'
 //   * success
 //   * error
 //   * halted
+//   * forbidden
 //   * after
 //   * finalize
 //
@@ -162,6 +163,19 @@ document.addEventListener(
 )
 
 document.addEventListener(
+  'stimulus-reflex:forbidden',
+  event =>
+    invokeLifecycleMethod(
+      'forbidden',
+      event.detail.element,
+      event.detail.controller.element,
+      event.detail.reflexId,
+      event.detail.payload
+    ),
+  true
+)
+
+document.addEventListener(
   'stimulus-reflex:after',
   event =>
     invokeLifecycleMethod(
@@ -194,6 +208,7 @@ document.addEventListener(
 //   * success
 //   * error
 //   * halted
+//   * forbidden
 //   * after
 //   * finalize
 //

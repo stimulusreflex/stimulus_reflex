@@ -46,7 +46,11 @@ export default class extends Controller {
     // show error message
   }
 
-  reflexHalted (element, reflex, error, reflexId) {
+  reflexForbidden (element, reflex, noop, reflexId) {
+    // Reflex action did not have permission to run
+  }
+
+  reflexHalted (element, reflex, noop, reflexId) {
     // handle aborted Reflex action
   }
 
