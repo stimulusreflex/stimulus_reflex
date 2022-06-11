@@ -114,7 +114,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def commit_session(reflex)
-    store = reflex.request.session.instance_variable_get("@by")
+    store = reflex.request.session.instance_variable_get(:@by)
     store.commit_session reflex.request, reflex.controller.response
   rescue => exception
     error = exception_with_backtrace(exception)

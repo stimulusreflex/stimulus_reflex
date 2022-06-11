@@ -10,9 +10,6 @@ class StimulusReflex::ConcernTest < ActiveSupport::TestCase
 
   class TestReflex < StimulusReflex::Reflex
     include TestConcern
-
-    def initialize
-    end
   end
 
   class TestController < ActionController::Base
