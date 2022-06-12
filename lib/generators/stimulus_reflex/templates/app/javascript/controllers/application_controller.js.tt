@@ -48,6 +48,7 @@ export default class extends Controller {
 
   reflexForbidden (element, reflex, noop, reflexId) {
     // Reflex action did not have permission to run
+    // window.location = '/'
   }
 
   reflexHalted (element, reflex, noop, reflexId) {
