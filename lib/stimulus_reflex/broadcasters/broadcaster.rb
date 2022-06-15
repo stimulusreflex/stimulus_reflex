@@ -26,7 +26,7 @@ module StimulusReflex
       false
     end
 
-    def halted(data: {})
+    def broadcast_halt(data: {})
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
         name: "stimulus-reflex:morph-halted",
@@ -35,7 +35,7 @@ module StimulusReflex
       ).broadcast
     end
 
-    def forbidden(data: {})
+    def broadcast_forbid(data: {})
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
         name: "stimulus-reflex:morph-forbidden",
@@ -44,7 +44,7 @@ module StimulusReflex
       ).broadcast
     end
 
-    def error(data: {}, body: nil)
+    def broadcast_error(data: {}, body: nil)
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
         name: "stimulus-reflex:morph-error",

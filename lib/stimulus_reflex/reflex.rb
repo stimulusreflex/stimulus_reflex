@@ -17,7 +17,7 @@ class StimulusReflex::Reflex
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
-  delegate :broadcast, :halted, :forbidden, :error, to: :broadcaster
+  delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
