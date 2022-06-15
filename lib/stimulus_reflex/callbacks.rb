@@ -6,7 +6,21 @@ module StimulusReflex
 
     included do
       include ActiveSupport::Callbacks
-      define_callbacks :process, skip_after_callbacks_if_terminated: true
+      define_callbacks :process, skip_after_callbacks_if_terminated: true, terminator: ->(target, result_lambda) do
+        halted = true
+        forbidden = true
+        catch(:abort) do
+          catch(:forbidden) do
+            result_lambda.call
+            forbidden = false
+          end
+          halted = false
+        end
+        forbidden = false if halted == true
+        target.instance_variable_set(:@halted, halted)
+        target.instance_variable_set(:@forbidden, forbidden)
+        halted || forbidden
+      end
     end
 
     class_methods do

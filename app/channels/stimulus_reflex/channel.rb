@@ -25,7 +25,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         if reflex
           reflex.rescue_with_handler(exception)
           reflex.logger&.error error_message
-          reflex.error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
+          reflex.broadcast_error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
           if exception.is_a? StimulusReflex::Reflex::VersionMismatchError
             mismatch = "Reflex failed due to stimulus_reflex gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the \"x.y.z.preN\" version format, while NPM packages use \"x.y.z-preN\".\n\nstimulus_reflex gem: #{StimulusReflex::VERSION}\nstimulus_reflex NPM: #{data["version"]}"
@@ -73,14 +73,16 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       end
 
       if reflex.halted?
-        reflex.halted data: data
+        reflex.broadcast_halt data: data
+      elsif reflex.forbidden?
+        reflex.broadcast_forbid data: data
       else
         begin
           reflex.broadcast(reflex_data.selectors, data)
         rescue => exception
           reflex.rescue_with_handler(exception)
           error = exception_with_backtrace(exception)
-          reflex.error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
+          reflex.broadcast_error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
           reflex.logger&.error "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
         end
       end
@@ -112,7 +114,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def commit_session(reflex)
-    store = reflex.request.session.instance_variable_get("@by")
+    store = reflex.request.session.instance_variable_get(:@by)
     store.commit_session reflex.request, reflex.controller.response
   rescue => exception
     error = exception_with_backtrace(exception)

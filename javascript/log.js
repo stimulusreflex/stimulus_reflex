@@ -22,7 +22,7 @@ const request = (
   })
 }
 
-const success = (event, halted) => {
+const success = event => {
   const { detail } = event || {}
   const { selector, payload } = detail || {}
   const { reflexId, target, morph } = detail.stimulusReflex || {}
@@ -40,10 +40,42 @@ const success = (event, halted) => {
     .split('-')
     .slice(1)
     .join('_')
+  const output = { reflexId, morph, payload }
+  if (operation !== 'dispatch_event') output.operation = operation
   console.log(
     `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
       '\u221E'}${progress} ${duration}`,
-    { reflexId, morph, operation, halted, payload }
+    output
+  )
+}
+
+const halted = event => {
+  const { detail } = event || {}
+  const { reflexId, target, payload } = detail.stimulusReflex || {}
+  const reflex = reflexes[reflexId]
+  if (Debug.disabled || reflex.promise.data.suppressLogging) return
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
+  console.log(
+    `\u2193 reflex \u2193 ${target} ${duration} %cHALTED`,
+    'color: #ffa500;',
+    { reflexId, payload }
+  )
+}
+
+const forbidden = event => {
+  const { detail } = event || {}
+  const { reflexId, target, payload } = detail.stimulusReflex || {}
+  const reflex = reflexes[reflexId]
+  if (Debug.disabled || reflex.promise.data.suppressLogging) return
+  const duration = reflex.timestamp
+    ? `in ${new Date() - reflex.timestamp}ms`
+    : 'CLONED'
+  console.log(
+    `\u2193 reflex \u2193 ${target} ${duration} %cFORBIDDEN`,
+    'color: #BF40BF;',
+    { reflexId, payload }
   )
 }
 
@@ -62,4 +94,4 @@ const error = event => {
   )
 }
 
-export default { request, success, error }
+export default { request, success, halted, forbidden, error }

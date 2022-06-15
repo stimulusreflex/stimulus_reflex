@@ -31,7 +31,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = BeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 6, reflex.instance_variable_get("@count")
+    assert_equal 6, reflex.instance_variable_get(:@count)
   end
 
   test "before_reflex with block works" do
@@ -47,7 +47,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = BeforeBlockCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 6, reflex.instance_variable_get("@count")
+    assert_equal 6, reflex.instance_variable_get(:@count)
   end
 
   test "basic after_reflex works" do
@@ -67,7 +67,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = AfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 1, reflex.instance_variable_get("@count")
+    assert_equal 1, reflex.instance_variable_get(:@count)
   end
 
   test "after_reflex with block works" do
@@ -83,7 +83,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = AfterBlockCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 1, reflex.instance_variable_get("@count")
+    assert_equal 1, reflex.instance_variable_get(:@count)
   end
 
   test "basic around_reflex works" do
@@ -105,7 +105,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = AroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 14, reflex.instance_variable_get("@count")
+    assert_equal 14, reflex.instance_variable_get(:@count)
   end
 
   test "execute methods in order" do
@@ -133,7 +133,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = CallbackOrderReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 3, reflex.instance_variable_get("@count")
+    assert_equal 3, reflex.instance_variable_get(:@count)
   end
 
   test "basic if option works" do
@@ -173,7 +173,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = IfCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 23, reflex.instance_variable_get("@count")
+    assert_equal 23, reflex.instance_variable_get(:@count)
   end
 
   test "if option with proc/lambda works" do
@@ -205,7 +205,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = IfProcCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 23, reflex.instance_variable_get("@count")
+    assert_equal 23, reflex.instance_variable_get(:@count)
   end
 
   test "basic unless option works" do
@@ -245,7 +245,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = UnlessCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 23, reflex.instance_variable_get("@count")
+    assert_equal 23, reflex.instance_variable_get(:@count)
   end
 
   test "unless option with proc/lambda works" do
@@ -277,7 +277,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = UnlessProcCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 23, reflex.instance_variable_get("@count")
+    assert_equal 23, reflex.instance_variable_get(:@count)
   end
 
   test "only option works" do
@@ -311,7 +311,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = OnlyCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :decrement, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:decrement)
-    assert_equal(-8, reflex.instance_variable_get("@count"))
+    assert_equal(-8, reflex.instance_variable_get(:@count))
   end
 
   test "except option works" do
@@ -345,11 +345,11 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = ExceptCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 6, reflex.instance_variable_get("@count")
+    assert_equal 6, reflex.instance_variable_get(:@count)
 
     reflex = ExceptCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :decrement, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:decrement)
-    assert_equal(-8, reflex.instance_variable_get("@count"))
+    assert_equal(-8, reflex.instance_variable_get(:@count))
   end
 
   test "skip_before_reflex works" do
@@ -383,7 +383,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SkipBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 6, reflex.instance_variable_get("@count")
+    assert_equal 6, reflex.instance_variable_get(:@count)
   end
 
   test "skip_after_reflex works" do
@@ -417,7 +417,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SkipAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 1, reflex.instance_variable_get("@count")
+    assert_equal 1, reflex.instance_variable_get(:@count)
   end
 
   test "skip_around_reflex works" do
@@ -455,7 +455,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SkipAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 7, reflex.instance_variable_get("@count")
+    assert_equal 7, reflex.instance_variable_get(:@count)
   end
 
   test "skip_before_reflex works in inherited reflex" do
@@ -484,7 +484,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = InheritedSkipApplicationReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 6, reflex.instance_variable_get("@count")
+    assert_equal 6, reflex.instance_variable_get(:@count)
   end
 
   test "basic prepend_before_reflex works" do
@@ -509,7 +509,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SimplePrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 3, reflex.instance_variable_get("@count")
+    assert_equal 3, reflex.instance_variable_get(:@count)
   end
 
   test "prepend_before_reflex with block works" do
@@ -529,7 +529,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = BlockPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 3, reflex.instance_variable_get("@count")
+    assert_equal 3, reflex.instance_variable_get(:@count)
   end
 
   test "basic prepend_before_reflex works in inherited reflex" do
@@ -559,7 +559,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = InheritedPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 9, reflex.instance_variable_get("@count")
+    assert_equal 9, reflex.instance_variable_get(:@count)
   end
 
   test "basic prepend_around_reflex works" do
@@ -588,7 +588,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SimplePrependAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 26, reflex.instance_variable_get("@count")
+    assert_equal 26, reflex.instance_variable_get(:@count)
   end
 
   test "basic prepend_after_reflex works" do
@@ -613,7 +613,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = SimplePrependAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 9, reflex.instance_variable_get("@count")
+    assert_equal 9, reflex.instance_variable_get(:@count)
   end
 
   test "append before_, around_ and after_reflex works" do
@@ -645,7 +645,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
 
     reflex = AppendCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
     reflex.process(:increment)
-    assert_equal 25, reflex.instance_variable_get("@count")
+    assert_equal 25, reflex.instance_variable_get(:@count)
   end
 end
 

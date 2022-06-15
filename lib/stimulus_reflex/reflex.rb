@@ -17,7 +17,7 @@ class StimulusReflex::Reflex
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
-  delegate :broadcast, :halted, :error, to: :broadcaster
+  delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
@@ -128,12 +128,7 @@ class StimulusReflex::Reflex
 
   # Invoke the reflex action specified by `name` and run all callbacks
   def process(name, *args)
-    reflex_invoked = false
-    result = run_callbacks(:process) {
-      public_send(name, *args).tap { reflex_invoked = true }
-    }
-    @halted ||= result == false && !reflex_invoked
-    result
+    run_callbacks(:process) { public_send(name, *args) }
   end
 
   # Indicates if the callback chain was halted via a throw(:abort) in a before_reflex callback.
@@ -141,6 +136,11 @@ class StimulusReflex::Reflex
   # IMPORTANT: The reflex will not re-render the page if the callback chain is halted
   def halted?
     !!@halted
+  end
+
+  # Indicates if the callback chain was halted via a throw(:forbidden) in a before_reflex callback.
+  def forbidden?
+    !!@forbidden
   end
 
   def default_reflex
