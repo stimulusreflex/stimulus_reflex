@@ -5,13 +5,15 @@ import Deprecate from '../deprecate'
 
 let consumer
 let params
-let subscriptionActive
+let subscription
+let active
+let queue = []
 
 const initialize = (consumerValue, paramsValue) => {
   consumer = consumerValue
   params = paramsValue
   document.addEventListener('DOMContentLoaded', () => {
-    subscriptionActive = false
+    active = false
     connectionStatusClass()
     if (Deprecate.enabled && consumer)
       console.warn(
@@ -22,15 +24,16 @@ const initialize = (consumerValue, paramsValue) => {
   document.addEventListener('turbo:load', connectionStatusClass)
 }
 
-const createSubscription = controller => {
+const subscribe = controller => {
+  if (subscription) return
   consumer = consumer || controller.application.consumer || createConsumer()
   const { channel } = controller.StimulusReflex
-  const subscription = { channel, ...params }
-  const identifier = JSON.stringify(subscription)
+  const request = { channel, ...params }
+  const identifier = JSON.stringify(request)
 
-  controller.StimulusReflex.subscription =
+  subscription =
     consumer.subscriptions.findAll(identifier)[0] ||
-    consumer.subscriptions.create(subscription, {
+    consumer.subscriptions.create(request, {
       received,
       connected,
       rejected,
@@ -39,14 +42,17 @@ const createSubscription = controller => {
 }
 
 const connected = () => {
-  subscriptionActive = true
+  active = true
   connectionStatusClass()
   emitEvent('stimulus-reflex:connected')
   emitEvent('stimulus-reflex:action-cable:connected')
+
+  queue.forEach(reflex => subscription.send(reflex))
+  queue = []
 }
 
 const rejected = () => {
-  subscriptionActive = false
+  active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:rejected')
   emitEvent('stimulus-reflex:action-cable:rejected')
@@ -54,10 +60,15 @@ const rejected = () => {
 }
 
 const disconnected = willAttemptReconnect => {
-  subscriptionActive = false
+  active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
   emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
+}
+
+const enqueueReflex = (element, id) => {
+  const reflex = element.reflexData[id]
+  active ? subscription.send(reflex) : queue.push(reflex)
 }
 
 const connectionStatusClass = () => {
@@ -69,13 +80,11 @@ const connectionStatusClass = () => {
     )
   ) {
     list.add(
-      subscriptionActive
-        ? 'stimulus-reflex-connected'
-        : 'stimulus-reflex-disconnected'
+      active ? 'stimulus-reflex-connected' : 'stimulus-reflex-disconnected'
     )
     return
   }
-  if (subscriptionActive) {
+  if (active) {
     list.replace('stimulus-reflex-disconnected', 'stimulus-reflex-connected')
   } else {
     list.replace('stimulus-reflex-connected', 'stimulus-reflex-disconnected')
@@ -83,15 +92,7 @@ const connectionStatusClass = () => {
 }
 
 export default {
-  consumer,
-  params,
-  get subscriptionActive () {
-    return subscriptionActive
-  },
-  createSubscription,
-  connected,
-  rejected,
-  disconnected,
-  connectionStatusClass,
+  subscribe,
+  enqueueReflex,
   initialize
 }

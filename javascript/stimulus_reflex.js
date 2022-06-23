@@ -77,15 +77,8 @@ const initialize = (
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  ActionCableTransport.createSubscription(controller)
+  ActionCableTransport.subscribe(controller)
   Object.assign(controller, {
-    // Indicates if the ActionCable web socket connection is open.
-    // The connection must be open before calling stimulate.
-    //
-    isActionCableConnectionOpen () {
-      return this.StimulusReflex.subscription.consumer.connection.isOpen()
-    },
-
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
@@ -145,12 +138,6 @@ const register = (controller, options = {}) => {
 
       const reflexId = reflexData.reflexId
 
-      if (!this.isActionCableConnectionOpen())
-        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
-
-      if (!ActionCableTransport.subscriptionActive)
-        throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
-
       // lifecycle setup
       controllerElement.reflexController =
         controllerElement.reflexController || {}
@@ -197,9 +184,7 @@ const register = (controller, options = {}) => {
           formData
         }
 
-        this.StimulusReflex.subscription.send(
-          controllerElement.reflexData[reflexId]
-        )
+        ActionCableTransport.enqueueReflex(controllerElement, reflexId)
       })
 
       const promise = registerReflex(reflexData.valueOf())
