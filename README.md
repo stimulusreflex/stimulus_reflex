@@ -47,7 +47,7 @@
 ### 🎉 **An exciting new way to build modern, reactive, real-time apps with Ruby on Rails.**
 
 StimulusReflex eliminates the complexity imposed by full-stack frontend frameworks.
-And, it's fast.
+And...it's fast.
 
 It works seamlessly with the Rails tooling you already know and love.
 
