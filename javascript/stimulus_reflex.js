@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
+import Stimulus from './app'
 import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
@@ -53,9 +54,9 @@ const initialize = (
     { once: true }
   )
   IsolationMode.set(!!isolate)
-  reflexes.app = application
+  Stimulus.set(application)
   Schema.set(application)
-  reflexes.app.register(
+  Stimulus.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )

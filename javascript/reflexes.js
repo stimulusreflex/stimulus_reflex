@@ -1,6 +1,7 @@
 import CableReady from 'cable_ready'
 
 import Debug from './debug'
+import Stimulus from './app'
 import Schema from './schema'
 import IsolationMode from './isolation_mode'
 
@@ -59,7 +60,7 @@ const received = data => {
 
       controllerElement.reflexController[
         reflexId
-      ] = reflexes.app.getControllerForElementAndIdentifier(
+      ] = Stimulus.app.getControllerForElementAndIdentifier(
         controllerElement,
         reflexData.reflexController
       )
@@ -149,7 +150,7 @@ const setupDeclarativeReflexes = debounce(() => {
     reflexAttributeNames.forEach(reflexName => {
       const controller = findControllerByReflexName(
         reflexName,
-        allReflexControllers(reflexes.app, element)
+        allReflexControllers(Stimulus.app, element)
       )
       let action
       if (controller) {
