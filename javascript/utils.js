@@ -83,6 +83,7 @@ const emitEvent = (event, detail) => {
 const elementToXPath = element => {
   if (element.id !== '') return "//*[@id='" + element.id + "']"
   if (element === document.body) return '/html/body'
+  if (element.nodeName === 'HTML') return '/html'
 
   let ix = 0
   const siblings =
@@ -131,6 +132,12 @@ const XPathToArray = (xpath, reverse = false) => {
   return reverse ? snapshots.reverse() : snapshots
 }
 
+const elementInvalid = element => {
+  return (
+    element.type === 'number' && element.validity && element.validity.badInput
+  )
+}
+
 export {
   uuidv4,
   serializeForm,
@@ -140,5 +147,6 @@ export {
   emitEvent,
   elementToXPath,
   XPathToElement,
-  XPathToArray
+  XPathToArray,
+  elementInvalid
 }
