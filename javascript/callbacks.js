@@ -19,6 +19,7 @@ const beforeDOMUpdate = event => {
 
   if (reflex.pendingOperations > 0) return
 
+  // TODO: v4 always resolve late
   if (!stimulusReflex.resolveLate)
     setTimeout(() =>
       promise.resolve({
@@ -57,6 +58,7 @@ const afterDOMUpdate = event => {
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
+  // TODO: v4 always resolve late
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
       promise.resolve({
@@ -134,7 +136,7 @@ const nothing = (event, payload, promise, reflex, reflexElement) => {
       element: reflexElement,
       event,
       payload,
-      reflexId: promise.data.reflexId,
+      reflexId: promise.reflexId,
       toString: () => ''
     })
   )

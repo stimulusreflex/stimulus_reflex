@@ -15,7 +15,7 @@ const initialize = (consumerValue, paramsValue) => {
   document.addEventListener('DOMContentLoaded', () => {
     active = false
     connectionStatusClass()
-    if (Deprecate.enabled && consumer)
+    if (Deprecate.enabled && consumerValue)
       console.warn(
         "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
       )
@@ -47,7 +47,7 @@ const connected = () => {
   emitEvent('stimulus-reflex:connected')
   emitEvent('stimulus-reflex:action-cable:connected')
 
-  queue.forEach(reflex => subscription.send(reflex))
+  queue.forEach(reflex => subscription.send(reflex.data))
   queue = []
 }
 
@@ -66,9 +66,8 @@ const disconnected = willAttemptReconnect => {
   emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
 }
 
-const enqueueReflex = (element, id) => {
-  const reflex = element.reflexData[id]
-  active ? subscription.send(reflex) : queue.push(reflex)
+const enqueueReflex = reflex => {
+  active ? subscription.send(reflex.data) : queue.push(reflex)
 }
 
 const connectionStatusClass = () => {

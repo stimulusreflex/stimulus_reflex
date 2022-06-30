@@ -5,20 +5,21 @@ import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
+import Reflex from './reflex'
 import ReflexData from './reflex_data'
 import IsolationMode from './isolation_mode'
 import ActionCableTransport from './transports/action_cable'
 
 import { dispatchLifecycleEvent } from './lifecycle'
-import { uuidv4, serializeForm } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
-import { registerReflex, setupDeclarativeReflexes } from './reflexes'
 import { reflexes } from './reflex_store'
 import { attributeValues } from './attributes'
+import { uuidv4, serializeForm, elementInvalid } from './utils'
+import { scanForReflexes, getReflexElement, getReflexOptions } from './reflexes'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
-// i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController);
+// i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController)
 //
 class StimulusReflexController extends Controller {
   constructor (...args) {
@@ -26,6 +27,9 @@ class StimulusReflexController extends Controller {
     register(this)
   }
 }
+
+// Uniquely identify this browser tab in each Reflex
+const tabId = uuidv4()
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
@@ -43,16 +47,6 @@ const initialize = (
   { controller, consumer, debug, params, isolate, deprecate } = {}
 ) => {
   ActionCableTransport.initialize(consumer, params)
-  document.addEventListener(
-    'DOMContentLoaded',
-    () => {
-      if (Deprecate.enabled && IsolationMode.disabled)
-        console.warn(
-          'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
-        )
-    },
-    { once: true }
-  )
   IsolationMode.set(!!isolate)
   Stimulus.set(application)
   Schema.set(application)
@@ -62,12 +56,13 @@ const initialize = (
   )
   Debug.set(!!debug)
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
-  const observer = new MutationObserver(setupDeclarativeReflexes)
+  const observer = new MutationObserver(scanForReflexes)
   observer.observe(document.documentElement, {
     attributeFilter: [Schema.reflex, Schema.action],
     childList: true,
     subtree: true
   })
+  return reflexes
 }
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
@@ -89,41 +84,17 @@ const register = (controller, options = {}) => {
     //
     stimulate () {
       const url = location.href
+      const controllerElement = this.element
       const args = Array.from(arguments)
       const target = args.shift() || 'StimulusReflex::Reflex#default_reflex'
-      const controllerElement = this.element
-      const reflexElement =
-        args[0] && args[0].nodeType === Node.ELEMENT_NODE
-          ? args.shift()
-          : controllerElement
-      if (
-        reflexElement.type === 'number' &&
-        reflexElement.validity &&
-        reflexElement.validity.badInput
-      ) {
+      const reflexElement = getReflexElement(args, controllerElement)
+
+      if (elementInvalid(reflexElement)) {
         if (Debug.enabled) console.warn('Reflex aborted: invalid numeric input')
         return
       }
-      const options = {}
-      if (
-        args[0] &&
-        typeof args[0] === 'object' &&
-        Object.keys(args[0]).filter(key =>
-          [
-            'attrs',
-            'selectors',
-            'reflexId',
-            'resolveLate',
-            'serializeForm',
-            'suppressLogging',
-            'includeInnerHTML',
-            'includeTextContent'
-          ].includes(key)
-        ).length
-      ) {
-        const opts = args.shift()
-        Object.keys(opts).forEach(o => (options[o] = opts[o]))
-      }
+
+      const options = getReflexOptions(args)
 
       const reflexData = new ReflexData(
         options,
@@ -139,7 +110,7 @@ const register = (controller, options = {}) => {
 
       const reflexId = reflexData.reflexId
 
-      // lifecycle setup
+      // TODO: remove this in v4
       controllerElement.reflexController =
         controllerElement.reflexController || {}
       controllerElement.reflexData = controllerElement.reflexData || {}
@@ -147,6 +118,7 @@ const register = (controller, options = {}) => {
 
       controllerElement.reflexController[reflexId] = this
       controllerElement.reflexData[reflexId] = reflexData.valueOf()
+      // END TODO: remove
 
       dispatchLifecycleEvent(
         'before',
@@ -155,23 +127,33 @@ const register = (controller, options = {}) => {
         reflexId
       )
 
+      const reflex = new Reflex(reflexData, this)
+      reflexes[reflexId] = reflex
+      this.last = reflex
+
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
+
+        // TODO: remove this in v4
+        // not needed after v4 because this is only here for the deprecation warning
         const check = reflexElement.attributes[Schema.reflexSerializeForm]
         if (check) {
-          // not needed after v4 because this is only here for the deprecation warning
           options['serializeForm'] = check.value !== 'false'
         }
+        // END TODO: remove
 
         const form =
           reflexElement.closest(reflexData.formSelector) ||
           document.querySelector(reflexData.formSelector) ||
           reflexElement.closest('form')
 
+        // TODO: remove this in v4
         if (Deprecate.enabled && options['serializeForm'] === undefined && form)
           console.warn(
             `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${Schema.reflexSerializeForm}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
           )
+        // END TODO: remove
+
         const formData =
           options['serializeForm'] === false
             ? ''
@@ -179,16 +161,18 @@ const register = (controller, options = {}) => {
                 element: reflexElement
               })
 
-        controllerElement.reflexData[reflexId] = {
+        reflex.data = {
           ...reflexData.valueOf(),
           params,
           formData
         }
 
-        ActionCableTransport.enqueueReflex(controllerElement, reflexId)
-      })
+        // TODO: remove this in v4
+        controllerElement.reflexData[reflexId] = reflex.data
+        // END TODO: remove
 
-      const promise = registerReflex(reflexData.valueOf())
+        ActionCableTransport.enqueueReflex(reflex)
+      })
 
       Log.request(
         reflexId,
@@ -199,7 +183,7 @@ const register = (controller, options = {}) => {
         controllerElement
       )
 
-      return promise
+      return reflex.getPromise
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -224,10 +208,26 @@ const register = (controller, options = {}) => {
       }
     }
   })
-}
 
-// Uniquely identify this browser tab in each Reflex
-const tabId = uuidv4()
+  // Access the reflexes created by the current controller instance
+  // reflexes is a Proxy to an object, keyed by reflexId
+  // this.reflexes.all and this.reflexes.last are scoped to this controller instance
+  // Reflexes can also be scoped by state eg. this.reflexes.queued
+  Object.defineProperty(controller, 'reflexes', {
+    get () {
+      return new Proxy(reflexes, {
+        get: function (target, prop) {
+          if (prop === 'last') return this.last
+          return Object.fromEntries(
+            Object.entries(target[prop]).filter(
+              ([_, reflex]) => reflex.controller === this
+            )
+          )
+        }.bind(this)
+      })
+    }
+  })
+}
 
 const useReflex = (controller, options = {}) => {
   register(controller, options)
@@ -238,6 +238,6 @@ document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-window.addEventListener('load', setupDeclarativeReflexes)
+window.addEventListener('load', scanForReflexes)
 
 export { initialize, register, useReflex }

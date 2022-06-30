@@ -3,6 +3,7 @@ import CableReady from 'cable_ready'
 import Debug from './debug'
 import Stimulus from './app'
 import Schema from './schema'
+import Reflex from './reflex'
 import IsolationMode from './isolation_mode'
 
 import { reflexes } from './reflex_store'
@@ -49,6 +50,7 @@ const received = data => {
   if (reflexData) {
     const { reflexId, payload } = reflexData
 
+    // TODO: remove this in v4
     if (!reflexes[reflexId] && IsolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
       const reflexElement = XPathToElement(reflexData.xpathElement)
@@ -58,13 +60,12 @@ const received = data => {
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      controllerElement.reflexController[
-        reflexId
-      ] = Stimulus.app.getControllerForElementAndIdentifier(
+      const controller = Stimulus.app.getControllerForElementAndIdentifier(
         controllerElement,
         reflexData.reflexController
       )
 
+      controllerElement.reflexController[reflexId] = controller
       controllerElement.reflexData[reflexId] = reflexData
 
       dispatchLifecycleEvent(
@@ -75,8 +76,11 @@ const received = data => {
         payload
       )
 
-      registerReflex(reflexData)
+      const reflex = Reflex.create(reflexData, controller)
+      reflexes[reflexId] = reflex
+      controller.last = reflex
     }
+    // END TODO: remove
 
     if (reflexes[reflexId]) {
       reflexes[reflexId].totalOperations = reflexOperations.length
@@ -92,23 +96,34 @@ const received = data => {
   }
 }
 
-const registerReflex = data => {
-  const { reflexId } = data
-  reflexes[reflexId] = { finalStage: 'finalize' }
+const getReflexElement = (args, element) => {
+  return args[0] && args[0].nodeType === Node.ELEMENT_NODE
+    ? args.shift()
+    : element
+}
 
-  const promise = new Promise((resolve, reject) => {
-    reflexes[reflexId].promise = {
-      resolve,
-      reject,
-      data
-    }
-  })
-
-  promise.reflexId = reflexId
-
-  if (Debug.enabled) promise.catch(() => {})
-
-  return promise
+const getReflexOptions = args => {
+  const options = {}
+  if (
+    args[0] &&
+    typeof args[0] === 'object' &&
+    Object.keys(args[0]).filter(key =>
+      [
+        'attrs',
+        'selectors',
+        'reflexId',
+        'resolveLate',
+        'serializeForm',
+        'suppressLogging',
+        'includeInnerHTML',
+        'includeTextContent'
+      ].includes(key)
+    ).length
+  ) {
+    const opts = args.shift()
+    Object.keys(opts).forEach(o => (options[o] = opts[o]))
+  }
+  return options
 }
 
 // compute the DOM element(s) which will be the morph root
@@ -140,7 +155,7 @@ const getReflexRoots = element => {
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
-const setupDeclarativeReflexes = debounce(() => {
+const scanForReflexes = debounce(() => {
   document.querySelectorAll(`[${Schema.reflex}]`).forEach(element => {
     const controllers = attributeValues(element.getAttribute(Schema.controller))
     const reflexAttributeNames = attributeValues(
@@ -180,4 +195,10 @@ const setupDeclarativeReflexes = debounce(() => {
   emitEvent('stimulus-reflex:ready')
 }, 20)
 
-export { received, registerReflex, getReflexRoots, setupDeclarativeReflexes }
+export {
+  received,
+  getReflexElement,
+  getReflexOptions,
+  getReflexRoots,
+  scanForReflexes
+}

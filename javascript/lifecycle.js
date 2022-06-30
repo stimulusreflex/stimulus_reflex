@@ -69,14 +69,11 @@ const invokeLifecycleMethod = (
   }
 
   if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
+    // TODO: remove these in v4
     Reflect.deleteProperty(controllerElement.reflexController, reflexId)
     Reflect.deleteProperty(controllerElement.reflexData, reflexId)
     Reflect.deleteProperty(controllerElement.reflexError, reflexId)
-    // Removing this on a trial basis
-    // 1. Prevents race condition with CR broadcasts
-    // 2. Planning to remove it for v4 as part of queueing refactor
-    // 3. Removing reflexes shouldn't be the responsibility of the lifecycle subsystem
-    // Reflect.deleteProperty(reflexes, reflexId)
+    // END TODO: remove
   }
 }
 

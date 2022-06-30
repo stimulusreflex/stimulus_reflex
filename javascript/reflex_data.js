@@ -55,6 +55,7 @@ export default class ReflexData {
       : this._selectors
   }
 
+  // TODO: v4 always resolve late
   get resolveLate () {
     return this.options['resolveLate'] || false
   }
