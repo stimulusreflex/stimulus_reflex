@@ -1,13 +1,14 @@
 import { createConsumer } from '@rails/actioncable'
 import { received } from '../reflexes'
+import { reflexes } from '../reflex_store'
 import { emitEvent } from '../utils'
+import { dispatchLifecycleEvent } from '../lifecycle'
 import Deprecate from '../deprecate'
 
 let consumer
 let params
 let subscription
 let active
-let queue = []
 
 const initialize = (consumerValue, paramsValue) => {
   consumer = consumerValue
@@ -46,9 +47,10 @@ const connected = () => {
   connectionStatusClass()
   emitEvent('stimulus-reflex:connected')
   emitEvent('stimulus-reflex:action-cable:connected')
-
-  queue.forEach(reflex => subscription.send(reflex.data))
-  queue = []
+  Object.values(reflexes.queued).forEach(reflex => {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent.bind(reflex, 'delivered')
+  })
 }
 
 const rejected = () => {
@@ -67,7 +69,10 @@ const disconnected = willAttemptReconnect => {
 }
 
 const enqueueReflex = reflex => {
-  active ? subscription.send(reflex.data) : queue.push(reflex)
+  if (active) {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent.bind(reflex, 'delivered')
+  } else dispatchLifecycleEvent.bind(reflex, 'queued')
 }
 
 const connectionStatusClass = () => {

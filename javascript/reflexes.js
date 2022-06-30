@@ -37,7 +37,10 @@ const received = data => {
       operation => operation.stimulusReflex.url !== location.href
     )
   ) {
-    return
+    if (Debug.enabled) {
+      console.error('Reflex failed due to mismatched URL.')
+      return
+    }
   }
 
   let reflexData
@@ -68,17 +71,11 @@ const received = data => {
       controllerElement.reflexController[reflexId] = controller
       controllerElement.reflexData[reflexId] = reflexData
 
-      dispatchLifecycleEvent(
-        'before',
-        reflexElement,
-        controllerElement,
-        reflexId,
-        payload
-      )
-
       const reflex = Reflex.create(reflexData, controller)
       reflexes[reflexId] = reflex
-      controller.last = reflex
+      controller.lastReflex = reflex
+
+      dispatchLifecycleEvent.bind(reflex, 'before')
     }
     // END TODO: remove
 

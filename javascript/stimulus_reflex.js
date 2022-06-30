@@ -120,16 +120,11 @@ const register = (controller, options = {}) => {
       controllerElement.reflexData[reflexId] = reflexData.valueOf()
       // END TODO: remove
 
-      dispatchLifecycleEvent(
-        'before',
-        reflexElement,
-        controllerElement,
-        reflexId
-      )
-
       const reflex = new Reflex(reflexData, this)
       reflexes[reflexId] = reflex
-      this.last = reflex
+      this.lastReflex = reflex
+
+      dispatchLifecycleEvent.bind(reflex, 'before')
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
@@ -212,12 +207,12 @@ const register = (controller, options = {}) => {
   // Access the reflexes created by the current controller instance
   // reflexes is a Proxy to an object, keyed by reflexId
   // this.reflexes.all and this.reflexes.last are scoped to this controller instance
-  // Reflexes can also be scoped by state eg. this.reflexes.queued
+  // Reflexes can also be scoped by stage eg. this.reflexes.queued
   Object.defineProperty(controller, 'reflexes', {
     get () {
       return new Proxy(reflexes, {
         get: function (target, prop) {
-          if (prop === 'last') return this.last
+          if (prop === 'last') return this.lastReflex
           return Object.fromEntries(
             Object.entries(target[prop]).filter(
               ([_, reflex]) => reflex.controller === this

@@ -23,24 +23,16 @@ const beforeDOMUpdate = event => {
   if (!stimulusReflex.resolveLate)
     setTimeout(() =>
       promise.resolve({
-        element: reflexElement,
+        element: reflex.element,
         event,
-        data: promise.data,
+        data: reflex.data,
         payload,
         reflexId,
         toString: () => ''
       })
     )
 
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      'success',
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent.bind(reflex, 'success'))
 }
 
 const afterDOMUpdate = event => {
@@ -62,24 +54,16 @@ const afterDOMUpdate = event => {
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
       promise.resolve({
-        element: reflexElement,
+        element: reflex.element,
         event,
-        data: promise.data,
+        data: reflex.data,
         payload,
         reflexId,
         toString: () => ''
       })
     )
 
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      'finalize',
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent.bind(reflex, 'finalize'))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)
@@ -111,15 +95,7 @@ const routeReflexEvent = event => {
 
   eventTypes[eventType](event, payload, promise, reflex, reflexElement)
 
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      eventType,
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent.bind(reflex, eventType))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)

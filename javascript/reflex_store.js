@@ -1,30 +1,32 @@
-const states = [
+const stages = [
   'created',
-  'sent',
+  'before',
+  'delivered',
   'queued',
-  'received',
-  'done',
+  'after',
+  'finalized',
+  'success',
   'error',
   'halted',
   'forbidden'
 ]
-let last
+let lastReflex
 
 const reflexes = new Proxy(
-  {},
+  {}, // You are standing in an open field west of a white house, with a boarded front door.
   {
     get: function (target, prop) {
-      if (states.includes(prop))
+      if (stages.includes(prop))
         return Object.fromEntries(
-          Object.entries(target).filter(([_, reflex]) => reflex.state === prop)
+          Object.entries(target).filter(([_, reflex]) => reflex.stage === prop)
         )
-      else if (prop === 'last') return last
+      else if (prop === 'last') return lastReflex
       else if (prop === 'all') return target
       return Reflect.get(...arguments)
     },
     set: function (target, prop, value) {
       target[prop] = value
-      last = value
+      lastReflex = value
       return true
     }
   }

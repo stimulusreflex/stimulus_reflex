@@ -5,10 +5,12 @@ export default class Reflex {
     this.data = data.valueOf()
     // TODO do we even need controller in v4?
     this.controller = controller
+    this.element = data.reflexElement
     this.reflexId = data.reflexId
     this.finalStage = 'finalize'
     this.error = null
-    this.state = 'created'
+    this.stage = 'created'
+    this.warned = false
   }
 
   get getPromise () {

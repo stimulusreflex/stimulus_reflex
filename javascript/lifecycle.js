@@ -6,7 +6,10 @@ import { reflexes } from './reflex_store'
 // Invokes a lifecycle method on a StimulusReflex controller.
 //
 // - stage - the lifecycle stage
+//   * created (at initialization)
 //   * before
+//   * delivered
+//   * queued
 //   * success
 //   * error
 //   * halted
@@ -91,8 +94,35 @@ document.addEventListener(
 )
 
 document.addEventListener(
+  'stimulus-reflex:queued',
+  event =>
+    invokeLifecycleMethod(
+      'queued',
+      event.detail.element,
+      event.detail.controller.element,
+      event.detail.reflexId,
+      event.detail.payload
+    ),
+  true
+)
+
+document.addEventListener(
+  'stimulus-reflex:delivered',
+  event =>
+    invokeLifecycleMethod(
+      'delivered',
+      event.detail.element,
+      event.detail.controller.element,
+      event.detail.reflexId,
+      event.detail.payload
+    ),
+  true
+)
+
+document.addEventListener(
   'stimulus-reflex:success',
   event => {
+    const reflex = reflexes[event.detail.reflexId]
     invokeLifecycleMethod(
       'success',
       event.detail.element,
@@ -100,13 +130,7 @@ document.addEventListener(
       event.detail.reflexId,
       event.detail.payload
     )
-    dispatchLifecycleEvent(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    dispatchLifecycleEvent.bind(reflex, 'after')
   },
   true
 )
@@ -114,13 +138,8 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:nothing',
   event => {
-    dispatchLifecycleEvent(
-      'success',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    const reflex = reflexes[event.detail.reflexId]
+    dispatchLifecycleEvent.bind(reflex, 'success')
   },
   true
 )
@@ -128,6 +147,7 @@ document.addEventListener(
 document.addEventListener(
   'stimulus-reflex:error',
   event => {
+    const reflex = reflexes[event.detail.reflexId]
     invokeLifecycleMethod(
       'error',
       event.detail.element,
@@ -135,13 +155,7 @@ document.addEventListener(
       event.detail.reflexId,
       event.detail.payload
     )
-    dispatchLifecycleEvent(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    dispatchLifecycleEvent.bind(reflex, 'after')
   },
   true
 )
@@ -201,7 +215,10 @@ document.addEventListener(
 // Dispatches a lifecycle event on document
 //
 // - stage - the lifecycle stage
+//   * created (at initialization)
 //   * before
+//   * delivered
+//   * queued
 //   * success
 //   * error
 //   * halted
@@ -209,64 +226,48 @@ document.addEventListener(
 //   * after
 //   * finalize
 //
-// - reflexElement - the element that triggered the Reflex (not necessarily the StimulusReflex Controller Element)
-//
-// - controllerElement - the element holding the StimulusReflex Controller
-//
-// - reflexId - the UUIDv4 which uniquely identifies the Reflex
-//
-// - payload - optional Reflex return value
-//
-const dispatchLifecycleEvent = (
-  stage,
-  reflexElement,
-  controllerElement,
-  reflexId,
-  payload
-) => {
-  if (!controllerElement) {
-    if (Debug.enabled && !reflexes[reflexId].warned) {
+const dispatchLifecycleEvent = stage => {
+  if (!this.controller) {
+    if (Debug.enabled && !this.warned) {
       console.warn(
         `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
       )
-      reflexes[reflexId].warned = true
+      this.warned = true
     }
     return
   }
 
-  if (
-    !controllerElement.reflexController ||
-    (controllerElement.reflexController &&
-      !controllerElement.reflexController[reflexId])
-  ) {
-    if (Debug.enabled && !reflexes[reflexId].warned) {
-      console.warn(
-        `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
-      )
-      reflexes[reflexId].warned = true
-    }
-    return
-  }
+  // if (
+  //   !controllerElement.reflexController ||
+  //   (controllerElement.reflexController &&
+  //     !controllerElement.reflexController[reflexId])
+  // ) {
+  //   if (Debug.enabled && !reflex.warned) {
+  //     console.warn(
+  //       `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
+  //     )
+  //     reflexes[reflexId].warned = true
+  //   }
+  //   return
+  // }
 
-  const { target } = controllerElement.reflexData[reflexId] || {}
-  const controller = controllerElement.reflexController[reflexId] || {}
   const event = `stimulus-reflex:${stage}`
-  const action = `${event}:${target.split('#')[1]}`
+  const action = `${event}:${this.data.target.split('#')[1]}`
   const detail = {
-    reflex: target,
-    controller,
-    reflexId,
-    element: reflexElement,
-    payload
+    reflex: this.data.target,
+    controller: this.controller,
+    reflexId: this.reflexId,
+    element: this.element,
+    payload: this.payload
   }
   const options = { bubbles: true, cancelable: false, detail }
 
-  controllerElement.dispatchEvent(new CustomEvent(event, options))
-  controllerElement.dispatchEvent(new CustomEvent(action, options))
+  this.controller.element.dispatchEvent(new CustomEvent(event, options))
+  this.controller.element.dispatchEvent(new CustomEvent(action, options))
 
   if (window.jQuery) {
-    window.jQuery(controllerElement).trigger(event, detail)
-    window.jQuery(controllerElement).trigger(action, detail)
+    window.jQuery(this.controller.element).trigger(event, detail)
+    window.jQuery(this.controller.element).trigger(action, detail)
   }
 }
 
