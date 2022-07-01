@@ -32,7 +32,7 @@ const beforeDOMUpdate = event => {
       })
     )
 
-  setTimeout(() => dispatchLifecycleEvent.bind(reflex, 'success'))
+  setTimeout(() => dispatchLifecycleEvent(reflex, 'success'))
 }
 
 const afterDOMUpdate = event => {
@@ -63,7 +63,7 @@ const afterDOMUpdate = event => {
       })
     )
 
-  setTimeout(() => dispatchLifecycleEvent.bind(reflex, 'finalize'))
+  setTimeout(() => dispatchLifecycleEvent(reflex, 'finalize'))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)
@@ -95,7 +95,7 @@ const routeReflexEvent = event => {
 
   eventTypes[eventType](event, payload, promise, reflex, reflexElement)
 
-  setTimeout(() => dispatchLifecycleEvent.bind(reflex, eventType))
+  setTimeout(() => dispatchLifecycleEvent(reflex, eventType))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)

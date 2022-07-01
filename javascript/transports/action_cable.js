@@ -49,7 +49,7 @@ const connected = () => {
   emitEvent('stimulus-reflex:action-cable:connected')
   Object.values(reflexes.queued).forEach(reflex => {
     subscription.send(reflex.data)
-    dispatchLifecycleEvent.bind(reflex, 'delivered')
+    dispatchLifecycleEvent(reflex, 'delivered')
   })
 }
 
@@ -71,8 +71,8 @@ const disconnected = willAttemptReconnect => {
 const enqueueReflex = reflex => {
   if (active) {
     subscription.send(reflex.data)
-    dispatchLifecycleEvent.bind(reflex, 'delivered')
-  } else dispatchLifecycleEvent.bind(reflex, 'queued')
+    dispatchLifecycleEvent(reflex, 'delivered')
+  } else dispatchLifecycleEvent(reflex, 'queued')
 }
 
 const connectionStatusClass = () => {

@@ -130,7 +130,7 @@ document.addEventListener(
       event.detail.reflexId,
       event.detail.payload
     )
-    dispatchLifecycleEvent.bind(reflex, 'after')
+    dispatchLifecycleEvent(reflex, 'after')
   },
   true
 )
@@ -139,7 +139,7 @@ document.addEventListener(
   'stimulus-reflex:nothing',
   event => {
     const reflex = reflexes[event.detail.reflexId]
-    dispatchLifecycleEvent.bind(reflex, 'success')
+    dispatchLifecycleEvent(reflex, 'success')
   },
   true
 )
@@ -155,7 +155,7 @@ document.addEventListener(
       event.detail.reflexId,
       event.detail.payload
     )
-    dispatchLifecycleEvent.bind(reflex, 'after')
+    dispatchLifecycleEvent(reflex, 'after')
   },
   true
 )
@@ -226,16 +226,18 @@ document.addEventListener(
 //   * after
 //   * finalize
 //
-const dispatchLifecycleEvent = stage => {
-  if (!this.controller) {
-    if (Debug.enabled && !this.warned) {
+const dispatchLifecycleEvent = (reflex, stage) => {
+  if (!reflex.controller) {
+    if (Debug.enabled && !reflex.warned) {
       console.warn(
         `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
       )
-      this.warned = true
+      reflex.warned = true
     }
     return
   }
+
+  reflex.stage = stage
 
   // if (
   //   !controllerElement.reflexController ||
@@ -252,22 +254,22 @@ const dispatchLifecycleEvent = stage => {
   // }
 
   const event = `stimulus-reflex:${stage}`
-  const action = `${event}:${this.data.target.split('#')[1]}`
+  const action = `${event}:${reflex.data.target.split('#')[1]}`
   const detail = {
-    reflex: this.data.target,
-    controller: this.controller,
-    reflexId: this.reflexId,
-    element: this.element,
-    payload: this.payload
+    reflex: reflex.data.target,
+    controller: reflex.controller,
+    reflexId: reflex.reflexId,
+    element: reflex.element,
+    payload: reflex.payload
   }
   const options = { bubbles: true, cancelable: false, detail }
 
-  this.controller.element.dispatchEvent(new CustomEvent(event, options))
-  this.controller.element.dispatchEvent(new CustomEvent(action, options))
+  reflex.controller.element.dispatchEvent(new CustomEvent(event, options))
+  reflex.controller.element.dispatchEvent(new CustomEvent(action, options))
 
   if (window.jQuery) {
-    window.jQuery(this.controller.element).trigger(event, detail)
-    window.jQuery(this.controller.element).trigger(action, detail)
+    window.jQuery(reflex.controller.element).trigger(event, detail)
+    window.jQuery(reflex.controller.element).trigger(action, detail)
   }
 }
 

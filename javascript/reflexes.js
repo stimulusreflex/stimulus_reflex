@@ -75,7 +75,7 @@ const received = data => {
       reflexes[reflexId] = reflex
       controller.lastReflex = reflex
 
-      dispatchLifecycleEvent.bind(reflex, 'before')
+      dispatchLifecycleEvent(reflex, 'before')
     }
     // END TODO: remove
 

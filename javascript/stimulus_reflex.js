@@ -124,7 +124,7 @@ const register = (controller, options = {}) => {
       reflexes[reflexId] = reflex
       this.lastReflex = reflex
 
-      dispatchLifecycleEvent.bind(reflex, 'before')
+      dispatchLifecycleEvent(reflex, 'before')
 
       setTimeout(() => {
         const { params } = controllerElement.reflexData[reflexId] || {}
