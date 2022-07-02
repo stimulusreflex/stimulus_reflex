@@ -140,7 +140,8 @@ const forbidden = (reflex, event) => {
       event,
       payload: reflex.payload,
       reflexId: reflex.reflexId,
-      toString: () => ''
+      error: 'forbidden',
+      toString: () => 'forbidden'
     })
   )
 }
