@@ -12,6 +12,11 @@ export default class Reflex {
     this.warned = false
     this.target = data.target
     this.action = data.target.split('#')[1]
+    this.selector = null
+    this.morph = null
+    this.operation = null
+    this.timestamp = new Date()
+    this.cloned = false // TODO: v4 remove
   }
 
   get getPromise () {

@@ -143,7 +143,7 @@ document.addEventListener(
 //   * finalize
 //
 const dispatchLifecycleEvent = (reflex, stage) => {
-  if (!reflex.controller) {
+  if (!reflex.controller.element.parentElement) {
     if (Debug.enabled && !reflex.warned) {
       console.warn(
         `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
@@ -155,22 +155,9 @@ const dispatchLifecycleEvent = (reflex, stage) => {
 
   reflex.stage = stage
 
-  // if (
-  //   !controllerElement.reflexController ||
-  //   (controllerElement.reflexController &&
-  //     !controllerElement.reflexController[reflexId])
-  // ) {
-  //   if (Debug.enabled && !reflex.warned) {
-  //     console.warn(
-  //       `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
-  //     )
-  //     reflexes[reflexId].warned = true
-  //   }
-  //   return
-  // }
-
   const event = `stimulus-reflex:${stage}`
   const action = `${event}:${reflex.action}`
+  // TODO: v4 detail = reflex
   const detail = {
     reflex: reflex.target,
     controller: reflex.controller,

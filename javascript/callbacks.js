@@ -37,8 +37,15 @@ const afterDOMUpdate = event => {
   const reflex = reflexes[stimulusReflex.reflexId]
 
   reflex.completedOperations++
+  reflex.selector = event.detail.selector
+  reflex.morph = event.detail.stimulusReflex.morph
+  reflex.operation = event.type
+    .split(':')[1]
+    .split('-')
+    .slice(1)
+    .join('_')
 
-  Log.success(event, false)
+  Log.success(reflex)
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
@@ -73,6 +80,13 @@ const routeReflexEvent = event => {
   const reflex = reflexes[stimulusReflex.reflexId]
   reflex.completedOperations++
   reflex.pendingOperations--
+  reflex.selector = event.detail.selector
+  reflex.morph = event.detail.stimulusReflex.morph
+  reflex.operation = event.type
+    .split(':')[1]
+    .split('-')
+    .slice(1)
+    .join('_')
   if (eventType === 'error') reflex.error = event.detail.error
 
   eventTypes[eventType](reflex, event)
@@ -84,7 +98,7 @@ const routeReflexEvent = event => {
 }
 
 const nothing = (reflex, event) => {
-  Log.success(event)
+  Log.success(reflex)
 
   // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
@@ -100,7 +114,7 @@ const nothing = (reflex, event) => {
 }
 
 const halted = (reflex, event) => {
-  Log.halted(event)
+  Log.halted(reflex, event)
 
   // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
@@ -116,7 +130,7 @@ const halted = (reflex, event) => {
 }
 
 const forbidden = (reflex, event) => {
-  Log.forbidden(event)
+  Log.forbidden(reflex, event)
 
   // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
@@ -132,7 +146,7 @@ const forbidden = (reflex, event) => {
 }
 
 const error = (reflex, event) => {
-  Log.error(event)
+  Log.error(reflex, event)
 
   // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>

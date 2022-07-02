@@ -61,6 +61,7 @@ class StimulusReflex::ReflexData
     data["tabId"]
   end
 
+  # TODO: remove this in v4
   def xpath_controller
     data["xpathController"]
   end
@@ -68,6 +69,7 @@ class StimulusReflex::ReflexData
   def xpath_element
     data["xpathElement"]
   end
+  # END TODO remove
 
   def reflex_controller
     data["reflexController"]

@@ -2,95 +2,72 @@ import Debug from './debug'
 
 import { reflexes } from './reflex_store'
 
-const request = (
-  reflexId,
-  target,
-  args,
-  controller,
-  element,
-  controllerElement
-) => {
-  const reflex = reflexes[reflexId]
+const request = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
-  reflex.timestamp = new Date()
-  console.log(`\u2191 stimulus \u2191 ${target}`, {
-    reflexId,
-    args,
-    controller,
-    element,
-    controllerElement
+  console.log(`\u2191 stimulus \u2191 ${reflex.target}`, {
+    reflexId: reflex.reflexId,
+    args: reflex.data.args,
+    controller: reflex.controller.identifier,
+    element: reflex.element,
+    controllerElement: reflex.controller.element
   })
 }
 
-const success = event => {
-  const { detail } = event || {}
-  const { selector, payload } = detail || {}
-  const { reflexId, target, morph } = detail.stimulusReflex || {}
-  const reflex = reflexes[reflexId]
+const success = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
   const progress =
     reflex.totalOperations > 1
       ? ` ${reflex.completedOperations}/${reflex.totalOperations}`
       : ''
-  const duration = reflex.timestamp
+  const duration = !reflex.cloned
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
-  const operation = event.type
-    .split(':')[1]
-    .split('-')
-    .slice(1)
-    .join('_')
-  const output = { reflexId, morph, payload }
-  if (operation !== 'dispatch_event') output.operation = operation
+  const output = {
+    reflexId: reflex.reflexId,
+    morph: reflex.morph,
+    payload: reflex.payload
+  }
+  if (reflex.operation !== 'dispatch_event') output.operation = reflex.operation
   console.log(
-    `\u2193 reflex \u2193 ${target} \u2192 ${selector ||
+    `\u2193 reflex \u2193 ${reflex.target} \u2192 ${reflex.selector ||
       '\u221E'}${progress} ${duration}`,
     output
   )
 }
 
-const halted = event => {
-  const { detail } = event || {}
-  const { reflexId, target, payload } = detail.stimulusReflex || {}
-  const reflex = reflexes[reflexId]
+const halted = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
-  const duration = reflex.timestamp
+  const duration = !reflex.cloned
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
   console.log(
-    `\u2193 reflex \u2193 ${target} ${duration} %cHALTED`,
+    `\u2193 reflex \u2193 ${reflex.target} ${duration} %cHALTED`,
     'color: #ffa500;',
-    { reflexId, payload }
+    { reflexId: reflex.reflexId, payload: reflex.payload }
   )
 }
 
-const forbidden = event => {
-  const { detail } = event || {}
-  const { reflexId, target, payload } = detail.stimulusReflex || {}
-  const reflex = reflexes[reflexId]
+const forbidden = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
-  const duration = reflex.timestamp
+  const duration = !reflex.cloned
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
   console.log(
-    `\u2193 reflex \u2193 ${target} ${duration} %cFORBIDDEN`,
+    `\u2193 reflex \u2193 ${reflex.target} ${duration} %cFORBIDDEN`,
     'color: #BF40BF;',
-    { reflexId, payload }
+    { reflexId: reflex.reflexId, payload: reflex.payload }
   )
 }
 
-const error = event => {
-  const { detail } = event || {}
-  const { reflexId, target, payload } = detail.stimulusReflex || {}
-  const reflex = reflexes[reflexId]
+const error = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
-  const duration = reflex.timestamp
+  const duration = !reflex.cloned
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
   console.log(
-    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${event.detail.error}`,
+    `\u2193 reflex \u2193 ${reflex.target} ${duration} %cERROR: ${reflex.error}`,
     'color: #f00;',
-    { reflexId, payload }
+    { reflexId: reflex.reflexId, payload: reflex.payload }
   )
 }
 

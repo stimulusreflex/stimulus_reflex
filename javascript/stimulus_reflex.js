@@ -169,14 +169,7 @@ const register = (controller, options = {}) => {
         ActionCableTransport.deliver(reflex)
       })
 
-      Log.request(
-        reflexId,
-        target,
-        args,
-        this.identifier,
-        reflexElement,
-        controllerElement
-      )
+      Log.request(reflex)
 
       return reflex.getPromise
     },
@@ -208,20 +201,21 @@ const register = (controller, options = {}) => {
   // reflexes is a Proxy to an object, keyed by reflexId
   // this.reflexes.all and this.reflexes.last are scoped to this controller instance
   // Reflexes can also be scoped by stage eg. this.reflexes.queued
-  Object.defineProperty(controller, 'reflexes', {
-    get () {
-      return new Proxy(reflexes, {
-        get: function (target, prop) {
-          if (prop === 'last') return this.lastReflex
-          return Object.fromEntries(
-            Object.entries(target[prop]).filter(
-              ([_, reflex]) => reflex.controller === this
+  if (!controller.reflexes)
+    Object.defineProperty(controller, 'reflexes', {
+      get () {
+        return new Proxy(reflexes, {
+          get: function (target, prop) {
+            if (prop === 'last') return this.lastReflex
+            return Object.fromEntries(
+              Object.entries(target[prop]).filter(
+                ([_, reflex]) => reflex.controller === this
+              )
             )
-          )
-        }.bind(this)
-      })
-    }
-  })
+          }.bind(this)
+        })
+      }
+    })
 }
 
 const useReflex = (controller, options = {}) => {

@@ -73,6 +73,7 @@ const received = data => {
 
       reflex = Reflex.create(reflexData, controller)
       reflexes[reflexId] = reflex
+      reflex.cloned = true
       controller.lastReflex = reflex
 
       dispatchLifecycleEvent(reflex, 'before')

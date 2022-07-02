@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO remove xpath_controller and xpath_element for v4
 ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
@@ -18,6 +19,7 @@ class StimulusReflex::Reflex
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
+  # TODO remove xpath_controller and xpath_element for v4
   delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})

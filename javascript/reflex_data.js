@@ -73,6 +73,7 @@ export default class ReflexData {
     return this.includeTextContent ? this.reflexElement.textContent : ''
   }
 
+  // TODO: remove this in v4
   get xpathController () {
     return elementToXPath(this.controllerElement)
   }
@@ -80,6 +81,7 @@ export default class ReflexData {
   get xpathElement () {
     return elementToXPath(this.reflexElement)
   }
+  // END TODO remove
 
   get formSelector () {
     const attr = this.reflexElement.attributes[Schema.reflexFormSelector]
