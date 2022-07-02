@@ -100,7 +100,7 @@ const routeReflexEvent = event => {
 const nothing = (reflex, event) => {
   Log.success(reflex)
 
-  // TODO: v4 simplify to reflex, event, toString
+  // TODO: v4 simplify to reflex, toString
   setTimeout(() =>
     reflex.promise.resolve({
       data: reflex.data,
@@ -116,7 +116,7 @@ const nothing = (reflex, event) => {
 const halted = (reflex, event) => {
   Log.halted(reflex, event)
 
-  // TODO: v4 simplify to reflex, event, toString
+  // TODO: v4 simplify to reflex, toString
   setTimeout(() =>
     reflex.promise.resolve({
       data: reflex.data,
@@ -132,16 +132,15 @@ const halted = (reflex, event) => {
 const forbidden = (reflex, event) => {
   Log.forbidden(reflex, event)
 
-  // TODO: v4 simplify to reflex, event, toString
+  // TODO: v4 simplify to reflex, toString
   setTimeout(() =>
-    reflex.promise.reject({
+    reflex.promise.resolve({
       data: reflex.data,
       element: reflex.element,
       event,
       payload: reflex.payload,
       reflexId: reflex.reflexId,
-      error: 'forbidden',
-      toString: () => 'forbidden'
+      toString: () => ''
     })
   )
 }
@@ -149,7 +148,8 @@ const forbidden = (reflex, event) => {
 const error = (reflex, event) => {
   Log.error(reflex, event)
 
-  // TODO: v4 simplify to reflex, event, toString
+  // TODO: v4 simplify to reflex, toString
+  // TODO: v4 convert to resolve?
   setTimeout(() =>
     reflex.promise.reject({
       data: reflex.data,
