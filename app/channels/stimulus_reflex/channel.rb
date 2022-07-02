@@ -25,7 +25,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         if reflex
           reflex.rescue_with_handler(exception)
           reflex.logger&.error error_message
-          reflex.broadcast_error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
+          reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
           if exception.is_a? StimulusReflex::Reflex::VersionMismatchError
             mismatch = "Reflex failed due to stimulus_reflex gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the \"x.y.z.preN\" version format, while NPM packages use \"x.y.z-preN\".\n\nstimulus_reflex gem: #{StimulusReflex::VERSION}\nstimulus_reflex NPM: #{data["version"]}"
@@ -48,7 +48,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
             StimulusReflex.config.logger.error error_message
           end
 
-          if body.to_s.include? "No route matches"
+          if error_message.to_s.include? "No route matches"
             initializer_path = Rails.root.join("config", "initializers", "stimulus_reflex.rb")
 
             StimulusReflex.config.logger.warn <<~NOTE
@@ -82,7 +82,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         rescue => exception
           reflex.rescue_with_handler(exception)
           error = exception_with_backtrace(exception)
-          reflex.broadcast_error data: data, body: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
+          reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
           reflex.logger&.error "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
         end
       end

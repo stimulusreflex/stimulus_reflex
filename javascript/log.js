@@ -88,7 +88,7 @@ const error = event => {
     ? `in ${new Date() - reflex.timestamp}ms`
     : 'CLONED'
   console.log(
-    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${event.detail.body}`,
+    `\u2193 reflex \u2193 ${target} ${duration} %cERROR: ${event.detail.error}`,
     'color: #f00;',
     { reflexId, payload }
   )

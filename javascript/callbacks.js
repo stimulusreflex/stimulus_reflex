@@ -63,23 +63,17 @@ const afterDOMUpdate = event => {
 }
 
 const routeReflexEvent = event => {
-  console.log(event.detail)
-  const { stimulusReflex, name, body } = event.detail || {}
+  const { stimulusReflex, name } = event.detail || {}
   const eventType = name.split('-')[2]
 
-  const eventTypes = {
-    nothing: nothing,
-    halted: halted,
-    forbidden: forbidden,
-    error: error
-  }
+  const eventTypes = { nothing, halted, forbidden, error }
 
   if (!stimulusReflex || !Object.keys(eventTypes).includes(eventType)) return
 
   const reflex = reflexes[stimulusReflex.reflexId]
   reflex.completedOperations++
   reflex.pendingOperations--
-  if (eventType === 'error') reflex.error = body
+  if (eventType === 'error') reflex.error = event.detail.error
 
   eventTypes[eventType](reflex, event)
 
