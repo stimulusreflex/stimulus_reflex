@@ -13,7 +13,7 @@ export default {
         'DOMContentLoaded',
         () =>
           console.warn(
-            'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
+            'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated. Use CableReady operations to broadcast updates to other tabs and users.'
           ),
         { once: true }
       )

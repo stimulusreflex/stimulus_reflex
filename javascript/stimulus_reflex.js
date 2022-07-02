@@ -129,15 +129,13 @@ const register = (controller, options = {}) => {
       dispatchLifecycleEvent(reflex, 'before')
 
       setTimeout(() => {
+        // TODO: in v4, params will be set on the reflex.data object
         const { params } = controllerElement.reflexData[reflexId] || {}
 
-        // TODO: remove this in v4
-        // not needed after v4 because this is only here for the deprecation warning
         const check = reflexElement.attributes[Schema.reflexSerializeForm]
         if (check) {
           options['serializeForm'] = check.value !== 'false'
         }
-        // END TODO: remove
 
         const form =
           reflexElement.closest(reflexData.formSelector) ||

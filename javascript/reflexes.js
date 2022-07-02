@@ -57,6 +57,7 @@ const received = data => {
     // TODO: remove this in v4
     if (!reflexes[reflexId] && IsolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
+      const reflexElement = XPathToElement(reflexData.xpathElement)
 
       controllerElement.reflexController =
         controllerElement.reflexController || {}
@@ -71,14 +72,16 @@ const received = data => {
       controllerElement.reflexController[reflexId] = controller
       controllerElement.reflexData[reflexId] = reflexData
 
-      reflex = Reflex.create(reflexData, controller)
+      reflex = new Reflex(reflexData, controller)
       reflexes[reflexId] = reflex
       reflex.cloned = true
+      reflex.element = reflexElement
       controller.lastReflex = reflex
 
       dispatchLifecycleEvent(reflex, 'before')
+      reflex.getPromise
     } else {
-      // v4 keep this
+      // v4 keep this, make it a const, kill line 55
       reflex = reflexes[reflexId]
     }
     // END TODO: remove

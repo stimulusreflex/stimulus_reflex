@@ -3,10 +3,7 @@ import Debug from './debug'
 import { camelize } from './utils'
 import { reflexes } from './reflex_store'
 
-// Invokes a lifecycle method on a StimulusReflex controller.
-// - reflex - the Reflex object
-//
-// - stage - the lifecycle stage
+// lifecycle stages
 //   * created (at initialization)
 //   * before
 //   * delivered
@@ -17,6 +14,10 @@ import { reflexes } from './reflex_store'
 //   * forbidden
 //   * after
 //   * finalize
+
+// Invokes a lifecycle method on a StimulusReflex controller.
+// - reflex - the Reflex object
+// - stage - the lifecycle stage
 //
 const invokeLifecycleMethod = (reflex, stage) => {
   // TODO: v4 reevaluate benefit of naming complexity vs semantic payoff
@@ -56,6 +57,44 @@ const invokeLifecycleMethod = (reflex, stage) => {
       reflex.reflexId,
       reflex.payload
     )
+  }
+}
+
+// Dispatches a lifecycle event on document
+// - reflex - the Reflex object
+// - stage - the lifecycle stage
+//
+const dispatchLifecycleEvent = (reflex, stage) => {
+  if (!reflex.controller.element.parentElement) {
+    if (Debug.enabled && !reflex.warned) {
+      console.warn(
+        `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
+      )
+      reflex.warned = true
+    }
+    return
+  }
+
+  reflex.stage = stage
+
+  const event = `stimulus-reflex:${stage}`
+  const action = `${event}:${reflex.action}`
+  // TODO: v4 detail = reflex
+  const detail = {
+    reflex: reflex.target,
+    controller: reflex.controller,
+    reflexId: reflex.reflexId,
+    element: reflex.element,
+    payload: reflex.payload
+  }
+  const options = { bubbles: true, cancelable: false, detail }
+
+  reflex.controller.element.dispatchEvent(new CustomEvent(event, options))
+  reflex.controller.element.dispatchEvent(new CustomEvent(action, options))
+
+  if (window.jQuery) {
+    window.jQuery(reflex.controller.element).trigger(event, detail)
+    window.jQuery(reflex.controller.element).trigger(action, detail)
   }
 }
 
@@ -126,54 +165,5 @@ document.addEventListener(
   event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'finalize'),
   true
 )
-
-// Dispatches a lifecycle event on document
-// - reflex - the Reflex object
-//
-// - stage - the lifecycle stage
-//   * created (at initialization)
-//   * before
-//   * delivered
-//   * queued
-//   * success
-//   * error
-//   * halted
-//   * forbidden
-//   * after
-//   * finalize
-//
-const dispatchLifecycleEvent = (reflex, stage) => {
-  if (!reflex.controller.element.parentElement) {
-    if (Debug.enabled && !reflex.warned) {
-      console.warn(
-        `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
-      )
-      reflex.warned = true
-    }
-    return
-  }
-
-  reflex.stage = stage
-
-  const event = `stimulus-reflex:${stage}`
-  const action = `${event}:${reflex.action}`
-  // TODO: v4 detail = reflex
-  const detail = {
-    reflex: reflex.target,
-    controller: reflex.controller,
-    reflexId: reflex.reflexId,
-    element: reflex.element,
-    payload: reflex.payload
-  }
-  const options = { bubbles: true, cancelable: false, detail }
-
-  reflex.controller.element.dispatchEvent(new CustomEvent(event, options))
-  reflex.controller.element.dispatchEvent(new CustomEvent(action, options))
-
-  if (window.jQuery) {
-    window.jQuery(reflex.controller.element).trigger(event, detail)
-    window.jQuery(reflex.controller.element).trigger(action, detail)
-  }
-}
 
 export { dispatchLifecycleEvent }
