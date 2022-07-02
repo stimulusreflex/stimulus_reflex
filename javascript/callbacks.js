@@ -50,7 +50,7 @@ const afterDOMUpdate = event => {
   if (reflex.completedOperations < reflex.totalOperations) return
 
   // TODO: v4 always resolve late (remove if)
-  // TODO: v4 simplify to reflex, event, toString
+  // TODO: v4 simplify to {reflex, toString}
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
       reflex.promise.resolve({
@@ -100,7 +100,7 @@ const routeReflexEvent = event => {
 const nothing = (reflex, event) => {
   Log.success(reflex)
 
-  // TODO: v4 simplify to reflex, toString
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
     reflex.promise.resolve({
       data: reflex.data,
@@ -116,7 +116,7 @@ const nothing = (reflex, event) => {
 const halted = (reflex, event) => {
   Log.halted(reflex, event)
 
-  // TODO: v4 simplify to reflex, toString
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
     reflex.promise.resolve({
       data: reflex.data,
@@ -132,7 +132,7 @@ const halted = (reflex, event) => {
 const forbidden = (reflex, event) => {
   Log.forbidden(reflex, event)
 
-  // TODO: v4 simplify to reflex, toString
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
     reflex.promise.resolve({
       data: reflex.data,
@@ -148,7 +148,7 @@ const forbidden = (reflex, event) => {
 const error = (reflex, event) => {
   Log.error(reflex, event)
 
-  // TODO: v4 simplify to reflex, toString
+  // TODO: v4 simplify to {reflex, toString}
   // TODO: v4 convert to resolve?
   setTimeout(() =>
     reflex.promise.reject({
