@@ -134,7 +134,7 @@ const forbidden = (reflex, event) => {
 
   // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
-    reflex.promise.resolve({
+    reflex.promise.reject({
       data: reflex.data,
       element: reflex.element,
       event,
