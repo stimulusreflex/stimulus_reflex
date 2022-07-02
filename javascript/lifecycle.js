@@ -4,6 +4,7 @@ import { camelize } from './utils'
 import { reflexes } from './reflex_store'
 
 // Invokes a lifecycle method on a StimulusReflex controller.
+// - reflex - the Reflex object
 //
 // - stage - the lifecycle stage
 //   * created (at initialization)
@@ -69,14 +70,6 @@ const invokeLifecycleMethod = (
       reflexId,
       payload
     )
-  }
-
-  if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    // TODO: remove these in v4
-    Reflect.deleteProperty(controllerElement.reflexController, reflexId)
-    Reflect.deleteProperty(controllerElement.reflexData, reflexId)
-    Reflect.deleteProperty(controllerElement.reflexError, reflexId)
-    // END TODO: remove
   }
 }
 
@@ -213,6 +206,7 @@ document.addEventListener(
 )
 
 // Dispatches a lifecycle event on document
+// - reflex - the Reflex object
 //
 // - stage - the lifecycle stage
 //   * created (at initialization)

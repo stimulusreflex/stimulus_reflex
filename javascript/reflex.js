@@ -7,7 +7,6 @@ export default class Reflex {
     this.controller = controller
     this.element = data.reflexElement
     this.reflexId = data.reflexId
-    this.finalStage = 'finalize'
     this.error = null
     this.stage = 'created'
     this.warned = false

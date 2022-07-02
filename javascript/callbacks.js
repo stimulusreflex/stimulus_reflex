@@ -102,8 +102,6 @@ const routeReflexEvent = event => {
 }
 
 const nothing = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'after'
-
   Log.success(event)
 
   setTimeout(() =>
@@ -119,8 +117,6 @@ const nothing = (event, payload, promise, reflex, reflexElement) => {
 }
 
 const halted = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'halted'
-
   Log.halted(event)
 
   setTimeout(() =>
@@ -136,8 +132,6 @@ const halted = (event, payload, promise, reflex, reflexElement) => {
 }
 
 const forbidden = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'forbidden'
-
   Log.forbidden(event)
 
   setTimeout(() =>
@@ -153,8 +147,6 @@ const forbidden = (event, payload, promise, reflex, reflexElement) => {
 }
 
 const error = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'after'
-
   Log.error(event)
 
   setTimeout(() =>
