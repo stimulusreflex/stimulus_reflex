@@ -1,7 +1,7 @@
 let transport = {}
 
 export default {
-  get mode () {
+  get plugin () {
     return transport
   },
   set (newTransport) {

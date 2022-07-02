@@ -48,7 +48,7 @@ const initialize = (
   { controller, consumer, debug, params, isolate, deprecate, transport } = {}
 ) => {
   Transport.set(transport || ActionCableTransport)
-  Transport.mode.initialize(consumer, params)
+  Transport.plugin.initialize(consumer, params)
   IsolationMode.set(!!isolate)
   Stimulus.set(application)
   Schema.set(application)
@@ -75,7 +75,7 @@ const initialize = (
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  Transport.mode.subscribe(controller)
+  Transport.plugin.subscribe(controller)
   Object.assign(controller, {
     // Invokes a server side reflex method.
     //
@@ -168,7 +168,7 @@ const register = (controller, options = {}) => {
         controllerElement.reflexData[reflexId] = reflex.data
         // END TODO: remove
 
-        Transport.mode.deliver(reflex)
+        Transport.plugin.deliver(reflex)
       })
 
       Log.request(reflex)
