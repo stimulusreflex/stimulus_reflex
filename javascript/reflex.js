@@ -7,8 +7,11 @@ export default class Reflex {
     this.element = data.reflexElement
     this.reflexId = data.reflexId
     this.error = null
+    this.payload = null
     this.stage = 'created'
     this.warned = false
+    this.target = data.target
+    this.action = data.target.split('#')[1]
   }
 
   get getPromise () {

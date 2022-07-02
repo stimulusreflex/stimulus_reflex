@@ -18,97 +18,62 @@ import { reflexes } from './reflex_store'
 //   * after
 //   * finalize
 //
-// - reflexElement - the element that triggered the Reflex (not necessarily the StimulusReflex Controller Element)
-// - controllerElement - the element holding the StimulusReflex Controller
-// - reflexId - the UUIDv4 which uniquely identifies the Reflex
-// - payload - the optional "return value" from the Reflex method
-//
-const invokeLifecycleMethod = (
-  stage,
-  reflexElement,
-  controllerElement,
-  reflexId,
-  payload
-) => {
-  if (!controllerElement || !controllerElement.reflexData[reflexId]) return
+const invokeLifecycleMethod = (reflex, stage) => {
+  // TODO: v4 reevaluate benefit of naming complexity vs semantic payoff
+  const specificLifecycleMethod =
+    reflex.controller[
+      ['before', 'after', 'finalize'].includes(stage)
+        ? `${stage}${camelize(reflex.action)}`
+        : `${camelize(reflex.action, false)}${camelize(stage)}`
+    ]
 
-  const controller = controllerElement.reflexController[reflexId]
-  const reflex = controllerElement.reflexData[reflexId].target
-  const reflexMethodName = reflex.split('#')[1]
+  const genericLifecycleMethod =
+    reflex.controller[
+      ['before', 'after', 'finalize'].includes(stage)
+        ? `${stage}Reflex`
+        : `reflex${camelize(stage)}`
+    ]
 
-  const specificLifecycleMethodName = ['before', 'after', 'finalize'].includes(
-    stage
-  )
-    ? `${stage}${camelize(reflexMethodName)}`
-    : `${camelize(reflexMethodName, false)}${camelize(stage)}`
-  const specificLifecycleMethod = controller[specificLifecycleMethodName]
-
-  const genericLifecycleMethodName = ['before', 'after', 'finalize'].includes(
-    stage
-  )
-    ? `${stage}Reflex`
-    : `reflex${camelize(stage)}`
-  const genericLifecycleMethod = controller[genericLifecycleMethodName]
-
+  // TODO: v4 just pass reflex into the lifecycle method
   if (typeof specificLifecycleMethod === 'function') {
     specificLifecycleMethod.call(
-      controller,
-      reflexElement,
-      reflex,
-      controllerElement.reflexError[reflexId],
-      reflexId,
-      payload
+      reflex.controller,
+      reflex.element,
+      reflex.target,
+      reflex.error,
+      reflex.reflexId,
+      reflex.payload
     )
   }
 
+  // TODO: v4 just pass reflex into the lifecycle method
   if (typeof genericLifecycleMethod === 'function') {
     genericLifecycleMethod.call(
-      controller,
-      reflexElement,
-      reflex,
-      controllerElement.reflexError[reflexId],
-      reflexId,
-      payload
+      reflex.controller,
+      reflex.element,
+      reflex.target,
+      reflex.error,
+      reflex.reflexId,
+      reflex.payload
     )
   }
 }
 
 document.addEventListener(
   'stimulus-reflex:before',
-  event =>
-    invokeLifecycleMethod(
-      'before',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'before'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:queued',
-  event =>
-    invokeLifecycleMethod(
-      'queued',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'queued'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:delivered',
-  event =>
-    invokeLifecycleMethod(
-      'delivered',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'delivered'),
   true
 )
 
@@ -116,13 +81,7 @@ document.addEventListener(
   'stimulus-reflex:success',
   event => {
     const reflex = reflexes[event.detail.reflexId]
-    invokeLifecycleMethod(
-      'success',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    invokeLifecycleMethod(reflex, 'success')
     dispatchLifecycleEvent(reflex, 'after')
   },
   true
@@ -130,10 +89,7 @@ document.addEventListener(
 
 document.addEventListener(
   'stimulus-reflex:nothing',
-  event => {
-    const reflex = reflexes[event.detail.reflexId]
-    dispatchLifecycleEvent(reflex, 'success')
-  },
+  event => dispatchLifecycleEvent(reflexes[event.detail.reflexId], 'success'),
   true
 )
 
@@ -141,13 +97,7 @@ document.addEventListener(
   'stimulus-reflex:error',
   event => {
     const reflex = reflexes[event.detail.reflexId]
-    invokeLifecycleMethod(
-      'error',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    invokeLifecycleMethod(reflex, 'error')
     dispatchLifecycleEvent(reflex, 'after')
   },
   true
@@ -155,53 +105,25 @@ document.addEventListener(
 
 document.addEventListener(
   'stimulus-reflex:halted',
-  event =>
-    invokeLifecycleMethod(
-      'halted',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'halted'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:forbidden',
-  event =>
-    invokeLifecycleMethod(
-      'forbidden',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'forbidden'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:after',
-  event =>
-    invokeLifecycleMethod(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'after'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:finalize',
-  event =>
-    invokeLifecycleMethod(
-      'finalize',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'finalize'),
   true
 )
 
@@ -248,9 +170,9 @@ const dispatchLifecycleEvent = (reflex, stage) => {
   // }
 
   const event = `stimulus-reflex:${stage}`
-  const action = `${event}:${reflex.data.target.split('#')[1]}`
+  const action = `${event}:${reflex.action}`
   const detail = {
-    reflex: reflex.data.target,
+    reflex: reflex.target,
     controller: reflex.controller,
     reflexId: reflex.reflexId,
     element: reflex.element,

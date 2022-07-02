@@ -52,11 +52,11 @@ const received = data => {
 
   if (reflexData) {
     const { reflexId, payload } = reflexData
+    let reflex
 
     // TODO: remove this in v4
     if (!reflexes[reflexId] && IsolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
-      const reflexElement = XPathToElement(reflexData.xpathElement)
 
       controllerElement.reflexController =
         controllerElement.reflexController || {}
@@ -71,19 +71,22 @@ const received = data => {
       controllerElement.reflexController[reflexId] = controller
       controllerElement.reflexData[reflexId] = reflexData
 
-      const reflex = Reflex.create(reflexData, controller)
+      reflex = Reflex.create(reflexData, controller)
       reflexes[reflexId] = reflex
       controller.lastReflex = reflex
 
       dispatchLifecycleEvent(reflex, 'before')
+    } else {
+      reflex = reflexes[reflexId]
     }
     // END TODO: remove
 
-    if (reflexes[reflexId]) {
-      reflexes[reflexId].totalOperations = reflexOperations.length
-      reflexes[reflexId].pendingOperations = reflexOperations.length
-      reflexes[reflexId].completedOperations = 0
-      reflexes[reflexId].piggybackOperations = data.operations
+    if (reflex) {
+      reflex.payload = payload
+      reflex.totalOperations = reflexOperations.length
+      reflex.pendingOperations = reflexOperations.length
+      reflex.completedOperations = 0
+      reflex.piggybackOperations = data.operations
       CableReady.perform(reflexOperations)
     }
   } else {
