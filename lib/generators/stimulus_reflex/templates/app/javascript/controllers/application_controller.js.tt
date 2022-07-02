@@ -38,6 +38,14 @@ export default class extends Controller {
     // document.body.classList.add('wait')
   }
 
+  reflexQueued (element, reflex, noop, reflexId) {
+    // Reflex will be delivered to server upon reconnection
+  }
+
+  reflexDelivered (element, reflex, noop, reflexId) {
+    // Reflex has been delivered to the server
+  }
+
   reflexSuccess (element, reflex, noop, reflexId) {
     // show success message
   }

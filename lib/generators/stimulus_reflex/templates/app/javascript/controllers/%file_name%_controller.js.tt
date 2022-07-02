@@ -55,36 +55,52 @@ export default class extends ApplicationController {
   //  element.innerText = 'Putting dance shoes on...'
   // }
 
+  // danceQueued(element, reflex, noop, reflexId) {
+  //   element.innerText = 'Waiting in the wings'
+  // }
+
+  // danceDelivered(element, reflex, noop, reflexId) {
+  //   element.innerText = 'My big moment'
+  // }
+
   // danceSuccess(element, reflex, noop, reflexId) {
-  //   element.innerText = '\nDanced like no one was watching! Was someone watching?'
+  //   element.innerText = 'Danced like no one was watching! Was someone watching?'
   // }
 
   // danceError(element, reflex, error, reflexId) {
   //   console.error('danceError', error);
-  //   element.innerText = "\nCouldn\'t dance!"
+  //   element.innerText = 'Could not dance!'
   // }
 
   // danceForbidden(element, reflex, noop, reflexId) {
   //   console.warn('danceForbidden');
-  //   element.innerText = "\nDancing is forbidden in Bomont."
+  //   element.innerText = 'Dancing is forbidden in Bomont.'
   // }
 
   // danceHalted(element, reflex, noop, reflexId) {
   //   console.warn('danceHalted');
-  //   element.innerText = "\nNobody puts Baby in a corner."
+  //   element.innerText = 'Nobody puts Baby in a corner.'
   // }
 
   // afterDance(element, reflex, noop, reflexId) {
-  //   element.innerText = '\nWhatever that was, it\'s over now.'
+  //   element.innerText = 'Whatever that was, it is over now.'
   // }
 
   // finalizeDance(element, reflex, noop, reflexId) {
-  //   element.innerText = '\nNow, the cleanup can begin!'
+  //   element.innerText = 'Now, the cleanup can begin!'
   // }
 <% end -%>
 <% actions.each do |action| -%>
   // <%= "before_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
   //  console.log("before <%= action %>", element, reflex, reflexId)
+  // }
+
+  // <%= "#{action}_queued".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.log("<%= action %> queued", element, reflex, reflexId)
+  // }
+
+  // <%= "#{action}_delivered".camelize(:lower) %>(element, reflex, noop, reflexId) {
+  //   console.log("<%= action %> delivered", element, reflex, reflexId)
   // }
 
   // <%= "#{action}_success".camelize(:lower) %>(element, reflex, noop, reflexId) {

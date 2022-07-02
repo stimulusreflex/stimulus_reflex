@@ -3,7 +3,6 @@ import Debug from './debug'
 export default class Reflex {
   constructor (data, controller) {
     this.data = data.valueOf()
-    // TODO do we even need controller in v4?
     this.controller = controller
     this.element = data.reflexElement
     this.reflexId = data.reflexId
