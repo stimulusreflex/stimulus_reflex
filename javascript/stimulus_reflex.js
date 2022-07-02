@@ -8,6 +8,7 @@ import Deprecate from './deprecate'
 import Reflex from './reflex'
 import ReflexData from './reflex_data'
 import IsolationMode from './isolation_mode'
+import Transport from './transport'
 import ActionCableTransport from './transports/action_cable'
 
 import { dispatchLifecycleEvent } from './lifecycle'
@@ -44,9 +45,10 @@ const tabId = uuidv4()
 //
 const initialize = (
   application,
-  { controller, consumer, debug, params, isolate, deprecate } = {}
+  { controller, consumer, debug, params, isolate, deprecate, transport } = {}
 ) => {
-  ActionCableTransport.initialize(consumer, params)
+  Transport.set(transport || ActionCableTransport)
+  Transport.mode.initialize(consumer, params)
   IsolationMode.set(!!isolate)
   Stimulus.set(application)
   Schema.set(application)
@@ -73,7 +75,7 @@ const initialize = (
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  ActionCableTransport.subscribe(controller)
+  Transport.mode.subscribe(controller)
   Object.assign(controller, {
     // Invokes a server side reflex method.
     //
@@ -166,7 +168,7 @@ const register = (controller, options = {}) => {
         controllerElement.reflexData[reflexId] = reflex.data
         // END TODO: remove
 
-        ActionCableTransport.deliver(reflex)
+        Transport.mode.deliver(reflex)
       })
 
       Log.request(reflex)
