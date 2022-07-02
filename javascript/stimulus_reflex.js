@@ -166,14 +166,14 @@ const register = (controller, options = {}) => {
         controllerElement.reflexData[reflexId] = reflex.data
         // END TODO: remove
 
-        ActionCableTransport.enqueueReflex(reflex)
+        ActionCableTransport.deliver(reflex)
       })
 
       Log.request(
         reflexId,
         target,
         args,
-        this.context.scope.identifier,
+        this.identifier,
         reflexElement,
         controllerElement
       )

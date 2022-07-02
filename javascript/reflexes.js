@@ -77,6 +77,7 @@ const received = data => {
 
       dispatchLifecycleEvent(reflex, 'before')
     } else {
+      // v4 keep this
       reflex = reflexes[reflexId]
     }
     // END TODO: remove

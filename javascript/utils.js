@@ -104,6 +104,7 @@ const elementToXPath = element => {
   }
 }
 
+// TODO: remove this in v4 (potentially!)
 const XPathToElement = xpath => {
   return document.evaluate(
     xpath,

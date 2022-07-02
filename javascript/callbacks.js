@@ -4,45 +4,37 @@ import Log from './log'
 
 import { reflexes } from './reflex_store'
 import { dispatchLifecycleEvent } from './lifecycle'
-import { XPathToElement } from './utils'
 
 const beforeDOMUpdate = event => {
-  const { stimulusReflex, payload } = event.detail || {}
+  const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const controllerElement = XPathToElement(xpathController)
-  const reflexElement = XPathToElement(xpathElement)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.reflexId]
 
   reflex.pendingOperations--
 
   if (reflex.pendingOperations > 0) return
 
-  // TODO: v4 always resolve late
+  // TODO: remove in v4 - always resolve late
   if (!stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({
+      reflex.promise.resolve({
         element: reflex.element,
         event,
         data: reflex.data,
-        payload,
-        reflexId,
+        payload: reflex.payload,
+        reflexId: reflex.reflexId,
         toString: () => ''
       })
     )
+  // END TODO: remove
 
   setTimeout(() => dispatchLifecycleEvent(reflex, 'success'))
 }
 
 const afterDOMUpdate = event => {
-  const { stimulusReflex, payload } = event.detail || {}
+  const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const controllerElement = XPathToElement(xpathController)
-  const reflexElement = XPathToElement(xpathElement)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.reflexId]
 
   reflex.completedOperations++
 
@@ -50,15 +42,16 @@ const afterDOMUpdate = event => {
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
-  // TODO: v4 always resolve late
+  // TODO: v4 always resolve late (remove if)
+  // TODO: v4 simplify to reflex, event, toString
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({
+      reflex.promise.resolve({
         element: reflex.element,
         event,
         data: reflex.data,
-        payload,
-        reflexId,
+        payload: reflex.payload,
+        reflexId: reflex.reflexId,
         toString: () => ''
       })
     )
@@ -70,7 +63,8 @@ const afterDOMUpdate = event => {
 }
 
 const routeReflexEvent = event => {
-  const { stimulusReflex, payload, name, body } = event.detail || {}
+  console.log(event.detail)
+  const { stimulusReflex, name, body } = event.detail || {}
   const eventType = name.split('-')[2]
 
   const eventTypes = {
@@ -82,18 +76,12 @@ const routeReflexEvent = event => {
 
   if (!stimulusReflex || !Object.keys(eventTypes).includes(eventType)) return
 
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const reflexElement = XPathToElement(xpathElement)
-  const controllerElement = XPathToElement(xpathController)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.reflexId]
+  reflex.completedOperations++
+  reflex.pendingOperations--
+  if (eventType === 'error') reflex.error = body
 
-  if (controllerElement) {
-    controllerElement.reflexError = controllerElement.reflexError || {}
-    if (eventType === 'error') controllerElement.reflexError[reflexId] = body
-  }
-
-  eventTypes[eventType](event, payload, promise, reflex, reflexElement)
+  eventTypes[eventType](reflex, event)
 
   setTimeout(() => dispatchLifecycleEvent(reflex, eventType))
 
@@ -101,63 +89,67 @@ const routeReflexEvent = event => {
     CableReady.perform(reflex.piggybackOperations)
 }
 
-const nothing = (event, payload, promise, reflex, reflexElement) => {
+const nothing = (reflex, event) => {
   Log.success(event)
 
+  // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.reflexId,
+      payload: reflex.payload,
+      reflexId: reflex.reflexId,
       toString: () => ''
     })
   )
 }
 
-const halted = (event, payload, promise, reflex, reflexElement) => {
+const halted = (reflex, event) => {
   Log.halted(event)
 
+  // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
+      payload: reflex.payload,
+      reflexId: reflex.reflexId,
       toString: () => ''
     })
   )
 }
 
-const forbidden = (event, payload, promise, reflex, reflexElement) => {
+const forbidden = (reflex, event) => {
   Log.forbidden(event)
 
+  // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
+      payload: reflex.payload,
+      reflexId: reflex.reflexId,
       toString: () => ''
     })
   )
 }
 
-const error = (event, payload, promise, reflex, reflexElement) => {
+const error = (reflex, event) => {
   Log.error(event)
 
+  // TODO: v4 simplify to reflex, event, toString
   setTimeout(() =>
-    promise.reject({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.reject({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
-      error: event.detail.body,
-      toString: () => event.detail.body
+      payload: reflex.payload,
+      reflexId: reflex.reflexId,
+      error: reflex.error,
+      toString: () => reflex.error
     })
   )
 }
