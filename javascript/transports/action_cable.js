@@ -46,7 +46,6 @@ const connected = () => {
   active = true
   connectionStatusClass()
   emitEvent('stimulus-reflex:connected')
-  emitEvent('stimulus-reflex:action-cable:connected')
   Object.values(reflexes.queued).forEach(reflex => {
     subscription.send(reflex.data)
     dispatchLifecycleEvent(reflex, 'delivered')
@@ -57,7 +56,6 @@ const rejected = () => {
   active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:rejected')
-  emitEvent('stimulus-reflex:action-cable:rejected')
   if (Debug.enabled) console.warn('Channel subscription was rejected.')
 }
 
@@ -65,10 +63,9 @@ const disconnected = willAttemptReconnect => {
   active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
-  emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
 }
 
-const enqueueReflex = reflex => {
+const deliver = reflex => {
   if (active) {
     subscription.send(reflex.data)
     dispatchLifecycleEvent(reflex, 'delivered')
@@ -97,6 +94,6 @@ const connectionStatusClass = () => {
 
 export default {
   subscribe,
-  enqueueReflex,
+  deliver,
   initialize
 }
