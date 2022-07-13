@@ -4,15 +4,14 @@ module StimulusReflex
   class PageBroadcaster < Broadcaster
     def broadcast(selectors, data)
       reflex.controller.process reflex.params[:action]
-      page_html = reflex.controller.response.body
+      fragment = StimulusReflex::Fragment.new(reflex.controller.response.body)
 
-      return unless page_html.present?
+      return if fragment.empty?
 
-      document = Nokogiri::HTML.parse(page_html)
-      selectors = selectors.select { |s| document.css(s).present? }
+      selectors = selectors.select { |s| fragment.match(s).present? }
       selectors.each do |selector|
         operations << [selector, :morph]
-        html = document.css(selector).inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT)
+        html = fragment.match(selector).inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT)
         cable_ready.morph(
           selector: selector,
           html: html,

@@ -7,8 +7,8 @@ module StimulusReflex
         selectors, html = morph
         updates = create_update_collection(selectors, html)
         updates.each do |update|
-          fragment = Nokogiri::HTML.fragment(update.html.to_s)
-          match = fragment.at_css(update.selector)
+          fragment = StimulusReflex::Fragment.new(update.html)
+          match = fragment.match(update.selector)
           if match.present?
             operations << [update.selector, :morph]
             cable_ready.morph(
