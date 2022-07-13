@@ -7,7 +7,7 @@ module StimulusReflex
     def initialize(html)
       @fragment = Nokogiri::HTML.fragment(html.to_s)
       @matches = {
-        "body" => @fragment
+        "body" => Match.new(@fragment)
       }
     end
 
@@ -16,7 +16,15 @@ module StimulusReflex
     end
 
     def match(selector)
-      @matches[selector] ||= @fragment.at_css(selector)
+      @matches[selector] ||= Match.new(@fragment.at_css(selector))
+    end
+
+    Match = Struct.new(:element) do
+      delegate :present?, to: :element
+
+      def to_html
+        element&.inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT)
+      end
     end
   end
 end

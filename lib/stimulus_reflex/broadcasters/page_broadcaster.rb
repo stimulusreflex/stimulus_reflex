@@ -11,7 +11,7 @@ module StimulusReflex
       selectors = selectors.select { |s| fragment.match(s).present? }
       selectors.each do |selector|
         operations << [selector, :morph]
-        html = fragment.match(selector).inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT)
+        html = fragment.match(selector).to_html
         cable_ready.morph(
           selector: selector,
           html: html,
