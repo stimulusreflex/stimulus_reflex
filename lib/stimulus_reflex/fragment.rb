@@ -2,7 +2,7 @@
 
 module StimulusReflex
   class Fragment
-    delegate :to_html, to: :"@fragment"
+    delegate :to_html, to: :@fragment
 
     def initialize(html)
       @fragment = Nokogiri::HTML.fragment(html.to_s)
