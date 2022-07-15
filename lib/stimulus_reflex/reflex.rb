@@ -30,8 +30,8 @@ class StimulusReflex::Reflex
     @selectors = selectors
     @method_name = method_name
     @params = params
-    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
+    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
     @payload = {}
     @headers = {}

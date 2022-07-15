@@ -2,8 +2,8 @@
 
 module StimulusReflex
   class Broadcaster
-    attr_reader :reflex, :logger, :operations
-    delegate :cable_ready, :permanent_attribute_name, :payload, to: :reflex
+    attr_reader :reflex, :cable_ready, :logger, :operations
+    delegate :permanent_attribute_name, :payload, to: :reflex
 
     DEFAULT_HTML_WITHOUT_FORMAT = Nokogiri::XML::Node::SaveOptions::DEFAULT_HTML &
       ~Nokogiri::XML::Node::SaveOptions::FORMAT
@@ -12,6 +12,7 @@ module StimulusReflex
       @reflex = reflex
       @logger = Rails.logger if defined?(Rails.logger)
       @operations = []
+      @cable_ready = StimulusReflex::CableReadyChannels.new(reflex.stream_name, reflex.reflex_id)
     end
 
     def nothing?
