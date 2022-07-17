@@ -24,7 +24,7 @@ module StimulusReflex
         raise TypeError.new(message.strip)
       end
 
-      @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
+      @cable_ready = StimulusReflex::CableReadyChannels.new(self)
     end
   end
 end

@@ -12,7 +12,7 @@ module StimulusReflex
       @reflex = reflex
       @logger = Rails.logger if defined?(Rails.logger)
       @operations = []
-      @cable_ready = StimulusReflex::CableReadyChannels.new(reflex.stream_name, reflex.reflex_id)
+      @cable_ready = StimulusReflex::CableReadyChannels.new(reflex)
     end
 
     def nothing?
