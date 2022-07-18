@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/cable_readiness"
+
 ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
   class VersionMismatchError < StandardError; end
 
+  prepend StimulusReflex::CableReadiness
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -21,27 +24,15 @@ class StimulusReflex::Reflex
   delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
-    if is_a? CableReady::Broadcaster
-      message = <<~MSG
-
-        #{self.class.name} includes CableReady::Broadcaster, and you need to remove it.
-        Reflexes have their own CableReady interface. You can just assume that it's present.
-        See https://docs.stimulusreflex.com/rtfm/cableready#using-cableready-inside-a-reflex-action for more details.
-
-      MSG
-      raise TypeError.new(message.strip)
-    end
-
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
     @params = params
-    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
+    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
-    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
     @payload = {}
     @headers = {}
 
