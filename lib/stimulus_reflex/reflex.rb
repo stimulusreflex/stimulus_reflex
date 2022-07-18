@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "stimulus_reflex/cable_readyable"
+require "stimulus_reflex/cable_readiness"
 
 ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
   class VersionMismatchError < StandardError; end
 
-  prepend StimulusReflex::CableReadyable
+  prepend StimulusReflex::CableReadiness
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper

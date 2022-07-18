@@ -3,7 +3,7 @@
 require "active_support/concern"
 
 module StimulusReflex
-  module CableReadyable
+  module CableReadiness
     extend ActiveSupport::Concern
 
     prepended do
