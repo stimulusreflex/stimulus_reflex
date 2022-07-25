@@ -20,7 +20,6 @@ class StimulusReflex::Reflex
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
-  delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
@@ -31,7 +30,6 @@ class StimulusReflex::Reflex
     @method_name = method_name
     @params = params
     @client_attributes = ClientAttributes.new(client_attributes)
-    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
     @payload = {}
     @headers = {}
@@ -80,10 +78,35 @@ class StimulusReflex::Reflex
     end
   end
 
+  def broadcast(*args)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast(*args)
+  end
+
+  def broadcast_halt(data:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_halt(data: data)
+  end
+
+  def broadcast_forbid(data:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_forbid(data: data)
+  end
+
+  def broadcast_error(data:, body:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_error(data: data, body: body)
+  end
+
   def morph(selectors, html = nil)
     case selectors
     when :page
-      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
+      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") if broadcaster&.selector? || broadcaster&.nothing?
+      @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     when :nothing
       raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
       @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
