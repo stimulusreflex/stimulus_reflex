@@ -126,6 +126,9 @@ const getReflexOptions = args => {
     ).length
   ) {
     const opts = args.shift()
+    // TODO: in v4, all promises resolve during finalize stage
+    // if they specify resolveLate, console.warn to say that the option will be ignored
+    // deprecation warning in 3.5 is not required as it's still required until v4
     Object.keys(opts).forEach(o => (options[o] = opts[o]))
   }
   return options
