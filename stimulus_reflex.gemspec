@@ -30,7 +30,7 @@ Gem::Specification.new do |gem|
   }
 
   gem.files = Dir[
-    "lib/**/*.{rb,rake}",
+    "lib/**/*.{rb,rake,tt}",
     "app/**/*.rb",
     "app/assets/javascripts/*",
     "bin/*",
