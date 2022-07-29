@@ -10,16 +10,16 @@ module StimulusReflex
 
       selectors = selectors.select { |s| fragment.match(s).present? }
       selectors.each do |selector|
-        operations << [selector, :morph]
+        operations << [selector, StimulusReflex.config.morph_operation]
         html = fragment.match(selector).to_html
-        cable_ready.morph(
+        cable_ready.send StimulusReflex.config.morph_operation, {
           selector: selector,
           html: html,
           payload: payload,
           children_only: true,
           permanent_attribute_name: permanent_attribute_name,
           stimulus_reflex: data.merge(morph: to_sym)
-        )
+        }
       end
       cable_ready.broadcast
     end

@@ -21,6 +21,11 @@ StimulusReflex.configure do |config|
 
   # config.on_missing_default_urls = :warn
 
+  # Override the CableReady operation used for morphing and replacing content
+
+  # config.morph_operation = :morph
+  # config.replace_operation = :inner_html
+
   # Override the parent class that the StimulusReflex ActionCable channel inherits from
 
   # config.parent_channel = "ApplicationCable::Channel"
