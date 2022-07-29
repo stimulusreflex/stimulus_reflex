@@ -14,7 +14,7 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :on_failed_sanity_checks, :on_new_version_available, :on_missing_default_urls, :parent_channel, :logging, :logger, :middleware
+    attr_accessor :on_failed_sanity_checks, :on_new_version_available, :on_missing_default_urls, :parent_channel, :logging, :logger, :middleware, :morph_operation, :replace_operation
 
     DEFAULT_LOGGING = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
@@ -26,6 +26,8 @@ module StimulusReflex
       @logging = DEFAULT_LOGGING
       @logger = Rails.logger
       @middleware = ActionDispatch::MiddlewareStack.new
+      @morph_operation = :morph
+      @replace_operation = :inner_html
     end
   end
 end

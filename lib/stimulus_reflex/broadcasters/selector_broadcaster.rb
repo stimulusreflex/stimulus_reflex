@@ -10,23 +10,23 @@ module StimulusReflex
           fragment = StimulusReflex::Fragment.new(update.html)
           match = fragment.match(update.selector)
           if match.present?
-            operations << [update.selector, :morph]
-            cable_ready.morph(
+            operations << [update.selector, StimulusReflex.config.morph_operation]
+            cable_ready.send StimulusReflex.config.morph_operation, {
               selector: update.selector,
               html: match.to_html,
               payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge(morph: to_sym)
-            )
+            }
           else
-            operations << [update.selector, :inner_html]
-            cable_ready.inner_html(
+            operations << [update.selector, StimulusReflex.config.replace_operation]
+            cable_ready.send StimulusReflex.config.replace_operation, {
               selector: update.selector,
               html: fragment.to_html,
               payload: payload,
               stimulus_reflex: data.merge(morph: to_sym)
-            )
+            }
           end
         end
       end
