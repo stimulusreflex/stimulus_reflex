@@ -108,11 +108,11 @@ class StimulusReflex::Reflex
       raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") if broadcaster&.selector? || broadcaster&.nothing?
       @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     when :nothing
-      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
-      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster&.selector?
+      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster&.nothing?
     else
-      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
-      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster&.nothing?
+      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster&.selector?
       broadcaster.append_morph(selectors, html)
     end
   end
