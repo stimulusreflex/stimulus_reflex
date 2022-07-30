@@ -42,6 +42,13 @@ class StimulusReflex::FragmentTest < ActiveSupport::TestCase
   end
 
   test "should extract whole HTML document" do
+    raw_body = <<-BODY
+      <body id="body">
+        <h1>Home#index</h1>
+        <p>Find me in app/views/home/index.html.erb</p>
+      </body>
+    BODY
+
     raw_html = <<-HTML
       <!DOCTYPE html>
       <html>
@@ -54,15 +61,14 @@ class StimulusReflex::FragmentTest < ActiveSupport::TestCase
           <script src="/assets/application.js" data-turbo-track="reload" defer="defer"></script>
         </head>
 
-        <body id="body">
-          <h1>Home#index</h1>
-          <p>Find me in app/views/home/index.html.erb</p>
-        </body>
+        #{raw_body}
       </html>
     HTML
 
     fragment = StimulusReflex::Fragment.new(raw_html)
 
+    assert_equal fragment.match("body").to_html.squish, raw_body.squish
+    assert_equal fragment.match("#body").to_html.squish, raw_body.squish
     assert_equal fragment.to_html.squish, raw_html.squish
   end
 end
