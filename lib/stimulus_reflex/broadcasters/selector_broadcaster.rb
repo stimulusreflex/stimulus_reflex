@@ -7,7 +7,7 @@ module StimulusReflex
         selectors, html = morph
         updates = create_update_collection(selectors, html)
         updates.each do |update|
-          fragment = StimulusReflex::Fragment.new(update.html)
+          fragment = StimulusReflex::HTML::Fragment.new(update.html)
           match = fragment.match(update.selector)
           if match.present?
             operations << [update.selector, StimulusReflex.config.morph_operation]

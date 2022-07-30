@@ -5,9 +5,6 @@ module StimulusReflex
     attr_reader :reflex, :cable_ready, :logger, :operations
     delegate :permanent_attribute_name, :payload, to: :reflex
 
-    DEFAULT_HTML_WITHOUT_FORMAT = Nokogiri::XML::Node::SaveOptions::DEFAULT_HTML &
-      ~Nokogiri::XML::Node::SaveOptions::FORMAT
-
     def initialize(reflex)
       @reflex = reflex
       @logger = Rails.logger if defined?(Rails.logger)
