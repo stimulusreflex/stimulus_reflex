@@ -1,8 +1,9 @@
 import { createConsumer } from '@rails/actioncable'
-import { received } from '../reflexes'
-import { reflexes } from '../reflex_store'
 import { emitEvent } from '../utils'
 import { dispatchLifecycleEvent } from '../lifecycle'
+import { reflexes } from '../reflexes'
+import { received } from '../process'
+
 import Deprecate from '../deprecate'
 
 let consumer

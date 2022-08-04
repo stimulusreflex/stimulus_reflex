@@ -1,8 +1,7 @@
 import CableReady from 'cable_ready'
-
 import Log from './log'
 
-import { reflexes } from './reflex_store'
+import { reflexes } from './reflexes'
 import { dispatchLifecycleEvent } from './lifecycle'
 
 const beforeDOMUpdate = event => {

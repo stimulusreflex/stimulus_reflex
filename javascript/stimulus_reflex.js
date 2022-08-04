@@ -11,12 +11,20 @@ import IsolationMode from './isolation_mode'
 import Transport from './transport'
 import ActionCableTransport from './transports/action_cable'
 
+import { reflexes } from './reflexes'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
-import { reflexes } from './reflex_store'
-import { attributeValues } from './attributes'
-import { uuidv4, serializeForm, elementInvalid } from './utils'
-import { scanForReflexes, getReflexElement, getReflexOptions } from './reflexes'
+import { attributeValues, attributeValue } from './attributes'
+import { findControllerByReflexName, allReflexControllers } from './controllers'
+import {
+  uuidv4,
+  serializeForm,
+  elementInvalid,
+  getReflexElement,
+  getReflexOptions,
+  debounce,
+  emitEvent
+} from './utils'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
@@ -221,6 +229,49 @@ const register = (controller, options = {}) => {
 const useReflex = (controller, options = {}) => {
   register(controller, options)
 }
+
+// Sets up declarative reflex behavior.
+// Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
+//
+const scanForReflexes = debounce(() => {
+  document.querySelectorAll(`[${Schema.reflex}]`).forEach(element => {
+    const controllers = attributeValues(element.getAttribute(Schema.controller))
+    const reflexAttributeNames = attributeValues(
+      element.getAttribute(Schema.reflex)
+    )
+    const actions = attributeValues(element.getAttribute(Schema.action))
+    reflexAttributeNames.forEach(reflexName => {
+      const controller = findControllerByReflexName(
+        reflexName,
+        allReflexControllers(Stimulus.app, element)
+      )
+      let action
+      if (controller) {
+        action = `${reflexName.split('->')[0]}->${
+          controller.identifier
+        }#__perform`
+        if (!actions.includes(action)) actions.push(action)
+      } else {
+        action = `${reflexName.split('->')[0]}->stimulus-reflex#__perform`
+        if (!controllers.includes('stimulus-reflex')) {
+          controllers.push('stimulus-reflex')
+        }
+        if (!actions.includes(action)) actions.push(action)
+      }
+    })
+    const controllerValue = attributeValue(controllers)
+    const actionValue = attributeValue(actions)
+    if (
+      controllerValue &&
+      element.getAttribute(Schema.controller) != controllerValue
+    ) {
+      element.setAttribute(Schema.controller, controllerValue)
+    }
+    if (actionValue && element.getAttribute(Schema.action) != actionValue)
+      element.setAttribute(Schema.action, actionValue)
+  })
+  emitEvent('stimulus-reflex:ready')
+}, 20)
 
 document.addEventListener('cable-ready:after-dispatch-event', routeReflexEvent)
 document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)

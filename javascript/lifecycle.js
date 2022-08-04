@@ -1,7 +1,7 @@
 import Debug from './debug'
 
+import { reflexes } from './reflexes'
 import { camelize } from './utils'
-import { reflexes } from './reflex_store'
 
 // lifecycle stages
 //   * created (at initialization)
