@@ -3,7 +3,7 @@ import Debug from './debug'
 const request = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
   console.log(`\u2191 stimulus \u2191 ${reflex.target}`, {
-    reflexId: reflex.reflexId,
+    id: reflex.id,
     args: reflex.data.args,
     controller: reflex.controller.identifier,
     element: reflex.element,
@@ -14,7 +14,7 @@ const request = reflex => {
 const success = reflex => {
   if (Debug.disabled || reflex.data.suppressLogging) return
   const output = {
-    reflexId: reflex.reflexId,
+    id: reflex.id,
     morph: reflex.morph,
     payload: reflex.payload
   }
@@ -31,7 +31,7 @@ const halted = reflex => {
   console.log(
     `\u2193 reflex \u2193 ${reflex.target} ${duration(reflex)} %cHALTED`,
     'color: #ffa500;',
-    { reflexId: reflex.reflexId, payload: reflex.payload }
+    { id: reflex.id, payload: reflex.payload }
   )
 }
 
@@ -40,7 +40,7 @@ const forbidden = reflex => {
   console.log(
     `\u2193 reflex \u2193 ${reflex.target} ${duration(reflex)} %cFORBIDDEN`,
     'color: #BF40BF;',
-    { reflexId: reflex.reflexId, payload: reflex.payload }
+    { id: reflex.id, payload: reflex.payload }
   )
 }
 
@@ -51,7 +51,7 @@ const error = reflex => {
       reflex.error
     }`,
     'color: #f00;',
-    { reflexId: reflex.reflexId, payload: reflex.payload }
+    { id: reflex.id, payload: reflex.payload }
   )
 }
 

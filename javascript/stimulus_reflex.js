@@ -89,7 +89,7 @@ const register = (controller, options = {}) => {
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
     // - reflexElement - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, serializeForm
+    // - options - [optional] an object that contains at least one of attrs, id, selectors, resolveLate, serializeForm
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
@@ -118,7 +118,7 @@ const register = (controller, options = {}) => {
         tabId
       )
 
-      const reflexId = reflexData.reflexId
+      const id = reflexData.id
 
       // TODO: remove this in v4
       controllerElement.reflexController =
@@ -126,19 +126,19 @@ const register = (controller, options = {}) => {
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      controllerElement.reflexController[reflexId] = this
-      controllerElement.reflexData[reflexId] = reflexData.valueOf()
+      controllerElement.reflexController[id] = this
+      controllerElement.reflexData[id] = reflexData.valueOf()
       // END TODO: remove
 
       const reflex = new Reflex(reflexData, this)
-      reflexes[reflexId] = reflex
+      reflexes[id] = reflex
       this.lastReflex = reflex
 
       dispatchLifecycleEvent(reflex, 'before')
 
       setTimeout(() => {
         // TODO: in v4, params will be set on the reflex.data object
-        const { params } = controllerElement.reflexData[reflexId] || {}
+        const { params } = controllerElement.reflexData[id] || {}
 
         const check = reflexElement.attributes[Schema.reflexSerializeForm]
         if (check) {
@@ -171,7 +171,7 @@ const register = (controller, options = {}) => {
         }
 
         // TODO: remove this in v4
-        controllerElement.reflexData[reflexId] = reflex.data
+        controllerElement.reflexData[id] = reflex.data
         // END TODO: remove
 
         Transport.plugin.deliver(reflex)
@@ -206,7 +206,7 @@ const register = (controller, options = {}) => {
   })
 
   // Access the reflexes created by the current controller instance
-  // reflexes is a Proxy to an object, keyed by reflexId
+  // reflexes is a Proxy to an object, keyed by id
   // this.reflexes.all and this.reflexes.last are scoped to this controller instance
   // Reflexes can also be scoped by stage eg. this.reflexes.queued
   if (!controller.reflexes)

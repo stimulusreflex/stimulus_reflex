@@ -7,7 +7,7 @@ import { dispatchLifecycleEvent } from './lifecycle'
 const beforeDOMUpdate = event => {
   const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const reflex = reflexes[stimulusReflex.reflexId]
+  const reflex = reflexes[stimulusReflex.id]
 
   reflex.pendingOperations--
 
@@ -21,7 +21,7 @@ const beforeDOMUpdate = event => {
         event,
         data: reflex.data,
         payload: reflex.payload,
-        reflexId: reflex.reflexId,
+        id: reflex.id,
         toString: () => ''
       })
     )
@@ -33,7 +33,7 @@ const beforeDOMUpdate = event => {
 const afterDOMUpdate = event => {
   const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const reflex = reflexes[stimulusReflex.reflexId]
+  const reflex = reflexes[stimulusReflex.id]
 
   reflex.completedOperations++
   reflex.selector = event.detail.selector
@@ -57,7 +57,7 @@ const afterDOMUpdate = event => {
         event,
         data: reflex.data,
         payload: reflex.payload,
-        reflexId: reflex.reflexId,
+        id: reflex.id,
         toString: () => ''
       })
     )
@@ -76,7 +76,7 @@ const routeReflexEvent = event => {
 
   if (!stimulusReflex || !Object.keys(eventTypes).includes(eventType)) return
 
-  const reflex = reflexes[stimulusReflex.reflexId]
+  const reflex = reflexes[stimulusReflex.id]
   reflex.completedOperations++
   reflex.pendingOperations--
   reflex.selector = event.detail.selector
@@ -106,7 +106,7 @@ const nothing = (reflex, event) => {
       element: reflex.element,
       event,
       payload: reflex.payload,
-      reflexId: reflex.reflexId,
+      id: reflex.id,
       toString: () => ''
     })
   )
@@ -122,7 +122,7 @@ const halted = (reflex, event) => {
       element: reflex.element,
       event,
       payload: reflex.payload,
-      reflexId: reflex.reflexId,
+      id: reflex.id,
       toString: () => ''
     })
   )
@@ -138,7 +138,7 @@ const forbidden = (reflex, event) => {
       element: reflex.element,
       event,
       payload: reflex.payload,
-      reflexId: reflex.reflexId,
+      id: reflex.id,
       toString: () => ''
     })
   )
@@ -155,7 +155,7 @@ const error = (reflex, event) => {
       element: reflex.element,
       event,
       payload: reflex.payload,
-      reflexId: reflex.reflexId,
+      id: reflex.id,
       error: reflex.error,
       toString: () => reflex.error
     })

@@ -36,9 +36,9 @@ export default class ReflexData {
     return this._attrs
   }
 
-  get reflexId () {
-    this._reflexId = this._reflexId || this.options['reflexId'] || uuidv4()
-    return this._reflexId
+  get id () {
+    this._id = this._id || this.options['id'] || uuidv4()
+    return this._id
   }
 
   get selectors () {
@@ -116,7 +116,7 @@ export default class ReflexData {
       attrs: this.attrs,
       dataset: this.dataset,
       selectors: this.selectors,
-      reflexId: this.reflexId,
+      id: this.id,
       resolveLate: this.resolveLate,
       suppressLogging: this.suppressLogging,
       xpathController: this.xpathController,

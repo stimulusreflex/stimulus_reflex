@@ -1,4 +1,5 @@
 import Schema from './schema'
+import Deprecate from './deprecate'
 
 // uuid4 function taken from stackoverflow
 // https://stackoverflow.com/a/2117523/554903
@@ -149,11 +150,13 @@ const getReflexElement = (args, element) => {
 
 const getReflexOptions = args => {
   const options = {}
+  // TODO: remove reflexId in v4
   if (
     args[0] &&
     typeof args[0] === 'object' &&
     Object.keys(args[0]).filter(key =>
       [
+        'id',
         'attrs',
         'selectors',
         'reflexId',
@@ -169,7 +172,14 @@ const getReflexOptions = args => {
     // TODO: in v4, all promises resolve during finalize stage
     // if they specify resolveLate, console.warn to say that the option will be ignored
     // deprecation warning in 3.5 is not required as it's still required until v4
-    Object.keys(opts).forEach(o => (options[o] = opts[o]))
+    Object.keys(opts).forEach(o => {
+      // TODO: no need to check for reflexId in v4
+      if (o === 'reflexId') {
+        if (Deprecate.enabled)
+          console.warn('reflexId option will be removed in v4. Use id instead.')
+        options['id'] = opts['reflexId']
+      } else options[o] = opts[o]
+    })
   }
   return options
 }

@@ -42,7 +42,7 @@ const invokeLifecycleMethod = (reflex, stage) => {
       reflex.element,
       reflex.target,
       reflex.error,
-      reflex.reflexId,
+      reflex.id,
       reflex.payload
     )
   }
@@ -54,7 +54,7 @@ const invokeLifecycleMethod = (reflex, stage) => {
       reflex.element,
       reflex.target,
       reflex.error,
-      reflex.reflexId,
+      reflex.id,
       reflex.payload
     )
   }
@@ -83,7 +83,7 @@ const dispatchLifecycleEvent = (reflex, stage) => {
   const detail = {
     reflex: reflex.target,
     controller: reflex.controller,
-    reflexId: reflex.reflexId,
+    id: reflex.id,
     element: reflex.element,
     payload: reflex.payload
   }
@@ -100,26 +100,26 @@ const dispatchLifecycleEvent = (reflex, stage) => {
 
 document.addEventListener(
   'stimulus-reflex:before',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'before'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'before'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:queued',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'queued'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'queued'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:delivered',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'delivered'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'delivered'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:success',
   event => {
-    const reflex = reflexes[event.detail.reflexId]
+    const reflex = reflexes[event.detail.id]
     invokeLifecycleMethod(reflex, 'success')
     dispatchLifecycleEvent(reflex, 'after')
   },
@@ -128,14 +128,14 @@ document.addEventListener(
 
 document.addEventListener(
   'stimulus-reflex:nothing',
-  event => dispatchLifecycleEvent(reflexes[event.detail.reflexId], 'success'),
+  event => dispatchLifecycleEvent(reflexes[event.detail.id], 'success'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:error',
   event => {
-    const reflex = reflexes[event.detail.reflexId]
+    const reflex = reflexes[event.detail.id]
     invokeLifecycleMethod(reflex, 'error')
     dispatchLifecycleEvent(reflex, 'after')
   },
@@ -144,25 +144,25 @@ document.addEventListener(
 
 document.addEventListener(
   'stimulus-reflex:halted',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'halted'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'halted'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:forbidden',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'forbidden'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'forbidden'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:after',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'after'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'after'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:finalize',
-  event => invokeLifecycleMethod(reflexes[event.detail.reflexId], 'finalize'),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'finalize'),
   true
 )
 

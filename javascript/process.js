@@ -48,11 +48,11 @@ export const received = data => {
   }
 
   if (reflexData) {
-    const { reflexId, payload } = reflexData
+    const { id, payload } = reflexData
     let reflex
 
     // TODO: remove this in v4
-    if (!reflexes[reflexId] && IsolationMode.disabled) {
+    if (!reflexes[id] && IsolationMode.disabled) {
       const controllerElement = XPathToElement(reflexData.xpathController)
       const reflexElement = XPathToElement(reflexData.xpathElement)
 
@@ -66,11 +66,11 @@ export const received = data => {
         reflexData.reflexController
       )
 
-      controllerElement.reflexController[reflexId] = controller
-      controllerElement.reflexData[reflexId] = reflexData
+      controllerElement.reflexController[id] = controller
+      controllerElement.reflexData[id] = reflexData
 
       reflex = new Reflex(reflexData, controller)
-      reflexes[reflexId] = reflex
+      reflexes[id] = reflex
       reflex.cloned = true
       reflex.element = reflexElement
       controller.lastReflex = reflex
@@ -79,7 +79,7 @@ export const received = data => {
       reflex.getPromise
     } else {
       // v4 keep this, make it a const
-      reflex = reflexes[reflexId]
+      reflex = reflexes[id]
     }
     // END TODO: remove
 

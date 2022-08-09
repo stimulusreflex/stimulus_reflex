@@ -44,87 +44,87 @@ export default class extends ApplicationController {
    *
    *   error/noop - the error message (for reflexError), otherwise null
    *
-   *   reflexId - a UUID4 or developer-provided unique identifier for each Reflex
+   *   id - a UUID4 or developer-provided unique identifier for each Reflex
    */
 
 <% if actions.empty? -%>
   // Assuming you create a "<%= class_name %>#dance" action in your Reflex class
   // you'll be able to use the following lifecycle methods:
 
-  // beforeDance(element, reflex, noop, reflexId) {
+  // beforeDance(element, reflex, noop, id) {
   //  element.innerText = 'Putting dance shoes on...'
   // }
 
-  // danceQueued(element, reflex, noop, reflexId) {
+  // danceQueued(element, reflex, noop, id) {
   //   element.innerText = 'Waiting in the wings'
   // }
 
-  // danceDelivered(element, reflex, noop, reflexId) {
+  // danceDelivered(element, reflex, noop, id) {
   //   element.innerText = 'My big moment'
   // }
 
-  // danceSuccess(element, reflex, noop, reflexId) {
+  // danceSuccess(element, reflex, noop, id) {
   //   element.innerText = 'Danced like no one was watching! Was someone watching?'
   // }
 
-  // danceError(element, reflex, error, reflexId) {
+  // danceError(element, reflex, error, id) {
   //   console.error('danceError', error);
   //   element.innerText = 'Could not dance!'
   // }
 
-  // danceForbidden(element, reflex, noop, reflexId) {
+  // danceForbidden(element, reflex, noop, id) {
   //   console.warn('danceForbidden');
   //   element.innerText = 'Dancing is forbidden in Bomont.'
   // }
 
-  // danceHalted(element, reflex, noop, reflexId) {
+  // danceHalted(element, reflex, noop, id) {
   //   console.warn('danceHalted');
   //   element.innerText = 'Nobody puts Baby in a corner.'
   // }
 
-  // afterDance(element, reflex, noop, reflexId) {
+  // afterDance(element, reflex, noop, id) {
   //   element.innerText = 'Whatever that was, it is over now.'
   // }
 
-  // finalizeDance(element, reflex, noop, reflexId) {
+  // finalizeDance(element, reflex, noop, id) {
   //   element.innerText = 'Now, the cleanup can begin!'
   // }
 <% end -%>
 <% actions.each do |action| -%>
-  // <%= "before_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //  console.log("before <%= action %>", element, reflex, reflexId)
+  // <%= "before_#{action}".camelize(:lower) %>(element, reflex, noop, id) {
+  //  console.log("before <%= action %>", element, reflex, id)
   // }
 
-  // <%= "#{action}_queued".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.log("<%= action %> queued", element, reflex, reflexId)
+  // <%= "#{action}_queued".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.log("<%= action %> queued", element, reflex, id)
   // }
 
-  // <%= "#{action}_delivered".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.log("<%= action %> delivered", element, reflex, reflexId)
+  // <%= "#{action}_delivered".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.log("<%= action %> delivered", element, reflex, id)
   // }
 
-  // <%= "#{action}_success".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.log("<%= action %> success", element, reflex, reflexId)
+  // <%= "#{action}_success".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.log("<%= action %> success", element, reflex, id)
   // }
 
-  // <%= "#{action}_error".camelize(:lower) %>(element, reflex, error, reflexId) {
-  //   console.error("<%= action %> error", element, reflex, error, reflexId)
+  // <%= "#{action}_error".camelize(:lower) %>(element, reflex, error, id) {
+  //   console.error("<%= action %> error", element, reflex, error, id)
   // }
 
-  // <%= "#{action}_halted".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.warn("<%= action %> halted", element, reflex, reflexId)
+  // <%= "#{action}_halted".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.warn("<%= action %> halted", element, reflex, id)
   // }
 
-  // <%= "#{action}_forbidden".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.warn("<%= action %> forbidden", element, reflex, reflexId)
+  // <%= "#{action}_forbidden".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.warn("<%= action %> forbidden", element, reflex, id)
   // }
 
-  // <%= "after_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.log("after <%= action %>", element, reflex, reflexId)
+  // <%= "after_#{action}".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.log("after <%= action %>", element, reflex, id)
   // }
 
-  // <%= "finalize_#{action}".camelize(:lower) %>(element, reflex, noop, reflexId) {
-  //   console.log("finalize <%= action %>", element, reflex, reflexId)
+  // <%= "finalize_#{action}".camelize(:lower) %>(element, reflex, noop, id) {
+  //   console.log("finalize <%= action %>", element, reflex, id)
   // }
 <%= "\n" unless action == actions.last -%>
 <% end -%>
