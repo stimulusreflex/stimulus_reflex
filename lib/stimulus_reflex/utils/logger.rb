@@ -46,6 +46,15 @@ module StimulusReflex
       reflex.class.to_s + "#" + reflex.method_name
     end
 
+    def id_full
+      reflex.id
+    end
+
+    def id
+      id_full[0..7]
+    end
+
+    # TODO: remove for v4
     def reflex_id_full
       reflex.reflex_id
     end
@@ -53,6 +62,7 @@ module StimulusReflex
     def reflex_id
       reflex_id_full[0..7]
     end
+    # END TODO remove
 
     def mode
       reflex.broadcaster.to_s

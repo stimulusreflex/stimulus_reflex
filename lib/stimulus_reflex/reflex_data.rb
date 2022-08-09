@@ -53,8 +53,8 @@ class StimulusReflex::ReflexData
     form_data.deep_merge(data["params"] || {})
   end
 
-  def reflex_id
-    data["reflexId"]
+  def id
+    data["id"]
   end
 
   def tab_id

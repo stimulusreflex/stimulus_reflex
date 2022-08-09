@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO remove xpath_controller and xpath_element for v4
-ClientAttributes = Struct.new(:reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
+ClientAttributes = Struct.new(:id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
   class VersionMismatchError < StandardError; end
@@ -20,7 +20,7 @@ class StimulusReflex::Reflex
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :reflex_id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
+  delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     if is_a? CableReady::Broadcaster
@@ -43,7 +43,7 @@ class StimulusReflex::Reflex
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
-    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, reflex_id)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, id)
     @payload = {}
     @headers = {}
 
@@ -53,6 +53,13 @@ class StimulusReflex::Reflex
 
     self.params
   end
+
+  # TODO: remove this for v4
+  def reflex_id
+    puts "Deprecation warning: reflex_id will be removed in v4. Use id instead!" if Rails.env.development?
+    id
+  end
+  # END TODO: remove
 
   def request
     @request ||= begin

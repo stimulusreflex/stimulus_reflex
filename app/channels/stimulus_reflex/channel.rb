@@ -36,7 +36,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
               CableReady::Channels.instance[stream_name].console_log(
                 message: mismatch,
                 level: "error",
-                reflex_id: data["reflexId"]
+                id: data["reflexId"]
               ).broadcast
             end
 
