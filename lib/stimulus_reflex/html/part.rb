@@ -45,14 +45,8 @@ module StimulusReflex
           element&.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
         end
 
-        # TODO: uncomment if the other to_html method is renamed
-        # def to_html
-        #   element&.to_html
-        # end
-
-        #  TODO: this method should be renamed to inner_html
         def to_html
-          element&.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
+          element&.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
         end
 
         def inner_html

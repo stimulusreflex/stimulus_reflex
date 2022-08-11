@@ -36,10 +36,9 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     outer_body = "<body>#{inner_body} </body>"
     whole_document = "<html><head></head>#{outer_body}</html>"
 
-    # TODO: this should be have like outer_html
-    assert_equal inner_body, document.match("body").to_html.squish
-    assert_equal inner_container, document.match("#container").to_html.squish
-    assert_equal inner_title, document.match("#title").to_html.squish
+    assert_equal outer_body, document.match("body").to_html.squish
+    assert_equal outer_container, document.match("#container").to_html.squish
+    assert_equal outer_title, document.match("#title").to_html.squish
 
     assert_equal whole_document, document.to_html.squish
     assert_equal whole_document, document.inner_html.squish
@@ -79,9 +78,8 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     assert_equal inner_body, document.match("#body").inner_html.squish
     assert_equal inner_body, document.match("body").inner_html.squish
 
-    # TODO: this should behave like #outer_html
-    assert_equal inner_body, document.match("body").to_html.squish
-    assert_equal inner_body, document.match("#body").to_html.squish
+    assert_equal outer_body, document.match("body").to_html.squish
+    assert_equal outer_body, document.match("#body").to_html.squish
   end
 
   test "should extract whole HTML document" do
@@ -124,8 +122,7 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     assert_equal inner_body, document.match("body").inner_html.squish
     assert_equal inner_body, document.match("#body").inner_html.squish
 
-    # TODO: change this to outer_body
-    assert_equal inner_body, document.match("body").to_html.squish
-    assert_equal inner_body, document.match("#body").to_html.squish
+    assert_equal outer_body, document.match("body").to_html.squish
+    assert_equal outer_body, document.match("#body").to_html.squish
   end
 end

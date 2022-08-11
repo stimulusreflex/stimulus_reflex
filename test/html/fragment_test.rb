@@ -38,8 +38,8 @@ class StimulusReflex::HTML::FragmentTest < ActiveSupport::TestCase
     refute fragment.match("body").present?
     assert_nil fragment.match("body").to_html
 
-    assert_equal outer_title, fragment.match("#container").to_html.squish
-    assert_equal inner_title, fragment.match("#title").to_html.squish
+    assert_equal raw_html.squish, fragment.match("#container").to_html.squish
+    assert_equal outer_title, fragment.match("#title").to_html.squish
   end
 
   test "should extract body of a fragment" do
@@ -59,8 +59,7 @@ class StimulusReflex::HTML::FragmentTest < ActiveSupport::TestCase
     assert_equal outer_body, fragment.inner_html.squish
     assert_equal outer_body, fragment.outer_html.squish
 
-    # TODO: change to outer_body
-    assert_equal inner_body, fragment.match("body").to_html.squish
+    assert_equal outer_body, fragment.match("body").to_html.squish
     assert_equal outer_body, fragment.match("body").outer_html.squish
     assert_equal inner_body, fragment.match("body").inner_html.squish
 
@@ -107,11 +106,9 @@ class StimulusReflex::HTML::FragmentTest < ActiveSupport::TestCase
     assert_equal outer_body, fragment.outer_html.squish
     assert_equal outer_body, fragment.inner_html.squish
 
+    assert_equal outer_body, fragment.match("body").to_html.squish
     assert_equal outer_body, fragment.match("body").outer_html.squish
     assert_equal inner_body, fragment.match("body").inner_html.squish
-
-    # TODO: change this to outer_html
-    assert_equal inner_body, fragment.match("body").to_html.squish
 
     refute fragment.match("#body").present?
     assert_nil fragment.match("#body").to_html
