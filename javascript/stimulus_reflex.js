@@ -240,7 +240,7 @@ document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 window.addEventListener('load', setupDeclarativeReflexes)
 
 document.addEventListener('readystatechange', event => {
-  if (event.target.readyState === 'complete') {
+  if (document.readyState === 'complete') {
     setupDeclarativeReflexes()
   }
 })
