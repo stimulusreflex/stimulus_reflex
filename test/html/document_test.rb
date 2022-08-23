@@ -2,7 +2,7 @@
 
 require_relative "../test_helper"
 
-class StimulusReflex::HTML::PartTest < ActiveSupport::TestCase
+class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
   test "should handle nil" do
     document = StimulusReflex::HTML::Document.new(nil)
 
