@@ -12,7 +12,7 @@ class StimulusReflex::FragmentTest < ActiveSupport::TestCase
 
     fragment = StimulusReflex::Fragment.new(raw_html)
 
-    assert_equal fragment.match("#title").to_html.squish, 'Home#index'
+    assert_equal fragment.match("#title").to_html.squish, "Home#index"
   end
 
   test "should extract top-level element of fragement" do
