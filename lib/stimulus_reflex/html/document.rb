@@ -20,7 +20,7 @@ module StimulusReflex
       end
 
       def initialize(html)
-        @document = Nokogiri::HTML5.parse(html.to_s)
+        @document = Nokogiri::HTML5::Document.parse(html.to_s)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
