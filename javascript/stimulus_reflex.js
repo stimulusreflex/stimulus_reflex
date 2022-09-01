@@ -240,4 +240,10 @@ document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
 
-export { initialize, register, useReflex, setupDeclarativeReflexes }
+export {
+  initialize,
+  register,
+  useReflex,
+  setupDeclarativeReflexes,
+  setupDeclarativeReflexesForElement
+}
