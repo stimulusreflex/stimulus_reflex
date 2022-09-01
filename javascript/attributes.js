@@ -31,7 +31,13 @@ const collectCheckedOptions = element => {
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
 //
 const attributeValue = (values = []) => {
-  const value = Array.from(new Set(values.filter(v => v && String(v).length).map(v => v.trim()))).join(' ').trim()
+  const value = Array.from(
+    new Set(
+      values
+      .filter(v => v && String(v).length)
+      .map(v => v.trim())
+    )
+  ).join(' ').trim()
 
   return value.length > 0 ? value : null
 }
