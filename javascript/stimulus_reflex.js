@@ -239,10 +239,5 @@ document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-document.addEventListener('readystatechange', () => {
-  if (document.readyState === 'complete') {
-    setupDeclarativeReflexes()
-  }
-})
 
 export { initialize, register, useReflex, setupDeclarativeReflexes }
