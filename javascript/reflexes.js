@@ -136,44 +136,48 @@ const getReflexRoots = element => {
   return list
 }
 
+// Sets up declarative reflex behavior for a single element
+//
+const setupDeclarativeReflexesForElement = (element) => {
+  const controllerAttribute = element.getAttribute(Schema.controller)
+  const controllers = attributeValues(controllerAttribute)
+
+  const reflexAttribute = element.getAttribute(Schema.reflex)
+  const reflexAttributeNames = attributeValues(reflexAttribute)
+
+  const actionAttribute = element.getAttribute(Schema.action)
+  const actions = attributeValues(actionAttribute).filter(action => !action.includes("#__perform"))
+
+  reflexAttributeNames.forEach(reflexName => {
+    const controller = findControllerByReflexName(
+      reflexName,
+      allReflexControllers(reflexes.app, element)
+    )
+    const controllerName = controller ? controller.identifier : 'stimulus-reflex'
+
+    actions.push(`${reflexName.split('->')[0]}->${controllerName}#__perform`)
+    controllers.push('stimulus-reflex')
+  })
+
+  const controllerValue = attributeValue(controllers)
+  const actionValue = attributeValue(actions)
+
+  if (controllerValue && element.getAttribute(Schema.controller) != controllerValue) {
+    element.setAttribute(Schema.controller, controllerValue)
+  }
+
+  if (actionValue && element.getAttribute(Schema.action) != actionValue) {
+    element.setAttribute(Schema.action, actionValue)
+  }
+}
+
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
 //
 const setupDeclarativeReflexes = debounce(() => {
   const reflexElements = document.querySelectorAll(`[${Schema.reflex}]`)
-  reflexElements.forEach(element => {
-    const controllerAttribute = element.getAttribute(Schema.controller)
-    const controllers = attributeValues(controllerAttribute)
-
-    const reflexAttribute = element.getAttribute(Schema.reflex)
-    const reflexAttributeNames = attributeValues(reflexAttribute)
-
-    const actionAttribute = element.getAttribute(Schema.action)
-    const actions = attributeValues(actionAttribute).filter(action => !action.includes("#__perform"))
-
-    reflexAttributeNames.forEach(reflexName => {
-      const controller = findControllerByReflexName(
-        reflexName,
-        allReflexControllers(reflexes.app, element)
-      )
-      const controllerName = controller ? controller.identifier : 'stimulus-reflex'
-
-      actions.push(`${reflexName.split('->')[0]}->${controllerName}#__perform`)
-      controllers.push('stimulus-reflex')
-    })
-
-    const controllerValue = attributeValue(controllers)
-    const actionValue = attributeValue(actions)
-
-    if (controllerValue && element.getAttribute(Schema.controller) != controllerValue) {
-      element.setAttribute(Schema.controller, controllerValue)
-    }
-
-    if (actionValue && element.getAttribute(Schema.action) != actionValue) {
-      element.setAttribute(Schema.action, actionValue)
-    }
-  })
+  reflexElements.forEach(element => setupDeclarativeReflexesForElement(element))
   emitEvent('stimulus-reflex:ready')
 }, 20)
 
-export { received, registerReflex, getReflexRoots, setupDeclarativeReflexes }
+export { received, registerReflex, getReflexRoots, setupDeclarativeReflexes, setupDeclarativeReflexesForElement }
