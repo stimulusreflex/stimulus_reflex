@@ -38,7 +38,7 @@ describe('extractReflexName', () => {
   })
 
   describe('when the reflex class is namespaced', () => {
-    it('returns an empty string', () => {
+    it('returns namespaced reflex name', () => {
       assert.equal(
         extractReflexName('click->MyModule::TestReflex#create'),
         'MyModule::Test'
