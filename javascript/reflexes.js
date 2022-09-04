@@ -156,7 +156,7 @@ const setupDeclarativeReflexesForElement = (element) => {
     const controllerName = controller ? controller.identifier : 'stimulus-reflex'
 
     actions.push(`${reflexName.split('->')[0]}->${controllerName}#__perform`)
-    controllers.push('stimulus-reflex')
+    controllers.push(controllerName)
   })
 
   const controllerValue = attributeValue(controllers)
