@@ -1,10 +1,5 @@
 import { html, fixture, assert, fixtureCleanup } from '@open-wc/testing'
 
-// import { extractElementDataset } from '../attributes'
-// import Schema, { defaultSchema } from '../schema'
-
-// import refute from './refute'
-
 import ExampleController from './dummy/example_controller'
 
 import { application } from './dummy/application'
