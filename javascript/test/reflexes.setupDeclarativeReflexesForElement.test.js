@@ -1,9 +1,7 @@
 import { html, fixture, assert, fixtureCleanup } from '@open-wc/testing'
 
-
 // import { extractElementDataset } from '../attributes'
 // import Schema, { defaultSchema } from '../schema'
-
 
 // import refute from './refute'
 
@@ -21,7 +19,9 @@ describe('setupDeclarativeReflexesForElement', () => {
   })
 
   afterEach(() => {
-    const registeredControllers = Array.from(reflexes.app.router.modulesByIdentifier.keys())
+    const registeredControllers = Array.from(
+      reflexes.app.router.modulesByIdentifier.keys()
+    )
 
     reflexes.app.unload(registeredControllers)
   })
@@ -42,7 +42,9 @@ describe('setupDeclarativeReflexesForElement', () => {
     reflexes.app.register('example', ExampleController)
 
     const element = await fixture(html`
-      <a data-controller="example" data-reflex="click->Example#handle">Handle</a>
+      <a data-controller="example" data-reflex="click->Example#handle"
+        >Handle</a
+      >
     `)
 
     setupDeclarativeReflexesForElement(element)
@@ -59,8 +61,14 @@ describe('setupDeclarativeReflexesForElement', () => {
 
     setupDeclarativeReflexesForElement(element)
 
-    assert.equal(element.dataset.reflex, 'click->Example#click hover->Example#hover')
-    assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform hover->stimulus-reflex#__perform')
+    assert.equal(
+      element.dataset.reflex,
+      'click->Example#click hover->Example#hover'
+    )
+    assert.equal(
+      element.dataset.action,
+      'click->stimulus-reflex#__perform hover->stimulus-reflex#__perform'
+    )
     assert.equal(element.dataset.controller, 'stimulus-reflex')
   })
 
@@ -69,13 +77,23 @@ describe('setupDeclarativeReflexesForElement', () => {
     reflexes.app.register('example2', ExampleController)
 
     const element = await fixture(html`
-      <a data-controller="example1 example2" data-reflex="click->Example1#click click->Example2#click">Click</a>
+      <a
+        data-controller="example1 example2"
+        data-reflex="click->Example1#click click->Example2#click"
+        >Click</a
+      >
     `)
 
     setupDeclarativeReflexesForElement(element)
 
-    assert.equal(element.dataset.reflex, 'click->Example1#click click->Example2#click')
-    assert.equal(element.dataset.action, 'click->example1#__perform click->example2#__perform')
+    assert.equal(
+      element.dataset.reflex,
+      'click->Example1#click click->Example2#click'
+    )
+    assert.equal(
+      element.dataset.action,
+      'click->example1#__perform click->example2#__perform'
+    )
     assert.equal(element.dataset.controller, 'example1 example2')
   })
 
@@ -86,7 +104,10 @@ describe('setupDeclarativeReflexesForElement', () => {
 
     setupDeclarativeReflexesForElement(element)
 
-    assert.equal(element.dataset.reflex, 'click->Example1#click click->Example2#click')
+    assert.equal(
+      element.dataset.reflex,
+      'click->Example1#click click->Example2#click'
+    )
     assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
     assert.equal(element.dataset.controller, 'stimulus-reflex')
   })
