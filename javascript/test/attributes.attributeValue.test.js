@@ -13,20 +13,39 @@ describe('attributeValue', () => {
   })
 
   it('returns expected attribute value for array with single value', () => {
-    assert(attributeValue(['example']) === 'example')
+    assert.equal(attributeValue(['example']), 'example')
   })
 
   it('returns expected attribute value for array with multiple values', () => {
-    assert(attributeValue(['one', 'two', 'three']) === 'one two three')
+    assert.equal(attributeValue(['one', 'two', 'three']), 'one two three')
   })
 
   it('returns expected attribute value for array with multiple values that include whitespace', () => {
-    assert(attributeValue([' one ', 'two ', 'three ']) === 'one two three')
+    assert.equal(attributeValue([' one ', 'two ', 'three ']), 'one two three')
   })
 
   it('returns expected attribute value for array with mixed values', () => {
-    assert(
-      attributeValue(['one', '', 'two', 'three', null]) === 'one two three'
+    assert.equal(
+      attributeValue(['one', '', 'two', 'three', null]),
+      'one two three'
+    )
+  })
+
+  it('returns expected attribute value for array with mixed and duplicate values', () => {
+    assert.equal(
+      attributeValue([
+        'one',
+        '',
+        'two',
+        'three',
+        null,
+        'two',
+        '',
+        'three',
+        'one',
+        null
+      ]),
+      'one two three'
     )
   })
 })

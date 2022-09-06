@@ -19,11 +19,15 @@ export default {
   set (application) {
     schema = { ...defaultSchema, ...application.schema }
     for (const attribute in schema) {
-      Object.defineProperty(this, attribute.slice(0, -9), {
-        get: () => {
-          return schema[attribute]
-        }
-      })
+      const attributeName = attribute.slice(0, -9)
+
+      if (!this.hasOwnProperty(attributeName)) {
+        Object.defineProperty(this, attributeName, {
+          get: () => {
+            return schema[attribute]
+          }
+        })
+      }
     }
   }
 }

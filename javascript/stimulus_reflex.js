@@ -11,7 +11,7 @@ import ActionCableTransport from './transports/action_cable'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { uuidv4, serializeForm } from './utils'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
-import { registerReflex, setupDeclarativeReflexes } from './reflexes'
+import { registerReflex, setupDeclarativeReflexes, setupDeclarativeReflexesForElement } from './reflexes'
 import { reflexes } from './reflex_store'
 import { attributeValues } from './attributes'
 
@@ -223,6 +223,8 @@ const register = (controller, options = {}) => {
       }
     }
   })
+
+  setupDeclarativeReflexesForElement(controller.element)
 }
 
 // Uniquely identify this browser tab in each Reflex
@@ -237,10 +239,17 @@ document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
+
 document.addEventListener('readystatechange', () => {
   if (document.readyState === 'complete') {
     setupDeclarativeReflexes()
   }
 })
 
-export { initialize, register, useReflex, setupDeclarativeReflexes }
+export {
+  initialize,
+  register,
+  useReflex,
+  setupDeclarativeReflexes,
+  setupDeclarativeReflexesForElement
+}
