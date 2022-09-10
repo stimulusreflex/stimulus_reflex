@@ -35,7 +35,7 @@ module StimulusReflex
 
     test "morphs the contents of the body element" do
       broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
-      broadcaster.append_morph("body", '<body><div><div>bar</div><div>baz</div></div></body>')
+      broadcaster.append_morph("body", "<body><div><div>bar</div><div>baz</div></div></body>")
 
       expected = {
         "cableReady" => true,
@@ -64,7 +64,7 @@ module StimulusReflex
 
     test "morphs the contents of the html element" do
       broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
-      broadcaster.append_morph("html", '<html><head><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body></html>')
+      broadcaster.append_morph("html", "<html><head><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body></html>")
 
       expected = {
         "cableReady" => true,
@@ -93,7 +93,7 @@ module StimulusReflex
 
     test "morphs the contents of the head element" do
       broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
-      broadcaster.append_morph("head", '<head><title>Test</title></head>')
+      broadcaster.append_morph("head", "<head><title>Test</title></head>")
 
       expected = {
         "cableReady" => true,
