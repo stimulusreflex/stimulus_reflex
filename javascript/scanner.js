@@ -28,7 +28,7 @@ const scanForReflexesOnElement = element => {
   reflexAttributeNames.forEach(reflexName => {
     const controller = findControllerByReflexName(
       reflexName,
-      allReflexControllers(reflexes.app, element)
+      allReflexControllers(element)
     )
     const controllerName = controller
       ? controller.identifier

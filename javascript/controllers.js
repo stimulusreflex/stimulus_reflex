@@ -1,14 +1,18 @@
 import Schema from './schema'
+import Stimulus from './app'
 
 import { attributeValues } from './attributes'
 import { extractReflexName } from './utils'
 
 // Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
-const localReflexControllers = (app, element) => {
+const localReflexControllers = element => {
   return attributeValues(element.getAttribute(Schema.controller)).reduce(
     (memo, name) => {
-      const controller = app.getControllerForElementAndIdentifier(element, name)
+      const controller = Stimulus.app.getControllerForElementAndIdentifier(
+        element,
+        name
+      )
       if (controller && controller.StimulusReflex) memo.push(controller)
       return memo
     },
@@ -19,10 +23,10 @@ const localReflexControllers = (app, element) => {
 // Returns all StimulusReflex controllers for the passed element.
 // Traverses DOM ancestors starting with element.
 //
-const allReflexControllers = (app, element) => {
+const allReflexControllers = element => {
   let controllers = []
   while (element) {
-    controllers = controllers.concat(localReflexControllers(app, element))
+    controllers = controllers.concat(localReflexControllers(element))
     element = element.parentElement
   }
   return controllers

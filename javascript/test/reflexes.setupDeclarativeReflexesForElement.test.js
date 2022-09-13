@@ -1,24 +1,24 @@
-import { html, fixture, assert, fixtureCleanup } from '@open-wc/testing'
+import { html, fixture, assert } from '@open-wc/testing'
 
 import ExampleController from './dummy/example_controller'
 
 import { application } from './dummy/application'
 import { initialize } from '../stimulus_reflex'
 
-import { reflexes } from '../reflex_store'
-import { setupDeclarativeReflexesForElement } from '../reflexes'
+import Stimulus from '../app'
+import { scanForReflexesOnElement } from '../scanner'
 
-describe('setupDeclarativeReflexesForElement', () => {
+describe('scanForReflexesOnElement', () => {
   beforeEach(() => {
     initialize(application)
   })
 
   afterEach(() => {
     const registeredControllers = Array.from(
-      reflexes.app.router.modulesByIdentifier.keys()
+      Stimulus.app.router.modulesByIdentifier.keys()
     )
 
-    reflexes.app.unload(registeredControllers)
+    Stimulus.app.unload(registeredControllers)
   })
 
   it('should add the right action and controller attribute', async () => {
@@ -26,7 +26,7 @@ describe('setupDeclarativeReflexesForElement', () => {
       <a data-reflex="click->Example#handle">Handle</a>
     `)
 
-    setupDeclarativeReflexesForElement(element)
+    scanForReflexesOnElement(element)
 
     assert.equal(element.dataset.reflex, 'click->Example#handle')
     assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
@@ -34,7 +34,7 @@ describe('setupDeclarativeReflexesForElement', () => {
   })
 
   it('should add the right action and controller attribute with an existing controller attribute', async () => {
-    reflexes.app.register('example', ExampleController)
+    Stimulus.app.register('example', ExampleController)
 
     const element = await fixture(html`
       <a data-controller="example" data-reflex="click->Example#handle"
@@ -42,7 +42,7 @@ describe('setupDeclarativeReflexesForElement', () => {
       >
     `)
 
-    setupDeclarativeReflexesForElement(element)
+    scanForReflexesOnElement(element)
 
     assert.equal(element.dataset.reflex, 'click->Example#handle')
     assert.equal(element.dataset.action, 'click->example#__perform')
@@ -54,7 +54,7 @@ describe('setupDeclarativeReflexesForElement', () => {
       <a data-reflex="click->Example#click hover->Example#hover">Handle</a>
     `)
 
-    setupDeclarativeReflexesForElement(element)
+    scanForReflexesOnElement(element)
 
     assert.equal(
       element.dataset.reflex,
@@ -68,8 +68,8 @@ describe('setupDeclarativeReflexesForElement', () => {
   })
 
   it('should add the right action and controller attribute with multiple reflex descriptors using different reflexes and multiple custom controllers', async () => {
-    reflexes.app.register('example1', ExampleController)
-    reflexes.app.register('example2', ExampleController)
+    Stimulus.app.register('example1', ExampleController)
+    Stimulus.app.register('example2', ExampleController)
 
     const element = await fixture(html`
       <a
@@ -79,7 +79,7 @@ describe('setupDeclarativeReflexesForElement', () => {
       >
     `)
 
-    setupDeclarativeReflexesForElement(element)
+    scanForReflexesOnElement(element)
 
     assert.equal(
       element.dataset.reflex,
@@ -97,7 +97,7 @@ describe('setupDeclarativeReflexesForElement', () => {
       <a data-reflex="click->Example1#click click->Example2#click">Click</a>
     `)
 
-    setupDeclarativeReflexesForElement(element)
+    scanForReflexesOnElement(element)
 
     assert.equal(
       element.dataset.reflex,
