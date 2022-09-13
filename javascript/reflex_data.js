@@ -2,7 +2,7 @@ import Schema from './schema'
 
 import { extractElementAttributes, extractElementDataset } from './attributes'
 import { uuidv4, getReflexRoots, elementToXPath } from './utils'
-import { version } from '../package.json'
+import packageInfo from '../package.json'
 
 export default class ReflexData {
   constructor (
@@ -130,7 +130,7 @@ export default class ReflexData {
       args: this.args,
       url: this.url,
       tabId: this.tabId,
-      version
+      version: packageInfo.version
     }
   }
 }

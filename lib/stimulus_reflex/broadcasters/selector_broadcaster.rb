@@ -7,26 +7,26 @@ module StimulusReflex
         selectors, html = morph
         updates = create_update_collection(selectors, html)
         updates.each do |update|
-          fragment = Nokogiri::HTML.fragment(update.html.to_s)
-          match = fragment.at_css(update.selector)
+          document = StimulusReflex::HTML::Document.new(update.html)
+          match = document.match(update.selector)
           if match.present?
-            operations << [update.selector, :morph]
-            cable_ready.morph(
+            operations << [update.selector, StimulusReflex.config.morph_operation]
+            cable_ready.send StimulusReflex.config.morph_operation, {
               selector: update.selector,
-              html: match.inner_html(save_with: Broadcaster::DEFAULT_HTML_WITHOUT_FORMAT),
+              html: match.inner_html,
               payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
               stimulus_reflex: data.merge(morph: to_sym)
-            )
+            }
           else
-            operations << [update.selector, :inner_html]
-            cable_ready.inner_html(
+            operations << [update.selector, StimulusReflex.config.replace_operation]
+            cable_ready.send StimulusReflex.config.replace_operation, {
               selector: update.selector,
-              html: fragment.to_html,
+              html: update.html.to_s,
               payload: payload,
               stimulus_reflex: data.merge(morph: to_sym)
-            )
+            }
           end
         end
       end

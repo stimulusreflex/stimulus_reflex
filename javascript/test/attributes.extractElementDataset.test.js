@@ -124,7 +124,7 @@ describe('extractElementDataset', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return dataset for element with data-reflex-dataset and other value than "combined"', async () => {
+  it('should return dataset for element with data-reflex-dataset and other value than "ancestors"', async () => {
     const parent = await fixture(html`
       <div data-parent-id="should not be included">
         <a
@@ -152,7 +152,7 @@ describe('extractElementDataset', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return dataset for element with data-reflex-dataset="combined"', async () => {
+  it('should return dataset for element with data-reflex-dataset="ancestors"', async () => {
     const body = await fixture(html`
       <div data-body-id="body">
         <div data-grandparent-id="456">
@@ -162,7 +162,7 @@ describe('extractElementDataset', () => {
               data-controller="foo"
               data-reflex="bar"
               data-info="12345"
-              data-reflex-dataset="combined"
+              data-reflex-dataset="ancestors"
               >Test</a
             >
           </div>
@@ -180,7 +180,7 @@ describe('extractElementDataset', () => {
         'data-grandparent-id': '456',
         'data-parent-id': '123',
         'data-body-id': 'body',
-        'data-reflex-dataset': 'combined'
+        'data-reflex-dataset': 'ancestors'
       },
       datasetAll: {}
     }
@@ -190,7 +190,7 @@ describe('extractElementDataset', () => {
   it('should return dataset for element with overloaded data attributes', async () => {
     const parent = await fixture(html`
       <div data-info="this is the outer one">
-        <a data-info="this is the inner one" data-reflex-dataset="combined"
+        <a data-info="this is the inner one" data-reflex-dataset="ancestors"
           >Test</a
         >
       </div>
@@ -201,17 +201,17 @@ describe('extractElementDataset', () => {
     const expected = {
       dataset: {
         'data-info': 'this is the inner one',
-        'data-reflex-dataset': 'combined'
+        'data-reflex-dataset': 'ancestors'
       },
       datasetAll: {}
     }
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('should return with combined parent attributes only for elements with data-reflex-dataset', async () => {
+  it('should return with ancestors parent attributes only for elements with data-reflex-dataset', async () => {
     const parent = await fixture(html`
       <div data-parent-id="123">
-        <button id="button1" data-reflex-dataset="combined">Something</button>
+        <button id="button1" data-reflex-dataset="ancestors">Something</button>
         <button id="button2">Another thing</button>
       </div>
     `)
@@ -221,7 +221,7 @@ describe('extractElementDataset', () => {
     const expectedButton1 = {
       dataset: {
         'data-parent-id': '123',
-        'data-reflex-dataset': 'combined'
+        'data-reflex-dataset': 'ancestors'
       },
       datasetAll: {}
     }
@@ -243,7 +243,7 @@ describe('extractElementDataset', () => {
   //     `<body data-body-id="body">
   //       <div data-grandparent-id="456">
   //         <div data-parent-id="123">
-  //           <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset-renamed="combined">Test</a>
+  //           <a id="example" data-controller="foo" data-reflex="bar" data-info="12345" data-reflex-dataset-renamed="ancestors">Test</a>
   //         </div>
   //       </div>
   //     </body>
@@ -261,7 +261,7 @@ describe('extractElementDataset', () => {
   //       'data-grandparent-id': '456',
   //       'data-parent-id': '123',
   //       'data-body-id': 'body',
-  //       'data-reflex-dataset-renamed': 'combined'
+  //       'data-reflex-dataset-renamed': 'ancestors'
   //     },
   //     datasetAll: {}
   //   }

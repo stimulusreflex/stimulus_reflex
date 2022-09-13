@@ -76,7 +76,7 @@ class StimulusReflex::ReflexData
   end
 
   def version
-    data["version"].gsub("-pre", ".pre")
+    data["version"].to_s.gsub("-pre", ".pre")
   end
 
   private

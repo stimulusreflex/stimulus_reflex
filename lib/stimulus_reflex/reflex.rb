@@ -1,49 +1,38 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/cable_readiness"
+
 # TODO remove xpath_controller and xpath_element for v4
 ClientAttributes = Struct.new(:id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
 
 class StimulusReflex::Reflex
   class VersionMismatchError < StandardError; end
 
+  prepend StimulusReflex::CableReadiness
   include ActiveSupport::Rescuable
   include StimulusReflex::Callbacks
   include ActionView::Helpers::TagHelper
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :cable_ready, :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
-  delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   # TODO remove xpath_controller and xpath_element for v4
   delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
-    if is_a? CableReady::Broadcaster
-      message = <<~MSG
-
-        #{self.class.name} includes CableReady::Broadcaster, and you need to remove it.
-        Reflexes have their own CableReady interface. You can just assume that it's present.
-        See https://docs.stimulusreflex.com/rtfm/cableready#using-cableready-inside-a-reflex-action for more details.
-
-      MSG
-      raise TypeError.new(message.strip)
-    end
-
     @channel = channel
     @url = url
     @element = element
     @selectors = selectors
     @method_name = method_name
     @params = params
-    @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @client_attributes = ClientAttributes.new(client_attributes)
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
-    @cable_ready = StimulusReflex::CableReadyChannels.new(stream_name, id)
     @payload = {}
     @headers = {}
 
@@ -98,16 +87,41 @@ class StimulusReflex::Reflex
     end
   end
 
+  def broadcast(*args)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast(*args)
+  end
+
+  def broadcast_halt(data:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_halt(data: data)
+  end
+
+  def broadcast_forbid(data:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_forbid(data: data)
+  end
+
+  def broadcast_error(data:, body:)
+    morph :page if broadcaster.nil?
+
+    broadcaster.broadcast_error(data: data, body: body)
+  end
+
   def morph(selectors, html = nil)
     case selectors
     when :page
-      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") unless broadcaster.page?
+      raise StandardError.new("Cannot call :page morph after :#{broadcaster.to_sym} morph") if broadcaster&.selector? || broadcaster&.nothing?
+      @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     when :nothing
-      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster.selector?
-      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster.nothing?
+      raise StandardError.new("Cannot call :nothing morph after :selector morph") if broadcaster&.selector?
+      @broadcaster = StimulusReflex::NothingBroadcaster.new(self) unless broadcaster&.nothing?
     else
-      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster.nothing?
-      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster.selector?
+      raise StandardError.new("Cannot call :selector morph after :nothing morph") if broadcaster&.nothing?
+      @broadcaster = StimulusReflex::SelectorBroadcaster.new(self) unless broadcaster&.selector?
       broadcaster.append_morph(selectors, html)
     end
   end

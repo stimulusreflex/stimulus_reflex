@@ -33,6 +33,93 @@ module StimulusReflex
       end
     end
 
+    test "morphs the contents of the body element" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph("body", "<body><div><div>bar</div><div>baz</div></div></body>")
+
+      expected = {
+        "cableReady" => true,
+        "operations" => [
+          {
+            "selector" => "body",
+            "html" => "<div><div>bar</div><div>baz</div></div>",
+            "payload" => {},
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "morph"
+          }
+        ],
+        "version" => CableReady::VERSION
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
+    test "morphs the contents of the html element" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph("html", "<html><head><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body></html>")
+
+      expected = {
+        "cableReady" => true,
+        "operations" => [
+          {
+            "selector" => "html",
+            "html" => "<head><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body>",
+            "payload" => {},
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "morph"
+          }
+        ],
+        "version" => CableReady::VERSION
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
+    test "morphs the contents of the head element" do
+      broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+      broadcaster.append_morph("head", "<head><title>Test</title></head>")
+
+      expected = {
+        "cableReady" => true,
+        "operations" => [
+          {
+            "selector" => "head",
+            "html" => "<title>Test</title>",
+            "payload" => {},
+            "childrenOnly" => true,
+            "permanentAttributeName" => nil,
+            "stimulusReflex" => {
+              "some" => "data",
+              "morph" => "selector"
+            },
+            "reflexId" => "666",
+            "operation" => "morph"
+          }
+        ],
+        "version" => CableReady::VERSION
+      }
+
+      assert_broadcast_on @reflex.stream_name, expected do
+        broadcaster.broadcast nil, some: :data
+      end
+    end
+
     test "replaces the contents of an element and ignores permanent-attributes if the selector(s) aren't present in the replacing html fragment" do
       broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
       broadcaster.append_morph("#foo", '<div id="baz"><span>bar</span></div>')

@@ -5,7 +5,10 @@ import * as StimulusReflex from './stimulus_reflex'
 import Debug from './debug'
 import Deprecate from './deprecate'
 
+import packageInfo from '../package.json'
+
 const global = {
+  version: packageInfo.version,
   ...StimulusReflex,
   get debug () {
     return Debug.value

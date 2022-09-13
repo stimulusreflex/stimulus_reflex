@@ -4,7 +4,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   attr_reader :reflex_data
 
   def stream_name
-    [params[:channel], connection.connection_identifier].join(":")
+    [params[:channel], connection.connection_identifier].reject(&:blank?).join(":")
   end
 
   def subscribed

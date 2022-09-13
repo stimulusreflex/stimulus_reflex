@@ -4,9 +4,9 @@ module StimulusReflex
   class CableReadyChannels
     delegate :[], to: "cable_ready_channels"
 
-    def initialize(stream_name, id)
-      @stream_name = stream_name
-      @id = id
+    def initialize(reflex)
+      @stream_name = reflex.stream_name
+      @id = reflex.id
     end
 
     def cable_ready_channels
