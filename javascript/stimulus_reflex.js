@@ -245,6 +245,7 @@ export {
   initialize,
   register,
   useReflex,
+  reflexes,
   scanForReflexes,
   scanForReflexesOnElement
 }
