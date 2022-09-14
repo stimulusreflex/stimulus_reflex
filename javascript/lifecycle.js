@@ -76,6 +76,7 @@ const dispatchLifecycleEvent = (reflex, stage) => {
   }
 
   reflex.stage = stage
+  reflex.lifecycle.push(stage)
 
   const event = `stimulus-reflex:${stage}`
   const action = `${event}:${reflex.action}`
@@ -137,6 +138,7 @@ document.addEventListener(
   event => {
     const reflex = reflexes[event.detail.id]
     invokeLifecycleMethod(reflex, 'error')
+    // TODO: v4 remove after events on error; behave like halted and forbidden
     dispatchLifecycleEvent(reflex, 'after')
   },
   true
