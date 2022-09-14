@@ -1,193 +1,163 @@
 import CableReady from 'cable_ready'
-
 import Log from './log'
 
-import { reflexes } from './reflex_store'
+import { reflexes } from './reflexes'
 import { dispatchLifecycleEvent } from './lifecycle'
-import { XPathToElement } from './utils'
 
 const beforeDOMUpdate = event => {
-  const { stimulusReflex, payload } = event.detail || {}
+  const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const controllerElement = XPathToElement(xpathController)
-  const reflexElement = XPathToElement(xpathElement)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.id]
 
   reflex.pendingOperations--
 
   if (reflex.pendingOperations > 0) return
 
+  // TODO: remove in v4 - always resolve late
   if (!stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({
-        element: reflexElement,
+      reflex.promise.resolve({
+        element: reflex.element,
         event,
-        data: promise.data,
-        payload,
-        reflexId,
+        data: reflex.data,
+        payload: reflex.payload,
+        id: reflex.id,
         toString: () => ''
       })
     )
+  // END TODO: remove
 
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      'success',
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent(reflex, 'success'))
 }
 
 const afterDOMUpdate = event => {
-  const { stimulusReflex, payload } = event.detail || {}
+  const { stimulusReflex } = event.detail || {}
   if (!stimulusReflex) return
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const controllerElement = XPathToElement(xpathController)
-  const reflexElement = XPathToElement(xpathElement)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.id]
 
   reflex.completedOperations++
+  reflex.selector = event.detail.selector
+  reflex.morph = event.detail.stimulusReflex.morph
+  reflex.operation = event.type
+    .split(':')[1]
+    .split('-')
+    .slice(1)
+    .join('_')
 
-  Log.success(event, false)
+  Log.success(reflex)
 
   if (reflex.completedOperations < reflex.totalOperations) return
 
+  // TODO: v4 always resolve late (remove if)
+  // TODO: v4 simplify to {reflex, toString}
   if (stimulusReflex.resolveLate)
     setTimeout(() =>
-      promise.resolve({
-        element: reflexElement,
+      reflex.promise.resolve({
+        element: reflex.element,
         event,
-        data: promise.data,
-        payload,
-        reflexId,
+        data: reflex.data,
+        payload: reflex.payload,
+        id: reflex.id,
         toString: () => ''
       })
     )
 
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      'finalize',
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent(reflex, 'finalize'))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)
 }
 
 const routeReflexEvent = event => {
-  const { stimulusReflex, payload, name, body } = event.detail || {}
+  const { stimulusReflex, name } = event.detail || {}
   const eventType = name.split('-')[2]
 
-  const eventTypes = {
-    nothing: nothing,
-    halted: halted,
-    forbidden: forbidden,
-    error: error
-  }
+  const eventTypes = { nothing, halted, forbidden, error }
 
   if (!stimulusReflex || !Object.keys(eventTypes).includes(eventType)) return
 
-  const { reflexId, xpathElement, xpathController } = stimulusReflex
-  const reflexElement = XPathToElement(xpathElement)
-  const controllerElement = XPathToElement(xpathController)
-  const reflex = reflexes[reflexId]
-  const { promise } = reflex
+  const reflex = reflexes[stimulusReflex.id]
+  reflex.completedOperations++
+  reflex.pendingOperations--
+  reflex.selector = event.detail.selector
+  reflex.morph = event.detail.stimulusReflex.morph
+  reflex.operation = event.type
+    .split(':')[1]
+    .split('-')
+    .slice(1)
+    .join('_')
+  if (eventType === 'error') reflex.error = event.detail.error
 
-  if (controllerElement) {
-    controllerElement.reflexError = controllerElement.reflexError || {}
-    if (eventType === 'error') controllerElement.reflexError[reflexId] = body
-  }
+  eventTypes[eventType](reflex, event)
 
-  eventTypes[eventType](event, payload, promise, reflex, reflexElement)
-
-  setTimeout(() =>
-    dispatchLifecycleEvent(
-      eventType,
-      reflexElement,
-      controllerElement,
-      reflexId,
-      payload
-    )
-  )
+  setTimeout(() => dispatchLifecycleEvent(reflex, eventType))
 
   if (reflex.piggybackOperations.length)
     CableReady.perform(reflex.piggybackOperations)
 }
 
-const nothing = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'after'
+const nothing = (reflex, event) => {
+  Log.success(reflex)
 
-  Log.success(event)
-
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
+      payload: reflex.payload,
+      id: reflex.id,
       toString: () => ''
     })
   )
 }
 
-const halted = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'halted'
+const halted = (reflex, event) => {
+  Log.halted(reflex, event)
 
-  Log.halted(event)
-
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
+      payload: reflex.payload,
+      id: reflex.id,
       toString: () => ''
     })
   )
 }
 
-const forbidden = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'forbidden'
+const forbidden = (reflex, event) => {
+  Log.forbidden(reflex, event)
 
-  Log.forbidden(event)
-
+  // TODO: v4 simplify to {reflex, toString}
   setTimeout(() =>
-    promise.resolve({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.resolve({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
+      payload: reflex.payload,
+      id: reflex.id,
       toString: () => ''
     })
   )
 }
 
-const error = (event, payload, promise, reflex, reflexElement) => {
-  reflex.finalStage = 'after'
+const error = (reflex, event) => {
+  Log.error(reflex, event)
 
-  Log.error(event)
-
+  // TODO: v4 simplify to {reflex, toString}
+  // TODO: v4 convert to resolve?
   setTimeout(() =>
-    promise.reject({
-      data: promise.data,
-      element: reflexElement,
+    reflex.promise.reject({
+      data: reflex.data,
+      element: reflex.element,
       event,
-      payload,
-      reflexId: promise.data.reflexId,
-      error: event.detail.body,
-      toString: () => event.detail.body
+      payload: reflex.payload,
+      id: reflex.id,
+      error: reflex.error,
+      toString: () => reflex.error
     })
   )
 }

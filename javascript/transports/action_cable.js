@@ -1,13 +1,15 @@
 import { createConsumer } from '@rails/actioncable'
-import { received } from '../reflexes'
 import { emitEvent } from '../utils'
+import { dispatchLifecycleEvent } from '../lifecycle'
+import { reflexes } from '../reflexes'
+import { received } from '../process'
+
 import Deprecate from '../deprecate'
 
 let consumer
 let params
 let subscription
 let active
-let queue = []
 
 const initialize = (consumerValue, paramsValue) => {
   consumer = consumerValue
@@ -15,7 +17,7 @@ const initialize = (consumerValue, paramsValue) => {
   document.addEventListener('DOMContentLoaded', () => {
     active = false
     connectionStatusClass()
-    if (Deprecate.enabled && consumer)
+    if (Deprecate.enabled && consumerValue)
       console.warn(
         "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
       )
@@ -45,17 +47,16 @@ const connected = () => {
   active = true
   connectionStatusClass()
   emitEvent('stimulus-reflex:connected')
-  emitEvent('stimulus-reflex:action-cable:connected')
-
-  queue.forEach(reflex => subscription.send(reflex))
-  queue = []
+  Object.values(reflexes.queued).forEach(reflex => {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent(reflex, 'delivered')
+  })
 }
 
 const rejected = () => {
   active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:rejected')
-  emitEvent('stimulus-reflex:action-cable:rejected')
   if (Debug.enabled) console.warn('Channel subscription was rejected.')
 }
 
@@ -63,12 +64,13 @@ const disconnected = willAttemptReconnect => {
   active = false
   connectionStatusClass()
   emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
-  emitEvent('stimulus-reflex:action-cable:disconnected', willAttemptReconnect)
 }
 
-const enqueueReflex = (element, id) => {
-  const reflex = element.reflexData[id]
-  active ? subscription.send(reflex) : queue.push(reflex)
+const deliver = reflex => {
+  if (active) {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent(reflex, 'delivered')
+  } else dispatchLifecycleEvent(reflex, 'queued')
 }
 
 const connectionStatusClass = () => {
@@ -93,6 +95,6 @@ const connectionStatusClass = () => {
 
 export default {
   subscribe,
-  enqueueReflex,
+  deliver,
   initialize
 }

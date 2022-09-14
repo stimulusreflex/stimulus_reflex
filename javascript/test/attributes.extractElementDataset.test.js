@@ -250,7 +250,7 @@ describe('extractElementDataset', () => {
   //     `
   //   )
   //   global.document = dom.window.document
-  //   // reflexes.app.schema.reflexDatasetAttribute = 'data-reflex-dataset-renamed'
+  //   // Stimulus.app.schema.reflexDatasetAttribute = 'data-reflex-dataset-renamed'
   //   const element = dom.window.document.querySelector('a')
   //   const actual = extractElementDataset(element)
   //   const expected = {

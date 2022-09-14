@@ -42,13 +42,13 @@ module StimulusReflex
       ).broadcast
     end
 
-    def broadcast_error(data: {}, body: nil)
+    def broadcast_error(data: {}, error: nil)
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
         name: "stimulus-reflex:morph-error",
         payload: payload,
         stimulus_reflex: data.merge(morph: to_sym),
-        body: body&.to_s
+        error: error&.to_s
       ).broadcast
     end
 

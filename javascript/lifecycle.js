@@ -1,276 +1,171 @@
 import Debug from './debug'
 
+import { reflexes } from './reflexes'
 import { camelize } from './utils'
-import { reflexes } from './reflex_store'
 
-// Invokes a lifecycle method on a StimulusReflex controller.
-//
-// - stage - the lifecycle stage
+// lifecycle stages
+//   * created (at initialization)
 //   * before
+//   * delivered
+//   * queued
 //   * success
 //   * error
 //   * halted
 //   * forbidden
 //   * after
 //   * finalize
+
+// Invokes a lifecycle method on a StimulusReflex controller.
+// - reflex - the Reflex object
+// - stage - the lifecycle stage
 //
-// - reflexElement - the element that triggered the Reflex (not necessarily the StimulusReflex Controller Element)
-// - controllerElement - the element holding the StimulusReflex Controller
-// - reflexId - the UUIDv4 which uniquely identifies the Reflex
-// - payload - the optional "return value" from the Reflex method
-//
-const invokeLifecycleMethod = (
-  stage,
-  reflexElement,
-  controllerElement,
-  reflexId,
-  payload
-) => {
-  if (!controllerElement || !controllerElement.reflexData[reflexId]) return
+const invokeLifecycleMethod = (reflex, stage) => {
+  // TODO: v4 reevaluate benefit of naming complexity vs semantic payoff
+  const specificLifecycleMethod =
+    reflex.controller[
+      ['before', 'after', 'finalize'].includes(stage)
+        ? `${stage}${camelize(reflex.action)}`
+        : `${camelize(reflex.action, false)}${camelize(stage)}`
+    ]
 
-  const controller = controllerElement.reflexController[reflexId]
-  const reflex = controllerElement.reflexData[reflexId].target
-  const reflexMethodName = reflex.split('#')[1]
+  const genericLifecycleMethod =
+    reflex.controller[
+      ['before', 'after', 'finalize'].includes(stage)
+        ? `${stage}Reflex`
+        : `reflex${camelize(stage)}`
+    ]
 
-  const specificLifecycleMethodName = ['before', 'after', 'finalize'].includes(
-    stage
-  )
-    ? `${stage}${camelize(reflexMethodName)}`
-    : `${camelize(reflexMethodName, false)}${camelize(stage)}`
-  const specificLifecycleMethod = controller[specificLifecycleMethodName]
-
-  const genericLifecycleMethodName = ['before', 'after', 'finalize'].includes(
-    stage
-  )
-    ? `${stage}Reflex`
-    : `reflex${camelize(stage)}`
-  const genericLifecycleMethod = controller[genericLifecycleMethodName]
-
+  // TODO: v4 just pass reflex into the lifecycle method
   if (typeof specificLifecycleMethod === 'function') {
     specificLifecycleMethod.call(
-      controller,
-      reflexElement,
-      reflex,
-      controllerElement.reflexError[reflexId],
-      reflexId,
-      payload
+      reflex.controller,
+      reflex.element,
+      reflex.target,
+      reflex.error,
+      reflex.id,
+      reflex.payload
     )
   }
 
+  // TODO: v4 just pass reflex into the lifecycle method
   if (typeof genericLifecycleMethod === 'function') {
     genericLifecycleMethod.call(
-      controller,
-      reflexElement,
-      reflex,
-      controllerElement.reflexError[reflexId],
-      reflexId,
-      payload
+      reflex.controller,
+      reflex.element,
+      reflex.target,
+      reflex.error,
+      reflex.id,
+      reflex.payload
     )
   }
+}
 
-  if (reflexes[reflexId] && stage === reflexes[reflexId].finalStage) {
-    Reflect.deleteProperty(controllerElement.reflexController, reflexId)
-    Reflect.deleteProperty(controllerElement.reflexData, reflexId)
-    Reflect.deleteProperty(controllerElement.reflexError, reflexId)
-    // Removing this on a trial basis
-    // 1. Prevents race condition with CR broadcasts
-    // 2. Planning to remove it for v4 as part of queueing refactor
-    // 3. Removing reflexes shouldn't be the responsibility of the lifecycle subsystem
-    // Reflect.deleteProperty(reflexes, reflexId)
+// Dispatches a lifecycle event on document
+// - reflex - the Reflex object
+// - stage - the lifecycle stage
+//
+const dispatchLifecycleEvent = (reflex, stage) => {
+  if (!reflex.controller.element.parentElement) {
+    if (Debug.enabled && !reflex.warned) {
+      console.warn(
+        `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
+      )
+      reflex.warned = true
+    }
+    return
+  }
+
+  reflex.stage = stage
+  reflex.lifecycle.push(stage)
+
+  const event = `stimulus-reflex:${stage}`
+  const action = `${event}:${reflex.action}`
+  // TODO: v4 detail = reflex
+  const detail = {
+    reflex: reflex.target,
+    controller: reflex.controller,
+    id: reflex.id,
+    element: reflex.element,
+    payload: reflex.payload
+  }
+  const options = { bubbles: true, cancelable: false, detail }
+
+  reflex.controller.element.dispatchEvent(new CustomEvent(event, options))
+  reflex.controller.element.dispatchEvent(new CustomEvent(action, options))
+
+  if (window.jQuery) {
+    window.jQuery(reflex.controller.element).trigger(event, detail)
+    window.jQuery(reflex.controller.element).trigger(action, detail)
   }
 }
 
 document.addEventListener(
   'stimulus-reflex:before',
-  event =>
-    invokeLifecycleMethod(
-      'before',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'before'),
+  true
+)
+
+document.addEventListener(
+  'stimulus-reflex:queued',
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'queued'),
+  true
+)
+
+document.addEventListener(
+  'stimulus-reflex:delivered',
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'delivered'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:success',
   event => {
-    invokeLifecycleMethod(
-      'success',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
-    dispatchLifecycleEvent(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    const reflex = reflexes[event.detail.id]
+    invokeLifecycleMethod(reflex, 'success')
+    dispatchLifecycleEvent(reflex, 'after')
   },
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:nothing',
-  event => {
-    dispatchLifecycleEvent(
-      'success',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
-  },
+  event => dispatchLifecycleEvent(reflexes[event.detail.id], 'success'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:error',
   event => {
-    invokeLifecycleMethod(
-      'error',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
-    dispatchLifecycleEvent(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    )
+    const reflex = reflexes[event.detail.id]
+    invokeLifecycleMethod(reflex, 'error')
+    // TODO: v4 remove after events on error; behave like halted and forbidden
+    dispatchLifecycleEvent(reflex, 'after')
   },
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:halted',
-  event =>
-    invokeLifecycleMethod(
-      'halted',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'halted'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:forbidden',
-  event =>
-    invokeLifecycleMethod(
-      'forbidden',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'forbidden'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:after',
-  event =>
-    invokeLifecycleMethod(
-      'after',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'after'),
   true
 )
 
 document.addEventListener(
   'stimulus-reflex:finalize',
-  event =>
-    invokeLifecycleMethod(
-      'finalize',
-      event.detail.element,
-      event.detail.controller.element,
-      event.detail.reflexId,
-      event.detail.payload
-    ),
+  event => invokeLifecycleMethod(reflexes[event.detail.id], 'finalize'),
   true
 )
-
-// Dispatches a lifecycle event on document
-//
-// - stage - the lifecycle stage
-//   * before
-//   * success
-//   * error
-//   * halted
-//   * forbidden
-//   * after
-//   * finalize
-//
-// - reflexElement - the element that triggered the Reflex (not necessarily the StimulusReflex Controller Element)
-//
-// - controllerElement - the element holding the StimulusReflex Controller
-//
-// - reflexId - the UUIDv4 which uniquely identifies the Reflex
-//
-// - payload - optional Reflex return value
-//
-const dispatchLifecycleEvent = (
-  stage,
-  reflexElement,
-  controllerElement,
-  reflexId,
-  payload
-) => {
-  if (!controllerElement) {
-    if (Debug.enabled && !reflexes[reflexId].warned) {
-      console.warn(
-        `StimulusReflex was not able execute callbacks or emit events for "${stage}" or later life-cycle stages for this Reflex. The StimulusReflex Controller Element is no longer present in the DOM. Could you move the StimulusReflex Controller to an element higher in your DOM?`
-      )
-      reflexes[reflexId].warned = true
-    }
-    return
-  }
-
-  if (
-    !controllerElement.reflexController ||
-    (controllerElement.reflexController &&
-      !controllerElement.reflexController[reflexId])
-  ) {
-    if (Debug.enabled && !reflexes[reflexId].warned) {
-      console.warn(
-        `StimulusReflex detected that the StimulusReflex Controller responsible for this Reflex has been replaced with a new instance. Callbacks and events for "${stage}" or later life-cycle stages cannot be executed.`
-      )
-      reflexes[reflexId].warned = true
-    }
-    return
-  }
-
-  const { target } = controllerElement.reflexData[reflexId] || {}
-  const controller = controllerElement.reflexController[reflexId] || {}
-  const event = `stimulus-reflex:${stage}`
-  const action = `${event}:${target.split('#')[1]}`
-  const detail = {
-    reflex: target,
-    controller,
-    reflexId,
-    element: reflexElement,
-    payload
-  }
-  const options = { bubbles: true, cancelable: false, detail }
-
-  controllerElement.dispatchEvent(new CustomEvent(event, options))
-  controllerElement.dispatchEvent(new CustomEvent(action, options))
-
-  if (window.jQuery) {
-    window.jQuery(controllerElement).trigger(event, detail)
-    window.jQuery(controllerElement).trigger(action, detail)
-  }
-}
 
 export { dispatchLifecycleEvent }

@@ -23,7 +23,6 @@ module StimulusReflex
         MSG
         raise TypeError.new(message.strip)
       end
-
       @cable_ready = StimulusReflex::CableReadyChannels.new(self)
     end
   end

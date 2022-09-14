@@ -1,10 +1,7 @@
 import Schema from './schema'
 
 import { extractElementAttributes, extractElementDataset } from './attributes'
-import { getReflexRoots } from './reflexes'
-import { uuidv4 } from './utils'
-import { elementToXPath } from './utils'
-
+import { uuidv4, getReflexRoots, elementToXPath } from './utils'
 import packageInfo from '../package.json'
 
 export default class ReflexData {
@@ -39,9 +36,9 @@ export default class ReflexData {
     return this._attrs
   }
 
-  get reflexId () {
-    this._reflexId = this._reflexId || this.options['reflexId'] || uuidv4()
-    return this._reflexId
+  get id () {
+    this._id = this._id || this.options['id'] || uuidv4()
+    return this._id
   }
 
   get selectors () {
@@ -55,6 +52,7 @@ export default class ReflexData {
       : this._selectors
   }
 
+  // TODO: v4 always resolve late
   get resolveLate () {
     return this.options['resolveLate'] || false
   }
@@ -72,6 +70,7 @@ export default class ReflexData {
     return this.includeTextContent ? this.reflexElement.textContent : ''
   }
 
+  // TODO: remove this in v4
   get xpathController () {
     return elementToXPath(this.controllerElement)
   }
@@ -79,6 +78,7 @@ export default class ReflexData {
   get xpathElement () {
     return elementToXPath(this.reflexElement)
   }
+  // END TODO remove
 
   get formSelector () {
     const attr = this.reflexElement.attributes[Schema.reflexFormSelector]
@@ -116,7 +116,7 @@ export default class ReflexData {
       attrs: this.attrs,
       dataset: this.dataset,
       selectors: this.selectors,
-      reflexId: this.reflexId,
+      id: this.id,
       resolveLate: this.resolveLate,
       suppressLogging: this.suppressLogging,
       xpathController: this.xpathController,

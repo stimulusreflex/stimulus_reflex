@@ -53,14 +53,15 @@ class StimulusReflex::ReflexData
     form_data.deep_merge(data["params"] || {})
   end
 
-  def reflex_id
-    data["reflexId"]
+  def id
+    data["id"]
   end
 
   def tab_id
     data["tabId"]
   end
 
+  # TODO: remove this in v4
   def xpath_controller
     data["xpathController"]
   end
@@ -68,6 +69,7 @@ class StimulusReflex::ReflexData
   def xpath_element
     data["xpathElement"]
   end
+  # END TODO remove
 
   def reflex_controller
     data["reflexController"]

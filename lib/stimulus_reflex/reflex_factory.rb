@@ -11,7 +11,7 @@ class StimulusReflex::ReflexFactory
         method_name: reflex_data.method_name,
         params: reflex_data.form_params,
         client_attributes: {
-          reflex_id: reflex_data.reflex_id,
+          id: reflex_data.id,
           tab_id: reflex_data.tab_id,
           xpath_controller: reflex_data.xpath_controller,
           xpath_element: reflex_data.xpath_element,
