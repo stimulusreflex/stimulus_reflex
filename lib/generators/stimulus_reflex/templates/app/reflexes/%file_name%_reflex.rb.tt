@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class <%= class_name %>Reflex < ApplicationReflex
+<%- if class_name == "Example" -%>
   # Add Reflex methods in this file.
   #
   # All Reflex instances include CableReady::Broadcaster and expose the following properties:
@@ -33,9 +34,16 @@ class <%= class_name %>Reflex < ApplicationReflex
   #
   # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
 
-<% actions.each do |action| -%>
+<%- end -%>
+<%- if class_name == "Example" -%>
+  def dance
+    morph "#dance", "I'm dancing!"
+  end
+<%- else -%>
+  <%- actions.each do |action| -%>
   def <%= action %>
   end
-<%= "\n" unless action == actions.last -%>
-<% end -%>
+  <%= "\n" unless action == actions.last -%>
+  <%- end -%>
+<%- end -%>
 end

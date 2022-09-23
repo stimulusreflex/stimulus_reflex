@@ -1,0 +1,4 @@
+import { application } from "./application"
+import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers'
+
+application.load(definitionsFromContext(require.context('controllers', true, /_controller\.js$/)))

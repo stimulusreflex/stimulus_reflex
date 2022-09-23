@@ -1,12 +1,15 @@
 import ApplicationController from './application_controller'
 
+<%- if class_name == "Example" -%>
 /* This is the custom StimulusReflex controller for the <%= class_name %> Reflex.
  * Learn more at: https://docs.stimulusreflex.com
  */
+<%- end -%>
 export default class extends ApplicationController {
+<%- if class_name == "Example" -%>
   /*
    * Regular Stimulus lifecycle methods
-   * Learn more at: https://stimulusjs.org/reference/lifecycle-callbacks
+   * Learn more at: https://stimulus.hotwired.dev/reference/lifecycle-callbacks
    *
    * If you intend to use this controller as a regular stimulus controller as well,
    * make sure any Stimulus lifecycle methods overridden in ApplicationController call super.
@@ -16,20 +19,20 @@ export default class extends ApplicationController {
    * call super if you intend to do anything else when this controller connects.
   */
 
+<%- end -%>
   connect () {
     super.connect()
+<%- if class_name == "Example" -%>
     // add your code here, if applicable
+<%- end -%>
   }
+<%- if class_name == "Example" -%>
 
   /* Reflex specific lifecycle methods.
    *
    * For every method defined in your Reflex class, a matching set of lifecycle methods become available
    * in this javascript controller. These are optional, so feel free to delete these stubs if you don't
    * need them.
-   *
-   * Important:
-   * Make sure to add data-controller="<%= class_name.underscore.dasherize %>" to your markup alongside
-   * data-reflex="<%= class_name %>#dance" for the lifecycle methods to fire properly.
    *
    * Example:
    *
@@ -47,50 +50,9 @@ export default class extends ApplicationController {
    *   id - a UUID4 or developer-provided unique identifier for each Reflex
    */
 
-<% if actions.empty? -%>
-  // Assuming you create a "<%= class_name %>#dance" action in your Reflex class
-  // you'll be able to use the following lifecycle methods:
+<%- end -%>
+<%- actions.each do |action| -%>
 
-  // beforeDance(element, reflex, noop, id) {
-  //  element.innerText = 'Putting dance shoes on...'
-  // }
-
-  // danceQueued(element, reflex, noop, id) {
-  //   element.innerText = 'Waiting in the wings'
-  // }
-
-  // danceDelivered(element, reflex, noop, id) {
-  //   element.innerText = 'My big moment'
-  // }
-
-  // danceSuccess(element, reflex, noop, id) {
-  //   element.innerText = 'Danced like no one was watching! Was someone watching?'
-  // }
-
-  // danceError(element, reflex, error, id) {
-  //   console.error('danceError', error);
-  //   element.innerText = 'Could not dance!'
-  // }
-
-  // danceForbidden(element, reflex, noop, id) {
-  //   console.warn('danceForbidden');
-  //   element.innerText = 'Dancing is forbidden in Bomont.'
-  // }
-
-  // danceHalted(element, reflex, noop, id) {
-  //   console.warn('danceHalted');
-  //   element.innerText = 'Nobody puts Baby in a corner.'
-  // }
-
-  // afterDance(element, reflex, noop, id) {
-  //   element.innerText = 'Whatever that was, it is over now.'
-  // }
-
-  // finalizeDance(element, reflex, noop, id) {
-  //   element.innerText = 'Now, the cleanup can begin!'
-  // }
-<% end -%>
-<% actions.each do |action| -%>
   // <%= "before_#{action}".camelize(:lower) %>(element, reflex, noop, id) {
   //  console.log("before <%= action %>", element, reflex, id)
   // }
@@ -126,6 +88,5 @@ export default class extends ApplicationController {
   // <%= "finalize_#{action}".camelize(:lower) %>(element, reflex, noop, id) {
   //   console.log("finalize <%= action %>", element, reflex, id)
   // }
-<%= "\n" unless action == actions.last -%>
-<% end -%>
+<%- end -%>
 }

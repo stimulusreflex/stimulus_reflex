@@ -7,21 +7,51 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, banner: "NAME"
   argument :actions, type: :array, default: [], banner: "action action"
-  class_options skip_stimulus: false, skip_app_reflex: false, skip_reflex: false, skip_app_controller: false
+  class_options skip_stimulus: false, skip_reflex: false
 
   def execute
     actions.map!(&:underscore)
 
-    copy_application_files if behavior == :invoke
+    cached_entrypoint = Rails.root.join("tmp/stimulus_reflex_installer/entrypoint")
+    if cached_entrypoint.exist?
+      entrypoint = File.read(cached_entrypoint)
+    else
+      entrypoint = [
+        "app/javascript",
+        "app/frontend"
+      ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
+      puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
+      puts "Press enter to accept this, or type a different path."
+      print "> "
+      input = $stdin.gets.chomp
+      entrypoint = input unless input.blank?
+    end
 
-    template "app/reflexes/%file_name%_reflex.rb" unless options[:skip_reflex]
-    template "app/javascript/controllers/%file_name%_controller.js" unless options[:skip_stimulus]
-  end
+    if !options[:skip_stimulus] && entrypoint.blank?
+      puts "❌ You must specify a valid JavaScript entrypoint."
+      exit
+    end
 
-  private
+    stimulus_class_src = "app/reflexes/%file_name%_reflex.rb.tt"
+    stimulus_class_path = Rails.root.join("app/reflexes", "#{file_name}_reflex.rb")
+    stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
+    stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
-  def copy_application_files
-    template "app/reflexes/application_reflex.rb" unless options[:skip_app_reflex]
-    template "app/javascript/controllers/application_controller.js" unless options[:skip_app_controller]
+    template(stimulus_class_src, stimulus_class_path) unless options[:skip_reflex] || File.exist?(stimulus_class_path)
+    template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus] || File.exist?(stimulus_controller_path)
+
+    if file_name == "example"
+      controller_src = "app/controllers/example_controller.rb.tt"
+      controller_path = Rails.root.join("app/controllers/example_controller.rb")
+      copy_file(controller_src, controller_path) unless File.exist?(controller_path)
+
+      FileUtils.mkdir_p(Rails.root.join("app/views/example"))
+
+      view_src = "app/views/example/index.html.erb.tt"
+      view_path = Rails.root.join("app/views/example/index.html.erb")
+      copy_file(view_src, view_path) unless File.exist?(view_path)
+
+      route "get '/example', to: 'example#index', constraints: -> { Rails.env.development? }"
+    end
   end
 end
