@@ -3,11 +3,11 @@ package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
 dev_package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_dev_package_list")
 drop_package_list = Rails.root.join("tmp/stimulus_reflex_installer/drop_npm_package_list")
 
-package_json = JSON.parse(Rails.root.join("package.json"))
+package_json = JSON.parse(File.read(Rails.root.join("package.json")))
 
-add = File.readlines(package_list).map(&:chomp)
-dev = File.readlines(dev_package_list).map(&:chomp)
-drop = File.readlines(drop_package_list).map(&:chomp)
+add = package_list.exist? ? File.readlines(package_list).map(&:chomp) : []
+dev = dev_package_list.exist? ? File.readlines(dev_package_list).map(&:chomp) : []
+drop = drop_package_list.exist? ? File.readlines(drop_package_list).map(&:chomp) : []
 
 if add.present? || dev.present? || drop.present?
 
@@ -32,6 +32,14 @@ if add.present? || dev.present? || drop.present?
 
   system "yarn install"
 
+end
+
+footgun = File.read("tmp/stimulus_reflex_installer/footgun")
+if footgun == "esbuild" && package_json["scripts"]["build"] != "node esbuild.config.js"
+  package_json["scripts"]["build:default"] = package_json["scripts"]["build"]
+  package_json["scripts"]["build"] = "node esbuild.config.js"
+  File.write(Rails.root.join("package.json"), JSON.pretty_generate(package_json))
+  say "✅ Your build script has been updated to use esbuild.config.js"
 end
 
 create_file "tmp/stimulus_reflex_installer/yarn", verbose: false

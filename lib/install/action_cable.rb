@@ -38,15 +38,32 @@ end
 
 # verify that the Action Cable channels folder and consumer class is available
 entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
+footgun = File.read("tmp/stimulus_reflex_installer/footgun")
+templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/channels", File.join(File.dirname(__FILE__)))
 channels_path = Rails.root.join(entrypoint, "channels")
+consumer_src = templates_path + "/consumer.js.tt"
 consumer_path = channels_path.join("consumer.js")
+index_src = templates_path + "/index_#{footgun}.js.tt"
 index_path = channels_path.join("index.js")
 
 empty_directory channels_path unless channels_path.exist?
 
-inside "app/javascript/channels" do # this is the correct relative path for these assets in railties
-  copy_file("consumer.js", consumer_path) unless consumer_path.exist?
-  copy_file("index.js", index_path) unless index_path.exist?
+copy_file(consumer_src, consumer_path) unless consumer_path.exist?
+
+friendly_index_path = index_path.relative_path_from(Rails.root).to_s
+if index_path.exist?
+  if File.read(index_path) == File.read(index_src)
+    say "✅ #{friendly_index_path} is present"
+  else
+    copy_file(index_path, "#{index_path}.bak", verbose: false)
+    remove_file(index_path, verbose: false)
+    copy_file(index_src, index_path, verbose: false)
+    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_index_path}\n")
+    say "#{friendly_index_path} has been created"
+    say "❕ original index.js renamed index.js.bak", :green
+  end
+else
+  copy_file(index_src, index_path)
 end
 
 # support esbuild and webpacker
@@ -56,16 +73,21 @@ pack_path = [
 ].find { |path| File.exist?(path) }
 
 # don't proceed unless application pack exists
-if !pack_path.exist?
+if pack_path.nil?
   say "❌ #{pack_path} is missing", :red
   create_file "tmp/stimulus_reflex_installer/halt", verbose: false
   return
 end
+friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 
 # import Action Cable channels into application pack
 pack = File.read(pack_path)
 channels_pattern = /import ['"]channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
+channel_import = {
+  "webpacker" => "import \"channels\"\n",
+  "esbuild" => "import \".\/channels\"\n"
+}
 
 if pack.match?(channels_pattern)
   if pack.match?(channels_commented_pattern)
@@ -73,21 +95,21 @@ if pack.match?(channels_pattern)
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ channels_commented_pattern }
-      lines[lines.index(matches.last).to_i] = "import \"channels\"\n"
+      lines[lines.index(matches.last).to_i] = channel_import[footgun]
       File.write(pack_path, lines.join)
-      say "✅ channels imported in app/javascript/packs/application.js"
+      say "✅ channels imported in #{friendly_pack_path}"
     else
       say "❔ your Action Cable channels are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ channels imported in app/javascript/packs/application.js"
+    say "✅ channels imported in #{friendly_pack_path}"
   end
 else
   lines = File.readlines(pack_path)
   matches = lines.select { |line| line =~ /^import / }
-  lines.insert lines.index(matches.last).to_i + 1, "import \"channels\"\n"
+  lines.insert lines.index(matches.last).to_i + 1, channel_import[footgun]
   File.write(pack_path, lines.join)
-  say "✅ channels imported in app/javascript/packs/application.js"
+  say "✅ channels imported in #{friendly_pack_path}"
 end
 
 create_file "tmp/stimulus_reflex_installer/action_cable", verbose: false

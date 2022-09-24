@@ -13,7 +13,7 @@ pack_path = [
 ].find { |path| File.exist?(path) }
 
 # don't proceed unless application pack exists
-if !pack_path.exist?
+if pack_path.nil?
   say "❌ #{pack_path} is missing", :red
   create_file "tmp/stimulus_reflex_installer/halt", verbose: false
   return
@@ -22,13 +22,17 @@ end
 empty_directory config_path unless config_path.exist?
 
 # create entrypoint/config/cable_ready.js and make sure it's imported in application.js
-inside config_path do
-  copy_file(cable_ready_src, cable_ready_path) unless File.exist?(cable_ready_path)
-end
+copy_file(cable_ready_src, cable_ready_path) unless File.exist?(cable_ready_path)
 
 pack = File.read(pack_path)
-cr_pattern = /import ['"]config\/cable_ready['"]/
+friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
+footgun = File.read("tmp/stimulus_reflex_installer/footgun")
+cr_pattern = /import ['"].\/config\/cable_ready['"]/
 cr_commented_pattern = /\s*\/\/\s*#{cr_pattern}/
+cr_import = {
+  "webpacker" => "import \"config\/cable_ready\"\n",
+  "esbuild" => "import \".\/config\/cable_ready\"\n"
+}
 
 if pack.match?(cr_pattern)
   if pack.match?(cr_commented_pattern)
@@ -36,31 +40,33 @@ if pack.match?(cr_pattern)
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ cr_commented_pattern }
-      lines[lines.index(matches.last).to_i] = "import \"config\/cable_ready\"\n"
+      lines[lines.index(matches.last).to_i] = cr_import[footgun]
       File.write(pack_path, lines.join)
-      say "✅ CableReady will be imported in app/javascript/packs/application.js"
+      say "✅ CableReady will be imported in #{friendly_pack_path}"
     else
       say "❔ CableReady is not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ CableReady will be imported in app/javascript/packs/application.js"
+    say "✅ CableReady will be imported in #{friendly_pack_path}"
   end
 else
   lines = File.readlines(pack_path)
   matches = lines.select { |line| line =~ /^import / }
-  lines.insert lines.index(matches.last).to_i + 1, "import \"config\/cable_ready\"\n"
+  lines.insert lines.index(matches.last).to_i + 1, cr_import[footgun]
   File.write(pack_path, lines.join)
-  say "✅ CableReady will be imported in app/javascript/packs/application.js"
+  say "✅ CableReady will be imported in #{friendly_pack_path}"
 end
 
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
-inside config_path do
-  copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
-end
+copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
 
 pack = File.read(pack_path)
-sr_pattern = /import ['"]config\/stimulus_reflex['"]/
+sr_pattern = /import ['"].\/config\/stimulus_reflex['"]/
 sr_commented_pattern = /\s*\/\/\s*#{sr_pattern}/
+sr_import = {
+  "webpacker" => "import \"config\/stimulus_reflex\"\n",
+  "esbuild" => "import \".\/config\/stimulus_reflex\"\n"
+}
 
 if pack.match?(sr_pattern)
   if pack.match?(sr_commented_pattern)
@@ -68,21 +74,21 @@ if pack.match?(sr_pattern)
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ sr_commented_pattern }
-      lines[lines.index(matches.last).to_i] = "import \"config\/stimulus_reflex\"\n"
+      lines[lines.index(matches.last).to_i] = sr_import[footgun]
       File.write(pack_path, lines.join)
-      say "✅ StimulusReflex will be imported in app/javascript/packs/application.js"
+      say "✅ StimulusReflex will be imported in #{friendly_pack_path}"
     else
       say "❔ StimulusReflex is not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ StimulusReflex will be imported in app/javascript/packs/application.js"
+    say "✅ StimulusReflex will be imported in #{friendly_pack_path}"
   end
 else
   lines = File.readlines(pack_path)
   matches = lines.select { |line| line =~ /^import / }
-  lines.insert lines.index(matches.last).to_i + 1, "import \"config\/stimulus_reflex\"\n"
+  lines.insert lines.index(matches.last).to_i + 1, sr_import[footgun]
   File.write(pack_path, lines.join)
-  say "✅ StimulusReflex will be imported in app/javascript/packs/application.js"
+  say "✅ StimulusReflex will be imported in #{friendly_pack_path}"
 end
 
 create_file "tmp/stimulus_reflex_installer/config", verbose: false

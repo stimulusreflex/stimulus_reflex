@@ -42,12 +42,12 @@ end
 
 entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 controllers_path = Rails.root.join(entrypoint, "controllers")
-templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/controllers", File.join(File.dirname(__FILE__)))
-application_controller_src = templates_path + "/application_controller.js.tt"
+controller_templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/controllers", File.join(File.dirname(__FILE__)))
+application_controller_src = controller_templates_path + "/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
-application_src = templates_path + "/application.js.tt"
+application_src = controller_templates_path + "/application.js.tt"
 application_path = controllers_path.join("application.js")
-index_src = templates_path + "/index_webpacker.js.tt"
+index_src = controller_templates_path + "/index_webpacker.js.tt"
 index_path = controllers_path.join("index.js")
 
 # create js frontend entrypoint if it doesn't already exist
@@ -64,14 +64,23 @@ copy_file(application_src, application_path) unless application_path.exist?
 copy_file(index_src, index_path) unless index_path.exist?
 
 pack_path = Rails.root.join(entrypoint, "packs/application.js")
-friendly_path = pack_path.relative_path_from(Rails.root).to_s
+pack_templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/packs", File.join(File.dirname(__FILE__)))
+pack_src = pack_templates_path + "/application.js.tt"
+friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 
-inside "app/javascript/packs" do
-  if pack_path.exist?
+if pack_path.exist?
+  if File.read(pack_path) == File.read(pack_src)
     say "✅ #{pack_path} is present"
   else
-    template("application.js", pack_path)
+    copy_file(pack_path, "#{pack_path}.bak", verbose: false)
+    remove_file(pack_path, verbose: false)
+    copy_file(pack_src, pack_path, verbose: false)
+    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_pack_path}\n")
+    say "#{friendly_pack_path} has been created"
+    say "❕ original application.js renamed application.js.bak", :green
   end
+else
+  copy_file(pack_src, pack_path)
 end
 
 pack = File.read(pack_path)
@@ -86,19 +95,19 @@ if pack.match?(controllers_pattern)
       matches = lines.select { |line| line =~ controllers_commented_pattern }
       lines[lines.index(matches.last).to_i] = "import \"controllers\"\n"
       File.write(pack_path, lines.join)
-      say "✅ Stimulus controllers imported in #{friendly_path}"
+      say "✅ Stimulus controllers imported in #{friendly_pack_path}"
     else
       say "❔ your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ Stimulus controllers imported in #{friendly_path}"
+    say "✅ Stimulus controllers imported in #{friendly_pack_path}"
   end
 else
   lines = File.readlines(pack_path)
   matches = lines.select { |line| line =~ /^import / }
   lines.insert lines.index(matches.last).to_i + 1, "import \"controllers\"\n"
   File.write(pack_path, lines.join)
-  say "✅ Stimulus controllers imported in #{friendly_path}"
+  say "✅ Stimulus controllers imported in #{friendly_pack_path}"
 end
 
 # ensure webpacker 5.4.3 is installed in the Gemfile

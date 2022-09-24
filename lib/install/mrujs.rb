@@ -34,7 +34,7 @@ if proceed
   ].find { |path| File.exist?(path) }
 
   # don't proceed unless application pack exists
-  if !pack_path.exist?
+  if pack_path.nil?
     say "❌ #{pack_path} is missing", :red
     create_file "tmp/stimulus_reflex_installer/halt", verbose: false
     return
@@ -43,15 +43,18 @@ if proceed
   empty_directory config_path unless config_path.exist?
 
   # create entrypoint/config/mrujs.js
-  inside config_path do
-    copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)
-  end
+  copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)
 
   # import mrujs in application.js
   pack = File.read(pack_path)
+  footgun = File.read("tmp/stimulus_reflex_installer/footgun")
   friendly_path = pack_path.relative_path_from(Rails.root).to_s
-  mrujs_pattern = /import ['"]config\/mrujs['"]/
+  mrujs_pattern = /import ['"].\/config\/mrujs['"]/
   mrujs_commented_pattern = /\s*\/\/\s*#{mrujs_pattern}/
+  mrujs_import = {
+    "webpacker" => "import \"config\/mrujs\"\n",
+    "esbuild" => "import \".\/config\/mrujs\"\n"
+  }
 
   if pack.match?(mrujs_pattern)
     if pack.match?(mrujs_commented_pattern)
@@ -59,7 +62,7 @@ if proceed
         # uncomment_lines only works with Ruby comments 🙄
         lines = File.readlines(pack_path)
         matches = lines.select { |line| line =~ mrujs_commented_pattern }
-        lines[lines.index(matches.last).to_i] = "import \"config\/mrujs\"\n"
+        lines[lines.index(matches.last).to_i] = mrujs_import[footgun]
         File.write(pack_path, lines.join)
         say "✅ mrujs imported in #{friendly_path}"
       else
@@ -71,7 +74,7 @@ if proceed
   else
     lines = File.readlines(pack_path)
     matches = lines.select { |line| line =~ /^import / }
-    lines.insert lines.index(matches.last).to_i + 1, "import \"config\/mrujs\"\n"
+    lines.insert lines.index(matches.last).to_i + 1, mrujs_import[footgun]
     File.write(pack_path, lines.join)
     say "✅ mrujs imported in #{friendly_path}"
   end

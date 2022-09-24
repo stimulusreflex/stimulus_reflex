@@ -2,7 +2,6 @@ include Rails.application.routes.url_helpers
 
 STEPS = {
   "action_cable" => "Action Cable",
-  "redis" => "Redis",
   "webpacker" => "Webpacker",
   "npm_packages" => "StimulusReflex and CableReady npm packages",
   "reflexes" => "Reflexes",
@@ -20,7 +19,7 @@ STEPS = {
 
 FOOTGUNS = {
   "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn"],
-  "esbuild" => [],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn"],
   "vite" => [],
   "shakapacker" => [],
   "importmap" => []
@@ -133,6 +132,9 @@ namespace :stimulus_reflex do
       end
     end
 
+    File.write("tmp/stimulus_reflex_installer/footgun", footgun)
+    FileUtils.touch("tmp/stimulus_reflex_installer/backups")
+
     # do the things
     FOOTGUNS[footgun].each do |template|
       run_install_template(template)
@@ -149,8 +151,20 @@ namespace :stimulus_reflex do
     puts "Join over 2000 StimulusReflex developers on Discord: https://discord.gg/stimulus-reflex"
     puts
 
+    backups = File.readlines("tmp/stimulus_reflex_installer/backups").map(&:chomp)
+    if backups.any?
+      puts "⚠️  The following files were regenerated during installation:"
+      puts
+      backups.each { |backup| puts "  #{backup}" }
+      puts
+      puts "Each of these files has been backed up with a .bak extension. Please review the changes carefully."
+      puts "If you're happy with the changes, you can delete the .bak files."
+      puts
+    end
+
     if Rails.root.join("app/reflexes/example_reflex.rb").exist?
-      puts "Launch `rails s` to access your example Reflex at ⚡ http://localhost:3000/example ⚡"
+      launch = Rails.root.join("bin/dev").exist? ? "bin/dev" : "rails s"
+      puts "Launch `#{launch}` to access your example Reflex at ⚡ http://localhost:3000/example ⚡"
       puts "Once you're finished with the example, you can remove it with `rails destroy stimulus_reflex example`"
       puts
     end
