@@ -75,7 +75,7 @@ if pack_path.exist?
     copy_file(pack_path, "#{pack_path}.bak", verbose: false)
     remove_file(pack_path, verbose: false)
     copy_file(pack_src, pack_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_pack_path}\n")
+    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_pack_path}\n", verbose: false)
     say "#{friendly_pack_path} has been created"
     say "❕ original application.js renamed application.js.bak", :green
   end
@@ -120,7 +120,7 @@ if index
     File.write(gemfile, lines.join)
   end
 else
-  append_file gemfile, "\n# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker"
+  append_file gemfile, "\n# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker", verbose: false
   gem "webpacker", "~> 5.4.3"
 end
 say "✅ webpacker gem is installed and up to date"

@@ -4,7 +4,7 @@ def write_redis_recommendation(development, lines, index)
 
   # add redis-session-store to Gemfile, but comment it out
   if !File.read(gemfile).match?(redis_pattern)
-    append_file gemfile, "\n# Use Redis for session storage"
+    append_file gemfile, "\n# Use Redis for session storage", verbose: false
     gem "redis-session-store", "0.11.4"
     comment_lines gemfile, redis_pattern
   end
@@ -108,7 +108,7 @@ RUBY
 
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(redis_session_store_pattern)
-    append_file gemfile, "\n# Use Redis for session storage"
+    append_file gemfile, "\n# Use Redis for session storage", 
     gem "redis-session-store", "0.11.4"
   end
   say "✅ Added redis-session-store to Gemfile"

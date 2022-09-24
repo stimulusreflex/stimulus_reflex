@@ -9,13 +9,13 @@ lines = File.readlines(package_json)
 
 if !lines.index { |line| line =~ /^\s*["']cable_ready["']: ["'].*#{cr_npm_version}["']/ }
   FileUtils.touch(package_list)
-  append_file(package_list, "cable_ready@#{cr_npm_version}\n")
+  append_file(package_list, "cable_ready@#{cr_npm_version}\n", verbose: false)
   say "✅ Enqueued cable_ready@#{cr_npm_version} to be added to dependencies"
 end
 
 if !lines.index { |line| line =~ /^\s*["']stimulus_reflex["']: ["'].*#{sr_npm_version}["']/ }
   FileUtils.touch(package_list)
-  append_file(package_list, "stimulus_reflex@#{sr_npm_version}\n")
+  append_file(package_list, "stimulus_reflex@#{sr_npm_version}\n", verbose: false)
   say "✅ Enqueued stimulus_reflex@#{sr_npm_version} to be added to dependencies"
 end
 

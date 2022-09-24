@@ -60,6 +60,11 @@ end
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
 copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
 
+if footgun == "webpacker"
+  append_file(stimulus_reflex_path, "StimulusReflex.debug = process.env.RAILS_ENV === \"development\"\n", verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
+  say "✅ StimulusReflex.debug will be set to true in development"
+end
+
 pack = File.read(pack_path)
 sr_pattern = /import ['"].\/config\/stimulus_reflex['"]/
 sr_commented_pattern = /\s*\/\/\s*#{sr_pattern}/
