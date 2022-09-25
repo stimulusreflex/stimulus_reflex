@@ -37,8 +37,6 @@ Gem::Specification.new do |gem|
     "[A-Z]*"
   ]
 
-  gem.test_files = Dir["test/**/*.rb"]
-
   gem.required_ruby_version = ">= 2.7.0"
 
   rails_version = ">= 5.2"

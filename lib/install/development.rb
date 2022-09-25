@@ -99,17 +99,19 @@ RUBY
   gemfile = Rails.root.join("Gemfile")
   redis_pattern = /gem ['"]redis['"]/
   redis_session_store_pattern = /gem ['"]redis-session-store['"]/
-
+  
   # uncomment redis in Gemfile
   if File.read(gemfile).match?(redis_pattern)
     uncomment_lines gemfile, redis_pattern, verbose: false
     say "✅ Redis gem uncommented in Gemfile"
   end
-
+  
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(redis_session_store_pattern)
     append_file gemfile, "\n# Use Redis for session storage", 
+    # rubocop:disable Lint/Syntax
     gem "redis-session-store", "0.11.4"
+    # rubocop:enable Lint/Syntax
   end
   say "✅ Added redis-session-store to Gemfile"
 end
