@@ -23,7 +23,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
       puts "Press enter to accept this, or type a different path."
       print "> "
-      input = $stdin.gets.chomp
+      input = Rails.env.test? ? "" : $stdin.gets.chomp
       entrypoint = input unless input.blank?
     end
 
