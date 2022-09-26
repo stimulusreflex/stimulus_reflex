@@ -108,7 +108,7 @@ RUBY
   
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(redis_session_store_pattern)
-    append_file gemfile, "\n# Use Redis for session storage", 
+    append_file gemfile, "\n# Use Redis for session storage"
     # rubocop:disable Lint/Syntax
     gem "redis-session-store", "0.11.4"
     # rubocop:enable Lint/Syntax
