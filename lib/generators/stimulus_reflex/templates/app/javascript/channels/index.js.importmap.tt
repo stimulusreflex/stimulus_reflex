@@ -1,0 +1,22 @@
+const registeredChannels = {}
+
+// Eager load all Action Cable channels registered beneath the `under` path in the import map
+export function eagerLoadChannelsFrom (under) {
+  const paths = Object.keys(parseImportmapJson()).filter(path =>
+    path.match(new RegExp(`^${under}/.*_channel$`))
+  )
+  paths.forEach(path => registerChannelFromPath(path, under))
+}
+
+function parseImportmapJson () {
+  return JSON.parse(document.querySelector('script[type=importmap]').text)
+    .imports
+}
+
+function registerChannelFromPath (path, under) {
+  const name = path
+    .replace(new RegExp(`^${under}/`), '')
+    .replace('_channel', '')
+
+  if (!(name in registeredChannels)) import(path)
+}

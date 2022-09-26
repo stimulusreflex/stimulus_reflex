@@ -18,14 +18,13 @@ def write_redis_recommendation(development, lines, index)
 
   # To use `redis-session-store`, make sure to add it to your Gemfile and run `bundle install`.
 
-  # config.session_store :redis_session_store, {
+  # config.session_store :redis_session_store,
   #   serializer: :json,
   #   on_redis_down: ->(*a) { logger.error("Redis down! \#{a.inspect}") },
   #   redis: {
   #     expire_after: 120.minutes,
   #     key_prefix: "session:",
   #     url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
-  #   }
   # }
 RUBY
     File.write(development, lines.join)
@@ -99,19 +98,17 @@ RUBY
   gemfile = Rails.root.join("Gemfile")
   redis_pattern = /gem ['"]redis['"]/
   redis_session_store_pattern = /gem ['"]redis-session-store['"]/
-  
+
   # uncomment redis in Gemfile
   if File.read(gemfile).match?(redis_pattern)
     uncomment_lines gemfile, redis_pattern, verbose: false
     say "✅ Redis gem uncommented in Gemfile"
   end
-  
+
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(redis_session_store_pattern)
     append_file gemfile, "\n# Use Redis for session storage"
-    # rubocop:disable Lint/Syntax
     gem "redis-session-store", "0.11.4"
-    # rubocop:enable Lint/Syntax
   end
   say "✅ Added redis-session-store to Gemfile"
 end

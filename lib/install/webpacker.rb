@@ -47,7 +47,7 @@ application_controller_src = controller_templates_path + "/application_controlle
 application_controller_path = controllers_path.join("application_controller.js")
 application_src = controller_templates_path + "/application.js.tt"
 application_path = controllers_path.join("application.js")
-index_src = controller_templates_path + "/index_webpacker.js.tt"
+index_src = controller_templates_path + "/index.js.webpacker.tt"
 index_path = controllers_path.join("index.js")
 
 # create js frontend entrypoint if it doesn't already exist

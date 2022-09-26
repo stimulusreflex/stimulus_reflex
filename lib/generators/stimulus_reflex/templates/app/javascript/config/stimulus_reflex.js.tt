@@ -1,5 +1,5 @@
 import { application } from "../controllers/application"
-import StimulusReflex from 'stimulus_reflex'
 import controller from '../controllers/application_controller'
+import StimulusReflex from 'stimulus_reflex'
 
 window.reflexes = StimulusReflex.initialize(application, { controller, isolate: true })

@@ -22,7 +22,7 @@ FOOTGUNS = {
   "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn"],
   "vite" => [],
   "shakapacker" => [],
-  "importmap" => []
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs"]
 }
 
 def run_install_template(template, force: false)

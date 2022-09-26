@@ -40,7 +40,7 @@ application_controller_src = templates_path + "/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
 application_src = templates_path + "/application.js.tt"
 application_path = controllers_path.join("application.js")
-index_src = templates_path + "/index_esbuild.js.tt"
+index_src = templates_path + "/index.js.esbuild.tt"
 index_path = controllers_path.join("index.js")
 
 # create js frontend entrypoint if it doesn't already exist
@@ -88,7 +88,7 @@ end
 
 pack_path = Rails.root.join(entrypoint, "application.js")
 templates_path = File.expand_path("../generators/stimulus_reflex/templates", File.join(File.dirname(__FILE__)))
-pack_src = templates_path + "/application.js.tt"
+pack_src = templates_path + "/application.js.esbuild.tt"
 friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 
 if pack_path.exist?

@@ -6,7 +6,6 @@ stimulus_reflex_path = config_path.join("stimulus_reflex.js")
 cable_ready_src = templates_path + "/cable_ready.js.tt"
 cable_ready_path = config_path.join("cable_ready.js")
 
-# support esbuild and webpacker
 pack_path = [
   Rails.root.join(entrypoint, "application.js"),
   Rails.root.join(entrypoint, "packs/application.js")
@@ -31,7 +30,8 @@ cr_pattern = /import ['"].\/config\/cable_ready['"]/
 cr_commented_pattern = /\s*\/\/\s*#{cr_pattern}/
 cr_import = {
   "webpacker" => "import \"config\/cable_ready\"\n",
-  "esbuild" => "import \".\/config\/cable_ready\"\n"
+  "esbuild" => "import \".\/config\/cable_ready\"\n",
+  "importmap" => "import \"config\/cable_ready\"\n"
 }
 
 if pack.match?(cr_pattern)
@@ -70,7 +70,8 @@ sr_pattern = /import ['"].\/config\/stimulus_reflex['"]/
 sr_commented_pattern = /\s*\/\/\s*#{sr_pattern}/
 sr_import = {
   "webpacker" => "import \"config\/stimulus_reflex\"\n",
-  "esbuild" => "import \".\/config\/stimulus_reflex\"\n"
+  "esbuild" => "import \".\/config\/stimulus_reflex\"\n",
+  "importmap" => "import \"config\/stimulus_reflex\"\n"
 }
 
 if pack.match?(sr_pattern)

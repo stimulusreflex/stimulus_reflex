@@ -43,7 +43,7 @@ templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/j
 channels_path = Rails.root.join(entrypoint, "channels")
 consumer_src = templates_path + "/consumer.js.tt"
 consumer_path = channels_path.join("consumer.js")
-index_src = templates_path + "/index_#{footgun}.js.tt"
+index_src = templates_path + "/index.js.#{footgun}.tt"
 index_path = channels_path.join("index.js")
 
 empty_directory channels_path unless channels_path.exist?
@@ -66,7 +66,6 @@ else
   copy_file(index_src, index_path)
 end
 
-# support esbuild and webpacker
 pack_path = [
   Rails.root.join(entrypoint, "application.js"),
   Rails.root.join(entrypoint, "packs/application.js")
@@ -86,7 +85,8 @@ channels_pattern = /import ['"]channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
 channel_import = {
   "webpacker" => "import \"channels\"\n",
-  "esbuild" => "import \".\/channels\"\n"
+  "esbuild" => "import \".\/channels\"\n",
+  "importmap" => "import \"channels\"\n"
 }
 
 if pack.match?(channels_pattern)

@@ -9,6 +9,8 @@
 
     <% if respond_to?(:javascript_pack_tag) %>
     <%= javascript_pack_tag "application", defer: true %>
+    <% elsif respond_to?(:javascript_importmap_tags) %>
+    <%= javascript_importmap_tags %>
     <% elsif respond_to?(:javascript_include_tag) %>
     <%= javascript_include_tag "application", defer: true %>
     <% end %>

@@ -8,26 +8,31 @@ if !File.exist?(mrujs_path)
 end
 
 if proceed
-  # queue mrujs for installation
-  if !File.read(Rails.root.join("package.json")).include?('"mrujs":')
-    package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
-    FileUtils.touch(package_list)
-    append_file(package_list, "mrujs@^0.10.1\n", verbose: false)
-    say "✅ Enqueued mrujs@^0.10.1 to be added to dependencies"
-  end
+  footgun = File.read("tmp/stimulus_reflex_installer/footgun")
 
-  # queue @rails/ujs for removal
-  if File.read(Rails.root.join("package.json")).include?('"@rails/ujs":')
-    drop_package_list = Rails.root.join("tmp/stimulus_reflex_installer/drop_npm_package_list")
-    FileUtils.touch(drop_package_list)
-    append_file(drop_package_list, "@rails/ujs\n", verbose: false)
-    say "✅ Enqueued @rails/ujs to be removed from dependencies"
+  if footgun == "importmap"
+    # pin "mrujs", to: "https://ga.jspm.io/npm:mrujs@0.10.1/dist/index.module.js"
+  else
+    # queue mrujs for installation
+    if !File.read(Rails.root.join("package.json")).include?('"mrujs":')
+      package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
+      FileUtils.touch(package_list)
+      append_file(package_list, "mrujs@^0.10.1\n", verbose: false)
+      say "✅ Enqueued mrujs@^0.10.1 to be added to dependencies"
+    end
+
+    # queue @rails/ujs for removal
+    if File.read(Rails.root.join("package.json")).include?('"@rails/ujs":')
+      drop_package_list = Rails.root.join("tmp/stimulus_reflex_installer/drop_npm_package_list")
+      FileUtils.touch(drop_package_list)
+      append_file(drop_package_list, "@rails/ujs\n", verbose: false)
+      say "✅ Enqueued @rails/ujs to be removed from dependencies"
+    end
   end
 
   templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/config", File.join(File.dirname(__FILE__)))
   mrujs_src = templates_path + "/mrujs.js.tt"
 
-  # support esbuild and webpacker
   pack_path = [
     Rails.root.join(entrypoint, "application.js"),
     Rails.root.join(entrypoint, "packs/application.js")
@@ -47,13 +52,13 @@ if proceed
 
   # import mrujs in application.js
   pack = File.read(pack_path)
-  footgun = File.read("tmp/stimulus_reflex_installer/footgun")
   friendly_path = pack_path.relative_path_from(Rails.root).to_s
   mrujs_pattern = /import ['"].\/config\/mrujs['"]/
   mrujs_commented_pattern = /\s*\/\/\s*#{mrujs_pattern}/
   mrujs_import = {
     "webpacker" => "import \"config\/mrujs\"\n",
-    "esbuild" => "import \".\/config\/mrujs\"\n"
+    "esbuild" => "import \".\/config\/mrujs\"\n",
+    "importmap" => "import \"config\/mrujs\"\n"
   }
 
   if pack.match?(mrujs_pattern)
