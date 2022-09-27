@@ -82,7 +82,7 @@ else
   index = lines.index { |line| line =~ /^Rails.application.configure do/ }
   lines.insert index + 1, <<RUBY
 
-  config.session_store :redis_session_store, {
+  config.session_store :redis_session_store,
     serializer: :json,
     on_redis_down: ->(*a) { logger.error("Redis down! \#{a.inspect}") },
     redis: {
@@ -90,7 +90,6 @@ else
       key_prefix: "session:",
       url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
     }
-  }
 RUBY
   File.write(development, lines.join)
   say "✅ Using redis-session-store for session storage"
