@@ -20,3 +20,5 @@ function registerChannelFromPath (path, under) {
 
   if (!(name in registeredChannels)) import(path)
 }
+
+eagerLoadChannelsFrom("channels")

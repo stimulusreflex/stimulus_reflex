@@ -1,3 +1,13 @@
+entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
+pack_path = Rails.root.join(entrypoint, "packs/application.js")
+friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
+
+if !pack_path.exist?
+  say "❌ #{friendly_pack_path} is missing. You need a valid application pack file to proceed.", :red
+  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
+  return
+end
+
 # verify that all critical dependencies are up to date; if not, queue for later
 package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
 dev_package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_dev_package_list")
@@ -40,7 +50,6 @@ if !lines.index { |line| line =~ /^\s*["']webpack-dev-server["']: ["']\^3.11.3["
   say "✅ Enqueued webpack-dev-server@^3.11.3 to be added to dev dependencies"
 end
 
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 controllers_path = Rails.root.join(entrypoint, "controllers")
 controller_templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/controllers", File.join(File.dirname(__FILE__)))
 application_controller_src = controller_templates_path + "/application_controller.js.tt"
@@ -50,38 +59,12 @@ application_path = controllers_path.join("application.js")
 index_src = controller_templates_path + "/index.js.webpacker.tt"
 index_path = controllers_path.join("index.js")
 
-# create js frontend entrypoint if it doesn't already exist
-if !Rails.root.join(entrypoint).exist?
-  FileUtils.mkdir_p(Rails.root.join(entrypoint))
-  puts "✅ Created #{entrypoint}"
-end
-
 # create entrypoint/controllers, as well as the index, application and application_controller
 empty_directory controllers_path unless controllers_path.exist?
 
 copy_file(application_controller_src, application_controller_path) unless application_controller_path.exist?
 copy_file(application_src, application_path) unless application_path.exist?
 copy_file(index_src, index_path) unless index_path.exist?
-
-pack_path = Rails.root.join(entrypoint, "packs/application.js")
-pack_templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/packs", File.join(File.dirname(__FILE__)))
-pack_src = pack_templates_path + "/application.js.tt"
-friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
-
-if pack_path.exist?
-  if File.read(pack_path) == File.read(pack_src)
-    say "✅ #{pack_path} is present"
-  else
-    copy_file(pack_path, "#{pack_path}.bak", verbose: false)
-    remove_file(pack_path, verbose: false)
-    copy_file(pack_src, pack_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_pack_path}\n", verbose: false)
-    say "#{friendly_pack_path} has been created"
-    say "❕ original application.js renamed application.js.bak", :green
-  end
-else
-  copy_file(pack_src, pack_path)
-end
 
 pack = File.read(pack_path)
 controllers_pattern = /import ['"]controllers['"]/

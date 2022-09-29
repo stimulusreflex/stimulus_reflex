@@ -1,3 +1,13 @@
+entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
+pack_path = Rails.root.join(entrypoint, "application.js")
+friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
+
+if !pack_path.exist?
+  say "❌ #{friendly_pack_path} is missing. You need a valid application pack file to proceed.", :red
+  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
+  return
+end
+
 templates_path = File.expand_path("../generators/stimulus_reflex/templates", File.join(File.dirname(__FILE__)))
 
 importmap_src = templates_path + "/config/importmap.rb.tt"
@@ -19,7 +29,6 @@ else
   copy_file(importmap_src, importmap_path)
 end
 
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 controllers_path = Rails.root.join(entrypoint, "controllers")
 application_controller_src = templates_path + "/app/javascript/controllers/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
@@ -28,28 +37,20 @@ application_path = controllers_path.join("application.js")
 index_src = templates_path + "/app/javascript/controllers/index.js.importmap.tt"
 index_path = controllers_path.join("index.js")
 
-# create js frontend entrypoint if it doesn't already exist
-if !Rails.root.join(entrypoint).exist?
-  FileUtils.mkdir_p(Rails.root.join(entrypoint))
-  puts "✅ Created #{entrypoint}"
-end
-
 # create entrypoint/controllers, as well as the index, application and application_controller
 empty_directory controllers_path unless controllers_path.exist?
 
 copy_file(application_controller_src, application_controller_path) unless application_controller_path.exist?
 
+# configure Stimulus application superclass to import Action Cable consumer
 friendly_application_path = application_path.relative_path_from(Rails.root).to_s
 if application_path.exist?
-  if File.read(application_path) == File.read(application_src)
+  if File.read(application_path).include?("import consumer")
     say "✅ #{friendly_application_path} is present"
   else
-    copy_file(application_path, "#{application_path}.bak", verbose: false)
-    remove_file(application_path, verbose: false)
-    copy_file(application_src, application_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_application_path}\n", verbose: false)
-    say "#{friendly_application_path} has been created"
-    say "❕ original application.js renamed application.js.bak", :green
+    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import consumer from \"../channels/consumer\"\n", verbose: false
+    inject_into_file application_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
+    say "#{friendly_application_path} has been updated to import the Action Cable consumer"
   end
 else
   copy_file(application_src, application_path)
