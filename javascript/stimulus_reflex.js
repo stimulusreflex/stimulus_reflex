@@ -21,7 +21,8 @@ import {
   serializeForm,
   elementInvalid,
   getReflexElement,
-  getReflexOptions
+  getReflexOptions,
+  emitEvent
 } from './utils'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
@@ -70,7 +71,7 @@ const initialize = (
     childList: true,
     subtree: true
   })
-  return reflexes
+  emitEvent('stimulus-reflex:initialized')
 }
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
@@ -224,6 +225,8 @@ const register = (controller, options = {}) => {
     })
 
   scanForReflexesOnElement(controller.element)
+
+  emitEvent('stimulus-reflex:registered', { detail: { controller } })
 }
 
 const useReflex = (controller, options = {}) => {
