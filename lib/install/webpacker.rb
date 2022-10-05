@@ -63,6 +63,7 @@ index_path = controllers_path.join("index.js")
 empty_directory controllers_path unless controllers_path.exist?
 
 copy_file(application_controller_src, application_controller_path) unless application_controller_path.exist?
+# webpacker 5.4 did not colloquially feature a controllers/application.js file
 copy_file(application_src, application_path) unless application_path.exist?
 copy_file(index_src, index_path) unless index_path.exist?
 
@@ -72,7 +73,7 @@ controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/
 
 if pack.match?(controllers_pattern)
   if pack.match?(controllers_commented_pattern)
-    if !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
+    if !no?("Do you want to import your Stimulus controllers in application.js? (Y/n)")
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ controllers_commented_pattern }

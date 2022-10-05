@@ -8,27 +8,60 @@ if !pack_path.exist?
   return
 end
 
-templates_path = File.expand_path("../generators/stimulus_reflex/templates", File.join(File.dirname(__FILE__)))
-
-importmap_src = templates_path + "/config/importmap.rb.tt"
 importmap_path = Rails.root.join("config/importmap.rb")
-
 friendly_importmap_path = importmap_path.relative_path_from(Rails.root).to_s
-if importmap_path.exist?
-  if File.read(importmap_path) == File.read(importmap_src)
-    say "✅ #{friendly_importmap_path} is present"
-  else
-    copy_file(importmap_path, "#{importmap_path}.bak", verbose: false)
-    remove_file(importmap_path, verbose: false)
-    copy_file(importmap_src, importmap_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_importmap_path}\n", verbose: false)
-    say "#{friendly_importmap_path} has been created"
-    say "❕ original importmap.rb renamed importmap.rb.bak", :green
-  end
-else
-  copy_file(importmap_src, importmap_path)
+
+if !importmap_path.exist?
+  say "❌ #{friendly_importmap_path} is missing. You need a valid importmap config file to proceed.", :red
+  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
+  return
 end
 
+importmap = File.read(importmap_path)
+
+if !importmap.include?("pin_all_from \"#{entrypoint}/controllers\"")
+  append_file(importmap_path, <<~RUBY)
+    pin_all_from "#{entrypoint}/controllers", under: "controllers"
+  RUBY
+end
+
+if !importmap.include?("pin_all_from \"#{entrypoint}/channels\"")
+  append_file(importmap_path, <<~RUBY)
+    pin_all_from "#{entrypoint}/channels", under: "channels"
+  RUBY
+end
+
+if !importmap.include?("pin_all_from \"#{entrypoint}/config\"")
+  append_file(importmap_path, <<~RUBY)
+    pin_all_from "#{entrypoint}/config", under: "config"
+  RUBY
+end
+
+if !importmap.include?("pin \"@rails/actioncable\"")
+  append_file(importmap_path, <<~RUBY)
+    pin "@rails/actioncable", to: "actioncable.esm.js"
+  RUBY
+end
+
+if !importmap.include?("pin \"cable_ready\"")
+  append_file(importmap_path, <<~RUBY)
+    pin "cable_ready", to: "https://devbuilds.herokuapp.com/package/npm/cable_ready/latest"
+  RUBY
+end
+
+if !importmap.include?("pin \"stimulus_reflex\"")
+  append_file(importmap_path, <<~RUBY)
+    pin "stimulus_reflex", to: "https://devbuilds.herokuapp.com/package/npm/stimulus_reflex/latest"
+  RUBY
+end
+
+if !importmap.include?("pin \"morphdom\"")
+  append_file(importmap_path, <<~RUBY)
+    pin "morphdom", to: "https://ga.jspm.io/npm:morphdom@2.6.1/dist/morphdom.js"
+  RUBY
+end
+
+templates_path = File.expand_path("../generators/stimulus_reflex/templates", File.join(File.dirname(__FILE__)))
 controllers_path = Rails.root.join(entrypoint, "controllers")
 application_controller_src = templates_path + "/app/javascript/controllers/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
@@ -48,7 +81,7 @@ if application_path.exist?
   if File.read(application_path).include?("import consumer")
     say "✅ #{friendly_application_path} is present"
   else
-    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import consumer from \"../channels/consumer\"\n", verbose: false
+    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
     inject_into_file application_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
     say "#{friendly_application_path} has been updated to import the Action Cable consumer"
   end

@@ -49,6 +49,40 @@ namespace :stimulus_reflex do
   task :install do
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
+    puts <<~ASCII
+      
+      ooooooooooooooooooooooooooooooooooooooo:~:+ooooooooooooooooo
+      oooooooooooooooooooooooooooooooooooo~.~:~~.:+ooooooooooooooo
+      ooooooooooooooooooooooooooooooooooooo+:...~.~:oooooooooooooo
+      ooooooo+:++~+oooooooooo++:::::::+++oo++...:.~~oooooooooooooo
+      oooooo+:~+:.~ooooooo+::~~~:~~~:::~~:::~~:+:~~~oooooooooooooo
+      ooooo+~..+...+ooo+:~~::::~~:~~+++++++++++:~~~+oooooooooooooo
+      ooooo+~..... :::~~~:::+::+:~~::+:++::+:::+~~~+oooooooooooooo
+      oooooo:~.~~.~~~~:::+::~..::~:+~:::::+++++:.::ooooooooooooooo
+      ooooooo:~~~:+:+++++:....~...::......~:+++:.:~ooooooooooooooo
+      oooooooo+~:~:+++:+:.......~~++::~~~~...~++.~~+oooooooooooooo
+      oooooooooo:~~:++++~~...~::~:~~~:~~~:~.. .:~~~:+oooooooo++:oo
+      ooooooooooo:~~~++++~ ~:~~::++o+oooo++:~~ .:::~~~:++++::~~~oo
+      oooooooooooo~~.+++:..~~:+ooooooooooooo+~~~~::+::::~~~~.~:+oo
+      ooooooooooo+~~.+++~~~~+oooooo+::++oooooo~~~++::+:~::~~:+oooo
+      ooooooooooo:~:~:++:~~.oooooo:....~oooooo~~~+++:~~~::++oooooo
+      ooooooooo:~~+::++++~.~:ooooo+~.~.:oooo+:.:~++:~~~:+ooooooooo
+      o::::~~~~~:+::++:+++~~:+++o+o++++o+o++:~~~::+.:~:ooooooooooo
+      o:~......~:~~:~::+++:~~:++++++++++:::~~~~:~~~.:~+ooooooooooo
+      oooo+~:~~~.~.~~~~~::++:~:~~~~:::~~~~~~  ..~.~.~::ooooooooooo
+      oooo~~~:~..~~:++::~~::::~   .~~~:~~~~. ~~~++:~~:~:oooooooooo
+      ooo+~~:o~.~+ooooo:~~~~~~~.~....~~.~..~:++::~~~:::~:ooooooooo
+      oooo:+oo::oooooooo~:~+::::++::~~~~~::+:::~~~~+::+:~~oooooooo
+      oooooooooooooooooo:~.::~~::::::::::~~~~:::~~~::~:+:~:+oooooo
+      oooooooooooooooooo:~~++:~~~~~:~:~::::::::~:::~~~::~~~:+ooooo
+      oooooooooooooooooo:~~+::++:~~:::::~::::::+:+:+:::~~::::ooooo
+      oooooooooooooooooo~~~::::~~::~::++o+oooooooooooooo++::+ooooo
+      oooooooooooooooooo~~.~:~~::++ooooooooooooooooooooooooooooooo
+      ooooooooooooooooo+~:.:~~:+oooooooooooooooooooooooooooooooooo
+      oooooooooooooooooo:~:~:ooooooooooooooooooooooooooooooooooooo
+      oooooooooooooooooo+:~+oooooooooooooooooooooooooooooooooooooo
+    ASCII
+
     if install_complete.exist?
       puts
       puts "✨ StimulusReflex and CableReady are already installed ✨"
@@ -56,7 +90,7 @@ namespace :stimulus_reflex do
       puts "To restart the installation process, run: rails stimulus_reflex:install:restart"
       puts
       puts "To get started, check out https://docs.stimulusreflex.com/hello-world/quickstart"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex <- we're here for you!"
+      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
       puts
       exit
     end
@@ -69,7 +103,7 @@ namespace :stimulus_reflex do
       puts "✨ Resuming StimulusReflex and CableReady installation ✨"
       puts
       puts "If you have any setup issues, please consult https://docs.stimulusreflex.com/hello-world/setup"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex <- we're here for you!"
+      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
       puts
       puts "Resuming installation into #{entrypoint}"
       puts "Run `rails stimulus_reflex:install:restart` to restart the installation process"
@@ -83,7 +117,7 @@ namespace :stimulus_reflex do
       puts "✨ Installing StimulusReflex and CableReady ✨"
       puts
       puts "If you have any setup issues, please consult https://docs.stimulusreflex.com/hello-world/setup"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex <- we're here for you!"
+      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
       puts
       puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
       puts "Press enter to accept this, or type a different path."

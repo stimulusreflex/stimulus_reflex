@@ -64,7 +64,7 @@ if application_path.exist?
   if File.read(application_path).include?("import consumer")
     say "✅ #{friendly_application_path} is present"
   else
-    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import consumer from \"../channels/consumer\"\n", verbose: false
+    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
     inject_into_file application_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
     say "#{friendly_application_path} has been updated to import the Action Cable consumer"
   end

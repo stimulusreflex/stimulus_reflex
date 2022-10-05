@@ -83,11 +83,8 @@ friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 pack = File.read(pack_path)
 channels_pattern = /import ['"]channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
-channel_import = {
-  "webpacker" => "import \"channels\"\n",
-  "esbuild" => "import \".\/channels\"\n",
-  "importmap" => "import \"channels\"\n"
-}
+prefix = footgun == "esbuild" ? ".\/" : ""
+channel_import = "import \"#{prefix}channels\"\n"
 
 if pack.match?(channels_pattern)
   if pack.match?(channels_commented_pattern)
@@ -95,7 +92,7 @@ if pack.match?(channels_pattern)
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ channels_commented_pattern }
-      lines[lines.index(matches.last).to_i] = channel_import[footgun]
+      lines[lines.index(matches.last).to_i] = channel_import
       File.write(pack_path, lines.join)
       say "✅ channels imported in #{friendly_pack_path}"
     else
@@ -107,7 +104,7 @@ if pack.match?(channels_pattern)
 else
   lines = File.readlines(pack_path)
   matches = lines.select { |line| line =~ /^import / }
-  lines.insert lines.index(matches.last).to_i + 1, channel_import[footgun]
+  lines.insert lines.index(matches.last).to_i + 1, channel_import
   File.write(pack_path, lines.join)
   say "✅ channels imported in #{friendly_pack_path}"
 end
