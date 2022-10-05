@@ -226,7 +226,7 @@ const register = (controller, options = {}) => {
 
   scanForReflexesOnElement(controller.element)
 
-  emitEvent('stimulus-reflex:registered', { detail: { controller } })
+  emitEvent('stimulus-reflex:controller-registered', { detail: { controller } })
 }
 
 const useReflex = (controller, options = {}) => {
