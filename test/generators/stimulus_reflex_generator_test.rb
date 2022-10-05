@@ -11,7 +11,7 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
 
   # test "creates singular named controller and reflex files" do
   #   run_generator %w[demo]
-  #   assert_file "app/javascript/controllers/demo_controller.js", /Demo/
+ assert_file "../../app/javascript/controllers/demo_controller.js"
   #   assert_file "app/reflexes/demo_reflex.rb", /DemoReflex/
   # end
 
