@@ -23,7 +23,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
       puts "Press enter to accept this, or type a different path."
       print "> "
-      input = Rails.env.test? ? "" : $stdin.gets.chomp
+      input = Rails.env.test? ? "tmp/app/javascript" : $stdin.gets.chomp
       entrypoint = input unless input.blank?
     end
 
@@ -32,8 +32,9 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       exit
     end
 
+    stimulus_class_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
     stimulus_class_src = "app/reflexes/%file_name%_reflex.rb.tt"
-    stimulus_class_path = Rails.root.join("app/reflexes", "#{file_name}_reflex.rb")
+    stimulus_class_path = Rails.root.join(stimulus_class_entrypoint, "#{file_name}_reflex.rb")
     stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
     stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
