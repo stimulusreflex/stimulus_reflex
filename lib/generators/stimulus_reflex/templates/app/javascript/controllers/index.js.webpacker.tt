@@ -1,4 +1,5 @@
 import { application } from "./application"
-import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers'
+import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
-application.load(definitionsFromContext(require.context('controllers', true, /_controller\.js$/)))
+const controllers = definitionsFromContext(require.context("controllers", true, /_controller\.js$/))
+application.load(controllers)
