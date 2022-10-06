@@ -50,47 +50,47 @@ namespace :stimulus_reflex do
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
     puts <<~ASCII
-      
-      ooooooooooooooooooooooooooooooooooooooo:~:+ooooooooooooooooo
-      oooooooooooooooooooooooooooooooooooo~.~:~~.:+ooooooooooooooo
-      ooooooooooooooooooooooooooooooooooooo+:...~.~:oooooooooooooo
-      ooooooo+:++~+oooooooooo++:::::::+++oo++...:.~~oooooooooooooo
-      oooooo+:~+:.~ooooooo+::~~~:~~~:::~~:::~~:+:~~~oooooooooooooo
-      ooooo+~..+...+ooo+:~~::::~~:~~+++++++++++:~~~+oooooooooooooo
-      ooooo+~..... :::~~~:::+::+:~~::+:++::+:::+~~~+oooooooooooooo
-      oooooo:~.~~.~~~~:::+::~..::~:+~:::::+++++:.::ooooooooooooooo
-      ooooooo:~~~:+:+++++:....~...::......~:+++:.:~ooooooooooooooo
-      oooooooo+~:~:+++:+:.......~~++::~~~~...~++.~~+oooooooooooooo
-      oooooooooo:~~:++++~~...~::~:~~~:~~~:~.. .:~~~:+oooooooo++:oo
-      ooooooooooo:~~~++++~ ~:~~::++o+oooo++:~~ .:::~~~:++++::~~~oo
-      oooooooooooo~~.+++:..~~:+ooooooooooooo+~~~~::+::::~~~~.~:+oo
-      ooooooooooo+~~.+++~~~~+oooooo+::++oooooo~~~++::+:~::~~:+oooo
-      ooooooooooo:~:~:++:~~.oooooo:....~oooooo~~~+++:~~~::++oooooo
-      ooooooooo:~~+::++++~.~:ooooo+~.~.:oooo+:.:~++:~~~:+ooooooooo
-      o::::~~~~~:+::++:+++~~:+++o+o++++o+o++:~~~::+.:~:ooooooooooo
-      o:~......~:~~:~::+++:~~:++++++++++:::~~~~:~~~.:~+ooooooooooo
-      oooo+~:~~~.~.~~~~~::++:~:~~~~:::~~~~~~  ..~.~.~::ooooooooooo
-      oooo~~~:~..~~:++::~~::::~   .~~~:~~~~. ~~~++:~~:~:oooooooooo
-      ooo+~~:o~.~+ooooo:~~~~~~~.~....~~.~..~:++::~~~:::~:ooooooooo
-      oooo:+oo::oooooooo~:~+::::++::~~~~~::+:::~~~~+::+:~~oooooooo
-      oooooooooooooooooo:~.::~~::::::::::~~~~:::~~~::~:+:~:+oooooo
-      oooooooooooooooooo:~~++:~~~~~:~:~::::::::~:::~~~::~~~:+ooooo
-      oooooooooooooooooo:~~+::++:~~:::::~::::::+:+:+:::~~::::ooooo
-      oooooooooooooooooo~~~::::~~::~::++o+oooooooooooooo++::+ooooo
-      oooooooooooooooooo~~.~:~~::++ooooooooooooooooooooooooooooooo
-      ooooooooooooooooo+~:.:~~:+oooooooooooooooooooooooooooooooooo
-      oooooooooooooooooo:~:~:ooooooooooooooooooooooooooooooooooooo
-      oooooooooooooooooo+:~+oooooooooooooooooooooooooooooooooooooo
+
+                                             \e[38;5;188m:\e[38;5;181m~\e[38;5;188m:\e[38;5;225m+
+                                          \e[38;5;181m~\e[38;5;145m.\e[38;5;181m~\e[38;5;182m:\e[38;5;145m~\e[38;5;175m~\e[38;5;139m.\e[38;5;181m:\e[38;5;225m+
+                                            \e[38;5;231m+\e[38;5;181m:\e[38;5;139m..\e[38;5;138m.\e[38;5;145m~\e[38;5;138m.\e[38;5;175m~\e[38;5;188m:
+             \e[38;5;231m+\e[38;5;182m:\e[38;5;188m+\e[38;5;188m+\e[38;5;181m~\e[38;5;231m+\e[0m          \e[38;5;231m+\e[38;5;224m+\e[38;5;188m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;188m:\e[38;5;188m:\e[38;5;224m+\e[38;5;225m+\e[38;5;231m+\e[0m  \e[38;5;231m+\e[38;5;188m+\e[38;5;138m.\e[38;5;139m.\e[38;5;139m.\e[38;5;188m:\e[38;5;139m.\e[38;5;175m~\e[38;5;181m~
+            \e[38;5;224m+\e[38;5;182m:\e[38;5;175m~\e[38;5;225m+\e[38;5;182m:\e[38;5;139m.\e[38;5;139m~\e[0m       \e[38;5;225m+\e[38;5;188m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;218m~\e[38;5;218m:\e[38;5;218m~\e[38;5;175m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;181m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;224m+\e[38;5;182m:\e[38;5;181m~\e[38;5;175m~\e[38;5;181m~
+           \e[38;5;231m+\e[38;5;181m~\e[38;5;175m.\e[38;5;139m.\e[38;5;188m+\e[38;5;139m.\e[38;5;175m.\e[38;5;139m.\e[38;5;231m+\e[0m   \e[38;5;225m+\e[38;5;188m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;188m:\e[38;5;182m:\e[38;5;181m~\e[38;5;175m~\e[38;5;218m:\e[38;5;181m~\e[38;5;181m~\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;224m+\e[38;5;182m:\e[38;5;182m~\e[38;5;175m~\e[38;5;182m~\e[38;5;188m+
+           \e[38;5;188m+\e[38;5;181m~\e[38;5;139m.\e[38;5;139m.\e[38;5;139m.\e[38;5;138m.\e[38;5;175m.\e[38;5;138m \e[38;5;182m:\e[38;5;188m:\e[38;5;182m:\e[38;5;181m~\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;224m:\e[38;5;224m+\e[38;5;182m:\e[38;5;218m:\e[38;5;224m+\e[38;5;182m:\e[38;5;175m~\e[38;5;175m~\e[38;5;218m:\e[38;5;224m:\e[38;5;224m+\e[38;5;224m:\e[38;5;224m+\e[38;5;224m+\e[38;5;224m:\e[38;5;224m:\e[38;5;224m+\e[38;5;224m:\e[38;5;218m:\e[38;5;224m:\e[38;5;224m+\e[38;5;175m~\e[38;5;218m~\e[38;5;181m~\e[38;5;231m+
+            \e[38;5;181m:\e[38;5;182m~\e[38;5;139m.\e[38;5;175m~\e[38;5;181m~\e[38;5;175m.\e[38;5;175m~\e[38;5;175m~\e[38;5;139m~\e[38;5;181m~\e[38;5;182m:\e[38;5;218m:\e[38;5;224m:\e[38;5;225m+\e[38;5;224m:\e[38;5;182m:\e[38;5;175m~\e[38;5;139m.\e[38;5;139m.\e[38;5;182m:\e[38;5;224m:\e[38;5;181m~\e[38;5;218m:\e[38;5;225m+\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;218m:\e[38;5;218m:\e[38;5;224m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;218m:\e[38;5;175m.\e[38;5;218m:\e[38;5;182m:
+             \e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;182m~\e[38;5;224m:\e[38;5;225m+\e[38;5;225m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;218m:\e[38;5;175m.\e[38;5;139m.\e[38;5;139m.\e[38;5;139m.\e[38;5;139m~\e[38;5;175m.\e[38;5;175m.\e[38;5;139m.\e[38;5;182m:\e[38;5;182m:\e[38;5;139m.\e[38;5;175m.\e[38;5;175m.\e[38;5;175m.\e[38;5;175m.\e[38;5;175m.\e[38;5;181m~\e[38;5;182m:\e[38;5;224m+\e[38;5;225m+\e[38;5;225m+\e[38;5;224m:\e[38;5;175m.\e[38;5;218m:\e[38;5;181m~
+              \e[38;5;188m+\e[38;5;182m~\e[38;5;182m:\e[38;5;181m~\e[38;5;182m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m:\e[38;5;225m+\e[38;5;218m:\e[38;5;138m.\e[38;5;139m.\e[38;5;138m.\e[38;5;139m.\e[38;5;175m.\e[38;5;175m.\e[38;5;175m.\e[38;5;175m~\e[38;5;181m~\e[38;5;225m+\e[38;5;225m+\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;175m~\e[38;5;139m~\e[38;5;139m.\e[38;5;139m.\e[38;5;139m.\e[38;5;182m~\e[38;5;225m+\e[38;5;225m+\e[38;5;139m.\e[38;5;182m~\e[38;5;181m~\e[38;5;188m+
+                \e[38;5;188m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;182m~\e[38;5;139m~\e[38;5;139m.\e[38;5;139m.\e[38;5;175m.\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;181m:\e[38;5;181m~\e[38;5;139m.\e[38;5;139m.\e[38;5;96m \e[38;5;138m.\e[38;5;182m:\e[38;5;181m~\e[38;5;145m~\e[38;5;182m~\e[38;5;181m:\e[38;5;188m+\e[0m        \e[38;5;231m+\e[38;5;224m+\e[38;5;188m:
+                 \e[38;5;188m:\e[38;5;182m~\e[38;5;181m~\e[38;5;182m~\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;175m~\e[38;5;139m \e[38;5;139m~\e[38;5;181m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;188m:\e[38;5;224m+\e[38;5;231m+\e[38;5;231mo\e[38;5;231m+\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231m+\e[38;5;225m+\e[38;5;188m:\e[38;5;181m~\e[38;5;139m~\e[38;5;96m \e[38;5;139m.\e[38;5;182m:\e[38;5;182m:\e[38;5;188m:\e[38;5;182m~\e[38;5;181m~\e[38;5;182m~\e[38;5;182m:\e[38;5;188m+\e[38;5;224m+\e[38;5;224m+\e[38;5;224m+\e[38;5;188m:\e[38;5;182m:\e[38;5;181m~\e[38;5;182m~\e[38;5;181m~
+                  \e[38;5;181m~\e[38;5;182m~\e[38;5;139m.\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;224m:\e[38;5;138m.\e[38;5;139m.\e[38;5;181m~\e[38;5;181m~\e[38;5;188m:\e[38;5;231m+\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231m+\e[38;5;182m~\e[38;5;175m~\e[38;5;181m~\e[38;5;181m~\e[38;5;218m:\e[38;5;182m:\e[38;5;224m+\e[38;5;224m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;181m~\e[38;5;139m~\e[38;5;139m.\e[38;5;175m~\e[38;5;182m:\e[38;5;231m+
+                 \e[38;5;231m+\e[38;5;181m~\e[38;5;181m~\e[38;5;139m.\e[38;5;224m+\e[38;5;225m+\e[38;5;225m+\e[38;5;182m~\e[38;5;139m~\e[38;5;139m~\e[38;5;181m~\e[38;5;188m+\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;225m+\e[38;5;182m:\e[38;5;188m:\e[38;5;188m+\e[38;5;231m+\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;181m~\e[38;5;175m~\e[38;5;181m~\e[38;5;225m+\e[38;5;225m+\e[38;5;224m:\e[38;5;224m:\e[38;5;224m+\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;188m+
+                 \e[38;5;182m:\e[38;5;175m~\e[38;5;182m:\e[38;5;181m~\e[38;5;225m:\e[38;5;225m+\e[38;5;225m+\e[38;5;182m:\e[38;5;181m~\e[38;5;175m~\e[38;5;139m.\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;188m:\e[38;5;139m.\e[38;5;175m.\e[38;5;139m.\e[38;5;139m.\e[38;5;139m~\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;139m~\e[38;5;182m~\e[38;5;181m~\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;218m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;224m+\e[38;5;231m+
+               \e[38;5;188m:\e[38;5;181m~\e[38;5;181m~\e[38;5;224m+\e[38;5;188m:\e[38;5;182m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;181m~\e[38;5;139m.\e[38;5;145m~\e[38;5;188m:\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231m+\e[38;5;181m~\e[38;5;175m.\e[38;5;175m~\e[38;5;175m.\e[38;5;182m:\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231mo\e[38;5;231m+\e[38;5;188m:\e[38;5;139m.\e[38;5;182m:\e[38;5;181m~\e[38;5;225m+\e[38;5;225m+\e[38;5;182m:\e[38;5;175m~\e[38;5;218m~\e[38;5;182m~\e[38;5;188m:\e[38;5;231m+
+       \e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;145m~\e[38;5;139m~\e[38;5;181m~\e[38;5;182m:\e[38;5;224m+\e[38;5;182m:\e[38;5;182m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m:\e[38;5;225m+\e[38;5;225m+\e[38;5;224m+\e[38;5;175m~\e[38;5;181m~\e[38;5;188m:\e[38;5;188m+\e[38;5;194m+\e[38;5;231m+\e[38;5;231mo\e[38;5;231m+\e[38;5;231mo\e[38;5;231m+\e[38;5;188m+\e[38;5;188m+\e[38;5;188m+\e[38;5;231mo\e[38;5;231m+\e[38;5;231mo\e[38;5;188m+\e[38;5;188m+\e[38;5;188m:\e[38;5;181m~\e[38;5;182m~\e[38;5;175m~\e[38;5;218m:\e[38;5;225m:\e[38;5;224m+\e[38;5;139m.\e[38;5;218m:\e[38;5;182m~\e[38;5;188m:
+       \e[38;5;188m:\e[38;5;181m~\e[38;5;175m.\e[38;5;175m.\e[38;5;139m.\e[38;5;139m.\e[38;5;139m.\e[38;5;139m.\e[38;5;182m~\e[38;5;182m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;218m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m+\e[38;5;218m:\e[38;5;175m~\e[38;5;181m~\e[38;5;182m:\e[38;5;188m+\e[38;5;231m+\e[38;5;231m+\e[38;5;231m+\e[38;5;231m+\e[38;5;231m+\e[38;5;231m+\e[38;5;188m+\e[38;5;188m+\e[38;5;188m+\e[38;5;188m:\e[38;5;188m:\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;181m~\e[38;5;175m~\e[38;5;182m:\e[38;5;182m~\e[38;5;139m~\e[38;5;182m~\e[38;5;138m.\e[38;5;218m:\e[38;5;181m~\e[38;5;188m+
+          \e[38;5;188m+\e[38;5;175m~\e[38;5;218m:\e[38;5;175m~\e[38;5;182m~\e[38;5;175m~\e[38;5;175m.\e[38;5;175m~\e[38;5;175m.\e[38;5;175m~\e[38;5;181m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;225m:\e[38;5;225m+\e[38;5;224m+\e[38;5;182m:\e[38;5;181m~\e[38;5;181m:\e[38;5;181m~\e[38;5;181m~\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;175m~\e[38;5;96m \e[38;5;96m \e[38;5;138m.\e[38;5;139m.\e[38;5;139m~\e[38;5;139m.\e[38;5;139m~\e[38;5;139m.\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:
+          \e[38;5;181m~\e[38;5;218m~\e[38;5;182m~\e[38;5;182m:\e[38;5;145m~\e[38;5;138m.\e[38;5;175m.\e[38;5;139m~\e[38;5;181m~\e[38;5;188m:\e[38;5;224m+\e[38;5;188m+\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;225m:\e[38;5;218m:\e[38;5;182m:\e[38;5;182m:\e[38;5;175m~\e[38;5;138m \e[38;5;132m \e[38;5;96m \e[38;5;139m.\e[38;5;175m~\e[38;5;181m~\e[38;5;181m~\e[38;5;181m:\e[38;5;181m~\e[38;5;181m~\e[38;5;181m~\e[38;5;145m~\e[38;5;139m.\e[38;5;138m \e[38;5;139m~\e[38;5;181m~\e[38;5;182m~\e[38;5;225m+\e[38;5;225m+\e[38;5;224m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m~\e[38;5;188m:
+         \e[38;5;231m+\e[38;5;181m~\e[38;5;182m~\e[38;5;188m:\e[0m \e[38;5;145m~\e[38;5;139m.\e[38;5;181m~\e[38;5;231m+\e[0m     \e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;181m~\e[38;5;175m~\e[38;5;181m~\e[38;5;175m~\e[38;5;139m~\e[38;5;139m.\e[38;5;181m~\e[38;5;139m.\e[38;5;138m.\e[38;5;139m.\e[38;5;139m.\e[38;5;175m~\e[38;5;175m~\e[38;5;175m.\e[38;5;139m~\e[38;5;139m.\e[38;5;139m.\e[38;5;175m~\e[38;5;218m:\e[38;5;225m+\e[38;5;225m+\e[38;5;225m:\e[38;5;218m:\e[38;5;182m~\e[38;5;175m~\e[38;5;182m~\e[38;5;182m:\e[38;5;188m:\e[38;5;182m:\e[38;5;175m~\e[38;5;182m:
+          \e[38;5;188m:\e[38;5;188m+\e[0m  \e[38;5;188m:\e[38;5;188m:\e[0m        \e[38;5;181m~\e[38;5;182m:\e[38;5;175m~\e[38;5;224m+\e[38;5;218m:\e[38;5;218m:\e[38;5;224m:\e[38;5;224m:\e[38;5;225m+\e[38;5;225m+\e[38;5;218m:\e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;181m~\e[38;5;181m~\e[38;5;182m~\e[38;5;182m:\e[38;5;218m:\e[38;5;224m+\e[38;5;224m:\e[38;5;218m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;175m~\e[38;5;181m~\e[38;5;224m+\e[38;5;224m:\e[38;5;182m:\e[38;5;225m+\e[38;5;182m:\e[38;5;175m~\e[38;5;182m~
+                        \e[38;5;188m:\e[38;5;182m~\e[38;5;175m.\e[38;5;225m:\e[38;5;218m:\e[38;5;181m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;218m:\e[38;5;218m:\e[38;5;182m~\e[38;5;175m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;181m~\e[38;5;188m:\e[38;5;225m+\e[38;5;182m:\e[38;5;175m~\e[38;5;181m:\e[38;5;231m+
+                        \e[38;5;188m:\e[38;5;182m~\e[38;5;175m~\e[38;5;225m+\e[38;5;225m+\e[38;5;182m:\e[38;5;181m~\e[38;5;182m~\e[38;5;182m~\e[38;5;175m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;218m~\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m~\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m~\e[38;5;218m~\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;139m~\e[38;5;182m~\e[38;5;181m:\e[38;5;231m+
+                        \e[38;5;182m:\e[38;5;182m~\e[38;5;181m~\e[38;5;225m+\e[38;5;182m:\e[38;5;188m:\e[38;5;225m+\e[38;5;224m+\e[38;5;182m:\e[38;5;181m~\e[38;5;182m~\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;218m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;188m:\e[38;5;188m:\e[38;5;188m+\e[38;5;188m:\e[38;5;188m+\e[38;5;188m:\e[38;5;188m+\e[38;5;188m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m~\e[38;5;182m:\e[38;5;218m:\e[38;5;182m:\e[38;5;182m:
+                        \e[38;5;181m~\e[38;5;182m~\e[38;5;181m~\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m:\e[38;5;182m~\e[38;5;218m~\e[38;5;218m:\e[38;5;182m:\e[38;5;182m~\e[38;5;182m:\e[38;5;188m:\e[38;5;224m+\e[38;5;231m+\e[0m \e[38;5;231m+\e[0m              \e[38;5;231m+\e[38;5;224m+\e[38;5;188m:\e[38;5;188m:\e[38;5;224m+
+                        \e[38;5;181m~\e[38;5;182m~\e[38;5;138m.\e[38;5;181m~\e[38;5;182m:\e[38;5;218m~\e[38;5;218m~\e[38;5;182m:\e[38;5;182m:\e[38;5;188m+\e[38;5;231m+
+                       \e[38;5;231m+\e[38;5;181m~\e[38;5;182m:\e[38;5;139m.\e[38;5;182m:\e[38;5;218m~\e[38;5;182m~\e[38;5;188m:\e[38;5;231m+
+                        \e[38;5;182m:\e[38;5;182m~\e[38;5;218m:\e[38;5;182m~\e[38;5;188m:
+                        \e[38;5;231m+\e[38;5;182m:\e[38;5;182m~\e[38;5;188m+
+      \e[0m
     ASCII
 
     if install_complete.exist?
+      puts "✨ \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m are already installed ✨"
       puts
-      puts "✨ StimulusReflex and CableReady are already installed ✨"
+      puts "To restart the installation process, run: \e[38;5;231mrails stimulus_reflex:install:restart\e[0m"
       puts
-      puts "To restart the installation process, run: rails stimulus_reflex:install:restart"
-      puts
-      puts "To get started, check out https://docs.stimulusreflex.com/hello-world/quickstart"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
+      puts "To get started, check out \e[4;97mhttps://docs.stimulusreflex.com/hello-world/quickstart\e[0m"
+      puts "or get help on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m. \e[38;5;196mWe are here for you.\e[0m 💙"
       puts
       exit
     end
@@ -99,27 +99,29 @@ namespace :stimulus_reflex do
     cached_entrypoint = Rails.root.join("tmp/stimulus_reflex_installer/entrypoint")
     if cached_entrypoint.exist?
       entrypoint = File.read(cached_entrypoint)
+      puts "✨ Resuming \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m installation ✨"
       puts
-      puts "✨ Resuming StimulusReflex and CableReady installation ✨"
+      puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
+      puts "or get help on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m. \e[38;5;196mWe are here for you.\e[0m 💙"
       puts
-      puts "If you have any setup issues, please consult https://docs.stimulusreflex.com/hello-world/setup"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
-      puts
-      puts "Resuming installation into #{entrypoint}"
-      puts "Run `rails stimulus_reflex:install:restart` to restart the installation process"
+      puts "Resuming installation into \e[1m#{entrypoint}\e[22m"
+      puts "Run \e[1;94mrails stimulus_reflex:install:restart\e[0m to restart the installation process"
       puts
     else
       entrypoint = [
         "app/javascript",
         "app/frontend"
       ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
+      puts "✨ Installing \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m ✨"
       puts
-      puts "✨ Installing StimulusReflex and CableReady ✨"
+      puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
+      puts "or get help on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m. \e[38;5;196mWe are here for you.\e[0m 💙"
+      if Rails.root.join(".git").exist?
+        puts
+        puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
+      end
       puts
-      puts "If you have any setup issues, please consult https://docs.stimulusreflex.com/hello-world/setup"
-      puts "or get help on Discord: https://discord.gg/stimulus-reflex. We are here for you. 💙"
-      puts
-      puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
+      puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
       puts "Press enter to accept this, or type a different path."
       print "> "
       input = $stdin.gets.chomp
@@ -155,13 +157,13 @@ namespace :stimulus_reflex do
     # verify their bundler before starting, unless they explicitly specified on CLI
     if footgun != ARGV[0]
       puts
-      puts "It looks like you're using #{footgun} as your bundler. Is that correct? (Y/n)"
+      puts "It looks like you're using \e[1m#{footgun}\e[22m as your bundler. Is that correct? (Y/n)"
       print "> "
       input = $stdin.gets.chomp
       if input.downcase == "n"
         puts
         puts "StimulusReflex installation supports: esbuild, webpacker, vite, shakapacker and importmap."
-        puts "Please run `rails stimulus_reflex:install [bundler]` to install StimulusReflex and CableReady."
+        puts "Please run \e[1;94mrails stimulus_reflex:install [bundler]\e[0m to install StimulusReflex and CableReady."
         exit
       end
     end
@@ -178,11 +180,11 @@ namespace :stimulus_reflex do
     system("bundle") if File.read("tmp/stimulus_reflex_installer/gemfile") != gemfile_hash
 
     puts
-    puts "🎉 StimulusReflex and CableReady have been successfully installed! 🎉"
+    puts "🎉 \e[1;92mStimulusReflex and CableReady have been successfully installed!\e[22m 🎉"
     puts
-    puts "👉 https://docs.stimulusreflex.com/hello-world/quickstart"
+    puts "👉 \e[4;97mhttps://docs.stimulusreflex.com/hello-world/quickstart\e[0m"
     puts
-    puts "Join over 2000 StimulusReflex developers on Discord: https://discord.gg/stimulus-reflex"
+    puts "Join over 2000 StimulusReflex developers on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m"
     puts
 
     backups = File.readlines("tmp/stimulus_reflex_installer/backups").map(&:chomp)
@@ -196,10 +198,16 @@ namespace :stimulus_reflex do
       puts
     end
 
+    if Rails.root.join(".git").exist?
+      system "git diff > tmp/stimulus_reflex_installer.diff"
+      puts "A diff of all changes has been saved to \e[1mtmp/stimulus_reflex_installer.diff\e[22m."
+      puts
+    end
+
     if Rails.root.join("app/reflexes/example_reflex.rb").exist?
       launch = Rails.root.join("bin/dev").exist? ? "bin/dev" : "rails s"
-      puts "Launch `#{launch}` to access your example Reflex at ⚡ http://localhost:3000/example ⚡"
-      puts "Once you're finished with the example, you can remove it with `rails destroy stimulus_reflex example`"
+      puts "Launch \e[1;94m#{launch}\e[0m to access your example Reflex at ⚡ \e[4;97mhttp://localhost:3000/example\e[0m ⚡"
+      puts "Once you're finished with the example, you can remove it with \e[1;94mrails destroy stimulus_reflex example\e[0m"
       puts
     end
 
@@ -242,7 +250,7 @@ namespace :stimulus_reflex do
     task :step do
       def warning
         puts "❌ You must specify a step to re-run. Valid steps are: #{STEPS.keys.join(", ")}"
-        puts "Example: rails stimulus_reflex:install:step initializers"
+        puts "Example: \e[1;94mrails stimulus_reflex:install:step initializers\e[0m"
       end
 
       warning if ARGV.empty?

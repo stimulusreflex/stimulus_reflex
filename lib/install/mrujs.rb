@@ -73,27 +73,18 @@ if proceed
   templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/config", File.join(File.dirname(__FILE__)))
   mrujs_src = templates_path + "/mrujs.js.tt"
 
-  # create entrypoint/config/mrujs.js
+  # create entrypoint/config/mrujs.js if necessary
   copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)
 
   # import mrujs config in entrypoint/config/index.js
   index_path = config_path.join("index.js")
-  index = File.read(pack_path)
+  index = File.read(index_path)
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
   mrujs_pattern = /import ['"].\/mrujs['"]/
-  mrujs_commented_pattern = /\s*\/\/\s*#{mrujs_pattern}/
-  mrujs_import = "\nimport '.\/mrujs'\n"
+  mrujs_import = "import '.\/mrujs'\n"
 
-  if index.match?(mrujs_pattern)
-    if index.match?(mrujs_commented_pattern)
-      # uncomment_lines only works with Ruby comments 🙄
-      lines = File.readlines(index_path)
-      matches = lines.select { |line| line =~ mrujs_commented_pattern }
-      lines[lines.index(matches.last).to_i] = mrujs_import
-      File.write(index_path, lines.join)
-    end
-  else
-    append_file(index_path, mrujs_import)
+  if !index.match?(mrujs_pattern)
+    append_file(index_path, mrujs_import, verbose: false)
   end
   say "✅ mrujs imported in #{friendly_index_path}"
 

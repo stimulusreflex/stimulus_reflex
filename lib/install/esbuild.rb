@@ -34,13 +34,13 @@ if esbuild_path.exist?
   else
     copy_file(esbuild_path, "#{esbuild_path}.bak", verbose: false)
     remove_file(esbuild_path, verbose: false)
-    copy_file(esbuild_src, esbuild_path, verbose: false)
+    template(esbuild_src, esbuild_path, verbose: false, entrypoint: entrypoint)
     append_file("tmp/stimulus_reflex_installer/backups", "esbuild.config.js\n", verbose: false)
     say "✅ esbuild.config.js copied to app root"
     say "❕ original esbuild.config.js renamed esbuild.config.js.bak", :green
   end
 else
-  copy_file(esbuild_src, esbuild_path)
+  template(esbuild_src, esbuild_path, entrypoint: entrypoint)
 end
 
 controllers_path = Rails.root.join(entrypoint, "controllers")

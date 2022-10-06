@@ -20,7 +20,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
         "app/javascript",
         "app/frontend"
       ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
-      puts "Where do JavaScript files live in your app? Our best guess is: #{entrypoint} 🤔"
+      puts "Where do JavaScript files live in your app? Our best guess is: \e[1#{entrypoint}\e[22m 🤔"
       puts "Press enter to accept this, or type a different path."
       print "> "
       input = Rails.env.test? ? "tmp/app/javascript" : $stdin.gets.chomp

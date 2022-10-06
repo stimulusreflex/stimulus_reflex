@@ -6,7 +6,7 @@ require('esbuild')
     entryPoints: ['application.js'],
     bundle: true,
     outdir: path.join(process.cwd(), 'app/assets/builds'),
-    absWorkingDir: path.join(process.cwd(), 'app/javascript'),
+    absWorkingDir: path.join(process.cwd(), '<%= config[:entrypoint] %>'),
     watch: process.argv.includes('--watch'),
     plugins: [rails()]
   })
