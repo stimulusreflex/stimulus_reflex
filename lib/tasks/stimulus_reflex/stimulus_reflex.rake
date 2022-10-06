@@ -14,15 +14,17 @@ STEPS = {
   "spring" => "Launch spring, ruiner of days, into the sun",
   "mrujs" => "Swap out UJS for mrujs",
   "broadcaster" => "Make CableReady available to channels, controllers, jobs and models",
-  "yarn" => "Resolve npm dependency changes"
+  "yarn" => "Resolve npm dependency changes",
+  "bundle" => "Resolve gem dependency changes",
+  "redis" => "Use Redis for session storage and caching"
 }
 
 FOOTGUNS = {
-  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn"],
-  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn"],
+  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
   "vite" => [],
   "shakapacker" => [],
-  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs"]
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "bundle", "redis"]
 }
 
 def run_install_template(template, force: false)
@@ -39,17 +41,12 @@ def run_install_template(template, force: false)
   puts "👍 #{STEPS[template]}" unless Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
 end
 
-# store a hash of the contents of Gemfile, so we know if we need to run bundle later
-def gemfile_hash
-  Digest::MD5.hexdigest(File.read(Rails.root.join("Gemfile")))
-end
-
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
-    puts <<~ASCII
+    puts <<~ANSI
 
                                              \e[38;5;188m:\e[38;5;181m~\e[38;5;188m:\e[38;5;225m+
                                           \e[38;5;181m~\e[38;5;145m.\e[38;5;181m~\e[38;5;182m:\e[38;5;145m~\e[38;5;175m~\e[38;5;139m.\e[38;5;181m:\e[38;5;225m+
@@ -82,7 +79,7 @@ namespace :stimulus_reflex do
                         \e[38;5;182m:\e[38;5;182m~\e[38;5;218m:\e[38;5;182m~\e[38;5;188m:
                         \e[38;5;231m+\e[38;5;182m:\e[38;5;182m~\e[38;5;188m+
       \e[0m
-    ASCII
+    ANSI
 
     if install_complete.exist?
       puts "✨ \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m are already installed ✨"
@@ -130,9 +127,6 @@ namespace :stimulus_reflex do
       File.write(cached_entrypoint, entrypoint)
     end
 
-    # capture Gemfile signature to ensure that we don't run slow bundle unless required
-    File.write("tmp/stimulus_reflex_installer/gemfile", gemfile_hash)
-
     # make sure we have a valid build tool specified, or proceed to automatic detection
     footgun = ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(ARGV[0]) ? ARGV[0] : nil
 
@@ -176,9 +170,6 @@ namespace :stimulus_reflex do
       run_install_template(template)
     end
 
-    # compare current Gemfile signature to cached signature to determine if we need to run bundle
-    system("bundle") if File.read("tmp/stimulus_reflex_installer/gemfile") != gemfile_hash
-
     puts
     puts "🎉 \e[1;92mStimulusReflex and CableReady have been successfully installed!\e[22m 🎉"
     puts
@@ -200,7 +191,7 @@ namespace :stimulus_reflex do
 
     if Rails.root.join(".git").exist?
       system "git diff > tmp/stimulus_reflex_installer.diff"
-      puts "A diff of all changes has been saved to \e[1mtmp/stimulus_reflex_installer.diff\e[22m."
+      puts "A diff of all changes has been saved to \e[1mtmp/stimulus_reflex_installer.diff\e[22m"
       puts
     end
 

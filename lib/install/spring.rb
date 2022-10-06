@@ -14,8 +14,9 @@ if proceed
   if (index = lines.index { |line| line =~ spring_pattern })
     say "💡 Can't kill spring process without killing install. Please run: pkill -f spring (or restart your terminal)"
 
-    lines[index] = "# #{lines[index]}"
-    File.write(gemfile, lines.join)
+    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
+    FileUtils.touch(remove_gem_list)
+    append_file(remove_gem_list, "spring\n", verbose: false)
     say "✅ Removed spring from Gemfile"
 
     if Rails.root.join("bin/spring").exist?
@@ -35,9 +36,10 @@ if proceed
   end
 
   if lines.index { |line| line =~ spring_watcher_pattern }
-    lines[index] = "# #{lines[index]}"
-    File.write(gemfile, lines.join)
-    say "✅ Removed spring-watcher-pattern from Gemfile"
+    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
+    FileUtils.touch(remove_gem_list)
+    append_file(remove_gem_list, "spring-watcher-listen\n", verbose: false)
+    say "✅ Removed spring-watcher-listen from Gemfile"
   end
 end
 

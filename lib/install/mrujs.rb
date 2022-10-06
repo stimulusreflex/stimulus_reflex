@@ -104,8 +104,9 @@ if proceed
 
   lines = File.readlines(gemfile)
   if (index = lines.index { |line| line =~ turbolinks_pattern })
-    lines[index] = "# #{lines[index]}"
-    File.write(gemfile, lines.join)
+    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
+    FileUtils.touch(remove_gem_list)
+    append_file(remove_gem_list, "turbolinks\n", verbose: false)
     say "✅ Removed turbolinks from Gemfile, since it's incompatible with mrujs"
   else
     say "✅ turbolinks is not present in Gemfile"

@@ -95,18 +95,9 @@ else
 end
 
 # ensure webpacker 5.4.3 is installed in the Gemfile
-gemfile = Rails.root.join("Gemfile")
-lines = File.readlines(gemfile)
-index = lines.index { |line| line =~ /gem ['"]webpacker['"]/ }
-if index
-  if !lines[index].match(/^[^#]*gem ['"]webpacker['"].*5.4.3['"]/)
-    lines[index] = "gem \"webpacker\", \"~> 5.4.3\"\n"
-    File.write(gemfile, lines.join)
-  end
-else
-  append_file gemfile, "\n# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker", verbose: false
-  gem "webpacker", "~> 5.4.3"
-end
-say "✅ webpacker gem is installed and up to date"
+add_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/add_gem_list")
+FileUtils.touch(add_gem_list)
+append_file(add_gem_list, "webpacker@5.4.3\n", verbose: false)
+say "✅ Enqueued webpacker 5.4.3 to be added to the Gemfile"
 
 create_file "tmp/stimulus_reflex_installer/webpacker", verbose: false

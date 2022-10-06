@@ -37,7 +37,7 @@ if esbuild_path.exist?
     template(esbuild_src, esbuild_path, verbose: false, entrypoint: entrypoint)
     append_file("tmp/stimulus_reflex_installer/backups", "esbuild.config.js\n", verbose: false)
     say "✅ esbuild.config.js copied to app root"
-    say "❕ original esbuild.config.js renamed esbuild.config.js.bak", :green
+    say "❕ original esbuild.config.js renamed esbuild.config.js.bak", :yellow
   end
 else
   template(esbuild_src, esbuild_path, entrypoint: entrypoint)
@@ -82,7 +82,7 @@ if index_path.exist?
     copy_file(index_src, index_path, verbose: false)
     append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_index_path}\n", verbose: false)
     say "#{friendly_index_path} has been created"
-    say "❕ original index.js renamed index.js.bak", :green
+    say "❕ original index.js renamed index.js.bak", :yellow
   end
 else
   copy_file(index_src, index_path)
