@@ -103,7 +103,7 @@ if proceed
   turbolinks_pattern = /^[^#]*gem ["']turbolinks["']/
 
   lines = File.readlines(gemfile)
-  if (index = lines.index { |line| line =~ turbolinks_pattern })
+  if lines.index { |line| line =~ turbolinks_pattern }
     remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
     FileUtils.touch(remove_gem_list)
     append_file(remove_gem_list, "turbolinks\n", verbose: false)

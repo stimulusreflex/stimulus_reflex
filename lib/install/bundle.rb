@@ -19,7 +19,7 @@ if add.present? || remove.present?
   remove.each do |name|
     index = lines.index { |line| line =~ /gem ['"]#{name}['"]/ }
     if index
-      if lines[index].match(/^[^#]*gem ['"]#{name}['"]/)
+      if /^[^#]*gem ['"]#{name}['"]/.match?(lines[index])
         lines[index] = "# #{lines[index]}"
       end
       say "✅ #{name} gem has been disabled"
@@ -32,21 +32,11 @@ if add.present? || remove.present?
 
     index = lines.index { |line| line =~ /gem ['"]#{name}['"]/ }
     if index
-      if version == "?"
-        if !lines[index].match(/^[^#]*gem ['"]#{name}['"]/)
-          lines[index] = "gem \"#{name}\"\n"
-        end
-      else
-        if !lines[index].match(/^[^#]*gem ['"]#{name}['"].*#{version}['"]/)
-          lines[index] = "gem \"#{name}\", \"#{version}\"\n"
-        end
+      if !lines[index].match(/^[^#]*gem ['"]#{name}['"].*#{version}['"]/)
+        lines[index] = "gem \"#{name}\", \"#{version}\"\n"
       end
     else
-      if version == "?"
-        lines << "gem \"#{name}\"\n"
-      else
-        lines << "gem \"#{name}\", \"#{version}\"\n"
-      end
+      lines << "gem \"#{name}\", \"#{version}\"\n"
     end
     say "✅ #{name} gem has been installed"
   end
