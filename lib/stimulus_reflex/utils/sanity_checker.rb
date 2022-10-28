@@ -5,6 +5,7 @@ class StimulusReflex::SanityChecker
 
   class << self
     def check!
+      return
       return if ENV["SKIP_SANITY_CHECK"]
       return if StimulusReflex.config.on_failed_sanity_checks == :ignore
       return if called_by_installer?
