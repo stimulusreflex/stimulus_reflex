@@ -94,7 +94,17 @@ controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/
 
 if pack.match?(controllers_pattern)
   if pack.match?(controllers_commented_pattern)
-    if !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
+
+    options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
+    options = YAML.safe_load(File.read(options_path))
+    
+    if options.key? "uncomment"
+      proceed = options["uncomment"]
+    else
+      proceed = !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
+    end
+
+    if proceed
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ controllers_commented_pattern }

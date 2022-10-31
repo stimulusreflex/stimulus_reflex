@@ -44,7 +44,23 @@ end
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
+    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer"))
+
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
+
+    # make sure we have a valid build tool specified, or proceed to automatic detection
+    footgun = ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(ARGV[0]) ? ARGV.shift : nil
+
+    options = {}
+    ARGV.each do |arg|
+      kv = arg.split("=")
+      if kv.length == 2
+        kv[1] = kv[1] == "true" ? true : kv[1] == "false" ? false : kv[1]
+        options[kv[0]] = kv[1]
+      end
+    end
+    options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
+    File.write(options_path, options.to_yaml)
 
     puts <<~ANSI
 
@@ -105,10 +121,6 @@ namespace :stimulus_reflex do
       puts "Run \e[1;94mrails stimulus_reflex:install:restart\e[0m to restart the installation process"
       puts
     else
-      entrypoint = [
-        "app/javascript",
-        "app/frontend"
-      ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
       puts "✨ Installing \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m ✨"
       puts
       puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
@@ -117,39 +129,45 @@ namespace :stimulus_reflex do
         puts
         puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
       end
-      puts
-      puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
-      puts "Press enter to accept this, or type a different path."
-      print "> "
-      input = $stdin.gets.chomp
-      entrypoint = input unless input.blank?
-      FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer"))
+      
+      if options.key? "entrypoint"
+        entrypoint = options["entrypoint"]
+      else
+        entrypoint = [
+          "app/javascript",
+          "app/frontend"
+        ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
+
+        puts
+        puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
+        puts "Press enter to accept this, or type a different path."
+        print "> "
+        input = $stdin.gets.chomp
+        entrypoint = input unless input.blank?
+      end
       File.write(cached_entrypoint, entrypoint)
     end
 
-    # make sure we have a valid build tool specified, or proceed to automatic detection
-    footgun = ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(ARGV[0]) ? ARGV[0] : nil
-
-    # auto-detect build tool based on existing packages and configuration
-    if Rails.root.join("config/importmap.rb").exist?
-      footgun = "importmap"
-    elsif Rails.root.join("package.json").exist?
-      package_json = File.read(Rails.root.join("package.json"))
-      footgun = "webpacker" if package_json.include?('"@rails/webpacker":')
-      footgun = "esbuild" if package_json.include?('"esbuild":')
-      footgun = "vite" if package_json.include?('"vite":')
-      footgun = "shakapacker" if package_json.include?('"shakapacker":')
-      if !footgun
+    # verify their bundler before starting, unless they explicitly specified on CLI
+    if !footgun
+      # auto-detect build tool based on existing packages and configuration
+      if Rails.root.join("config/importmap.rb").exist?
+        footgun = "importmap"
+      elsif Rails.root.join("package.json").exist?
+        package_json = File.read(Rails.root.join("package.json"))
+        footgun = "webpacker" if package_json.include?('"@rails/webpacker":')
+        footgun = "esbuild" if package_json.include?('"esbuild":')
+        footgun = "vite" if package_json.include?('"vite":')
+        footgun = "shakapacker" if package_json.include?('"shakapacker":')
+        if !footgun
+          puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
+          exit
+        end
+      else
         puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
         exit
       end
-    else
-      puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
-      exit
-    end
 
-    # verify their bundler before starting, unless they explicitly specified on CLI
-    if footgun != ARGV[0]
       puts
       puts "It looks like you're using \e[1m#{footgun}\e[22m as your bundler. Is that correct? (Y/n)"
       print "> "
@@ -203,38 +221,15 @@ namespace :stimulus_reflex do
     end
 
     FileUtils.touch(install_complete)
+    exit
   end
 
   namespace :install do
-    desc "Install StimulusReflex and CableReady for webpacker 5.4"
-    task :webpacker do
-      system "rails stimulus_reflex:install webpacker"
-    end
-
-    desc "Install StimulusReflex and CableReady for esbuild"
-    task :esbuild do
-      system "rails stimulus_reflex:install esbuild"
-    end
-
-    desc "Install StimulusReflex and CableReady for vite"
-    task :vite do
-      system "rails stimulus_reflex:install vite"
-    end
-
-    desc "Install StimulusReflex and CableReady for shakapacker"
-    task :shakapacker do
-      system "rails stimulus_reflex:install shakapacker"
-    end
-
-    desc "Install StimulusReflex and CableReady for importmap-rails"
-    task :importmap do
-      system "rails stimulus_reflex:install importmap"
-    end
-
     desc "Restart StimulusReflex and CableReady installation"
     task :restart do
       FileUtils.rm_rf Rails.root.join("tmp/stimulus_reflex_installer")
-      system "rails stimulus_reflex:install"
+      system "rails stimulus_reflex:install #{ARGV.join(" ")}"
+      exit
     end
 
     desc "Re-run a specific StimulusReflex install step"

@@ -23,7 +23,14 @@ end
 
 proceed = true
 if !File.exist?(mrujs_path)
-  proceed = !no?("Would you like to install and enable mrujs? It's a modern, drop-in replacement for ujs-rails \n... and it just happens to integrate beautifully with CableReady. (Y/n)")
+  options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
+  options = YAML.safe_load(File.read(options_path))
+  
+  if options.key? "mrujs"
+    proceed = options["mrujs"]
+  else
+    proceed = !no?("Would you like to install and enable mrujs? It's a modern, drop-in replacement for ujs-rails \n... and it just happens to integrate beautifully with CableReady. (Y/n)")
+  end
 end
 
 if proceed

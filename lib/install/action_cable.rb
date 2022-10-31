@@ -81,14 +81,24 @@ friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 
 # import Action Cable channels into application pack
 pack = File.read(pack_path)
-channels_pattern = /import ['"]channels['"]/
+channels_pattern = /import ['"](\.\/)?channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
 prefix = footgun == "esbuild" ? ".\/" : ""
 channel_import = "import \"#{prefix}channels\"\n"
 
 if pack.match?(channels_pattern)
   if pack.match?(channels_commented_pattern)
-    if !no?("Action Cable seems to be commented out in your application.js. Do you want to uncomment it? (Y/n)")
+
+    options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
+    options = YAML.safe_load(File.read(options_path))
+    
+    if options.key? "uncomment"
+      proceed = options["uncomment"]
+    else
+      proceed = !no?("Action Cable seems to be commented out in your application.js. Do you want to uncomment it? (Y/n)")
+    end
+
+    if proceed
       # uncomment_lines only works with Ruby comments 🙄
       lines = File.readlines(pack_path)
       matches = lines.select { |line| line =~ channels_commented_pattern }
