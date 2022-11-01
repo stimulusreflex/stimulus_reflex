@@ -43,8 +43,7 @@ if add.present? || remove.present?
 
   File.write(gemfile, lines.join)
 
-  system "bundle" if hash != gemfile_hash
-
+  system("bash -c 'bundle'") if hash != gemfile_hash
 end
 
 create_file "tmp/stimulus_reflex_installer/bundle", verbose: false
