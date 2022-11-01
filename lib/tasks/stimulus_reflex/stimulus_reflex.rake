@@ -55,7 +55,11 @@ namespace :stimulus_reflex do
     ARGV.each do |arg|
       kv = arg.split("=")
       if kv.length == 2
-        kv[1] = kv[1] == "true" ? true : kv[1] == "false" ? false : kv[1]
+        kv[1] = if kv[1] == "true"
+          true
+        else
+          kv[1] == "false" ? false : kv[1]
+        end
         options[kv[0]] = kv[1]
       end
     end
@@ -129,7 +133,7 @@ namespace :stimulus_reflex do
         puts
         puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
       end
-      
+
       if options.key? "entrypoint"
         entrypoint = options["entrypoint"]
       else

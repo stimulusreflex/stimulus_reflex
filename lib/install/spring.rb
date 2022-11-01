@@ -7,10 +7,10 @@ if lines.index { |line| line =~ spring_pattern }
   options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
   options = YAML.safe_load(File.read(options_path))
 
-  if options.key? "spring"
-    proceed = options["spring"]
+  proceed = if options.key? "spring"
+    options["spring"]
   else
-    proceed = !no?("Would you like to disable the spring gem? \nIt's been removed from Rails 7, and is the frequent culprit behind countless mystery bugs. (Y/n)")
+    !no?("Would you like to disable the spring gem? \nIt's been removed from Rails 7, and is the frequent culprit behind countless mystery bugs. (Y/n)")
   end
 end
 

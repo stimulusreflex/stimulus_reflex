@@ -97,11 +97,11 @@ if pack.match?(controllers_pattern)
 
     options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
     options = YAML.safe_load(File.read(options_path))
-    
-    if options.key? "uncomment"
-      proceed = options["uncomment"]
+
+    proceed = if options.key? "uncomment"
+      options["uncomment"]
     else
-      proceed = !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
+      !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
     end
 
     if proceed
