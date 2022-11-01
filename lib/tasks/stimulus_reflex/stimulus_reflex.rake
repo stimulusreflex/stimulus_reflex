@@ -45,22 +45,25 @@ namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
     FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer"))
-
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
-    # make sure we have a valid build tool specified, or proceed to automatic detection
-    footgun = ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(ARGV[0]) ? ARGV.shift : nil
-
+    footgun = nil
     options = {}
+
     ARGV.each do |arg|
-      kv = arg.split("=")
-      if kv.length == 2
-        kv[1] = if kv[1] == "true"
-          true
-        else
-          kv[1] == "false" ? false : kv[1]
+      # make sure we have a valid build tool specified, or proceed to automatic detection
+      if ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(arg)
+        footgun = arg
+      else
+        kv = arg.split("=")
+        if kv.length == 2
+          kv[1] = if kv[1] == "true"
+            true
+          else
+            kv[1] == "false" ? false : kv[1]
+          end
+          options[kv[0]] = kv[1]
         end
-        options[kv[0]] = kv[1]
       end
     end
     options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
