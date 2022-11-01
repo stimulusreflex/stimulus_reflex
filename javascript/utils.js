@@ -1,5 +1,6 @@
 import Schema from './schema'
 import Deprecate from './deprecate'
+import Debug from './debug'
 
 // uuid4 function taken from stackoverflow
 // https://stackoverflow.com/a/2117523/554903
