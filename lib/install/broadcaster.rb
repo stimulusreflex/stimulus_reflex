@@ -1,4 +1,4 @@
-# include CableReady::Broadcaster in hannels, controllers, jobs, models
+# include CableReady::Broadcaster in channels, controllers, jobs, models
 
 channel_path = "app/channels/application_cable/channel.rb"
 if Rails.root.join(channel_path).exist?

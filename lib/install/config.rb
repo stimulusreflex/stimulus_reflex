@@ -31,7 +31,7 @@ copy_file(index_src, index_path) unless File.exist?(index_path)
 
 index_pattern = /import ['"].\/config['"]/
 index_commented_pattern = /\s*\/\/\s*#{index_pattern}/
-prefix = footgun == "esbuild" ? ".\/" : ""
+prefix = ["esbuild"].include?(footgun) ? ".\/" : ""
 index_import = "import \"#{prefix}config\"\n"
 
 if pack.match?(index_pattern)
@@ -55,7 +55,7 @@ copy_file(cable_ready_src, cable_ready_path) unless File.exist?(cable_ready_path
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
 copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
 
-if footgun == "webpacker"
+if ["webpacker", "shakapacker"].include?(footgun)
   append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
 
     if (process.env.RAILS_ENV === 'development') {
