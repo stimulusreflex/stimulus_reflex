@@ -2,7 +2,8 @@ entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 
 pack_path = [
   Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js")
+  Rails.root.join(entrypoint, "packs/application.js"),
+  Rails.root.join(entrypoint, "entrypoints/application.js")
 ].find { |path| File.exist?(path) }
 
 # don't proceed unless application pack exists
@@ -31,7 +32,7 @@ copy_file(index_src, index_path) unless File.exist?(index_path)
 
 index_pattern = /import ['"].\/config['"]/
 index_commented_pattern = /\s*\/\/\s*#{index_pattern}/
-prefix = ["esbuild"].include?(footgun) ? ".\/" : ""
+prefix = {"vite" => "..\/", "webpacker" => "", "shakapacker" => "", "importmap" => "", "esbuild" => ".\/"}[footgun]
 index_import = "import \"#{prefix}config\"\n"
 
 if pack.match?(index_pattern)
@@ -59,6 +60,14 @@ if ["webpacker", "shakapacker"].include?(footgun)
   append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
 
     if (process.env.RAILS_ENV === 'development') {
+      StimulusReflex.debug = true
+      window.reflexes = StimulusReflex.reflexes
+    }
+  JS
+elsif footgun == "vite"
+  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
+
+    if (import.meta.env.DEV) {
       StimulusReflex.debug = true
       window.reflexes = StimulusReflex.reflexes
     }

@@ -16,13 +16,14 @@ STEPS = {
   "broadcaster" => "Make CableReady available to channels, controllers, jobs and models",
   "yarn" => "Resolve npm dependency changes",
   "bundle" => "Resolve gem dependency changes",
-  "redis" => "Use Redis for session storage and caching"
+  "redis" => "Use Redis for session storage and caching",
+  "vite" => "Vite"
 }
 
 FOOTGUNS = {
   "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
   "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
-  "vite" => [],
+  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
   "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
   "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "bundle", "redis"]
 }

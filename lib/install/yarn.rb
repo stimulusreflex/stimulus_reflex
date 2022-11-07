@@ -14,12 +14,14 @@ if add.present? || dev.present? || drop.present?
   add.each do |package|
     matches = package.match(/(.+)@(.+)/)
     name, version = matches[1], matches[2]
+    package_json["dependencies"] = {} unless package_json["dependencies"]
     package_json["dependencies"][name] = version
   end
 
   dev.each do |package|
     matches = package.match(/(.+)@(.+)/)
     name, version = matches[1], matches[2]
+    package_json["devDependencies"] = {} unless package_json["devDependencies"]
     package_json["devDependencies"][name] = version
   end
 

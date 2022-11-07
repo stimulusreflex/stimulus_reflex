@@ -2,7 +2,7 @@
 if defined?(ActionCable::Engine)
   say "✅ ActionCable::Engine is required and in scope"
 else
-  say "❌ ActionCable::Engine is not required. Please add `require \"action_cable/engine\"` to your `config/application.rb`", :red
+  say "❌ ActionCable::Engine is not required. Please add or uncomment `require \"action_cable/engine\"` to your `config/application.rb`", :red
   create_file "tmp/stimulus_reflex_installer/halt", verbose: false
   return
 end
@@ -68,7 +68,8 @@ end
 
 pack_path = [
   Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js")
+  Rails.root.join(entrypoint, "packs/application.js"),
+  Rails.root.join(entrypoint, "entrypoints/application.js")
 ].find { |path| File.exist?(path) }
 
 # don't proceed unless application pack exists
@@ -83,7 +84,7 @@ friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
 pack = File.read(pack_path)
 channels_pattern = /import ['"](\.\/)?channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
-prefix = footgun == "esbuild" ? ".\/" : ""
+prefix = {"vite" => "..\/", "webpacker" => "", "shakapacker" => "", "importmap" => "", "esbuild" => ".\/"}[footgun]
 channel_import = "import \"#{prefix}channels\"\n"
 
 if pack.match?(channels_pattern)

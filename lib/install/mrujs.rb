@@ -4,7 +4,8 @@ mrujs_path = config_path.join("mrujs.js")
 
 pack_path = [
   Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js")
+  Rails.root.join(entrypoint, "packs/application.js"),
+  Rails.root.join(entrypoint, "entrypoints/application.js")
 ].find { |path| File.exist?(path) }
 
 # don't proceed unless application pack exists
