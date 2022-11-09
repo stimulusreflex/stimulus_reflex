@@ -10,7 +10,7 @@ def write_redis_recommendation(development, lines, index)
 
   # config.session_store :redis_session_store,
   #   serializer: :json,
-  #   on_redis_down: ->(*a) { logger.error("Redis down! \#{a.inspect}") },
+  #   on_redis_down: ->(*a) { Rails.logger.error("Redis down! \#{a.inspect}") },
   #   redis: {
   #     expire_after: 120.minutes,
   #     key_prefix: "session:",
@@ -54,7 +54,7 @@ else
 
   config.session_store :redis_session_store,
     serializer: :json,
-    on_redis_down: ->(*a) { logger.error("Redis down! \#{a.inspect}") },
+    on_redis_down: ->(*a) { Rails.logger.error("Redis down! \#{a.inspect}") },
     redis: {
       expire_after: 120.minutes,
       key_prefix: "session:",
