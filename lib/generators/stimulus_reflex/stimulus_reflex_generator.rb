@@ -50,7 +50,8 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       view_path = Rails.root.join("app/views/example/index.html.erb")
       template(view_src, view_path)
 
-      FileUtils.remove_dir("app/views/example") if behavior == :revoke && Dir.empty?(Rails.root.join("app/views/example"))
+      example_path = Rails.root.join("app/views/example")
+      FileUtils.remove_dir("app/views/example") if behavior == :revoke && example_path.exist? && Dir.empty?(example_path)
 
       route "get '/example', to: 'example#index', constraints: -> { Rails.env.development? }"
     end
