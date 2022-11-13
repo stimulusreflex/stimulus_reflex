@@ -4,19 +4,19 @@
     <title>StimulusReflex Demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <%%= csrf_meta_tags %>
+    <%%= csp_meta_tag %>
 
-    <% if respond_to?(:vite_javascript_tag) %>
-    <%= vite_client_tag %>
-    <%= vite_javascript_tag "application" %>
-    <% elsif respond_to?(:javascript_pack_tag) %>
-    <%= javascript_pack_tag "application", defer: true %>
-    <% elsif respond_to?(:javascript_importmap_tags) %>
-    <%= javascript_importmap_tags %>
-    <% elsif respond_to?(:javascript_include_tag) %>
-    <%= javascript_include_tag "application", defer: true %>
-    <% end %>
+    <%% if respond_to?(:vite_javascript_tag) %>
+    <%%= vite_client_tag %>
+    <%%= vite_javascript_tag "application" %>
+    <%% elsif respond_to?(:javascript_pack_tag) %>
+    <%%= javascript_pack_tag "application", defer: true %>
+    <%% elsif respond_to?(:javascript_importmap_tags) %>
+    <%%= javascript_importmap_tags %>
+    <%% elsif respond_to?(:javascript_include_tag) %>
+    <%%= javascript_include_tag "application", defer: true %>
+    <%% end %>
 
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
   </head>

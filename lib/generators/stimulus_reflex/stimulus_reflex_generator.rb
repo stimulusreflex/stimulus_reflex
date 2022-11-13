@@ -38,19 +38,19 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
     stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
-    template(stimulus_class_src, stimulus_class_path) unless options[:skip_reflex] || File.exist?(stimulus_class_path)
-    template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus] || File.exist?(stimulus_controller_path)
+    template(stimulus_class_src, stimulus_class_path) unless options[:skip_reflex]
+    template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
       controller_src = "app/controllers/example_controller.rb.tt"
       controller_path = Rails.root.join("app/controllers/example_controller.rb")
-      copy_file(controller_src, controller_path) unless File.exist?(controller_path)
-
-      FileUtils.mkdir_p(Rails.root.join("app/views/example"))
+      template(controller_src, controller_path)
 
       view_src = "app/views/example/index.html.erb.tt"
       view_path = Rails.root.join("app/views/example/index.html.erb")
-      copy_file(view_src, view_path) unless File.exist?(view_path)
+      template(view_src, view_path)
+
+      FileUtils.remove_dir("app/views/example") if behavior == :revoke && Dir.empty?(Rails.root.join("app/views/example"))
 
       route "get '/example', to: 'example#index', constraints: -> { Rails.env.development? }"
     end
