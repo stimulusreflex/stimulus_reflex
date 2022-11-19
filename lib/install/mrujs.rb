@@ -106,6 +106,21 @@ if proceed
     say "✅ @rails/ujs removed from #{friendly_pack_path}"
   end
 
+  application_path = Rails.root.join("config/application.rb")
+  application_pattern = /^[^#]*config\.action_view\.form_with_generates_remote_forms = true/
+  application = File.read(application_path)
+  
+  if !application.match?(application_pattern)
+    insert_into_file application_path, after: "class Application < Rails::Application" do
+      <<-RUBY
+
+    # form_with helper will generate remote forms by default (mrujs)
+    config.action_view.form_with_generates_remote_forms = true
+      RUBY
+    end
+  end
+  say "✅ form_with_generates_remote_forms set to true in config/application.rb"
+
   # remove turbolinks from Gemfile because it's incompatible with mrujs (and unnecessary)
   gemfile = Rails.root.join("Gemfile")
   turbolinks_pattern = /^[^#]*gem ["']turbolinks["']/
