@@ -106,6 +106,7 @@ if proceed
     say "✅ @rails/ujs removed from #{friendly_pack_path}"
   end
 
+  # set Action View to generate remote forms when using form_with
   application_path = Rails.root.join("config/application.rb")
   application_pattern = /^[^#]*config\.action_view\.form_with_generates_remote_forms = true/
   application = File.read(application_path)
