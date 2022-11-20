@@ -110,7 +110,7 @@ if proceed
   application_path = Rails.root.join("config/application.rb")
   application_pattern = /^[^#]*config\.action_view\.form_with_generates_remote_forms = true/
   application = File.read(application_path)
-  
+
   if !application.match?(application_pattern)
     insert_into_file application_path, after: "class Application < Rails::Application" do
       <<-RUBY
