@@ -17,15 +17,16 @@ STEPS = {
   "yarn" => "Resolve npm dependency changes",
   "bundle" => "Resolve gem dependency changes",
   "redis" => "Use Redis for session storage and caching",
-  "vite" => "Vite"
+  "vite" => "Vite",
+  "compression" => "Compress WebSockets traffic with gzip"
 }
 
 FOOTGUNS = {
-  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
-  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
-  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
-  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis"],
-  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "bundle", "redis"]
+  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis", "compression"],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis", "compression"],
+  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis", "compression"],
+  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "yarn", "bundle", "redis", "compression"],
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "bundle", "redis", "compression"]
 }
 
 def run_install_template(template, force: false)

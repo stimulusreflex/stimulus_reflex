@@ -121,20 +121,26 @@ else
 end
 
 # create Action Cable initializer if it doesn't already exist
-# silence notoriously chatty Action Cable logs
 initializer_path = Rails.root.join("config/initializers/action_cable.rb")
-if initializer_path.exist?
-  append_file(initializer_path, "ActionCable.server.config.logger = Logger.new(nil)", verbose: false) unless File.read(initializer_path).match?(/^[^#]*ActionCable.server.config.logger/)
-else
+if !initializer_path.exist?
   create_file(initializer_path, verbose: false) do
     <<~RUBY
       # frozen_string_literal: true
 
-      ActionCable.server.config.logger = Logger.new(nil)
     RUBY
   end
   say "✅ Action Cable initializer created"
 end
-say "✅ Action Cable logger silenced for performance and legibility"
+
+# silence notoriously chatty Action Cable logs
+if !File.read(initializer_path).match?(/^[^#]*ActionCable.server.config.logger/)
+  append_file(initializer_path, verbose: false) do
+    <<~RUBY
+      ActionCable.server.config.logger = Logger.new(nil)
+
+    RUBY
+  end
+  say "✅ Action Cable logger silenced for performance and legibility"
+end
 
 create_file "tmp/stimulus_reflex_installer/action_cable", verbose: false

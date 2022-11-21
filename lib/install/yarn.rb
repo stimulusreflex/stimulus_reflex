@@ -32,7 +32,7 @@ if add.present? || dev.present? || drop.present?
 
   File.write(Rails.root.join("package.json"), JSON.pretty_generate(package_json))
 
-  system "yarn install"
+  system "yarn install --silent"
 
 end
 
