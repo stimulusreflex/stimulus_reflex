@@ -25,8 +25,10 @@ if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']: ["']\^3.1.0["
   say "✅ Enqueued @hotwired/stimulus@^3.1.0 to be added to dependencies"
 end
 
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+
 # copy esbuild.config.js to app root
-esbuild_src = File.expand_path("../generators/stimulus_reflex/templates/esbuild.config.js.tt", File.join(File.dirname(__FILE__)))
+esbuild_src = File.expand_path(template_src + "/esbuild.config.js.tt", File.join(File.dirname(__FILE__)))
 esbuild_path = Rails.root.join("esbuild.config.js")
 if esbuild_path.exist?
   if File.read(esbuild_path) == File.read(esbuild_src)
@@ -44,7 +46,7 @@ else
 end
 
 controllers_path = Rails.root.join(entrypoint, "controllers")
-templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/controllers", File.join(File.dirname(__FILE__)))
+templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
 application_controller_src = templates_path + "/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
 application_src = templates_path + "/application.js.tt"

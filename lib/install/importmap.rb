@@ -61,7 +61,8 @@ if !importmap.include?("pin \"morphdom\"")
   RUBY
 end
 
-templates_path = File.expand_path("../generators/stimulus_reflex/templates", File.join(File.dirname(__FILE__)))
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+templates_path = File.expand_path(template_src, File.join(File.dirname(__FILE__)))
 controllers_path = Rails.root.join(entrypoint, "controllers")
 application_controller_src = templates_path + "/app/javascript/controllers/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")

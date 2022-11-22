@@ -6,7 +6,8 @@ else
   empty_directory reflexes_path
 end
 
-templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/reflexes", File.join(File.dirname(__FILE__)))
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+templates_path = File.expand_path(template_src + "/app/reflexes", File.join(File.dirname(__FILE__)))
 application_reflex_path = Rails.root.join("app/reflexes/application_reflex.rb")
 application_reflex_src = templates_path + "/application_reflex.rb.tt"
 if application_reflex_path.exist?

@@ -26,7 +26,8 @@ if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus-webpack-helpers["'
 end
 
 controllers_path = Rails.root.join(entrypoint, "controllers")
-controller_templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/controllers", File.join(File.dirname(__FILE__)))
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+controller_templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
 application_controller_src = controller_templates_path + "/application_controller.js.tt"
 application_controller_path = controllers_path.join("application_controller.js")
 application_src = controller_templates_path + "/application.js.tt"

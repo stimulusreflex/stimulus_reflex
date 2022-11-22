@@ -15,7 +15,8 @@ end
 
 footgun = File.read("tmp/stimulus_reflex_installer/footgun")
 config_path = Rails.root.join(entrypoint, "config")
-templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/config", File.join(File.dirname(__FILE__)))
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
 index_src = templates_path + "/index.js.tt"
 index_path = config_path.join("index.js")
 stimulus_reflex_src = templates_path + "/stimulus_reflex.js.tt"

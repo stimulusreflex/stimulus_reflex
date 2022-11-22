@@ -39,15 +39,27 @@ def run_install_template(template, force: false)
     puts "👍 #{STEPS[template]}"
     return
   end
-  system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true"
-  puts "👍 #{STEPS[template]}" unless Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
+
+  begin
+    template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/new_installer/lib/install/#{template}.rb", open_timeout: 1, read_timeout: 1).read.strip
+    File.write(Rails.root.join("tmp/stimulus_reflex_installer/templates/#{template}.rb"), template_content)
+    system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true")
+    icon = "👍"
+  rescue
+    system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true"
+    icon = "🏡"
+    IO.write("tmp/stimulus_reflex_installer/network_issue", "#{template}\n", mode: "a")
+  end
+  puts "#{icon} #{STEPS[template]}" unless Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
 end
 
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
-    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer"))
+    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
+    network_issue = Rails.root.join("tmp/stimulus_reflex_installer/network_issue")
+    FileUtils.rm(network_issue) if network_issue.exist?
 
     footgun = nil
     options = {}
@@ -191,6 +203,7 @@ namespace :stimulus_reflex do
 
     File.write("tmp/stimulus_reflex_installer/footgun", footgun)
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
+    File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))
 
     # do the things
     FOOTGUNS[footgun].each do |template|
@@ -204,6 +217,18 @@ namespace :stimulus_reflex do
     puts
     puts "Join over 2000 StimulusReflex developers on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m"
     puts
+
+    if network_issue.exist?
+      network_issues = File.readlines(network_issue).map(&:chomp)
+      puts "⚠️ \e[33;1;196mNetwork issues were encountered downloading the latest installer steps:\e[0m"
+      puts
+      network_issues.each do |issue|
+        puts "  \e[33;1;196m- #{issue}\e[0m"
+      end
+      puts
+      puts "\e[33;1;196mLocal copies 🏡 that shipped with StimulusReflex #{StimulusReflex::VERSION} (NOTE: new_installer branch) were used.\nThis is *probably* okay, but run \e[1;94mrails stimulus_reflex:install:restart\e[0m if something seems broken.\e[0m"
+      puts
+    end
 
     backups = File.readlines("tmp/stimulus_reflex_installer/backups").map(&:chomp)
     if backups.any?

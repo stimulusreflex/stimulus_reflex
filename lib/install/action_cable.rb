@@ -39,7 +39,8 @@ end
 # verify that the Action Cable channels folder and consumer class is available
 entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 footgun = File.read("tmp/stimulus_reflex_installer/footgun")
-templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/channels", File.join(File.dirname(__FILE__)))
+template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+templates_path = File.expand_path(template_src + "/app/javascript/channels", File.join(File.dirname(__FILE__)))
 channels_path = Rails.root.join(entrypoint, "channels")
 consumer_src = templates_path + "/consumer.js.tt"
 consumer_path = channels_path.join("consumer.js")

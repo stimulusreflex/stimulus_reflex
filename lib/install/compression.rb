@@ -1,10 +1,15 @@
 options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
 options = YAML.safe_load(File.read(options_path))
+initializer_path = Rails.root.join("config/initializers/action_cable.rb")
+initializer = File.read(initializer_path)
 
-proceed = if options.key? "compression"
-  options["compression"]
-else
-  !no?("Configure Action Cable to compress your WebSocket traffic with gzip? (Y/n)")
+proceed = true
+if initializer.exclude? "PermessageDeflate.configure"
+  proceed = if options.key? "compression"
+    options["compression"]
+  else
+    !no?("Configure Action Cable to compress your WebSocket traffic with gzip? (Y/n)")
+  end
 end
 
 if proceed
@@ -28,8 +33,7 @@ if proceed
   system("bash -c 'bundle --quiet'")
 
   # add permessage_deflate config to Action Cable initializer
-  initializer_path = Rails.root.join("config/initializers/action_cable.rb")
-  if File.read(initializer_path).exclude? "PermessageDeflate.configure"
+  if initializer.exclude? "PermessageDeflate.configure"
     append_file(initializer_path, verbose: false) do
       <<~RUBY
         module ActionCable

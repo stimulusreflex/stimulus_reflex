@@ -78,7 +78,8 @@ if proceed
     end
   end
 
-  templates_path = File.expand_path("../generators/stimulus_reflex/templates/app/javascript/config", File.join(File.dirname(__FILE__)))
+  template_src = File.read("tmp/stimulus_reflex_installer/template_src")
+  templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
   mrujs_src = templates_path + "/mrujs.js.tt"
 
   # create entrypoint/config/mrujs.js if necessary
