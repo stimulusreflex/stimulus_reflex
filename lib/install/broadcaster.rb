@@ -37,6 +37,23 @@ else
   puts "❔ Active Job not available. Skipping."
 end
 
+if defined?(StateMachines)
+  cable_ready_initializer = Rails.root.join("config/initializers/cable_ready.rb")
+  lines = File.read(cable_ready_initializer)
+  if !lines.include?("StateMachines::Machine.prepend(CableReady::Broadcaster)")
+    inject_into_file cable_ready_initializer, after: "CableReady.configure do |config|\n", verbose: false do
+      <<-RUBY
+
+  StateMachines::Machine.prepend(CableReady::Broadcaster)
+
+      RUBY
+    end
+  end
+  puts "✅ prepend CableReady::Broadcaster into StateMachines::Machine"
+else
+  puts "❔ StateMachines not available. Skipping."
+end
+
 model_path = "app/models/application_record.rb"
 if Rails.root.join(model_path).exist?
   lines = File.readlines(model_path)
