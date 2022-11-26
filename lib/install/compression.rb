@@ -13,28 +13,23 @@ if initializer.exclude? "PermessageDeflate.configure"
 end
 
 if proceed
-  # ensure permessage_deflate is included in Gemfile
+  add_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/add_gem_list")
   gemfile = Rails.root.join("Gemfile")
-  lines = File.readlines(gemfile)
-
-  index = lines.index { |line| line =~ /gem ['"]permessage_deflate['"]/ }
-  if index
-    if !lines[index].match(/^[^#]*gem ['"]permessage_deflate['"]/)
-      lines[index] = "\ngem \"permessage_deflate\"n"
-    end
-  else
-    lines << "\ngem \"permessage_deflate\"\n"
+  if !File.read(gemfile).match?(/gem ['"]permessage_deflate['"]/)
+    FileUtils.touch(add_gem_list)
+    append_file(add_gem_list, "permessage_deflate@>= 0.1\n", verbose: false)
+    say "✅ Enqueued permessage_deflate to be added to the Gemfile"
   end
-  say "✅ permessage_deflate gem has been installed"
 
-  File.write(gemfile, lines.join)
-
-  # install permessage_deflate
-  system("bash -c 'bundle --quiet'")
+  # create working copy of Action Cable initializer in tmp
+  working = Rails.root.join("tmp/stimulus_reflex_installer/working")
+  FileUtils.mkdir_p(working)
+  initializer_working = Rails.root.join(working, "action_cable.rb")
+  FileUtils.cp(initializer_path, initializer_working)
 
   # add permessage_deflate config to Action Cable initializer
   if initializer.exclude? "PermessageDeflate.configure"
-    append_file(initializer_path, verbose: false) do
+    append_file(initializer_working, verbose: false) do
       <<~RUBY
         module ActionCable
           module Connection

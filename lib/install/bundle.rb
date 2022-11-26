@@ -43,7 +43,7 @@ if add.present? || remove.present?
 
   File.write(gemfile, lines.join)
 
-  system("bash -c 'bundle --quiet'") if hash != gemfile_hash
+  bundle_command("install --quiet", "BUNDLE_IGNORE_MESSAGES" => "1") if hash != gemfile_hash
 end
 
 create_file "tmp/stimulus_reflex_installer/bundle", verbose: false
