@@ -17,17 +17,16 @@ STEPS = {
   "yarn" => "Resolve npm dependency changes",
   "bundle" => "Resolve gem dependency changes",
   "vite" => "Vite",
-  "caching" => "Enable caching in development",
   "compression" => "Compress WebSockets traffic with gzip",
   "finalize" => "Finalize installation"
 }
 
 FOOTGUNS = {
-  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "caching", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "caching", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "caching", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "caching", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "caching", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle", "finalize"]
+  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
+  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
+  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle", "finalize"]
 }
 
 def run_install_template(template, force: false, local: false)
