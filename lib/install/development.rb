@@ -22,10 +22,10 @@ RUBY
         <<~RUBY
 
           # StimulusReflex recommends using Redis for session storage
-          # gem "redis-session-store", "0.11.4"
+          # gem "redis-session-store", "0.11.5"
         RUBY
       end
-      say "💡 Added redis-session-store 0.11.4 to the Gemfile, commented out"
+      say "💡 Added redis-session-store 0.11.5 to the Gemfile, commented out"
     end
   end
 end
@@ -89,15 +89,15 @@ else
   # add redis v4 to be compatible with redis-session-store
   if File.read(gemfile).match?(/gem ['"]redis['"]/)
     FileUtils.touch(add_gem_list)
-    append_file(add_gem_list, "redis@>= 4\", \"< 5\n", verbose: false)
+    append_file(add_gem_list, "redis\n", verbose: false)
     say "✅ Enqueued redis to be added to the Gemfile"
   end
 
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(/gem ['"]redis-session-store['"]/)
     FileUtils.touch(add_gem_list)
-    append_file(add_gem_list, "redis-session-store@~> 0.11.4\n", verbose: false)
-    say "✅ Enqueued redis-session-store 0.11.4 to be added to the Gemfile"
+    append_file(add_gem_list, "redis-session-store@~> 0.11.5\n", verbose: false)
+    say "✅ Enqueued redis-session-store 0.11.5 to be added to the Gemfile"
   end
 
   index = lines.index { |line| line =~ /^Rails.application.configure do/ }
