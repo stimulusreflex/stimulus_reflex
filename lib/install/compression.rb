@@ -1,7 +1,7 @@
 options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
 options = YAML.safe_load(File.read(options_path))
-initializer_path = Rails.root.join("config/initializers/action_cable.rb")
-initializer = File.read(initializer_path)
+initializer_working_path = Rails.root.join("tmp/stimulus_reflex_installer/working/action_cable.rb")
+initializer = File.read(initializer_working_path)
 
 proceed = true
 if initializer.exclude? "PermessageDeflate.configure"
@@ -21,15 +21,11 @@ if proceed
     say "✅ Enqueued permessage_deflate to be added to the Gemfile"
   end
 
-  # create working copy of Action Cable initializer in tmp
-  working = Rails.root.join("tmp/stimulus_reflex_installer/working")
-  FileUtils.mkdir_p(working)
-  initializer_working = Rails.root.join(working, "action_cable.rb")
-  FileUtils.cp(initializer_path, initializer_working)
+
 
   # add permessage_deflate config to Action Cable initializer
   if initializer.exclude? "PermessageDeflate.configure"
-    append_file(initializer_working, verbose: false) do
+    append_file(initializer_working_path, verbose: false) do
       <<~RUBY
         module ActionCable
           module Connection

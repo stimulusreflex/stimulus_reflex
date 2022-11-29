@@ -121,9 +121,13 @@ else
   say "✅ channels imported in #{friendly_pack_path}"
 end
 
-# create Action Cable initializer if it doesn't already exist
+# create working copy of Action Cable initializer in tmp
+working = Rails.root.join("tmp/stimulus_reflex_installer/working")
+FileUtils.mkdir_p(working)
 initializer_path = Rails.root.join("config/initializers/action_cable.rb")
+
 if !initializer_path.exist?
+  # create Action Cable initializer if it doesn't already exist
   create_file(initializer_path, verbose: false) do
     <<~RUBY
       # frozen_string_literal: true
@@ -143,5 +147,8 @@ if !File.read(initializer_path).match?(/^[^#]*ActionCable.server.config.logger/)
   end
   say "✅ Action Cable logger silenced for performance and legibility"
 end
+
+initializer_working_path = Rails.root.join(working, "action_cable.rb")
+FileUtils.cp(initializer_path, initializer_working_path)
 
 create_file "tmp/stimulus_reflex_installer/action_cable", verbose: false

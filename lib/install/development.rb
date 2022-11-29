@@ -40,46 +40,44 @@ def find_index(lines)
   index
 end
 
-development = Rails.root.join("config/environments/development.rb")
-working = Rails.root.join("tmp/stimulus_reflex_installer/working")
-FileUtils.mkdir_p(working)
-development_working = Rails.root.join(working, "development.rb")
-FileUtils.cp(development, development_working)
+development_path = Rails.root.join("config/environments/development.rb")
+development_working_path = Rails.root.join("tmp/stimulus_reflex_installer/working/development.rb")
+FileUtils.cp(development_path, development_working_path)
 
 # add default_url_options to development.rb for Action Mailer
 if defined?(ActionMailer)
-  lines = File.readlines(development_working)
+  lines = File.readlines(development_working_path)
   unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
     index = lines.index { |line| line =~ /^Rails.application.configure do/ }
     lines.insert index + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
-    File.write(development_working, lines.join)
+    File.write(development_working_path, lines.join)
   end
   say "✅ Action Mailer default_url_options defined"
 end
 
 # add default_url_options to development.rb for Action Controller
-lines = File.readlines(development_working)
+lines = File.readlines(development_working_path)
 unless lines.find { |line| line.include?("config.action_controller.default_url_options") }
   index = lines.index { |line| line =~ /^Rails.application.configure do/ }
   lines.insert index + 1, "  config.action_controller.default_url_options = {host: \"localhost\", port: 3000}\n"
-  File.write(development_working, lines.join)
+  File.write(development_working_path, lines.join)
 end
 say "✅ Action Controller default_url_options defined"
 
 gemfile = Rails.root.join("Gemfile")
-lines = File.readlines(development_working)
+lines = File.readlines(development_working_path)
 
 # halt with instructions if using cookie store, otherwise, nudge towards Redis
 if (index = lines.index { |line| line =~ /^[^#]*config.session_store/ })
   if /^[^#]*cookie_store/.match?(lines[index])
-    write_redis_recommendation(development_working, lines, index, gemfile)
+    write_redis_recommendation(development_working_path, lines, index, gemfile)
     say "❌ StimulusReflex does not support session cookies. See https://docs.stimulusreflex.com/hello-world/setup#session-storage", :red
     create_file "tmp/stimulus_reflex_installer/halt", verbose: false
     return
   elsif /^[^#]*redis_session_store/.match?(lines[index])
     say "✅ Using redis-session-store for session storage"
   else
-    write_redis_recommendation(development_working, lines, index, gemfile)
+    write_redis_recommendation(development_working_path, lines, index, gemfile)
     say "❔ We recommend using redis-session-store for session storage. See https://docs.stimulusreflex.com/hello-world/setup#session-storage"
   end
 # no session store defined, so let's opt-in to redis-session-store
@@ -89,7 +87,7 @@ else
   # add redis v4 to be compatible with redis-session-store
   if File.read(gemfile).match?(/gem ['"]redis['"]/)
     FileUtils.touch(add_gem_list)
-    append_file(add_gem_list, "redis\n", verbose: false)
+    append_file(add_gem_list, "redis@>= 4\", \"< 6\n", verbose: false)
     say "✅ Enqueued redis to be added to the Gemfile"
   end
 
@@ -112,19 +110,19 @@ else
         url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
       }
   RUBY
-  File.write(development_working, lines.join)
+  File.write(development_working_path, lines.join)
   say "✅ Using redis-session-store for session storage"
 end
 
 # switch to redis for caching if using memory store, otherwise nudge with a comment
-lines = File.readlines(development_working)
+lines = File.readlines(development_working_path)
 if (index = lines.index { |line| line =~ /^[^#]*config.cache_store = :memory_store/ })
   lines[index] = <<~RUBY
     config.cache_store = :redis_cache_store, {
       url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
     }
   RUBY
-  File.write(development_working, lines.join)
+  File.write(development_working_path, lines.join)
   say "✅ Using Redis for caching"
 elsif lines.index { |line| line =~ /^[^#]*config.cache_store = :redis_cache_store/ }
   say "✅ Using Redis for caching"
@@ -138,7 +136,7 @@ else
       #   url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
       # }
     RUBY
-    File.write(development_working, lines.join)
+    File.write(development_working_path, lines.join)
   end
   say "❔ We couldn't identify your cache store, but recommend using Redis. See https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
 end
