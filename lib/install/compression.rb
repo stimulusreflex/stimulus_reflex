@@ -21,8 +21,6 @@ if proceed
     say "✅ Enqueued permessage_deflate to be added to the Gemfile"
   end
 
-
-
   # add permessage_deflate config to Action Cable initializer
   if initializer.exclude? "PermessageDeflate.configure"
     append_file(initializer_working_path, verbose: false) do
