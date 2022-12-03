@@ -10,7 +10,7 @@ import ReflexData from './reflex_data'
 import IsolationMode from './isolation_mode'
 import Transport from './transport'
 import ActionCableTransport from './transports/action_cable'
-
+import { kebabize } from 'cable_ready/javascript/utils'
 import { reflexes } from './reflexes'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
@@ -52,25 +52,74 @@ const tabId = uuidv4()
 //
 const initialize = (
   application,
-  { controller, consumer, debug, params, isolate, deprecate, transport } = {}
+  {
+    controller,
+    consumer,
+    debug,
+    params,
+    isolate,
+    deprecate,
+    transport,
+    operations
+  } = {}
 ) => {
   Transport.set(transport || ActionCableTransport)
   Transport.plugin.initialize(consumer, params)
+
   IsolationMode.set(!!isolate)
   Stimulus.set(application)
   Schema.set(application)
+
   Stimulus.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
+
   Debug.set(!!debug)
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
+
   const observer = new MutationObserver(scanForReflexes)
   observer.observe(document.documentElement, {
     attributeFilter: [Schema.reflex, Schema.action],
     childList: true,
     subtree: true
   })
+
+  operations = Object.entries({
+    morph: 'morph',
+    replace: 'inner_html',
+    ...(typeof operations === 'undefined' ? {} : operations)
+  })
+  operations.forEach(mapping => {
+    const [task, operation] = mapping
+    operations[task] = kebabize(operation)
+  })
+
+  document.addEventListener(
+    'cable-ready:after-dispatch-event',
+    routeReflexEvent
+  )
+  document.addEventListener(
+    `cable-ready:before-${operations['replace']}`,
+    beforeDOMUpdate
+  )
+  document.addEventListener(
+    `cable-ready:before-${operations['morph']}`,
+    beforeDOMUpdate
+  )
+  document.addEventListener(
+    `cable-ready:after-${operations['replace']}`,
+    afterDOMUpdate
+  )
+  document.addEventListener(
+    `cable-ready:after-${operations['morph']}`,
+    afterDOMUpdate
+  )
+
+  document.addEventListener('readystatechange', () => {
+    if (document.readyState === 'complete') scanForReflexes()
+  })
+
   emitEvent('stimulus-reflex:initialized')
 }
 
@@ -232,17 +281,6 @@ const register = (controller, options = {}) => {
 const useReflex = (controller, options = {}) => {
   register(controller, options)
 }
-
-document.addEventListener('cable-ready:after-dispatch-event', routeReflexEvent)
-document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
-document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
-document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
-document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-document.addEventListener('readystatechange', () => {
-  if (document.readyState === 'complete') {
-    scanForReflexes()
-  }
-})
 
 export {
   initialize,
