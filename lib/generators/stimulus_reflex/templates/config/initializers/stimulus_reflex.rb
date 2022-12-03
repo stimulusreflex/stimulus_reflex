@@ -22,6 +22,7 @@ StimulusReflex.configure do |config|
   # config.on_missing_default_urls = :warn
 
   # Override the CableReady operation used for morphing and replacing content
+  # If you change these, you'll need to pass an `operations` option when you initalize SR on the client
 
   # config.morph_operation = :morph
   # config.replace_operation = :inner_html
