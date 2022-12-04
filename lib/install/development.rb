@@ -84,13 +84,6 @@ if (index = lines.index { |line| line =~ /^[^#]*config.session_store/ })
 else
   add_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/add_gem_list")
 
-  # add redis v4 to be compatible with redis-session-store
-  if File.read(gemfile).match?(/gem ['"]redis['"]/)
-    FileUtils.touch(add_gem_list)
-    append_file(add_gem_list, "redis@>= 4\", \"< 6\n", verbose: false)
-    say "✅ Enqueued redis to be added to the Gemfile"
-  end
-
   # add redis-session-store to Gemfile
   if !File.read(gemfile).match?(/gem ['"]redis-session-store['"]/)
     FileUtils.touch(add_gem_list)
