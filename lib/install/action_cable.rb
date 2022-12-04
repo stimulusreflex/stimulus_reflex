@@ -36,6 +36,16 @@ else
   say "❔ config/cable.yml should use the redis adapter - or something like it - in development. You have something else specified, and we trust that you know what you're doing."
 end
 
+# install action-cable-redis-backport gem if using Action Cable < 7.1
+unless ActionCable::VERSION::MAJOR >= 7 && ActionCable::VERSION::MINOR >= 1
+  if !File.read(Rails.root.join("Gemfile")).match?(/gem ['"]action-cable-redis-backport['"]/)
+    add_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/add_gem_list")
+    FileUtils.touch(add_gem_list)
+    append_file(add_gem_list, "action-cable-redis-backport@~> 1\n", verbose: false)
+    say "💡 Added action-cable-redis-backport 1.0.0 to the Gemfile"
+  end
+end
+
 # verify that the Action Cable channels folder and consumer class is available
 entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
 footgun = File.read("tmp/stimulus_reflex_installer/footgun")
