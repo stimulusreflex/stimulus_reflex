@@ -19,10 +19,10 @@ if !lines.index { |line| line =~ /^\s*["']esbuild-rails["']: ["']\^1.0.3["']/ }
   say "✅ Enqueued esbuild-rails@^1.0.3 to be added to dependencies"
 end
 
-if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']: ["']\^3.1.0["']/ }
+if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
   FileUtils.touch(package_list)
-  append_file(package_list, "@hotwired/stimulus@^3.1.0\n", verbose: false)
-  say "✅ Enqueued @hotwired/stimulus@^3.1.0 to be added to dependencies"
+  append_file(package_list, "@hotwired/stimulus@^3.2\n", verbose: false)
+  say "✅ Enqueued @hotwired/stimulus@^3.2 to be added to dependencies"
 end
 
 template_src = File.read("tmp/stimulus_reflex_installer/template_src")

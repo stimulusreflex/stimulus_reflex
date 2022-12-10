@@ -1,7 +1,5 @@
-reflex = Rails.root.join("app/reflexes/example_reflex.rb")
-
 proceed = false
-if !reflex.exist?
+if !Rails.root.join("app/reflexes/example_reflex.rb").exist?
   puts
 
   options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")

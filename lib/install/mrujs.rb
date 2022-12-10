@@ -110,15 +110,26 @@ if proceed
   # set Action View to generate remote forms when using form_with
   application_path = Rails.root.join("config/application.rb")
   application_pattern = /^[^#]*config\.action_view\.form_with_generates_remote_forms = true/
-  application = File.read(application_path)
+  defaults_pattern = /config\.load_defaults \d\.\d/
+  lines = File.readlines(application_path)
 
-  if !application.match?(application_pattern)
-    insert_into_file application_path, after: "class Application < Rails::Application" do
+  if !lines.index { |line| line =~ application_pattern }
+    if (index = lines.index { |line| line =~ /^[^#]*#{defaults_pattern}/ })
+      gsub_file application_path, /\s*#{defaults_pattern}\n/, verbose: false do
       <<-RUBY
-
+\n#{lines[index]}
     # form_with helper will generate remote forms by default (mrujs)
     config.action_view.form_with_generates_remote_forms = true
       RUBY
+      end
+    else
+      insert_into_file application_path, after: "class Application < Rails::Application" do
+        <<-RUBY
+
+    # form_with helper will generate remote forms by default (mrujs)
+    config.action_view.form_with_generates_remote_forms = true
+        RUBY
+      end
     end
   end
   say "✅ form_with_generates_remote_forms set to true in config/application.rb"

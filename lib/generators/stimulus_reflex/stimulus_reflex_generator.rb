@@ -32,28 +32,28 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       exit
     end
 
-    stimulus_class_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
-    stimulus_class_src = "app/reflexes/%file_name%_reflex.rb.tt"
-    stimulus_class_path = Rails.root.join(stimulus_class_entrypoint, "#{file_name}_reflex.rb")
+    reflex_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
+    reflex_src = "app/reflexes/%file_name%_reflex.rb.tt"
+    reflex_path = Rails.root.join(reflex_entrypoint, "#{file_name}_reflex.rb")
     stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
     stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
-    template(stimulus_class_src, stimulus_class_path) unless options[:skip_reflex]
+    template(reflex_src, reflex_path) unless options[:skip_reflex]
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
-      controller_src = "app/controllers/example_controller.rb.tt"
-      controller_path = Rails.root.join("app/controllers/example_controller.rb")
+      controller_src = "app/controllers/example_controllers.rb.tt"
+      controller_path = Rails.root.join("app/controllers/examples_controller.rb")
       template(controller_src, controller_path)
 
-      view_src = "app/views/example/index.html.erb.tt"
-      view_path = Rails.root.join("app/views/example/index.html.erb")
+      view_src = "app/views/examples/show.html.erb.tt"
+      view_path = Rails.root.join("app/views/examples/show.html.erb")
       template(view_src, view_path)
 
-      example_path = Rails.root.join("app/views/example")
-      FileUtils.remove_dir("app/views/example") if behavior == :revoke && example_path.exist? && Dir.empty?(example_path)
+      example_path = Rails.root.join("app/views/examples")
+      FileUtils.remove_dir(example_path) if behavior == :revoke && example_path.exist? && Dir.empty?(example_path)
 
-      route "get '/example', to: 'example#index', constraints: -> { Rails.env.development? }"
+      route "resource :example, constraints: -> { Rails.env.development? }"
     end
   end
 end

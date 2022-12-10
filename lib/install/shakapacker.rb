@@ -13,10 +13,10 @@ package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
 package_json = Rails.root.join("package.json")
 lines = File.readlines(package_json)
 
-if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']: ["']\^3.1.0["']/ }
+if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
   FileUtils.touch(package_list)
-  append_file(package_list, "@hotwired/stimulus@^3.1\n", verbose: false)
-  say "✅ Enqueued @hotwired/stimulus@^3.1 to be added to dependencies"
+  append_file(package_list, "@hotwired/stimulus@^3.2\n", verbose: false)
+  say "✅ Enqueued @hotwired/stimulus@^3.2 to be added to dependencies"
 end
 
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus-webpack-helpers["']: ["']\^1.0.1["']/ }

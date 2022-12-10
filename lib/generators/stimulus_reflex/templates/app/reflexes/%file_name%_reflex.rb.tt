@@ -28,8 +28,13 @@ class <%= class_name %>Reflex < ApplicationReflex
   #   end
   #
   #   def example(argument=true)
-  #     # Your logic here...
+  #     # Your logic here! Update models, launch jobs, poll Redis...
+  #
+  #     # By default, Reflexes call the controller action for the current page and render the view.
   #     # Any declared instance variables will be made available to the Rails controller and view.
+  #
+  #     # You can also use the `morph` method to mark a Reflex as Selector or Nothing.
+  #     # https://docs.stimulusreflex.com/rtfm/morph-modes#introducing-morphs
   #   end
   #
   # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
