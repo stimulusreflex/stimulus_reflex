@@ -1,12 +1,10 @@
-gemfile = Rails.root.join("Gemfile")
+require "stimulus_reflex/installer"
+
 spring_pattern = /^[^#]*gem ["']spring["']/
 
 proceed = true
-lines = File.readlines(gemfile)
+lines = gemfile_path.readlines
 if lines.index { |line| line =~ spring_pattern }
-  options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-  options = YAML.safe_load(File.read(options_path))
-
   proceed = if options.key? "spring"
     options["spring"]
   else
@@ -19,35 +17,31 @@ if proceed
   bin_rails_pattern = /^[^#]*load File.expand_path\("spring", __dir__\)/
 
   if (index = lines.index { |line| line =~ spring_pattern })
-    say "💡 Can't kill spring process without killing install. Please run: pkill -f spring (or restart your terminal)"
+    remove_gem :spring
 
-    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
-    FileUtils.touch(remove_gem_list)
-    append_file(remove_gem_list, "spring\n", verbose: false)
-    say "✅ Removed spring from Gemfile"
-
-    if Rails.root.join("bin/spring").exist?
+    bin_spring = Rails.root.join("bin/spring")
+    if bin_spring.exist?
       run "bin/spring binstub --remove --all"
       say "✅ Removed spring binstubs"
     end
 
     bin_rails = Rails.root.join("bin/rails")
-    bin_rails_content = File.readlines(bin_rails)
+    bin_rails_content = bin_rails.readlines
     if (index = bin_rails_content.index { |line| line =~ bin_rails_pattern })
-      bin_rails_content[index] = "# #{bin_rails_content[index]}"
-      File.write(bin_rails, bin_rails_content.join)
+      backup(bin_rails) do
+        bin_rails_content[index] = "# #{bin_rails_content[index]}"
+        bin_rails.write bin_rails_content.join
+      end
       say "✅ Removed spring from bin/rails"
     end
+    create_file "tmp/stimulus_reflex_installer/kill_spring", verbose: false
   else
     say "✅ spring has been successfully 86'd"
   end
 
   if lines.index { |line| line =~ spring_watcher_pattern }
-    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
-    FileUtils.touch(remove_gem_list)
-    append_file(remove_gem_list, "spring-watcher-listen\n", verbose: false)
-    say "✅ Removed spring-watcher-listen from Gemfile"
+    remove_gem "spring-watcher-listen"
   end
 end
 
-create_file "tmp/stimulus_reflex_installer/spring", verbose: false
+complete_step :spring

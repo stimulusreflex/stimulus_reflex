@@ -1,58 +1,40 @@
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
-pack_path = Rails.root.join(entrypoint, "application.js")
-friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
+require "stimulus_reflex/installer"
 
-if !pack_path.exist?
-  say "❌ #{friendly_pack_path} is missing. You need a valid application pack file to proceed.", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
-  return
-end
+return if pack_path_missing?
 
 # verify that all critical dependencies are up to date; if not, queue for later
-package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
-package_json = Rails.root.join("package.json")
-lines = File.readlines(package_json)
+lines = package_json.readlines
 
 if !lines.index { |line| line =~ /^\s*["']esbuild-rails["']: ["']\^1.0.3["']/ }
-  FileUtils.touch(package_list)
-  append_file(package_list, "esbuild-rails@^1.0.3\n", verbose: false)
-  say "✅ Enqueued esbuild-rails@^1.0.3 to be added to dependencies"
+  add_package "esbuild-rails@^1.0.3"
 end
 
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
-  FileUtils.touch(package_list)
-  append_file(package_list, "@hotwired/stimulus@^3.2\n", verbose: false)
-  say "✅ Enqueued @hotwired/stimulus@^3.2 to be added to dependencies"
+  add_package "@hotwired/stimulus@^3.2"
 end
-
-template_src = File.read("tmp/stimulus_reflex_installer/template_src")
-
 # copy esbuild.config.js to app root
-esbuild_src = File.expand_path(template_src + "/esbuild.config.js.tt", File.join(File.dirname(__FILE__)))
+esbuild_src = fetch(File.expand_path(template_src + "/esbuild.config.js.tt", File.join(File.dirname(__FILE__))))
 esbuild_path = Rails.root.join("esbuild.config.js")
 if esbuild_path.exist?
-  if File.read(esbuild_path) == File.read(esbuild_src)
+  if esbuild_path.read == esbuild_src.read
     say "✅ esbuild.config.js present in app root"
   else
-    copy_file(esbuild_path, "#{esbuild_path}.bak", verbose: false)
-    remove_file(esbuild_path, verbose: false)
-    template(esbuild_src, esbuild_path, verbose: false, entrypoint: entrypoint)
-    append_file("tmp/stimulus_reflex_installer/backups", "esbuild.config.js\n", verbose: false)
-    say "✅ esbuild.config.js copied to app root"
-    say "❕ original esbuild.config.js renamed esbuild.config.js.bak", :yellow
+    backup(esbuild_path) do
+      template(esbuild_src, esbuild_path, verbose: false, entrypoint: entrypoint)
+    end
   end
 else
   template(esbuild_src, esbuild_path, entrypoint: entrypoint)
 end
 
-controllers_path = Rails.root.join(entrypoint, "controllers")
 templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
-application_controller_src = templates_path + "/application_controller.js.tt"
-application_controller_path = controllers_path.join("application_controller.js")
-application_src = templates_path + "/application.js.tt"
-application_path = controllers_path.join("application.js")
-index_src = templates_path + "/index.js.esbuild.tt"
-index_path = controllers_path.join("index.js")
+application_controller_src = fetch(templates_path + "/application_controller.js.tt")
+application_controller_path = controllers_path / "application_controller.js"
+application_js_src = fetch(templates_path + "/application.js.tt")
+application_js_path = controllers_path / "application.js"
+index_src = fetch(templates_path + "/index.js.esbuild.tt")
+index_path = controllers_path / "index.js"
+friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 
 # create entrypoint/controllers, if necessary
 empty_directory controllers_path unless controllers_path.exist?
@@ -61,45 +43,37 @@ empty_directory controllers_path unless controllers_path.exist?
 copy_file(application_controller_src, application_controller_path) unless application_controller_path.exist?
 
 # configure Stimulus application superclass to import Action Cable consumer
-friendly_application_path = application_path.relative_path_from(Rails.root).to_s
-if application_path.exist?
-  if File.read(application_path).include?("import consumer")
-    say "✅ #{friendly_application_path} is present"
-  else
-    inject_into_file application_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
-    inject_into_file application_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
-    say "#{friendly_application_path} has been updated to import the Action Cable consumer"
+friendly_application_js_path = application_js_path.relative_path_from(Rails.root).to_s
+if application_js_path.exist?
+  backup(application_js_path) do
+    if application_js_path.read.include?("import consumer")
+      say "✅ #{friendly_application_js_path} is present"
+    else
+      inject_into_file application_js_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
+      inject_into_file application_js_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
+      say "#{friendly_application_js_path} has been updated to import the Action Cable consumer"
+    end
   end
 else
-  copy_file(application_src, application_path)
+  copy_file(application_js_src, application_js_path)
 end
 
-friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 if index_path.exist?
-  if File.read(index_path) == File.read(index_src)
-    say "✅ #{friendly_index_path} is present"
-  else
-    copy_file(index_path, "#{index_path}.bak", verbose: false)
-    remove_file(index_path, verbose: false)
-    copy_file(index_src, index_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_index_path}\n", verbose: false)
-    say "#{friendly_index_path} has been created"
-    say "❕ original index.js renamed index.js.bak", :yellow
+  if index_path.read != index_src.read
+    backup(index_path, delete: true) do
+      copy_file(index_src, index_path, verbose: false)
+    end
   end
 else
   copy_file(index_src, index_path)
 end
+say "#{friendly_index_path} has been created"
 
-pack = File.read(pack_path)
 controllers_pattern = /import ['"].\/controllers['"]/
 controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/
 
 if pack.match?(controllers_pattern)
   if pack.match?(controllers_commented_pattern)
-
-    options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-    options = YAML.safe_load(File.read(options_path))
-
     proceed = if options.key? "uncomment"
       options["uncomment"]
     else
@@ -108,23 +82,23 @@ if pack.match?(controllers_pattern)
 
     if proceed
       # uncomment_lines only works with Ruby comments 🙄
-      lines = File.readlines(pack_path)
+      lines = pack_path.readlines
       matches = lines.select { |line| line =~ controllers_commented_pattern }
       lines[lines.index(matches.last).to_i] = "import \".\/controllers\"\n"
-      File.write(pack_path, lines.join)
+      pack_path.write lines.join
       say "✅ Stimulus controllers imported in #{friendly_pack_path}"
     else
-      say "❔ your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
+      say "🤷 your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
     say "✅ Stimulus controllers imported in #{friendly_pack_path}"
   end
 else
-  lines = File.readlines(pack_path)
+  lines = pack_path.readlines
   matches = lines.select { |line| line =~ /^import / }
   lines.insert lines.index(matches.last).to_i + 1, "import \".\/controllers\"\n"
-  File.write(pack_path, lines.join)
+  pack_path.write lines.join
   say "✅ Stimulus controllers imported in #{friendly_pack_path}"
 end
 
-create_file "tmp/stimulus_reflex_installer/esbuild_rails", verbose: false
+complete_step :esbuild

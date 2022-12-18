@@ -1,6 +1,6 @@
 include Rails.application.routes.url_helpers
 
-STEPS = {
+SR_STEPS = {
   "action_cable" => "Action Cable",
   "webpacker" => "Webpacker",
   "npm_packages" => "StimulusReflex and CableReady npm packages",
@@ -15,47 +15,50 @@ STEPS = {
   "mrujs" => "Swap out UJS for mrujs",
   "broadcaster" => "Make CableReady available to channels, controllers, jobs and models",
   "yarn" => "Resolve npm dependency changes",
-  "bundle" => "Resolve gem dependency changes",
+  "bundle" => "Resolve gem dependency changes and install configuration changes",
   "vite" => "Vite",
-  "compression" => "Compress WebSockets traffic with gzip",
-  "finalize" => "Finalize installation"
+  "compression" => "Compress WebSockets traffic with gzip"
 }
 
-FOOTGUNS = {
-  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle", "finalize"],
-  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle", "finalize"]
+SR_FOOTGUNS = {
+  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle"],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle"],
+  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle"],
+  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "yarn", "bundle"],
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle"]
 }
 
-def run_install_template(template, force: false, local: false)
+def github_branch
+  "new_installer"
+end
+
+def run_install_template(template, force: false, local: false, trace: false)
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
     FileUtils.rm(Rails.root.join("tmp/stimulus_reflex_installer/halt"))
     puts "StimulusReflex installation halted. Please fix the issues above and try again."
     exit
   end
   if Rails.root.join("tmp/stimulus_reflex_installer/#{template}").exist? && !force
-    puts "👍 #{STEPS[template]}"
+    puts "👍 #{SR_STEPS[template]}"
     return
   end
 
   if local
-    system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true"
+    system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true LOCAL=true #{"--trace" if trace}"
     icon = "👍🏡"
   else
     begin
-      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/new_installer/lib/install/#{template}.rb", open_timeout: 1, read_timeout: 1).read.strip
+      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{github_branch}/lib/install/#{template}.rb", open_timeout: 1, read_timeout: 1).read.strip
       File.write(Rails.root.join("tmp/stimulus_reflex_installer/templates/#{template}.rb"), template_content)
-      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true")
+      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false GITHUB_BRANCH=#{github_branch} #{"--trace" if trace}")
       icon = "👍"
     rescue
-      system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true"
+      system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true LOCAL=true #{"--trace" if trace}"
       icon = "🏡"
       IO.write("tmp/stimulus_reflex_installer/network_issue", "#{template}\n", mode: "a")
     end
   end
-  puts "#{icon} #{STEPS[template]}" unless Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
+  puts "#{icon} #{SR_STEPS[template]}" unless Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
 end
 
 namespace :stimulus_reflex do
@@ -211,9 +214,11 @@ namespace :stimulus_reflex do
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
     File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))
 
+    `bin/spring stop` if defined?(Spring)
+
     # do the things
-    FOOTGUNS[footgun].each do |template|
-      run_install_template(template, local: !!options["local"])
+    SR_FOOTGUNS[footgun].each do |template|
+      run_install_template(template, local: !!options["local"], trace: !!options["trace"])
     end
 
     puts
@@ -238,7 +243,7 @@ namespace :stimulus_reflex do
 
     backups = File.readlines("tmp/stimulus_reflex_installer/backups").map(&:chomp)
     if backups.any?
-      puts "⚠️  The following files were regenerated during installation:"
+      puts "🙆 The following files were modified during installation:"
       puts
       backups.each { |backup| puts "  #{backup}" }
       puts
@@ -249,18 +254,19 @@ namespace :stimulus_reflex do
 
     if Rails.root.join(".git").exist?
       system "git diff > tmp/stimulus_reflex_installer.diff"
-      puts "A diff of all changes has been saved to \e[1mtmp/stimulus_reflex_installer.diff\e[22m"
+      puts "🏮 A diff of all changes has been saved to \e[1mtmp/stimulus_reflex_installer.diff\e[22m"
       puts
     end
 
     if Rails.root.join("app/reflexes/example_reflex.rb").exist?
       launch = Rails.root.join("bin/dev").exist? ? "bin/dev" : "rails s"
-      puts "Launch \e[1;94m#{launch}\e[0m to access your example Reflex at ⚡ \e[4;97mhttp://localhost:3000/example\e[0m ⚡"
+      puts "🚀 Launch \e[1;94m#{launch}\e[0m to access the example at ⚡ \e[4;97mhttp://localhost:3000/example\e[0m ⚡"
       puts "Once you're finished with the example, you can remove it with \e[1;94mrails destroy stimulus_reflex example\e[0m"
       puts
     end
 
     FileUtils.touch(install_complete)
+    `pkill -f spring` if Rails.root.join("tmp/stimulus_reflex_installer/kill_spring").exist?
     exit
   end
 
@@ -277,9 +283,9 @@ namespace :stimulus_reflex do
       def warning(step = nil)
         return if step.include?("=")
         if step
-          puts "⚠️ #{step} is not a valid step. Valid steps are: #{STEPS.keys.join(", ")}"
+          puts "⚠️ #{step} is not a valid step. Valid steps are: #{SR_STEPS.keys.join(", ")}"
         else
-          puts "❌ You must specify a step to re-run. Valid steps are: #{STEPS.keys.join(", ")}"
+          puts "❌ You must specify a step to re-run. Valid steps are: #{SR_STEPS.keys.join(", ")}"
           puts "Example: \e[1;94mrails stimulus_reflex:install:step initializers\e[0m"
         end
       end
@@ -287,7 +293,7 @@ namespace :stimulus_reflex do
       warning if ARGV.empty?
 
       ARGV.each do |step|
-        STEPS.include?(step) ? run_install_template(step, force: true) : warning(step)
+        SR_STEPS.include?(step) ? run_install_template(step, force: true) : warning(step)
       end
       exit
     end

@@ -1,19 +1,21 @@
-# verify app/reflexes exists and create if necessary
+require "stimulus_reflex/installer"
+
 reflexes_path = Rails.root.join("app/reflexes")
+templates_path = File.expand_path(template_src + "/app/reflexes", File.join(File.dirname(__FILE__)))
+application_reflex_path = reflexes_path / "application_reflex.rb"
+application_reflex_src = fetch(templates_path + "/application_reflex.rb.tt")
+
+# verify app/reflexes exists and create if necessary
 if reflexes_path.exist?
   say "✅ app/reflexes directory is present"
 else
   empty_directory reflexes_path
 end
 
-template_src = File.read("tmp/stimulus_reflex_installer/template_src")
-templates_path = File.expand_path(template_src + "/app/reflexes", File.join(File.dirname(__FILE__)))
-application_reflex_path = Rails.root.join("app/reflexes/application_reflex.rb")
-application_reflex_src = templates_path + "/application_reflex.rb.tt"
 if application_reflex_path.exist?
   say "✅ app/reflexes/application_reflex.rb is present"
 else
   copy_file application_reflex_src, application_reflex_path
 end
 
-create_file "tmp/stimulus_reflex_installer/reflexes", verbose: false
+complete_step :reflexes

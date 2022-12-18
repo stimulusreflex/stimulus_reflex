@@ -1,11 +1,14 @@
+require "stimulus_reflex/installer"
+
 # verify that Action Cable is installed
 if defined?(ActionCable::Engine)
   say "✅ ActionCable::Engine is required and in scope"
 else
-  say "❌ ActionCable::Engine is not required. Please add or uncomment `require \"action_cable/engine\"` to your `config/application.rb`", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
+  halt "ActionCable::Engine is not required. Please add or uncomment `require \"action_cable/engine\"` to your `config/application.rb`"
   return
 end
+
+return if pack_path_missing?
 
 # verify that the Action Cable pubsub config is created
 cable_config = Rails.root.join("config/cable.yml")
@@ -19,7 +22,7 @@ else
 end
 
 # verify that the Action Cable pubsub is set to use redis in development
-yaml = YAML.safe_load(File.read(cable_config))
+yaml = YAML.safe_load(cable_config.read)
 app_name = Rails.application.class.module_parent.name.underscore
 
 if yaml["development"]["adapter"] == "redis"
@@ -30,80 +33,54 @@ elsif yaml["development"]["adapter"] == "async"
     "url" => "<%= ENV.fetch(\"REDIS_URL\") { \"redis://localhost:6379/1\" } %>",
     "channel_prefix" => "#{app_name}_development"
   }
-  File.write(cable_config, yaml.to_yaml)
+  backup(cable_config) do
+    cable_config.write(yaml.to_yaml)
+  end
   say "✅ config/cable.yml was updated to use the redis adapter in development"
 else
-  say "❔ config/cable.yml should use the redis adapter - or something like it - in development. You have something else specified, and we trust that you know what you're doing."
+  say "🤷 config/cable.yml should use the redis adapter - or something like it - in development. You have something else specified, and we trust that you know what you're doing."
 end
 
 # install action-cable-redis-backport gem if using Action Cable < 7.1
 unless ActionCable::VERSION::MAJOR >= 7 && ActionCable::VERSION::MINOR >= 1
-  if !File.read(Rails.root.join("Gemfile")).match?(/gem ['"]action-cable-redis-backport['"]/)
-    add_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/add_gem_list")
-    FileUtils.touch(add_gem_list)
-    append_file(add_gem_list, "action-cable-redis-backport@~> 1\n", verbose: false)
-    say "💡 Added action-cable-redis-backport 1.0.0 to the Gemfile"
+  if !gemfile.match?(/gem ['"]action-cable-redis-backport['"]/)
+    add_gem "action-cable-redis-backport@~> 1"
   end
 end
 
 # verify that the Action Cable channels folder and consumer class is available
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
-footgun = File.read("tmp/stimulus_reflex_installer/footgun")
-template_src = File.read("tmp/stimulus_reflex_installer/template_src")
 templates_path = File.expand_path(template_src + "/app/javascript/channels", File.join(File.dirname(__FILE__)))
 channels_path = Rails.root.join(entrypoint, "channels")
-consumer_src = templates_path + "/consumer.js.tt"
-consumer_path = channels_path.join("consumer.js")
-index_src = templates_path + "/index.js.#{footgun}.tt"
-index_path = channels_path.join("index.js")
+consumer_src = fetch(templates_path + "/consumer.js.tt")
+consumer_path = channels_path / "consumer.js"
+index_src = fetch(templates_path + "/index.js.#{footgun}.tt")
+index_path = channels_path / "index.js"
+friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 
 empty_directory channels_path unless channels_path.exist?
 
 copy_file(consumer_src, consumer_path) unless consumer_path.exist?
 
-friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 if index_path.exist?
-  if File.read(index_path) == File.read(index_src)
+  if index_path.read == index_src.read
     say "✅ #{friendly_index_path} is present"
   else
-    copy_file(index_path, "#{index_path}.bak", verbose: false)
-    remove_file(index_path, verbose: false)
-    copy_file(index_src, index_path, verbose: false)
-    append_file("tmp/stimulus_reflex_installer/backups", "#{friendly_index_path}\n", verbose: false)
-    say "#{friendly_index_path} has been created"
-    say "❕ original index.js renamed index.js.bak", :yellow
+    backup(index_path) do
+      copy_file(index_src, index_path, verbose: false)
+    end
+    say "✅ #{friendly_index_path} has been created"
   end
 else
   copy_file(index_src, index_path)
 end
 
-pack_path = [
-  Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js"),
-  Rails.root.join(entrypoint, "entrypoints/application.js")
-].find { |path| File.exist?(path) }
-
-# don't proceed unless application pack exists
-if pack_path.nil?
-  say "❌ #{pack_path} is missing", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
-  return
-end
-friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
-
 # import Action Cable channels into application pack
-pack = File.read(pack_path)
-channels_pattern = /import ['"](\.\/)?channels['"]/
+channels_pattern = /import ['"](\.\.\/|\.\/)?channels['"]/
 channels_commented_pattern = /\s*\/\/\s*#{channels_pattern}/
-prefix = {"vite" => "..\/", "webpacker" => "", "shakapacker" => "", "importmap" => "", "esbuild" => ".\/"}[footgun]
 channel_import = "import \"#{prefix}channels\"\n"
 
 if pack.match?(channels_pattern)
   if pack.match?(channels_commented_pattern)
-
-    options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-    options = YAML.safe_load(File.read(options_path))
-
     proceed = if options.key? "uncomment"
       options["uncomment"]
     else
@@ -112,33 +89,31 @@ if pack.match?(channels_pattern)
 
     if proceed
       # uncomment_lines only works with Ruby comments 🙄
-      lines = File.readlines(pack_path)
+      lines = pack_path.readlines
       matches = lines.select { |line| line =~ channels_commented_pattern }
       lines[lines.index(matches.last).to_i] = channel_import
-      File.write(pack_path, lines.join)
+      pack_path.write lines.join
       say "✅ channels imported in #{friendly_pack_path}"
     else
-      say "❔ your Action Cable channels are not being imported in your application.js. We trust that you have a reason for this."
+      say "🤷 your Action Cable channels are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
     say "✅ channels imported in #{friendly_pack_path}"
   end
 else
-  lines = File.readlines(pack_path)
+  lines = pack_path.readlines
   matches = lines.select { |line| line =~ /^import / }
   lines.insert lines.index(matches.last).to_i + 1, channel_import
-  File.write(pack_path, lines.join)
+  pack_path.write lines.join
   say "✅ channels imported in #{friendly_pack_path}"
 end
 
 # create working copy of Action Cable initializer in tmp
-working = Rails.root.join("tmp/stimulus_reflex_installer/working")
-FileUtils.mkdir_p(working)
-initializer_path = Rails.root.join("config/initializers/action_cable.rb")
-
-if !initializer_path.exist?
+if action_cable_initializer_path.exist?
+  FileUtils.cp(action_cable_initializer_path, action_cable_initializer_working_path)
+else
   # create Action Cable initializer if it doesn't already exist
-  create_file(initializer_path, verbose: false) do
+  create_file(action_cable_initializer_working_path, verbose: false) do
     <<~RUBY
       # frozen_string_literal: true
 
@@ -148,8 +123,8 @@ if !initializer_path.exist?
 end
 
 # silence notoriously chatty Action Cable logs
-if !File.read(initializer_path).match?(/^[^#]*ActionCable.server.config.logger/)
-  append_file(initializer_path, verbose: false) do
+if !action_cable_initializer_working_path.read.match?(/^[^#]*ActionCable.server.config.logger/)
+  append_file(action_cable_initializer_working_path, verbose: false) do
     <<~RUBY
       ActionCable.server.config.logger = Logger.new(nil)
 
@@ -158,7 +133,4 @@ if !File.read(initializer_path).match?(/^[^#]*ActionCable.server.config.logger/)
   say "✅ Action Cable logger silenced for performance and legibility"
 end
 
-initializer_working_path = Rails.root.join(working, "action_cable.rb")
-FileUtils.cp(initializer_path, initializer_working_path)
-
-create_file "tmp/stimulus_reflex_installer/action_cable", verbose: false
+complete_step :action_cable

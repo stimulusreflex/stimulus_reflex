@@ -1,53 +1,35 @@
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
+require "stimulus_reflex/installer"
 
-pack_path = [
-  Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js"),
-  Rails.root.join(entrypoint, "entrypoints/application.js")
-].find { |path| File.exist?(path) }
+return if pack_path_missing?
 
-# don't proceed unless application pack exists
-if pack_path.nil?
-  say "❌ #{pack_path} is missing", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
-  return
-end
-
-footgun = File.read("tmp/stimulus_reflex_installer/footgun")
-config_path = Rails.root.join(entrypoint, "config")
-template_src = File.read("tmp/stimulus_reflex_installer/template_src")
 templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
-index_src = templates_path + "/index.js.tt"
-index_path = config_path.join("index.js")
-stimulus_reflex_src = templates_path + "/stimulus_reflex.js.tt"
-stimulus_reflex_path = config_path.join("stimulus_reflex.js")
-cable_ready_src = templates_path + "/cable_ready.js.tt"
-cable_ready_path = config_path.join("cable_ready.js")
-
-pack = File.read(pack_path)
-friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
+index_src = fetch(templates_path + "/index.js.tt")
+index_path = config_path / "index.js"
+stimulus_reflex_src = fetch(templates_path + "/stimulus_reflex.js.tt")
+stimulus_reflex_path = config_path / "stimulus_reflex.js"
+cable_ready_src = fetch(templates_path + "/cable_ready.js.tt")
+cable_ready_path = config_path / "cable_ready.js"
 
 empty_directory config_path unless config_path.exist?
 
 copy_file(index_src, index_path) unless File.exist?(index_path)
 
-index_pattern = /import ['"].\/config['"]/
+index_pattern = /import ['"](\.\.\/|\.\/)?config['"]/
 index_commented_pattern = /\s*\/\/\s*#{index_pattern}/
-prefix = {"vite" => "..\/", "webpacker" => "", "shakapacker" => "", "importmap" => "", "esbuild" => ".\/"}[footgun]
 index_import = "import \"#{prefix}config\"\n"
 
 if pack.match?(index_pattern)
   if pack.match?(index_commented_pattern)
-    lines = File.readlines(pack_path)
+    lines = pack_path.readlines
     matches = lines.select { |line| line =~ index_commented_pattern }
     lines[lines.index(matches.last).to_i] = index_import
-    File.write(pack_path, lines.join)
+    pack_path.write lines.join
   end
 else
-  lines = File.readlines(pack_path)
+  lines = pack_path.readlines
   matches = lines.select { |line| line =~ /^import / }
   lines.insert lines.index(matches.last).to_i + 1, index_import
-  File.write(pack_path, lines.join)
+  pack_path.write lines.join
 end
 say "✅ SR/CR configs will be imported in #{friendly_pack_path}"
 
@@ -58,7 +40,7 @@ copy_file(cable_ready_src, cable_ready_path) unless File.exist?(cable_ready_path
 copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
 
 if ["webpacker", "shakapacker"].include?(footgun)
-  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
+  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
     if (process.env.RAILS_ENV === 'development') {
       StimulusReflex.debug = true
@@ -66,15 +48,15 @@ if ["webpacker", "shakapacker"].include?(footgun)
     }
   JS
 elsif footgun == "vite"
-  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
+  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
-    if (import.meta.env.DEV) {
+    if (import.meta.env.MODE === "development") {
       StimulusReflex.debug = true
       window.reflexes = StimulusReflex.reflexes
     }
   JS
 else
-  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless File.read(stimulus_reflex_path).include?("StimulusReflex.debug")
+  append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
     // consider removing these options in production
     StimulusReflex.debug = true
@@ -84,4 +66,4 @@ else
 end
 say "✅ Set useful development environment options"
 
-create_file "tmp/stimulus_reflex_installer/config", verbose: false
+complete_step :config

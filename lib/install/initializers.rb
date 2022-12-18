@@ -1,3 +1,5 @@
+require "stimulus_reflex/installer"
+
 sr_initializer_path = Rails.root.join("config/initializers/stimulus_reflex.rb")
 cr_initializer_path = Rails.root.join("config/initializers/cable_ready.rb")
 
@@ -7,4 +9,4 @@ say "✅ StimulusReflex initializer created at config/initializers/stimulus_refl
 generate "cable_ready:initializer" unless cr_initializer_path.exist?
 say "✅ CableReady initializer created at config/initializers/cable_ready.rb"
 
-create_file "tmp/stimulus_reflex_installer/initializers", verbose: false
+complete_step :initializers

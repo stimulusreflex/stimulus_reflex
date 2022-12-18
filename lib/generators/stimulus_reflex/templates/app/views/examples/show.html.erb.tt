@@ -9,7 +9,7 @@
 
     <%% if respond_to?(:vite_javascript_tag) %>
     <%%= vite_client_tag %>
-    <%%= vite_javascript_tag "application" %>
+    <%%= vite_javascript_tag "application", defer: true %>
     <%% elsif respond_to?(:javascript_pack_tag) %>
     <%%= javascript_pack_tag "application", defer: true %>
     <%% elsif respond_to?(:javascript_importmap_tags) %>

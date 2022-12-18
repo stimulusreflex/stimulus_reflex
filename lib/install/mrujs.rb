@@ -1,32 +1,11 @@
-entrypoint = File.read("tmp/stimulus_reflex_installer/entrypoint")
-config_path = Rails.root.join(entrypoint, "config")
-mrujs_path = config_path.join("mrujs.js")
+require "stimulus_reflex/installer"
 
-pack_path = [
-  Rails.root.join(entrypoint, "application.js"),
-  Rails.root.join(entrypoint, "packs/application.js"),
-  Rails.root.join(entrypoint, "entrypoints/application.js")
-].find { |path| File.exist?(path) }
+return if pack_path_missing?
 
-# don't proceed unless application pack exists
-if pack_path.nil?
-  say "❌ #{pack_path} is missing", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
-  return
-end
-
-# don't proceed unless config folder exists
-if config_path.nil?
-  say "❌ #{config_path} is missing", :red
-  create_file "tmp/stimulus_reflex_installer/halt", verbose: false
-  return
-end
+mrujs_path = config_path / "mrujs.js"
 
 proceed = true
 if !File.exist?(mrujs_path)
-  options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-  options = YAML.safe_load(File.read(options_path))
-
   proceed = if options.key? "mrujs"
     options["mrujs"]
   else
@@ -35,59 +14,49 @@ if !File.exist?(mrujs_path)
 end
 
 if proceed
-  footgun = File.read("tmp/stimulus_reflex_installer/footgun")
-
   if footgun == "importmap"
-    importmap_path = Rails.root.join("config/importmap.rb")
-    friendly_importmap_path = importmap_path.relative_path_from(Rails.root).to_s
 
     if !importmap_path.exist?
-      say "❌ #{friendly_importmap_path} is missing. You need a valid importmap config file to proceed.", :red
-      create_file "tmp/stimulus_reflex_installer/halt", verbose: false
+      halt "#{friendly_importmap_path} is missing. You need a valid importmap config file to proceed."
       return
     end
 
-    importmap = File.read(importmap_path)
+    importmap = importmap_path.read
 
     if !importmap.include?("pin \"mrujs\"")
-      append_file(importmap_path, <<~RUBY)
+      append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs", to: "https://ga.jspm.io/npm:mrujs@0.10.1/dist/index.module.js"
       RUBY
+      say "✅ pin mrujs"
     end
 
     if !importmap.include?("pin \"mrujs\/plugins\"")
-      append_file(importmap_path, <<~RUBY)
+      append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs/plugins", to: "https://ga.jspm.io/npm:mrujs@0.10.1/plugins/dist/plugins.module.js"
       RUBY
+      say "✅ pin mrujs plugins"
     end
   else
     # queue mrujs for installation
-    if !File.read(Rails.root.join("package.json")).include?('"mrujs":')
-      package_list = Rails.root.join("tmp/stimulus_reflex_installer/npm_package_list")
-      FileUtils.touch(package_list)
-      append_file(package_list, "mrujs@^0.10.1\n", verbose: false)
-      say "✅ Enqueued mrujs@^0.10.1 to be added to dependencies"
+    if !package_json.read.include?('"mrujs":')
+      add_package "mrujs@^0.10.1"
     end
 
     # queue @rails/ujs for removal
-    if File.read(Rails.root.join("package.json")).include?('"@rails/ujs":')
-      drop_package_list = Rails.root.join("tmp/stimulus_reflex_installer/drop_npm_package_list")
-      FileUtils.touch(drop_package_list)
-      append_file(drop_package_list, "@rails/ujs\n", verbose: false)
-      say "✅ Enqueued @rails/ujs to be removed from dependencies"
+    if package_json.read.include?('"@rails/ujs":')
+      drop_package "@rails/ujs"
     end
   end
 
-  template_src = File.read("tmp/stimulus_reflex_installer/template_src")
   templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
-  mrujs_src = templates_path + "/mrujs.js.tt"
+  mrujs_src = fetch(templates_path + "/mrujs.js.tt")
 
   # create entrypoint/config/mrujs.js if necessary
   copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)
 
   # import mrujs config in entrypoint/config/index.js
-  index_path = config_path.join("index.js")
-  index = File.read(index_path)
+  index_path = config_path / "index.js"
+  index = index_path.read
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
   mrujs_pattern = /import ['"].\/mrujs['"]/
   mrujs_import = "import '.\/mrujs'\n"
@@ -98,10 +67,9 @@ if proceed
   say "✅ mrujs imported in #{friendly_index_path}"
 
   # remove @rails/ujs from application.js
-  friendly_pack_path = pack_path.relative_path_from(Rails.root).to_s
   rails_ujs_pattern = /import Rails from ['"]@rails\/ujs['"]/
 
-  lines = File.readlines(pack_path)
+  lines = pack_path.readlines
   if lines.index { |line| line =~ rails_ujs_pattern }
     gsub_file pack_path, rails_ujs_pattern, "", verbose: false
     say "✅ @rails/ujs removed from #{friendly_pack_path}"
@@ -111,42 +79,40 @@ if proceed
   application_path = Rails.root.join("config/application.rb")
   application_pattern = /^[^#]*config\.action_view\.form_with_generates_remote_forms = true/
   defaults_pattern = /config\.load_defaults \d\.\d/
-  lines = File.readlines(application_path)
 
-  if !lines.index { |line| line =~ application_pattern }
-    if (index = lines.index { |line| line =~ /^[^#]*#{defaults_pattern}/ })
-      gsub_file application_path, /\s*#{defaults_pattern}\n/, verbose: false do
-      <<-RUBY
-\n#{lines[index]}
-    # form_with helper will generate remote forms by default (mrujs)
-    config.action_view.form_with_generates_remote_forms = true
-      RUBY
-      end
-    else
-      insert_into_file application_path, after: "class Application < Rails::Application" do
-        <<-RUBY
+  lines = application_path.readlines
+  backup(application_path) do
+    if !lines.index { |line| line =~ application_pattern }
+      if (index = lines.index { |line| line =~ /^[^#]*#{defaults_pattern}/ })
+        gsub_file application_path, /\s*#{defaults_pattern}\n/, verbose: false do
+          <<-RUBY
+  \n#{lines[index]}
+      # form_with helper will generate remote forms by default (mrujs)
+      config.action_view.form_with_generates_remote_forms = true
+          RUBY
+        end
+      else
+        insert_into_file application_path, after: "class Application < Rails::Application" do
+          <<-RUBY
 
-    # form_with helper will generate remote forms by default (mrujs)
-    config.action_view.form_with_generates_remote_forms = true
-        RUBY
+      # form_with helper will generate remote forms by default (mrujs)
+      config.action_view.form_with_generates_remote_forms = true
+          RUBY
+        end
       end
     end
+    say "✅ form_with_generates_remote_forms set to true in config/application.rb"
   end
-  say "✅ form_with_generates_remote_forms set to true in config/application.rb"
 
   # remove turbolinks from Gemfile because it's incompatible with mrujs (and unnecessary)
-  gemfile = Rails.root.join("Gemfile")
   turbolinks_pattern = /^[^#]*gem ["']turbolinks["']/
 
-  lines = File.readlines(gemfile)
+  lines = gemfile_path.readlines
   if lines.index { |line| line =~ turbolinks_pattern }
-    remove_gem_list = Rails.root.join("tmp/stimulus_reflex_installer/remove_gem_list")
-    FileUtils.touch(remove_gem_list)
-    append_file(remove_gem_list, "turbolinks\n", verbose: false)
-    say "✅ Removed turbolinks from Gemfile, since it's incompatible with mrujs"
+    remove_gem :turbolinks
   else
     say "✅ turbolinks is not present in Gemfile"
   end
 end
 
-create_file "tmp/stimulus_reflex_installer/mrujs", verbose: false
+complete_step :mrujs

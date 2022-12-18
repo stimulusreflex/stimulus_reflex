@@ -42,7 +42,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
-      controller_src = "app/controllers/example_controllers.rb.tt"
+      controller_src = "app/controllers/examples_controller.rb.tt"
       controller_path = Rails.root.join("app/controllers/examples_controller.rb")
       template(controller_src, controller_path)
 
