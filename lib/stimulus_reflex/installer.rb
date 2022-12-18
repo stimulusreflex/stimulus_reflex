@@ -3,17 +3,18 @@ require "cable_ready/version"
 
 ### general utilities
 
-def fetch(file)
-  return Pathname.new(file) if ENV["LOCAL"] == "true"
+def fetch(step_path, file)
+  location = template_src + step_path + file
+  return Pathname.new(location) if ENV["LOCAL"] == "true"
 
   begin
-    local_file = Rails.root.join(working, file)
-    FileUtils.mkdir_p(working, file.split("/")[0..-2].join("/"))
-    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates/#{file}", open_timeout: 1, read_timeout: 1).read.strip)
+    local_file = Rails.root.join(working, location)
+    FileUtils.mkdir_p(working, location.split("/")[0..-2].join("/"))
+    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{step_path + file}", open_timeout: 1, read_timeout: 1).read.strip)
     local_file
   rescue
     create_or_append(network_issue_path, current_template + "\n", verbose: false)
-    Pathname.new(file)
+    Pathname.new(location)
   end
 end
 

@@ -28,12 +28,13 @@ if !lines.index { |line| line =~ /^\s*["']webpack-dev-server["']: ["']\^3.11.3["
   add_dev_package "webpack-dev-server@^3.11.3"
 end
 
-controller_templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
-application_controller_src = fetch(controller_templates_path + "/application_controller.js.tt")
+step_path = "/app/javascript/controllers"
+# controller_templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
+application_controller_src = fetch(step_path, "application_controller.js.tt")
 application_controller_path = controllers_path / "application_controller.js"
-application_js_src = fetch(controller_templates_path + "/application.js.tt")
+application_js_src = fetch(step_path, "application.js.tt")
 application_js_path = controllers_path / "application.js"
-index_src = fetch(controller_templates_path + "/index.js.webpacker.tt")
+index_src = fetch(step_path, "index.js.webpacker.tt")
 index_path = controllers_path / "index.js"
 
 # create entrypoint/controllers, as well as the index, application and application_controller

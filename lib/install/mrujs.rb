@@ -48,8 +48,8 @@ if proceed
     end
   end
 
-  templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
-  mrujs_src = fetch(templates_path + "/mrujs.js.tt")
+  step_path = "/app/javascript/config/"
+  mrujs_src = fetch(step_path, "mrujs.js.tt")
 
   # create entrypoint/config/mrujs.js if necessary
   copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)

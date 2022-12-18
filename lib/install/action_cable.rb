@@ -49,11 +49,11 @@ unless ActionCable::VERSION::MAJOR >= 7 && ActionCable::VERSION::MINOR >= 1
 end
 
 # verify that the Action Cable channels folder and consumer class is available
-templates_path = File.expand_path(template_src + "/app/javascript/channels", File.join(File.dirname(__FILE__)))
+step_path = "/app/javascript/channels/"
 channels_path = Rails.root.join(entrypoint, "channels")
-consumer_src = fetch(templates_path + "/consumer.js.tt")
+consumer_src = fetch(step_path, "consumer.js.tt")
 consumer_path = channels_path / "consumer.js"
-index_src = fetch(templates_path + "/index.js.#{footgun}.tt")
+index_src = fetch(step_path, "index.js.#{footgun}.tt")
 index_path = channels_path / "index.js"
 friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 

@@ -13,7 +13,7 @@ if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
   add_package "@hotwired/stimulus@^3.2"
 end
 # copy esbuild.config.js to app root
-esbuild_src = fetch(File.expand_path(template_src + "/esbuild.config.js.tt", File.join(File.dirname(__FILE__))))
+esbuild_src = fetch("/", "esbuild.config.js.tt")
 esbuild_path = Rails.root.join("esbuild.config.js")
 if esbuild_path.exist?
   if esbuild_path.read == esbuild_src.read
@@ -27,12 +27,12 @@ else
   template(esbuild_src, esbuild_path, entrypoint: entrypoint)
 end
 
-templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
-application_controller_src = fetch(templates_path + "/application_controller.js.tt")
+step_path = "/app/javascript/controllers/"
+application_controller_src = fetch(step_path, "application_controller.js.tt")
 application_controller_path = controllers_path / "application_controller.js"
-application_js_src = fetch(templates_path + "/application.js.tt")
+application_js_src = fetch(step_path, "application.js.tt")
 application_js_path = controllers_path / "application.js"
-index_src = fetch(templates_path + "/index.js.esbuild.tt")
+index_src = fetch(step_path, "index.js.esbuild.tt")
 index_path = controllers_path / "index.js"
 friendly_index_path = index_path.relative_path_from(Rails.root).to_s
 

@@ -2,12 +2,12 @@ require "stimulus_reflex/installer"
 
 return if pack_path_missing?
 
-templates_path = File.expand_path(template_src + "/app/javascript/config", File.join(File.dirname(__FILE__)))
-index_src = fetch(templates_path + "/index.js.tt")
+step_path = "/app/javascript/config/"
+index_src = fetch(step_path, "index.js.tt")
 index_path = config_path / "index.js"
-stimulus_reflex_src = fetch(templates_path + "/stimulus_reflex.js.tt")
+stimulus_reflex_src = fetch(step_path, "stimulus_reflex.js.tt")
 stimulus_reflex_path = config_path / "stimulus_reflex.js"
-cable_ready_src = fetch(templates_path + "/cable_ready.js.tt")
+cable_ready_src = fetch(step_path, "cable_ready.js.tt")
 cable_ready_path = config_path / "cable_ready.js"
 
 empty_directory config_path unless config_path.exist?

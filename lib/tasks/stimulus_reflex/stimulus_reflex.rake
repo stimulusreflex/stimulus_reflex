@@ -32,7 +32,7 @@ def github_branch
   "new_installer"
 end
 
-def run_install_template(template, force: false, local: false, trace: false)
+def run_install_template(template, force: false, local: false, trace: false, timeout: 1)
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
     FileUtils.rm(Rails.root.join("tmp/stimulus_reflex_installer/halt"))
     puts "StimulusReflex installation halted. Please fix the issues above and try again."
@@ -48,7 +48,7 @@ def run_install_template(template, force: false, local: false, trace: false)
     icon = "👍🏡"
   else
     begin
-      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{github_branch}/lib/install/#{template}.rb", open_timeout: 1, read_timeout: 1).read.strip
+      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{github_branch}/lib/install/#{template}.rb", open_timeout: timeout, read_timeout: timeout).read.strip
       File.write(Rails.root.join("tmp/stimulus_reflex_installer/templates/#{template}.rb"), template_content)
       system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false GITHUB_BRANCH=#{github_branch} #{"--trace" if trace}")
       icon = "👍"
@@ -90,6 +90,7 @@ namespace :stimulus_reflex do
       end
     end
     options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
+    options.merge({"timeout": 1})
     File.write(options_path, options.to_yaml)
 
     puts <<~ANSI
@@ -218,7 +219,7 @@ namespace :stimulus_reflex do
 
     # do the things
     SR_FOOTGUNS[footgun].each do |template|
-      run_install_template(template, local: !!options["local"], trace: !!options["trace"])
+      run_install_template(template, local: !!options["local"], trace: !!options["trace"], timeout: options["timeout"])
     end
 
     puts

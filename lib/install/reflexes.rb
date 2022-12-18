@@ -1,9 +1,9 @@
 require "stimulus_reflex/installer"
 
 reflexes_path = Rails.root.join("app/reflexes")
-templates_path = File.expand_path(template_src + "/app/reflexes", File.join(File.dirname(__FILE__)))
+step_path = "/app/reflexes/"
 application_reflex_path = reflexes_path / "application_reflex.rb"
-application_reflex_src = fetch(templates_path + "/application_reflex.rb.tt")
+application_reflex_src = fetch(step_path, "application_reflex.rb.tt")
 
 # verify app/reflexes exists and create if necessary
 if reflexes_path.exist?
