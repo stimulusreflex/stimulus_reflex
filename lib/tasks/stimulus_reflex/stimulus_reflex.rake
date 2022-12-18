@@ -238,7 +238,7 @@ namespace :stimulus_reflex do
         puts "  \e[33;1;196m- #{issue}\e[0m"
       end
       puts
-      puts "\e[33;1;196mLocal copies 🏡 that shipped with StimulusReflex #{StimulusReflex::VERSION} (NOTE: new_installer branch) were used.\nThis is *probably* okay, but run \e[1;94mrails stimulus_reflex:install:restart\e[0m if something seems broken.\e[0m"
+      puts "\e[33;1;196mLocal copies 🏡 that shipped with StimulusReflex #{StimulusReflex::VERSION} (NOTE: new_installer branch) were used.\nThis is *probably* okay, but run \e[1;94mrails stimulus_reflex:install:restart timeout=3\e[0m if something seems broken, or you're on a slow connection.\e[0m"
       puts
     end
 
