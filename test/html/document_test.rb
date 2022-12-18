@@ -167,4 +167,16 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     assert_equal outer_p, document.match("p").outer_html.squish
     assert_equal inner_p, document.match("p").inner_html.squish
   end
+
+  test "should properly handle a tr without the parent table" do
+    html = "<tr><td>1</td><td>2</td></tr>"
+    document = StimulusReflex::HTML::Document.new(html)
+    assert_equal html, document.to_html
+  end
+
+  test "should properly handle a td without the parent table or td" do
+    html = "<td>1</td>"
+    document = StimulusReflex::HTML::Document.new(html)
+    assert_equal html, document.to_html
+  end
 end
