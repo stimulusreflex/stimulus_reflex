@@ -10,7 +10,8 @@ def fetch(step_path, file)
   begin
     local_file = Rails.root.join(working, location)
     FileUtils.mkdir_p(working, location.split("/")[0..-2].join("/"))
-    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{step_path + file}", open_timeout: 1, read_timeout: 1).read.strip)
+    timeout = options["timeout"].to_i
+    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{step_path + file}", open_timeout: timeout, read_timeout: timeout).read.strip)
     local_file
   rescue
     create_or_append(network_issue_path, current_template + "\n", verbose: false)

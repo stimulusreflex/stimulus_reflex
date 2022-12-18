@@ -67,7 +67,7 @@ if index_path.exist?
 else
   copy_file(index_src, index_path)
 end
-say "#{friendly_index_path} has been created"
+say "✅ #{friendly_index_path} has been created"
 
 controllers_pattern = /import ['"].\/controllers['"]/
 controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/

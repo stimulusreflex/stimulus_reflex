@@ -90,7 +90,7 @@ namespace :stimulus_reflex do
       end
     end
     options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-    options.merge({"timeout": 1})
+    options.reverse_merge!({"timeout" => 1})
     File.write(options_path, options.to_yaml)
 
     puts <<~ANSI
@@ -219,7 +219,7 @@ namespace :stimulus_reflex do
 
     # do the things
     SR_FOOTGUNS[footgun].each do |template|
-      run_install_template(template, local: !!options["local"], trace: !!options["trace"], timeout: options["timeout"])
+      run_install_template(template, local: !!options["local"], trace: !!options["trace"], timeout: options["timeout"].to_i)
     end
 
     puts
