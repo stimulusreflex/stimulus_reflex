@@ -11,7 +11,7 @@ def fetch(step_path, file)
   begin
     local_file = Pathname.new(working.to_s + relative_path)
     FileUtils.mkdir_p(working.to_s + relative_path.split("/")[0..-2].join("/"))
-    timeout = YAML.safe_load(File.read(options_path))["timeout"]
+    timeout = YAML.safe_load(File.read(options_path))["timeout"].to_i
     local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{relative_path}", open_timeout: timeout, read_timeout: timeout).read)
     local_file
   rescue

@@ -24,7 +24,7 @@ module StimulusReflex
         tmp_path = working.to_s + file
         url = "https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{StimulusReflex::BRANCH}/lib/generators/stimulus_reflex/templates#{file}"
         FileUtils.mkdir_p(tmp_path.split("/")[0..-2].join("/"))
-        File.write(tmp_path, URI.open(url, open_timeout: options[:timeout], read_timeout: options[:timeout]).read)
+        File.write(tmp_path, URI.open(url, open_timeout: options[:timeout].to_i, read_timeout: options[:timeout].to_i).read)
         tmp_path
       rescue
         source_paths.first + file
