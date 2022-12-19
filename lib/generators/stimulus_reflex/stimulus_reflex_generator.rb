@@ -18,8 +18,8 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       entrypoint = File.read(cached_entrypoint)
     else
       entrypoint = [
-        "app/javascript",
-        "app/frontend"
+        Rails.root.join("app/javascript"),
+        Rails.root.join("app/frontend")
       ].find(&:exist?) || "app/javascript"
       puts "Where do JavaScript files live in your app? Our best guess is: \e[1#{entrypoint}\e[22m 🤔"
       puts "Press enter to accept this, or type a different path."
