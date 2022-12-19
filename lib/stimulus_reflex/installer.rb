@@ -9,10 +9,10 @@ def fetch(step_path, file)
   return Pathname.new(location) if ENV["LOCAL"] == "true"
 
   begin
-    local_file = Rails.root.join(working, location)
+    local_file = Pathname.new(working.to_s + relative_path)
     FileUtils.mkdir_p(working.to_s + relative_path.split("/")[0..-2].join("/"))
     timeout = YAML.safe_load(File.read(options_path))["timeout"]
-    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{relative_path}", open_timeout: timeout, read_timeout: timeout).read.strip)
+    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{ENV["GITHUB_BRANCH"]}/lib/generators/stimulus_reflex/templates#{relative_path}", open_timeout: timeout, read_timeout: timeout).read)
     local_file
   rescue
     create_or_append(network_issue_path, current_template + "\n", verbose: false)

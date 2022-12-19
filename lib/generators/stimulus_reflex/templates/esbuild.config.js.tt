@@ -11,3 +11,4 @@ require('esbuild')
     plugins: [rails()]
   })
   .catch(() => process.exit(1))
+  

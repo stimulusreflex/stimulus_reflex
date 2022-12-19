@@ -28,10 +28,6 @@ SR_FOOTGUNS = {
   "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle"]
 }
 
-def github_branch
-  "new_installer"
-end
-
 def run_install_template(template, force: false, local: false, trace: false, timeout: 1)
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
     FileUtils.rm(Rails.root.join("tmp/stimulus_reflex_installer/halt"))
@@ -48,9 +44,9 @@ def run_install_template(template, force: false, local: false, trace: false, tim
     icon = "👍🏡"
   else
     begin
-      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{github_branch}/lib/install/#{template}.rb", open_timeout: timeout, read_timeout: timeout).read.strip
+      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{StimulusReflex::BRANCH}/lib/install/#{template}.rb", open_timeout: timeout, read_timeout: timeout).read
       File.write(Rails.root.join("tmp/stimulus_reflex_installer/templates/#{template}.rb"), template_content)
-      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false GITHUB_BRANCH=#{github_branch} #{"--trace" if trace}")
+      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false GITHUB_BRANCH=#{StimulusReflex::BRANCH} #{"--trace" if trace}")
       icon = "👍"
     rescue
       system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true LOCAL=true #{"--trace" if trace}"
