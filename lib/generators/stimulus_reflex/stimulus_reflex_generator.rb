@@ -8,7 +8,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, banner: "NAME"
   argument :actions, type: :array, default: [], banner: "action action"
-  class_options skip_stimulus: false, skip_reflex: false, timeout: 1
+  class_options skip_stimulus: false, skip_reflex: false, timeout: 1, local: false
 
   def execute
     actions.map!(&:underscore)
@@ -62,6 +62,8 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   def fetch(file)
     working = Rails.root.join("tmp/stimulus_reflex_installer/working")
+
+    return (source_paths.first + file) if options[:local]
 
     begin
       tmp_path = working.to_s + file
