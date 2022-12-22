@@ -6,7 +6,7 @@ class ExamplesController < ApplicationController
       format.html
       format.turbo_stream do
         render turbo_stream: turbo_stream.append_all("body", cable_ready_tag(cable_car.console_log(message: "Dear John,\n\nI'd hoped this day would never come. I loved you, but I don't recognize who you've become.\n\nIt's over, and I'm taking the kids.\n\nDon't try to contact me. I hope that Turbo Streams makes you happy in all of the ways that I never could.\n\nGladys")))
-      end
+      end if defined?(Turbo)
     end
   end
 

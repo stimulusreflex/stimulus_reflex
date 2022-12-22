@@ -7,6 +7,14 @@
     <%%= csrf_meta_tags %>
     <%%= csp_meta_tag %>
 
+    <script type="importmap">
+      {
+        "imports": {
+          "fireworks-js": "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
+        }
+      }
+    </script>
+
     <%% if respond_to?(:vite_javascript_tag) %>
     <%%= vite_client_tag %>
     <%%= vite_javascript_tag "application", defer: true %>
@@ -18,13 +26,6 @@
     <%%= javascript_include_tag "application", defer: true %>
     <%% end %>
 
-    <script type="importmap">
-      {
-        "imports": {
-          "fireworks-js": "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
-        }
-      }
-    </script>
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js" crossorigin="anonymous"></script>
     <script type="module">
       import { Fireworks } from 'fireworks-js'
@@ -227,14 +228,16 @@
 
         <kbd><%%= cable_ready_tag(cable_car.console_log(message: "Testy McTestface")) %></kbd>
 
-        <!-- this is live code, so it will execute the operation and then remove itself -->
+        <!-- this is live code, so if @hotwired/turbo-rails is in your JS package, it will execute the operation and then remove itself -->
         <%%= cable_ready_tag(cable_car.console_log(message: "Testy McTestface")).html_safe %>
 
         <p style="margin-top: 1rem;">You can render it as a Turbo Stream response in your controller action:</p>
 
         <kbd>render turbo_stream: turbo_stream.append_all("body", cable_ready_tag(cable_car.console_log(message: "Testy McTestface")))</kbd>
         
-        <p style="margin-top: 1rem;"><%%= link_to 'Send a Console log message with Turbo Streams', "/example", data: { turbo_stream: true } %> right now.</p>
+        <% if defined?(Turbo) %>
+        <p style="margin-top: 1rem;"><%= link_to 'Send a Console log message with Turbo Streams', "/example", data: { turbo_stream: true } %> right now.</p>
+        <% end %>
       </article>
 
       <article>
