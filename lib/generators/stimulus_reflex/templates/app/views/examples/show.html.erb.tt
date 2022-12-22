@@ -235,9 +235,9 @@
 
         <kbd>render turbo_stream: turbo_stream.append_all("body", cable_ready_tag(cable_car.console_log(message: "Testy McTestface")))</kbd>
         
-        <% if defined?(Turbo) %>
+        <%% if defined?(Turbo) %>
         <p style="margin-top: 1rem;"><%= link_to 'Send a Console log message with Turbo Streams', "/example", data: { turbo_stream: true } %> right now.</p>
-        <% end %>
+        <%% end %>
       </article>
 
       <article>
