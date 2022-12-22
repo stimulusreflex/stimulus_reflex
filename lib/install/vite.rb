@@ -12,7 +12,7 @@ if !lines.index { |line| line =~ /^\s*["']stimulus-vite-helpers["']: ["']\^3["']
   add_package "stimulus-vite-helpers@^3"
 end
 
-step_path = "/app/javascript/controllers"
+step_path = "/app/javascript/controllers/"
 # controller_templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
 application_controller_src = fetch(step_path, "application_controller.js.tt")
 application_controller_path = controllers_path / "application_controller.js"

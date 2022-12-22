@@ -12,7 +12,7 @@ if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus-webpack-helpers["'
   add_package "@hotwired/stimulus-webpack-helpers@^1.0.1"
 end
 
-step_path = "/app/javascript/controllers"
+step_path = "/app/javascript/controllers/"
 # controller_templates_path = File.expand_path(template_src + "/app/javascript/controllers", File.join(File.dirname(__FILE__)))
 application_controller_src = fetch(step_path, "application_controller.js.tt")
 application_controller_path = controllers_path / "application_controller.js"
