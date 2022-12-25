@@ -28,7 +28,7 @@ SR_FOOTGUNS = {
   "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "mrujs", "compression", "bundle"]
 }
 
-def run_install_template(template, force: false, local: false, trace: false, timeout: 1)
+def run_install_template(template, force: false, local: false, trace: false, timeout: 1, branch: StimulusReflex::BRANCH)
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?
     FileUtils.rm(Rails.root.join("tmp/stimulus_reflex_installer/halt"))
     puts "StimulusReflex installation halted. Please fix the issues above and try again."
@@ -44,9 +44,9 @@ def run_install_template(template, force: false, local: false, trace: false, tim
     icon = "👍🏡"
   else
     begin
-      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{StimulusReflex::BRANCH}/lib/install/#{template}.rb", open_timeout: timeout, read_timeout: timeout).read
+      template_content = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{branch}/lib/install/#{template}.rb", open_timeout: timeout, read_timeout: timeout).read
       File.write(Rails.root.join("tmp/stimulus_reflex_installer/templates/#{template}.rb"), template_content)
-      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false GITHUB_BRANCH=#{StimulusReflex::BRANCH} #{"--trace" if trace}")
+      system("#{RbConfig.ruby} ./bin/rails app:template LOCATION=tmp/stimulus_reflex_installer/templates/#{template}.rb SKIP_SANITY_CHECK=true LOCAL=false #{"--trace" if trace}")
       icon = "👍"
     rescue
       system "#{RbConfig.ruby} ./bin/rails app:template LOCATION=#{File.expand_path("../../install/#{template}.rb", __dir__)} SKIP_SANITY_CHECK=true LOCAL=true #{"--trace" if trace}"
@@ -86,8 +86,8 @@ namespace :stimulus_reflex do
       end
     end
     options_path = Rails.root.join("tmp/stimulus_reflex_installer/options")
-    options.reverse_merge!({"timeout" => 1})
-    File.write(options_path, options.to_yaml)
+    options.reverse_merge!({"timeout" => 1, "branch" => StimulusReflex::BRANCH})
+    options_path.write(options.to_yaml)
 
     puts <<~ANSI
 
@@ -215,7 +215,7 @@ namespace :stimulus_reflex do
 
     # do the things
     SR_FOOTGUNS[footgun].each do |template|
-      run_install_template(template, local: !!options["local"], trace: !!options["trace"], timeout: options["timeout"].to_i)
+      run_install_template(template, local: !!options["local"], trace: !!options["trace"], timeout: options["timeout"].to_i, branch: options["branch"])
     end
 
     puts
@@ -234,7 +234,7 @@ namespace :stimulus_reflex do
         puts "  \e[33;1;196m- #{issue}\e[0m"
       end
       puts
-      puts "\e[33;1;196mLocal copies 🏡 that shipped with StimulusReflex #{StimulusReflex::VERSION} (NOTE: new_installer branch) were used.\nThis is *probably* okay, but run \e[1;94mrails stimulus_reflex:install:restart timeout=3\e[33;1;196m if something seems\nbroken, or you're on a slow connection.\e[0m"
+      puts "\e[33;1;196mLocal copies 🏡 that shipped with StimulusReflex #{StimulusReflex::VERSION} were used.\nThis is *probably* okay, but run \e[1;94mrails stimulus_reflex:install:restart timeout=3\e[33;1;196m if something seems\nbroken, or you're on a slow connection.\e[0m"
       puts
     end
 
@@ -275,7 +275,7 @@ namespace :stimulus_reflex do
       exit
     end
 
-    desc "Re-run a specific StimulusReflex install step"
+    desc "Re-run specific StimulusReflex install steps"
     task :step do
       def warning(step = nil)
         return if step.include?("=")
