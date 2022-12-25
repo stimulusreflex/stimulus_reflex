@@ -8,6 +8,14 @@ class ApplicationReflex < StimulusReflex::Reflex
   # If your ActionCable connection is: `identified_by :current_user`
   #   delegate :current_user, to: :connection
   #
+  # current_user delegation alloqs you to use the Current pattern, too:
+  #   before_reflex do
+  #     Current.user = current_user
+  #   end
+  #
+  # To access view helpers inside Reflexes:
+  #   delegate :helpers, to: :ApplicationController
+  #
   # If you need to localize your Reflexes, you can set the I18n locale here:
   #
   #   before_reflex do
