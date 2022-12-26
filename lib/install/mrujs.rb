@@ -52,7 +52,7 @@ if proceed
   mrujs_src = fetch(step_path, "mrujs.js.tt")
 
   # create entrypoint/config/mrujs.js if necessary
-  copy_file(mrujs_src, mrujs_path) unless File.exist?(mrujs_path)
+  copy_file(mrujs_src, mrujs_path) unless mrujs_path.exist?
 
   # import mrujs config in entrypoint/config/index.js
   index_path = config_path / "index.js"

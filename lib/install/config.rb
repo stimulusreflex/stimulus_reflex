@@ -34,10 +34,10 @@ end
 say "✅ SR/CR configs will be imported in #{friendly_pack_path}"
 
 # create entrypoint/config/cable_ready.js and make sure it's imported in application.js
-copy_file(cable_ready_src, cable_ready_path) unless File.exist?(cable_ready_path)
+copy_file(cable_ready_src, cable_ready_path) unless cable_ready_path.exist?
 
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
-copy_file(stimulus_reflex_src, stimulus_reflex_path) unless File.exist?(stimulus_reflex_path)
+copy_file(stimulus_reflex_src, stimulus_reflex_path) unless stimulus_reflex_path.exist?
 
 if ["webpacker", "shakapacker"].include?(footgun)
   append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
