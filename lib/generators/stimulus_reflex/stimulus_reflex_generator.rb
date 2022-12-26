@@ -8,7 +8,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, banner: "NAME"
   argument :actions, type: :array, default: [], banner: "action action"
-  class_options skip_stimulus: false, skip_reflex: false, timeout: 1, local: false
+  class_options skip_stimulus: false, skip_reflex: false, timeout: 1, local: false, branch: StimulusReflex::BRANCH
 
   def execute
     actions.map!(&:underscore)
@@ -67,7 +67,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
     begin
       tmp_path = working.to_s + file
-      url = "https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{StimulusReflex::BRANCH}/lib/generators/stimulus_reflex/templates#{file.gsub("%", "%25")}"
+      url = "https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{options[:branch]}/lib/generators/stimulus_reflex/templates#{file.gsub("%", "%25")}"
       FileUtils.mkdir_p(tmp_path.split("/")[0..-2].join("/"))
       File.write(tmp_path, URI.open(url, open_timeout: options[:timeout].to_i, read_timeout: options[:timeout].to_i).read) # standard:disable Security/Open
       tmp_path

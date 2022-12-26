@@ -60,11 +60,11 @@ backup(importmap_path) do
   end
 end
 
-application_controller_src = fetch("/", "/app/javascript/controllers/application_controller.js.tt")
+application_controller_src = fetch("/", "app/javascript/controllers/application_controller.js.tt")
 application_controller_path = controllers_path / "application_controller.js"
-application_js_src = fetch("/", "/app/javascript/controllers/application.js.tt")
+application_js_src = fetch("/", "app/javascript/controllers/application.js.tt")
 application_js_path = controllers_path / "application.js"
-index_src = fetch("/", "/app/javascript/controllers/index.js.importmap.tt")
+index_src = fetch("/", "app/javascript/controllers/index.js.importmap.tt")
 index_path = controllers_path / "index.js"
 
 # create entrypoint/controllers, as well as the index, application and application_controller
