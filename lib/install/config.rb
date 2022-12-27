@@ -12,7 +12,9 @@ cable_ready_path = config_path / "cable_ready.js"
 
 empty_directory config_path unless config_path.exist?
 
-copy_file(index_src, index_path) unless File.exist?(index_path)
+backup(index_path, delete: true) do
+  copy_file(index_src, index_path)
+end
 
 index_pattern = /import ['"](\.\.\/|\.\/)?config['"]/
 index_commented_pattern = /\s*\/\/\s*#{index_pattern}/

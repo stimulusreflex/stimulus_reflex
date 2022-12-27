@@ -11,6 +11,10 @@ if !Rails.root.join("app/reflexes/example_reflex.rb").exist?
   end
 end
 
-generate("stimulus_reflex", "example", "dance") if proceed
+if ENV["LOCAL"] == "true"
+  generate("stimulus_reflex", "example", "--local true") if proceed
+else
+  generate("stimulus_reflex", "example") if proceed
+end
 
 complete_step :example

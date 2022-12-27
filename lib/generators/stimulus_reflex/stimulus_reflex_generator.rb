@@ -55,6 +55,24 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       FileUtils.remove_dir(example_path) if behavior == :revoke && example_path.exist? && Dir.empty?(example_path)
 
       route "resource :example, constraints: -> { Rails.env.development? }"
+
+      importmap_path = Rails.root.join("config/importmap.rb")
+      if importmap_path.exist?
+        importmap = importmap_path.read
+        if behavior == :revoke
+          if importmap.include?("pin \"fireworks-js\"")
+            importmap_path.write importmap_path.readlines.reject { |line| line.include?("pin \"fireworks-js\"") }.join
+            say "✅ unpin fireworks-js"
+          end
+        else
+          if !importmap.include?("pin \"fireworks-js\"")
+            append_file(importmap_path, <<~RUBY, verbose: false)
+              pin "fireworks-js", to: "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
+            RUBY
+            say "✅ pin fireworks-js"
+          end
+        end
+      end
     end
   end
 
