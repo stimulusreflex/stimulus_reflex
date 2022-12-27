@@ -13,8 +13,8 @@ end
 
 if ENV["LOCAL"] == "true"
   generate("stimulus_reflex", "example", "--local true") if proceed
-else
-  generate("stimulus_reflex", "example") if proceed
+elsif proceed
+  generate("stimulus_reflex", "example")
 end
 
 complete_step :example

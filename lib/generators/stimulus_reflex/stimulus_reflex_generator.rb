@@ -64,13 +64,11 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
             importmap_path.write importmap_path.readlines.reject { |line| line.include?("pin \"fireworks-js\"") }.join
             say "✅ unpin fireworks-js"
           end
-        else
-          if !importmap.include?("pin \"fireworks-js\"")
-            append_file(importmap_path, <<~RUBY, verbose: false)
-              pin "fireworks-js", to: "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
-            RUBY
-            say "✅ pin fireworks-js"
-          end
+        elsif !importmap.include?("pin \"fireworks-js\"")
+          append_file(importmap_path, <<~RUBY, verbose: false)
+            pin "fireworks-js", to: "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
+          RUBY
+          say "✅ pin fireworks-js"
         end
       end
     end
