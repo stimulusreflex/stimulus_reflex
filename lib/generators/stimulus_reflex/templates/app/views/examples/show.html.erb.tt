@@ -34,12 +34,15 @@
 
       const fireworks = new Fireworks(document.querySelector('.fireworks'))
       document.addEventListener('example:destroyed', () => fireworks.launch(12))
+
+      if (window.mrujs === undefined)
+        document.querySelector('#mrujs-warning').style.display = 'block'
     </script>
 
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
   </head>
 
-  <body>
+  <body style="cursor: auto;">
     <main class="container">
       <h1>StimulusReflex</h1>
 
@@ -90,6 +93,8 @@
 
       <article>
         <h3>CableCar (aka "Ajax mode") + mrujs</h3>
+
+        <p id="mrujs-warning" style="display: none;">⚠️ It seems as though you did not install <ins>mrujs</ins> in your application. Sadly, this means that many of the live examples will not work. You can run <kbd>rails stimulus_reflex:install:step mrujs <%%= "yarn " unless Rails.root.join("config/importmap.rb").exist? %>bundle</kbd> if you change your mind.</p>
 
         <p>If you aren't using Action Cable, the <ins>cable_car</ins> method can render CableReady JSON anywhere in your application.</p>
 
