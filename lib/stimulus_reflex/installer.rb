@@ -49,7 +49,7 @@ def backup(path, delete: false)
     yield
     return
   end
-  
+
   backup_path = Pathname.new("#{path}.bak")
   old_path = path.relative_path_from(Rails.root).to_s
   filename = path.to_path.split("/").last
