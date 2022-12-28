@@ -9,7 +9,7 @@ class StimulusReflex::ReflexFactory
         element: reflex_data.element,
         selectors: reflex_data.selectors,
         method_name: reflex_data.method_name,
-        params: reflex_data.form_params,
+        params: reflex_data.params,
         client_attributes: {
           id: reflex_data.id,
           tab_id: reflex_data.tab_id,

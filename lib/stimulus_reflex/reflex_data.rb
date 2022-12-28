@@ -49,8 +49,16 @@ class StimulusReflex::ReflexData
     Rack::Utils.parse_nested_query(data["formData"])
   end
 
+  def params
+    form_params.merge(url_params)
+  end
+
   def form_params
     form_data.deep_merge(data["params"] || {})
+  end
+
+  def url_params
+    Rack::Utils.parse_nested_query(URI.parse(url).query)
   end
 
   def id
