@@ -250,7 +250,7 @@
       <article>
         <h3>Calling perform directly</h3>
 
-        <p>CableReady operations are just JavaScript objects. The method that executes them, <ins>perform</ins>, <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">doesn't care how the JSON was generated</a> or what transport mechanism (if any!) was used to deliver it.</p>
+        <p>CableReady operations are just JavaScript objects. Broadcasts are just an array of operations, expressed as JSON. The method that executes operations, <ins>perform</ins>, <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">doesn't care how the JSON was generated</a> or what transport mechanism (if any!) was used to deliver it.</p>
 
         <kbd>import { perform } from 'cable_ready'<br><br>
         function processAvianCarrier(operations) {<br>
@@ -264,8 +264,15 @@
 
       <article>
         <p>If you're finished with this example page and resource controller, you can destroy them:</p>
+
         <kbd>rails destroy stimulus_reflex example</kbd>
       </article>
+
+      <p>As always, please drop by the <a href="https://discord.gg/stimulus-reflex">StimulusReflex Discord server</a> if you have any questions or need support of any kind. We're incredibly proud of the community that has formed around these libraries, and we discuss everything from JS/Ruby/CSS to View Component/Phlex to databases and CRDTs.</p>
+
+      <p>In particular, we'd love to know what you're building with SR/CR. Please tell us, and we might feature you on the project website.</p>
+
+      <p>You can find the documentation for StimulusReflex <a href="https://docs.stimulusreflex.com">here</a> and CableReady <a href="https://cableready.stimulusreflex.com">here</a>.</p>
     </main>
     <div class="fireworks" style="position: fixed; bottom: 0; width: 100vw; height: 100vh; pointer-events: none;"></div>
   </body>
