@@ -41,6 +41,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
     template(reflex_src, reflex_path) unless options[:skip_reflex]
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
+    rails_command "stimulus:manifest:update" unless Rails.root.join("config/importmap.rb").exist?
 
     if file_name == "example"
       controller_src = fetch("/app/controllers/examples_controller.rb.tt")
