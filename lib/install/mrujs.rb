@@ -30,7 +30,7 @@ if proceed
       say "✅ pin mrujs"
     end
 
-    if !importmap.include?("pin \"mrujs\/plugins\"")
+    if !importmap.include?("pin \"mrujs\/plugins\"") # standard:disable Style/RedundantStringEscape
       append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs/plugins", to: "https://ga.jspm.io/npm:mrujs@0.10.1/plugins/dist/plugins.module.js"
       RUBY
@@ -59,7 +59,7 @@ if proceed
   index = index_path.read
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
   mrujs_pattern = /import ['"].\/mrujs['"]/
-  mrujs_import = "import '.\/mrujs'\n"
+  mrujs_import = "import '.\/mrujs'\n" # standard:disable Style/RedundantStringEscape
 
   if !index.match?(mrujs_pattern)
     append_file(index_path, mrujs_import, verbose: false)

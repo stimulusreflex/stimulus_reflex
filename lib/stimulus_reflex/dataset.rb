@@ -25,10 +25,20 @@ class StimulusReflex::Dataset < OpenStruct
   end
 
   def boolean
-    @boolean ||= ->(accessor) { ActiveModel::Type::Boolean.new.cast(self[accessor]) || self[accessor].blank? }
+    @boolean ||= ->(accessor) { cast_boolean(self[accessor]) || self[accessor].blank? }
   end
 
   def numeric
     @numeric ||= ->(accessor) { Float(self[accessor]) }
+  end
+
+  private
+
+  def cast_boolean(value)
+    ((value == "") ? nil : !false_values.include?(value)) unless value.nil?
+  end
+
+  def false_values
+    @false_values ||= [false, 0, "0", "f", "F", "false", "FALSE", "off", "OFF"].to_set
   end
 end

@@ -84,7 +84,7 @@ if pack.match?(controllers_pattern)
       # uncomment_lines only works with Ruby comments 🙄
       lines = pack_path.readlines
       matches = lines.select { |line| line =~ controllers_commented_pattern }
-      lines[lines.index(matches.last).to_i] = "import \".\/controllers\"\n"
+      lines[lines.index(matches.last).to_i] = "import \".\/controllers\"\n" # standard:disable Style/RedundantStringEscape
       pack_path.write lines.join
       say "✅ Stimulus controllers imported in #{friendly_pack_path}"
     else
@@ -96,7 +96,7 @@ if pack.match?(controllers_pattern)
 else
   lines = pack_path.readlines
   matches = lines.select { |line| line =~ /^import / }
-  lines.insert lines.index(matches.last).to_i + 1, "import \".\/controllers\"\n"
+  lines.insert lines.index(matches.last).to_i + 1, "import \".\/controllers\"\n" # standard:disable Style/RedundantStringEscape
   pack_path.write lines.join
   say "✅ Stimulus controllers imported in #{friendly_pack_path}"
 end

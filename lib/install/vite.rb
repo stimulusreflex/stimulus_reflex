@@ -29,7 +29,7 @@ copy_file(index_src, index_path) unless index_path.exist?
 
 controllers_pattern = /import ['"](\.\.\/)?controllers['"]/
 controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/
-prefix = "..\/"
+prefix = "..\/" # standard:disable Style/RedundantStringEscape
 
 if pack.match?(controllers_pattern)
   if pack.match?(controllers_commented_pattern)
