@@ -33,21 +33,28 @@ backup(importmap_path) do
 
   if !importmap.include?("pin \"@rails/actioncable\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "@rails/actioncable", to: "actioncable.esm.js"
+      pin "@rails/actioncable", to: "actioncable.esm.js", preload: true
     RUBY
     say "✅ pin Action Cable"
   end
 
+  if !importmap.include?("pin \"@hotwired/stimulus\"")
+    append_file(importmap_path, <<~RUBY, verbose: false)
+      pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
+    RUBY
+    say "✅ pin Stimulus"
+  end
+
   if !importmap.include?("pin \"cable_ready\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "cable_ready", to: "https://devbuilds.herokuapp.com/package/npm/cable_ready/latest"
+      pin "cable_ready", to: "https://devbuilds.herokuapp.com/package/npm/cable_ready/latest", preload: true
     RUBY
     say "✅ pin CableReady"
   end
 
   if !importmap.include?("pin \"stimulus_reflex\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "stimulus_reflex", to: "https://devbuilds.herokuapp.com/package/npm/stimulus_reflex/latest"
+      pin "stimulus_reflex", to: "https://devbuilds.herokuapp.com/package/npm/stimulus_reflex/latest", preload: true
     RUBY
     say "✅ pin StimulusReflex"
   end

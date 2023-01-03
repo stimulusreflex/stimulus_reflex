@@ -21,7 +21,6 @@ module StimulusReflex
 
     initializer "stimulus_reflex.importmap", before: "importmap" do |app|
       if app.config.respond_to?(:importmap)
-        app.config.importmap.paths << Engine.root.join("lib/stimulus_reflex/importmap.rb")
         app.config.importmap.cache_sweepers << Engine.root.join("app/assets/javascripts")
       end
     end

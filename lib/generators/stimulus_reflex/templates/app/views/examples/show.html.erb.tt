@@ -165,7 +165,7 @@
 
         <!--
         <%%#= updates_for current_user do %>
-          <%%#= current_user.name %>
+          <p style="margin-top: 1rem;"><%%#= current_user.name %></p>
         <%%# end %>
         -->
 
@@ -184,10 +184,10 @@
 
         <!--
         <%%#= updates_for User do %>
-          <ul>
-            <%%#= @users.each do |user| %>
+          <ul style="margin-top: 1rem;">
+            <%%# @users.each do |user| %>
               <li><%%#= user.name %></li>
-            <%%#= end %>
+            <%%# end %>
           </ul>
         <%%# end %>
         -->
@@ -205,10 +205,10 @@
 
         <!--
         <%%#= updates_for current_user, :posts do %>
-          <ul>
-            <%%#= @posts.each do |post| %>
+          <ul style="margin-top: 1rem;">
+            <%%# @posts.each do |post| %>
               <li><%%#= post.title %></li>
-            <%%#= end %>
+            <%%# end %>
           </ul>
         <%%# end %>
         -->
@@ -268,9 +268,7 @@
         <kbd>rails destroy stimulus_reflex example</kbd>
       </article>
 
-      <p>As always, please drop by the <a href="https://discord.gg/stimulus-reflex">StimulusReflex Discord server</a> if you have any questions or need support of any kind. We're incredibly proud of the community that has formed around these libraries, and we discuss everything from JS/Ruby/CSS to View Component/Phlex to databases and CRDTs.</p>
-
-      <p>In particular, we'd love to know what you're building with SR/CR. Please tell us, and we might feature you on the project website.</p>
+      <p>As always, please drop by the <a href="https://discord.gg/stimulus-reflex">StimulusReflex Discord server</a> if you have any questions or need support of any kind. We're incredibly proud of the community that has formed around these libraries, and we discuss everything from JS/Ruby/CSS to View Component/Phlex to databases and CRDTs. <b>We'd love to hear what you're building with SR/CR.</b></p>
 
       <p>You can find the documentation for StimulusReflex <a href="https://docs.stimulusreflex.com">here</a> and CableReady <a href="https://cableready.stimulusreflex.com">here</a>.</p>
     </main>
