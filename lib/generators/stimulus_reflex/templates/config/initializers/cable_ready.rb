@@ -15,4 +15,8 @@ CableReady.configure do |config|
   # https://cableready.stimulusreflex.com/customization#custom-operations
 
   # config.add_operation_name :jazz_hands
+  
+  # Change the default Active Job queue used for broadcast_later and broadcast_later_to
+
+  # config.broadcast_job_queue = :default
 end
