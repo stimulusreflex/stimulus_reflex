@@ -7,28 +7,21 @@ module StimulusReflex
 
       delegate :element, to: :@document
 
+      def document_element
+        @document&.root
+      end
+
       def outer_html
-        if @document.is_a?(Nokogiri::HTML::DocumentFragment)
-          @document
-        else
-          @document.root
-        end.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
+        document_element ? document_element.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT) : ""
       end
       alias_method :to_html, :outer_html
 
       def inner_html
-        if @document.is_a?(Nokogiri::HTML::DocumentFragment)
-          # `inner_html` on a DocumentFragment returns the outer HTML tag, so we need to strip it out manually.
-          # There might be a cleaner way to do this?
-          @document.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT).sub(/^<([^>]*)>/, "").sub(/<\/[^>]*>$/, "")
-        else
-          @document.root.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
-        end
+        document_element ? document_element.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT) : ""
       end
 
       def initialize(html)
-        @initial_html = html.to_s
-        @document = parsing_class.parse(@initial_html)
+        @document = parsing_class.parse(html.to_s)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
@@ -38,20 +31,8 @@ module StimulusReflex
         @document.content.empty?
       end
 
-      # This is an imperfect solution to the problem of parsing HTML that is not technically well-formed.
-      # For example, "<tr></tr>" by itself is invalid, because the HTML spec requires a <table> element.
-      # To work around this, we detect if the HTML string starts and ends with a tag that, by itself, would
-      # be invalid. If it is the case, we use Nokogiri::HTML::DocumentFragment document parser instead of
-      # Nokogiri::HTML5::Document. The former will not strip out the invalid tags from the output.
-      def relaxed_parsing?
-        return @relaxed_parsing if defined?(@relaxed_parsing)
-
-        tags = %w[tr td th thead tbody]
-        @relaxed_parsing ||= @initial_html&.match?(/^\s*<(#{tags.join("|")})/i) && @initial_html&.match?(/<\s*\/\s*(#{tags.join("|")})\s*>$/i)
-      end
-
       def parsing_class
-        relaxed_parsing? ? Nokogiri::HTML::DocumentFragment : Nokogiri::HTML5::Document
+        Nokogiri::HTML5::Document
       end
 
       def match(selector)

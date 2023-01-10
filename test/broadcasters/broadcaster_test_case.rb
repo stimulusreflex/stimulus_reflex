@@ -23,7 +23,7 @@ class StimulusReflex::BroadcasterTestCase < ActionCable::Channel::TestCase
     message = new_messages.find { |msg| ActiveSupport::JSON.decode(msg) == serialized_msg }
 
     unless message
-      puts "\n\n#{ActiveSupport::JSON.decode(new_messages.first)}\n#{data}\n\n"
+      puts "\n\nActual: #{ActiveSupport::JSON.decode(new_messages.first)}\n\nExpected: #{data}\n\n"
     end
 
     assert message, "No messages sent with #{data} to #{stream}"
