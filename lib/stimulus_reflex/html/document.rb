@@ -7,20 +7,21 @@ module StimulusReflex
 
       delegate :element, to: :@document
 
-      def to_html
-        @document.root.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
+      def document_element
+        @document&.root
       end
 
       def outer_html
-        @document.root.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
+        document_element ? document_element.to_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT) : ""
       end
+      alias_method :to_html, :outer_html
 
       def inner_html
-        @document.root.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT)
+        document_element ? document_element.inner_html(save_with: DEFAULT_HTML_WITHOUT_FORMAT) : ""
       end
 
       def initialize(html)
-        @document = Nokogiri::HTML5::Document.parse(html.to_s)
+        @document = parsing_class.parse(html.to_s)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
@@ -28,6 +29,10 @@ module StimulusReflex
 
       def empty?
         @document.content.empty?
+      end
+
+      def parsing_class
+        Nokogiri::HTML5::Document
       end
 
       def match(selector)
