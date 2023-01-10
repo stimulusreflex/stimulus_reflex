@@ -71,7 +71,9 @@ module StimulusReflex
         "operations" => [
           {
             "selector" => "html",
-            "html" => "<head><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body>",
+            # Nokogiri automatically adds a `<meta>` tag for the encoding
+            # See. https://github.com/sparklemotion/nokogiri/blob/6ea1449926ce97648bb2f7401c9e4fdcb0e261ba/lib/nokogiri/html4/document.rb#L34-L35
+            "html" => "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Test</title></head><body><div><div>bar</div><div>baz</div></div></body>",
             "payload" => {},
             "childrenOnly" => true,
             "permanentAttributeName" => nil,
