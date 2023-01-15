@@ -9,7 +9,8 @@ export default {
     outline: [2, 3],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/stimulusreflex/stimulus_reflex' },
-      { icon: 'twitter', link: 'https://twitter.com/stimulusreflex' }
+      { icon: 'twitter', link: 'https://twitter.com/stimulusreflex' },
+      { icon: 'discord', link: 'https://discord.gg/stimulus-reflex' }
     ],
     editLink: {
       pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
