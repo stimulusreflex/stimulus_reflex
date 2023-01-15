@@ -21,13 +21,12 @@ export default {
     for (const attribute in schema) {
       const attributeName = attribute.slice(0, -9)
 
-      if (!this.hasOwnProperty(attributeName)) {
-        Object.defineProperty(this, attributeName, {
-          get: () => {
-            return schema[attribute]
-          }
-        })
-      }
+      Object.defineProperty(this, attributeName, {
+        get: () => {
+          return schema[attribute]
+        },
+        configurable: true
+      })
     }
   }
 }
