@@ -5,7 +5,12 @@ export default {
   lastUpdated: true,
   themeConfig: {
     siteTitle: "StimulusReflex",
-    logo: "",
+    logo: "https://www.gitbook.com/cdn-cgi/image/width=40,height=40,fit=contain,dpr=1,format=auto/https%3A%2F%2F3036285672-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-legacy-files%2Fo%2Fspaces%252F-Lpnm81iPOBUa9lAmLxg%252Favatar.png%3Fgeneration%3D1570308033034858%26alt%3Dmedia",
+    outline: [2, 3],
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/stimulusreflex/stimulus_reflex' },
+      { icon: 'twitter', link: 'https://twitter.com/stimulusreflex' }
+    ],
     editLink: {
       pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
       text: 'Edit this page on GitHub'
@@ -15,6 +20,10 @@ export default {
       { text: 'Changelog', link: 'https://github.com/stimulusreflex/stimulus_reflex/releases' },
       { text: 'CableReady', link: 'https://cableready.stimulusreflex.com' },
     ],
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2023'
+    },
     sidebar: [
       {
         text: "Hello World",
