@@ -43,37 +43,61 @@ describe('Schema', () => {
     assert.equal(Schema.reflexDatasetAll, 'data-reflex-dataset-all')
     assert.equal(Schema.reflexSerializeForm, 'data-reflex-serialize-form')
     assert.equal(Schema.reflexFormSelector, 'data-reflex-form-selector')
-    assert.equal(Schema.reflexIncludeInnerHtml, 'data-reflex-include-inner-html')
-    assert.equal(Schema.reflexIncludeTextContent, 'data-reflex-include-text-content')
+    assert.equal(
+      Schema.reflexIncludeInnerHtml,
+      'data-reflex-include-inner-html'
+    )
+    assert.equal(
+      Schema.reflexIncludeTextContent,
+      'data-reflex-include-text-content'
+    )
   })
 
-  it("should override schema", () => {
+  it('should override schema', () => {
     Schema.set({ schema: schemaOne })
 
     assert.equal(Schema.reflex, 'data-reflex-one')
     assert.equal(Schema.reflexPermanent, 'data-reflex-permanent-one')
     assert.equal(Schema.reflexRoot, 'data-reflex-root-one')
-    assert.equal(Schema.reflexSuppressLogging, 'data-reflex-suppress-logging-one')
+    assert.equal(
+      Schema.reflexSuppressLogging,
+      'data-reflex-suppress-logging-one'
+    )
     assert.equal(Schema.reflexDataset, 'data-reflex-dataset-one')
     assert.equal(Schema.reflexDatasetAll, 'data-reflex-dataset-all-one')
     assert.equal(Schema.reflexSerializeForm, 'data-reflex-serialize-form-one')
     assert.equal(Schema.reflexFormSelector, 'data-reflex-form-selector-one')
-    assert.equal(Schema.reflexIncludeInnerHtml, 'data-reflex-include-inner-html-one')
-    assert.equal(Schema.reflexIncludeTextContent, 'data-reflex-include-text-content-one')
+    assert.equal(
+      Schema.reflexIncludeInnerHtml,
+      'data-reflex-include-inner-html-one'
+    )
+    assert.equal(
+      Schema.reflexIncludeTextContent,
+      'data-reflex-include-text-content-one'
+    )
   })
 
-  it("should override schema multipe times", () => {
+  it('should override schema multipe times', () => {
     Schema.set({ schema: schemaTwo })
 
     assert.equal(Schema.reflex, 'data-reflex-two')
     assert.equal(Schema.reflexPermanent, 'data-reflex-permanent-two')
     assert.equal(Schema.reflexRoot, 'data-reflex-root-two')
-    assert.equal(Schema.reflexSuppressLogging, 'data-reflex-suppress-logging-two')
+    assert.equal(
+      Schema.reflexSuppressLogging,
+      'data-reflex-suppress-logging-two'
+    )
     assert.equal(Schema.reflexDataset, 'data-reflex-dataset-two')
     assert.equal(Schema.reflexDatasetAll, 'data-reflex-dataset-all-two')
     assert.equal(Schema.reflexSerializeForm, 'data-reflex-serialize-form-two')
     assert.equal(Schema.reflexFormSelector, 'data-reflex-form-selector-two')
-    assert.equal(Schema.reflexIncludeInnerHtml, 'data-reflex-include-inner-html-two')
-    assert.equal(Schema.reflexIncludeTextContent, 'data-reflex-include-text-content-two')
+    assert.equal(
+      Schema.reflexIncludeInnerHtml,
+      'data-reflex-include-inner-html-two'
+    )
+    assert.equal(
+      Schema.reflexIncludeTextContent,
+      'data-reflex-include-text-content-two'
+    )
   })
 })
