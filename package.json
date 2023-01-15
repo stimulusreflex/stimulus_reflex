@@ -42,7 +42,10 @@
     "watch": "yarn build:watch",
     "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
     "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
-    "test": "web-test-runner javascript/test/**/*.test.js"
+    "test": "web-test-runner javascript/test/**/*.test.js",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "peerDependencies": {
     "@hotwired/stimulus": ">= 3.0"
@@ -62,6 +65,8 @@
     "@web/test-runner": "^0.13.27",
     "prettier-standard": "^16.4.1",
     "rollup": "^2.70.1",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "vitepress": "^1.0.0-alpha.36",
+    "vue": "^3.2.45"
   }
 }

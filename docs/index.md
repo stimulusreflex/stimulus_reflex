@@ -12,11 +12,11 @@ We extend the capabilities of both [Rails](https://rubyonrails.org) and [Stimulu
 
 This architecture eliminates the complexity imposed by full-stack frontend frameworks without abandoning [high-performance reactive user experiences](https://www.youtube.com/watch?v=SWEts0rlezA\&t=214s). With StimulusReflex, small teams can do big things faster than ever before. We invite you to explore **a fresh alternative to the Single Page App** (SPA).
 
-{% hint style="success" %}
+::: tip
 **Get Involved.** We are stronger together! Please join us on [Discord.![](https://img.shields.io/discord/629472241427415060)](https://discord.gg/stimulus-reflex)
 
 [![GitHub stars](https://img.shields.io/github/stars/stimulusreflex/stimulus\_reflex?style=social)](https://github.com/stimulusreflex/stimulus\_reflex) [![GitHub forks](https://img.shields.io/github/forks/stimulusreflex/stimulus\_reflex?style=social)](https://github.com/stimulusreflex/stimulus\_reflex) [![Twitter follow](https://img.shields.io/twitter/follow/hopsoft?style=social)](https://twitter.com/hopsoft)
-{% endhint %}
+:::
 
 ## Why should I use StimulusReflex?
 
@@ -24,14 +24,14 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ### Goals
 
-* [x] Enable small teams to do big things, faster 🏃🏽‍♀️
-* [x] Increase developer happiness ❤️❤️❤️
-* [x] Facilitate simple, concise, and clear code 🤸
-* [x] Integrate seamlessly with Ruby on Rails 🚝
+* ✅ Enable small teams to do big things, faster 🏃🏽‍♀️
+* ✅ Increase developer happiness ❤️❤️❤️
+* ✅ Facilitate simple, concise, and clear code 🤸
+* ✅ Integrate seamlessly with Ruby on Rails 🚝
 
 ## New Release: v3.4 - Developer Happiness Edition
 
-![](.gitbook/assets/kittens.jpg)
+![](/kittens.jpg)
 
 Find out more and learn how to upgrade on the [Release History](appendices/release-history.md) page.
 
@@ -64,9 +64,9 @@ Another excellent demo is [BoxDrop](https://www.boxdrop.io).
 
 ## Build the next Twitter in just 9 minutes (or less) 😉
 
-{% embed url="https://www.youtube.com/watch?v=F5hA79vKE_E" %}
+<!-- {% embed url="https://www.youtube.com/watch?v=F5hA79vKE_E" %}
 This demo from early 2020 is exciting, but it is not a tutorial!
-{% endembed %}
+{% endembed %} -->
 
 ## First-class ViewComponent support
 

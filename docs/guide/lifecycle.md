@@ -33,7 +33,7 @@ class ExampleReflex < StimulusReflex::Reflex
   after_reflex :do_stuff
 
   # Example with a block
-  before_reflex do 
+  before_reflex do
     # callback logic
   end
 
@@ -84,11 +84,11 @@ StimulusReflex gives you the ability to inject custom JavaScript at five distinc
 5. **`after`** follows either `success` or `error` immediately before DOM manipulations
 6. **`finalize`** occurs immediately after all DOM manipulations are complete
 
-{% hint style="info" %}
+::: info
 **Using life-cycle callback methods is not a requirement.**
 
 Think of them as power tools that can help you build more sophisticated results. 👷
-{% endhint %}
+:::
 
 If you define a method with a name that matches what the library searches for, it will run at just the right moment. **If there's no method defined, nothing happens.** StimulusReflex will only look for these methods in Stimulus controllers that extend `ApplicationController` or have called `StimulusReflex.register(this)` in their `connect()` function.
 
@@ -121,23 +121,23 @@ StimulusReflex controllers automatically support five generic life-cycle callbac
 5. `afterReflex`
 6. `finalizeReflex`
 
-{% hint style="warning" %}
+::: warning
 While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
-{% endhint %}
+:::
 
 In this example, we update each anchor's text before invoking the server side Reflex:
 
-{% code title="app/views/examples/show.html.erb" %}
-```markup
+::: code-group
+```html [app/views/examples/show.html.erb]
 <div data-controller="example">
   <a href="#" data-reflex="Example#masticate">Eat</a>
   <a href="#" data-reflex="Example#defecate">Poop</a>
 </div>
 ```
-{% endcode %}
+:::
 
-{% code title="app/javascript/controllers/example_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/example_controller.js]
 import ApplicationController from './application_controller.js'
 
 export default class extends ApplicationController {
@@ -148,7 +148,7 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 ### Custom Life-cycle Methods
 
@@ -163,17 +163,17 @@ The Reflex `Example#poke` will cause StimulusReflex to check for the existence o
 5. `afterPoke`
 6. `finalizePoke`
 
-{% code title="app/views/examples/show.html.erb" %}
-```markup
+::: code-group
+```html [app/views/examples/show.html.erb]
 <div data-controller="example">
   <a href="#" data-reflex="click->Example#poke">Poke</a>
   <a href="#" data-reflex="click->Example#purge">Purge</a>
 </div>
 ```
-{% endcode %}
+:::
 
-{% code title="app/javascript/controllers/example_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/example_controller.js]
 import ApplicationController from './application_controller.js'
 
 export default class extends ApplicationController {
@@ -186,13 +186,13 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 Adapting the Generic example, we've refactored our controller to capture the `before` callback events for each anchor individually.
 
-{% hint style="info" %}
+::: info
 **It's not required to implement all life-cycle methods.** Pick and choose which life-cycle callback methods make sense for your application. The answer is frequently **none**.
-{% endhint %}
+:::
 
 ### Conventions
 
@@ -262,11 +262,11 @@ document.addEventListener('stimulus-reflex:before', event => {
 
 `event.target` is a reference to the element that triggered the Reflex, and `event.detail.controller` is a reference to the instance of the controller that called the `stimulate` method. This is especially handy if you have multiple instances of a controller on your page.
 
-{% hint style="info" %}
+::: info
 Knowing which element dispatched the event might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
 
 You can learn all about Reflex controller elements on the [Calling Reflexes](reflexes.md#understanding-reflex-controllers) page.
-{% endhint %}
+:::
 
 #### jQuery Events
 

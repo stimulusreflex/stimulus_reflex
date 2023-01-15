@@ -10,11 +10,11 @@
 ⬆️ StimulusReflex is for **sending** commands. 📡  
 ⬇️ CableReady is for **receiving** updates. 👽
 
-{% hint style="info" %}
+::: info
 A Reflex action is a reaction to a user action that changes server-side state and re-renders the current page \(or a subset of the current page\) for that particular user in the background, provided that they are still on the same page.
 
 A CableReady method is a reaction to some server-side code \(which must be imperatively called\) that makes some change for some set of users in the background.
-{% endhint %}
+:::
 
 CableReady has 33 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
@@ -22,7 +22,7 @@ CableReady has 33 operations for changing every aspect of your page, and you can
 
 StimulusReflex uses CableReady's `morph` for Page Morphs and some Selector Morphs, `inner_html` for Selector Morphs that don't use `morph` , and `dispatch_event` for Nothing Morphs, as well as aborted/halted Reflexes and sending errors that occur in a Reflex action.
 
-The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](../appendices/troubleshooting.md#morphing-sanity-checklist).
+The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](/appendices/troubleshooting.md#morphing-sanity-checklist).
 
 ### Using CableReady inside a Reflex action
 
@@ -47,9 +47,9 @@ The only constaint imposed upon use of the special `cable_ready` method is that 
 
 You can still use CableReady "normally" inside of a Reflex, if you need to broadcast to more than just the current user. Just call `cable_ready` with a stream identifier in brackets.
 
-{% hint style="danger" %}
+::: danger
 Do not include `CableReady::Broadcaster` in your Reflex classes. It's already present in the Reflex scope and including it again will cause errors.
-{% endhint %}
+:::
 
 ### When to use a StimulusReflex `morph` vs. a CableReady operation
 
@@ -69,9 +69,9 @@ You can control the order in which CableReady and StimulusReflex operations exec
 
 CableReady operations that have `broadcast` called on them well be immediately delivered to the client, while any CableReady operations queued in a Page or Selector Morph Reflex action that aren't broadcast by the end of the action will be broadcast along with the StimulusReflex-specific `morph` operations. The StimulusReflex operations execute first, followed by any remaining CableReady operations.
 
-{% hint style="warning" %}
+::: warning
 If you have CableReady operations that haven't been broadcasted followed by another set of operations that do get broadcasted... the former group of operations will go out with the latter. If you want some operations to be sent with the StimulusReflex operations, make sure that they occur after any calls to `broadcast`.
-{% endhint %}
+:::
 
 One clever example use of advanced CableReady+StimulusReflex operation ordering is `CableReady#push_state`. There are scenarios where you might want to update your page and then change the URL. If you attempt to change the URL of the page during the Reflex action, the StimulusReflex `morph` updates will be unsuccessful due to the URL changing. StimulusReflex won't execute if the page has changed since the beginning of the Reflex.
 
@@ -89,11 +89,10 @@ However, you must take responsibility for ensuring that your CableReady operatio
 
 This is because StimulusReflex needs to be able to locate the Stimulus controller which initiated the Reflex, and it expects it to be in the same place in your DOM hierarchy that it was when the Reflex started.
 
-{% hint style="info" %}
+::: info
 Keeping your DOM hierarchy consistent through the lifetime of a Reflex is critically important when using StimulusReflex with isolation mode disabled.
-{% endhint %}
+:::
 
 ### radiolabel
 
 If you're making extensive use of StimulusReflex `morph` and CableReady operations, you might consider installing [radiolabel](https://github.com/leastbad/radiolabel). It's a powerful visual aid that allows you to see your CableReady operations happen.
-

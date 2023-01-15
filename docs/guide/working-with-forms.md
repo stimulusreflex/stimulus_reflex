@@ -6,9 +6,9 @@ description: Forms fly business class on StimulusReflex Airways ✈️
 
 When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer. We recommend that you approach every requirement from [the bottom of the Rails stack and move up](../hello-world/quickstart.md), because **form submission in Rails is already really well-designed and powerful**. UJS-powered remote forms are great, especially with the [Optimism](https://optimism.leastbad.com) gem delivering validation errors over the wire. 🦸🏽
 
-{% hint style="warning" %}
+::: warning
 Seriously, though: if you're thinking of replacing UJS remote forms with StimulusReflex form handling without a specific reason for doing so... just stick with Rails!
-{% endhint %}
+:::
 
 StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](reflexes.md#combined-data-attributes-with-stimulate). This leaves form submission in the cold, though... doesn't it? 🥶
 
@@ -25,9 +25,9 @@ StimulusReflex uses `form` elements as a familiar way to group related elements 
 * forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
 * there's no reason to set up a route or controller action for a form intended for SR
 
-{% hint style="warning" %}
+::: warning
 It's very likely that in a future version of StimulusReflex, form serialization will be both optional and configurable to use any container element.
-{% endhint %}
+:::
 
 ## Modifying `params` before its sent to the server
 
@@ -78,9 +78,9 @@ Working with `has_many` associations? No sweat! Building a new record for a nest
 
 Reflex actions called outside of a form will still have a `params` accessor, pointing to an empty `ActionController::Parameters` instance.
 
-{% hint style="danger" %}
+::: danger
 If you call a full-page update Reflex outside of a form that has unsaved data, you will lose the data in the form. You will also lose the data if you throw your laptop into a volcano. 🌋
-{% endhint %}
+:::
 
 ### A note about file uploads
 
@@ -103,10 +103,10 @@ One simple technique is to use a Stimulus controller to reset the form after the
 <% end %>
 ```
 
-This controller will make use of the [Promise](https://docs.stimulusreflex.com/rtfm/lifecycle#promises) returned by the `stimulate` method:
+This controller will make use of the [Promise](https://docs.stimulusreflex.com/guide/lifecycle#promises) returned by the `stimulate` method:
 
-{% code title="app/javascript/controllers/reflex_form_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/reflex_form_controller.js]
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
@@ -121,7 +121,7 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 ## Example: Auto-saving Posts with nested Comments
 
@@ -222,11 +222,11 @@ If you need to filter or constrain the contents of a text input, consider using 
 
 Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be **morphed** in any way.
 
-{% hint style="warning" %}
+::: warning
 Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](morph-modes.md#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
 
 Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [morph](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
-{% endhint %}
+:::
 
 ## Modifying Forms with Morphs
 
@@ -254,7 +254,7 @@ end
 
 Depending on how your DOM hierarchy is set up, make sure that you're giving `morph` the HTML content required to successfully update the children of your target element. This requires that the outermost element of the supplied HTML matches the parent element:
 
-```markup
+```html
 <%= form_with model: @post do |form| %>
   <%= form.text_field :title %>
   <div id="form_swap">
@@ -267,16 +267,16 @@ Depending on how your DOM hierarchy is set up, make sure that you're giving `mor
 
 The partial might look something like this:
 
-```markup
+```html
 <%= form.text_field :summary %>
 ```
 
 Since the partial does not include the parent `div`, in order to successfully replace the contents of "form\_swap" we'll need to wrap it ourselves:
 
 ```ruby
-    html = render(partial: "path/to/partial", locals: {form: form})
+html = render(partial: "path/to/partial", locals: {form: form})
 
-    morph "#form_swap", "<div id='form_swap'>#{html}</div>"
+morph "#form_swap", "<div id='form_swap'>#{html}</div>"
 ```
 
-You can learn more about why wrapping Morph replacement content is necessary [here](morph-modes.md#intelligent-defaults).
+You can learn more about why wrapping Morph replacement content is necessary [here](./morph-modes.md#intelligent-defaults).
