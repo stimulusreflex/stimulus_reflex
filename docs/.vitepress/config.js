@@ -6,6 +6,10 @@ export default {
   themeConfig: {
     siteTitle: "StimulusReflex",
     logo: "",
+    editLink: {
+      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
+      text: 'Edit this page on GitHub'
+    },
     nav: [
       { text: 'GitHub', link: 'https://github.com/stimulusreflex/stimulus_reflex' },
       { text: 'Changelog', link: 'https://github.com/stimulusreflex/stimulus_reflex/releases' },
