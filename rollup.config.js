@@ -37,30 +37,31 @@ const umdConfig = {
   }
 }
 
+const baseName = 'stimulus_reflex'
 const distFolders = ['dist', 'app/assets/javascripts']
 
 const output = distFolders
   .map(distFolder => [
     {
       ...umdConfig,
-      file: `${distFolder}/stimulus_reflex.umd.js`,
+      file: `${distFolder}/${baseName}.umd.js`,
       plugins: [pretty()]
     },
     {
       ...umdConfig,
-      file: `${distFolder}/stimulus_reflex.umd.min.js`,
+      file: `${distFolder}/${baseName}.umd.min.js`,
       sourcemap: true,
       plugins: [pretty()]
     },
     {
       ...esConfig,
-      file: `${distFolder}/stimulus_reflex.js`,
+      file: `${distFolder}/${baseName}.js`,
       format: 'es',
       plugins: [pretty()]
     },
     {
       ...esConfig,
-      file: `${distFolder}/stimulus_reflex.min.js`,
+      file: `${distFolder}/${baseName}.min.js`,
       sourcemap: true,
       plugins: [minify()]
     }
