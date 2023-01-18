@@ -24,7 +24,8 @@ export default {
         items: [
           {
             items: [
-              { text: 'v3.5.0', link: 'https://stimulusreflex.netlify.app' },
+              { text: 'v3.4.1', link: 'https://v3-4-docs--stimulusreflex.netlify.app' },
+              { text: 'v3.5.0', link: 'https://v3-5-docs--stimulusreflex.netlify.app' },
             ]
           }
         ]
