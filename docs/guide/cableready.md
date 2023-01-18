@@ -18,7 +18,8 @@ A CableReady method is a reaction to some server-side code \(which must be imper
 
 CableReady has 33 operations for changing every aspect of your page, and you can define your own. It can emit events, set cookies, make you breakfast and call your parents \(Twilio fees are not included.\)
 
-{% embed url="https://www.youtube.com/watch?v=dPzv2qsj5L8" caption="" %}
+[![](https://img.youtube.com/vi/dPzv2qsj5L8/maxresdefault.jpg)](https://www.youtube.com/watch?v=dPzv2qsj5L8)
+
 
 StimulusReflex uses CableReady's `morph` for Page Morphs and some Selector Morphs, `inner_html` for Selector Morphs that don't use `morph` , and `dispatch_event` for Nothing Morphs, as well as aborted/halted Reflexes and sending errors that occur in a Reflex action.
 

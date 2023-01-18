@@ -157,11 +157,7 @@ config.action_mailer.default_url_options = {host: "localhost", port: 3000}
 
 ## AnyCable
 
-::: danger
-"But does it scale?"
-:::
-
-::: tip
+::: danger "But does it scale?"
 Yes.
 :::
 

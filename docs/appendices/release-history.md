@@ -1,3 +1,7 @@
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Release History
 
 ## New Release: v3.4.1
@@ -50,9 +54,7 @@ More than anything, StimulusReflex v3.4 feels fast and incredibly solid. We didn
 
 Introduces the concept of **Morphs** to StimulusReflex.
 
-TODO: embed url="" caption=""
-
-https://www.youtube.com/watch?v=utxCm3uLhIE
+[![](https://img.youtube.com/vi/utxCm3uLhIE/maxresdefault.jpg)](https://www.youtube.com/watch?v=utxCm3uLhIE)
 
 **Page** Morphs provide a full-page [morphdom](https://github.com/patrick-steele-idem/morphdom) refresh with controller processing as an intelligent default.
 
@@ -62,4 +64,4 @@ https://www.youtube.com/watch?v=utxCm3uLhIE
 
 There's a [handy chart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0) showing how the different Morphs work. Find all of the documentation and examples behind the link below.
 
-TODO page-ref page="../guide/morph-modes.md"
+<LinkComponent name="Morph Modes" href="/guide/morph-modes.html"/>

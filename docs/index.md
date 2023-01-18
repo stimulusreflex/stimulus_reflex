@@ -64,9 +64,10 @@ Another excellent demo is [BoxDrop](https://www.boxdrop.io).
 
 ## Build the next Twitter in just 9 minutes (or less) 😉
 
-<!-- {% embed url="https://www.youtube.com/watch?v=F5hA79vKE_E" %}
 This demo from early 2020 is exciting, but it is not a tutorial!
-{% endembed %} -->
+
+[![](https://img.youtube.com/vi/F5hA79vKE_E/maxresdefault.jpg)](https://www.youtube.com/watch?v=F5hA79vKE_E)
+
 
 ## First-class ViewComponent support
 

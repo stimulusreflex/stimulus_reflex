@@ -2,6 +2,10 @@
 description: How to prepare your app to use StimulusReflex
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Setup
 
 ## First: set up Webpacker
@@ -46,7 +50,7 @@ There have been recent reports of a change in the Safari web browser that cause 
 
 And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](/appendices/testing.md#test-environment-setup) and [production](/appendices/deployment.md).
 
-[quickstart.md](./quickstart.md)
+<LinkComponent name="Quick Start" href="/hello-world/quickstart.html" />
 
 ## Manual Configuration
 
@@ -180,7 +184,7 @@ Out of the box, ActionCable doesn't give StimulusReflex the ability to distingui
 
 When the time comes, it's easy to configure your application to support authenticating users by their Rails session or current\_user scope. Just check out the Authentication page and choose your own adventure.
 
-TODO [authentication.md](../guide/authentication.md)
+<LinkComponent name="Authentication" href="/guide/authentication.html" />
 
 ## Tab isolation
 
@@ -210,7 +214,7 @@ We default to using the `:cache_store` for `config.session_store` (and enabling 
 
 You can learn more about session storage on the Deployment page.
 
-TODO: [deployment.md](/appendices/deployment.md)
+<LinkComponent name="Deployment" href="/appendices/deployment.html" />
 
 ## Rack middleware support
 
