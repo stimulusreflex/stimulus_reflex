@@ -1,20 +1,33 @@
-import { Controller } from 'stimulus'
-import { dispatchLifecycleEvent } from './lifecycle'
-import { uuidv4, serializeForm } from './utils'
-import { beforeDOMUpdate, afterDOMUpdate, serverMessage } from './callbacks'
-import reflexes, { registerReflex, setupDeclarativeReflexes } from './reflexes'
-import { attributeValues } from './attributes'
+import { Controller } from '@hotwired/stimulus'
+
+import Stimulus from './app'
 import Schema from './schema'
 import Log from './log'
 import Debug from './debug'
 import Deprecate from './deprecate'
+import Reflex from './reflex'
 import ReflexData from './reflex_data'
-import isolationMode from './isolation_mode'
-import actionCable from './transports/action_cable'
+import IsolationMode from './isolation_mode'
+import Transport from './transport'
+import ActionCableTransport from './transports/action_cable'
+
+import { reflexes } from './reflexes'
+import { dispatchLifecycleEvent } from './lifecycle'
+import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
+import { attributeValues } from './attributes'
+import { scanForReflexes, scanForReflexesOnElement } from './scanner'
+import {
+  uuidv4,
+  serializeForm,
+  elementInvalid,
+  getReflexElement,
+  getReflexOptions,
+  emitEvent
+} from './utils'
 
 // Default StimulusReflexController that is implicitly wired up as data-controller for any DOM elements
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
-// i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController);
+// i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController)
 //
 class StimulusReflexController extends Controller {
   constructor (...args) {
@@ -22,6 +35,9 @@ class StimulusReflexController extends Controller {
     register(this)
   }
 }
+
+// Uniquely identify this browser tab in each Reflex
+const tabId = uuidv4()
 
 // Initializes StimulusReflex by registering the default Stimulus controller with the passed Stimulus application.
 //
@@ -36,36 +52,26 @@ class StimulusReflexController extends Controller {
 //
 const initialize = (
   application,
-  { controller, consumer, debug, params, isolate, deprecate } = {}
+  { controller, consumer, debug, params, isolate, deprecate, transport } = {}
 ) => {
-  actionCable.set(consumer, params)
-  setTimeout(() => {
-    if (Deprecate.enabled && consumer)
-      console.warn(
-        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
-      )
-  })
-  isolationMode.set(!!isolate)
-  setTimeout(() => {
-    if (Deprecate.enabled && isolationMode.disabled)
-      console.warn(
-        'Deprecation warning: the next version of StimulusReflex will standardize isolation mode, and the isolate option will be removed.\nPlease update your applications to assume that every tab will be isolated.'
-      )
-  })
-  reflexes.app = application
+  Transport.set(transport || ActionCableTransport)
+  Transport.plugin.initialize(consumer, params)
+  IsolationMode.set(!!isolate)
+  Stimulus.set(application)
   Schema.set(application)
-  reflexes.app.register(
+  Stimulus.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
   Debug.set(!!debug)
   if (typeof deprecate !== 'undefined') Deprecate.set(deprecate)
-  const observer = new MutationObserver(setupDeclarativeReflexes)
+  const observer = new MutationObserver(scanForReflexes)
   observer.observe(document.documentElement, {
     attributeFilter: [Schema.reflex, Schema.action],
     childList: true,
     subtree: true
   })
+  emitEvent('stimulus-reflex:initialized')
 }
 
 // Registers a Stimulus controller and extends it with StimulusReflex behavior
@@ -76,58 +82,28 @@ const initialize = (
 const register = (controller, options = {}) => {
   const channel = 'StimulusReflex::Channel'
   controller.StimulusReflex = { ...options, channel }
-  actionCable.createSubscription(controller)
+  Transport.plugin.subscribe(controller)
   Object.assign(controller, {
-    // Indicates if the ActionCable web socket connection is open.
-    // The connection must be open before calling stimulate.
-    //
-    isActionCableConnectionOpen () {
-      return this.StimulusReflex.subscription.consumer.connection.isOpen()
-    },
-
     // Invokes a server side reflex method.
     //
     // - target - the reflex target (full name of the server side reflex) i.e. 'ReflexClassName#method'
-    // - controllerElement - [optional] the element that triggered the reflex, defaults to this.element
-    // - options - [optional] an object that contains at least one of attrs, reflexId, selectors, resolveLate, serializeForm
+    // - reflexElement - [optional] the element that triggered the reflex, defaults to this.element
+    // - options - [optional] an object that contains at least one of attrs, id, selectors, resolveLate, serializeForm
     // - *args - remaining arguments are forwarded to the server side reflex method
     //
     stimulate () {
       const url = location.href
+      const controllerElement = this.element
       const args = Array.from(arguments)
       const target = args.shift() || 'StimulusReflex::Reflex#default_reflex'
-      const controllerElement = this.element
-      const reflexElement =
-        args[0] && args[0].nodeType === Node.ELEMENT_NODE
-          ? args.shift()
-          : controllerElement
-      if (
-        reflexElement.type === 'number' &&
-        reflexElement.validity &&
-        reflexElement.validity.badInput
-      ) {
+      const reflexElement = getReflexElement(args, controllerElement)
+
+      if (elementInvalid(reflexElement)) {
         if (Debug.enabled) console.warn('Reflex aborted: invalid numeric input')
         return
       }
-      const options = {}
-      if (
-        args[0] &&
-        typeof args[0] === 'object' &&
-        Object.keys(args[0]).filter(key =>
-          [
-            'attrs',
-            'selectors',
-            'reflexId',
-            'resolveLate',
-            'serializeForm',
-            'includeInnerHTML',
-            'includeTextContent'
-          ].includes(key)
-        ).length
-      ) {
-        const opts = args.shift()
-        Object.keys(opts).forEach(o => (options[o] = opts[o]))
-      }
+
+      const options = getReflexOptions(args)
 
       const reflexData = new ReflexData(
         options,
@@ -141,35 +117,30 @@ const register = (controller, options = {}) => {
         tabId
       )
 
-      const reflexId = reflexData.reflexId
+      const id = reflexData.id
 
-      if (!this.isActionCableConnectionOpen())
-        throw 'The ActionCable connection is not open! `this.isActionCableConnectionOpen()` must return true before calling `this.stimulate()`'
-
-      if (!actionCable.subscriptionActive)
-        throw 'The ActionCable channel subscription for StimulusReflex was rejected.'
-
-      // lifecycle setup
+      // TODO: remove this in v4
       controllerElement.reflexController =
         controllerElement.reflexController || {}
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      controllerElement.reflexController[reflexId] = this
-      controllerElement.reflexData[reflexId] = reflexData.valueOf()
+      controllerElement.reflexController[id] = this
+      controllerElement.reflexData[id] = reflexData.valueOf()
+      // END TODO: remove
 
-      dispatchLifecycleEvent(
-        'before',
-        reflexElement,
-        controllerElement,
-        reflexId
-      )
+      const reflex = new Reflex(reflexData, this)
+      reflexes[id] = reflex
+      this.lastReflex = reflex
+
+      dispatchLifecycleEvent(reflex, 'before')
 
       setTimeout(() => {
-        const { params } = controllerElement.reflexData[reflexId] || {}
+        // TODO: in v4, params will be set on the reflex.data object
+        const { params } = controllerElement.reflexData[id] || {}
+
         const check = reflexElement.attributes[Schema.reflexSerializeForm]
         if (check) {
-          // not needed after v4 because this is only here for the deprecation warning
           options['serializeForm'] = check.value !== 'false'
         }
 
@@ -178,10 +149,13 @@ const register = (controller, options = {}) => {
           document.querySelector(reflexData.formSelector) ||
           reflexElement.closest('form')
 
+        // TODO: remove this in v4
         if (Deprecate.enabled && options['serializeForm'] === undefined && form)
           console.warn(
             `Deprecation warning: the next version of StimulusReflex will not serialize forms by default.\nPlease set ${Schema.reflexSerializeForm}=\"true\" on your Reflex Controller Element or pass { serializeForm: true } as an option to stimulate.`
           )
+        // END TODO: remove
+
         const formData =
           options['serializeForm'] === false
             ? ''
@@ -189,31 +163,22 @@ const register = (controller, options = {}) => {
                 element: reflexElement
               })
 
-        controllerElement.reflexData[reflexId] = {
+        reflex.data = {
           ...reflexData.valueOf(),
           params,
           formData
         }
 
-        this.StimulusReflex.subscription.send(
-          controllerElement.reflexData[reflexId]
-        )
+        // TODO: remove this in v4
+        controllerElement.reflexData[id] = reflex.data
+        // END TODO: remove
+
+        Transport.plugin.deliver(reflex)
       })
 
-      const promise = registerReflex(reflexData.valueOf())
+      Log.request(reflex)
 
-      if (Debug.enabled) {
-        Log.request(
-          reflexId,
-          target,
-          args,
-          this.context.scope.identifier,
-          reflexElement,
-          controllerElement
-        )
-      }
-
-      return promise
+      return reflex.getPromise
     },
 
     // Wraps the call to stimulate for any data-reflex elements.
@@ -238,36 +203,52 @@ const register = (controller, options = {}) => {
       }
     }
   })
-}
 
-// Uniquely identify this browser tab in each Reflex
-const tabId = uuidv4()
+  // Access the reflexes created by the current controller instance
+  // reflexes is a Proxy to an object, keyed by id
+  // this.reflexes.all and this.reflexes.last are scoped to this controller instance
+  // Reflexes can also be scoped by stage eg. this.reflexes.queued
+  if (!controller.reflexes)
+    Object.defineProperty(controller, 'reflexes', {
+      get () {
+        return new Proxy(reflexes, {
+          get: function (target, prop) {
+            if (prop === 'last') return this.lastReflex
+            return Object.fromEntries(
+              Object.entries(target[prop]).filter(
+                ([_, reflex]) => reflex.controller === this
+              )
+            )
+          }.bind(this)
+        })
+      }
+    })
+
+  scanForReflexesOnElement(controller.element)
+
+  emitEvent('stimulus-reflex:controller-registered', { detail: { controller } })
+}
 
 const useReflex = (controller, options = {}) => {
   register(controller, options)
 }
 
-document.addEventListener('stimulus-reflex:server-message', serverMessage)
+document.addEventListener('cable-ready:after-dispatch-event', routeReflexEvent)
 document.addEventListener('cable-ready:before-inner-html', beforeDOMUpdate)
 document.addEventListener('cable-ready:before-morph', beforeDOMUpdate)
 document.addEventListener('cable-ready:after-inner-html', afterDOMUpdate)
 document.addEventListener('cable-ready:after-morph', afterDOMUpdate)
-window.addEventListener('load', setupDeclarativeReflexes)
+document.addEventListener('readystatechange', () => {
+  if (document.readyState === 'complete') {
+    scanForReflexes()
+  }
+})
 
-export default {
+export {
   initialize,
   register,
   useReflex,
-  get debug () {
-    return Debug.value
-  },
-  set debug (value) {
-    Debug.set(!!value)
-  },
-  get deprecate () {
-    return Deprecate.value
-  },
-  set deprecate (value) {
-    Deprecate.set(!!value)
-  }
+  reflexes,
+  scanForReflexes,
+  scanForReflexesOnElement
 }

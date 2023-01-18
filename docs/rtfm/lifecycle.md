@@ -98,13 +98,13 @@ StimulusReflex also emits life-cycle events which can be captured in other Stimu
 
 ### Understanding Stages
 
-Most of the time, it's reasonable to expect that your Reflexes will follow a predictable cycle: `before` -&gt; `success` -&gt; `after` -&gt; `finalize`.
+Most of the time, it's reasonable to expect that your Reflexes will follow a predictable cycle: `before` -> `success` -> `after` -> `finalize`.
 
 There are, however, several important exceptions to the norm.
 
-1. Reflexes that are aborted on the server have a short cycle: `before` -&gt; `halted`
-2. Reflexes that have errors: `before` -&gt; `error` -&gt; `after` -&gt; \[`finalize`\]
-3. **Nothing Morphs end early**: `before` -&gt; \[`success`\] -&gt; `after`
+1. Reflexes that are aborted on the server have a short cycle: `before` -> `halted`
+2. Reflexes that have errors: `before` -> `error` -> `after` -> \[`finalize`]
+3. **Nothing Morphs end early**: `before` -> \[`success`] -> `after`
 
 Nothing Morphs have no CableReady operations to wait for, so there is nothing to `finalize`. A Nothing Morph with an error will not have a `finalize` stage.
 
@@ -136,7 +136,7 @@ In this example, we update each anchor's text before invoking the server side Re
 ```
 {% endcode %}
 
-{% code title="app/javascript/controllers/example\_controller.js" %}
+{% code title="app/javascript/controllers/example_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 
@@ -172,7 +172,7 @@ The Reflex `Example#poke` will cause StimulusReflex to check for the existence o
 ```
 {% endcode %}
 
-{% code title="app/javascript/controllers/example\_controller.js" %}
+{% code title="app/javascript/controllers/example_controller.js" %}
 ```javascript
 import ApplicationController from './application_controller.js'
 
@@ -222,7 +222,7 @@ Both generic and custom life-cycle callback methods share the same arguments:
 
 **reflex** - the name of the server side Reflex
 
-**error/noop** - the error message \(for reflexError\), otherwise `null`
+**error/noop** - the error message (for reflexError), otherwise `null`
 
 **reflexId** - a UUID4 or developer-provided unique identifier for each Reflex
 
@@ -356,4 +356,3 @@ All four events fire on `document`.
 In addition to DOM events, StimulusReflex will also emits duplicate [jQuery events](https://api.jquery.com/category/events/event-handler-attachment/) which you can capture. This occurs only if the jQuery library is present in the global scope eg. available on `window`.
 
 These jQuery events have the same name and `details` accessors as the DOM events.
-

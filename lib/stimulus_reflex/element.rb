@@ -1,66 +1,32 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/dataset"
+require "stimulus_reflex/utils/attribute_builder"
+
 class StimulusReflex::Element < OpenStruct
-  attr_reader :attrs, :data_attrs, :inner_html, :text_content
+  include StimulusReflex::AttributeBuilder
+
+  attr_reader :attrs, :dataset
+
+  alias_method :data_attributes, :dataset
+
+  delegate :signed, :unsigned, :numeric, :boolean, :data_attrs, to: :dataset
 
   def initialize(data = {})
     @attrs = HashWithIndifferentAccess.new(data["attrs"] || {})
-    @inner_html = data["inner_html"]
-    @text_content = data["text_content"]
+    @dataset = StimulusReflex::Dataset.new(data)
 
-    datasets = data["dataset"] || {}
-    regular_dataset = datasets["dataset"] || {}
-    @data_attrs = build_data_attrs(regular_dataset, datasets["datasetAll"] || {})
-
+    all_attributes = @attrs.merge(@dataset.attrs)
     super build_underscored(all_attributes)
-
-    @data_attrs.transform_keys! { |key| key.delete_prefix "data-" }
-  end
-
-  def signed
-    @signed ||= ->(accessor) { GlobalID::Locator.locate_signed(dataset[accessor]) }
-  end
-
-  def unsigned
-    @unsigned ||= ->(accessor) { GlobalID::Locator.locate(dataset[accessor]) }
   end
 
   def attributes
     @attributes ||= OpenStruct.new(build_underscored(attrs))
   end
 
-  def dataset
-    @dataset ||= OpenStruct.new(build_underscored(data_attrs))
-  end
-
   def to_dom_id
     raise NoIDError.new "The element `morph` is called on must have a valid DOM ID" if id.blank?
 
     "##{id}"
-  end
-
-  alias_method :data_attributes, :dataset
-
-  private
-
-  def all_attributes
-    @attrs.merge(@data_attrs)
-  end
-
-  def build_data_attrs(dataset, dataset_all)
-    dataset_all.transform_keys! { |key| "data-#{key.delete_prefix("data-").pluralize}" }
-
-    dataset.each { |key, value| dataset_all[key]&.prepend(value) }
-
-    data_attrs = dataset.merge(dataset_all)
-
-    HashWithIndifferentAccess.new(data_attrs || {})
-  end
-
-  def build_underscored(attrs)
-    attrs.merge(attrs.transform_keys(&:underscore))
-  end
-
-  class NoIDError < StandardError
   end
 end

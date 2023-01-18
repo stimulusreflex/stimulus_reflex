@@ -1,13 +1,18 @@
+import Schema from './schema'
+import Stimulus from './app'
+
 import { attributeValues } from './attributes'
 import { extractReflexName } from './utils'
-import Schema from './schema'
 
 // Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
-const localReflexControllers = (app, element) => {
+const localReflexControllers = element => {
   return attributeValues(element.getAttribute(Schema.controller)).reduce(
     (memo, name) => {
-      const controller = app.getControllerForElementAndIdentifier(element, name)
+      const controller = Stimulus.app.getControllerForElementAndIdentifier(
+        element,
+        name
+      )
       if (controller && controller.StimulusReflex) memo.push(controller)
       return memo
     },
@@ -18,10 +23,10 @@ const localReflexControllers = (app, element) => {
 // Returns all StimulusReflex controllers for the passed element.
 // Traverses DOM ancestors starting with element.
 //
-const allReflexControllers = (app, element) => {
+const allReflexControllers = element => {
   let controllers = []
   while (element) {
-    controllers = controllers.concat(localReflexControllers(app, element))
+    controllers = controllers.concat(localReflexControllers(element))
     element = element.parentElement
   }
   return controllers
@@ -36,8 +41,10 @@ const findControllerByReflexName = (reflexName, controllers) => {
     if (!controller.identifier) return
 
     return (
-      extractReflexName(reflexName).toLowerCase() ===
-      controller.identifier.toLowerCase()
+      extractReflexName(reflexName)
+        .replace(/([a-z0–9])([A-Z])/g, '$1-$2')
+        .replace(/(::)/g, '--')
+        .toLowerCase() === controller.identifier
     )
   })
 

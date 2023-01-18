@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "test_helper"
+require "mocha/minitest"
 
 class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
   tests StimulusReflex::Channel
@@ -10,7 +11,7 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
     def connection.env
       @env ||= {}
     end
-    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {reflex_id: "666"})
+    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {id: "666", version: StimulusReflex::VERSION})
     @reflex.controller_class.view_paths << Rails.root.join("test/views")
   end
 
@@ -28,5 +29,15 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
 
   test "dom_id" do
     assert @reflex.dom_id(TestModel.new(id: 123)) == "#test_model_123"
+  end
+
+  test "params behave like ActionController::Parameters" do
+    ActionDispatch::Request.any_instance.stubs(:parameters).returns({"a" => "1", "b" => "2", "c" => "3"})
+    reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {version: StimulusReflex::VERSION})
+
+    deleted_param = reflex.params.delete("a")
+
+    assert deleted_param == "1"
+    assert reflex.params.to_unsafe_h == {"b" => "2", "c" => "3"}
   end
 end

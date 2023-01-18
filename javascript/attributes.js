@@ -1,7 +1,8 @@
-import { elementToXPath, XPathToArray } from './utils'
 import Schema from './schema'
 import Debug from './debug'
 import Deprecate from './deprecate'
+
+import { elementToXPath, XPathToArray } from './utils'
 
 const multipleInstances = element => {
   if (['checkbox', 'radio'].includes(element.type)) {
@@ -30,12 +31,15 @@ const collectCheckedOptions = element => {
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
 //
 const attributeValue = (values = []) => {
-  const value = values
-    .filter(v => v && String(v).length)
-    .map(v => v.trim())
-    .join(' ')
-    .trim()
-  return value.length ? value : null
+  const value = Array.from(
+    new Set(
+      values
+      .filter(v => v && String(v).length)
+      .map(v => v.trim())
+    )
+  ).join(' ').trim()
+
+  return value.length > 0 ? value : null
 }
 
 // Returns an array for the passed string value by splitting on whitespace.

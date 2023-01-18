@@ -14,50 +14,39 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [10, 12]
+        node: [14, 16, 18]
+
     steps:
-    - uses: actions/checkout@master
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - uses: actions/cache@v1
-      id: yarn-cache
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.node }}-yarn-
-    - name: Yarn install
-      run: yarn
-    - name: Run JavaScript Tests
-      run: yarn run test
+      - uses: actions/checkout@master
+
+      - name: Setup Node v${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
+
+      - name: Yarn install
+        run: yarn
+
+      - name: Run JavaScript Tests
+        run: yarn run test
+
 
   ruby_test:
     name: Ruby Test Action
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [2.6.6, 2.7.2, '3.0']
+        ruby: [2.7, '3.0', 3.1, 3.2]
+
     steps:
-    - uses: actions/checkout@master
-    - name: Set up Ruby ${{ matrix.ruby-version }}
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-    - uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - name: Bundle install
-      run: |
-        gem install bundler
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
-    - name: Run ruby tests
-      run: bundle exec rake test_ruby
+      - uses: actions/checkout@master
+
+      - name: Set up Ruby v${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Run ruby tests
+        run: bundle exec rake test_ruby

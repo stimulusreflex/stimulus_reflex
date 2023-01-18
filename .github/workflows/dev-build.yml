@@ -1,0 +1,49 @@
+name: dev-builds
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: Build JavaScript package
+        run: |
+          yarn install
+          yarn build
+          # yarn test
+          yarn pack --filename stimulus_reflex-dev-build.tgz
+
+      - name: Publish Dev Build
+        run: |
+          name="$(git log -n 1 --format=format:%cn)"
+          email="$(git log -n 1 --format=format:%ce)"
+          message="$(git log -n 1 --format=format:%s)"
+          date="$(git log -n 1 --format=format:%ai)"
+
+          tar -xf stimulus_reflex-dev-build.tgz
+
+          git clone https://github.com/stimulusreflex/dev-builds && cd dev-builds
+          git remote remove origin
+          git remote add origin https://${{ secrets.STIMULUSREFLEX_BOT_DEV_BUILDS_TOKEN }}@github.com/stimulusreflex/dev-builds.git
+
+          git checkout --orphan "${GITHUB_SHA:0:7}"
+          cp -r ../package/. ./
+          git add .
+
+          # git add dist/ javascript/ README.md CHANGELOG.md LICENSE.txt package.json
+
+          git config --global user.name "$name"
+          git config --global user.email "$email"
+
+          GIT_COMMITER_DATE=${date} git commit -m "stimulus_reflex/${GITHUB_SHA:0:7} ${message}" --date "${date}"
+
+          git tag stimulus_reflex/${GITHUB_SHA:0:7} -m "stimulus_reflex/${GITHUB_SHA:0:7} ${message}"
+          git push origin stimulus_reflex/${GITHUB_SHA:0:7}

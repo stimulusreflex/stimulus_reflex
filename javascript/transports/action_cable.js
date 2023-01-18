@@ -1,20 +1,41 @@
 import { createConsumer } from '@rails/actioncable'
-import { received } from '../reflexes'
 import { emitEvent } from '../utils'
+import { dispatchLifecycleEvent } from '../lifecycle'
+import { reflexes } from '../reflexes'
+import { received } from '../process'
+
+import Deprecate from '../deprecate'
 
 let consumer
 let params
-let subscriptionActive
+let subscription
+let active
 
-const createSubscription = controller => {
+const initialize = (consumerValue, paramsValue) => {
+  consumer = consumerValue
+  params = paramsValue
+  document.addEventListener('DOMContentLoaded', () => {
+    active = false
+    connectionStatusClass()
+    if (Deprecate.enabled && consumerValue)
+      console.warn(
+        "Deprecation warning: the next version of StimulusReflex will obtain a reference to consumer via the Stimulus application object.\nPlease add 'application.consumer = consumer' to your index.js after your Stimulus application has been established, and remove the consumer key from your StimulusReflex initialize() options object."
+      )
+  })
+  document.addEventListener('turbolinks:load', connectionStatusClass)
+  document.addEventListener('turbo:load', connectionStatusClass)
+}
+
+const subscribe = controller => {
+  if (subscription) return
   consumer = consumer || controller.application.consumer || createConsumer()
   const { channel } = controller.StimulusReflex
-  const subscription = { channel, ...params }
-  const identifier = JSON.stringify(subscription)
+  const request = { channel, ...params }
+  const identifier = JSON.stringify(request)
 
-  controller.StimulusReflex.subscription =
+  subscription =
     consumer.subscriptions.findAll(identifier)[0] ||
-    consumer.subscriptions.create(subscription, {
+    consumer.subscriptions.create(request, {
       received,
       connected,
       rejected,
@@ -23,33 +44,57 @@ const createSubscription = controller => {
 }
 
 const connected = () => {
-  subscriptionActive = true
+  active = true
+  connectionStatusClass()
   emitEvent('stimulus-reflex:connected')
+  Object.values(reflexes.queued).forEach(reflex => {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent(reflex, 'delivered')
+  })
 }
 
 const rejected = () => {
-  subscriptionActive = false
+  active = false
+  connectionStatusClass()
   emitEvent('stimulus-reflex:rejected')
   if (Debug.enabled) console.warn('Channel subscription was rejected.')
 }
 
 const disconnected = willAttemptReconnect => {
-  subscriptionActive = false
+  active = false
+  connectionStatusClass()
   emitEvent('stimulus-reflex:disconnected', willAttemptReconnect)
 }
 
-export default {
-  consumer,
-  params,
-  get subscriptionActive () {
-    return subscriptionActive
-  },
-  createSubscription,
-  connected,
-  rejected,
-  disconnected,
-  set (consumerValue, paramsValue) {
-    consumer = consumerValue
-    params = paramsValue
+const deliver = reflex => {
+  if (active) {
+    subscription.send(reflex.data)
+    dispatchLifecycleEvent(reflex, 'delivered')
+  } else dispatchLifecycleEvent(reflex, 'queued')
+}
+
+const connectionStatusClass = () => {
+  const list = document.body.classList
+  if (
+    !(
+      list.contains('stimulus-reflex-connected') ||
+      list.contains('stimulus-reflex-disconnected')
+    )
+  ) {
+    list.add(
+      active ? 'stimulus-reflex-connected' : 'stimulus-reflex-disconnected'
+    )
+    return
   }
+  if (active) {
+    list.replace('stimulus-reflex-disconnected', 'stimulus-reflex-connected')
+  } else {
+    list.replace('stimulus-reflex-connected', 'stimulus-reflex-disconnected')
+  }
+}
+
+export default {
+  subscribe,
+  deliver,
+  initialize
 }

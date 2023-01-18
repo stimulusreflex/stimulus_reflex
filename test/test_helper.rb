@@ -2,12 +2,14 @@
 
 ENV["RAILS_ENV"] ||= "test"
 
-require "minitest/mock"
+require "mocha"
 require "rails"
 require "active_model"
 require "active_record"
 require "action_controller"
+require "minitest/mock"
 require "pry"
+
 require_relative "../lib/stimulus_reflex"
 
 class TestApp < Rails::Application

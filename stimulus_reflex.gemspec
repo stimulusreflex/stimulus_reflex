@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path("../lib/stimulus_reflex/version", __FILE__)
+require File.expand_path("lib/stimulus_reflex/version", __dir__)
 
 Gem::Specification.new do |gem|
   gem.name = "stimulus_reflex"
@@ -11,6 +11,10 @@ Gem::Specification.new do |gem|
   gem.homepage = "https://github.com/stimulusreflex/stimulus_reflex"
   gem.summary = "Build reactive applications with the Rails tooling you already know and love."
   gem.post_install_message = <<~MESSAGE
+    Finish installation by running:
+
+    rake stimulus_reflex:install
+
     Get support for StimulusReflex and CableReady on Discord:
 
     https://discord.gg/stimulus-reflex
@@ -25,18 +29,35 @@ Gem::Specification.new do |gem|
     "source_code_uri" => gem.homepage
   }
 
-  gem.files = Dir["app/**/*", "lib/**/*", "bin/*", "[A-Z]*"]
+  gem.files = Dir[
+    "lib/**/*.{rb,rake,tt}",
+    "app/**/*.rb",
+    "app/assets/javascripts/*",
+    "bin/*",
+    "[A-Z]*"
+  ]
+
   gem.test_files = Dir["test/**/*.rb"]
 
-  gem.add_dependency "rack"
+  gem.required_ruby_version = ">= 2.7.0"
+
+  rails_version = ">= 5.2"
+  gem.add_dependency "actioncable", rails_version
+  gem.add_dependency "actionpack", rails_version
+  gem.add_dependency "actionview", rails_version
+  gem.add_dependency "activesupport", rails_version
+  gem.add_dependency "railties", rails_version
+
+  gem.add_dependency "cable_ready", ">= 5.0.0.pre9"
   gem.add_dependency "nokogiri"
-  gem.add_dependency "rails", ">= 5.2"
+  gem.add_dependency "rack"
   gem.add_dependency "redis"
-  gem.add_dependency "cable_ready", "5.0.0.pre2"
 
   gem.add_development_dependency "bundler", "~> 2.0"
-  gem.add_development_dependency "pry-nav"
+  gem.add_development_dependency "mocha"
   gem.add_development_dependency "pry"
+  gem.add_development_dependency "pry-nav"
+  gem.add_development_dependency "rails", rails_version
   gem.add_development_dependency "rake"
   gem.add_development_dependency "standardrb", "~> 1.0"
 end

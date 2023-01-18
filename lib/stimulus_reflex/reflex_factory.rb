@@ -9,14 +9,16 @@ class StimulusReflex::ReflexFactory
         element: reflex_data.element,
         selectors: reflex_data.selectors,
         method_name: reflex_data.method_name,
-        params: reflex_data.form_params,
+        params: reflex_data.params,
         client_attributes: {
-          reflex_id: reflex_data.reflex_id,
+          id: reflex_data.id,
           tab_id: reflex_data.tab_id,
           xpath_controller: reflex_data.xpath_controller,
           xpath_element: reflex_data.xpath_element,
           reflex_controller: reflex_data.reflex_controller,
-          permanent_attribute_name: reflex_data.permanent_attribute_name
+          permanent_attribute_name: reflex_data.permanent_attribute_name,
+          suppress_logging: reflex_data.suppress_logging,
+          version: reflex_data.version
         })
     end
 

@@ -205,7 +205,7 @@ You can customize the contents, order, formatting and even color of the logging 
 * `session_id_full` - the current user's session id
 * `reflex_info` - the Reflex Class # the Reflex action
 * `operation` - the CableReady operation used to execute the current Morph
-* `reflex_id` - the first 8 characters of the unique [UUIDv4](https://en.wikipedia.org/wiki/Universally\_unique\_identifier#Version\_4\_%28random%29) identifying the Reflex
+* `reflex_id` - the first 8 characters of the unique [UUIDv4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_%28random%29) identifying the Reflex
 * `reflex_id_full` - the unique UUIDv4 identifying the Reflex
 * `mode` - whether the current Morph is Page, Selector or Nothing
 * `selector` - the destination CSS selector for the content to be updated

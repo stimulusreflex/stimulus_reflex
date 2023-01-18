@@ -2,18 +2,22 @@
 
 module StimulusReflex
   class Logger
+    attr_reader :logger
     attr_accessor :reflex, :current_operation
+
+    delegate :debug, :info, :warn, :error, :fatal, :unknown, to: :logger
 
     def initialize(reflex)
       @reflex = reflex
       @current_operation = 1
+      @logger = StimulusReflex.config.logger
     end
 
-    def print
+    def log_all_operations
       return unless config_logging.instance_of?(Proc)
 
       reflex.broadcaster.operations.each do
-        puts instance_eval(&config_logging) + "\e[0m"
+        logger.info instance_eval(&config_logging) + "\e[0m"
         @current_operation += 1
       end
     end
@@ -22,6 +26,8 @@ module StimulusReflex
 
     def config_logging
       return @config_logging if @config_logging
+
+      return unless StimulusReflex.config.logging.instance_of?(Proc)
 
       StimulusReflex.config.logging.binding.eval("using StimulusReflex::Utils::Colorize")
       @config_logging = StimulusReflex.config.logging
@@ -40,6 +46,15 @@ module StimulusReflex
       reflex.class.to_s + "#" + reflex.method_name
     end
 
+    def id_full
+      reflex.id
+    end
+
+    def id
+      id_full[0..7]
+    end
+
+    # TODO: remove for v4
     def reflex_id_full
       reflex.reflex_id
     end
@@ -47,6 +62,7 @@ module StimulusReflex
     def reflex_id
       reflex_id_full[0..7]
     end
+    # END TODO remove
 
     def mode
       reflex.broadcaster.to_s

@@ -41,22 +41,35 @@ class StimulusReflex::ReflexData
     data["permanentAttributeName"]
   end
 
+  def suppress_logging
+    data["suppressLogging"]
+  end
+
   def form_data
     Rack::Utils.parse_nested_query(data["formData"])
+  end
+
+  def params
+    form_params.merge(url_params)
   end
 
   def form_params
     form_data.deep_merge(data["params"] || {})
   end
 
-  def reflex_id
-    data["reflexId"]
+  def url_params
+    Rack::Utils.parse_nested_query(URI.parse(url).query)
+  end
+
+  def id
+    data["id"]
   end
 
   def tab_id
     data["tabId"]
   end
 
+  # TODO: remove this in v4
   def xpath_controller
     data["xpathController"]
   end
@@ -64,9 +77,14 @@ class StimulusReflex::ReflexData
   def xpath_element
     data["xpathElement"]
   end
+  # END TODO remove
 
   def reflex_controller
     data["reflexController"]
+  end
+
+  def version
+    data["version"].to_s.gsub("-pre", ".pre")
   end
 
   private

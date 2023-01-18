@@ -2,6 +2,7 @@ const defaultSchema = {
   reflexAttribute: 'data-reflex',
   reflexPermanentAttribute: 'data-reflex-permanent',
   reflexRootAttribute: 'data-reflex-root',
+  reflexSuppressLoggingAttribute: 'data-reflex-suppress-logging',
   reflexDatasetAttribute: 'data-reflex-dataset',
   reflexDatasetAllAttribute: 'data-reflex-dataset-all',
   reflexSerializeFormAttribute: 'data-reflex-serialize-form',
@@ -12,14 +13,20 @@ const defaultSchema = {
 
 let schema = {}
 
+export { schema, defaultSchema }
+
 export default {
   set (application) {
     schema = { ...defaultSchema, ...application.schema }
-    for (const attribute in schema)
-      Object.defineProperty(this, attribute.slice(0, -9), {
+    for (const attribute in schema) {
+      const attributeName = attribute.slice(0, -9)
+
+      Object.defineProperty(this, attributeName, {
         get: () => {
           return schema[attribute]
-        }
+        },
+        configurable: true
       })
+    }
   }
 }
