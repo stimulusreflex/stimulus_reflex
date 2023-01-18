@@ -70,6 +70,7 @@ export default {
           { text: "Troubleshooting", link: "/appendices/troubleshooting" },
           { text: "Release History", link: "/appendices/release-history" },
           { text: "Glossary", link: "/appendices/glossary" },
+          { text: "Core Team", link: "/appendices/team" },
         ]
       }
     ]
