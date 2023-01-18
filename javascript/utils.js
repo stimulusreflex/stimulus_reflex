@@ -2,6 +2,7 @@ import Schema from './schema'
 import Deprecate from './deprecate'
 import Debug from './debug'
 import { Utils } from 'cable_ready'
+const { debounce, dispatch, xpathToElement, xpathToElementArray } = Utils
 
 // uuid4 function taken from stackoverflow
 // https://stackoverflow.com/a/2117523/554903
@@ -57,10 +58,9 @@ const camelize = (value, uppercaseFirstLetter = true) => {
 }
 
 // TODO: remove this in v4 (potentially!)
-const XPathToElement = Utils.xpathToElement
-const XPathToArray = Utils.xpathToElementArray
-const debounce = Utils.debounce
-const emitEvent = (name, detail = {}) => Utils.dispatch(document, name, detail)
+const XPathToElement = xpathToElement
+const XPathToArray = xpathToElementArray
+const emitEvent = (name, detail = {}) => dispatch(document, name, detail)
 
 const extractReflexName = reflexString => {
   const match = reflexString.match(/(?:.*->)?(.*?)(?:Reflex)?#/)
@@ -172,6 +172,7 @@ export {
   serializeForm,
   camelize,
   debounce,
+  dispatch,
   extractReflexName,
   emitEvent,
   elementToXPath,
