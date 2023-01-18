@@ -4,6 +4,10 @@ description: >-
   difficulty or opposition
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Persistence
 
 We estimate that 80% of the pain points in web development are the direct result of maintaining state on the client. Even without considering the complexity of frameworks like React, how much time have you lost to fretting about model validation, stale data, and DOM readiness over your career?
@@ -128,7 +132,8 @@ The Rails session object is perfect for prototyping during development, before p
 Cookie-based sessions are not _currently_ supported. Be sure to use a session store such as :cache\_store or you will be sad. You can find guidance on this topic on the Setup page.
 :::
 
-TODO [setup.md](../hello-world/setup.md)
+<LinkComponent name="Setup" href="/hello-world/setup.html"/>
+
 
 ## The Rails cache store
 

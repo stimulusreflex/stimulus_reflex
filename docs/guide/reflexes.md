@@ -2,6 +2,10 @@
 description: Reflex classes are full of Reflex actions. Reflex actions are full of love. 🏩
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Calling Reflexes
 
 What is a Reflex, really? Is it a transactional UI update that takes place over a persistent open connection to the server? Is it a new tool on your belt that operates adjacent to and in tandem with concepts like REST and Ajax? Is it the smug feelings associated with successfully achieving a massive productivity arbitrage? Is it the boundless potential for unironic good in every child?
@@ -22,7 +26,7 @@ You can learn more about the control flow of each Morph by consulting [this flow
 
 The rest of this page generally assumes that you're working with a Page Morph. Selector and Nothing Morphs are described in detail on their own page:
 
-TODO [morph-modes.md](morph-modes.md)
+<LinkComponent name="Morph Modes" href="/guide/morph-modes.html"/>
 
 ## Declaring a Reflex in HTML with data attributes
 
@@ -298,8 +302,6 @@ And you can see that the StimulusReflex Controller responsible for the Reflex wa
 So, that's pretty cool, right? 🕶️ It knows to use `foo` instead of `stimulus-reflex`.
 
 The thing is... _where's our console message?_ It never happened, because we destroyed the Reflex Controller Element (the `button`) that was holding the instance of `foo` that was responsible for the Reflex. That includes the life-cycle events that make callbacks possible.
-
-TODO https://www.youtube.com/watch?v=XZxzJGgox_E
 
 Now, it's very common to use `data-reflex` and `data-controller` on the same element. There's nothing inherently wrong with doing so - in fact, it's a solid go-to strategy for handling callbacks - _unless_ your Reflex does something that results in the Reflex Controller Element being destroyed (think: `innerHTML`) or otherwise disconnected from your DOM.
 
