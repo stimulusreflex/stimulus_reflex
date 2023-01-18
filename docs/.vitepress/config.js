@@ -13,19 +13,18 @@ export default {
       { icon: 'discord', link: 'https://discord.gg/stimulus-reflex' }
     ],
     editLink: {
-      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
+      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/v3.4-docs/docs/:path',
       text: 'Edit this page on GitHub'
     },
     nav: [
       { text: 'Changelog', link: 'https://github.com/stimulusreflex/stimulus_reflex/releases' },
       { text: 'CableReady', link: 'https://cableready.stimulusreflex.com' },
       {
-        text: 'v3.5',
+        text: 'v3.4.1',
         items: [
           {
             items: [
               { text: 'v3.5.0', link: 'https://stimulusreflex.netlify.app' },
-              { text: 'v3.4.1', link: 'https://docs.stimulusreflex.com' }
             ]
           }
         ]
