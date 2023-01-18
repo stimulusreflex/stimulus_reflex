@@ -11,38 +11,38 @@ description: Dealing with the scaling concerns we are supposedly lucky to have
 Instead, we make the best of things by enabling caching in the development environment. This allows us to:
 
 * assign our user session data to be managed by the cache store
-* use the [Rails Cache API](../rtfm/persistence.md#the-rails-cache-store) to store data that we access from Reflexes
+* use the [Rails Cache API](../guide/persistence.md#the-rails-cache-store) to store data that we access from Reflexes
 * catch bugs that otherwise might only occur in production
 
 ### Use Redis as your cache store
 
 We want to change the cache store to make use of Redis. First we should enable the `redis` gem, as well as `hiredis`, a native wrapper which is much faster than the Ruby gem alone.
 
-{% code title="Gemfile" %}
-```ruby
+::: code-group
+```ruby [Gemfile]
 gem "redis", ">= 4.0", :require => ["redis", "redis/connection/hiredis"]
 gem "hiredis"
 ```
-{% endcode %}
+:::
 
 Now that Redis is available to your application, you need to configure your development enviroment:
 
-{% code title="config/environments/development.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/development.rb]
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
 config.session_store :cache_store, key: "_session_development", compress: true, pool_size: 5, expire_after: 1.year
 ```
-{% endcode %}
+:::
 
-{% hint style="danger" %}
+::: danger
 Please note that `cache_store` is an accessor, while `session_store` is a method. Take care **not** to use an `=` when defining your `session_store`.
-{% endhint %}
+:::
 
 Continue reading the [Deployment on Heroku](deployment.md#deployment-on-heroku) section below for tips on setting up Redis-backed sessions using the `redis-session-store` gem.
 
-{% hint style="warning" %}
+::: danger
 For **caching and session storage**, make sure that your Redis instance is configured to use the `volatile-lru` key expiration strategy. It means that if your Redis instance gets full, it will start ejecting the session data for the users who have likely churned anyhow, while ensuring regular users stay logged in.
-{% endhint %}
+:::
 
 ## Deployment on Heroku
 
@@ -50,16 +50,16 @@ We have seen deployments where combining cache and session storage functions int
 
 Heroku allows you to provision multiple Redis instances to your application, both via their [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) and using the Heroku CLI. This is possible at the free tier, so there's nothing to lose and lots to gain by splitting these up.
 
-{% hint style="success" %}
+::: danger
 You could end up with separate Redis instances for: fragment caching, sessions, ActionCable and Sidekiq job queues.
 
 Remember, never store Sidekiq jobs with a `volatile-lru` key expiration strategy. If your job queue runs out of space, you want it sounding every alarm possible.
-{% endhint %}
+:::
 
 Install the `redis-session-store` gem into your project, and then in your `production.rb` you can change your session store:
 
-{% code title="config/environments/production.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/production.rb]
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
 
 config.session_store :redis_session_store,
@@ -73,11 +73,11 @@ config.session_store :redis_session_store,
     url: ENV.fetch("HEROKU_REDIS_MAROON_URL")
   }
 ```
-{% endcode %}
+:::
 
-{% hint style="success" %}
+::: danger
 You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - **only Heroku Redis assigns color-based instance names**, for example.
-{% endhint %}
+:::
 
 Heroku will give all Redis instances after the first a distinct URL. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
 
@@ -105,11 +105,11 @@ Some users have noted that ActionCable can take a long time to connect. This is 
 
 The latest release of the Rack gem \(2.2.3 as of the time of this writing\) came out in June 2020, so the fix is to add `rack` to your Gemfile and point to this specific commit:
 
-{% code title="Gemfile" %}
-```ruby
+::: code-group
+```ruby [Gemfile]
 gem "rack", git: "https://github.com/rack/rack.git", ref: "8be612a"
 ```
-{% endcode %}
+:::
 
 ## Cloudflare DNS
 
@@ -125,8 +125,8 @@ In a more sophisticated setup, you could experiment with hosting your websockets
 
 Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your `nginx.conf` has the **port 443 section** set up to receive secure websockets:
 
-{% code title="/etc/nginx/nginx.conf" %}
-```ruby
+::: code-group
+```ruby [/etc/nginx/nginx.conf]
 server {
     listen 443;
     passenger_enabled on;
@@ -136,7 +136,7 @@ server {
     }
 }
 ```
-{% endcode %}
+:::
 
 Please note that **the above is not a complete document**; it's just the fragments often missing from the default configurations found on hosts like Cloud 66.
 
@@ -146,41 +146,36 @@ When you are using Selector Morphs, it is very common to use `ApplicationControl
 
 If your helper is generating **example.com** URLs, this is for you.
 
-{% tabs %}
-{% tab title="Development" %}
-{% code title="config/environments/development.rb" %}
-```ruby
+
+::: code-group
+```ruby [config/environments/development.rb]
 config.action_controller.default_url_options = {host: "localhost", port: 3000}
 ```
-{% endcode %}
-{% endtab %}
+:::
 
-{% tab title="Production" %}
-{% code title="config/environments/production.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/production.rb]
 config.action_controller.default_url_options = {host: "stimulusreflex.com"}
 ```
-{% endcode %}
-{% endtab %}
-{% endtabs %}
+:::
 
 Similarly, if you need URL helpers in your mailers:
 
-{% code title="config/environments/development.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/development.rb]
 config.action_mailer.default_url_options = {host: "localhost", port: 3000}
 ```
-{% endcode %}
+:::
 
 ## AnyCable
 
-{% hint style="danger" %}
+::: danger
 "But does it scale?"
-{% endhint %}
+:::
 
-{% hint style="success" %}
+::: danger
 Yes.
-{% endhint %}
+:::
 
 We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
 
@@ -198,9 +193,9 @@ There is also a brand-new installation wizard which you can access via `rails g 
 
 Official AnyCable documentation for StimulusReflex can be found [here](https://docs.anycable.io/v1/#/ruby/stimulus_reflex). If you notice any issues with AnyCable support, please tell us about it [here](https://github.com/stimulusreflex/stimulus_reflex/issues/46).
 
-{% hint style="info" %}
+::: danger
 If you're looking to authenticate AnyCable connections with Devise, the documentation for that process is [here](https://docs.anycable.io/v1/#/ruby/authentication), and there's a good discussion about this process [here](https://github.com/anycable/anycable-rails/issues/127).
-{% endhint %}
+:::
 
 ## Turbolinks / Turbo Drive
 
@@ -226,34 +221,34 @@ If you want to set up your ActionCable backend to accept connections from a diff
 
 First, make sure that you're serving the ActionCable endpoint:
 
-{% code title="config/routes.rb" %}
-```ruby
+::: code-group
+```ruby [config/routes.rb]
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 end
 ```
-{% endcode %}
+:::
 
 Then, you will have to modify your `consumer.js` to connect to your application URL. Note that you can connect to secure websockets via SSL by using`wss://` instead of `ws://`
 
-{% code title="app/javascript/channels/consumer.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/channels/consumer.js]
 import { createConsumer } from '@rails/actioncable'
 export default createConsumer('wss://myapp.com/cable')
 ```
-{% endcode %}
+:::
 
 Finally, tweak your production configuration. **Don't disable forgery protection unless it's not working.**
 
-{% code title="config/environments/production.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/production.rb]
 Rails.application.configure do
   config.action_cable.allowed_request_origins
   config.action_cable.url = "wss://myapp.com/cable"
   config.action_cable.disable_request_forgery_protection = true # only if necessary
 end
 ```
-{% endcode %}
+:::
 
 ## Is StimulusReflex suitable for use in developing countries?
 
@@ -271,4 +266,3 @@ We offer two suggestions to developers looking to support users with slow, unrel
 2. You might need to program defensively using two-stage commits. This means devising ways to acknowledge that transactions were completed. You should also construct your UI to hide action elements like buttons when your connection is dropped.
 
 If you're working through these issues, please get in touch with us on Discord. We will work hard to help.
-

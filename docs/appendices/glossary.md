@@ -34,11 +34,11 @@ The Stimulus controller created during installation which Reflex controllers can
 
 ## Morphs
 
-The three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs](../rtfm/morph-modes.md) page for more information.
+The three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs](../guide/morph-modes.md) page for more information.
 
 ## Reflex root
 
-Page Morphs update with the `body` element as the default Reflex root. You can specify one or more elements to constrain what part of the DOM will be updated using the `data-reflex-root` attribute. See [Scoping Page Morphs](https://docs.stimulusreflex.com/rtfm/morph-modes#scoping-page-morphs) for more information.
+Page Morphs update with the `body` element as the default Reflex root. You can specify one or more elements to constrain what part of the DOM will be updated using the `data-reflex-root` attribute. See [Scoping Page Morphs](https://docs.stimulusreflex.com/guide/morph-modes#scoping-page-morphs) for more information.
 
 ## reflexId
 

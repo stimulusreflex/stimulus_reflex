@@ -20,7 +20,7 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](<../.gitbook/assets/power-rangers (1).jpg>)
+![Each Morph is useful in different scenarios.](<//power-rangers (1).jpg>)
 
 | What are you replacing?                | Process Controller Action? | Typical Round-Trip Speed |
 | -------------------------------------- | -------------------------- | ------------------------ |
@@ -38,9 +38,9 @@ What makes Page Morphs interesting and distinct from other Morph types is that t
 
 Any instance variables that you set in your Reflex action method are available to your controller action. In addition, there is a special `@stimulus_reflex` variable that is set to `true` when a controller action is being run by a Reflex.
 
-{% hint style="info" %}
+::: info
 StimulusReflex does not support using redirect\_to in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
-{% endhint %}
+:::
 
 ### Scoping Page Morphs
 
@@ -58,43 +58,39 @@ StimulusReflex will decide which element's children to replace by evaluating thr
 
 Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
 
-{% tabs %}
-{% tab title="index.html.erb" %}
-```
+::: code-group
+``` [index.html.erb]
 <div data-reflex-root="[forward],[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>
   <div backward><%= @words&.reverse %></div>
 </div>
 ```
-{% endtab %}
 
-{% tab title="example_reflex.rb" %}
-```ruby
+```ruby [example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   def words
     @words = element[:value]
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
-{% hint style="info" %}
+::: info
 One interesting detail of this example is that by assigning the root to `[forward],[backward]` we are implicitly telling StimulusReflex to **not** update the text input itself. This prevents resetting the input value while the user is typing.
-{% endhint %}
+:::
 
-{% hint style="warning" %}
+::: info
 In StimulusReflex, morphdom is called with the **childrenOnly** flag set to _true_.
 
 This means that \<body> or the custom parent selector(s) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
 
 If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an \<a>.
-{% endhint %}
+:::
 
-{% hint style="info" %}
+::: info
 It's completely valid for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
-{% endhint %}
+:::
 
 ### Permanent Elements
 
@@ -102,26 +98,26 @@ Perhaps you just don't want a section of your DOM to be updated by StimulusRefle
 
 Just add `data-reflex-permanent` to any element in your DOM, and it will be left unchanged by full-page Reflex updates and `morph` calls that re-render partials. Note that `morph` calls which insert simple strings or empty values do not respect the `data-reflex-permanent` attribute.
 
-{% code title="index.html.erb" %}
-```markup
+::: code-group
+```html [index.html.erb]
 <div data-reflex-permanent>
   <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=star&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
   <iframe src="https://ghbtns.com/github-btn.html?user=stimulusreflex&repo=stimulus_reflex&type=fork&count=true" frameborder="0" scrolling="0" class="ghbtn"></iframe>
 </div>
 ```
-{% endcode %}
+:::
 
-{% hint style="warning" %}
+::: info
 We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org) editor ([ActionText](https://guides.rubyonrails.org/action\_text\_overview.html)) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
 ¯\*_(ツ)\*_/¯
-{% endhint %}
+:::
 
-{% hint style="danger" %}
+::: info
 Beware of Ruby gems that implicitly inject HTML into the body as it might be removed from the DOM when a Reflex is invoked. For example, consider the [intercom-rails gem](https://github.com/intercom/intercom-rails) which automatically injects the Intercom chat into the body. Gems like this often provide [instructions](https://github.com/intercom/intercom-rails#manually-inserting-the-intercom-javascript) for explicitly including their markup. We recommend using the explicit option whenever possible, so that you can wrap the content with `data-reflex-permanent`.
-{% endhint %}
+:::
 
 ## Selector Morphs
 
@@ -133,39 +129,39 @@ Updating a target element with a Selector morph does _not_ invoke ActionDispatch
 
 Let's first establish a baseline HTML sample to modify. Our attention will focus primarily on the `div` known colloquially as **#foo**.
 
-{% code title="show.html.erb" %}
-```markup
+::: code-group
+```html [show.html.erb]
 <header data-reflex="click->Example#change">
   <%= render partial: "path/to/foo", locals: {message: "Am I the medium or the massage?"} %>
 </header>
 ```
-{% endcode %}
+:::
 
 Behold! For this is the `foo` partial. It is an example of perfection:
 
-{% code title="_foo.html.erb" %}
-```markup
+::: code-group
+```html [_foo.html.erb]
 <div id="foo">
   <span class="spa"><%= message %></span>
 </div>
 ```
-{% endcode %}
+:::
 
 You create a Selector morph by calling the `morph` method. In its simplest form, it takes two parameters: **selector** and **html**. We pass any valid CSS DOM selector that returns a reference to the first matching element, as well as the value we're updating it with.
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   def change
     morph "#foo", "Your muscles... they are so tight."
   end
 end
 ```
-{% endcode %}
+:::
 
 If you consult your Elements Inspector, you'll now see that #foo now contains a text node and your `header` has gained some attributes. This is just how StimulusReflex makes the magic happen.
 
-```markup
+```html
 <header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
   <div id="foo">Your muscles... they are so tight.</div>
 </header>
@@ -173,13 +169,13 @@ If you consult your Elements Inspector, you'll now see that #foo now contains a 
 
 **Morphs only replace the children of the element that you are targeting.** If you need to update the target element (as you would with `outerHTML`) consider targeting the parent of the element you need to change. You could, for example, call `morph "header", "No more #foo."` and start fresh.
 
-{% hint style="info" %}
+::: info
 Cool, but _where did the span go_? We're glad you asked!
 
 The truth is that a lot of complexity and nasty edge cases are being hidden away, while presenting you intelligent defaults and generally trying to follow the _principle of least surprise_.
 
 There's no sugar coating the fact that there's a happy path for all of the typical use cases, and lots of gotchas to be mindful of otherwise. We're going to tackle this by showing you best practices first. Start by #winning now and later there will be a section with all of the logic behind the decisions so you can troubleshoot if things go awry / [Charlie Sheen](https://www.youtube.com/watch?v=pipTwjwrQYQ).
-{% endhint %}
+:::
 
 ### Intelligent defaults
 
@@ -190,11 +186,11 @@ yelling = element.value.upcase
 morph "#foo", render(partial: "path/to/foo", locals: {message: yelling})
 ```
 
-{% hint style="success" %}
+::: info
 Since StimulusReflex v3.4, `render` has been delegated to the controller class responsible for rendering the current page. Of course, you're still free to use `ApplicationController` or any other ActionDispatch controller to render your content.
 
 You'll have access to all the same helpers that you would in a normal Rails HTTP request and the subsequent SSR handling of it.
-{% endhint %}
+:::
 
 If ViewComponents are your thing, we have you covered:
 
@@ -234,7 +230,7 @@ morph "#foo", "<div id=\"baz\"><span>Just breathe in... and out.</span></div>"
 
 Now your content is contained in a `span` element node. All set... except that you changed #foo to #baz.
 
-```markup
+```html
 <header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
   <div id="foo">
     <div id="baz">
@@ -255,24 +251,20 @@ Ultimately, we've optimized for two primary use cases for morph functionality:
 
 If you're doing pagination in Rails, [pagy](https://github.com/ddnexus/pagy) is the tool for the job. pagy works great with StimulusReflex, Bootstrap and FontAwesome:
 
-{% tabs %}
-{% tab title="View" %}
-```markup
+
+::: code-group
+```html [View]
 <div id="paginator"><%= render partial: "paginator", locals: {pagy: @pagy} %></div>
 <div id="posts"><%= render @posts %></div>
 ```
-{% endtab %}
 
-{% tab title="Controller" %}
-```ruby
+```ruby [Controller]
 def index
   @pagy, @posts = pagy(Post.all, page: 1)
 end
 ```
-{% endtab %}
 
-{% tab title="Reflex" %}
-```ruby
+```ruby [Reflex]
 class PagyReflex < ApplicationReflex
   include Pagy::Backend
 
@@ -283,10 +275,8 @@ class PagyReflex < ApplicationReflex
   end
 end
 ```
-{% endtab %}
 
-{% tab title="Partial" %}
-```markup
+```html [Partial]
 <nav class="d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item"><a href="#" id="page_prev_li" class="page-link" data-reflex="click->Pagy#paginate" data-page="<%= pagy.prev || 1 %>"><span class="far fa-angle-double-left"></span></a></li>
@@ -303,23 +293,20 @@ end
   </ul>
 </nav>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
 Hang on, though... if you watch the [client-side logging](../appendices/troubleshooting.md#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
 
 The `paginator` partial is only rendered one time, so this one is easy: we have to move the top-level div into the partial. When it gets re-rendered, it will automatically match what `morph` needs to update the contents because it _is_ the contents:
 
-{% tabs %}
-{% tab title="View" %}
-```markup
+
+::: code-group
+```html [View]
 <%= render partial: "paginator", locals: {pagy: @pagy} %>
 <div id="posts"><%= render @posts %></div>
 ```
-{% endtab %}
 
-{% tab title="Partial" %}
-```markup
+```html [Partial]
 <div id="paginator">
   <nav class="d-flex justify-content-center">
     <ul class="pagination">
@@ -338,8 +325,7 @@ The `paginator` partial is only rendered one time, so this one is easy: we have 
   </nav>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
 The `posts` partial (not listed) is rendered as a collection, and so it must be handled differently. You cannot put the top-level div into each element of the collection!
 
@@ -435,20 +421,20 @@ Let's step through creating a simple ActiveJob that will be triggered by a Nothi
 
 First, some quick housekeeping: you need to create an ActionCable channel. Running `rails generate channel counter` should do the trick. We want to stream updates to anyone listening in on the `counter` stream.
 
-{% code title="app/channels/counter_channel.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/counter_channel.rb]
 class CounterChannel < ApplicationCable::Channel
   def subscribed
     stream_from "counter"
   end
 end
 ```
-{% endcode %}
+:::
 
 When the channel client receives data, send it to CableReady for processing.
 
-{% code title="app/javascript/channels/counter_channel.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/channels/counter_channel.js]
 import consumer from "./consumer"
 consumer.subscriptions.create("CounterChannel", {
   received(data) {
@@ -456,24 +442,24 @@ consumer.subscriptions.create("CounterChannel", {
   }
 })
 ```
-{% endcode %}
+:::
 
 Create a simple view template that contains a `button` to launch the Reflex as well as a `span` to hold the current value. We'll pull in the current value of the counter key in the Rails cache. If it doesn't yet exist, set the value to 0.
 
-{% code title="index.html.erb" %}
-```markup
+::: code-group
+```html [index.html.erb]
 <button data-reflex="click->Counter#increment">Increment Counter</button>
 
 The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter", raw: true) {0} %></span>
 ```
-{% endcode %}
+:::
 
 This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active\_job\_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active\_job\_basics.html#globalid) system behind the scenes.
 
 You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, make sure to pass the user resource (ActiveRecord model instance) to the ActiveJob.
 
-{% code title="app/reflexes/counter_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/counter_reflex.rb]
 class CounterReflex < ApplicationReflex
   def increment
     morph :nothing
@@ -481,12 +467,12 @@ class CounterReflex < ApplicationReflex
   end
 end
 ```
-{% endcode %}
+:::
 
 Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We then use CableReady to queue up a text\_content operation with the newly incremented value before ultimately sending the broadcast.
 
-{% code title="app/jobs/increment_job.rb" %}
-```ruby
+::: code-group
+```ruby [app/jobs/increment_job.rb]
 class IncrementJob < ApplicationJob
   include CableReady::Broadcaster
   queue_as :default
@@ -496,10 +482,10 @@ class IncrementJob < ApplicationJob
   end
 end
 ```
-{% endcode %}
+:::
 
 This setup might seem like overkill to increment a number on your page, but you only need to setup the channel once, and then you really just need an ActiveJob class to make the magic happen. You can use these examples as starting points for applications of arbitrary sophistication and complexity.
 
-{% hint style="info" %}
+::: info
 There's an amazing resource on best practices with ActiveJob and Sidekiq [available here](https://github.com/toptal/active-job-style-guide).
-{% endhint %}
+:::

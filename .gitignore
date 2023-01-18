@@ -15,3 +15,6 @@ dist/**
 
 app/assets/javascripts/**
 !app/assets/javascripts/.keep
+
+docs/.vitepress/dist/
+docs/.vitepress/cache/

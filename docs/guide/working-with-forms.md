@@ -19,11 +19,11 @@ UJS-powered remote forms are great, especially now that we have [mrujs](https://
 
 Don't believe the hype: **UJS is alive and well!**
 
-{% hint style="info" %}
+::: info
 When you POST a form to a boilerplate Rails resource controller and your create attempt fails, the URL will appear to show the `new` template _content_ but the URL will appear to be `/` (aka the `index` action). This will make it impossible for StimulusReflex Page Morphs to update the page.
 
 The recommended mitigation for this behaviour is to **use Mrujs**.
-{% endhint %}
+:::
 
 ## StimulusReflex form processing
 
@@ -31,29 +31,25 @@ StimulusReflex gathers all of the attributes on the element that initiates a Ref
 
 However, if a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form can **optionally** be serialized and made available to the server-side Reflex action method as the `params` accessor.
 
-{% hint style="warning" %}
+::: info
 Form serialization will not be enabled by default in StimulusReflex v4.
 
 v3.5 developers will see a deprecation warning suggesting that they explicitly set `serializeForm: true` for forms that they would like to be serialized.
-{% endhint %}
+:::
 
 `params` is an instance of `ActionController::Parameters` which you can manipulate the same way you would with a real form submitted via a normal POST action, with `require` and `permit`. This is useful for validating models and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
 To enable this form serialization in a Reflex, either set the `serializeForm: true` option when calling `stimulate()` or make sure that there's a `data-reflex-serialize-form` data attribute on the element which initiates your Reflex action.
 
-{% tabs %}
-{% tab title="JavaScript" %}
-```javascript
+::: code-group
+```javascript [JavaScript]
 this.stimulate('Example#foo', { serializeForm: true })
 ```
-{% endtab %}
 
-{% tab title="HTML" %}
-```markup
+```html [HTML]
 <form data-reflex="submit->Example#foo" data-reflex-serialize-form></form>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
 ## When forms are not actually forms
 
@@ -64,9 +60,9 @@ StimulusReflex uses `form` elements as a familiar way to group related elements 
 * forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
 * there's no reason to set up a route or controller action for a form intended for SR
 
-{% hint style="info" %}
+::: info
 You might be wondering why to even use forms at all. One significant reason is that many CSS frameworks like Bootstrap expect forms to be forms.
-{% endhint %}
+:::
 
 ## Remote forms in Rails 6.1
 
@@ -74,7 +70,7 @@ The behaviour of form helpers changed slightly in Rails 6.1, as forms are no lon
 
 We recommend that Rails developers use UJS/mrujs remote forms wherever possible, especially if they are using Turbolinks / Turbo Drive. This allows forms to be submitted without reloading the page, which is not only much faster (no more ugly screen refreshes!) but allows ActionCable Connections to remain open, too. This prevents any interruption that could impact your Reflexes.
 
-```markup
+```html
 <%= form_with model: @foo, local: false %>
 <%= form_with model: @foo, data: { remote: "true" } %>
 <%= form_for @foo, remote: true %>
@@ -113,9 +109,9 @@ Working with `has_many` associations? No sweat! Building a new record for a nest
 
 Reflex actions called outside of a form will still have a `params` accessor, pointing to an empty `ActionController::Parameters` instance.
 
-{% hint style="danger" %}
+::: info
 If you call a full-page update Reflex outside of a form that has unsaved data, you will lose the data in the form. You will also lose the data if you throw your laptop into a volcano. 🌋
-{% endhint %}
+:::
 
 ### A note about file uploads
 
@@ -138,10 +134,10 @@ One simple technique is to use a Stimulus controller to reset the form after the
 <% end %>
 ```
 
-This controller will make use of the [Promise](https://docs.stimulusreflex.com/rtfm/lifecycle#promises) returned by the `stimulate` method:
+This controller will make use of the [Promise](https://docs.stimulusreflex.com/guide/lifecycle#promises) returned by the `stimulate` method:
 
-{% code title="app/javascript/controllers/reflex_form_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/reflex_form_controller.js]
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
@@ -156,7 +152,7 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 ## Example: Auto-saving Posts with nested Comments
 
@@ -257,11 +253,11 @@ If you need to filter or constrain the contents of a text input, consider using 
 
 Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be **morphed** in any way.
 
-{% hint style="warning" %}
+::: info
 Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](morph-modes.md#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
 
 Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [morph](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
-{% endhint %}
+:::
 
 ## Modifying forms with Morphs
 
@@ -289,7 +285,7 @@ end
 
 Depending on how your DOM hierarchy is set up, make sure that you're giving `morph` the HTML content required to successfully update the children of your target element. This requires that the outermost element of the supplied HTML matches the parent element:
 
-```markup
+```html
 <%= form_with model: @post do |form| %>
   <%= form.text_field :title %>
   <div id="form_swap">
@@ -302,7 +298,7 @@ Depending on how your DOM hierarchy is set up, make sure that you're giving `mor
 
 The partial might look something like this:
 
-```markup
+```html
 <%= form.text_field :summary %>
 ```
 
