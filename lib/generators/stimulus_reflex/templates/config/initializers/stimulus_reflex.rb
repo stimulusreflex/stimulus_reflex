@@ -21,6 +21,11 @@ StimulusReflex.configure do |config|
 
   # config.on_missing_default_urls = :warn
 
+  # Enable/disable assets compilation
+  # `true` or `false`
+
+  # config.precompile_assets = true
+
   # Override the CableReady operation used for morphing and replacing content
 
   # config.morph_operation = :morph
