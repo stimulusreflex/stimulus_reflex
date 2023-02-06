@@ -53,7 +53,7 @@
   "dependencies": {
     "@hotwired/stimulus": ">= 3.0",
     "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 5.0.0-pre9"
+    "cable_ready": "https://github.com/cableready/dev-builds/archive/cable_ready/7616c18.tar.gz"
   },
   "devDependencies": {
     "@open-wc/testing": "^3.1.2",
