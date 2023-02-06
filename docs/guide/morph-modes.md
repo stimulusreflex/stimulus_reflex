@@ -59,7 +59,7 @@ StimulusReflex will decide which element's children to replace by evaluating thr
 Here is a simple example: the user is presented with a text box. Anything they type into the text box will be echoed back in two div elements, forwards and backwards.
 
 ::: code-group
-``` [index.html.erb]
+```html [index.html.erb]
 <div data-reflex-root="[forward],[backward]">
   <input type="text" value="<%= @words %>" data-reflex="keyup->Example#words">
   <div forward><%= @words %></div>

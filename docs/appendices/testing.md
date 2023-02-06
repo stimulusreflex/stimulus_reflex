@@ -27,7 +27,7 @@ gem "hiredis"
 
 To setup your Rails credentials for the test environment and link to Redis, run `rails credentials:edit --environment test` and add the following:
 
-```text
+```yaml
 redis_url: redis://localhost:6379/0
 ```
 
