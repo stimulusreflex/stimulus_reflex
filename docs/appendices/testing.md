@@ -18,38 +18,38 @@ Here is a checklist of what needs to be enabled, much of which is borrowed from 
 
 Install [Redis](https://redis.io/download). Make sure that it's running and accessible to the Rails project and then include connectivity gems:
 
-{% code title="Gemfile" %}
-```ruby
+::: code-group
+```ruby [Gemfile]
 gem "redis", ">= 4.0", :require => ["redis", "redis/connection/hiredis"]
 gem "hiredis"
 ```
-{% endcode %}
+:::
 
 To setup your Rails credentials for the test environment and link to Redis, run `rails credentials:edit --environment test` and add the following:
 
-```text
+```yaml
 redis_url: redis://localhost:6379/0
 ```
 
 Configure ActionCable to use your Redis instance:
 
-{% code title="config/cable.yml" %}
-```yaml
+::: code-group
+```yaml [config/cable.yml]
 test:
   adapter: redis
   url: <%= Rails.application.credentials.redis_url %>
   channel_prefix: your_app_test
 ```
-{% endcode %}
+:::
 
 Configure your cache store and turn on ActionController caching:
 
-{% code title="config/environments/test.rb" %}
-```ruby
+::: code-group
+```ruby [config/environments/test.rb]
 config.action_controller.perform_caching = true
 config.cache_store = :redis_cache_store, {driver: :hiredis, url: Rails.application.credentials.redis_url}
 ```
-{% endcode %}
+:::
 
 ## Resources
 
@@ -57,13 +57,12 @@ config.cache_store = :redis_cache_store, {driver: :hiredis, url: Rails.applicati
 
 There's lots of helpful information contained in the [Testing Rails Applications](https://guides.rubyonrails.org/testing.html#testing-action-cable) guide page.
 
-### stimulus\_reflex\_testing gem
+### `stimulus_reflex_testing` gem
 
-Our friends at Podia released [stimulus\_reflex\_testing](https://github.com/podia/stimulus_reflex_testing), which provides some helpers for unit testing your Reflex classes. 
+Our friends at Podia released [stimulus\_reflex\_testing](https://github.com/podia/stimulus_reflex_testing), which provides some helpers for unit testing your Reflex classes.
 
 ## Open questions!
 
 How do you run the StimulusReflex tests on the server? How do you run them on the client?
 
 Where do we need more coverage?
-

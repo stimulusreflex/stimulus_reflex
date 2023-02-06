@@ -6,9 +6,9 @@ description: How to secure your StimulusReflex application
 
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
-{% hint style="info" %}
-Since StimulusReflex v3.4, there is now an additional concept that you should understand - [Tab Isolation](reflexes.md#tab-isolation) - which is adjacent to but not the same as authentication. Authentication is about who sees what, while Tab Isolation is about what **you** see if you open the same thing, twice.
-{% endhint %}
+::: info
+StimulusReflex v3.5 deprecates [Tab Isolation](reflexes.md#tab-isolation), which will be removed in v4. Each tab will be fully isolated from others.
+:::
 
 ## Authentication Schemes
 
@@ -16,8 +16,8 @@ Since StimulusReflex v3.4, there is now an additional concept that you should un
 
 You can use your Rails session to isolate your users so that they don't see each other's updates. This works great even if your application doesn't have a login system.
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :session_id
@@ -29,14 +29,14 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 ### Current User
 
 Many Rails apps use the current\_user convention or more recently, the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
 
-{% code title="app/controllers/application_controller.rb  " %}
-```ruby
+::: code-group
+```ruby [app/controllers/application_controller.rb  ]
 class ApplicationController < ActionController::Base
   before_action :set_action_cable_identifier
 
@@ -47,10 +47,10 @@ class ApplicationController < ActionController::Base
   end
 end
 ```
-{% endcode %}
+:::
 
-{% code title="app/channels/application_cable/connection.rb " %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb ]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -65,12 +65,12 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 Note that without intervention, your Reflex classes will **not** be able to see current\_user. This is easily fixed by setting `self.current_user = user` above and then delegating `current_user` to your ActionCable connection:
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
 
@@ -79,14 +79,14 @@ class ExampleReflex < StimulusReflex::Reflex
   end
 end
 ```
-{% endcode %}
+:::
 
 ### Devise
 
 If you're using the versatile [Devise](https://github.com/plataformatec/devise) authentication library, your configuration is even easier.
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -108,28 +108,28 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
-{% hint style="warning" %}
+::: info
 If you have multiple Devise user models, you [need to specify](https://stackoverflow.com/questions/43258458/envwarden-not-working-with-rails-5) `env["warden"].user(:user)` or the variable will return `nil`.
-{% endhint %}
+:::
 
 Delegate `current_user` to the ActionCable `connection` and be home by lunch:
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
 end
 ```
-{% endcode %}
+:::
 
 ### Sorcery
 
 If you're using [Sorcery](https://github.com/Sorcery/sorcery) for authentication, you'll need to pull the user's `id` out of the session store.
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -140,42 +140,42 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 Now you're free to delegate `current_user` to the ActionCable `connection`.
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
-{% endcode %}
+:::
 
 ### Tokens (Subscription-based)
 
-{% hint style="success" %}
+::: info
 You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus\_reflex\_harness/tree/token\_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
-{% endhint %}
+:::
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.
 
 Your first instinct might be to authenticate in `connection.rb` using ugly hacks where you pass a token as part of your ActionCable connection URL. While this seems to make sense - after all, this is close to how the other techniques above work - **putting your token into the URL is a real security vulnerability** and there's a better way: _move the responsibility for authentication from the ActionCable connection down to the channels themselves_. Let's consider a potential solution that uses the [Warden::JWTAuth](https://github.com/waiting-for-dev/warden-jwt\_auth) module:
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
   end
 end
 ```
-{% endcode %}
+:::
 
 We create the `current_user` accessor as usual, but we won't be able to set it until someone successfully create a subscription to a channel. If they fail to pass a valid token, we can deny them a subscription. That means that all channels will need to be able to authenticate tokens during the subscription creation process. We will create a `subscribed` method in `ApplicationCable`, which all of your channels inherit from.
 
-{% code title="app/channels/application_cable/channel.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/channel.rb]
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
     attr_accessor :current_user
@@ -200,14 +200,14 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 In this configuration, a failure to match a token with a Warden user results in a call to `reject`. This means that while they have successfully established an ActionCable connection, they do not have the credentials to subscribe to the individual channel. Notice how we manually set the `current_user` on the connection if the authentication is successful.
 
 In order for this scheme to work, all of your ActionCable channels - including StimulusReflex - must conform to the same validation mechanism. StimulusReflex itself will access the `ApplicationCable::Channel` definition in your application. You can set additional channels to authenticate in this manner by making sure that they inherit from `ApplicationCable::Channel` and that the `subscribed` method calls `super` before your `stream_from` or `stream_for` statement:
 
-{% code title="app/channels/test_channel.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/test_channel.rb]
 class TestChannel < ApplicationCable::Channel
   def subscribed
     super
@@ -215,10 +215,10 @@ class TestChannel < ApplicationCable::Channel
   end
 end
 ```
-{% endcode %}
+:::
 
-{% code title="app/javascript/channels/test_channel.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/channels/test_channel.js]
 import consumer from './consumer'
 
 consumer.subscriptions.create(
@@ -232,32 +232,32 @@ consumer.subscriptions.create(
   }
 )
 ```
-{% endcode %}
+:::
 
 Set a JWT token for the current user in your layout template. Note that in this example we do assume that the `warden-jwt_auth` gem is in your project (possibly through `devise-jwt`) and that there is a valid `current_user` accessor in scope.
 
-{% code title="app/controllers/application_controller.rb" %}
-```ruby
+::: code-group
+```ruby [app/controllers/application_controller.rb]
 class ApplicationController < ActionController::Base
   before_action do
     @token = Warden::JWTAuth::UserEncoder.new.call(current_user, :user, nil).first
   end
 end
 ```
-{% endcode %}
+:::
 
-{% code title="app/views/layout/application.html.erb" %}
-```markup
+::: code-group
+```html [app/views/layout/application.html.erb]
 <head>
   <meta name="action-cable-auth-token" content="<%= @token %>"/>
 </head>
 ```
-{% endcode %}
+:::
 
 Now, make sure that StimulusReflex is able to access the JWT token from your DOM:
 
-{% code title="app/javascript/controllers/index.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/index.js]
 import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import StimulusReflex from 'stimulus_reflex'
@@ -269,24 +269,24 @@ application.load(definitionsFromContext(context))
 
 StimulusReflex.initialize(application, { params })
 ```
-{% endcode %}
+:::
 
 Finally, delegate `current_user` to the ActionCable `connection` as you would in any other Reflex class:
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 end
 ```
-{% endcode %}
+:::
 
 ### Unauthenticated Connections
 
 Perhaps your application doesn't have users. And maybe it doesn't even have sessions! You just want to offer all visitors access for the duration of the time that they are looking at your page. This will give every browser looking at your page a unique ActionCable connection.
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :uuid
@@ -297,17 +297,17 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 While there is no user concept in this scenario, you can still access the visitor's uuid:
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   delegate :uuid, to: :connection
 end
 ```
-{% endcode %}
+:::
 
 ### Hybrid Anonymous + Authenticated Connections
 
@@ -315,8 +315,8 @@ When you are building an application which has authenticated users, but you wish
 
 Here is an ActionCable connection class based on encrypted session cookies and Devise logins:
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -330,7 +330,7 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 This makes use of the ability to declare multiple `identified_by` values in a single connection class. Note that you still have to delegate both `current_user` and `session_id` to the connection so you can access these values in your Reflex action methods.
 
@@ -344,8 +344,8 @@ While a multi-tenant tutorial is out-of-scope for this document, the basic idea 
 
 As is so typically the case with Rails, the actual technique for bringing the Tenant to your Reflex is shorter than the explanation. Just set the current tenant to an instance of the correct class in your `Connection` module:
 
-{% code title="app/channels/application_cable/connection.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/connection.rb]
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -358,7 +358,7 @@ module ApplicationCable
   end
 end
 ```
-{% endcode %}
+:::
 
 A slightly more sophisticated reference application with multiple account support and a Current object is available in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus\_reflex\_harness/tree/tenant) repo, if you'd like to dig into this approach further.
 
@@ -421,9 +421,9 @@ end
 
 While it is possible to create a solution for non-Page Morph Reflexes that involves [creating a Controller instance and delegating](https://dalezak.medium.com/using-cancancan-with-stimulusreflex-in-your-rails-app-c3d00ea0fe1b) `current_ability` to it, it's hard to justify documenting that approach here since there is already a viable, one-size-fits-all solution available and there is a performance hit when you create a Controller.
 
-{% hint style="warning" %}
+::: info
 You cannot use the `authorize!` method in your Reflex action, because a Reflex is not a Controller.
-{% endhint %}
+:::
 
 ### Pundit
 
@@ -431,21 +431,21 @@ The trusty [pundit](https://github.com/varvet/pundit) gem allows you to set up p
 
 Pundit expects you to have a `current_user` in scope and a policy matching the name of your Reflex action. In the following example we create a `sing?` policy for our `sing` Reflex action in `song_policy.rb`
 
-{% code title="app/policies/song_policy.rb" %}
-```ruby
+::: code-group
+```ruby [app/policies/song_policy.rb]
 class SongPolicy < ApplicationPolicy
   def sing?
     user.sings_in_key?
   end
 end
 ```
-{% endcode %}
+:::
 
-{% code title="app/reflexes/song_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/song_reflex.rb]
 class SongReflex < ApplicationReflex
   include Pundit
-  
+
   def sing
     @song = Song.find(params[:song_id])
     authorize @song
@@ -453,19 +453,19 @@ class SongReflex < ApplicationReflex
   end
 end
 ```
-{% endcode %}
+:::
 
 Pundit will match your Reflex action to the right policy. If the `authorize` call fails, a `Pundit::NotAuthorizedError` will be raised, which you can handle in your Reflex action or leave unhandled so that it bubbles up and gets picked up by a 3rd-party error handling mechanism such as [Sentry](https://sentry.io) or [HoneyBadger](https://www.honeybadger.io).
 
-{% code title="app/reflexes/application_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/application_reflex.rb]
 class ApplicationReflex < StimulusReflex::Reflex
   rescue_from Pundit::NotAuthorizedError do |exception|
     # handle authorization issue
   end
 end
 ```
-{% endcode %}
+:::
 
 If you're using Pundit to safeguard data from being accessed by bad actors and unauthorized parties - due to bugs in your code - that's probably the correct approach. _However..._ you might also want to explicitly validate policies so that you can react to them in your browser:
 
@@ -475,18 +475,18 @@ You can also ask Pundit to validate a policy explicitly and then [abort the Refl
 
 The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 
-{% code title="app/policies/example_reflex_policy.rb" %}
-```ruby
+::: code-group
+```ruby [app/policies/example_reflex_policy.rb]
 class ExampleReflexPolicy < ApplicationPolicy
   def test?
     user.admin?
   end
 end
 ```
-{% endcode %}
+:::
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 
@@ -502,12 +502,12 @@ class ExampleReflex < ApplicationReflex
   end
 end
 ```
-{% endcode %}
+:::
 
 You can even pick up this failure to thrive in a callback on your Stimulus controller:
 
-{% code title="app/javascript/controllers/example_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/example_controller.js]
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
@@ -520,7 +520,7 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 ## Passing params to ActionCable
 
@@ -528,8 +528,8 @@ It's common to pass key/value pairs to your ActionCable subscriptions, which sho
 
 In this example, we want to tell the server whether the user has granted permission to send them native notifications. We'll then pick it up on the server:
 
-{% code title="app/javascript/controllers/index.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/index.js]
 import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import StimulusReflex from 'stimulus_reflex'
@@ -547,22 +547,22 @@ Notification.requestPermission().then(notifications => {
 application.load(definitionsFromContext(context))
 StimulusReflex.initialize(application, { consumer, controller, params })
 ```
-{% endcode %}
+:::
 
-{% code title="app/channels/application_cable/channel.rb" %}
-```ruby
+::: code-group
+```ruby [app/channels/application_cable/channel.rb]
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
     attr_accessor :notifications
 
     def subscribed
       @notifications = params[:notifications]
-      puts @notifications # "default", "granted" or "denied" 
+      puts @notifications # "default", "granted" or "denied"
     end
-    
+
   end
 end
 ```
-{% endcode %}
+:::
 
 Once you know if you can send notifications, you could consider using CableReady's [notification operation](https://cableready.stimulusreflex.com/usage/dom-operations/notifications#notification) to send updates. If they denied your request, you could use the Rails flash object instead.
