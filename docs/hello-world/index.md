@@ -33,7 +33,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 
 ![](/kittens.jpg)
 
-Find out more and learn how to upgrade on the [Release History](appendices/release-history.md) page.
+Find out more and learn how to upgrade on the [Release History](/appendices/release-history.md) page.
 
 ## Faster UIs, smaller downloads and longer battery life
 
