@@ -1438,12 +1438,6 @@ bytes@3.1.2:
   dependencies:
     morphdom "^2.6.1"
 
-"cable_ready@https://github.com/cableready/dev-builds/archive/cable_ready/bb6a2d7.tar.gz":
-  version "5.0.0-pre9"
-  resolved "https://github.com/cableready/dev-builds/archive/cable_ready/bb6a2d7.tar.gz#59b1625cad7a00cf72a01f934d1af2f265a4ec0e"
-  dependencies:
-    morphdom "^2.6.1"
-
 cache-content-type@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-content-type/-/cache-content-type-1.0.1.tgz#035cde2b08ee2129f4a8315ea8f00a00dba1453c"

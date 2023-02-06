@@ -16,7 +16,7 @@ export default {
       { icon: 'discord', link: 'https://discord.gg/stimulus-reflex' }
     ],
     editLink: {
-      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/v3.5-docs/docs/:path',
+      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
       text: 'Edit this page on GitHub'
     },
     nav: [
@@ -27,8 +27,8 @@ export default {
         items: [
           {
             items: [
-              { text: 'v3.4.1', link: 'https://v3-4-docs--stimulusreflex.netlify.app' },
-              { text: 'v3.5.0', link: 'https://v3-5-docs--stimulusreflex.netlify.app' },
+              { text: 'v3.4.1', link: 'https://v3-4-docs.docs.stimulusreflex.com' },
+              { text: 'v3.5.0', link: 'https://stimulusreflex.netlify.app' },
             ]
           }
         ]
@@ -43,7 +43,7 @@ export default {
         text: "Hello World",
         collapisble: true,
         items: [
-          { text: "Welcome", link: "/hello-world/welcome" },
+          { text: "Welcome", link: "/hello-world/index" },
           { text: "Setup", link: "/hello-world/setup" },
           { text: "Quick Start", link: "/hello-world/quickstart" },
         ]
