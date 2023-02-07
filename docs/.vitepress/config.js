@@ -38,6 +38,11 @@ export default {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2023'
     },
+    algolia: {
+      appId: 'CLUHBW6IBX',
+      apiKey: 'f4a7fd48f9684278271931903f68047f',
+      indexName: 'stimulusreflex'
+    },
     sidebar: [
       {
         text: "Hello World",
