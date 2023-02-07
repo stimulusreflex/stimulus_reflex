@@ -565,4 +565,4 @@ end
 ```
 :::
 
-Once you know if you can send notifications, you could consider using CableReady's [notification operation](https://cableready.stimulusreflex.com/usage/dom-operations/notifications#notification) to send updates. If they denied your request, you could use the Rails flash object instead.
+Once you know if you can send notifications, you could consider using CableReady's [`notification` operation](https://cableready.stimulusreflex.com/reference/operations/notifications.html#notification) to send updates. If they denied your request, you could use the Rails flash object instead.
