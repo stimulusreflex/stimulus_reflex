@@ -5,9 +5,9 @@ hero:
   tagline: Build reactive applications with the Rails tooling you already know and love
   text:
   image:
-    light: https://github.com/stimulusreflex/stimulus_reflex/blob/d773570eca0db7875e1e49d22bc03d31ccc2122e/assets/stimulus-reflex-logo.png?raw=true
-    dark: https://github.com/stimulusreflex/stimulus_reflex/raw/b40b6160001f9f4d4d72a25de786242ea654c104/assets/stimulus-reflex-logo-dark.png?raw=true
-    alt: StimulusReflex
+    light: /stimulus-reflex-logo-with-copy.svg
+    dark: /stimulus-reflex-logo-with-copy-dark.svg
+    alt: StimulusReflex Logo
   actions:
     - theme: brand
       text: Get Started
@@ -30,10 +30,12 @@ features:
 
 <style>
 :root {
-  --vp-c-brand: #5097F7;
-  --vp-button-brand-hover-bg: #5097F7;
+  --vp-c-brand: #BA6598;
+  --vp-button-brand-hover-bg: #BA6598;
+  --vp-button-brand-border: var(--vp-button-alt-hover-border);
+  --vp-button-brand-hover-border: var(--vp-button-alt-hover-border);
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe, #5097F7);
+  --vp-home-hero-name-background: #BA6598;
 }
 </style>
 

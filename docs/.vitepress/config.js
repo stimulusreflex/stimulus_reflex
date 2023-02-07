@@ -5,10 +5,7 @@ export default {
   lastUpdated: true,
   themeConfig: {
     siteTitle: "StimulusReflex",
-    logo: {
-      light: "https://github.com/stimulusreflex/stimulus_reflex/blob/d773570eca0db7875e1e49d22bc03d31ccc2122e/assets/stimulus-reflex-logo.png?raw=true",
-      dark: "https://github.com/stimulusreflex/stimulus_reflex/raw/b40b6160001f9f4d4d72a25de786242ea654c104/assets/stimulus-reflex-logo-dark.png?raw=true"
-    },
+    logo: "/stimulus-reflex-logo.svg",
     outline: [2, 3],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/stimulusreflex/stimulus_reflex' },
