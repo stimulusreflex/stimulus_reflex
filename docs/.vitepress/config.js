@@ -28,7 +28,7 @@ export default {
           {
             items: [
               { text: 'v3.4.1', link: 'https://v3-4-docs.docs.stimulusreflex.com' },
-              { text: 'v3.5.0', link: 'https://stimulusreflex.netlify.app' },
+              { text: 'v3.5.0', link: 'https://docs.stimulusreflex.com' },
             ]
           }
         ]
@@ -68,7 +68,7 @@ export default {
         collapisble: true,
         items: [
           { text: "Working with Events", link: "/appendices/events" },
-          { text: "Testing \(WIP\)", link: "/appendices/testing" },
+          { text: "Testing (WIP)", link: "/appendices/testing" },
           { text: "Deployment", link: "/appendices/deployment" },
           { text: "Troubleshooting", link: "/appendices/troubleshooting" },
           { text: "Release History", link: "/appendices/release-history" },

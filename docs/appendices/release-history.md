@@ -6,10 +6,10 @@
 
 ## New Release: v3.4.1
 
-While this was primarily a bug-fix release, there were some exciting leaps forward, especially on the CableReady side. You should check out the new [graft](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#graft) operation, which seems dry until you realize that you can **move elements on your DOM without losing the internal state of your Stimulus controllers**.
+While this was primarily a bug-fix release, there were some exciting leaps forward, especially on the CableReady side. You should check out the new [`graft`](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#graft) operation, which seems dry until you realize that you can **move elements on your DOM without losing the internal state of your Stimulus controllers**.
 
 * CableReady v4.5.0 has eight [new operations](https://cableready.stimulusreflex.com/reference/operations): `append`, `graft`, `prepend`, `replace`, `replace_state`, `play_sound`, `go` and `scroll_into_view`
-* special Reflex `cable_ready` method now works with [custom operations](https://cableready.stimulusreflex.com/customization#custom-operations)
+* special Reflex `cable_ready` method now works with [custom operations](https://cableready.stimulusreflex.com/guide/customization#custom-operations)
 * responsibility for a Reflex has been moved to the [element holding the controller](../guide/reflexes.md#understanding-stimulusreflex-controllers)
 * life-cycle callbacks now return the correct element reference
 * fixed an issue with form data serialization for characters like `&` and `=`
