@@ -265,7 +265,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 ::: info
 Knowing which element dispatched the event might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
 
-You can learn all about Reflex controller elements on the [Calling Reflexes](/guides/reflexes#understanding-reflex-controllers) page.
+You can learn all about Reflex controller elements on the [Calling Reflexes](/guide/reflexes#understanding-reflex-controllers) page.
 :::
 
 #### jQuery Events

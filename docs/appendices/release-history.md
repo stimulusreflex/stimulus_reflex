@@ -24,8 +24,8 @@ Developer happiness is not a catch-phrase. We are actively working to improve th
 
 As with all major StimulusReflex releases, v3.4 is [packed full of new features](https://github.com/stimulusreflex/stimulus_reflex/blob/master/CHANGELOG.md) from 52 contributors that are directly inspired by the questions, requests and grievances of the 1000+ people on the [SR Discord](https://discord.gg/stimulus-reflex):
 
-* we completely overhauled the [client-side Reflex logging](/appendencies/troubleshooting#client-side-logging) with per-Morph granularity
-* a brand new and shockingly customizable [server-side Reflex](/appendencies/troubleshooting#stimulusreflex-logging) **colorized logging** module
+* we completely overhauled the [client-side Reflex logging](/appendices/troubleshooting#client-side-logging) with per-Morph granularity
+* a brand new and shockingly customizable [server-side Reflex](/appendices/troubleshooting#stimulusreflex-logging) **colorized logging** module
 * a new `finalize` [life-cycle stage](/guide/lifecycle#client-side-reflex-callbacks) that occurs after all DOM mutations are complete
 * support for lazily evaluated [signed and unsigned](/guide/reflexes#signed-and-unsigned-global-id-accessors) Global ID to model instances
 * a special `cable_ready` method that [automatically broadcasts](/guide/reflexes#using-cableready-inside-a-reflex-action) to the current user

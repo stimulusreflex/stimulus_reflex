@@ -471,7 +471,7 @@ If you're using Pundit to safeguard data from being accessed by bad actors and u
 
 #### Explicit policy validation
 
-You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](/guides/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** life-cycle event.
+You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](/guide/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** life-cycle event.
 
 The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 

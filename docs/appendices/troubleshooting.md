@@ -527,7 +527,7 @@ StimulusReflex does not support using `redirect_to` in a Page Morph. If you try 
 :::
 
 ::: info
-Are you using [Phusion Passenger](https://www.phusionpassenger.com) but seeing your server appear to freeze up? Make sure your [configuration](/appendencies/deployment#nginx-passenger) is correct.
+Are you using [Phusion Passenger](https://www.phusionpassenger.com) but seeing your server appear to freeze up? Make sure your [configuration](/appendices/deployment#nginx-passenger) is correct.
 :::
 
 ::: info
@@ -543,7 +543,7 @@ Are `ActionController::RoutingError Exception: No route matches`errors getting y
 :::
 
 ::: info
-Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [`default_url_options`](/appendencies/troubleshooting#modifying-the-default-data-attribute-schema).
+Are you using `ApplicationController.render` to regenerate partials that make use of view helpers? Are those helpers generating URL routes that point to `example.com`? You can fix this by setting up your [`default_url_options`](/appendices/troubleshooting#modifying-the-default-data-attribute-schema).
 :::
 
 ::: info
@@ -551,7 +551,7 @@ Are you seeing `(WARNING: Can't locate the stimulus_reflex npm package)` when yo
 :::
 
 ::: info
-If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` (see the [Morphing Sanity Checklist](/appendencies/troubleshooting#morphing-sanity-checklist))
+If your `data-reflex-permanent` isn't being respected, try adding a unique `id` parameter as well. Note that if your Morphs are being performed with `inner_html` operations and you need `data-reflex-permanent` to work, you will have to reconfigure your Morph to work with `morphdom` (see the [Morphing Sanity Checklist](/appendices/troubleshooting#morphing-sanity-checklist))
 :::
 
 ::: info
