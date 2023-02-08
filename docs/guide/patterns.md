@@ -131,7 +131,10 @@ Sometimes you still need to be able to interface with legacy components, but you
 Stimulus doesn't provide an easy way to access a controller instance; you have to have access to your Stimulus application object, the element, the name of the controller and be willing to call an undocumented API.
 
 ```javascript
-this.application.getControllerForElementAndIdentifier(document.getElementById('users'), 'users')
+this.application.getControllerForElementAndIdentifier(
+  document.getElementById('users'),
+  'users'
+)
 ```
 
 This is ugly, verbose and potentially impossible outside of another Stimulus controller. Wouldn't it be nice to access your controller's methods and local variables from a legacy jQuery component? Just add this line to the **`initialize()`** method of your Stimulus controllers:
@@ -145,7 +148,7 @@ This creates a document-scoped variable with the same name as your controller (o
 ::: tip
 If your controller's identifier doesn't obey the rules of JavaScript variable naming conventions, you will need to specify a viable name for your instance.
 
-For example, if your controller is named _list-item_ you might consider **`this.element.listItem = this`** for that controller**.**
+For example, if your controller is named `list-item` you might consider **`this.element.listItem = this`** for that controller**.**
 :::
 
 ## Server Side
@@ -217,7 +220,9 @@ end
 Then make sure that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
 
 ```html
-<div id="pow" data-reflex-root="#pow" data-reflex="click->Biff#pow">Pow.</div>
+<div id="pow" data-reflex-root="#pow" data-reflex="click->Biff#pow">
+  Pow.
+</div>
 ```
 
 Otherwise StimulusReflex will look for the `body` tag and not know what to do.
@@ -287,7 +292,11 @@ class UserReflex < ApplicationReflex
   def follow
     user = User.find(element.dataset[:user_id])
     Current.user.follow(user)
-    morph "#following", render(partial: "users/following", locals: {user: Current.user})
+
+    morph "#following", render(
+      partial: "users/following",
+      locals: { user: Current.user }
+    )
   end
 end
 ```
@@ -328,7 +337,10 @@ CableReady - which is included and available for use in your Reflex classes - ex
 class UserReflex < ApplicationReflex
   def profile
     user = User.find(element.dataset[:user_id])
-    morph dom_id(user), render(partial: "users/profile", locals: {user: user})
+    morph dom_id(user), render(
+      partial: "users/profile",
+      locals: { user: user }
+    )
   end
 end
 ```
@@ -354,11 +366,12 @@ class Notification < ApplicationRecord
       partial: "layouts/navbar/notification",
       locals: { notification: self }
     )
-    cable_ready["notification_feed:#{self.recipient.id}"].insert_adjacent_html(
-      selector: "#notification_dropdown",
-      position: "afterbegin",
-      html: html
-    ).broadcast
+    cable_ready["notification_feed:#{self.recipient.id}"]
+      .insert_adjacent_html(
+        selector: "#notification_dropdown",
+        position: "afterbegin",
+        html: html
+      ).broadcast
   end
 end
 ```

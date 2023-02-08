@@ -20,7 +20,7 @@ We want to change the cache store to make use of Redis. First we should enable t
 
 ::: code-group
 ```ruby [Gemfile]
-gem "redis", ">= 4.0", :require => ["redis", "redis/connection/hiredis"]
+gem "redis", ">= 4.0", require: ["redis", "redis/connection/hiredis"]
 gem "hiredis"
 ```
 :::
@@ -29,8 +29,18 @@ Now that Redis is available to your application, you need to configure your deve
 
 ::: code-group
 ```ruby [config/environments/development.rb]
-config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
-config.session_store :cache_store, key: "_session_development", compress: true, pool_size: 5, expire_after: 1.year
+config.cache_store = :redis_cache_store, {
+  driver: :hiredis,
+  url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
+}
+
+config.session_store(
+  :cache_store,
+  key: "_session_development",
+  compress: true,
+  pool_size: 5,
+  expire_after: 1.year
+)
 ```
 :::
 
@@ -60,9 +70,13 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 
 ::: code-group
 ```ruby [config/environments/production.rb]
-config.cache_store = :redis_cache_store, {driver: :hiredis, url: ENV.fetch("REDIS_URL")}
+config.cache_store = :redis_cache_store, {
+  driver: :hiredis,
+  url: ENV.fetch("REDIS_URL")
+}
 
-config.session_store :redis_session_store,
+config.session_store(
+  :redis_session_store,
   key: "_session_production",
   serializer: :json,
   redis: {
@@ -72,6 +86,7 @@ config.session_store :redis_session_store,
     key_prefix: "app:session:",
     url: ENV.fetch("HEROKU_REDIS_MAROON_URL")
   }
+)
 ```
 :::
 
@@ -126,14 +141,14 @@ In a more sophisticated setup, you could experiment with hosting your websockets
 Specifically, if you experience your server process appear to freeze up when ActionCable is in play, you need to make sure that your `nginx.conf` has the **port 443 section** set up to receive secure websockets:
 
 ::: code-group
-```ruby [/etc/nginx/nginx.conf]
+```text [/etc/nginx/nginx.conf]
 server {
-    listen 443;
-    passenger_enabled on;
-    location /cable {
-        passenger_app_group_name YOUR_APP_HERE_action_cable;
-        passenger_force_max_concurrent_requests_per_process 0;
-    }
+  listen 443;
+  passenger_enabled on;
+  location /cable {
+    passenger_app_group_name YOUR_APP_HERE_action_cable;
+    passenger_force_max_concurrent_requests_per_process 0;
+  }
 }
 ```
 :::
@@ -149,13 +164,18 @@ If your helper is generating **example.com** URLs, this is for you.
 
 ::: code-group
 ```ruby [config/environments/development.rb]
-config.action_controller.default_url_options = {host: "localhost", port: 3000}
+config.action_controller.default_url_options = {
+  host: "localhost",
+  port: 3000
+}
 ```
 :::
 
 ::: code-group
 ```ruby [config/environments/production.rb]
-config.action_controller.default_url_options = {host: "stimulusreflex.com"}
+config.action_controller.default_url_options = {
+  host: "stimulusreflex.com"
+}
 ```
 :::
 
@@ -163,7 +183,10 @@ Similarly, if you need URL helpers in your mailers:
 
 ::: code-group
 ```ruby [config/environments/development.rb]
-config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+config.action_mailer.default_url_options = {
+  host: "localhost",
+  port: 3000
+}
 ```
 :::
 

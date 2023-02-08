@@ -132,7 +132,9 @@ Let's first establish a baseline HTML sample to modify. Our attention will focus
 ::: code-group
 ```html [show.html.erb]
 <header data-reflex="click->Example#change">
-  <%= render partial: "path/to/foo", locals: {message: "Am I the medium or the massage?"} %>
+  <%= render partial: "path/to/foo", locals: {
+    message: "Am I the medium or the massage?"
+  } %>
 </header>
 ```
 :::
@@ -162,7 +164,7 @@ end
 If you consult your Elements Inspector, you'll now see that #foo now contains a text node and your `header` has gained some attributes. This is just how StimulusReflex makes the magic happen.
 
 ```html
-<header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
+<header data-reflex="click->Example#change">
   <div id="foo">Your muscles... they are so tight.</div>
 </header>
 ```
@@ -183,7 +185,10 @@ There's no sugar coating the fact that there's a happy path for all of the typic
 
 ```ruby
 yelling = element.value.upcase
-morph "#foo", render(partial: "path/to/foo", locals: { message: yelling })
+
+morph "#foo", render(partial: "path/to/foo", locals: {
+  message: yelling
+})
 ```
 
 ::: info
@@ -195,7 +200,9 @@ You'll have access to all the same helpers that you would in a normal Rails HTTP
 If ViewComponents are your thing, we have you covered:
 
 ```ruby
-morph "#foo", render(FooComponent.new(message: "React is making your muscles sore."))
+morph "#foo", render(FooComponent.new(
+  message: "React is making your muscles sore."
+))
 ```
 
 The `foo` partial (listed in the [Tutorial](/guide/morph-modes#tutorial)section above) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
@@ -219,19 +226,19 @@ As you have already seen, it's **okay** to morph a container with a string, or a
 Let's say that you update #foo with the following morph:
 
 ```ruby
-morph "#foo", "<div id=\"foo\">Let's do something about those muscles.</div>"
+morph "#foo", %(<div id="foo">Let's do something about those muscles.</div>)
 ```
 
 This update will use `morphdom` to update the existing #foo div. However, because #foo contains a [text node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), `data-reflex-permanent` is ignored. (Sorry! We just work here.)
 
 ```ruby
-morph "#foo", "<div id=\"baz\"><span>Just breathe in... and out.</span></div>"
+morph "#foo", %(<div id="baz"><span>Just breathe in... and out.</span></div>)
 ```
 
 Now your content is contained in a `span` element node. All set... except that you changed #foo to #baz.
 
 ```html
-<header data-reflex="click->Example#change" data-controller="stimulus-reflex" data-action="click->stimulus-reflex#__perform">
+<header data-reflex="click->Example#change">
   <div id="foo">
     <div id="baz">
       <span>Just breathe in... and out.</span>
@@ -254,8 +261,13 @@ If you're doing pagination in Rails, [pagy](https://github.com/ddnexus/pagy) is 
 
 ::: code-group
 ```html [View]
-<div id="paginator"><%= render partial: "paginator", locals: {pagy: @pagy} %></div>
-<div id="posts"><%= render @posts %></div>
+<div id="paginator">
+  <%= render partial: "paginator", locals: { pagy: @pagy } %>
+</div>
+
+<div id="posts">
+  <%= render @posts %>
+</div>
 ```
 
 ```ruby [Controller]
@@ -332,7 +344,7 @@ The `posts` partial (not listed) is rendered as a collection, and so it must be 
 Instead, simply wrap the `render` call itself with markup for the top-level div:
 
 ```ruby
-morph "#posts", "<div id=\"posts\">" + render(posts) + "</div>"
+morph "#posts", %(<div id="posts">#{render(posts)}</div>)
 ```
 
 Now, both `paginator` and `posts` are being updated using `morphdom`.
@@ -409,8 +421,10 @@ You can morph the same target element multiple times in one Reflex by calling Ca
 ```ruby
 morph :nothing
 cable_ready[stream_name].morph({ spinner... }).broadcast
+
 # long running work
 cable_ready[stream_name].morph({ progress update... }).broadcast
+
 # long running work
 cable_ready[stream_name].morph({ final update... }).broadcast
 ```
@@ -449,9 +463,15 @@ Create a simple view template that contains a `button` to launch the Reflex as w
 
 ::: code-group
 ```html [index.html.erb]
-<button data-reflex="click->Counter#increment">Increment Counter</button>
+<button data-reflex="click->Counter#increment">
+  Increment Counter
+</button>
 
-The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter", raw: true) { 0 } %></span>
+The counter currently reads:
+
+<span id="counter">
+  <%= Rails.cache.fetch("counter", raw: true) { 0 } %>
+</span>
 ```
 :::
 
@@ -463,8 +483,9 @@ You need to give the job enough information to successfully broadcast any import
 ```ruby [app/reflexes/counter_reflex.rb]
 class CounterReflex < ApplicationReflex
   def increment
-    morph :nothing
     IncrementJob.set(wait: 3.seconds).perform_later
+
+    morph :nothing
   end
 end
 ```
@@ -479,7 +500,10 @@ class IncrementJob < ApplicationJob
   queue_as :default
 
   def perform
-    cable_ready["counter"].text_content(selector: "#counter", text: Rails.cache.increment("counter")).broadcast
+    cable_ready["counter"].text_content(
+      selector: "#counter",
+      text: Rails.cache.increment("counter")
+    ).broadcast
   end
 end
 ```

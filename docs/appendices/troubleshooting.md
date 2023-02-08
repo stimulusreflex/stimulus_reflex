@@ -359,7 +359,7 @@ We want to stress that if you follow the happy path explained on the [Morphs](/g
 Even if you maintain the same CSS selector, you cannot modify any attributes (including data attributes) of the container element with the `morph` method.
 
 ```ruby
-morph "#foo", "<div id=\"foo\" data-muscles=\"sore\">data-muscles will not be set.</div>"
+morph "#foo", %(<div id="foo" data-muscles="sore">data-muscles will not be set.</div>)
 ```
 
 You might consider one of the other [CableReady](https://cableready.stimulusreflex.com) operations like `outer_html` or `set_attribute`.
@@ -369,7 +369,7 @@ You might consider one of the other [CableReady](https://cableready.stimulusrefl
 It's not enough for the container selector to match. Your content needs to be wrapped in an element, or else `data-reflex-permanent` will not work.
 
 ```ruby
-morph "#foo", "<div id=\"foo\"><p>Strengthen your core.</p></div>"
+morph "#foo", %(<div id="foo"><p>Strengthen your core.</p></div>)
 ```
 
 #### No closing tag? No problem.
@@ -377,7 +377,7 @@ morph "#foo", "<div id=\"foo\"><p>Strengthen your core.</p></div>"
 Inexplicably, `morphdom` just doesn't seem to care if your top-level element node is closed.
 
 ```ruby
-morph "#foo", "<div id=\"foo\"><span>Who needs muscle</span>"
+morph "#foo", %(<div id="foo"><span>Who needs muscle</span>)
 ```
 
 #### Different element type altogether? Who cares, so long as the CSS selector matches?
@@ -385,7 +385,7 @@ morph "#foo", "<div id=\"foo\"><span>Who needs muscle</span>"
 Go ahead, turn your `div` into a `span`. `morphdom` just doesn't care.
 
 ```ruby
-morph "#foo", "<span id=\"foo\">Are these muscles or rocks? lol</span>"
+morph "#foo", %(<span id="foo">Are these muscles or rocks? lol</span>)
 ```
 
 #### A new CSS selector (or no CSS selector) will be processed with innerHTML
@@ -393,7 +393,7 @@ morph "#foo", "<span id=\"foo\">Are these muscles or rocks? lol</span>"
 Changing the CSS selector will result in some awkward nesting issues.
 
 ```ruby
-morph "#foo", "<div id=\"baz\">Let me know if this is too strong.</div>"
+morph "#foo", %(<div id="baz">Let me know if this is too strong.</div>)
 ```
 
 ```html
@@ -405,7 +405,7 @@ morph "#foo", "<div id=\"baz\">Let me know if this is too strong.</div>"
 #### If the element with the CSS selector is surrounded, external content will be discarded.
 
 ```ruby
-morph "#foo", "I am excited to see your <div id=\"foo\">muscles</div> next week."
+morph "#foo", %(I am excited to see your <div id="foo">muscles</div> next week.)
 ```
 
 ```html
@@ -415,7 +415,7 @@ morph "#foo", "I am excited to see your <div id=\"foo\">muscles</div> next week.
 #### If an element matches the target CSS selector, other elements will be ignored.
 
 ```ruby
-morph "#foo", "<div id=\"foo\">Foo!</div><div id=\"post_foo\">Avant-Foo!</div>"
+morph "#foo", %(<div id="foo">Foo!</div><div id="post_foo">Avant-Foo!</div>)
 ```
 
 ```ruby
@@ -425,7 +425,7 @@ morph "#foo", "<div id=\"foo\">Foo!</div><div id=\"post_foo\">Avant-Foo!</div>"
 #### This is true even if the elements are reversed.
 
 ```ruby
-morph "#foo", "<div id=\"post_foo\">Avant-Foo!</div><div id=\"foo\">Foo!</div>"
+morph "#foo", %(<div id="post_foo">Avant-Foo!</div><div id="foo">Foo!</div>)
 ```
 
 ```ruby
@@ -435,7 +435,7 @@ morph "#foo", "<div id=\"post_foo\">Avant-Foo!</div><div id=\"foo\">Foo!</div>"
 #### But it's all good in the hood if the selector is not present. 🤦
 
 ```ruby
-morph "#foo", "<div id=\"mike\">Mike</div> and <div id=\"ike\">Ike</div>"
+morph "#foo", %(<div id="mike">Mike</div> and <div id="ike">Ike</div>)
 ```
 
 ```ruby
@@ -454,7 +454,7 @@ Do you have any more weird edge cases? Please let us know!
 
 There are some things that we'd very much like to fix, but we simply haven't been able to or the responsibility falls to an upstream dependency we don't have direct access to.
 
-#### iFrame gets refreshed despite data-reflex-permanent
+#### iframe gets refreshed despite `data-reflex-permanent`
 
 Depending on how your DOM is structured, it's possible to have an iframe element which has been marked with `data-reflex-permanent` get morphed. [We're aware of it, and we've tried to fix it.](https://github.com/hopsoft/stimulus_reflex/issues/452)
 
@@ -469,7 +469,7 @@ If you require your Stimulus controllers more than once, you might find that you
 ::: info
 If you're making changes to your Reflex classes, remember that you need to refresh your page in your web browser to allow ActionCable to reconnect to the server. You'll still be executing old code until you reconnect.
 
-You can [setup webpack-dev-server to help](/guide/patterns#use-webpack-dev-server-to-reload-after-reflex-changes), however.
+You can [setup `webpack-dev-server` to help](/guide/patterns#use-webpack-dev-server-to-reload-after-reflex-changes), however.
 :::
 
 ::: info
@@ -499,7 +499,7 @@ Are you finding that the [Trix](https://github.com/basecamp/trix) rich text edit
 :::
 
 ::: info
-Are you experiencing weird behavior in your production environment where your users appear to be getting randomly logged out? Try switching your session management to the [redis-session-store](https://github.com/roidrage/redis-session-store) gem.
+Are you experiencing weird behavior in your production environment where your users appear to be getting randomly logged out? Try switching your session management to the [`redis-session-store`](https://github.com/roidrage/redis-session-store) gem.
 :::
 
 ::: info
@@ -519,7 +519,7 @@ Are you having trouble with [Shoelace](https://shoelace.style) web components no
 :::
 
 ::: info
-If you're getting "undefined method" errors in your Reflex action method classes, make sure that you're not including `CableReady::Broadcaster`, which is already avalable in scope.
+If you're getting "undefined method" errors in your Reflex action method classes, make sure that you're not including `CableReady::Broadcaster`, which is already available in scope.
 :::
 
 ::: info
@@ -539,7 +539,7 @@ Do you have your `config/cable.yml` set up properly? You must [install Redis](ht
 :::
 
 ::: info
-Are `ActionController::RoutingError Exception: No route matches`errors getting you down? You might need to add [Rack middleware](/hello-world/setup#rack-middleware-support) to your initializer.
+Are `ActionController::RoutingError Exception: No route matches` errors getting you down? You might need to add [Rack middleware](/hello-world/setup#rack-middleware-support) to your initializer.
 :::
 
 ::: info

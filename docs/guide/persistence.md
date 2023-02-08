@@ -44,18 +44,20 @@ def update_value
 end
 ```
 
-::: code-group
 ```ruby [example_controller.rb]
 def index
   @value ||= 0
 end
 ```
 
-::: code-group
 ```html [index.html.erb]
 <div data-controller="example">
-  <input type="text" data-reflex-permanent
-    data-reflex="input->Example#update_value">
+  <input
+    type="text"
+    data-reflex-permanent
+    data-reflex="input->Example#update_value"
+  />
+
   <p>The value is: <%= @value %>.</p>
 </div>
 ```
@@ -117,8 +119,12 @@ end
 
 ```html [index.html.erb]
 <div data-controller="example">
-  <input type="text" data-reflex-permanent
-    data-reflex="input->Example#update_value">
+  <input
+    type="text"
+    data-reflex-permanent
+    data-reflex="input->Example#update_value"
+  />
+
   <p>The value is: <%= session[:value] %>.</p>
 </div>
 ```
@@ -159,11 +165,7 @@ If you're planning to do more than set an initial simple value for the fetch def
 
 ::: code-group
 ```html [fortune.html.erb]
-<pre><%=
-  Rails.cache.fetch("fortune") do
-    `fortune | cowsay`
-  end
-%></pre>
+<pre><%= Rails.cache.fetch("fortune") { `fortune | cowsay` } %></pre>
 ```
 :::
 

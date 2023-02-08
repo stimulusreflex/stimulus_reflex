@@ -8,7 +8,7 @@ In the future, this page will be home to the definitive guide to testing Stimulu
 
 After many conversations and a few threats of potential future action, sometimes the only way to get started is to start. The stucture, order and content best suited to the topic of testing is still very much an open conversation.
 
-Please do drop by [`#docs`](https://discord.gg/kCnM5Zfvau) on the StimulusReflex Discord and offer your best ideas. Please **don't** open documentation PRs on Github, as we can't accept them for technical reasons.
+Please do drop by [`#stimulus_reflex`](https://discord.gg/stimulus-reflex) on the StimulusReflex Discord and offer your best ideas.
 
 ## Test environment setup
 

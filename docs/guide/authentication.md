@@ -135,7 +135,9 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = User.find_by(id: request.session.fetch("user_id", nil)) || reject_unauthorized_connection
+      self.current_user = User.find_by(
+        id: request.session.fetch("user_id", nil)
+      ) || reject_unauthorized_connection
     end
   end
 end
@@ -221,16 +223,17 @@ end
 ```javascript [app/javascript/channels/test_channel.js]
 import consumer from './consumer'
 
-consumer.subscriptions.create(
-  {
-    channel: 'TestChannel',
-    token: document.querySelector('meta[name=action-cable-auth-token]').content
+consumer.subscriptions.create({
+  channel: 'TestChannel',
+  token: document.querySelector('meta[name=action-cable-auth-token]').content
+}, {
+  connected () {
+    console.log('Token accepted')
   },
-  {
-    connected () { console.log('Token accepted') },
-    rejected () { console.log('Token rejected') }
+  rejected () {
+    console.log('Token rejected')
   }
-)
+})
 ```
 :::
 

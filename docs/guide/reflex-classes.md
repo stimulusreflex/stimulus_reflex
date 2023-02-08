@@ -119,8 +119,14 @@ Here's an example that outlines how you can interact with the `element` property
 
 ::: code-group
 ```html [app/views/examples/show.html.erb]
-<input type="checkbox" id="example" label="Example" checked
-  data-reflex="change->Example#accessors" data-value="123" />
+<input
+  type="checkbox"
+  id="example"
+  label="Example"
+  checked
+  data-reflex="change->Example#accessors"
+  data-value="123"
+/>
 ```
 :::
 
@@ -177,10 +183,11 @@ Rails has [a pair of cool features](https://github.com/rails/globalid) that allo
 The `element` accessor on every Reflex has two dynamic accessors, `signed` and `unsigned` which automatically unpack Global IDs stored in data attributes and converts them to model instances.
 
 ```html
-<div data-reflex="click->Example#foo"
-     data-public="<%= @foo.to_global_id.to_s %>"
-     data-secure="<%= @foo.to_sgid.to_s %>"
->
+<div
+  data-reflex="click->Example#foo"
+  data-public="<%= @foo.to_global_id.to_s %>"
+  data-secure="<%= @foo.to_sgid.to_s %>"
+></div>
 ```
 
 While in reality, you'd never use both on the same object, you can now have StimulusReflex automatically convert these attributes into instances of the models they reference. This happens lazily, at the time you access the accessor:

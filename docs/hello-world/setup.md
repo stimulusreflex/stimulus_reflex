@@ -263,7 +263,7 @@ import 'controllers'
 
 ## Running "Edge"
 
-If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on Github:
+If you are interested in running the latest version of StimulusReflex, you can point to the `master` branch on GitHub:
 
 ::: code-group
 ```javascript [package.json]
@@ -289,7 +289,7 @@ It is really important to **always make sure that your Ruby and JavaScript packa
 
 Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
 
-Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the GitHub username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
 
 ::: code-group
 ```javascript [package.json]

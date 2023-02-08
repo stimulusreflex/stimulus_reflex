@@ -327,7 +327,12 @@ On the client, you can modify `params` in your `beforeReflex` callback by modify
 export default class extends ApplicationController {
   beforeReflex(element, reflex, noop, reflexId) {
     const { params } = element.reflexData[reflexId]
-    element.reflexData[reflexId].params = { ...params, foo: true, bar: false }
+
+    element.reflexData[reflexId].params = {
+      ...params,
+      foo: true,
+      bar: false
+    }
   }
 }
 ```
@@ -338,6 +343,11 @@ Or, if you prefer working with events:
 document.addEventListener('stimulus-reflex:before', event => {
   const reflexId = event.detail.reflexId
   const { params } = event.target.reflexData[reflexId]
-  event.target.reflexData[reflexId].params = { ...params, foo: true, bar: false }
+
+  event.target.reflexData[reflexId].params = {
+    ...params,
+    foo: true,
+    bar: false
+  }
 })
 ```

@@ -37,6 +37,7 @@ This means **you can automatically target the current user**, and if you're _onl
 class ExampleReflex < ApplicationReflex
   def foo
     cable_ready.console_log(message: "Cable Ready rocks!").broadcast
+
     morph :nothing
   end
 end

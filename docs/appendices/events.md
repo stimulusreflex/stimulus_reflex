@@ -24,15 +24,15 @@ Other times, you might just want to exercise fine control over exactly when some
 
 For these use cases, we can use a technique known as a **debounce**. The classic mental model is holding open the elevator door for people to board. The elevator can't leave until a few seconds after you let go of the button.
 
-Debounce is flexible. In addition to specifying a delay, additional options can indicate whether the first ("_leading_") event is fired and whether the last ("_trailing_") event is fired. Much like an angry, beeping elevator there is also _maxWait_ to provide the amount of time to wait before an interim event is fired, even if new events are still arriving.
+Debounce is flexible. In addition to specifying a delay, additional options can indicate whether the first ("_leading_") event is fired and whether the last ("_trailing_") event is fired. Much like an angry, beeping elevator there is also `maxWait` to provide the amount of time to wait before an interim event is fired, even if new events are still arriving.
 
 ::: info
-LiveView's **debounce** implementation accepts **blur** as a delay value, effectively saying "don't do this until the user leaves this input element".
+LiveView's **debounce** implementation accepts **`blur`** as a delay value, effectively saying "don't do this until the user leaves this input element".
 
-With Stimulus, we can just define a handler for the **blur** event and keep the concepts separate.
+With Stimulus, we can just define a handler for the **`blur`** event and keep the concepts separate.
 :::
 
-While you can find many implementations of throttle and debounce on the web, one of the most commonly used implementations can be found in the [Lodash](https://lodash.com) library. Lodash has dozens of functions that are flexible, well-tested and optimised. They also_ _return new functions that you can assign to replace your existing functions.
+While you can find many implementations of throttle and debounce on the web, one of the most commonly used implementations can be found in the [Lodash](https://lodash.com) library. Lodash has dozens of functions that are flexible, well-tested and optimised. They also return new functions that you can assign to replace your existing functions.
 
 ::: info
 Lodash implementation of **debounce** is so flexible that **throttle** is actually implemented using debounce.
@@ -90,9 +90,9 @@ When the handler is executed, we call `stimulate` and pass the current scroll of
 
 We will look at more examples below, but for now just remember that `throttle` with default parameters has the example same form and syntax as `debounce`.
 
-## debounced
+## `debounced`
 
-Another excellent option for debouncing events is the [debounced](https://github.com/hopsoft/debounced) library, which creates debounced versions of standard bubbling DOM events. It's been designed to pair exceptionally well with Stimulus and StimulusReflex:
+Another excellent option for debouncing events is the [`debounced`](https://github.com/hopsoft/debounced) library, which creates debounced versions of standard bubbling DOM events. It's been designed to pair exceptionally well with Stimulus and StimulusReflex:
 
 ```html
 <input type="text" data-reflex="debounced:input->Example#work">
@@ -222,16 +222,16 @@ end
 ```
 :::
 
-## requestAnimationFrame
+## `requestAnimationFrame()`
 
-Just before we wrap up events, there is a third important mechanism modern browsers provide to control time in our applications, and that is requestAnimationFrame.
+Just before we wrap up events, there is a third important mechanism modern browsers provide to control time in our applications, and that is [`requestAnimationFrame()`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame).
 
 If you've ever developed games, simulations or visualisations, chances are that you've worked with render loops. For the rest of us, the idea that we can use JavaScript, WebGL and the HTML canvas/SVG elements to create incredible visual results might seem alien. There are many great starter articles including "[Anatomy of a video game](https://developer.mozilla.org/en-US/docs/Games/Anatomy)" on MDN.
 
-requestAnimationFrame is the mechanism used to control screen draw operations. When paired with keydown and mouse/touch events, complete games with GPU-accelerated graphics are possible. New browser APIs such as [HTML5 Bluetooth](https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web) mean that you could use your Xbox controllers.
+`requestAnimationFrame()` is the mechanism used to control screen draw operations. When paired with keydown and mouse/touch events, complete games with GPU-accelerated graphics are possible. New browser APIs such as [HTML5 Bluetooth](https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web) mean that you could use your Xbox controllers.
 
 ::: info
-It can be intimidating to start out from nothing with requestAnimationFrame, which is why excellent libraries such as [Greensock](https://greensock.com) are so popular.
+It can be intimidating to start out from nothing with `requestAnimationFrame()`, which is why excellent libraries such as [Greensock](https://greensock.com) are so popular.
 
 While a paid version is available, you can get amazingly far with the free version, specifically if you check out their [Timeline](https://greensock.com/docs/v3/GSAP/Timeline) primative, which offers an impressive selection of callbacks.
 

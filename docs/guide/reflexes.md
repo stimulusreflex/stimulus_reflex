@@ -178,7 +178,9 @@ Note that you can only provide parameters to Reflex actions by calling the `this
 
 ```html
 <div data-folder-id="<%= folder.id %>" data-controller="folders">
-  <button data-action="click->folders#edit" data-reflex-dataset="combined">Edit</button>
+  <button data-action="click->folders#edit" data-reflex-dataset="combined">
+    Edit
+  </button>
 </div>
 ```
 
@@ -232,7 +234,9 @@ The StimulusReflex client is literally just a complex Stimulus Controller. When 
 
 ```html
 <div>
-  <button data-reflex="click->Foo#remove">Remove this button</button>
+  <button data-reflex="click->Foo#remove">
+    Remove this button
+  </button>
 </div>
 ```
 
@@ -240,9 +244,13 @@ When it finds a `data-reflex` attribute, it adds a Stimulus Controller called `s
 
 ```html
 <div>
-  <button data-reflex="click->Foo#remove"
-          data-controller="stimulus-reflex"
-          data-action="click->stimulus-reflex#__perform">Remove this button</button>
+  <button
+    data-reflex="click->Foo#remove"
+    data-controller="stimulus-reflex"
+    data-action="click->stimulus-reflex#__perform"
+  >
+    Remove this button
+  </button>
 </div>
 ```
 
@@ -265,8 +273,12 @@ You should interpret this as "my Reflex was handled by the ApplicationController
 If you want to provide handlers for life-cycle events, you will need to create a StimulusReflex Controller class with the same name as your Reflex:
 
 ```html
-<button data-reflex="click->Foo#remove"
-        data-controller="foo">Remove this button</button>
+<button
+  data-reflex="click->Foo#remove"
+  data-controller="foo"
+>
+  Remove this button
+</button>
 ```
 
 ::: code-group
@@ -289,6 +301,7 @@ When you click the button, it calls the `Foo` Reflex - and removes the `button` 
 class FooReflex < ApplicationReflex
   def remove
     cable_ready.remove(selector: 'button').broadcast
+
     morph :nothing
   end
 end
@@ -315,9 +328,13 @@ It's just a reality of UI design that sometimes when you present a table of rows
 
 ```html
 <div data-controller="foo">
-  <button data-reflex="click->Foo#remove"
-          data-controller="stimulus-reflex"
-          data-action="click->stimulus-reflex#__perform">Remove this button</button>
+  <button
+    data-reflex="click->Foo#remove"
+    data-controller="stimulus-reflex"
+    data-action="click->stimulus-reflex#__perform"
+  >
+    Remove this button
+  </button>
 </div>
 ```
 
