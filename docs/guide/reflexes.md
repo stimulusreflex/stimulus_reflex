@@ -328,11 +328,7 @@ It's just a reality of UI design that sometimes when you present a table of rows
 
 ```html
 <div data-controller="foo">
-  <button
-    data-reflex="click->Foo#remove"
-    data-controller="stimulus-reflex"
-    data-action="click->stimulus-reflex#__perform"
-  >
+  <button data-reflex="click->Foo#remove">
     Remove this button
   </button>
 </div>
