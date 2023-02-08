@@ -122,7 +122,7 @@ StimulusReflex controllers automatically support five generic life-cycle callbac
 6. `finalizeReflex`
 
 ::: info
-While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](lifecycle.md#custom-life-cycle-methods), which allow you to define different callbacks for every action.
+While this is perfect for simpler Reflexes with a small number of actions, most developers quickly switch to using [Custom Life-cycle Methods](/guide/lifecycle#custom-life-cycle-methods), which allow you to define different callbacks for every action.
 :::
 
 In this example, we update each anchor's text before invoking the server side Reflex:
@@ -265,7 +265,7 @@ document.addEventListener('stimulus-reflex:before', event => {
 ::: info
 Knowing which element dispatched the event might appear daunting, but the key is in knowing how the Reflex was created. If a Reflex is declared using a `data-reflex` attribute in your HTML, the event will be emitted by the element with the attribute.
 
-You can learn all about Reflex controller elements on the [Calling Reflexes](reflexes.md#understanding-reflex-controllers) page.
+You can learn all about Reflex controller elements on the [Calling Reflexes](/guides/reflexes#understanding-reflex-controllers) page.
 :::
 
 #### jQuery Events

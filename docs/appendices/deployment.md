@@ -11,7 +11,7 @@ description: Dealing with the scaling concerns we are supposedly lucky to have
 Instead, we make the best of things by enabling caching in the development environment. This allows us to:
 
 * assign our user session data to be managed by the cache store
-* use the [Rails Cache API](../guide/persistence.md#the-rails-cache-store) to store data that we access from Reflexes
+* use the [Rails Cache API](/guide/persistence#the-rails-cache-store) to store data that we access from Reflexes
 * catch bugs that otherwise might only occur in production
 
 ### Use Redis as your cache store
@@ -38,7 +38,7 @@ config.session_store :cache_store, key: "_session_development", compress: true, 
 Please note that `cache_store` is an accessor, while `session_store` is a method. Take care **not** to use an `=` when defining your `session_store`.
 :::
 
-Continue reading the [Deployment on Heroku](deployment.md#deployment-on-heroku) section below for tips on setting up Redis-backed sessions using the `redis-session-store` gem.
+Continue reading the [Deployment on Heroku](/appendices/deployment#deployment-on-heroku) section below for tips on setting up Redis-backed sessions using the `redis-session-store` gem.
 
 ::: danger
 For **caching and session storage**, make sure that your Redis instance is configured to use the `volatile-lru` key expiration strategy. It means that if your Redis instance gets full, it will start ejecting the session data for the users who have likely churned anyhow, while ensuring regular users stay logged in.
@@ -79,11 +79,11 @@ config.session_store :redis_session_store,
 You don't have to use Heroku's Redis addon. If you choose another provider, your configuration will be slightly different - **only Heroku Redis assigns color-based instance names**, for example.
 :::
 
-Heroku will give all Redis instances after the first a distinct URL. All you have to do is provide the app\_session\_key and a prefix. In this example, Rails sessions will last a maximum of one year.
+Heroku will give all Redis instances after the first a distinct URL. All you have to do is provide the `app_session_key` and a prefix. In this example, Rails sessions will last a maximum of one year.
 
 ### Heroku Redis Secure URLs
 
-At the time of this writing, the `hiredis` gem does not support SSL. When you provision multiple Heroku Redis addons at the "Hobby" tier, it will give you a "color URL" and a REDIS\_TLS\_URL . You need to use the **non-TLS** one which works just fine without SSL.
+At the time of this writing, the `hiredis` gem does not support SSL. When you provision multiple Heroku Redis addons at the "Hobby" tier, it will give you a "color URL" and a `REDIS_TLS_URL` . You need to use the **non-TLS** one which works just fine without SSL.
 
 If you plan to use the paid "Premium" tier Heroku Redis addons, they use Redis 6 by default and TLS becomes mandatory. Until such time as `hiredis` supports SSL, you will need to create your addon instance by specifying that Redis 5 is to be used:
 
@@ -103,7 +103,7 @@ Generally, only the `heroku/ruby` buildpack is required to successfully deploy a
 
 Some users have noted that ActionCable can take a long time to connect. This is because Render is setting the `X-Forwarded-Proto` header to use `wss`, which was not supported by Rack until [this commit](https://github.com/rack/rack/commit/8be612ab949cf2eba7f4231ef17052a68315f911) in April 2021.
 
-The latest release of the Rack gem \(2.2.3 as of the time of this writing\) came out in June 2020, so the fix is to add `rack` to your Gemfile and point to this specific commit:
+The latest release of the Rack gem (2.2.3 as of the time of this writing) came out in June 2020, so the fix is to add `rack` to your Gemfile and point to this specific commit:
 
 ::: code-group
 ```ruby [Gemfile]
@@ -115,7 +115,7 @@ gem "rack", git: "https://github.com/rack/rack.git", ref: "8be612a"
 
 Cloudflare's infrastructure is nothing short of impressive, and they are a great choice for free DNS hosting. However, the default behaviour of their DNS product is to proxy all traffic to your domain. **This includes websocket traffic.**
 
-Your mileage may vary \(literally, depending on how far you are from a Cloudflare edge node!\) but changing your DNS records from "Proxying" to "DNS Only", you could shave 60-90ms off the real-world execution time of your Reflex actions.
+Your mileage may vary (literally, depending on how far you are from a Cloudflare edge node!) but changing your DNS records from "Proxying" to "DNS Only", you could shave 60-90ms off the real-world execution time of your Reflex actions.
 
 In a more sophisticated setup, you could experiment with hosting your websockets endpoint on a different domain, allowing you to experience the best of both worlds. In fact, this is the specific reason we add `<%= action_cable_meta_tag %>` to our HEADs.
 
@@ -173,16 +173,16 @@ config.action_mailer.default_url_options = {host: "localhost", port: 3000}
 Yes.
 :::
 
-We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server \(written in any language\) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
+We're excited to announce that StimulusReflex now works with [AnyCable](https://github.com/anycable/anycable), a library which allows you to use any WebSocket server (written in any language) as a replacement for your Ruby WebSocket server. You can read more about the dramatic scalability possible with AnyCable in [this post](https://evilmartians.com/chronicles/anycable-actioncable-on-steroids).
 
-We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. We've even [seen reports](https://nebulab.it/blog/actioncable-vs-anycable-fight/) that ActionCable can benchmark at 20,000 connections, while AnyCable maxes out around 60,000 because it runs out of TCP ports to allocate.
+We'd love to hear your battle stories regarding the number of simultaneous connections you can achieve both with and without AnyCable. Anecdotal evidence suggests that you can realistically squeeze ~4000 connections with native ActionCable, whereas AnyCable should allow roughly 10,000 connections **per node**. We've even [seen reports](https://nebulab.it/blog/actioncable-vs-anycable-fight) that ActionCable can benchmark at 20,000 connections, while AnyCable maxes out around 60,000 because it runs out of TCP ports to allocate.
 
 Of course, the message delivery speed - and even delivery _success_ rate - will dip as you start to approach the upper limit, so if you are working on a project successful enough to have this problem, you are advised to switch.
 
 Getting to this point required significant effort and cooperation between members of both projects. You can try out the AnyCable v1.0 release today.
 
 1. Add `gem "anycable-rails", "~> 1.0"` to your `Gemfile`.
-2. Install `anycable-go` v1.0 \([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)\).
+2. Install `anycable-go` v1.0 ([binaries](https://github.com/anycable/anycable-go/releases) available here, Docker images are also [available](https://hub.docker.com/repository/docker/anycable/anycable-go/tags?page=1&name=preview)).
 3. If you are using the session object, you must select a cache store that is not MemoryStore, which is not compatible with AnyCable.
 
 There is also a brand-new installation wizard which you can access via `rails g anycable:setup` after the gem has been installed.
@@ -199,7 +199,7 @@ We strongly recommend the use of [Turbolinks 5](https://github.com/turbolinks/tu
 
 In addition to the dramatic speed benefits associated with swapping the page content without having to load a new page, Turbo Drive will help you minimize the resource consumption of your ActionCable connections as well.
 
-When all of your ActionCable channels \(including StimulusReflex\) share one memoized `consumer.js` your browser doesn't have to re-establish a new websocket connection with the server on every page. Turbolinks allows your connection to be persisted between page loads.
+When all of your ActionCable channels (including StimulusReflex) share one memoized `consumer.js` your browser doesn't have to re-establish a new websocket connection with the server on every page. Turbolinks allows your connection to be persisted between page loads.
 
 ## Native Mobile Wrappers
 
@@ -248,7 +248,7 @@ end
 
 ## Is StimulusReflex suitable for use in developing countries?
 
-On the face, serving raw HTML to the client means a smaller download, there's no SPA dynamically rendering a page from JSON \(slow\) and draining the battery. However, the question deserves a more nuanced treatment - and not just because **some devices might not even support Websockets**.
+On the face, serving raw HTML to the client means a smaller download, there's no SPA dynamically rendering a page from JSON (slow) and draining the battery. However, the question deserves a more nuanced treatment - and not just because **some devices might not even support Websockets**.
 
 It's simply true that the team developing StimulusReflex is working on relatively recent, non-mobile computers with subjectively fast, reliable connections to the internet. None of us are actively testing on legacy hardware.
 

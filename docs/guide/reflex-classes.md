@@ -1,6 +1,6 @@
 # Reflex Classes
 
-Regardless of whether you use declared Reflexes in your HTML markup or call `stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `ApplicationReflex`.
+Regardless of whether you use declared Reflexes in your HTML markup or call `this.stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `ApplicationReflex`.
 
 ::: code-group
 ```ruby [app/reflexes/example_reflex.rb]
@@ -11,7 +11,7 @@ end
 
 Setting a declarative data-reflex="click->Example#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
 
-You can do anything you like in a Reflex action, including [retrieving data from Redis](persistence.md#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](cableready.md#order-of-operations).
+You can do anything you like in a Reflex action, including [retrieving data from Redis](/guide/persistence#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](/guide/cableready#order-of-operations).
 
 ::: tip
 If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
@@ -29,7 +29,7 @@ end
 ```
 :::
 
-You will learn all about the `element` accessor in the [next section](reflex-classes.md#element).
+You will learn all about the `element` accessor in the [next section](/guide/reflex-classes#element).
 
 ::: tip
 Note that there's no correlation between the Reflex class or Reflex action and the page (or its controller) that you're on. Your `users#show` page can call `Example#increment`.
@@ -37,9 +37,9 @@ Note that there's no correlation between the Reflex class or Reflex action and t
 
 ## ActionCable Connection Identifiers
 
-It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. First, you'll need to make sure that your Connection is "identified" by your `current_user`. Since ActionCable is separate from the ActionController namespace, accessors need to be setup as part of your [authentication](authentication.md#current-user) process.
+It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. First, you'll need to make sure that your Connection is "identified" by your `current_user`. Since ActionCable is separate from the ActionController namespace, accessors need to be setup as part of your [authentication](/guide/authentication#current-user) process.
 
-Your Connection can have multiple accessors defined. For example, it's common to implement a [hybrid](authentication.md#hybrid-anonymous-authenticated-connections) technique to use the visitor's `session_id` before they authenticate, and then switch over to `current_user`.
+Your Connection can have multiple accessors defined. For example, it's common to implement a [hybrid](/guide/authentication#hybrid-anonymous-authenticated-connections) technique to use the visitor's `session_id` before they authenticate, and then switch over to `current_user`.
 
 Once your connection is `identified_by :current_user`, you can delegate `current_user` to your ActionCable Connection:
 
@@ -80,7 +80,7 @@ You can also bust the cached value by running a different query, but Rails devel
 ::: tip
 **Don't use `current_user` or other Connection identifiers in templates or partials that will be rendered in a Reflex.**
 
-Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action\_view\_overview.html#render-without-partial-and-locals-options).
+Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action_view_overview.html#render-without-partial-and-locals-options).
 :::
 
 If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
@@ -165,7 +165,7 @@ The same goes for other pairs, such as `value` and `data-value`. `value` has mea
 :::
 
 ::: tip
-When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
+When StimulusReflex is rendering your template, an instance variable named **`@stimulus_reflex`** is available to your Rails controller and set to true.
 
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
 :::

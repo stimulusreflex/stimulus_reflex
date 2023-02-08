@@ -31,13 +31,13 @@ And set up your `package.json`:
 
 ## Command-Line Install
 
-StimulusReflex relies on [Stimulus](https://stimulusjs.org), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6+ projects. For Rails 5.2, see [here](setup.md#rails-5-2-support).
+StimulusReflex relies on [Stimulus](https://stimulus.hotwired.dev), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6+ projects. For Rails 5.2, see [here](/hello-world/setup#rails-5-2-support).
 
 ::: warning
 StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
 :::
 
-The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](../appendices/deployment.md#session-storage).)
+The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](/appendices/deployment#session-storage).)
 
 ```ruby
 bundle add stimulus_reflex --version 3.5.0.pre8
@@ -45,21 +45,21 @@ rake stimulus_reflex:install
 ```
 
 ::: warning
-There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](../appendices/troubleshooting.md#safari-nsurlsession-websocket-bug).
+There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](/appendices/troubleshooting#safari-nsurlsession-websocket-bug).
 :::
 
-And that's it! You can start using StimulusReflex in your application with the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md).
+And that's it! You can start using StimulusReflex in your application with the `development` environment. You'll need to keep reading to set up [`test`](/appendices/testing#test-environment-setup) and [`production`](/appendices/deployment).
 
-<LinkComponent name="Quick Start" href="/hello-world/quickstart.html" />
+<LinkComponent name="Quick Start" href="/hello-world/quickstart" />
 
 ## Manual Configuration
 
-Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project in the _development_ environment. You'll need to keep reading to set up [test](../appendices/testing.md#test-environment-setup) and [production](../appendices/deployment.md). For Rails 5.2, see [here](setup.md#rails-5-2-support).
+Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project in the _development_ environment. You'll need to keep reading to set up [test](/appendices/testing#test-environment-setup) and [production](/appendices/deployment). For Rails 5.2, see [here](/hello-world/setup#rails-5-2-support).
 
 ::: warning
 StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
 
-You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](../appendices/deployment.md#session-storage) page.
+You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](/appendices/deployment#session-storage) page.
 :::
 
 We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
@@ -94,9 +94,9 @@ StimulusReflex.initialize(application, { isolate: true })
 :::
 
 ::: warning
-The installation information presented by the [StimulusJS handbook](https://stimulusjs.org/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex assumes that you are following the Rails webpacker flow. Your application pack should simply `import 'controllers'`.
+The installation information presented by the [StimulusJS handbook](https://stimulus.hotwired.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex assumes that you are following the Rails webpacker flow. Your application pack should simply `import 'controllers'`.
 
-If you require your controllers in both 'application.js `and` index.js\` it's likely that your controllers will load twice, causing all sorts of strange behavior.
+If you require your controllers in both `application.js` and `index.js` it's likely that your controllers will load twice, causing all sorts of strange behavior.
 :::
 
 **Cookie-based session storage is not currently supported by StimulusReflex.**
@@ -109,7 +109,7 @@ In Rails, the default cache store is the memory store. We want to change the cac
 ```ruby [config/environments/development.rb]
 Rails.application.configure do
   # CHANGE the following line; it's :memory_store by default
-  config.cache_store = :redis_cache_store, {url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }}
+  config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } }
 
   # ADD the following line; it probably doesn't exist
   config.session_store :cache_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
@@ -117,7 +117,7 @@ end
 ```
 :::
 
-You can read more about configuring Redis on the [Deployment](../appendices/deployment.md#session-storage) page.
+You can read more about configuring Redis on the [Deployment](/appendices/deployment#session-storage) page.
 
 Configure ActionCable to use the Redis adapter in development mode:
 
@@ -130,7 +130,7 @@ development:
 ```
 :::
 
-You should also add the `action_cable_meta_tag`helper to your application template so that ActionCable can access important configuration settings:
+You should also add the `action_cable_meta_tag` helper to your application template so that ActionCable can access important configuration settings:
 
 ::: code-group
 ```html [app/views/layouts/application.html.erb]
@@ -143,7 +143,7 @@ You should also add the `action_cable_meta_tag`helper to your application templa
 :::
 
 ::: warning
-There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](../appendices/troubleshooting.md#safari-nsurlsession-websocket-bug).
+There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](/appendices/troubleshooting#safari-nsurlsession-websocket-bug).
 :::
 
 ## Upgrading, package versions and sanity
@@ -172,9 +172,9 @@ Out of the box, ActionCable doesn't give StimulusReflex the ability to distingui
 
 **If you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind!
 
-When the time comes, it's easy to configure your application to support authenticating users by their Rails session or current\_user scope. Just check out the Authentication page and choose your own adventure.
+When the time comes, it's easy to configure your application to support authenticating users by their Rails session or `current_user` scope. Just check out the Authentication page and choose your own adventure.
 
-<LinkComponent name="Authentication" href="/guide/authentication.html" />
+<LinkComponent name="Authentication" href="/guide/authentication" />
 
 ## Tab isolation
 
@@ -200,11 +200,11 @@ Keep in mind that tab isolation mode only applies when multiple tabs are open to
 
 We are strong believers in the Rails Doctrine and work very hard to prioritize convention over configuration. Unfortunately, there are some inherent limitations to the way cookies are communicated via websockets that make it difficult to use cookies for session storage in production.
 
-We default to using the `:cache_store` for `config.session_store` (and enabling caching) in the development environment if no other option has been declared. Many developers switch to using the [redis-session-store gem](https://github.com/roidrage/redis-session-store), especially in production.
+We default to using the `:cache_store` for `config.session_store` (and enabling caching) in the development environment if no other option has been declared. Many developers switch to using the [`redis-session-store` gem](https://github.com/roidrage/redis-session-store), especially in production.
 
 You can learn more about session storage on the Deployment page.
 
-<LinkComponent name="Deployment" href="/appendices/deployment.html" />
+<LinkComponent name="Deployment" href="/appendices/deployment" />
 
 ## Rack middleware support
 
@@ -227,9 +227,9 @@ Users of [Jumpstart Pro](https://jumpstartrails.com) are advised to add the `Jum
 
 ## ViewComponent Integration
 
-There is no special process required for using [view\_component](https://github.com/github/view\_component) with StimulusReflex. If ViewComponent is setup and running properly, you're already able to use them in your Reflex-enabled views.
+There is no special process required for using [`view_component`](https://github.com/github/view_component) with StimulusReflex. If ViewComponent is setup and running properly, you're already able to use them in your Reflex-enabled views.
 
-Many StimulusReflex + ViewComponent developers are enjoying using the [view\_component\_reflex](https://github.com/joshleblanc/view\_component\_reflex) gem, which automatically persists component state to your session between Reflexes.
+Many StimulusReflex + ViewComponent developers are enjoying using the [`view_component_reflex`](https://github.com/joshleblanc/view_component_reflex) gem, which automatically persists component state to your session between Reflexes.
 
 ## Rails 5.2+ Support
 
@@ -246,7 +246,7 @@ To use Rails 5.2 with StimulusReflex, you'll need the latest Action Cable packag
 ::: warning
 There's nothing about StimulusReflex 3+ that shouldn't work fine in a Rails 5.2 app if you're willing to do a bit of manual package dependency management.
 
-If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](../appendices/troubleshooting.md#rails-5-2-revisited)" on the Troubleshooting page.
+If you're having trouble with converting your Rails 5.2 app to work correctly with webpacker, you should check out "[Rails 5.2, revisited](/appendices/troubleshooting#rails-5-2-revisited)" on the Troubleshooting page.
 :::
 
 ## Polyfills for IE11
@@ -285,11 +285,11 @@ Restart your server(s) and refresh your page to see the latest.
 It is really important to **always make sure that your Ruby and JavaScript package versions are the same**!
 :::
 
-### Running a branch to test a Github Pull Request
+### Running a branch to test a GitHub Pull Request
 
 Sometimes you want to test a new feature or bugfix before it is officially merged with the `master` branch. You can adapt the "Edge" instructions and run code from anywhere.
 
-Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus\_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
+Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the Github username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `master` branch of the main project repository.
 
 ::: code-group
 ```javascript [package.json]

@@ -26,7 +26,7 @@ The DOM element upon which the `data-reflex` attribute is placed or the `stimula
 
 ## Reflex controller
 
-A Stimulus controller that imports the StimulusReflex client library directly, or extends from `ApplicationController`. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [targets](https://stimulus.hotwire.dev/reference/targets) in its DOM hierarchy.
+A Stimulus controller that imports the StimulusReflex client library directly, or extends from `ApplicationController`. It has a `stimulate` method for triggering Reflexes and like all Stimulus controllers, it's aware of the element it is attached to - as well as any Stimulus [Targets](https://stimulus.hotwire.dev/reference/targets) in its DOM hierarchy.
 
 ## ApplicationController
 
@@ -34,7 +34,7 @@ The Stimulus controller created during installation which Reflex controllers can
 
 ## Morphs
 
-The three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs](../guide/morph-modes.md) page for more information.
+The three ways to use StimulusReflex are Page, Selector and Nothing morphs. Page morphs are the default, and covered extensively on this page. See the [Morphs](/guide/morph-modes) page for more information.
 
 ## Reflex root
 
@@ -59,4 +59,3 @@ Each Reflex moves through a distinct set of moments, ideally _before_ -&gt; _suc
 ## Life-cycle event
 
 At every stage, each Reflex can implement optional responses, both generally and specifically to individual Reflex actions. Developers can choose to work with DOM events, callback methods in a Stimulus controller or responding to the resolved Promise representing the Reflex.
-

@@ -1,11 +1,11 @@
 # Integrating CableReady
 
-[CableReady](https://cableready.stimulusreflex.com) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready?autoplay=1\&ck\_subscriber\_id=646293602)?
+[CableReady](https://cableready.stimulusreflex.com) is the primary dependency of StimulusReflex, and it actually pre-dates this library by a year. What is it, and why should you care enough to watch [this video](https://gorails.com/episodes/how-to-use-cable-ready)?
 
 | Library        | Responsibility                                                                                                                                                                                     |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | StimulusReflex | Translates user actions into server-side events that change your data, then regenerating your page based on this new data **into an HTML string**.                                                 |
-| CableReady     | Takes the HTML string from StimulusReflex and sends it to the browser before using [morphdom](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
+| CableReady     | Takes the HTML string from StimulusReflex and sends it to the browser before using [`morphdom`](https://github.com/patrick-steele-idem/morphdom/) to update only the parts of your DOM that changed. |
 
 ⬆️ StimulusReflex is for **sending** commands. 📡\
 ⬇️ CableReady is for **receiving** updates. 👽
@@ -23,7 +23,7 @@ CableReady has 36 operations for changing every aspect of your page, and you can
 
 StimulusReflex uses CableReady's `morph` for Page Morphs and some Selector Morphs, `inner_html` for Selector Morphs that don't use `morph` , and `dispatch_event` for Nothing Morphs, as well as aborted/halted Reflexes and sending errors that occur in a Reflex action.
 
-The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](../appendices/troubleshooting.md#morphing-sanity-checklist).
+The reason some Selector morphs are sent via `inner_html` is that the content you send to replace your existing DOM elements has to match up. If you replace an element with something completely different, `morph` just won't work. You can read all about this in the [Morphing Sanity Checklist](/appendices/troubleshooting#morphing-sanity-checklist).
 
 ## Using CableReady inside a Reflex action
 

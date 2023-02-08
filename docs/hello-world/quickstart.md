@@ -6,7 +6,7 @@ description: How to use StimulusReflex in your app
 
 ## Before you begin...
 
-**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working\_with\_javascript\_in\_rails.html#remote-elements), [Stimulus](https://stimulusjs.org), and [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
+**A great user experience can be created with Rails alone.** Tools such as [Russian Doll caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html), [UJS](https://guides.rubyonrails.org/working_with_javascript_in_rails.html#remote-elements), [Stimulus](https://stimulus.hotwired.dev), and [Turbo Drive](https://turbo.hotwire.dev/handbook/drive) are incredibly powerful when combined. Could you build your application using these tools without introducing StimulusReflex?
 
 ::: warning
 We are only alive for a short while and learning any new technology is a sacrifice of time spent with those you love, creating art or walking in the woods. 👨‍👨‍👧‍👧🎨🌲
@@ -51,7 +51,7 @@ The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
 ::: warning
 While `click` and `change` are two of the most common events used to initiate Reflex actions, you can use `mouseover`, `drop`, `play` and [any others](https://developer.mozilla.org/en-US/docs/Web/Events) that makes sense for your application.
 
-We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](../appendices/events.md#throttle-and-debounce) to reduce how many events are emitted.
+We do caution you to be careful with events that can trigger many times in a short period such as `scroll`, `drag`, `resize` or `mousemove`. It's possible to use a [debounce strategy](/appendices/events#throttle-and-debounce) to reduce how many events are emitted.
 :::
 
 The other two attributes `data-step` and `data-count` are used to pass data to the server. You can think of them as arguments.
@@ -84,14 +84,14 @@ If you change the code in a Reflex class, you must refresh the page in your brow
 
 Real-world applications will benefit from additional structure and more granular control. Building on the solid foundation that Stimulus provides, we can import StimulusReflex into our Stimulus controllers and build complex functionality.
 
-Let's build on our increment counter example by adding a Stimulus controller and manually triggering a Reflex action by calling the `stimulate` method.
+Let's build on our increment counter example by adding a Stimulus controller and manually triggering a Reflex action by calling the `this.stimulate()` method.
 
 1. Declare the appropriate data attributes in HTML.
 2. Create a client side StimulusReflex controller with JavaScript.
 3. Create a server side Reflex object with Ruby.
 4. Create a server side Example controller with Ruby.
 
-We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](../appendices/troubleshooting.md#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
+We can use the standard Stimulus `data-controller` and `data-action` attributes, which can be [changed if you have a conflict](/appendices/troubleshooting#modifying-the-default-data-attribute-schema). There's no StimulusReflex-specific markup required:
 
 ::: code-group
 ```html [app/views/pages/index.html.erb]
@@ -102,7 +102,7 @@ We can use the standard Stimulus `data-controller` and `data-action` attributes,
 ```
 :::
 
-Now we can create a simple Stimulus controller that extends `ApplicationController`, which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `stimulate` method:
+Now we can create a simple Stimulus controller that extends `ApplicationController`, which is installed with StimulusReflex. It takes care of making your controller automatically inherit the `this.stimulate()` method:
 
 ::: code-group
 ```javascript [app/javascript/controllers/counter_controller.js]
@@ -118,7 +118,7 @@ export default class extends ApplicationController {
 :::
 
 ::: warning
-If you extend `ApplicationController` and need to create a `connect` method, make sure that the first line of your method is `super.connect()` or else you can't call `stimulate`.
+If you extend `ApplicationController` and need to create a `connect` method, make sure that the first line of your method is `super.connect()` or else you can't call `this.stimulate()`.
 :::
 
 When the user clicks the anchor, the Stimulus event system calls the `increment` method on our controller. In this example, we pass two parameters: the first one follows the format `[ReflexClass]#[action]` and informs the server which Reflex action in which Reflex class we want to trigger. Our second parameter is an optional argument that is passed to the Reflex action as a parameter.
@@ -171,7 +171,7 @@ This will create but not overwrite the following files:
 4. `app/reflexes/user_reflex.rb`
 
 ::: warning
-If you later destroy a stimulus\_reflex "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
+If you later destroy a `stimulus_reflex` "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
 :::
 
 ## StimulusReflex Cheatsheet

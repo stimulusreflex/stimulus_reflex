@@ -2,6 +2,11 @@
 description: Forms fly business class on StimulusReflex Airways ✈️
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
+
 # Forms
 
 When developers learn StimulusReflex and re-consider how they approach building reactive user experiences, one of the first questions is how to submit a form using their shiny new hammer.
@@ -27,7 +32,7 @@ The recommended mitigation for this behaviour is to **use Mrujs**.
 
 ## StimulusReflex form processing
 
-StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](reflexes.md#combined-data-attributes-with-stimulate). This is very different from the mechanics of a form submission.
+StimulusReflex gathers all of the attributes on the element that initiates a Reflex. All of this data gets packed into an object that is made available to your Reflex action method through the `element` accessor. You can even [scoop up the attributes of parent elements](/guide/reflexes#combined-data-attributes-with-stimulate). This is very different from the mechanics of a form submission.
 
 However, if a Reflex is called on a `form` element - or a **child** of that `form` element - then the data for the whole form can **optionally** be serialized and made available to the server-side Reflex action method as the `params` accessor.
 
@@ -39,7 +44,7 @@ v3.5 developers will see a deprecation warning suggesting that they explicitly s
 
 `params` is an instance of `ActionController::Parameters` which you can manipulate the same way you would with a real form submitted via a normal POST action, with `require` and `permit`. This is useful for validating models and setting multiple attributes of a model at the same time, even if it hasn't yet been saved to the datastore.
 
-To enable this form serialization in a Reflex, either set the `serializeForm: true` option when calling `stimulate()` or make sure that there's a `data-reflex-serialize-form` data attribute on the element which initiates your Reflex action.
+To enable this form serialization in a Reflex, either set the `serializeForm: true` option when calling `this.stimulate()` or make sure that there's a `data-reflex-serialize-form` data attribute on the element which initiates your Reflex action.
 
 ::: code-group
 ```javascript [JavaScript]
@@ -58,7 +63,7 @@ StimulusReflex uses `form` elements as a familiar way to group related elements 
 * forms are usually submitted via a classic POST operation or an Ajax fetch; this is _not the case_ when working with StimulusReflex
 * forms usually have action and method attributes; we recommend against them - you really **can** just use `<form></form>` with no other mechanism or configuration required
 * forms often have submit buttons; when using StimulusReflex, submit buttons have no effect
-* there's no reason to set up a route or controller action for a form intended for SR
+* there's no reason to set up a route or controller action for a form intended for StimulusReflex
 
 ::: info
 You might be wondering why to even use forms at all. One significant reason is that many CSS frameworks like Bootstrap expect forms to be forms.
@@ -89,11 +94,11 @@ While not directly SR-specific, we've noticed that a lot of developers get tripp
 
 Quoting from MDN:
 
-> &#x20;`submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit\_event) event is sent back to the form object.
+> &#x20;`submit()` submits the form, but that's all it does. `requestSubmit()`, on the other hand, acts as if a submit button were clicked. The form's content is validated, and the form is submitted only if validation succeeds. Once the form has been submitted, the [`submit`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event) event is sent back to the form object.
 
 ## Working with the `params` accessor in your Reflex class
 
-The `params` accessor is available to your `before_reflex` `around_reflex` and `after_reflex` callbacks in your server-side Reflex class. You are also free to add additional business logic on the client using the Reflex [life-cycle callbacks](lifecycle.md#server-side-reflex-callbacks) in your Stimulus controllers.
+The `params` accessor is available to your `before_reflex` `around_reflex` and `after_reflex` callbacks in your server-side Reflex class. You are also free to add additional business logic on the client using the Reflex [life-cycle callbacks](/guide/lifecycle#server-side-reflex-callbacks) in your Stimulus controllers.
 
 The `params` accessor behaves as it does in a Rails controller, so you are free to lock it down and add nested models as you expect:
 
@@ -119,7 +124,7 @@ At the time of this writing, **forms that upload files are unsupported by Stimul
 
 You can explore using CableReady and/or mrujs to provide live error handling, and there are excellent tools such as [Dropzone](https://www.dropzonejs.com) which make it possible to upload multiple files, work with ActiveStorage and even upload directly to a cloud storage bucket.
 
-As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active\_storage\_overview.html).
+As websockets is a text-based protocol that doesn't guarantee packet delivery or the order of packet arrival, it is not well-suited to uploading binary files. This is an example of a problem best solved with vanilla Rails UJS form handling and [ActiveStorage](https://guides.rubyonrails.org/active_storage_overview.html).
 
 ### Resetting a submitted form
 
@@ -128,13 +133,13 @@ If you handle your form with StimulusReflex, and the resulting DOM diff doesn't 
 One simple technique is to use a Stimulus controller to reset the form after the Reflex completes successfully. We'll call this controller `reflex-form` and we'll use it to set a target on the first text field, as well as an action on the submit button:
 
 ```javascript
-<%= form_with(model: model, data: {controller: "reflex-form"}) do |form| %>
-  <%= form.text_field :name, data: {target: "reflex-form.focus"} %>
+<%= form_with(model: model, data: { controller: "reflex-form" }) do |form| %>
+  <%= form.text_field :name, data: { target: "reflex-form.focus" } %>
   <%= form.button data: {action: "click->reflex-form#submit"} %>
 <% end %>
 ```
 
-This controller will make use of the [Promise](https://docs.stimulusreflex.com/guide/lifecycle#promises) returned by the `stimulate` method:
+This controller will make use of the [Promise](/guide/lifecycle#promises) returned by the `this.stimulate()` method:
 
 ::: code-group
 ```javascript [app/javascript/controllers/reflex_form_controller.js]
@@ -249,14 +254,14 @@ However, **StimulusReflex works hard to ensure morph operations will not overwri
 
 We've worked really hard to make sure that developers can update other aspects of the active text input element. For example, it's possible to change the background color or even mark the element as disabled while you're typing into it. However, all attempts to overwrite the input element's value will be silently suppressed.
 
-If you need to filter or constrain the contents of a text input, consider using a client-side library such as [Cleave.js](https://nosir.github.io/cleave.js/) instead of trying to circumvent the Single Source of Truth mechanisms, which are there to protect your users from their fellow collaborators.
+If you need to filter or constrain the contents of a text input, consider using a client-side library such as [`cleave.js`](https://nosir.github.io/cleave.js/) instead of trying to circumvent the Single Source of Truth mechanisms, which are there to protect your users from their fellow collaborators.
 
 Note that this concept only applies to the active text input element. Any elements which are marked with `data-reflex-permanent` will not be **morphed** in any way.
 
 ::: info
-Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](morph-modes.md#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
+Unfortunately, it's not possible to protect elements from being replaced with a Selector Morph that uses an `inner_html` operation. The client-side logger will show you which operation is being used, and you can [tweak the data](/guide/morph-modes#things-go-wrong) you're sending to make sure it's delivered as a `morph` operation.
 
-Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [morph](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
+Similarly, custom CableReady operations broadcast by the developer do not automatically respect `data-reflex-permanent`. You can set the `permanent_attribute_name` option for the [`morph`](https://cableready.stimulusreflex.com/reference/operations/dom-mutations#morph) operation directly.
 :::
 
 ## Modifying forms with Morphs
@@ -302,7 +307,7 @@ The partial might look something like this:
 <%= form.text_field :summary %>
 ```
 
-Since the partial does not include the parent `div`, in order to successfully replace the contents of "form\_swap" we'll need to wrap it ourselves:
+Since the partial does not include the parent `div`, in order to successfully replace the contents of `#form_swap` we'll need to wrap it ourselves:
 
 ```ruby
     html = render(partial: "path/to/partial", locals: {form: form})
@@ -310,7 +315,9 @@ Since the partial does not include the parent `div`, in order to successfully re
     morph "#form_swap", "<div id='form_swap'>#{html}</div>"
 ```
 
-You can learn more about why wrapping Morph replacement content is necessary [here](morph-modes.md#intelligent-defaults).
+You can learn more about why wrapping Morph replacement content is necessary:
+
+<LinkComponent name="Intelligent Defaults" href="/guide/morph-modes#intelligent-defaults"/>
 
 ## Modifying `params` before a Reflex
 

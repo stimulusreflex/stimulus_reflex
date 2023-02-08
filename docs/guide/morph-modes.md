@@ -4,9 +4,9 @@ description: How to update everything, nothing or something in-between 🧘
 
 # Morphs
 
-By default, StimulusReflex updates your entire page. After re-processing your controller action, rendering your view template, and sending the raw HTML to your browser, StimulusReflex uses the amazing [morphdom](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
+By default, StimulusReflex updates your entire page. After re-processing your controller action, rendering your view template, and sending the raw HTML to your browser, StimulusReflex uses the amazing [`morphdom`](https://github.com/patrick-steele-idem/morphdom) library to do the smallest number of DOM modifications necessary to refresh your UI in just a few milliseconds. For many developers, this will be a perfect solution forever. They can stop reading here.
 
-Most real-world applications are more sophisticated, though. You think of your site in terms of sections, components and content areas. We reason about our functionality with abstractions like _"sidebar"_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we need to surgically swap out one of those containers with something new. Sending the entire page to the client seems like massive overkill. We need to update just part of the DOM without disturbing the rest of the tree... _and we need it to happen in \~10ms_.
+Most real-world applications are more sophisticated, though. You think of your site in terms of sections, components and content areas. We reason about our functionality with abstractions like _"sidebar"_ but when it's time to work, we shift back to contemplating a giant tree of nested containers. Sometimes we need to surgically swap out one of those containers with something new. Sending the entire page to the client seems like massive overkill. We need to update just part of the DOM without disturbing the rest of the tree... _and we need it to happen in ~10ms_.
 
 Other times... we just need to hit a button which feeds a cat which may or may not still be alive in a steel box. 🐈
 
@@ -20,13 +20,13 @@ Changing the Morph mode happens in your server-side Reflex class, either in the 
 
 `morph` is only available in Reflex classes, not controller actions. Once you change modes, you cannot change between them.
 
-![Each Morph is useful in different scenarios.](<//power-rangers (1).jpg>)
+![Each Morph is useful in different scenarios.](/power-rangers.jpg)
 
 | What are you replacing?                | Process Controller Action? | Typical Round-Trip Speed |
 | -------------------------------------- | -------------------------- | ------------------------ |
-| The full **page** (default)            | Yes                        | \~50ms                   |
-| All children of a CSS DOM **selector** | No                         | \~15ms                   |
-| **Nothing** at all                     | No                         | \~6ms                    |
+| The full **page** (default)            | Yes                        | ~50ms                    |
+| All children of a CSS DOM **selector** | No                         | ~15ms                    |
+| **Nothing** at all                     | No                         | ~6ms                     |
 
 ## Page Morphs
 
@@ -39,7 +39,7 @@ What makes Page Morphs interesting and distinct from other Morph types is that t
 Any instance variables that you set in your Reflex action method are available to your controller action. In addition, there is a special `@stimulus_reflex` variable that is set to `true` when a controller action is being run by a Reflex.
 
 ::: info
-StimulusReflex does not support using redirect\_to in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
+StimulusReflex does not support using `redirect_to` in a Page Morph. If you try to return an HTTP 302 in your controller during a Reflex action, your page content will become "You are being redirected."
 :::
 
 ### Scoping Page Morphs
@@ -81,15 +81,15 @@ One interesting detail of this example is that by assigning the root to `[forwar
 :::
 
 ::: info
-In StimulusReflex, morphdom is called with the **childrenOnly** flag set to _true_.
+In StimulusReflex, `morphdom` is called with the **childrenOnly** flag set to _true_.
 
-This means that \<body> or the custom parent selector(s) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
+This means that `<body>` or the custom parent selector(s) you specify are not updated. For this reason, it's necessary to wrap anything you need to be updated in a div, span or other bounding tag so that it can be swapped out without confusion.
 
-If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an \<a>.
+If you're stuck with an element that just won't update, make sure that you're not attempting to update the attributes on an `<a>`.
 :::
 
 ::: info
-It's completely valid for an element with a data-reflex-root attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
+It's completely valid for an element with a `data-reflex-root` attribute to reference itself via a CSS class or other mechanism. Just always remember that the parent itself will not be replaced! Only the children of the parent are modified.
 :::
 
 ### Permanent Elements
@@ -108,7 +108,7 @@ Just add `data-reflex-permanent` to any element in your DOM, and it will be left
 :::
 
 ::: info
-We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org) editor ([ActionText](https://guides.rubyonrails.org/action\_text\_overview.html)) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
+We have encountered scenarios where the `data-reflex-permanent` attribute is ignored unless there is a unique `id` attribute on the element as well. If you are working with the [Trix](https://trix-editor.org) editor ([ActionText](https://guides.rubyonrails.org/action_text_overview.html)) you absolutely must use `data-reflex-permanent` and specify an `id` attribute.
 
 Please let us know if you can identify this happening in the wild, as technically it shouldn't be necessary... and yet, it works.
 
@@ -183,7 +183,7 @@ There's no sugar coating the fact that there's a happy path for all of the typic
 
 ```ruby
 yelling = element.value.upcase
-morph "#foo", render(partial: "path/to/foo", locals: {message: yelling})
+morph "#foo", render(partial: "path/to/foo", locals: { message: yelling })
 ```
 
 ::: info
@@ -198,14 +198,14 @@ If ViewComponents are your thing, we have you covered:
 morph "#foo", render(FooComponent.new(message: "React is making your muscles sore."))
 ```
 
-The `foo` partial (listed in the [Tutorial ](morph-modes.md#tutorial)section above) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
+The `foo` partial (listed in the [Tutorial](/guide/morph-modes#tutorial)section above) is an example of a best practice for several subtle but important reasons which you should use to model your own updates:
 
 * it has a **single** top-level container element with the same CSS selector as the target
 * inside that container element is another [element node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), **not a text node**
 
 If you can follow those two guidelines, you will see several important benefits regardless of how the HTML stream is generated:
 
-* DOM changes will be performed by the morphdom library, which is highly efficient
+* DOM changes will be performed by the `morphdom` library, which is highly efficient
 * morph will respect elements with the `data-reflex-permanent` attribute
 * any event handlers set on contents should remain intact (unless they no longer exist)
 
@@ -222,7 +222,7 @@ Let's say that you update #foo with the following morph:
 morph "#foo", "<div id=\"foo\">Let's do something about those muscles.</div>"
 ```
 
-This update will use morphdom to update the existing #foo div. However, because #foo contains a [text node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), `data-reflex-permanent` is ignored. (Sorry! We just work here.)
+This update will use `morphdom` to update the existing #foo div. However, because #foo contains a [text node](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType), `data-reflex-permanent` is ignored. (Sorry! We just work here.)
 
 ```ruby
 morph "#foo", "<div id=\"baz\"><span>Just breathe in... and out.</span></div>"
@@ -295,14 +295,14 @@ end
 ```
 :::
 
-Hang on, though... if you watch the [client-side logging](../appendices/troubleshooting.md#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
+Hang on, though... if you watch the [client-side logging](/appendices/troubleshooting#client-side-logging) when you click the button to advance to the 2nd page, you'll see that both `morph` calls used CableReady `inner_html` operations to update the divs. While this might be fine for some applications, `inner_html` completely wipes out any Stimulus controllers present in the replaced DOM hierarchy and doesn't respect the `data-reflex-permanent` attribute. How can we adapt this so that both `morph` operations are performed by the `morphdom` library?
 
 The `paginator` partial is only rendered one time, so this one is easy: we have to move the top-level div into the partial. When it gets re-rendered, it will automatically match what `morph` needs to update the contents because it _is_ the contents:
 
 
 ::: code-group
 ```html [View]
-<%= render partial: "paginator", locals: {pagy: @pagy} %>
+<%= render partial: "paginator", locals: { pagy: @pagy } %>
 <div id="posts"><%= render @posts %></div>
 ```
 
@@ -339,7 +339,7 @@ Now, both `paginator` and `posts` are being updated using `morphdom`.
 
 ### Morphing Multiplicity
 
-What fun is morphing if you can't [stretch out a little](https://www.youtube.com/watch?v=J5G\_rdNQLFU)?
+What fun is morphing if you can't [stretch out a little](https://www.youtube.com/watch?v=J5G_rdNQLFU)?
 
 ```ruby
 morph "#username": "hopsoft", "#notification_count": 5
@@ -350,7 +350,7 @@ You can call `morph` multiple times in your Reflex action method.
 
 You can use Ruby's implicit Hash syntax to update multiple selectors with one morph. These updates will all be sent as part of the same broadcast, and executed in the order they are defined. Any non-String values will be coerced into Strings. Passing no html argument is equivalent to `""`.
 
-### dom\_id
+### `dom_id`
 
 One of the best perks of Rails naming conventions is that you can usually calculate what the name of an element or resource will be programmatically, so long as you know the class name and id.
 
@@ -360,7 +360,7 @@ Inside a Reflex class, you might find yourself typing code like:
 morph "#user_#{user.id}", user.name
 ```
 
-The [dom\_id](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom\_id) helper is available inside Reflex classes and supports the optional prefix argument:
+The [`dom_id`](https://apidock.com/rails/v6.0.0/ActionView/RecordIdentifier/dom_id) helper is available inside Reflex classes and supports the optional prefix argument:
 
 ```ruby
 morph dom_id(user), user.name
@@ -368,21 +368,21 @@ morph dom_id(user), user.name
 
 ### View Helpers that emit URLs
 
-If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](../appendices/deployment.md#set-your-default\_url\_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
+If you are planning to render a partial that uses Rails routing view helpers to create URLs, you will need to [set up your environment configuration files](/appendices/deployment#set-your-default_url_options-for-each-environment) to make sure that your site's URL is available inside your Reflexes.
 
-You'll know that you forgot this step if your URLs are coming out as **example.com**.
+You'll know that you forgot this step if your URLs are coming out as **`example.com`**.
 
 ### Things go wrong...
 
 We've worked really hard to make morphs easy to work with, but there are some rules and edge cases that you have to follow if you want your Selector Morphs to use a CableReady `morph` operation instead of an `inner_html` operation.
 
-If you're not getting the results you expect, please consult the [Morphing Sanity Checklist](../appendices/troubleshooting.md#morphing-sanity-checklist) to make sure you're not accidentally using the wrong operation. Use of [radiolabel](https://github.com/leastbad/radiolabel) can help provide an early warning.
+If you're not getting the results you expect, please consult the [Morphing Sanity Checklist](/appendices/troubleshooting#morphing-sanity-checklist) to make sure you're not accidentally using the wrong operation. Use of [radiolabel](https://github.com/leastbad/radiolabel) can help provide an early warning.
 
 ## Nothing Morphs
 
 Your user clicks a button. Something happens on the server. The browser is notified that this task was completed via the usual callbacks and events.
 
-Nothing morphs are [Remote Procedure Calls](https://en.wikipedia.org/wiki/Remote\_procedure\_call), implemented on top of ActionCable.
+Nothing morphs are [Remote Procedure Calls](https://en.wikipedia.org/wiki/Remote_procedure_call), implemented on top of ActionCable.
 
 Sometimes you want to take advantage of the chasis and infrastructure of StimulusReflex, without any assumptions or expectations about changing your DOM afterwards. The bare metal nature of Nothing morphs means that the time between initiating a Reflex and receiving a confirmation can be low single-digit milliseconds, if you don't do anything to slow it down.
 
@@ -436,6 +436,7 @@ When the channel client receives data, send it to CableReady for processing.
 ::: code-group
 ```javascript [app/javascript/channels/counter_channel.js]
 import consumer from "./consumer"
+
 consumer.subscriptions.create("CounterChannel", {
   received(data) {
     if (data.cableReady) CableReady.perform(data.operations)
@@ -450,11 +451,11 @@ Create a simple view template that contains a `button` to launch the Reflex as w
 ```html [index.html.erb]
 <button data-reflex="click->Counter#increment">Increment Counter</button>
 
-The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter", raw: true) {0} %></span>
+The counter currently reads: <span id="counter"><%= Rails.cache.fetch("counter", raw: true) { 0 } %></span>
 ```
 :::
 
-This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active\_job\_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active\_job\_basics.html#globalid) system behind the scenes.
+This is the complete implementation of a minimum viable Nothing morph Reflex action. Note that in a real application, you would almost certainly pass parameter arguments into your ActiveJob constructor. An ActiveJob can accept [a wide variety of data types](https://guides.rubyonrails.org/active_job_basics.html#supported-types-for-arguments). This includes ActiveRecord models, which makes use of the [Global ID](https://guides.rubyonrails.org/active_job_basics.html#globalid) system behind the scenes.
 
 You need to give the job enough information to successfully broadcast any important results to the correct places. For example, if you're planning to broadcast notifications to a specific user, make sure to pass the user resource (ActiveRecord model instance) to the ActiveJob.
 
@@ -469,7 +470,7 @@ end
 ```
 :::
 
-Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We then use CableReady to queue up a text\_content operation with the newly incremented value before ultimately sending the broadcast.
+Finally, the job includes CableReady::Broadcaster so that it can send commands back to the client. We then use CableReady to queue up a `text_content` operation with the newly incremented value before ultimately sending the broadcast.
 
 ::: code-group
 ```ruby [app/jobs/increment_job.rb]

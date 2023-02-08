@@ -7,7 +7,7 @@ description: How to secure your StimulusReflex application
 If you're just trying to bootstrap a proof-of-concept application on your local workstation, you don't technically have to worry about giving ActionCable the ability to distinguish between multiple concurrent users. However, **the moment you deploy to a host with more than one person accessing your app, you'll find that you're sharing a session and seeing other people's updates**. That isn't what most developers have in mind.
 
 ::: info
-StimulusReflex v3.5 deprecates [Tab Isolation](reflexes.md#tab-isolation), which will be removed in v4. Each tab will be fully isolated from others.
+StimulusReflex v3.5 deprecates [Tab Isolation](/guide/reflexes#tab-isolation), which will be removed in v4. Each tab will be fully isolated from others.
 :::
 
 ## Authentication Schemes
@@ -33,7 +33,7 @@ end
 
 ### Current User
 
-Many Rails apps use the current\_user convention or more recently, the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
+Many Rails apps use the `current_user` convention or more recently, the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) object to provide a global user context. This gives access to the user scope from _almost_ all parts of your application.
 
 ::: code-group
 ```ruby [app/controllers/application_controller.rb  ]
@@ -67,7 +67,7 @@ end
 ```
 :::
 
-Note that without intervention, your Reflex classes will **not** be able to see current\_user. This is easily fixed by setting `self.current_user = user` above and then delegating `current_user` to your ActionCable connection:
+Note that without intervention, your Reflex classes will **not** be able to see `current_user`. This is easily fixed by setting `self.current_user = user` above and then delegating `current_user` to your ActionCable connection:
 
 ::: code-group
 ```ruby [app/reflexes/example_reflex.rb]
@@ -155,12 +155,12 @@ end
 ### Tokens (Subscription-based)
 
 ::: info
-You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus\_reflex\_harness/tree/token\_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
+You can clone [a simple but fully functioning example application](https://github.com/leastbad/stimulus_reflex_harness/tree/token_auth) based on the Stimulus Reflex Harness. It uses Devise with the `devise-jwt` gem to create a JWT token which is injected into the HEAD. You can use it as a reference for all of the instructions below.
 :::
 
 There are scenarios where developers might wish to use JWT or some other form of authenticated programmatic access to an application using websockets. For example, you can configure a GraphQL service to accept queries over ActionCable instead of providing an URL endpoint for traditional Ajax calls. You also might need to support multiple custom domains with one ActionCable endpoint. You might also need a solution that doesn't depend on cookies, such as when you want to deploy multiple AnyCable nodes on a service like Heroku.
 
-Your first instinct might be to authenticate in `connection.rb` using ugly hacks where you pass a token as part of your ActionCable connection URL. While this seems to make sense - after all, this is close to how the other techniques above work - **putting your token into the URL is a real security vulnerability** and there's a better way: _move the responsibility for authentication from the ActionCable connection down to the channels themselves_. Let's consider a potential solution that uses the [Warden::JWTAuth](https://github.com/waiting-for-dev/warden-jwt\_auth) module:
+Your first instinct might be to authenticate in `connection.rb` using ugly hacks where you pass a token as part of your ActionCable connection URL. While this seems to make sense - after all, this is close to how the other techniques above work - **putting your token into the URL is a real security vulnerability** and there's a better way: _move the responsibility for authentication from the ActionCable connection down to the channels themselves_. Let's consider a potential solution that uses the [Warden::JWTAuth](https://github.com/waiting-for-dev/warden-jwt_auth) module:
 
 ::: code-group
 ```ruby [app/channels/application_cable/connection.rb]
@@ -360,7 +360,7 @@ end
 ```
 :::
 
-A slightly more sophisticated reference application with multiple account support and a Current object is available in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus\_reflex\_harness/tree/tenant) repo, if you'd like to dig into this approach further.
+A slightly more sophisticated reference application with multiple account support and a Current object is available in the `tenant` branch of the [`stimulus_reflex_harness`](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) repo, if you'd like to dig into this approach further.
 
 ## Authorization
 
@@ -370,9 +370,9 @@ The `before_reflex` callback is the best place to handle privilege checks, becau
 
 ### CanCanCan
 
-When using [CanCanCan](https://github.com/CanCanCommunity/cancancan) (CCC) for authorization, the `accessible_by` method ensures that you only access records permitted for the current user. Depending on your requirements, you might opt to use different strategies for Page Morphs than you do for other types of Reflexes. This is because the CCC `authorize!` method is designed to operate on the current ActionController instance. StimulusReflex only creates Controller instances for Page Morphs, as they incur a performance penalty.
+When using [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization, the `accessible_by` method ensures that you only access records permitted for the current user. Depending on your requirements, you might opt to use different strategies for Page Morphs than you do for other types of Reflexes. This is because the CanCanCan `authorize!` method is designed to operate on the current ActionController instance. StimulusReflex only creates Controller instances for Page Morphs, as they incur a performance penalty.
 
-The first solution that you should consider is to create an Ability instance for your user in your Reflex class. This is a technique that the CCC documentation describes as "[working in a Pundit way](https://github.com/CanCanCommunity/cancancan/blob/develop/docs/Defining-Abilities:-Best-Practices.md#split-your-abilityrb-file)". While it might be a departure from how you use CCC in your Controllers, it does have the advantage of working with all Morph types and doesn't force the instantiation of an otherwise unused Controller instance:
+The first solution that you should consider is to create an Ability instance for your user in your Reflex class. This is a technique that the CanCanCan documentation describes as "[working in a Pundit way](https://github.com/CanCanCommunity/cancancan/blob/develop/docs/Defining-Abilities:-Best-Practices.md#split-your-abilityrb-file)". While it might be a departure from how you use CanCanCan in your Controllers, it does have the advantage of working with all Morph types and doesn't force the instantiation of an otherwise unused Controller instance:
 
 ```ruby
 class ClassroomsReflex < ApplicationReflex
@@ -393,7 +393,7 @@ end
 
 #### Page Morphs
 
-Since Page Morphs create an ActionController instance to render your page template, it's possible to piggy-back on your existing Controller-based CCC logic by moving authorization calls out of your Reflex and into your Controller:
+Since Page Morphs create an ActionController instance to render your page template, it's possible to piggy-back on your existing Controller-based CanCanCan logic by moving authorization calls out of your Reflex and into your Controller:
 
 ```ruby
 class ClassroomsReflex < ApplicationReflex
@@ -471,7 +471,7 @@ If you're using Pundit to safeguard data from being accessed by bad actors and u
 
 #### Explicit policy validation
 
-You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](reflexes.md#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** life-cycle event.
+You can also ask Pundit to validate a policy explicitly and then [abort the Reflex](/guides/reflexes#aborting-a-reflex) before it begins. This is an action that can be handled by the client via the **halted** life-cycle event.
 
 The following example assumes that you have a `current_user` in scope and an `application_policy.rb` already in place. In this application, the `User` model has a boolean attribute called `admin`.
 

@@ -2,6 +2,10 @@
 description: How to build a great StimulusReflex application
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Useful Patterns
 
 In the course of creating StimulusReflex and using it to build production applications, we have discovered several useful tricks. While it may be tempting to add features to the core library, every idea that we include creates bloat and comes with the risk of stepping on someone's toes because we didn't anticipate all of the ways it could be used.
@@ -91,11 +95,11 @@ Handling this problem for every action would be extremely tedious. Luckily we ca
 :::
 
 ::: tip
-Note that to obtain our **focusElement**, we looked for a single instance of `autofocus` on an element that is a child of our controller. We used **this.element** where **this** is a reference to the Stimulus controller.
+Note that to obtain our **`focusElement`**, we looked for a single instance of `autofocus` on an element that is a child of our controller. We used **`this.element`** where **`this`** is a reference to the Stimulus controller.
 
-If we wanted to only check the element that triggered the Reflex action, we would modify our **afterReflex ()** to **afterReflex(element)** and then call **element.querySelector** - or just check the attributes directly.
+If we wanted to only check the element that triggered the Reflex action, we would modify our **`afterReflex()`** to **`afterReflex(element)`** and then call **`element.querySelector`** - or just check the attributes directly.
 
-If we wanted to check the whole page for an **autofocus** attribute, we can just use **document.querySelector('\[autofocus]')** as usual. The square-bracket notation just tells your browser to look for an attribute called **autofocus**, regardless of whether it has a value or not.
+If we wanted to check the whole page for an **`autofocus`** attribute, we can just use **`document.querySelector('[autofocus]')`** as usual. The square-bracket notation just tells your browser to look for an attribute called **`autofocus`**, regardless of whether it has a value or not.
 :::
 
 ### Offering visual feedback
@@ -106,13 +110,13 @@ You can see Velocity in action on the StimulusReflex Expo [Todos demo](https://e
 
 ### Capture all DOM update events
 
-Stimulus provides a really powerful event routing syntax that includes custom events, specifying multiple events and capturing events on **document** and **window**.
+Stimulus provides a really powerful event routing syntax that includes custom events, specifying multiple events and capturing events on **`document`** and **window**.
 
 ```html
 <div data-action="cable-ready:after-morph@document->chat#scroll">
 ```
 
-By capturing the **cable-ready:after-morph** event, we can run code after every update from the server. In this example, the scroll method on our Chat controller is being called to scroll the content window to the bottom, displaying new messages.
+By capturing the **`cable-ready:after-morph`** event, we can run code after every update from the server. In this example, the scroll method on our Chat controller is being called to scroll the content window to the bottom, displaying new messages.
 
 ### Capture jQuery events with DOM event listeners
 
@@ -130,18 +134,18 @@ Stimulus doesn't provide an easy way to access a controller instance; you have t
 this.application.getControllerForElementAndIdentifier(document.getElementById('users'), 'users')
 ```
 
-This is ugly, verbose and potentially impossible outside of another Stimulus controller. Wouldn't it be nice to access your controller's methods and local variables from a legacy jQuery component? Just add this line to the **initialize()** method of your Stimulus controllers:
+This is ugly, verbose and potentially impossible outside of another Stimulus controller. Wouldn't it be nice to access your controller's methods and local variables from a legacy jQuery component? Just add this line to the **`initialize()`** method of your Stimulus controllers:
 
 ```javascript
 this.element[this.identifier] = this
 ```
 
-This creates a document-scoped variable with the same name as your controller (or controllers!) on the element itself, so you can now call **element.controllerName.method()** without any Pilates required. You can read more about this technique [here](https://leastbad.com/stimulus-power-move).
+This creates a document-scoped variable with the same name as your controller (or controllers!) on the element itself, so you can now call **`element.controllerName.method()`** without any Pilates required. You can read more about this technique [here](https://leastbad.com/stimulus-power-move).
 
 ::: tip
 If your controller's identifier doesn't obey the rules of JavaScript variable naming conventions, you will need to specify a viable name for your instance.
 
-For example, if your controller is named _list-item_ you might consider **this.element.listItem = this** for that controller**.**
+For example, if your controller is named _list-item_ you might consider **`this.element.listItem = this`** for that controller**.**
 :::
 
 ## Server Side
@@ -152,8 +156,9 @@ Caching is the secret to getting your application responding in 30-50ms after a 
 
 You might be surprised how easy it can be to stash frequently accessed resources that are expensive to generate. This is known as a **fragment cache**. In this contrived example, the cached block will be expired and replaced if the current user or the todo is changed:
 
-```ruby
+```html
 <% todo = Todo.first %>
+
 <% cache([current_user, todo]) do %>
   ... a whole lot of work here ...
 <% end %>
@@ -161,7 +166,7 @@ You might be surprised how easy it can be to stash frequently accessed resources
 
 Russian Doll caching is just stacking cache fragments inside each other, and then configuring your ActiveRecord model callbacks to expire any keys that they are cached in when updated by setting the `touch: true` option on your `belongs_to` associations.
 
-```ruby
+```erb
 <% cache([current_user, "todo_list", @todos.map(&:id), @todos.maximum(:updated_at)]) do %>
   <ul>
     <% @todos.each do |todo| %>
@@ -217,7 +222,10 @@ Then make sure that you're setting a `data-reflex-root` attribute containing a C
 
 Otherwise StimulusReflex will look for the `body` tag and not know what to do.
 
-You can read more about scoping Page Morphs [here](morph-modes.md#scoping-page-morphs).
+You can read more about scoping Page Morphs:
+
+<LinkComponent name="Morph Modes" href="/guide/morph-modes#scoping-page-morphs"/>
+
 
 ### Internationalization
 
@@ -257,7 +265,7 @@ end
 
 ### The Current pattern
 
-Several years ago, DHH [introduced](https://www.youtube.com/watch?v=D7zUOtlpUPw) the [Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) pattern to Rails 5.1. It's easy to work with Current objects inside of your Reflex classes using a `before_reflex` callback in your `ApplicationReflex`.
+Several years ago, DHH [introduced](https://www.youtube.com/watch?v=D7zUOtlpUPw) the [`Current`](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) pattern to Rails 5.1. It's easy to work with Current objects inside of your Reflex classes using a `before_reflex` callback in your `ApplicationReflex`.
 
 ::: code-group
 ```ruby [app/reflexes/application_reflex.rb]
@@ -285,12 +293,12 @@ end
 ```
 :::
 
-You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [stimulus\_reflex\_harness](https://github.com/leastbad/stimulus\_reflex\_harness/tree/tenant) app.
+You can also set the Current object in the `connect` method of your `Connection` module. You can see this approach in the `tenant` branch of the [`stimulus_reflex_harness`](https://github.com/leastbad/stimulus_reflex_harness/tree/tenant) app.
 
 ### Adding log tags
 
 ::: tip
-Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](../appendices/troubleshooting.md#stimulusreflex-logging). This section will be removed when the next release arrives.
+Since StimulusReflex v3.4, there is now a vastly superior path in the form of [StimulusReflex Logging](/appendices/troubleshooting#stimulusreflex-logging). This section will be removed when the next release arrives.
 :::
 
 You can prepend the `id` of the current `User` on messages logged from your `Connection` module.
@@ -311,9 +319,9 @@ end
 ```
 :::
 
-### Generating ids with dom\_id
+### Generating ids with `dom_id`
 
-CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [dom\_id helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom\_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id. Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.
+CableReady - which is included and available for use in your Reflex classes - exposes a variation of the [`dom_id` helper found in Rails](https://apidock.com/rails/ActionView/RecordIdentifier/dom_id). It has the exact same function signature and behavior, with one subtle but important difference: it prepends a `#` character to the beginning of the generated id. Where the original function was intended for use in ActionView ERB templates, that `#` makes it perfect for use on the server, where the `#` character is required to refer to a DOM element id attribute.
 
 ::: code-group
 ```ruby [app/reflexes/user_reflex.rb]
@@ -328,9 +336,9 @@ end
 
 ### ViewComponentReflex
 
-We're big fans of using [ViewComponents](https://github.com/github/view\_component) in our template rendering process. The [view\_component\_reflex](https://github.com/joshleblanc/view\_component\_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
+We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [`view_component_reflex`](https://github.com/joshleblanc/view_component_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
 
-Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh) for inspiration and examples.
+<!-- Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh) for inspiration and examples. -->
 
 ### Rendering views inside of an ActiveRecord model or ActiveJob class
 

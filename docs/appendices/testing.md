@@ -2,13 +2,13 @@
 description: This page is woefully incomplete because we need your help to finish it.
 ---
 
-# Testing \(WIP\)
+# Testing (WIP)
 
 In the future, this page will be home to the definitive guide to testing StimulusReflex. Until then, we're doing our best!
 
 After many conversations and a few threats of potential future action, sometimes the only way to get started is to start. The stucture, order and content best suited to the topic of testing is still very much an open conversation.
 
-Please do drop by [\#docs](https://discord.gg/kCnM5Zfvau) on the StimulusReflex Discord and offer your best ideas. Please **don't** open documentation PRs on Github, as we can't accept them for technical reasons.
+Please do drop by [`#docs`](https://discord.gg/kCnM5Zfvau) on the StimulusReflex Discord and offer your best ideas. Please **don't** open documentation PRs on Github, as we can't accept them for technical reasons.
 
 ## Test environment setup
 
@@ -59,7 +59,7 @@ There's lots of helpful information contained in the [Testing Rails Applications
 
 ### `stimulus_reflex_testing` gem
 
-Our friends at Podia released [stimulus\_reflex\_testing](https://github.com/podia/stimulus_reflex_testing), which provides some helpers for unit testing your Reflex classes.
+Our friends at Podia released [`stimulus_reflex_testing`](https://github.com/podia/stimulus_reflex_testing), which provides some helpers for unit testing your Reflex classes.
 
 ## Open questions!
 

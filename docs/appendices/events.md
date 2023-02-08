@@ -6,9 +6,9 @@ description: StimulusReflex rocks because it stands on the shoulders of Stimulus
 
 It's become progressively easier to work with events in a consistent way across all web browsers. There are still gotchas and awkward idiosyncrasies that would make Larry David squirm, but compared to the bad old days of IE6 - long a _nevergreen_ browser default on Windows - there's usually a correct answer to most problems.
 
-The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix\_live\_view/Phoenix.LiveView.html#module-key-events).
+The team behind StimulusReflex works hard to make sure that the library has everything it needs to present a favorable alternative to using SPAs. We're also opinionated about what StimulusReflex shouldn't take on, and those decisions reflect some of the biggest differences from other solutions such as [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-key-events).
 
-A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulusjs.org), a lightweight library that provides powerful event handling.
+A big part of the reason we can keep the footprint of StimulusReflex so small without sacrificing functionality is that it is tightly integrated with [Stimulus](https://stimulus.hotwired.dev), a lightweight library that provides powerful event handling.
 
 We also draw upon proven libraries such as [Lodash](https://lodash.com) and [debounced](https://github.com/hopsoft/debounced) when necessary to craft flexible solutions to common problems.
 
@@ -84,7 +84,7 @@ end
 ```
 :::
 
-We can use the [Stimulus Global Events](https://stimulusjs.org/reference/actions#global-events) syntax to map window scroll events to the `scroll` function on a Stimulus controller named `event`. When the controller is attached to the `div` at page load, `connect` is fired, StimulusReflex is instantiated and we use the Lodash `debounce` [function](https://lodash.com/docs/4.17.15#debounce) to return a new event handler that will execute when the page is scrolled _but then stops scrolling for at least a second_. We could set a `maxWait` option if we were worried about users who just won't stop scrolling, but that's as weird as it sounds and qualifies as premature optimisation.
+We can use the [Stimulus Global Events](https://stimulus.hotwired.dev/reference/actions#global-events) syntax to map window scroll events to the `scroll` function on a Stimulus controller named `event`. When the controller is attached to the `div` at page load, `connect` is fired, StimulusReflex is instantiated and we use the Lodash `debounce` [function](https://lodash.com/docs/4.17.15#debounce) to return a new event handler that will execute when the page is scrolled _but then stops scrolling for at least a second_. We could set a `maxWait` option if we were worried about users who just won't stop scrolling, but that's as weird as it sounds and qualifies as premature optimisation.
 
 When the handler is executed, we call `stimulate` and pass the current scroll offset of the browser window to the server as an integer argument. The server reflex writes the scroll offset to `STDOUT` or your Rails log file.
 
