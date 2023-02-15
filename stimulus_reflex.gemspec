@@ -52,11 +52,12 @@ Gem::Specification.new do |gem|
   gem.add_dependency "redis"
 
   gem.add_development_dependency "bundler", "~> 2.0"
+  gem.add_development_dependency "magic_frozen_string_literal", "~> 1.2"
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "pry"
   gem.add_development_dependency "pry-nav"
   gem.add_development_dependency "rails", rails_version
   gem.add_development_dependency "rake"
-  gem.add_development_dependency "standard", "1.19.1"
-  gem.add_development_dependency "standardrb", "~> 1.0"
+  gem.add_development_dependency "standard", "~> 1.24"
+  gem.add_development_dependency "standardrb"
 end
