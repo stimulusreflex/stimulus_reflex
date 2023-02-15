@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StimulusReflex::ReflexFactory
   class << self
     attr_reader :reflex_data

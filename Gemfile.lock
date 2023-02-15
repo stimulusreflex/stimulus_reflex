@@ -104,6 +104,7 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    magic_frozen_string_literal (1.2.0)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
@@ -213,6 +214,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  magic_frozen_string_literal (~> 1.2)
   mocha
   pry
   pry-nav

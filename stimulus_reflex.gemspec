@@ -37,8 +37,6 @@ Gem::Specification.new do |gem|
     "[A-Z]*"
   ]
 
-  gem.test_files = Dir["test/**/*.rb"]
-
   gem.required_ruby_version = ">= 2.7.0"
 
   rails_version = ">= 5.2"
@@ -54,6 +52,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "redis"
 
   gem.add_development_dependency "bundler", "~> 2.0"
+  gem.add_development_dependency "magic_frozen_string_literal", "~> 1.2"
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "pry"
   gem.add_development_dependency "pry-nav"
