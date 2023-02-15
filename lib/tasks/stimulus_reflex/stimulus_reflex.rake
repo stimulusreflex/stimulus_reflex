@@ -33,7 +33,6 @@ SR_BUNDLERS = {
 }
 
 def run_install_template(template, force: false, trace: false)
-
   puts "--- [#{template}] ----"
 
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?

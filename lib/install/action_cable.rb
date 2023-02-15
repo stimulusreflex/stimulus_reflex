@@ -47,12 +47,10 @@ end
 
 if gemfile.match?(/gem ['"]redis['"]/)
   say "⏩ redis gem is already present in Gemfile. Skipping."
+elsif Rails::VERSION::MAJOR >= 7
+  add_gem "redis@~> 5"
 else
-  if Rails::VERSION::MAJOR >= 7
-    add_gem "redis@~> 5"
-  else
-    add_gem "redis@~> 4"
-  end
+  add_gem "redis@~> 4"
 end
 
 # install action-cable-redis-backport gem if using Action Cable < 7.1
