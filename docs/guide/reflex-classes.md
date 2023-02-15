@@ -1,50 +1,50 @@
 # Reflex Classes
 
-Regardless of whether you use declared Reflexes in your HTML markup or call `stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `ApplicationReflex`.
+Regardless of whether you use declared Reflexes in your HTML markup or call `this.stimulate()` directly from inside of a Stimulus controller, StimulusReflex maps your requests to Reflex classes on the server. These classes are found in `app/reflexes` and they inherit from `ApplicationReflex`.
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
 end
 ```
-{% endcode %}
+:::
 
 Setting a declarative data-reflex="click->Example#test" will call the `test` method in the Example Reflex class. We refer to Reflex class methods which get called from the client as "Reflex Action methods".
 
-You can do anything you like in a Reflex action, including [retrieving data from Redis](persistence.md#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](cableready.md#order-of-operations).
+You can do anything you like in a Reflex action, including [retrieving data from Redis](/guide/persistence#the-rails-cache-store), ActiveRecord database updates, launching ActiveJobs and even initiating [CableReady broadcasts](/guide/cableready#order-of-operations).
 
-{% hint style="success" %}
+::: tip
 If you change the code in a Reflex class, you have to refresh your web browser to allow ActionCable to reconnect. This will reload the appropriate modules and allow you to see your changes.
-{% endhint %}
+:::
 
 You can get and set values on the `session` object, and if you're using the (default) Page Morph Reflexes, any instance variables that you set in your Reflex Action method will be available to the controller action before your page is re-rendered.
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   def test
     @id = element.dataset["id"] # @id will be available inside your controller action if you're doing a Page Morph
   end
 end
 ```
-{% endcode %}
+:::
 
-You will learn all about the `element` accessor in the [next section](reflex-classes.md#element).
+You will learn all about the `element` accessor in the [next section](/guide/reflex-classes#element).
 
-{% hint style="warning" %}
+::: tip
 Note that there's no correlation between the Reflex class or Reflex action and the page (or its controller) that you're on. Your `users#show` page can call `Example#increment`.
-{% endhint %}
+:::
 
 ## ActionCable Connection Identifiers
 
-It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. First, you'll need to make sure that your Connection is "identified" by your `current_user`. Since ActionCable is separate from the ActionController namespace, accessors need to be setup as part of your [authentication](authentication.md#current-user) process.
+It's very common to want to be able to access the `current_user` or equivalent accessor inside your Reflex actions. First, you'll need to make sure that your Connection is "identified" by your `current_user`. Since ActionCable is separate from the ActionController namespace, accessors need to be setup as part of your [authentication](/guide/authentication#current-user) process.
 
-Your Connection can have multiple accessors defined. For example, it's common to implement a [hybrid](authentication.md#hybrid-anonymous-authenticated-connections) technique to use the visitor's `session_id` before they authenticate, and then switch over to `current_user`.
+Your Connection can have multiple accessors defined. For example, it's common to implement a [hybrid](/guide/authentication#hybrid-anonymous-authenticated-connections) technique to use the visitor's `session_id` before they authenticate, and then switch over to `current_user`.
 
 Once your connection is `identified_by :current_user`, you can delegate `current_user` to your ActionCable Connection:
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   delegate :current_user, to: :connection
 
@@ -53,17 +53,17 @@ class ExampleReflex < ApplicationReflex
   end
 end
 ```
-{% endcode %}
+:::
 
 If you plan to access `current_user` from all of your Reflex classes, delegate it your ApplicationReflex:
 
-{% code title="app/reflexes/application_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/application_reflex.rb]
 class ApplicationReflex < StimulusReflex::Reflex
   delegate :current_user, to: :connection
 end
 ```
-{% endcode %}
+:::
 
 ### Queries and associations are cached
 
@@ -77,11 +77,11 @@ current_user.reload
 
 You can also bust the cached value by running a different query, but Rails developers are used to thinking in terms of request/response cycles. They know controller actions are idempotent, and so it's reasonable to expect Reflex actions to also be idempotent. And they are... except for accessors on the Connection.
 
-{% hint style="danger" %}
+::: tip
 **Don't use `current_user` or other Connection identifiers in templates or partials that will be rendered in a Reflex.**
 
-Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action\_view\_overview.html#render-without-partial-and-locals-options).
-{% endhint %}
+Instead, pass a `user` variable into the template using the `locals` hash [parameter](https://guides.rubyonrails.org/action_view_overview.html#render-without-partial-and-locals-options).
+:::
 
 If you are expecting your data to change and it doesn't, you can lose an afternoon to debugging.
 
@@ -99,40 +99,46 @@ The following properties available to the developer inside Reflex actions:
 * `url` - the URL of the page that triggered the reflex
 * `params` - an `ActionController::Parameters` of the closest form
 * `element` - a Hash like object that represents the HTML element that triggered the reflex
-* `reflex_id` - a UUIDv4 that uniquely identies each Reflex
+* `reflex_id` - a UUIDv4 that uniquely identifies each Reflex
 
-{% hint style="danger" %}
+::: tip
 `reflex` and `process` are reserved words inside Reflex classes. You cannot create Reflex actions with these names.
-{% endhint %}
+:::
 
 ## `element`
 
 The `element` property contains all of the Stimulus controller's [DOM element attributes](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) as well as other properties like `tagName`, `checked` and `value`. In addition, `values` and the `dataset` property reference special collections as described below.
 
-{% hint style="info" %}
+::: tip
 **Most values are strings.** The only exceptions are `checked` and `selected` which are booleans.
 
 Elements that support **multiple values** such as `<select multiple>` or a collection of checkboxes with the same `name` will emit an additional **`values` property.** In addition, the `value` property will contain a comma-separated string of the checked options.
-{% endhint %}
+:::
 
 Here's an example that outlines how you can interact with the `element` property and the `dataset` collection in your Reflex action. You can use the dot notation as well as string and symbol accessors.
 
-{% code title="app/views/examples/show.html.erb" %}
-```markup
-<input type="checkbox" id="example" label="Example" checked
-  data-reflex="change->Example#accessors" data-value="123" />
+::: code-group
+```html [app/views/examples/show.html.erb]
+<input
+  type="checkbox"
+  id="example"
+  label="Example"
+  checked
+  data-reflex="change->Example#accessors"
+  data-value="123"
+/>
 ```
-{% endcode %}
+:::
 
-{% code title="app/reflexes/example_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   def accessors
 
     element.id                  # => "example"
     element[:id]                # => "example"
     element["id"]               # => "example"
-    
+
     element.value               # => "on" (checkbox is always "on", use checked)
     element.values              # => nil, or Array for multiple values
 
@@ -156,19 +162,19 @@ class ExampleReflex < ApplicationReflex
   end
 end
 ```
-{% endcode %}
+:::
 
-{% hint style="warning" %}
+::: tip
 Remember, `id` and `data-id` are different attributes. `id` can be used as a CSS selector, and  it must be unique in your DOM. It does not show up in your `dataset` accessor. `data-id` cannot be used as a CSS selector, does not have to be unique in your DOM and is part of your `dataset`. Similar names, entirely different concepts and functions.
 
 The same goes for other pairs, such as `value` and `data-value`. `value` has meaning to the browser and it's what gets processed in a form submission by Rails. `data-value` is just an arbitrary name that you made up, and it could have just as easily been `data-principle`.
-{% endhint %}
+:::
 
-{% hint style="success" %}
-When StimulusReflex is rendering your template, an instance variable named **@stimulus\_reflex** is available to your Rails controller and set to true.
+::: tip
+When StimulusReflex is rendering your template, an instance variable named **`@stimulus_reflex`** is available to your Rails controller and set to true.
 
 You can use this flag to create branching logic to control how the template might look different if it's a Reflex vs normal page refresh.
-{% endhint %}
+:::
 
 ## Signed and unsigned Global ID accessors
 
@@ -176,11 +182,12 @@ Rails has [a pair of cool features](https://github.com/rails/globalid) that allo
 
 The `element` accessor on every Reflex has two dynamic accessors, `signed` and `unsigned` which automatically unpack Global IDs stored in data attributes and converts them to model instances.
 
-```markup
-<div data-reflex="click->Example#foo"
-     data-public="<%= @foo.to_global_id.to_s %>"
-     data-secure="<%= @foo.to_sgid.to_s %>"
->
+```html
+<div
+  data-reflex="click->Example#foo"
+  data-public="<%= @foo.to_global_id.to_s %>"
+  data-secure="<%= @foo.to_sgid.to_s %>"
+></div>
 ```
 
 While in reality, you'd never use both on the same object, you can now have StimulusReflex automatically convert these attributes into instances of the models they reference. This happens lazily, at the time you access the accessor:
@@ -209,14 +216,17 @@ class MyTestReflex < ApplicationReflex
 end
 ```
 
-## Accessing `reflex_id`
+## Accessing `reflex_id` and `tab_id`
 
 Every Reflex starts as a client-side data structure that is assigned a unique UUIDv4 used to track it through its round-trip life-cycle. Most developers using StimulusReflex never have to think about these details. However, if you're building an application that is based on transactional concepts, it might be very useful to be able to track interactions based on the `reflex_id`.
+
+Similarly, if you're developing an application where a user might have multiple browser tabs open, it might be helpful to be able to tell those tabs apart. Look no further than `tab_id`.
 
 ```ruby
 class ExampleReflex < ApplicationReflex
   def foo
     puts reflex_id
+    puts tab_id
   end
 end
 ```

@@ -1,6 +1,8 @@
 import Schema from './schema'
 import Deprecate from './deprecate'
 import Debug from './debug'
+import { Utils } from 'cable_ready'
+const { debounce, dispatch, xpathToElement, xpathToElementArray } = Utils
 
 // uuid4 function taken from stackoverflow
 // https://stackoverflow.com/a/2117523/554903
@@ -55,32 +57,15 @@ const camelize = (value, uppercaseFirstLetter = true) => {
   return value
 }
 
-const debounce = (callback, delay = 250) => {
-  let timeoutId
-  return (...args) => {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => {
-      timeoutId = null
-      callback(...args)
-    }, delay)
-  }
-}
+// TODO: remove this in v4 (potentially!)
+const XPathToElement = xpathToElement
+const XPathToArray = xpathToElementArray
+const emitEvent = (name, detail = {}) => dispatch(document, name, detail)
 
 const extractReflexName = reflexString => {
   const match = reflexString.match(/(?:.*->)?(.*?)(?:Reflex)?#/)
 
   return match ? match[1] : ''
-}
-
-const emitEvent = (event, detail) => {
-  document.dispatchEvent(
-    new CustomEvent(event, {
-      bubbles: true,
-      cancelable: false,
-      detail
-    })
-  )
-  if (window.jQuery) window.jQuery(document).trigger(event, detail)
 }
 
 // construct a valid xPath for an element in the DOM
@@ -106,35 +91,6 @@ const elementToXPath = element => {
       ix++
     }
   }
-}
-
-// TODO: remove this in v4 (potentially!)
-const XPathToElement = xpath => {
-  return document.evaluate(
-    xpath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue
-}
-
-const XPathToArray = (xpath, reverse = false) => {
-  const snapshotList = document.evaluate(
-    xpath,
-    document,
-    null,
-    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-    null
-  )
-
-  const snapshots = []
-
-  for (let i = 0; i < snapshotList.snapshotLength; i++) {
-    snapshots.push(snapshotList.snapshotItem(i))
-  }
-
-  return reverse ? snapshots.reverse() : snapshots
 }
 
 const elementInvalid = element => {
@@ -216,6 +172,7 @@ export {
   serializeForm,
   camelize,
   debounce,
+  dispatch,
   extractReflexName,
   emitEvent,
   elementToXPath,

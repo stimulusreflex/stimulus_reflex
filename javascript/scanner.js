@@ -2,7 +2,7 @@ import { reflexes } from './reflexes'
 import Schema from './schema'
 import { attributeValues, attributeValue } from './attributes'
 import { findControllerByReflexName, allReflexControllers } from './controllers'
-import { debounce, emitEvent } from './utils'
+import { debounce, dispatch } from './utils'
 
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.
@@ -10,7 +10,6 @@ import { debounce, emitEvent } from './utils'
 const scanForReflexes = debounce(() => {
   const reflexElements = document.querySelectorAll(`[${Schema.reflex}]`)
   reflexElements.forEach(element => scanForReflexesOnElement(element))
-  emitEvent('stimulus-reflex:ready')
 }, 20)
 
 const scanForReflexesOnElement = element => {
@@ -41,15 +40,28 @@ const scanForReflexesOnElement = element => {
   const controllerValue = attributeValue(controllers)
   const actionValue = attributeValue(actions)
 
+  let emitReadyEvent = false
+
   if (
     controllerValue &&
     element.getAttribute(Schema.controller) != controllerValue
   ) {
     element.setAttribute(Schema.controller, controllerValue)
+    emitReadyEvent = true
   }
 
   if (actionValue && element.getAttribute(Schema.action) != actionValue) {
     element.setAttribute(Schema.action, actionValue)
+    emitReadyEvent = true
+  }
+
+  if (emitReadyEvent) {
+    dispatch(element, 'stimulus-reflex:ready', {
+      reflex: reflexAttribute,
+      controller: controllerValue,
+      action: actionValue,
+      element
+    })
   }
 }
 export { scanForReflexes, scanForReflexesOnElement }

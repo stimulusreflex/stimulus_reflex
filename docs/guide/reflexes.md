@@ -2,6 +2,10 @@
 description: Reflex classes are full of Reflex actions. Reflex actions are full of love. 🏩
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Calling Reflexes
 
 What is a Reflex, really? Is it a transactional UI update that takes place over a persistent open connection to the server? Is it a new tool on your belt that operates adjacent to and in tandem with concepts like REST and Ajax? Is it the smug feelings associated with successfully achieving a massive productivity arbitrage? Is it the boundless potential for unironic good in every child?
@@ -18,27 +22,25 @@ StimulusReflex features three distinct modes of operation, and you can use all t
 
 Every Reflex starts off life as a Page Morph. You can change it to a different kind of Morph inside of your Reflex action; there's no way to set a Morph type on the client.
 
-You can learn more about the control flow of each Morph by consulting [this flowchart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0\_0).
+You can learn more about the control flow of each Morph by consulting [this flowchart](https://app.lucidchart.com/documents/view/e83d2cac-d2b1-4a05-8a2f-d55ea5e40bc9/0_0).
 
 The rest of this page generally assumes that you're working with a Page Morph. Selector and Nothing Morphs are described in detail on their own page:
 
-{% content-ref url="morph-modes.md" %}
-[morph-modes.md](morph-modes.md)
-{% endcontent-ref %}
+<LinkComponent name="Morph Modes" href="/guide/morph-modes"/>
 
 ## Declaring a Reflex in HTML with data attributes
 
-The fastest way to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[DOM-event]->[ReflexClass]#[action]`
+The fastest way to enable Reflex actions by using the `data-reflex` attribute. The syntax follows Stimulus format: `[event]->[ReflexClass]#[action]`
 
-```markup
+```html
 <button data-reflex="click->Comment#create">Create</button>
 ```
 
 You can use additional data attributes to pass variables as part of your Reflex payload.
 
-```markup
-<button 
-  data-reflex="click->Comment#create" 
+```html
+<button
+  data-reflex="click->Comment#create"
   data-post-id="<%= @post.id %>"
 >Create</button>
 ```
@@ -47,11 +49,21 @@ It's a recommended **best practice** to put an `id` attribute on any element tha
 
 If you have multiple identical elements calling Reflex actions, no life-cycle mechanisms (afterReflex callbacks, success events etc) will be run.
 
-{% hint style="info" %}
+::: info
 Thanks to the magic of [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver), a browser feature that allows StimulusReflex to know when the DOM has changed, StimulusReflex can pick up `data-reflex` attributes on all HTML elements - even if they are dynamically created and inserted into your DOM.
 
 This means that if you parse a client-side markup format that has declarative Reflexes contained within, they will be connected to StimulusReflex in less than a millisecond.
-{% endhint %}
+:::
+
+### Trigger a Reflex on a custom event
+
+While `click` `input` and `change` are the most common browser events to catch, Reflexes can be initiated in response to any event supported by the Stimulus [event syntax](https://stimulus.hotwired.dev/reference/actions#global-events).
+
+This means that custom events, such as `ajax:success`, are valid. It also means that you can listen for events on `window` and `document`, making `resize@window->Foo#resize` a valid declared Reflex.
+
+::: info
+The Stimulus [event shorthand](https://stimulus.hotwired.dev/reference/actions#event-shorthand) syntax is **not** supported.
+:::
 
 ### Declaring multiple Reflex events on an element
 
@@ -59,23 +71,23 @@ Do you want to trigger different Reflex actions for different events? We have yo
 
 You can specify multiple Reflex operations by separating them with a space:
 
-```markup
+```html
 <img src="cat.jpg" data-reflex="mouseenter->Cat#approach mouseleave->Cat#escape">
 ```
 
-{% hint style="warning" %}
+::: info
 There are two intentional limitations to this technique:
 
 All Reflex actions must target the same controller. In the above example, it won't work properly if the `mouseleave` points to `Dog#escape` because, obviously, cats and dogs don't mix.
 
 Also, you can only specify one action per event; this means `data-reflex="click->Cat#eat click->Cat#sleep"` will not work. In this example, the second action would be discarded.
-{% endhint %}
+:::
 
 ### Inheriting data-attributes from parent elements
 
 You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
 
-```markup
+```html
 <div data-post-id="<%= @post.id %>">
   <div data-category-id="<%= @category.id %>">
     <button data-reflex="click->Comment#create" data-reflex-dataset="combined">Create</button>
@@ -96,7 +108,7 @@ end
 
 If a data attribute appears several times, the deepest one in the DOM tree is taken. In the following example, `data-id` would be **2**.
 
-```markup
+```html
 <div data-id="1">
   <button data-id="2" data-reflex="Example#whatever" data-reflex-dataset="combined">Click me</button>
 </div>
@@ -106,15 +118,15 @@ If a data attribute appears several times, the deepest one in the DOM tree is ta
 
 In addition to declared Reflexes, you can also initiate a Reflex with JavaScript:
 
-```markup
+```html
 <button data-controller="foo"
         data-action="foo#bar"></button>
 ```
 
 Note that there is no relation between the name or action on the Stimulus controller, and the Reflex being called in the event handler:
 
-{% code title="app/javascript/controllers/foo_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/foo_controller.js]
 import ApplicationController from './application_controller.js'
 
 export default class extends ApplicationController {
@@ -123,11 +135,11 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 This is possible because `ApplicationController` imports the StimulusReflex Controller and calls `StimulusReflex.register(this)`. As a result, `ApplicationController` and all Stimulus Controllers that extend it gain a method called `stimulate`.
 
-When you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method is called for you. 🤯 You will learn all about this process in [Understanding Reflex Controllers](reflexes.md#understanding-stimulusreflex-controllers).
+When you use declarative Reflex calls via `data-reflex` attributes in your HTML, the `stimulate` method is called for you. 🤯 You will learn all about this process in [Understanding Reflex Controllers](/guide/reflexes#understanding-stimulusreflex-controllers).
 
 ### `stimulate` is extremely flexible
 
@@ -143,7 +155,7 @@ When you use declarative Reflex calls via `data-reflex` attributes in your HTML,
 
 ### Receiving arguments
 
-When calling `stimulate()` with JavaScript, you have the option to send arguments to the Reflex action method on the server. Options have to be JSON-serializable data types and are received in a predictable order. Objects that are passed as parameters are accessible using both symbol and string keys.
+When calling `this.stimulate()` with JavaScript, you have the option to send arguments to the Reflex action method on the server. Options have to be JSON-serializable data types and are received in a predictable order. Objects that are passed as parameters are accessible using both symbol and string keys.
 
 ```ruby
 class CatReflex < ApplicationReflex
@@ -154,23 +166,25 @@ class CatReflex < ApplicationReflex
 end
 ```
 
-{% hint style="warning" %}
+::: info
 Note: **the method signature has to match.** If the Reflex action is expecting two arguments and doesn't receive two arguments, it will raise an exception.
-{% endhint %}
+:::
 
-Note that you can only provide parameters to Reflex actions by calling the `stimulate` method with arguments; there is no equivalent for Reflexes declared with data attributes.
+Note that you can only provide parameters to Reflex actions by calling the `this.stimulate()` method with arguments; there is no equivalent for Reflexes declared with data attributes.
 
-### Combined data attributes with `stimulate()`
+### Combined data attributes with `this.stimulate()`
 
-`data-reflex-dataset="combined"` also works with the `stimulate()` function:
+`data-reflex-dataset="combined"` also works with the `this.stimulate()` function:
 
-```markup
+```html
 <div data-folder-id="<%= folder.id %>" data-controller="folders">
-  <button data-action="click->folders#edit" data-reflex-dataset="combined">Edit</button>
+  <button data-action="click->folders#edit" data-reflex-dataset="combined">
+    Edit
+  </button>
 </div>
 ```
 
-By default, `stimulate` treats the DOM element that the controller is placed on as the **element** parameter. Instead, we use `event.target` to make the clicked button element be the source of the Reflex action. All combined data attributes will be picked up, and all callbacks and events will emit from the button.
+By default, `this.stimulate()` treats the DOM element that the controller is placed on as the **element** parameter. Instead, we use `event.target` to make the clicked button element be the source of the Reflex action. All combined data attributes will be picked up, and all callbacks and events will emit from the button.
 
 ```javascript
 import ApplicationController from './application_controller.js'
@@ -186,11 +200,11 @@ export default class extends ApplicationController {
 
 It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
 
-We'll go into much deeper detail on life-cycle callbacks on the [Life-cycle](lifecycle.md) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
+We'll go into much deeper detail on life-cycle callbacks on the [Life-cycle](/guide/lifecycle) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
 
-{% hint style="warning" %}
+::: info
 Halted Reflexes do not execute afterReflex callbacks on the server or client.
-{% endhint %}
+:::
 
 ### Requesting a "refresh"
 
@@ -204,7 +218,7 @@ Calling `stimulate` with no parameters invokes a special global Reflex that allo
 
 It's also possible to trigger this global Reflex by passing nothing but a browser event to the `data-reflex` attribute. For example, the following button element will refresh the page content every time the user presses it:
 
-```markup
+```html
 <button data-reflex="click">Refresh</button>
 ```
 
@@ -212,33 +226,39 @@ It's also possible to trigger this global Reflex by passing nothing but a browse
 
 You've already read that StimulusReflex is based on the Stimulus JavaScript library. When you're using Stimulus, you put Controllers on your DOM elements by setting `data-controller="foo"`. In the following example, we attach an instance of the Controller class defined in `foo_controller.js` to a `div`:
 
-```markup
+```html
 <div data-controller="foo"></div>
 ```
 
 The StimulusReflex client is literally just a complex Stimulus Controller. When you first load your page, the first thing it does is scan your DOM for `data-reflex` attributes:
 
-```markup
+```html
 <div>
-  <button data-reflex="click->Foo#remove">Remove this button</button>
+  <button data-reflex="click->Foo#remove">
+    Remove this button
+  </button>
 </div>
 ```
 
 When it finds a `data-reflex` attribute, it adds a Stimulus Controller called `stimulus-reflex` and a `__perform` action to the element:
 
-```markup
+```html
 <div>
-  <button data-reflex="click->Foo#remove"
-          data-controller="stimulus-reflex"
-          data-action="click->stimulus-reflex#__perform">Remove this button</button>
+  <button
+    data-reflex="click->Foo#remove"
+    data-controller="stimulus-reflex"
+    data-action="click->stimulus-reflex#__perform"
+  >
+    Remove this button
+  </button>
 </div>
 ```
 
-These three attributes contain everything required to call the `remove` Reflex action on the `Foo` Reflex class when the user clicks the button. The button is now a **Reflex Controller Element**, because the StimulusReflex Controller responsible for the Reflex is attached to it. As a result, all [life-cycle events](lifecycle.md#client-side-reflex-callbacks) will be emitted from it.
+These three attributes contain everything required to call the `remove` Reflex action on the `Foo` Reflex class when the user clicks the button. The button is now a **Reflex Controller Element**, because the StimulusReflex Controller responsible for the Reflex is attached to it. As a result, all [life-cycle events](/guide/lifecycle#client-side-reflex-callbacks) will be emitted from it.
 
-{% hint style="success" %}
+::: info
 StimulusReflex scans all content inserted into the DOM for `data-reflex` attributes, regardless of whether that content is there when the page loads or if it comes from a Reflex, an Ajax fetch, or your own local JavaScript logic. You don't have to do anything special to ensure that your UI is Reflex-enabled.
-{% endhint %}
+:::
 
 What's really interesting about this is that you'll notice we don't have to add the `foo` Stimulus controller to the `button` element in order to be able to call `Foo` Reflexes. We are _not_ doing it magically in the background, either; there simply doesn't need to be a `foo` StimulusReflex Controller on the element in order for a declared Reflex to call `FooReflex#remove` on the server.
 
@@ -246,19 +266,23 @@ What's really interesting about this is that you'll notice we don't have to add 
 
 If we click the button, we'll see that the StimulusReflex Controller used to handle the Reflex was `stimulus-reflex` as expected:
 
-![](../.gitbook/assets/chrome\_rtkq7h4grp.png)
+![](/chrome_rtkq7h4grp.png)
 
 You should interpret this as "my Reflex was handled by the ApplicationController" - that is, `application_controller.js` - which was installed during setup. Any generic Reflex callbacks defined in the `ApplicationController` itself will be run, but this is usually limited to spinners and other "meta" UI effects.
 
 If you want to provide handlers for life-cycle events, you will need to create a StimulusReflex Controller class with the same name as your Reflex:
 
-```markup
-<button data-reflex="click->Foo#remove"
-        data-controller="foo">Remove this button</button>
+```html
+<button
+  data-reflex="click->Foo#remove"
+  data-controller="foo"
+>
+  Remove this button
+</button>
 ```
 
-{% code title="app/javascript/controllers/foo_controller.js" %}
-```javascript
+::: code-group
+```javascript [app/javascript/controllers/foo_controller.js]
 import ApplicationController from './application_controller'
 
 export default class extends ApplicationController {
@@ -268,52 +292,51 @@ export default class extends ApplicationController {
   }
 }
 ```
-{% endcode %}
+:::
 
 When you click the button, it calls the `Foo` Reflex - and removes the `button` from the DOM:
 
-{% code title="app/reflexes/foo_reflex.rb" %}
-```ruby
+::: code-group
+```ruby [app/reflexes/foo_reflex.rb]
 class FooReflex < ApplicationReflex
   def remove
     cable_ready.remove(selector: 'button').broadcast
+
     morph :nothing
   end
 end
 ```
-{% endcode %}
+:::
 
 And you can see that the StimulusReflex Controller responsible for the Reflex was `foo`:
 
-![](../.gitbook/assets/chrome\_rbev7gok4j.png)
+![](/chrome_rbev7gok4j.png)
 
 So, that's pretty cool, right? 🕶️ It knows to use `foo` instead of `stimulus-reflex`.
 
 The thing is... _where's our console message?_ It never happened, because we destroyed the Reflex Controller Element (the `button`) that was holding the instance of `foo` that was responsible for the Reflex. That includes the life-cycle events that make callbacks possible.
 
-{% embed url="https://www.youtube.com/watch?v=XZxzJGgox_E" %}
-
 Now, it's very common to use `data-reflex` and `data-controller` on the same element. There's nothing inherently wrong with doing so - in fact, it's a solid go-to strategy for handling callbacks - _unless_ your Reflex does something that results in the Reflex Controller Element being destroyed (think: `innerHTML`) or otherwise disconnected from your DOM.
 
-{% hint style="info" %}
-The **primary** reason StimulusReflex, Phoenix LiveView and Laravel LiveWire all use the morphdom library for updates is to avoid destroying large chunks of your DOM when there are very good reasons not to do so - such as not \_Keyser Söze-\_ing your Stimulus controllers.
+::: info
+The **primary** reason StimulusReflex, Phoenix LiveView and Laravel LiveWire all use the `morphdom` library for updates is to avoid destroying large chunks of your DOM when there are very good reasons not to do so - such as not _Keyser Söze-_ing your Stimulus controllers.
 
-It's notable that [Hotwire](https://github.com/hotwired/turbo/blob/main/src/core/streams/stream\_actions.ts) chooses to use `innerHTML` over morphdom, which could ultimately result in a great many frustrated Stimulus developers.
-{% endhint %}
+It's notable that [Turbo Streams](https://github.com/hotwired/turbo/blob/main/src/core/streams/stream_actions.ts) chooses to use `innerHTML` over `morphdom` by default, which could ultimately result in a great many frustrated Stimulus developers. But there is also a way to use `morphdom` with Turbo Streams.
+:::
 
 It's just a reality of UI design that sometimes when you present a table of rows that represent model records, clicking on the "Delete" button makes the row it lives on _go away_. We need the ability to delegate the responsibility for the Reflex and its life-cycle events to one of the Reflex Controller Element's ancestors; specifically, an ancestor that will survive whatever DOM mutations are caused by the Reflex. This brings us back full-circle to the original `foo` example:
 
-```markup
+```html
 <div data-controller="foo">
-  <button data-reflex="click->Foo#remove"
-          data-controller="stimulus-reflex"
-          data-action="click->stimulus-reflex#__perform">Remove this button</button>
+  <button data-reflex="click->Foo#remove">
+    Remove this button
+  </button>
 </div>
 ```
 
 With the ancestor `div` safely out of harm's way, we now see the desired console message:
 
-![](../.gitbook/assets/chrome\_th99linxf7.png)
+![](/chrome_th99linxf7.png)
 
 As you can see, it's now possible to remove the Reflex Controller Element (the `button`) without losing your ability to have your StimulusReflex Controller still generating life-cycle events.
 

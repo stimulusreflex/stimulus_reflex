@@ -6,16 +6,25 @@ module StimulusReflex
       SanityChecker.check! unless Rails.env.production?
     end
 
+    # If you don't want to precompile StimulusReflex's assets (eg. because you're using webpack),
+    # you can do this in an initializer:
+    #
+    # config.after_initialize do
+    #   config.assets.precompile -= StimulusReflex::Engine::PRECOMPILE_ASSETS
+    # end
+    #
+    PRECOMPILE_ASSETS = %w[
+      stimulus_reflex.js
+      stimulus_reflex.min.js
+      stimulus_reflex.min.js.map
+      stimulus_reflex.umd.js
+      stimulus_reflex.umd.min.js
+      stimulus_reflex.umd.min.js.map
+    ]
+
     initializer "stimulus_reflex.assets" do |app|
-      if app.config.respond_to?(:assets)
-        app.config.assets.precompile += %w[
-          stimulus_reflex.js
-          stimulus_reflex.min.js
-          stimulus_reflex.min.js.map
-          stimulus_reflex.umd.js
-          stimulus_reflex.umd.min.js
-          stimulus_reflex.umd.min.js.map
-        ]
+      if app.config.respond_to?(:assets) && StimulusReflex.config.precompile_assets
+        app.config.assets.precompile += PRECOMPILE_ASSETS
       end
     end
 

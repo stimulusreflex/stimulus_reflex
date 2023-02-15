@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://gitcdn.link/repo/hopsoft/stimulus_reflex/master/assets/stimulus-reflex-logo-with-copy.svg" width="360" />
+  <img src="https://github.com/stimulusreflex/stimulus_reflex/blob/7dae7694577c6237601afa0a9ab81120c2a1dfb7/assets/stimulus-reflex-logo-with-copy.png" width="360" />
   <h1 align="center">Welcome to StimulusReflex 👋</h1>
   <p align="center">
     <img src="https://img.shields.io/gem/v/stimulus_reflex.svg?color=red" />
@@ -54,7 +54,7 @@ It works seamlessly with the Rails tooling you already know and love.
 - Server-rendered HTML, delivered in milliseconds over the wire via Websockets
 - ERB templates and partials, with first-class [ViewComponent](https://github.com/github/view_component) support
 - [Russian doll caching](https://edgeguides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) and [ActiveJob](https://guides.rubyonrails.org/active_job_basics.html)
-- [StimulusJS](https://stimulusjs.org/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)
+- [StimulusJS](https://stimulus.hotwired.dev/) and [Turbolinks](https://www.youtube.com/watch?v=SWEts0rlezA)/[Turbo Drive](https://turbo.hotwired.dev/reference/drive)
 - Built with [CableReady](https://www.youtube.com/watch?v=dPzv2qsj5L8), our secret power-move
 
 **Our goal is to help small teams do big things with familiar tools.**
@@ -76,7 +76,7 @@ This project strives to live up to the vision outlined in [The Rails Doctrine](h
 
 ## 👩‍👩‍👧 Discord Community
 
-Please join over 1500 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, StimulusJS and CableReady.
+Please join over 2000 of us on [Discord](https://discord.gg/stimulus-reflex) for support getting started, as well as active discussions around Rails, Hotwire, Stimulus, Phlex and CableReady.
 
 ![](https://img.shields.io/discord/629472241427415060)
 

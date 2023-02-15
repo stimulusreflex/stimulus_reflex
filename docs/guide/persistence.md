@@ -4,6 +4,10 @@ description: >-
   difficulty or opposition
 ---
 
+<script setup>
+  import LinkComponent from '../components/LinkComponent.vue'
+</script>
+
 # Persistence
 
 We estimate that 80% of the pain points in web development are the direct result of maintaining state on the client. Even without considering the complexity of frameworks like React, how much time have you lost to fretting about model validation, stale data, and DOM readiness over your career?
@@ -32,73 +36,66 @@ This document is here to get you to the light bulb moment quickly.
 
 One of the most common patterns in StimulusReflex is to pass instance variables from the Reflex method through the controller and into the view template. Ruby's `||=` (pronounced "**or equals**") operator helps us manage this hand-off:
 
-{% tabs %}
-{% tab title="example_reflex.rb" %}
-```ruby
+
+::: code-group
+```ruby [example_reflex.rb]
 def update_value
   @value = element[:value]
 end
 ```
-{% endtab %}
-{% endtabs %}
 
-{% tabs %}
-{% tab title="example_controller.rb" %}
-```ruby
+```ruby [example_controller.rb]
 def index
   @value ||= 0
 end
 ```
-{% endtab %}
-{% endtabs %}
 
-{% tabs %}
-{% tab title="index.html.erb" %}
-```markup
+```html [index.html.erb]
 <div data-controller="example">
-  <input type="text" data-reflex-permanent
-    data-reflex="input->Example#update_value">
+  <input
+    type="text"
+    data-reflex-permanent
+    data-reflex="input->Example#update_value"
+  />
+
   <p>The value is: <%= @value %>.</p>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
-When you access the index page, the value will initially be set to 0. If the user changes the value of the text input, the value is updated to reflect whatever has been typed. This is possible because the `||=` will only set the instance variable to be 0 if there hasn't already been a value set in the Reflex method.
+When you access the index page, the value will initially be set to `0`. If the user changes the value of the text input, the value is updated to reflect whatever has been typed. This is possible because the `||=` will only set the instance variable to be `0` if there hasn't already been a value set in the Reflex method.
 
-{% hint style="info" %}
-It's good to remember that in Ruby, **nil.to\_i** will return 0. This means that even without **||=** you can safely use **@value.to\_i** in your view template, because it will default to 0 in the rendered output.
-{% endhint %}
+::: info
+It's good to remember that in Ruby, **`nil.to_i`** will return `0`. This means that even without **`||=`** you can safely use **`@value.to_i`** in your view template, because it will default to `0` in the rendered output.
+:::
 
-{% hint style="success" %}
+::: info
 StimulusReflex doesn't need to go through the Rails routing module. This means updates are processed much faster than requests that come from typing in a URL or refreshing the page.
-{% endhint %}
+:::
 
 Of course, instance variables are aptly named: they only exist for the duration of a single request, regardless of whether that request is initiated by accessing a URL or clicking a button managed by StimulusReflex.
 
-### The @stimulus\_reflex instance variable
+### The `@stimulus_reflex` instance variable
 
 When StimulusReflex calls your Rails controller's action method, it passes any active instance variables along with a special instance variable called `@stimulus_reflex` which is set to `true`. **You can use this variable to create an if/else block in your controller that behaves differently depending on whether it's being called within the context of a Reflex update or not.**
 
-{% tabs %}
-{% tab title="pinball_controller.rb" %}
-```ruby
+::: code-group
+```ruby [pinball_controller.rb]
 def index
   unless @stimulus_reflex
     session[:balls_left] = 3
   end
 end
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
 In this example, the user is given 3 new balls every time they refresh the page in their browser, effectively restarting the game. If the page state is updated via StimulusReflex, no new balls are allocated.
 
 This also means that `session[:balls_left]` will be set to 3 before the initial HTML page has been rendered and transmitted.
 
-{% hint style="success" %}
+::: info
 **The first time the controller action executes is your opportunity to set up the state that StimulusReflex will later modify.**
-{% endhint %}
+:::
 
 ## The Rails session object
 
@@ -106,115 +103,103 @@ The `session` object will persist across multiple requests; indeed, you can open
 
 We can update our earlier example to use the session object, and it will now persist across multiple browser tabs and refreshes:
 
-{% tabs %}
-{% tab title="example_reflex.rb" %}
-```ruby
+
+::: code-group
+```ruby [example_reflex.rb]
 def update_value
   session[:value] = element[:value]
 end
 ```
-{% endtab %}
-{% endtabs %}
 
-{% tabs %}
-{% tab title="example_controller.rb" %}
-```ruby
+```ruby [example_controller.rb]
 def index
   session[:value] ||= 0
 end
 ```
-{% endtab %}
-{% endtabs %}
 
-{% tabs %}
-{% tab title="index.html.erb" %}
-```markup
+```html [index.html.erb]
 <div data-controller="example">
-  <input type="text" data-reflex-permanent
-    data-reflex="input->Example#update_value">
+  <input
+    type="text"
+    data-reflex-permanent
+    data-reflex="input->Example#update_value"
+  />
+
   <p>The value is: <%= session[:value] %>.</p>
 </div>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
 In general, you should be careful not to abuse the session object in a production app. First, sometimes sessions get lost or reset when people move between devices. It's also possible to accidentally reuse the same session variable key in multiple places, resulting in confusion and a frustrating bug hunt. Don't underestimate your ability to sabotage yourself in the future!
 
 The Rails session object is perfect for prototyping during development, before potentially moving to the Rails cache, Redis or your database to store anything important. You have the power and flexibility to decide which data is ephemeral and which needs to survive the loss of a data centre, coast or continent. 🦖 👾 🌪
 
-{% hint style="danger" %}
-Cookie-based sessions are not _currently_ supported. Be sure to use a session store such as :cache\_store or you will be sad. You can find guidance on this topic on the Setup page.
-{% endhint %}
+::: info
+Cookie-based sessions are not _currently_ supported. Be sure to use a session store such as `:cache_store` or you will be sad. You can find guidance on this topic on the Setup page.
+:::
 
-{% content-ref url="../hello-world/setup.md" %}
-[setup.md](../hello-world/setup.md)
-{% endcontent-ref %}
+<LinkComponent name="Setup" href="/hello-world/setup"/>
+
 
 ## The Rails cache store
 
-One of the most under-appreciated modules in Rails is `ActiveSupport::Cache` which provides the underlying infrastructure for [Russian doll](https://guides.rubyonrails.org/caching\_with\_rails.html#russian-doll-caching) caching. It can be called directly and that it has [a solid offering of utility methods](https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) such as `increment` and `decrement` for numeric values.
+One of the most under-appreciated modules in Rails is `ActiveSupport::Cache` which provides the underlying infrastructure for [Russian doll](https://guides.rubyonrails.org/caching_with_rails.html#russian-doll-caching) caching. It can be called directly and that it has [a solid offering of utility methods](https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) such as `increment` and `decrement` for numeric values.
 
 The Rails cache provides a consistent interface to a key/value storage container that behind the scenes can be anything from an in-memory database or temporary files to Redis or Memcached hosted on a different machine.
 
 You can access the Rails cache easily from anywhere in your application:
 
 ```ruby
-Rails.cache.fetch("clicks:#{session.id}") {0}
+Rails.cache.fetch("clicks:#{session.id}") { 0 }
 ```
 
 Behold the sexy: we're using the user's `session.id` to help us build a unique key string to look up the current value. The structure of the key is free-form, but the convention is to use colon characters to build up a namespace, terminating in a unique identifier. For example:
 
 ```ruby
-Rails.cache.fetch("preferences:colors:foreground:#{session.id}") {"blue"}
+Rails.cache.fetch("preferences:colors:foreground:#{session.id}") { "blue" }
 ```
 
 If no key exists, it will evaluate the block, store the value for that key and return the value in one convenient, atomic action. Bam!
 
 If you're planning to do more than set an initial simple value for the fetch default, it's good idiomatic Ruby to move to the `do..end` form of block declaration:
 
-{% tabs %}
-{% tab title="fortune.html.erb" %}
-```markup
-<pre><%=
-  Rails.cache.fetch("fortune") do
-    `fortune | cowsay`
-  end
-%></pre>
+::: code-group
+```html [fortune.html.erb]
+<pre><%= Rails.cache.fetch("fortune") { `fortune | cowsay` } %></pre>
 ```
-{% endtab %}
-{% endtabs %}
+:::
 
-{% hint style="success" %}
-In order to use the Rails cache store in development, you'll have to run `rails dev:cache` on the command line **once**. Otherwise, if you look in `config/environments/development.rb` you'll see that your cache store will be **:null\_store**, which is exactly as reliable as it sounds.
-{% endhint %}
+::: info
+In order to use the Rails cache store in development, you'll have to run `rails dev:cache` on the command line **once**. Otherwise, if you look in `config/environments/development.rb` you'll see that your cache store will be **`:null_store`**, which is exactly as reliable as it sounds.
+:::
 
 ## ActiveRecord
 
 The most common and powerful persistence mechanism you'll call from a Reflex method is also the most familiar.
 
-An excellent reference example of StimulusReflex best practices is [todos\_reflex.rb](https://github.com/stimulusreflex/stimulus\_reflex\_todomvc/blob/master/app/reflexes/todos\_reflex.rb) from the [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) sample application.
+An excellent reference example of StimulusReflex best practices is [`todos_reflex.rb`](https://github.com/hopsoft/stimulus_reflex_todomvc/blob/master/app/reflexes/todos_reflex.rb) from the [StimulusReflex TodoMVC](http://todomvc.stimulusreflex.com) sample application.
 
-The Reflex class makes use of the `session.id`, the `data-id` attributes from individual Todo model instances, and the new Rails `&` [safe navigation operator](http://mitrev.net/ruby/2015/11/13/the-operator-in-ruby/) (available since Ruby 2.3) to make short work of mapping events on the client to your permanent data store.
+The Reflex class makes use of the `session.id`, the `data-id` attributes from individual Todo model instances, and the new Rails `&` [safe navigation operator](http://mitrev.net/ruby/2015/11/13/the-operator-in-ruby) (available since Ruby 2.3) to make short work of mapping events on the client to your permanent data store.
 
-[todos\_controller.rb](https://github.com/stimulusreflex/stimulus\_reflex\_todomvc/blob/master/app/controllers/todos\_controller.rb) only makes a single ActiveRecord query to render the current state of the view template. Well-designed StimulusReflex applications **leave the heavy-lifting associated with state changes to the Reflex class.**
+[`todos_controller.rb`](https://github.com/hopsoft/stimulus_reflex_todomvc/blob/master/app/reflexes/todos_reflex.rb) only makes a single ActiveRecord query to render the current state of the view template. Well-designed StimulusReflex applications **leave the heavy-lifting associated with state changes to the Reflex class.**
 
 ## Redis
 
 If Redis is your Rails cache store, you're already one step ahead!
 
-Depending on your application and the kind of data you're working with, [calling the Redis engine directly](https://github.com/stimulusreflex/stimulus\_reflex/tree/fbbe93e5793f8e937d2fad14ec0d28c57f383d81/docs/appendices/deployment/README.md#use-redis-as-your-cache-store) (through the `redis` gem, in tandem with the `hiredis` gem for optimal performance) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
+Depending on your application and the kind of data you're working with, [calling the Redis engine directly](/appendices/deployment#use-redis-as-your-cache-store) (through the `redis` gem, in tandem with the `hiredis` gem for optimal performance) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
 
-Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis/)".
+Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis)".
 
-{% hint style="warning" %}
+::: info
 Just remember that while data in Redis could potentially be accessed faster than data in a traditional database engine such as Postgres, it is still ephemeral and you should act as though your data could **theoretically** disappear at any time.
 
 It is a common pattern to store the results of API calls or long-running database queries in Redis, with the assumption that you could reconstitute your Redis store from scratch later in an emergency.
-{% endhint %}
+:::
 
-{% hint style="danger" %}
-If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](../appendices/deployment.md#deployment-on-heroku).
-{% endhint %}
+::: info
+If you are deploying to Heroku or seeing sessions end prematurely, check out the section on [Deployment](/appendices/deployment#deployment-on-heroku).
+:::
 
 ## Kredis
 
