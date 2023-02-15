@@ -43,10 +43,6 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
-      controller_src = fetch("/app/controllers/examples_controller.rb.tt")
-      controller_path = Rails.root.join("app/controllers/examples_controller.rb")
-      template(controller_src, controller_path)
-
       view_src = fetch("/app/views/examples/show.html.erb.tt")
       view_path = Rails.root.join("app/views/examples/show.html.erb")
       template(view_src, view_path)
@@ -60,16 +56,25 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
       if importmap_path.exist?
         importmap = importmap_path.read
+
         if behavior == :revoke
           if importmap.include?("pin \"fireworks-js\"")
             importmap_path.write importmap_path.readlines.reject { |line| line.include?("pin \"fireworks-js\"") }.join
             say "✅ unpin fireworks-js"
+          else
+            say "⏩ fireworks-js not pinned. Skipping."
           end
-        elsif !importmap.include?("pin \"fireworks-js\"")
-          append_file(importmap_path, <<~RUBY, verbose: false)
-            pin "fireworks-js", to: "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
-          RUBY
-          say "✅ pin fireworks-js"
+        end
+
+        if behavior == :invoke
+          if importmap.include?("pin \"fireworks-js\"")
+            say "⏩ fireworks-js already pinnned. Skipping."
+          else
+            append_file(importmap_path, <<~RUBY, verbose: false)
+              pin "fireworks-js", to: "https://ga.jspm.io/npm:fireworks-js@2.10.0/dist/index.es.js"
+            RUBY
+            say "✅ pin fireworks-js"
+          end
         end
       end
     end
