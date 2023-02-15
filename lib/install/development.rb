@@ -8,22 +8,28 @@ FileUtils.cp(development_path, development_working_path)
 # add default_url_options to development.rb for Action Mailer
 if defined?(ActionMailer)
   lines = development_working_path.readlines
-  unless lines.find { |line| line.include?("config.action_mailer.default_url_options") }
+  if lines.find { |line| line.include?("config.action_mailer.default_url_options") }
+    say "⏩ Action Mailer default_url_options already defined. Skipping."
+  else
     index = lines.index { |line| line =~ /^Rails.application.configure do/ }
     lines.insert index + 1, "  config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n\n"
     development_working_path.write lines.join
+
+    say "✅ Action Mailer default_url_options defined"
   end
-  say "✅ Action Mailer default_url_options defined"
 end
 
 # add default_url_options to development.rb for Action Controller
 lines = development_working_path.readlines
-unless lines.find { |line| line.include?("config.action_controller.default_url_options") }
+if lines.find { |line| line.include?("config.action_controller.default_url_options") }
+  say "⏩ Action Controller default_url_options already defined. Skipping."
+else
   index = lines.index { |line| line =~ /^Rails.application.configure do/ }
   lines.insert index + 1, "  config.action_controller.default_url_options = {host: \"localhost\", port: 3000}\n"
   development_working_path.write lines.join
+
+  say "✅ Action Controller default_url_options defined"
 end
-say "✅ Action Controller default_url_options defined"
 
 # halt with instructions if using cookie store, otherwise, nudge towards Redis
 lines = development_working_path.readlines
@@ -34,7 +40,7 @@ if (index = lines.index { |line| line =~ /^[^#]*config.session_store/ })
     halt "StimulusReflex does not support session cookies. See https://docs.stimulusreflex.com/hello-world/setup#session-storage"
     return
   elsif /^[^#]*redis_session_store/.match?(lines[index])
-    say "✅ Using redis-session-store for session storage"
+    say "⏩ Already using redis-session-store for session storage. Skipping."
   else
     write_redis_recommendation(development_working_path, lines, index, gemfile_path)
     say "🤷 We recommend using redis-session-store for session storage. See https://docs.stimulusreflex.com/hello-world/setup#session-storage"
@@ -52,7 +58,7 @@ else
 
   index = lines.index { |line| line =~ /^Rails.application.configure do/ }
   lines.insert index + 1, <<~RUBY
-  
+
     config.session_store :redis_session_store,
       serializer: :json,
       on_redis_down: ->(*a) { Rails.logger.error("Redis down! \#{a.inspect}") },
@@ -78,7 +84,7 @@ if (index = lines.index { |line| line =~ /^[^#]*config.cache_store = :memory_sto
   development_working_path.write lines.join
   say "✅ Using Redis for caching"
 elsif lines.index { |line| line =~ /^[^#]*config.cache_store = :redis_cache_store/ }
-  say "✅ Using Redis for caching"
+  say "⏩ Already using Redis for caching. Skipping."
 else
   if !lines.index { |line| line.include?("We couldn't identify your cache store") }
     lines.insert find_index(lines), <<~RUBY

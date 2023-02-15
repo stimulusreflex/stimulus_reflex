@@ -64,27 +64,27 @@ end
 
 def add_gem(name)
   create_or_append(add_gem_list, "#{name}\n", verbose: false)
-  say "➕ Added #{name} to the Gemfile"
+  say "☑️  Added #{name} to the Gemfile"
 end
 
 def remove_gem(name)
   create_or_append(remove_gem_list, "#{name}\n", verbose: false)
-  say "➖ Removed #{name} from Gemfile"
+  say "❎ Removed #{name} from Gemfile"
 end
 
 def add_package(name)
   create_or_append(package_list, "#{name}\n", verbose: false)
-  say "➕ Enqueued #{name} to be added to dependencies"
+  say "☑️  Enqueued #{name} to be added to dependencies"
 end
 
 def add_dev_package(name)
   create_or_append(dev_package_list, "#{name}\n", verbose: false)
-  say "➕ Enqueued #{name} to be added to dev dependencies"
+  say "☑️  Enqueued #{name} to be added to dev dependencies"
 end
 
 def drop_package(name)
   create_or_append(drop_package_list, "#{name}\n", verbose: false)
-  say "➖ Enqueued #{name} to be removed from dependencies"
+  say "❎ Enqueued #{name} to be removed from dependencies"
 end
 
 def gemfile_hash

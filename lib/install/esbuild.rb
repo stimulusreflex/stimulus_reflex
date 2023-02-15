@@ -9,24 +9,32 @@ lines = package_json.readlines
 
 if !lines.index { |line| line =~ /^\s*["']esbuild-rails["']: ["']\^1.0.3["']/ }
   add_package "esbuild-rails@^1.0.3"
+else
+  say "⏩ esbuild-rails npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
   add_package "@hotwired/stimulus@^3.2"
+else
+  say "⏩ @hotwired/stimulus npm package is already present. Skipping."
 end
-# copy esbuild.config.js to app root
-esbuild_src = fetch("/", "esbuild.config.js.tt")
-esbuild_path = Rails.root.join("esbuild.config.js")
+
+# copy esbuild.config.mjs to app root
+esbuild_src = fetch("/", "esbuild.config.mjs.tt")
+esbuild_path = Rails.root.join("esbuild.config.mjs")
+
 if esbuild_path.exist?
   if esbuild_path.read == esbuild_src.read
-    say "✅ esbuild.config.js present in app root"
+    say "⏩ esbuild.config.mjs already present in app root. Skipping."
   else
     backup(esbuild_path) do
       template(esbuild_src, esbuild_path, verbose: false, entrypoint: entrypoint)
     end
+    say "✅ updated esbuild.config.mjs in app root"
   end
 else
   template(esbuild_src, esbuild_path, entrypoint: entrypoint)
+  say "✅ Created esbuild.config.mjs in app root"
 end
 
 step_path = "/app/javascript/controllers/"
@@ -46,30 +54,36 @@ copy_file(application_controller_src, application_controller_path) unless applic
 
 # configure Stimulus application superclass to import Action Cable consumer
 friendly_application_js_path = application_js_path.relative_path_from(Rails.root).to_s
+
 if application_js_path.exist?
   backup(application_js_path) do
     if application_js_path.read.include?("import consumer")
-      say "✅ #{friendly_application_js_path} is present"
+      say "⏩ #{friendly_application_js_path} is already present. Skipping."
     else
       inject_into_file application_js_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
       inject_into_file application_js_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
-      say "#{friendly_application_js_path} has been updated to import the Action Cable consumer"
+      say "✅ #{friendly_application_js_path} has been updated to import the Action Cable consumer"
     end
   end
 else
   copy_file(application_js_src, application_js_path)
+  say "✅ #{friendly_application_js_path} has been created"
 end
 
 if index_path.exist?
-  if index_path.read != index_src.read
+  if index_path.read == index_src.read
+    say "⏩ #{friendly_index_path} already present. Skipping."
+  else
     backup(index_path, delete: true) do
       copy_file(index_src, index_path, verbose: false)
     end
+
+    say "✅ #{friendly_index_path} has been updated"
   end
 else
   copy_file(index_src, index_path)
+  say "✅ #{friendly_index_path} has been created"
 end
-say "✅ #{friendly_index_path} has been created"
 
 controllers_pattern = /import ['"].\/controllers['"]/
 controllers_commented_pattern = /\s*\/\/\s*#{controllers_pattern}/
@@ -79,7 +93,7 @@ if pack.match?(controllers_pattern)
     proceed = if options.key? "uncomment"
       options["uncomment"]
     else
-      !no?("Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
+      !no?("✨ Stimulus seems to be commented out in your application.js. Do you want to import your controllers? (Y/n)")
     end
 
     if proceed
@@ -93,7 +107,7 @@ if pack.match?(controllers_pattern)
       say "🤷 your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ Stimulus controllers imported in #{friendly_pack_path}"
+    say "⏩ Stimulus controllers are already being imported in #{friendly_pack_path}. Skipping."
   end
 else
   lines = pack_path.readlines

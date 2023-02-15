@@ -8,26 +8,38 @@ return if pack_path_missing?
 lines = package_json.readlines
 if !lines.index { |line| line =~ /^\s*["']webpack["']: ["']\^4.46.0["']/ }
   add_package "webpack@^4.46.0"
+else
+  say "⏩ webpack npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']webpack-cli["']: ["']\^3.3.12["']/ }
   add_package "webpack-cli@^3.3.12"
+else
+  say "⏩ webpack-cli npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']@rails\/webpacker["']: ["']\^5.4.3["']/ }
   add_package "@rails/webpacker@^5.4.3"
+else
+  say "⏩ @rails/webpacker npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
   add_package "@hotwired/stimulus@^3.2"
+else
+  say "⏩ @hotwired/stimulus npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus-webpack-helpers["']: ["']\^1.0.1["']/ }
   add_package "@hotwired/stimulus-webpack-helpers@^1.0.1"
+else
+  say "⏩ @hotwired/stimulus-webpack-helpers npm package is already present. Skipping."
 end
 
 if !lines.index { |line| line =~ /^\s*["']webpack-dev-server["']: ["']\^3.11.3["']/ }
   add_dev_package "webpack-dev-server@^3.11.3"
+else
+  say "⏩ @webpack-dev-server is already present. Skipping."
 end
 
 step_path = "/app/javascript/controllers/"
@@ -54,7 +66,7 @@ if pack.match?(controllers_pattern)
     proceed = if options.key? "uncomment"
       options["uncomment"]
     else
-      !no?("Do you want to import your Stimulus controllers in application.js? (Y/n)")
+      !no?("✨ Do you want to import your Stimulus controllers in application.js? (Y/n)")
     end
 
     if proceed

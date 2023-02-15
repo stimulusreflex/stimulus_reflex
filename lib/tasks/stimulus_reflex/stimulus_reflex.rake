@@ -4,11 +4,12 @@ include Rails.application.routes.url_helpers
 
 SR_STEPS = {
   "action_cable" => "Action Cable",
-  "webpacker" => "Webpacker",
+  "webpacker" => "Install StimulusReflex using Webpacker",
+  "shakapacker" => "Install StimulusReflex using Shakapacker",
   "npm_packages" => "StimulusReflex and CableReady npm packages",
   "reflexes" => "Reflexes",
-  "importmap" => "Import Maps",
-  "esbuild" => "esbuild",
+  "importmap" => "Install StimulusReflex using importmaps",
+  "esbuild" => "Install StimulusReflex using esbuild",
   "config" => "Client initialization",
   "initializers" => "StimulusReflex and CableReady initializers",
   "example" => "Create an Example Reflex",
@@ -16,21 +17,23 @@ SR_STEPS = {
   "spring" => "Launch spring, ruiner of days, into the sun",
   "mrujs" => "Swap out UJS for mrujs",
   "broadcaster" => "Make CableReady available to channels, controllers, jobs and models",
+  "updatable" => "Include CableReady::Updatable in Active Record model classes",
   "yarn" => "Resolve npm dependency changes",
   "bundle" => "Resolve gem dependency changes and install configuration changes",
-  "vite" => "Vite",
-  "compression" => "Compress WebSockets traffic with gzip"
+  "vite" => "StimulusReflex using Vite",
+  "compression" => "Compress WebSocket traffic with gzip"
 }
 
 SR_BUNDLERS = {
-  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "yarn", "bundle"],
-  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "yarn", "bundle"],
-  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "yarn", "bundle"],
-  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "yarn", "bundle"],
-  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "example", "spring", "bundle"]
+  "webpacker" => ["npm_packages", "webpacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "updatable", "example", "spring", "yarn", "bundle"],
+  "esbuild" => ["npm_packages", "esbuild", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "updatable", "example", "spring", "yarn", "bundle"],
+  "vite" => ["npm_packages", "vite", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "updatable", "example", "spring", "yarn", "bundle"],
+  "shakapacker" => ["npm_packages", "shakapacker", "config", "action_cable", "reflexes", "development", "initializers", "broadcaster", "updatable", "example", "spring", "yarn", "bundle"],
+  "importmap" => ["config", "action_cable", "importmap", "reflexes", "development", "initializers", "broadcaster", "updatable", "example", "spring", "bundle"]
 }
 
 def run_install_template(template, force: false, trace: false)
+
   puts "--- [#{template}] ----"
 
   if Rails.root.join("tmp/stimulus_reflex_installer/halt").exist?

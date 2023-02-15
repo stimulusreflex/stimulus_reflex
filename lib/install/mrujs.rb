@@ -26,28 +26,36 @@ if proceed
 
     importmap = importmap_path.read
 
-    if !importmap.include?("pin \"mrujs\"")
+    if importmap.include?("pin \"mrujs\"")
+      say "⏩ mrujs already pinned. Skipping."
+    else
       append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs", to: "https://ga.jspm.io/npm:mrujs@0.10.1/dist/index.module.js"
       RUBY
       say "✅ pin mrujs"
     end
 
-    if !importmap.include?("pin \"mrujs/plugins\"")
+    if importmap.include?("pin \"mrujs/plugins\"")
+      say "⏩ mrujs/plugins already pinned. Skipping."
+    else
       append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs/plugins", to: "https://ga.jspm.io/npm:mrujs@0.10.1/plugins/dist/plugins.module.js"
       RUBY
-      say "✅ pin mrujs plugins"
+      say "✅ pin mrujs/plugins"
     end
   else
     # queue mrujs for installation
-    if !package_json.read.include?('"mrujs":')
+    if package_json.read.include?('"mrujs":')
+      say "⏩ mrujs already present. Skipping."
+    else
       add_package "mrujs@^0.10.1"
     end
 
     # queue @rails/ujs for removal
     if package_json.read.include?('"@rails/ujs":')
       drop_package "@rails/ujs"
+    else
+      say "⏩ @rails/ujs not present. Skipping."
     end
   end
 
@@ -64,10 +72,12 @@ if proceed
   mrujs_pattern = /import ['"].\/mrujs['"]/
   mrujs_import = "import '.\/mrujs'\n" # standard:disable Style/RedundantStringEscape
 
-  if !index.match?(mrujs_pattern)
+  if index.match?(mrujs_pattern)
+    say "⏩ mrujs alredy imported in #{friendly_index_path}. Skipping."
+  else
     append_file(index_path, mrujs_import, verbose: false)
+    say "✅ mrujs imported in #{friendly_index_path}"
   end
-  say "✅ mrujs imported in #{friendly_index_path}"
 
   # remove @rails/ujs from application.js
   rails_ujs_pattern = /import Rails from ['"]@rails\/ujs['"]/
@@ -76,6 +86,8 @@ if proceed
   if lines.index { |line| line =~ rails_ujs_pattern }
     gsub_file pack_path, rails_ujs_pattern, "", verbose: false
     say "✅ @rails/ujs removed from #{friendly_pack_path}"
+  else
+    say "⏩ @rails/ujs not present in #{friendly_pack_path}. Skipping."
   end
 
   # set Action View to generate remote forms when using form_with
@@ -114,7 +126,7 @@ if proceed
   if lines.index { |line| line =~ turbolinks_pattern }
     remove_gem :turbolinks
   else
-    say "✅ turbolinks is not present in Gemfile"
+    say "⏩ turbolinks is not present in Gemfile. Skipping."
   end
 end
 

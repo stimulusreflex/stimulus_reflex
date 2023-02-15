@@ -16,58 +16,72 @@ backup(importmap_path) do
     append_file(importmap_path, <<~RUBY, verbose: false)
       pin_all_from "#{entrypoint}/controllers", under: "controllers"
     RUBY
-    say "✅ pin controllers folder"
+    say "✅ pin_all_from controllers"
+  else
+    say "⏩ pin_all_from controllers already pinned. Skipping."
   end
 
   if !importmap.include?("pin_all_from \"#{entrypoint}/channels\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
       pin_all_from "#{entrypoint}/channels", under: "channels"
     RUBY
-    say "✅ pin channels folder"
+    say "✅ pin_all_from channels"
+  else
+    say "⏩ pin_all_from channels already pinned. Skipping."
   end
 
   if !importmap.include?("pin_all_from \"#{entrypoint}/config\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
       pin_all_from "#{entrypoint}/config", under: "config"
     RUBY
-    say "✅ pin config folder"
+    say "✅ pin_all_from config"
+  else
+    say "⏩ pin_all_from config already pinned. Skipping."
   end
 
   if !importmap.include?("pin \"@rails/actioncable\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
       pin "@rails/actioncable", to: "actioncable.esm.js", preload: true
     RUBY
-    say "✅ pin Action Cable"
+    say "✅ pin @rails/actioncable"
+  else
+    say "⏩ @rails/actioncable already pinned. Skipping."
   end
 
   if !importmap.include?("pin \"@hotwired/stimulus\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
       pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
     RUBY
-    say "✅ pin Stimulus"
-  end
-
-  if !importmap.include?("pin \"cable_ready\"")
-    # https://cdn.jsdelivr.net/npm/cable_ready@5.0.0-pre10/dist/cable_ready.js
-    append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "cable_ready", to: "https://devbuilds.herokuapp.com/package/npm/cable_ready/latest", preload: true
-    RUBY
-    say "✅ pin CableReady"
-  end
-
-  if !importmap.include?("pin \"stimulus_reflex\"")
-    # https://cdn.jsdelivr.net/npm/stimulus_reflex@3.5.0-pre10/dist/stimulus_reflex.js
-    append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "stimulus_reflex", to: "https://devbuilds.herokuapp.com/package/npm/stimulus_reflex/latest", preload: true
-    RUBY
-    say "✅ pin StimulusReflex"
+    say "✅ pin @hotwired/stimulus"
+  else
+    say "⏩ @hotwired/stimulus already pinned. Skipping."
   end
 
   if !importmap.include?("pin \"morphdom\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "morphdom", to: "https://ga.jspm.io/npm:morphdom@2.6.1/dist/morphdom.js"
+      pin "morphdom", to: "https://ga.jspm.io/npm:morphdom@2.6.1/dist/morphdom.js", preload: true
     RUBY
     say "✅ pin morphdom"
+  else
+    say "⏩ morphdom already pinned. Skipping."
+  end
+
+  if !importmap.include?("pin \"cable_ready\"")
+    append_file(importmap_path, <<~RUBY, verbose: false)
+      pin "cable_ready", to: "cable_ready.min.js", preload: true
+    RUBY
+    say "✅ pin cable_ready"
+  else
+    say "⏩ cable_ready already pinned. Skipping."
+  end
+
+  if !importmap.include?("pin \"stimulus_reflex\"")
+    append_file(importmap_path, <<~RUBY, verbose: false)
+      pin "stimulus_reflex", to: "stimulus_reflex.min.js", preload: true
+    RUBY
+    say "✅ pin stimulus_reflex"
+  else
+    say "⏩ stimulus_reflex already pinned. Skipping."
   end
 end
 
@@ -88,7 +102,7 @@ backup(application_js_path) do
   if application_js_path.exist?
     friendly_application_js_path = application_js_path.relative_path_from(Rails.root).to_s
     if application_js_path.read.include?("import consumer")
-      say "✅ #{friendly_application_js_path} is present"
+      say "⏩ #{friendly_application_js_path} is present. Skipping."
     else
       inject_into_file application_js_path, "import consumer from \"../channels/consumer\"\n", after: "import { Application } from \"@hotwired/stimulus\"\n", verbose: false
       inject_into_file application_js_path, "application.consumer = consumer\n", after: "application.debug = false\n", verbose: false
@@ -96,21 +110,23 @@ backup(application_js_path) do
     end
   else
     copy_file(application_js_src, application_js_path)
+    say "✅ #{friendly_application_js_path} has been created"
   end
 end
 
 if index_path.exist?
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
   if index_path.read == index_src.read
-    say "✅ #{friendly_index_path} is present"
+    say "⏩ #{friendly_index_path} is present. Skipping"
   else
     backup(index_path, delete: true) do
       copy_file(index_src, index_path, verbose: false)
     end
-    say "#{friendly_index_path} has been created"
+    say "✅ #{friendly_index_path} has been updated"
   end
 else
   copy_file(index_src, index_path)
+  say "✅ #{friendly_index_path} has been created."
 end
 
 complete_step :importmap

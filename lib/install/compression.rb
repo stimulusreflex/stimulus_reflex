@@ -4,12 +4,13 @@ require "stimulus_reflex/installer"
 
 initializer = action_cable_initializer_working_path.read
 
-proceed = true
+proceed = false
+
 if initializer.exclude? "PermessageDeflate.configure"
   proceed = if options.key? "compression"
     options["compression"]
   else
-    !no?("Configure Action Cable to compress your WebSocket traffic with gzip? (Y/n)")
+    !no?("✨ Configure Action Cable to compress your WebSocket traffic with gzip? (Y/n)")
   end
 end
 
@@ -40,8 +41,11 @@ if proceed
         end
       RUBY
     end
+
+    say "✅ Action Cable initializer patched to deflate WS traffic"
+  else
+    say "⏩ Action Cable initializer is already patched to deflate WS traffic. Skipping."
   end
-  say "✅ Action Cable initializer patched to deflate WS traffic"
 end
 
 complete_step :compression

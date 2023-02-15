@@ -2,6 +2,12 @@
 
 require "stimulus_reflex/installer"
 
+if !package_json.exist?
+  say "⏩ No package.json file found. Skipping."
+
+  return
+end
+
 # run yarn install only when packages are waiting to be added or removed
 add = package_list.exist? ? package_list.readlines.map(&:chomp) : []
 dev = dev_package_list.exist? ? dev_package_list.readlines.map(&:chomp) : []
@@ -33,13 +39,17 @@ if add.present? || dev.present? || drop.present?
   package_json.write JSON.pretty_generate(json)
 
   system "yarn install --silent"
+else
+  say "⏩ No yarn depdencies to add or remove. Skipping."
 end
 
-if bundler == "esbuild" && json["scripts"]["build"] != "node esbuild.config.js"
+if bundler == "esbuild" && json["scripts"]["build"] != "node esbuild.config.mjs"
   json["scripts"]["build:default"] = json["scripts"]["build"]
-  json["scripts"]["build"] = "node esbuild.config.js"
+  json["scripts"]["build"] = "node esbuild.config.mjs"
   package_json.write JSON.pretty_generate(json)
-  say "✅ Your build script has been updated to use esbuild.config.js"
+  say "✅ Your yarn build script has been updated to use esbuild.config.mjs"
+else
+  say "⏩ Your yarn build script is already setup. Skipping."
 end
 
 complete_step :yarn
