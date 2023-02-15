@@ -33,10 +33,7 @@
       import { Fireworks } from 'fireworks-js'
 
       const fireworks = new Fireworks(document.querySelector('.fireworks'))
-      document.addEventListener('example:destroyed', () => fireworks.launch(12))
-
-      if (window.mrujs === undefined)
-        document.querySelector('#mrujs-warning').style.display = 'block'
+      document.addEventListener('fireworks', () => fireworks.launch(12))
     </script>
 
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
@@ -48,14 +45,31 @@
 
       <p>Actual demonstrations will show up in this space, soon. In the meantime, verify that your installation was successful:</p>
 
-      <button data-reflex="click->Example#dance">Dance!</button>
-      <div id="dance"></div>
+      <button data-reflex="click->Example#increment">Increment</button>
+      <button data-reflex="click->Example#reset">Reset</button>
+
+      <br />
+
+      <div>
+        Last Refresh:
+        <b><mark id="time"><%%= Time.now %></mark></b>
+      </div>
+
+      <div>
+        Clicked
+        <b><mark id="count"><%%= session[:count] || 0 %></mark></b>
+        times
+      </div>
+
+      <br/>
+
+      <progress value="<%%= session[:count] %>" max="10"></progress>
 
       <h1>CableReady</h1>
 
       <p>CableReady lets you control one or many clients from the server in real-time.</p>
 
-      <p>Everything in CableReady revolves around its <a href="https://cableready.stimulusreflex.com/reference/operations">35+</a> <b>operations</b>, which are commands that can update content, raise events, write cookies and even play audio. A group of one or more operations is called a <b>broadcast</b>. Broadcasts follow a <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">simple JSON format</a>.</p>
+      <p>Everything in CableReady revolves around its <a href="https://cableready.stimulusreflex.com/reference/operations" target="_blank">38+</a> <b>operations</b>, which are commands that can update content, raise events, write cookies and even play audio. A group of one or more operations is called a <b>broadcast</b>. Broadcasts follow a <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">simple JSON format</a>.</p>
 
       <p>We're going to go through the main ways developers use CableReady with some live demonstrations and code samples. We recommend that you open the controller class and ERB template for this page to follow along.</p>
 
@@ -64,81 +78,37 @@
 
         WebSockets is the primary way most Rails developers use CableReady, via the <ins>cable_ready</ins> method.
 
-        <p>Use the <ins>stream_from</ins> helper to create a secure Action Cable subscription:</p>
+        <p>Use the <ins>cable_ready_stream_from</ins> helper to create a secure Action Cable subscription:</p>
 
-        <kbd>stream_from :example_page</kbd>
+        <kbd>cable_ready_stream_from :example_page</kbd>
 
-        <%%= stream_from :example_page %>
+        <%%= cable_ready_stream_from :example_page %>
 
         <p style="margin-top: 1rem;">Every user looking at a page subscribed to the <ins>:example_page</ins> channel will receive the same broadcasts.</p>
 
-        <p>You can call <ins>cable_ready</ins> <a href="https://cableready.stimulusreflex.com/cableready-everywhere">pretty much anywhere</a> in your application. Try it in your <kbd>rails console</kbd> now:</p>
+        <p>You can call <ins>cable_ready</ins> <a href="https://cableready.stimulusreflex.com/guide/cableready-everywhere" target="_blank">pretty much anywhere</a> in your application. Try it in your <kbd>rails console</kbd> now:</p>
 
-        <kbd>include CableReady::Broadcaster<br>cable_ready[:example_page].text_content("#stream_from_output", text: "Hello from the console!").broadcast</kbd>
+        <kbd>include CableReady::Broadcaster<br>cable_ready[:example_page].text_content("#cable_ready_stream_from_output", text: "Hello from the console!").broadcast</kbd>
 
-        <p style="margin-top: 1rem;">Any message you send will appear in the <ins>#stream_from_output</ins> DIV below &mdash; even if you <i>open multiple tabs</i>.</p>
+        <p style="margin-top: 1rem;">Any message you send will appear in the <ins>#cable_ready_stream_from_output</ins> DIV below &mdash; even if you <i>open multiple tabs</i>.</p>
 
-        <div id="stream_from_output" style="height: 2rem; font-weight: bolder; border: coral 2px dashed; padding: 0.15rem 0.4rem;"></div>
+        <div id="cable_ready_stream_from_output" style="height: 2rem; font-weight: bolder; border: coral 2px dashed; padding: 0.15rem 0.4rem;"></div>
 
-        <p style="margin-top: 1rem;">While it's easy to <a href="https://cableready.stimulusreflex.com/broadcasting-to-resources">create your own custom Action Cable channels</a>, <ins>stream_from</ins> will be the first tool you reach for, because it doesn't require any additional code.</p>
+        <p style="margin-top: 1rem;">While it's easy to <a href="https://cableready.stimulusreflex.com/guide/broadcasting-to-resources" target="_blank">create your own custom Action Cable channels</a>, <ins>cable_ready_stream_from</ins> will be the first tool you reach for, because it doesn't require any additional code.</p>
 
         <p>Specify Active Record models or compound qualifiers to go full-ninja: 🥷</p>
 
-        <kbd>stream_from current_user</kbd><br>
+        <kbd>cable_ready_stream_from current_user</kbd><br>
 
-        <kbd style="margin-top: 0.3rem;">stream_from @post, :comments</kbd>
+        <kbd style="margin-top: 0.3rem;">cable_ready_stream_from @post, :comments</kbd>
 
-        <p style="margin-top: 1rem;">These examples barely scrape the surface of what's possible. Be sure to check out the <a href="https://cableready.stimulusreflex.com/identifiers">Stream Identifiers</a> chapter.</p>
-      </article>
-
-      <article>
-        <h3>CableCar (aka "Ajax mode") + mrujs</h3>
-
-        <p id="mrujs-warning" style="display: none;">⚠️ It seems as though you did not install <ins>mrujs</ins> in your application. Sadly, this means that many of the live examples will not work. You can run <kbd>rails stimulus_reflex:install:step mrujs <%%= "yarn " unless Rails.root.join("config/importmap.rb").exist? %>bundle</kbd> if you change your mind.</p>
-
-        <p>If you aren't using Action Cable, the <ins>cable_car</ins> method can render CableReady JSON anywhere in your application.</p>
-
-        <p>When you return CableReady responses from your controller actions, you unlock what we call "Ajax Mode":</p>
-
-        <div class="grid" style="grid-template-columns: 1fr 2fr; grid-column-gap: 4rem;">
-          <div>
-            <h4>form_with via POST</h4>      
-            <%%= form_with do |form| %>
-              <%%= form.submit "Create" %>
-            <%% end %>
-
-            <h4>link_to via PATCH</h4>
-            <p>
-              <%%= link_to "Update", {}, method: :patch %>
-            </p>
-
-            <h4>button_to via DELETE</h4>
-            <%%= button_to "Delete", {}, method: :delete, remote: true %>
-          </div>
-
-          <div>
-            <h4>Output DIV</h4>
-            <div id="cable_car_output" style="font-weight: bolder;"></div>
-
-            <div id="explanation" style="display:none; margin-top: 1rem;">
-              <p>This content DIV, <ins>#explanation</ins>, was initially set to <ins>display: none</ins> and revealed using a <ins>set_style</ins> operation:</p>
-
-              <kbd>set_style("#explanation", name: "display", value: "block")</kbd>
-            </div>
-          </div>
-        </div>
-        
-        <p>All examples use the excellent <a href="https://mrujs.com">mrujs</a> to handle the remote forms and links. We recommend that you compare the example controller, ERB template, Puma log output and the generated HTML in your Elements inspector to quickly get a handle on this elegant approach to reactivity.</p>
-        
-        <p>The view helpers infer the correct URL from the current page and HTTP verb. mrujs manages all remote fetches, and <b>will perform any CableReady operations in the response</b>. When you <a href="https://cableready.stimulusreflex.com/reference/operations/event-dispatch#dispatch_event">dispatch events</a>, the fireworks begin.</p>
-
-        <p><ins>cable_car</ins> is also really useful for generating CableReady JSON that will be cached, duplicated, mutated, stored, discarded, translated, serialized, streamed and/or queued.</p>
+        <p style="margin-top: 1rem;">These examples barely scrape the surface of what's possible. Be sure to check out the <a href="https://cableready.stimulusreflex.com/guide/identifiers" target="_blank">Stream Identifiers</a> chapter.</p>
       </article>
 
       <article>
         <h3>Updatable: magically update the DOM when server-side data changes</h3>
 
-        <p>The <ins>updates_for</ins> helper allow you to designate sections of your page that will <a href="https://cableready.stimulusreflex.com/updatable">update automatically</a> with new content when an Active Record model changes. 🤯</p>
+        <p>The <ins>updates_for</ins> helper allow you to designate sections of your page that will <a href="https://cableready.stimulusreflex.com/guide/updatable" target="_blank">update automatically</a> with new content when an Active Record model changes. 🤯</p>
 
         <small>It's difficult to demonstrate this feature without creating a temporary model and a migration; a road to hell, paved with good intentions. However, you likely have these models (or similar) in your application. Uncomment, tweak if necessary and follow along!</small>
 
@@ -158,13 +128,13 @@
 
         <p>Next, use the <ins>updates_for</ins> helper to create one or more containers that will receive content updates.</p>
 
-        <kbd> &lt;%= updates_for current_user do %&gt;<br>
+        <kbd> &lt;%= cable_ready_updates_for current_user do %&gt;<br>
                 &nbsp;&nbsp;&lt;%= current_user.name %&gt;<br>
               &lt;% end %&gt;
         </kbd>
 
         <!--
-        <%%#= updates_for current_user do %>
+        <%%#= cable_ready_updates_for current_user do %>
           <p style="margin-top: 1rem;"><%%#= current_user.name %></p>
         <%%# end %>
         -->
@@ -173,7 +143,7 @@
 
         <p>Specify the class constant to get updates when records are created or deleted:</p>
 
-        <kbd> &lt;%= updates_for User do %&gt;<br>
+        <kbd> &lt;%= cable_ready_updates_for User do %&gt;<br>
               &nbsp;&nbsp;&lt;ul&gt;<br>
               &nbsp;&nbsp;&lt;% @users.each do |user| %&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;%= user.name %&gt;&lt;/li&gt;<br>
@@ -183,7 +153,7 @@
         </kbd>
 
         <!--
-        <%%#= updates_for User do %>
+        <%%#= cable_ready_updates_for User do %>
           <ul style="margin-top: 1rem;">
             <%%# @users.each do |user| %>
               <li><%%#= user.name %></li>
@@ -194,7 +164,7 @@
 
         <p style="margin-top: 1rem;">Update when new posts are created by the current user:</p>
 
-        <kbd> &lt;%= updates_for current_user, :posts do %&gt;<br>
+        <kbd> &lt;%= cable_ready_updates_for current_user, :posts do %&gt;<br>
               &nbsp;&nbsp;&lt;ul&gt;<br>
               &nbsp;&nbsp;&lt;% @posts.each do |post| %&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;%= post.title %&gt;&lt;/li&gt;<br>
@@ -204,7 +174,7 @@
         </kbd>
 
         <!--
-        <%%#= updates_for current_user, :posts do %>
+        <%%#= cable_ready_updates_for current_user, :posts do %>
           <ul style="margin-top: 1rem;">
             <%%# @posts.each do |post| %>
               <li><%%#= post.title %></li>
@@ -214,52 +184,10 @@
         -->
 
         <p style="margin-top: 1rem;">One major advantage of the Updatable approach is that each visitor sees <b>personalized content</b>. This is difficult with a WebSockets broadcast, where every subscriber receives the same data.</p>
-        
+
         <p>Instead, Updatable notifies all subscribers that an update is available, prompting each client to make a fetch request and refresh sections of the page.</p>
 
-        <p>There's more to <a href="https://cableready.stimulusreflex.com/updatable">Updatable</a> than what's covered here... <i>but, not much more</i>. It really is that simple.</p>
-      </article>
-
-      <article>
-        <h3>cable_ready_tag + Turbo Streams</h3>
-
-        <p>You can embed CableReady operations in a static page or template element using a <ins>cable-ready</ins> element.<p>
-
-        <p>This element is a web component that executes CableReady operations after it is appended to the DOM. You can leverage the power of CableReady, even if you're stuck with Turbo Streams.</p>
-
-        <p>Use the <ins>cable_ready_tag</ins> helper to render the element for you:</p>
-
-        <kbd>cable_ready_tag(cable_car.console_log(message: "Testy McTestface"))</kbd>
-
-        <p style="margin-top: 1rem;">This emits the following HTML. <b>You should see it in your Console log already.</b></p>
-
-        <kbd><%%= cable_ready_tag(cable_car.console_log(message: "Testy McTestface")) %></kbd>
-
-        <!-- this is live code, so if @hotwired/turbo-rails is in your JS package, it will execute the operation and then remove itself -->
-        <%%= cable_ready_tag(cable_car.console_log(message: "Testy McTestface")).html_safe %>
-
-        <p style="margin-top: 1rem;">You can render it as a Turbo Stream response in your controller action:</p>
-
-        <kbd>render turbo_stream: turbo_stream.append_all("body", cable_ready_tag(cable_car.console_log(message: "Testy McTestface")))</kbd>
-        
-        <%% if defined?(Turbo) %>
-        <p style="margin-top: 1rem;"><%%= link_to 'Send a Console log message with Turbo Streams', "/example", data: { turbo_stream: true } %> right now.</p>
-        <%% end %>
-      </article>
-
-      <article>
-        <h3>Calling perform directly</h3>
-
-        <p>CableReady operations are just JavaScript objects. Broadcasts are just an array of operations, expressed as JSON. The method that executes operations, <ins>perform</ins>, <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">doesn't care how the JSON was generated</a> or what transport mechanism (if any!) was used to deliver it.</p>
-
-        <kbd>import { perform } from 'cable_ready'<br><br>
-        function processAvianCarrier(operations) {<br>
-          &nbsp;&nbsp;perform(JSON.parse(operations))<br>
-        }</kbd>
-
-        <p style="margin-top: 1rem;">It's common to call <ins>perform</ins> in Action Cable Channel classes, Stimulus controllers, event handlers and even inside <a href="https://cableready.stimulusreflex.com/customization#custom-operations">custom CableReady operations</a>.</p>
-
-        <p>And hey... if you find CableReady useful and are comfortable in multiple languages, please consider getting involved in the <a href="https://dev.to/leastbad/the-cableready-language-implementation-project-4hjd">CableReady Language Implementation Project</a>.</p>
+        <p>There's more to <a href="https://cableready.stimulusreflex.com/guide/updatable" target="_blank">Updatable</a> than what's covered here... <i>but, not much more</i>. It really is that simple.</p>
       </article>
 
       <article>
@@ -268,9 +196,9 @@
         <kbd>rails destroy stimulus_reflex example</kbd>
       </article>
 
-      <p>As always, please drop by the <a href="https://discord.gg/stimulus-reflex">StimulusReflex Discord server</a> if you have any questions or need support of any kind. We're incredibly proud of the community that has formed around these libraries, and we discuss everything from JS/Ruby/CSS to View Component/Phlex to databases and CRDTs. <b>We'd love to hear what you're building with SR/CR.</b></p>
+      <p>As always, please drop by the <a href="https://discord.gg/stimulus-reflex" target="_blank">StimulusReflex Discord server</a> if you have any questions or need support of any kind. We're incredibly proud of the community that has formed around these libraries, and we discuss everything from JavaScript/Ruby/CSS to View Component/Phlex to databases and CRDTs. <b>We'd love to hear what you're building with StimulusReflex and CableReady.</b></p>
 
-      <p>You can find the documentation for StimulusReflex <a href="https://docs.stimulusreflex.com">here</a> and CableReady <a href="https://cableready.stimulusreflex.com">here</a>.</p>
+      <p>You can find the documentation for StimulusReflex <a href="https://docs.stimulusreflex.com" target="_blank">here</a> and CableReady <a href="https://cableready.stimulusreflex.com" target="_blank">here</a>.</p>
     </main>
     <div class="fireworks" style="position: fixed; bottom: 0; width: 100vw; height: 100vh; pointer-events: none;"></div>
   </body>

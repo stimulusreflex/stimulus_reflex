@@ -17,7 +17,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #     - signed    - use a signed Global ID to map dataset attribute to a model eg. element.signed[:foo]
   #     - unsigned  - use an unsigned Global ID to map dataset attribute to a model  eg. element.unsigned[:foo]
   #   - cable_ready - a special cable_ready that can broadcast to the current visitor (no brackets needed)
-  #   - id          - a UUIDv4 that uniquely identies each Reflex
+  #   - id          - a UUIDv4 that uniquely identifies each Reflex
   #   - tab_id      - a UUIDv4 that uniquely identifies the browser tab
   #
   # Example:
@@ -41,8 +41,22 @@ class <%= class_name %>Reflex < ApplicationReflex
 
 <%- end -%>
 <%- if class_name == "Example" -%>
-  def dance
-    morph "#dance", "I'm dancing!"
+  def increment
+    count = session[:count] || 0
+    session[:count] = count + 1
+
+    morph "#time", Time.now
+    morph "#count", session[:count]
+
+    cable_ready.set_value(selector: "progress", value: session[:count])
+
+    if session[:count] >= 10
+      cable_ready.dispatch_event(name: "fireworks")
+    end
+  end
+
+  def reset
+    session[:count] = 0
   end
 <%- else -%>
   <%- actions.each do |action| -%>
