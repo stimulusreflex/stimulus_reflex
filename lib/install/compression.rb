@@ -15,7 +15,9 @@ if initializer.exclude? "PermessageDeflate.configure"
 end
 
 if proceed
-  if !gemfile.match?(/gem ['"]permessage_deflate['"]/)
+  if gemfile.match?(/gem ['"]permessage_deflate['"]/)
+    say "⏩ permessage_deflate already present in Gemfile. Skipping."
+  else
     add_gem "permessage_deflate@>= 0.1"
   end
 

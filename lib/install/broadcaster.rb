@@ -100,7 +100,7 @@ if defined?(StateMachines)
 
     puts "✅ prepend CableReady::Broadcaster into StateMachines::Machine"
   else
-    puts "⏩  already prepended CableReady::Broadcaster into StateMachines::Machine. Skipping"
+    puts "⏩ already prepended CableReady::Broadcaster into StateMachines::Machine. Skipping"
   end
 else
   puts "⏩ StateMachines not available. Skipping."
