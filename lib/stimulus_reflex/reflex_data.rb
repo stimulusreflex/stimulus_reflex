@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StimulusReflex::ReflexData
   attr_reader :data
 

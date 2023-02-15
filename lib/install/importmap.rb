@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 return if pack_path_missing?

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 spring_pattern = /^[^#]*gem ["']spring["']/
 
-proceed = true
+proceed = false
 lines = gemfile_path.readlines
 if lines.index { |line| line =~ spring_pattern }
   proceed = if options.key? "spring"

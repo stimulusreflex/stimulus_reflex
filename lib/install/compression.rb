@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 initializer = action_cable_initializer_working_path.read

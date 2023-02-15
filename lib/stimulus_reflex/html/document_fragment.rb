@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # forzen_string_literal: true
 
 module StimulusReflex

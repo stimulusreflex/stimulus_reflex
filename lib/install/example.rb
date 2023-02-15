@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 proceed = false
@@ -11,9 +13,7 @@ if !Rails.root.join("app/reflexes/example_reflex.rb").exist?
   end
 end
 
-if ENV["LOCAL"] == "true"
-  generate("stimulus_reflex", "example", "--local true") if proceed
-elsif proceed
+if proceed
   generate("stimulus_reflex", "example")
 end
 

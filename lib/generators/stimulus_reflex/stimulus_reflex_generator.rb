@@ -8,7 +8,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, banner: "NAME"
   argument :actions, type: :array, default: [], banner: "action action"
-  class_options skip_stimulus: false, skip_reflex: false, timeout: 1, local: false, branch: StimulusReflex::BRANCH
+  class_options skip_stimulus: false, skip_reflex: false
 
   def execute
     actions.map!(&:underscore)
@@ -57,6 +57,7 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
       route "resource :example, constraints: -> { Rails.env.development? }"
 
       importmap_path = Rails.root.join("config/importmap.rb")
+
       if importmap_path.exist?
         importmap = importmap_path.read
         if behavior == :revoke
@@ -77,18 +78,6 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
   private
 
   def fetch(file)
-    working = Rails.root.join("tmp/stimulus_reflex_installer/working")
-
-    return (source_paths.first + file) if options[:local]
-
-    begin
-      tmp_path = working.to_s + file
-      url = "https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{options[:branch]}/lib/generators/stimulus_reflex/templates#{file.gsub("%", "%25")}"
-      FileUtils.mkdir_p(tmp_path.split("/")[0..-2].join("/"))
-      File.write(tmp_path, URI.open(url, open_timeout: options[:timeout].to_i, read_timeout: options[:timeout].to_i).read) # standard:disable Security/Open
-      tmp_path
-    rescue
-      source_paths.first + file
-    end
+    source_paths.first + file
   end
 end

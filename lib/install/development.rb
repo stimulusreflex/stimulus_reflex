@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 # mutate working copy of development.rb to avoid bundle alerts

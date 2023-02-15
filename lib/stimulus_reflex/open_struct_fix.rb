@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Temporary fix until this PR gets merged:
 # https://github.com/ruby/ostruct/pull/37

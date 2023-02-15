@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 reflexes_path = Rails.root.join("app/reflexes")

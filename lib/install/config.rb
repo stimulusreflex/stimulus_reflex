@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 return if pack_path_missing?
@@ -41,7 +43,7 @@ copy_file(cable_ready_src, cable_ready_path) unless cable_ready_path.exist?
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
 copy_file(stimulus_reflex_src, stimulus_reflex_path) unless stimulus_reflex_path.exist?
 
-if ["webpacker", "shakapacker"].include?(footgun)
+if ["webpacker", "shakapacker"].include?(bundler)
   append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
     if (process.env.RAILS_ENV === 'development') {
@@ -49,7 +51,7 @@ if ["webpacker", "shakapacker"].include?(footgun)
       window.reflexes = StimulusReflex.reflexes
     }
   JS
-elsif footgun == "vite"
+elsif bundler == "vite"
   append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
     if (import.meta.env.MODE === "development") {

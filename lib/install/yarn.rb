@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 # run yarn install only when packages are waiting to be added or removed
@@ -33,7 +35,7 @@ if add.present? || dev.present? || drop.present?
   system "yarn install --silent"
 end
 
-if footgun == "esbuild" && json["scripts"]["build"] != "node esbuild.config.js"
+if bundler == "esbuild" && json["scripts"]["build"] != "node esbuild.config.js"
   json["scripts"]["build:default"] = json["scripts"]["build"]
   json["scripts"]["build"] = "node esbuild.config.js"
   package_json.write JSON.pretty_generate(json)

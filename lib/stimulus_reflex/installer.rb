@@ -1,24 +1,12 @@
-require "stimulus_reflex/version"
-require "cable_ready/version"
+# frozen_string_literal: true
 
 ### general utilities
 
 def fetch(step_path, file)
   relative_path = step_path + file
   location = template_src + relative_path
-  return Pathname.new(location) if ENV["LOCAL"] == "true"
-  opts = YAML.safe_load(options_path.read)
 
-  begin
-    local_file = Pathname.new(working.to_s + relative_path)
-    FileUtils.mkdir_p(working.to_s + relative_path.split("/")[0..-2].join("/"))
-    timeout = opts["timeout"].to_i
-    local_file.write(URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/#{opts["branch"]}/lib/generators/stimulus_reflex/templates#{relative_path}", open_timeout: timeout, read_timeout: timeout).read)
-    local_file
-  rescue
-    create_or_append(network_issue_path, current_template + "\n", verbose: false)
-    Pathname.new(location)
-  end
+  Pathname.new(location)
 end
 
 def complete_step(step)
@@ -121,8 +109,8 @@ def entrypoint
   @entrypoint ||= File.read("tmp/stimulus_reflex_installer/entrypoint")
 end
 
-def footgun
-  @footgun ||= File.read("tmp/stimulus_reflex_installer/footgun")
+def bundler
+  @bundler ||= File.read("tmp/stimulus_reflex_installer/bundler")
 end
 
 def network_issue_path
@@ -193,7 +181,7 @@ def prefix
     "shakapacker" => "",
     "importmap" => "",
     "esbuild" => ".\/"
-  }[footgun]
+  }[bundler]
   # standard:enable Style/RedundantStringEscape
 end
 

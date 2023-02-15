@@ -1,20 +1,23 @@
-require "stimulus_reflex/installer"
+# frozen_string_literal: true
+
+require "cable_ready/installer"
 
 return if pack_path_missing?
 
 mrujs_path = config_path / "mrujs.js"
 
-proceed = true
+proceed = false
+
 if !File.exist?(mrujs_path)
   proceed = if options.key? "mrujs"
     options["mrujs"]
   else
-    !no?("Would you like to install and enable mrujs? It's a modern, drop-in replacement for ujs-rails \n... and it just happens to integrate beautifully with CableReady. (Y/n)")
+    !no?("✨ Would you like to install and enable mrujs? It's a modern, drop-in replacement for rails-ujs (Y/n)")
   end
 end
 
 if proceed
-  if footgun == "importmap"
+  if bundler == "importmap"
 
     if !importmap_path.exist?
       halt "#{friendly_importmap_path} is missing. You need a valid importmap config file to proceed."
@@ -30,7 +33,7 @@ if proceed
       say "✅ pin mrujs"
     end
 
-    if !importmap.include?("pin \"mrujs\/plugins\"") # standard:disable Style/RedundantStringEscape
+    if !importmap.include?("pin \"mrujs/plugins\"")
       append_file(importmap_path, <<~RUBY, verbose: false)
         pin "mrujs/plugins", to: "https://ga.jspm.io/npm:mrujs@0.10.1/plugins/dist/plugins.module.js"
       RUBY

@@ -2,5 +2,4 @@
 
 module StimulusReflex
   VERSION = "3.5.0.pre9"
-  BRANCH = "new_installer"
 end

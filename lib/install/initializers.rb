@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 sr_initializer_src = fetch("/", "config/initializers/stimulus_reflex.rb")

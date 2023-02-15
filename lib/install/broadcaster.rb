@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stimulus_reflex/installer"
 
 # include CableReady::Broadcaster in Action Cable Channel classes
