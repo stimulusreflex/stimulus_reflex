@@ -220,12 +220,16 @@ namespace :stimulus_reflex do
       exit
     end
 
-    desc "Re-run specific StimulusReflex install steps"
+    desc <<~DESC
+      Run specific StimulusReflex install steps
+
+      #{SR_STEPS.sort.map { |step, description| "#{step.ljust(20)} #{description}" }.join("\n")}
+    DESC
     task :step do
       def warning(step = nil)
-        return if step.include?("=")
+        return if step.to_s.include?("=")
         if step
-          puts "⚠️ #{step} is not a valid step. Valid steps are: #{SR_STEPS.keys.join(", ")}"
+          puts "⚠️  #{step} is not a valid step. Valid steps are: #{SR_STEPS.keys.join(", ")}"
         else
           puts "❌ You must specify a step to re-run. Valid steps are: #{SR_STEPS.keys.join(", ")}"
           puts "Example: \e[1;94mrails stimulus_reflex:install:step initializers\e[0m"
@@ -237,6 +241,10 @@ namespace :stimulus_reflex do
       ARGV.each do |step|
         SR_STEPS.include?(step) ? run_install_template(step, force: true) : warning(step)
       end
+
+      run_install_template(:bundle, force: true)
+      run_install_template(:yarn, force: true)
+
       exit
     end
   end

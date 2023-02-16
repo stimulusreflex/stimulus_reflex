@@ -48,15 +48,9 @@ else
 end
 
 FileUtils.cp(development_working_path, development_path)
-puts "--"
-puts development_working_path
-puts development_path
 say "✅ development environment configuration installed"
 
 FileUtils.cp(action_cable_initializer_working_path, action_cable_initializer_path)
-puts "--"
-puts action_cable_initializer_working_path
-puts action_cable_initializer_path
 say "✅ Action Cable initializer installed"
 
 complete_step :bundle
