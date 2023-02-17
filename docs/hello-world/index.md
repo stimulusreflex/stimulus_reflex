@@ -77,7 +77,7 @@ This demo from early 2020 is exciting, but it is not a tutorial!
 
 ## First-class ViewComponent support
 
-When you have [ViewComponent](https://github.com/github/view_component)installed in your project, you can use [componentized views](https://www.youtube.com/watch?v=YVYRus_2KZM) in your Reflexes **without any configuration required**. 💯
+When you have [ViewComponent](https://github.com/github/view_component) installed in your project, you can use [componentized views](https://www.youtube.com/watch?v=YVYRus_2KZM) in your Reflexes **without any configuration required**. 💯
 
 If you install the amazing [ViewComponentReflex](https://github.com/joshleblanc/view_component_reflex) as well, you will be able to persist the state of your components into the user's session. Every instance of your components will maintain their own local state. This provides seamless continuity for your UI - even when doing full-page Reflex updates. _Hand, meet glove._ 🖐️+🧤
 
