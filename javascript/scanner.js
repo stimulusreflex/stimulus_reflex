@@ -1,8 +1,9 @@
-import { reflexes } from './reflexes'
 import Schema from './schema'
+
 import { attributeValues, attributeValue } from './attributes'
-import { findControllerByReflexName, allReflexControllers } from './controllers'
 import { debounce, dispatch } from './utils'
+import { findControllerByReflexName, allReflexControllers } from './controllers'
+import { reflexes } from './reflexes'
 
 // Sets up declarative reflex behavior.
 // Any elements that define data-reflex will automatically be wired up with the default StimulusReflexController.

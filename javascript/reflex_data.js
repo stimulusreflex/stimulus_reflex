@@ -2,6 +2,7 @@ import Schema from './schema'
 
 import { extractElementAttributes, extractElementDataset } from './attributes'
 import { uuidv4, getReflexRoots, elementToXPath } from './utils'
+
 import packageInfo from '../package.json'
 
 export default class ReflexData {

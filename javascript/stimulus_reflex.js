@@ -1,21 +1,22 @@
 import { Controller } from '@hotwired/stimulus'
 
-import Stimulus from './app'
-import Schema from './schema'
-import Log from './log'
+import ActionCableTransport from './transports/action_cable'
+import App from './app'
 import Debug from './debug'
 import Deprecate from './deprecate'
+import IsolationMode from './isolation_mode'
+import Log from './log'
 import Reflex from './reflex'
 import ReflexData from './reflex_data'
-import IsolationMode from './isolation_mode'
+import Schema from './schema'
 import Transport from './transport'
-import ActionCableTransport from './transports/action_cable'
 
-import { reflexes } from './reflexes'
-import { dispatchLifecycleEvent } from './lifecycle'
-import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
 import { attributeValues } from './attributes'
+import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
+import { dispatchLifecycleEvent } from './lifecycle'
+import { reflexes } from './reflexes'
 import { scanForReflexes, scanForReflexesOnElement } from './scanner'
+
 import {
   uuidv4,
   serializeForm,
@@ -49,6 +50,7 @@ const tabId = uuidv4()
 //   * params     - [{}] key/value parameters to send during channel subscription
 //   * isolate    - [false] restrict Reflex playback to the tab which initiated it
 //   * deprecate  - [true] show warnings regarding upcoming changes to the library
+//   * transport  - [optional] defaults to ActionCableTransport
 //
 const initialize = (
   application,
@@ -57,9 +59,9 @@ const initialize = (
   Transport.set(transport || ActionCableTransport)
   Transport.plugin.initialize(consumer, params)
   IsolationMode.set(!!isolate)
-  Stimulus.set(application)
+  App.set(application)
   Schema.set(application)
-  Stimulus.app.register(
+  App.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )

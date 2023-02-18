@@ -1,7 +1,9 @@
-import Schema from './schema'
-import Deprecate from './deprecate'
 import Debug from './debug'
+import Deprecate from './deprecate'
+import Schema from './schema'
+
 import { Utils } from 'cable_ready'
+
 const { debounce, dispatch, xpathToElement, xpathToElementArray } = Utils
 
 // uuid4 function taken from stackoverflow
