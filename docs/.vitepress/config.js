@@ -16,7 +16,7 @@ export default {
       { icon: 'discord', link: 'https://discord.gg/stimulus-reflex' }
     ],
     editLink: {
-      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/master/docs/:path',
+      pattern: 'https://github.com/stimulusreflex/stimulus_reflex/edit/main/docs/:path',
       text: 'Edit this page on GitHub'
     },
     nav: [

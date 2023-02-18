@@ -27,6 +27,9 @@ class TestController < ApplicationController
 end
 
 class SessionMock
+  def enabled?
+  end
+
   def load!
     nil
   end

@@ -11,11 +11,6 @@ StimulusReflex.configure do |config|
   #
   # config.on_failed_sanity_checks = :exit
 
-  # Enable/disable exiting / warning when there's a new StimulusReflex release
-  # `:exit` or `:warn` or `:ignore`
-  #
-  # config.on_new_version_available = :ignore
-
   # Enable/disable exiting / warning when there is no default URLs specified in environment config
   # `:warn` or `:ignore`
   #
