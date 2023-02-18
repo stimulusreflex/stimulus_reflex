@@ -38,15 +38,15 @@ class StimulusReflex::ConfigurationTest < ActionView::TestCase
     end
   end
 
-  test "sets on_new_version_available" do
-    revert_config_changes(:on_new_version_available) do
-      assert_equal :ignore, StimulusReflex.config.on_new_version_available
-
+  test "shows on_new_version_available notice" do
+    assert_output(nil, %(NOTICE: The `config.on_new_version_available` option has been removed from the StimulusReflex initializer. You can safely remove this option from your initializer.\n)) do
       StimulusReflex.configure do |config|
-        config.on_new_version_available = :warn
+        config.on_new_version_available = :ignore
       end
+    end
 
-      assert_equal :warn, StimulusReflex.config.on_new_version_available
+    assert_output(nil, %(NOTICE: The `config.on_new_version_available` option has been removed from the StimulusReflex initializer. You can safely remove this option from your initializer.\n)) do
+      StimulusReflex.config.on_new_version_available
     end
   end
 
