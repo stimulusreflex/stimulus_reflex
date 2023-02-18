@@ -65,6 +65,8 @@
 
       <progress value="<%%= session[:count] %>" max="10"></progress>
 
+      <div id="reload"></div>
+
       <h1>CableReady</h1>
 
       <p>CableReady lets you control one or many clients from the server in real-time.</p>
