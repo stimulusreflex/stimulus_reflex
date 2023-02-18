@@ -2,11 +2,11 @@ import CableReady from 'cable_ready'
 
 import App from './app'
 import Debug from './debug'
-import Reflex from './reflex'
 import IsolationMode from './isolation_mode'
+import Reflex from './reflex'
 
-import { reflexes } from './reflexes'
 import { dispatchLifecycleEvent } from './lifecycle'
+import { reflexes } from './reflexes'
 import { XPathToElement } from './utils'
 
 export const received = data => {

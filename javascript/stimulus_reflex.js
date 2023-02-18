@@ -1,21 +1,22 @@
 import { Controller } from '@hotwired/stimulus'
 
-import Schema from './schema'
-import Log from './log'
+import ActionCableTransport from './transports/action_cable'
 import App from './app'
 import Debug from './debug'
 import Deprecate from './deprecate'
+import IsolationMode from './isolation_mode'
+import Log from './log'
 import Reflex from './reflex'
 import ReflexData from './reflex_data'
-import IsolationMode from './isolation_mode'
+import Schema from './schema'
 import Transport from './transport'
-import ActionCableTransport from './transports/action_cable'
 
-import { reflexes } from './reflexes'
-import { dispatchLifecycleEvent } from './lifecycle'
-import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
 import { attributeValues } from './attributes'
+import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
+import { dispatchLifecycleEvent } from './lifecycle'
+import { reflexes } from './reflexes'
 import { scanForReflexes, scanForReflexesOnElement } from './scanner'
+
 import {
   uuidv4,
   serializeForm,

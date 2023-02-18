@@ -1,6 +1,6 @@
-import Schema from './schema'
 import Debug from './debug'
 import Deprecate from './deprecate'
+import Schema from './schema'
 
 import { elementToXPath, XPathToArray } from './utils'
 
