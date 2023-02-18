@@ -49,6 +49,7 @@ const tabId = uuidv4()
 //   * params     - [{}] key/value parameters to send during channel subscription
 //   * isolate    - [false] restrict Reflex playback to the tab which initiated it
 //   * deprecate  - [true] show warnings regarding upcoming changes to the library
+//   * transport  - [optional] defaults to ActionCableTransport
 //
 const initialize = (
   application,
