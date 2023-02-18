@@ -24,13 +24,13 @@
       <img alt="JavaScript Code Style" src="https://img.shields.io/badge/JavaScript_Code_Style-prettier_standard-ff69b4.svg" />
     </a>
     <br />
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/actions/workflows/prettier-standard.yml">
       <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Prettier-Standard/badge.svg" alt="Prettier-Standard" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/actions/workflows/standardrb.yml">
       <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/StandardRB/badge.svg" alt="StandardRB" style="max-width:100%;">
     </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg">
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/stimulusreflex/stimulus_reflex/actions/workflows/tests.yml">
       <img src="https://github.com/stimulusreflex/stimulus_reflex/workflows/Tests/badge.svg" alt="Tests">
     </a>
   </p>
