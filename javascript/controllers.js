@@ -1,5 +1,5 @@
+import App from './app'
 import Schema from './schema'
-import Stimulus from './app'
 
 import { attributeValues } from './attributes'
 import { extractReflexName } from './utils'
@@ -9,7 +9,7 @@ import { extractReflexName } from './utils'
 const localReflexControllers = element => {
   return attributeValues(element.getAttribute(Schema.controller)).reduce(
     (memo, name) => {
-      const controller = Stimulus.app.getControllerForElementAndIdentifier(
+      const controller = App.app.getControllerForElementAndIdentifier(
         element,
         name
       )

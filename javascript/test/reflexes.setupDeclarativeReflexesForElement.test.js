@@ -5,7 +5,7 @@ import ExampleController from './dummy/example_controller'
 import { application } from './dummy/application'
 import { initialize } from '../stimulus_reflex'
 
-import Stimulus from '../app'
+import App from '../app'
 import { scanForReflexesOnElement } from '../scanner'
 
 describe('scanForReflexesOnElement', () => {
@@ -15,10 +15,10 @@ describe('scanForReflexesOnElement', () => {
 
   afterEach(() => {
     const registeredControllers = Array.from(
-      Stimulus.app.router.modulesByIdentifier.keys()
+      App.app.router.modulesByIdentifier.keys()
     )
 
-    Stimulus.app.unload(registeredControllers)
+    App.app.unload(registeredControllers)
   })
 
   it('should add the right action and controller attribute', async () => {
@@ -34,7 +34,7 @@ describe('scanForReflexesOnElement', () => {
   })
 
   it('should add the right action and controller attribute with an existing controller attribute', async () => {
-    Stimulus.app.register('example', ExampleController)
+    App.app.register('example', ExampleController)
 
     const element = await fixture(html`
       <a data-controller="example" data-reflex="click->Example#handle"
@@ -68,8 +68,8 @@ describe('scanForReflexesOnElement', () => {
   })
 
   it('should add the right action and controller attribute with multiple reflex descriptors using different reflexes and multiple custom controllers', async () => {
-    Stimulus.app.register('example1', ExampleController)
-    Stimulus.app.register('example2', ExampleController)
+    App.app.register('example1', ExampleController)
+    App.app.register('example2', ExampleController)
 
     const element = await fixture(html`
       <a

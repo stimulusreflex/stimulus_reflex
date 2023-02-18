@@ -1,7 +1,7 @@
 import CableReady from 'cable_ready'
 
+import App from './app'
 import Debug from './debug'
-import Stimulus from './app'
 import Reflex from './reflex'
 import IsolationMode from './isolation_mode'
 
@@ -61,7 +61,7 @@ export const received = data => {
       controllerElement.reflexData = controllerElement.reflexData || {}
       controllerElement.reflexError = controllerElement.reflexError || {}
 
-      const controller = Stimulus.app.getControllerForElementAndIdentifier(
+      const controller = App.app.getControllerForElementAndIdentifier(
         controllerElement,
         reflexData.reflexController
       )

@@ -1,8 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
 
-import Stimulus from './app'
 import Schema from './schema'
 import Log from './log'
+import App from './app'
 import Debug from './debug'
 import Deprecate from './deprecate'
 import Reflex from './reflex'
@@ -58,9 +58,9 @@ const initialize = (
   Transport.set(transport || ActionCableTransport)
   Transport.plugin.initialize(consumer, params)
   IsolationMode.set(!!isolate)
-  Stimulus.set(application)
+  App.set(application)
   Schema.set(application)
-  Stimulus.app.register(
+  App.app.register(
     'stimulus-reflex',
     controller || StimulusReflexController
   )
