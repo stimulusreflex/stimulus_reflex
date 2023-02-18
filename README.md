@@ -7,7 +7,7 @@
     <a href="https://www.npmjs.com/package/stimulus_reflex">
       <img alt="downloads" src="https://img.shields.io/npm/dm/stimulus_reflex.svg?color=blue" target="_blank" />
     </a>
-    <a href="https://github.com/stimulusreflex/stimulus_reflex/blob/master/LICENSE">
+    <a href="https://github.com/stimulusreflex/stimulus_reflex/blob/main/LICENSE">
       <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-brightgreen.svg" target="_blank" />
     </a>
     <a href="http://blog.codinghorror.com/the-best-code-is-no-code-at-all/" target="_blank">

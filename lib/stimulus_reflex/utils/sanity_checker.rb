@@ -48,7 +48,7 @@ class StimulusReflex::SanityChecker
     if using_null_store?
       warn_and_exit <<~WARN
         👉 StimulusReflex requires caching to be enabled.
-        
+
         Caching allows the session to be modified during ActionCable requests. Your config.cache_store is set to :null_store, so it won't work.
       WARN
     end
@@ -75,7 +75,7 @@ class StimulusReflex::SanityChecker
     return if Rails.env.development? == false
     return if using_preview_release?
     begin
-      latest_version = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/master/LATEST", open_timeout: 1, read_timeout: 1).read.strip
+      latest_version = URI.open("https://raw.githubusercontent.com/stimulusreflex/stimulus_reflex/main/LATEST", open_timeout: 1, read_timeout: 1).read.strip
       if latest_version != StimulusReflex::VERSION
         puts <<~WARN
 
