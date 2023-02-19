@@ -86,24 +86,4 @@ if Rails.root.join(application_record_path).exist?
   end
 end
 
-# include CableReady::Broadcaster in StateMachines, if present
-if defined?(StateMachines)
-  lines = action_cable_initializer_working_path.read
-  if !lines.include?("StateMachines::Machine.prepend(CableReady::Broadcaster)")
-    inject_into_file action_cable_initializer_working_path, after: "CableReady.configure do |config|\n", verbose: false do
-      <<-RUBY
-
-  StateMachines::Machine.prepend(CableReady::Broadcaster)
-
-      RUBY
-    end
-
-    puts "✅ prepend CableReady::Broadcaster into StateMachines::Machine"
-  else
-    puts "⏩ already prepended CableReady::Broadcaster into StateMachines::Machine. Skipping"
-  end
-else
-  puts "⏩ StateMachines not available. Skipping."
-end
-
 complete_step :broadcaster
