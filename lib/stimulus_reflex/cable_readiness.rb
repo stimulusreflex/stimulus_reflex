@@ -18,7 +18,7 @@ module StimulusReflex
 
           #{self.class.name} includes CableReady::Broadcaster, and you need to remove it.
           Reflexes have their own CableReady interface. You can just assume that it's present.
-          See https://docs.stimulusreflex.com/rtfm/cableready#using-cableready-inside-a-reflex-action for more details.
+          See https://docs.stimulusreflex.com/guide/cableready#using-cableready-inside-a-reflex-action for more details.
 
         MSG
         raise TypeError.new(message.strip)

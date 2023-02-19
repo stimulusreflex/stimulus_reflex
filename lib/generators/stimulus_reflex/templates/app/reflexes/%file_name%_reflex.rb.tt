@@ -24,7 +24,7 @@ class <%= class_name %>Reflex < ApplicationReflex
   #
   #   before_reflex do
   #     # throw :abort # this will prevent the Reflex from continuing
-  #     # learn more about callbacks at https://docs.stimulusreflex.com/rtfm/lifecycle
+  #     # learn more about callbacks at https://docs.stimulusreflex.com/guide/lifecycle
   #   end
   #
   #   def example(argument=true)
@@ -34,10 +34,10 @@ class <%= class_name %>Reflex < ApplicationReflex
   #     # Any declared instance variables will be made available to the Rails controller and view.
   #
   #     # You can also use the `morph` method to mark a Reflex as Selector or Nothing.
-  #     # https://docs.stimulusreflex.com/rtfm/morph-modes#introducing-morphs
+  #     # https://docs.stimulusreflex.com/guide/morph-modes#introducing-morphs
   #   end
   #
-  # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
+  # Learn more at: https://docs.stimulusreflex.com/guide/reflex-classes
 
 <%- end -%>
 <%- if class_name == "Example" -%>

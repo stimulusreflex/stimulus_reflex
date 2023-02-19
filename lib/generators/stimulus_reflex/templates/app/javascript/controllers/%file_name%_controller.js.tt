@@ -6,7 +6,7 @@ import ApplicationController from './application_controller'
 //
 // It corresponds to the server-side Reflex class located at /app/reflexes/example.rb
 //
-// Learn more at: https://docs.stimulusreflex.com/rtfm/reflexes
+// Learn more at: https://docs.stimulusreflex.com/guide/reflexes
 //
 
 <%- end -%>
@@ -33,7 +33,7 @@ export default class extends ApplicationController {
   // on your Example Reflex class. You don't have to do anything else!
   //
   // This Stimulus controller doesn't even need to exist for StimulusReflex to work its magic.
-  // https://docs.stimulusreflex.com/rtfm/reflexes#declaring-a-reflex-in-html-with-data-attributes
+  // https://docs.stimulusreflex.com/guide/reflexes#declaring-a-reflex-in-html-with-data-attributes
   //
   // However...
   //
@@ -50,13 +50,13 @@ export default class extends ApplicationController {
   //
   // The `stimulate` method is very flexible, and it gives you the opportunity to pass
   // parameter options that will be passed to the `dance` method on the server.
-  // https://docs.stimulusreflex.com/rtfm/reflexes#calling-a-reflex-in-a-stimulus-controller
+  // https://docs.stimulusreflex.com/guide/reflexes#calling-a-reflex-in-a-stimulus-controller
   //
   // Reflex lifecycle methods
   //
   // For every method defined in your Reflex class, a matching set of optional
   // lifecycle callback methods become available in this javascript controller.
-  // https://docs.stimulusreflex.com/rtfm/lifecycle#client-side-reflex-callbacks
+  // https://docs.stimulusreflex.com/guide/lifecycle#client-side-reflex-callbacks
   //
   //   <a href="#" data-reflex="click->Example#dance" data-controller="example">Dance!</a>
   //
