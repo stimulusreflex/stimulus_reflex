@@ -226,7 +226,7 @@ namespace :stimulus_reflex do
       #{SR_STEPS.sort.map { |step, description| "#{step.ljust(20)} #{description}" }.join("\n")}
     DESC
     task :step do
-      def warning(step = nil)
+      def warning(step = nil, force_exit = true)
         return if step.to_s.include?("=")
         if step
           puts "⚠️  #{step} is not a valid step. Valid steps are: #{SR_STEPS.keys.join(", ")}"
@@ -234,12 +234,13 @@ namespace :stimulus_reflex do
           puts "❌ You must specify a step to re-run. Valid steps are: #{SR_STEPS.keys.join(", ")}"
           puts "Example: \e[1;94mrails stimulus_reflex:install:step initializers\e[0m"
         end
+        exit if force_exit
       end
 
       warning if ARGV.empty?
 
       ARGV.each do |step|
-        SR_STEPS.include?(step) ? run_install_template(step, force: true) : warning(step)
+        SR_STEPS.include?(step) ? run_install_template(step, force: true) : warning(step, false)
       end
 
       run_install_template(:bundle, force: true)
