@@ -43,6 +43,10 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
+      controller_src = fetch("/app/controllers/examples_controller.rb.tt")
+      controller_path = Rails.root.join("app/controllers/examples_controller.rb")
+      template(controller_src, controller_path)
+
       view_src = fetch("/app/views/examples/show.html.erb.tt")
       view_path = Rails.root.join("app/views/examples/show.html.erb")
       template(view_src, view_path)

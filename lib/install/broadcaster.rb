@@ -40,7 +40,7 @@ unless proceed
   return
 end
 
-broadcaster_include = "\n    include CableReady::Broadcaster"
+broadcaster_include = "\n    include CableReady::Broadcaster\n"
 
 # include CableReady::Broadcaster in Action Cable Channel classes
 if include_in_channel
