@@ -1,6 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve'
 import json from '@rollup/plugin-json'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 
 const pretty = () => {
   return terser({
@@ -30,6 +30,7 @@ const umdConfig = {
   format: 'umd',
   exports: 'named',
   globals: {
+    '@rails/actioncable': "ActionCable",
     morphdom: 'morphdom',
     cable_ready: 'CableReady',
     '@hotwired/stimulus': 'Stimulus'
