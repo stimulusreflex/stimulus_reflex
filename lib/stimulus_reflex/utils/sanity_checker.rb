@@ -53,7 +53,7 @@ class StimulusReflex::SanityChecker
 
   def check_default_url_config
     return if StimulusReflex.config.on_missing_default_urls == :ignore
-    if default_url_config_set? == false
+    if default_url_config_missing?
       puts <<~WARN
         👉 StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{"and ActionMailer " if defined?(ActionMailer)}will default to example.com when rendering route helpers.
 
@@ -75,16 +75,16 @@ class StimulusReflex::SanityChecker
     Rails.application.config.cache_store == :null_store
   end
 
+  def initializer_missing?
+    File.exist?(Rails.root.join("config", "initializers", "stimulus_reflex.rb")) == false
+  end
+
   def default_url_config_set?
     if defined?(ActionMailer)
-      Rails.application.config.action_controller.default_url_options.blank? && Rails.application.config.action_mailer.default_url_options.blank?
+      Rails.application.config.action_controller.default_url_options.blank? || Rails.application.config.action_mailer.default_url_options.blank?
     else
       Rails.application.config.action_controller.default_url_options.blank?
     end
-  end
-
-  def initializer_missing?
-    File.exist?(Rails.root.join("config", "initializers", "stimulus_reflex.rb")) == false
   end
 
   def warn_and_exit(text)
@@ -106,15 +106,7 @@ class StimulusReflex::SanityChecker
           end
 
       INFO
-      if initializer_missing?
-        puts <<~INFO
-          You can create a StimulusReflex initializer with the command:
-
-            bundle exec rails generate stimulus_reflex:initializer
-
-        INFO
-      end
-      exit false if Rails.env.test? == false
+      exit false unless Rails.env.test?
     end
   end
 end

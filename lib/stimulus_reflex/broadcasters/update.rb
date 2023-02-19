@@ -16,6 +16,7 @@ module StimulusReflex
       end
 
       def html
+        return @value unless defined?(ActiveRecord)
         html = @reflex.render(@key) if @key.is_a?(ActiveRecord::Base) && @value.nil?
         html = @reflex.render_collection(@key) if @key.is_a?(ActiveRecord::Relation) && @value.nil?
         html || @value

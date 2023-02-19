@@ -47,7 +47,7 @@ class StimulusReflex::Reflex
 
   # TODO: remove this for v4
   def reflex_id
-    puts "Deprecation warning: reflex_id will be removed in v4. Use id instead!" if Rails.env.development?
+    warn "Deprecation warning: reflex_id will be removed in v4. Use id instead!" if Rails.env.development?
     id
   end
   # END TODO: remove
