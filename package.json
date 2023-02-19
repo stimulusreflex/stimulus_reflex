@@ -18,30 +18,33 @@
     "dom",
     "morphdom"
   ],
-  "homepage": "https://docs.stimulusreflex.com/",
-  "bugs": {
-    "url": "https://github.com/stimulusreflex/stimulus_reflex/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:stimulusreflex/stimulus_reflex.git"
-  },
+  "homepage": "https://docs.stimulusreflex.com",
+  "bugs": "https://github.com/stimulusreflex/stimulus_reflex/issues",
+  "repository": "https://github.com/stimulusreflex/stimulus_reflex",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./dist/stimulus_reflex.umd.min.js",
-  "module": "./dist/stimulus_reflex.min.js",
+  "contributors": [
+    "Andrew Mason <andrewmcodes@protonmail.com>",
+    "Julian Rubisch <julian@julianrubisch.at>",
+    "Marco Roth <marco.roth@intergga.ch>",
+    "Nathan Hopkins <natehop@gmail.com>"
+  ],
+  "main": "./dist/stimulus_reflex.js",
+  "module": "./dist/stimulus_reflex.js",
+  "browser": "./dist/stimulus_reflex.js",
+  "import": "./dist/stimulus_reflex.js",
+  "unpkg": "./dist/stimulus_reflex.umd.js",
+  "umd": "./dist/stimulus_reflex.umd.js",
   "files": [
     "dist/*",
     "javascript/*"
   ],
   "scripts": {
-    "lint": "yarn prettier-standard:check",
-    "format": "yarn prettier-standard:format",
+    "lint": "yarn run format --check",
+    "format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.mjs",
     "build": "yarn rollup -c",
     "build:watch": "yarn rollup -wc",
     "watch": "yarn build:watch",
-    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/**/*.js rollup.config.js",
-    "prettier-standard:format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.js",
     "test": "web-test-runner javascript/test/**/*.test.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
