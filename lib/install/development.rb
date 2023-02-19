@@ -100,4 +100,11 @@ else
   say "🤷 We couldn't identify your cache store, but recommend using Redis. See https://docs.stimulusreflex.com/appendices/deployment#use-redis-as-your-cache-store"
 end
 
+if Rails.root.join("tmp", "caching-dev.txt").exist?
+  say "⏩ Already caching in development. Skipping."
+else
+  system "rails dev:cache"
+  say "✅ Enabled caching in development"
+end
+
 complete_step :development
