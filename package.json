@@ -56,13 +56,13 @@
     "cable_ready": "5.0.0-pre10"
   },
   "devDependencies": {
-    "@open-wc/testing": "^3.1.2",
+    "@open-wc/testing": "^3.1.7",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
-    "@web/dev-server-esbuild": "^0.3.0",
+    "@web/dev-server-esbuild": "^0.3.3",
     "@web/dev-server-rollup": "^0.3.21",
-    "@web/test-runner": "^0.13.27",
+    "@web/test-runner": "^0.15.0",
     "flexsearch": "^0.7.31",
     "prettier-standard": "^16.4.1",
     "rollup": "^3.17.1",
