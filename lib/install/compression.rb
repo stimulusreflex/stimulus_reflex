@@ -33,9 +33,9 @@ if initializer.exclude? "PermessageDeflate.configure"
     RUBY
   end
 
-  say "✅ Action Cable initializer patched to deflate WS traffic"
+  say "✅ Action Cable initializer patched to deflate websocket traffic"
 else
-  say "⏩ Action Cable initializer is already patched to deflate WS traffic. Skipping."
+  say "⏩ Action Cable initializer is already patched to deflate websocket traffic. Skipping."
 end
 
 complete_step :compression
