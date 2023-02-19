@@ -40,10 +40,12 @@ unless proceed
   return
 end
 
+broadcaster_include = "\n    include CableReady::Broadcaster"
+
 # include CableReady::Broadcaster in Action Cable Channel classes
 if include_in_channel
   backup(channel_path) do
-    inject_into_file channel_path, "\n    include CableReady::Broadcaster", after: /class (ApplicationCable::)?Channel < ActionCable::Channel::Base/, verbose: false
+    inject_into_file channel_path, broadcaster_include, after: /class (ApplicationCable::)?Channel < ActionCable::Channel::Base/, verbose: false
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationCable::Channel"
@@ -54,7 +56,7 @@ end
 # include CableReady::Broadcaster in Action Controller classes
 if include_in_controller
   backup(controller_path) do
-    inject_into_file controller_path, "\n    include CableReady::Broadcaster", after: "class ApplicationController < ActionController::Base", verbose: false
+    inject_into_class controller_path, "ApplicationController", broadcaster_include, verbose: false
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationController"
@@ -66,7 +68,7 @@ end
 
 if include_in_job
   backup(job_path) do
-    inject_into_file job_path, "\n    include CableReady::Broadcaster", after: "class ApplicationJob < ActiveJob::Base", verbose: false
+    inject_into_class job_path, "ApplicationJob", broadcaster_include, verbose: false
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationJob"
@@ -77,7 +79,7 @@ end
 # include CableReady::Broadcaster in Active Record model classes
 if include_in_model
   backup(application_record_path) do
-    inject_into_file application_record_path, "\n    include CableReady::Broadcaster", after: "class ApplicationRecord < ActiveRecord::Base", verbose: false
+    inject_into_class application_record_path, "ApplicationRecord", broadcaster_include, verbose: false
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationRecord"
