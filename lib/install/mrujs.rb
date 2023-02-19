@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "cable_ready/installer"
+require "stimulus_reflex/installer"
 
 return if pack_path_missing?
 
