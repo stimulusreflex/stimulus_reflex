@@ -43,58 +43,46 @@ end
 # include CableReady::Broadcaster in Action Cable Channel classes
 if include_in_channel
   backup(channel_path) do
-    lines = channel_path.readlines
-    index = lines.index { |line| line.include?("class Channel < ActionCable::Channel::Base") }
-    lines.insert index + 1, "    include CableReady::Broadcaster\n"
-    channel_path.write lines.join
+    inject_into_file channel_path, "\n    include CableReady::Broadcaster", after: /class (ApplicationCable::)?Channel < ActionCable::Channel::Base/
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationCable::Channel"
 else
-  puts "⏩ already included CableReady::Broadcaster in ApplicationCable::Channel channels. Skipping."
+  puts "⏩ Not including CableReady::Broadcaster in ApplicationCable::Channel channels. Skipping."
 end
 
 # include CableReady::Broadcaster in Action Controller classes
 if include_in_controller
   backup(controller_path) do
-    lines = controller_path.readlines
-    index = lines.index { |line| line.include?("") }
-    lines.insert index + 1, "    include CableReady::Broadcaster\n"
-    controller_path.write lines.join
+    inject_into_file controller_path, "\n    include CableReady::Broadcaster", after: "class ApplicationController < ActionController::Base"
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationController"
 else
-  puts "⏩ already included CableReady::Broadcaster in ApplicationController. Skipping."
+  puts "⏩ Not including CableReady::Broadcaster in ApplicationController. Skipping."
 end
 
 # include CableReady::Broadcaster in Active Job classes, if present
 
 if include_in_job
   backup(job_path) do
-    lines = job_path.readlines
-    index = lines.index { |line| line.include?("class ApplicationJob < ActiveJob::Base") }
-    lines.insert index + 1, "  include CableReady::Broadcaster\n"
-    job_path.write lines.join
+    inject_into_file job_path, "\n    include CableReady::Broadcaster", after: "class ApplicationJob < ActiveJob::Base"
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationJob"
 else
-  puts "⏩ already included CableReady::Broadcaster in ApplicationJob. Skipping."
+  puts "⏩ Not including CableReady::Broadcaster in ApplicationJob. Skipping."
 end
 
 # include CableReady::Broadcaster in Active Record model classes
 if include_in_model
   backup(application_record_path) do
-    lines = application_record_path.readlines
-    index = lines.index { |line| line.include?("class ApplicationRecord < ActiveRecord::Base") }
-    lines.insert index + 1, "  include CableReady::Broadcaster\n"
-    application_record_path.write lines.join
+    inject_into_file application_record_path, "\n    include CableReady::Broadcaster", after: "class ApplicationRecord < ActiveRecord::Base"
   end
 
   puts "✅ include CableReady::Broadcaster in ApplicationRecord"
 else
-  puts "⏩ already included CableReady::Broadcaster in ApplicationRecord. Skipping"
+  puts "⏩ Not including CableReady::Broadcaster in ApplicationRecord. Skipping"
 end
 
 complete_step :broadcaster
