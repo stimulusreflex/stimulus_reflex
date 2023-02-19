@@ -116,6 +116,7 @@ end
 
 if index_path.exist?
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
+
   if index_path.read == index_src.read
     say "⏩ #{friendly_index_path} is present. Skipping"
   else

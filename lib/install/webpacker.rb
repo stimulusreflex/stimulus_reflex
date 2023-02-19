@@ -24,12 +24,6 @@ else
   say "⏩ @rails/webpacker npm package is already present. Skipping."
 end
 
-if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
-  add_package "@hotwired/stimulus@^3.2"
-else
-  say "⏩ @hotwired/stimulus npm package is already present. Skipping."
-end
-
 if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus-webpack-helpers["']: ["']\^1.0.1["']/ }
   add_package "@hotwired/stimulus-webpack-helpers@^1.0.1"
 else
@@ -75,12 +69,12 @@ if pack.match?(controllers_pattern)
       matches = lines.select { |line| line =~ controllers_commented_pattern }
       lines[lines.index(matches.last).to_i] = "import \"controllers\"\n"
       pack_path.write lines.join
-      say "✅ Stimulus controllers imported in #{friendly_pack_path}"
+      say "✅ Uncommented Stimulus controllers import in #{friendly_pack_path}"
     else
       say "🤷 your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
     end
   else
-    say "✅ Stimulus controllers imported in #{friendly_pack_path}"
+    say "⏩ Stimulus controllers are already being imported in #{friendly_pack_path}. Skipping."
   end
 else
   lines = pack_path.readlines

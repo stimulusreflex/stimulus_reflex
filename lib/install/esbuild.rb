@@ -13,12 +13,6 @@ else
   say "⏩ esbuild-rails npm package is already present. Skipping."
 end
 
-if !lines.index { |line| line =~ /^\s*["']@hotwired\/stimulus["']:/ }
-  add_package "@hotwired/stimulus@^3.2"
-else
-  say "⏩ @hotwired/stimulus npm package is already present. Skipping."
-end
-
 # copy esbuild.config.mjs to app root
 esbuild_src = fetch("/", "esbuild.config.mjs.tt")
 esbuild_path = Rails.root.join("esbuild.config.mjs")
@@ -102,7 +96,7 @@ if pack.match?(controllers_pattern)
       matches = lines.select { |line| line =~ controllers_commented_pattern }
       lines[lines.index(matches.last).to_i] = "import \".\/controllers\"\n" # standard:disable Style/RedundantStringEscape
       pack_path.write lines.join
-      say "✅ Stimulus controllers imported in #{friendly_pack_path}"
+      say "✅ Uncommented Stimulus controllers import in #{friendly_pack_path}"
     else
       say "🤷 your Stimulus controllers are not being imported in your application.js. We trust that you have a reason for this."
     end
