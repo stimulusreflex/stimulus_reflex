@@ -1,5 +1,5 @@
-import assert from 'assert'
-import { JSDOM } from 'jsdom'
+import { html, fixture, assert } from '@open-wc/testing'
+
 import { extractDataAttributes } from '../attributes'
 
 describe('extractDataAttributes', () => {
@@ -21,21 +21,29 @@ describe('extractDataAttributes', () => {
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns empty object for an element without attributes', () => {
-    const dom = new JSDOM('<div>Test</div>')
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('div')
+  it('returns empty object for an element without attributes', async () => {
+    const element = await fixture(
+      html`
+        <div>Test</div>
+      `
+    )
     const actual = extractDataAttributes(element)
     const expected = {}
     assert.deepStrictEqual(actual, expected)
   })
 
-  it('returns expected data attributes for an element', () => {
-    const dom = new JSDOM(
-      '<div id="example" class="should not appear" data-controller="foo" data-reflex="bar" data-info="12345">Test</div>'
-    )
-    global.document = dom.window.document
-    const element = dom.window.document.querySelector('div')
+  it('returns expected data attributes for an element', async () => {
+    const element = await fixture(html`
+      <div
+        id="example"
+        class="should not appear"
+        data-controller="foo"
+        data-reflex="bar"
+        data-info="12345"
+      >
+        Test
+      </div>
+    `)
     const actual = extractDataAttributes(element)
     const expected = {
       'data-controller': 'foo',

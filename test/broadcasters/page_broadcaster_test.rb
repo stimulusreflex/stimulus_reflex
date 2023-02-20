@@ -12,7 +12,7 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
   test "performs a page morph on body" do
     class << @reflex.controller.response
       def body
-        "<html><head></head><body>New Content</body></html>"
+        "<html><head></head><body><div>New Content</div><div>Another Content</div></body></html>"
       end
     end
 
@@ -20,21 +20,22 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
 
     expected = {
       "cableReady" => true,
-      "operations" => {
-        "morph" => [
-          {
-            "selector" => "body",
-            "html" => "New Content",
-            "payload" => {},
-            "childrenOnly" => true,
-            "permanentAttributeName" => nil,
-            "stimulusReflex" => {
-              "some" => :data,
-              "morph" => :page
-            }
-          }
-        ]
-      }
+      "operations" => [
+        {
+          "selector" => "body",
+          "html" => "<div>New Content</div><div>Another Content</div>",
+          "payload" => {},
+          "childrenOnly" => true,
+          "permanentAttributeName" => nil,
+          "stimulusReflex" => {
+            "some" => :data,
+            "morph" => :page
+          },
+          "reflexId" => "666",
+          "operation" => "morph"
+        }
+      ],
+      "version" => CableReady::VERSION
     }
 
     assert_broadcast_on @reflex.stream_name, expected do
@@ -53,21 +54,22 @@ class StimulusReflex::PageBroadcasterTest < StimulusReflex::BroadcasterTestCase
 
     expected = {
       "cableReady" => true,
-      "operations" => {
-        "morph" => [
-          {
-            "selector" => "#foo",
-            "html" => "New Content",
-            "payload" => {},
-            "childrenOnly" => true,
-            "permanentAttributeName" => nil,
-            "stimulusReflex" => {
-              "some" => :data,
-              "morph" => :page
-            }
-          }
-        ]
-      }
+      "operations" => [
+        {
+          "selector" => "#foo",
+          "html" => "New Content",
+          "payload" => {},
+          "childrenOnly" => true,
+          "permanentAttributeName" => nil,
+          "stimulusReflex" => {
+            "some" => :data,
+            "morph" => :page
+          },
+          "reflexId" => "666",
+          "operation" => "morph"
+        }
+      ],
+      "version" => CableReady::VERSION
     }
 
     assert_broadcast_on @reflex.stream_name, expected do

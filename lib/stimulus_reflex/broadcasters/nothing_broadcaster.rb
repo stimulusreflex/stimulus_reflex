@@ -3,7 +3,13 @@
 module StimulusReflex
   class NothingBroadcaster < Broadcaster
     def broadcast(_, data)
-      broadcast_message subject: "nothing", data: data
+      operations << ["document", :dispatch_event]
+      cable_ready.dispatch_event(
+        name: "stimulus-reflex:morph-nothing",
+        selector: nil,
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym)
+      ).broadcast
     end
 
     def nothing?

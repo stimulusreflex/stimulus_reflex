@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
 class StimulusReflex::SanityChecker
-  NODE_VERSION_FORMAT = /(\d+\.\d+\.\d+.*):/
-  JSON_VERSION_FORMAT = /(\d+\.\d+\.\d+.*)"/
-
   class << self
     def check!
+      return if ENV["SKIP_SANITY_CHECK"]
       return if StimulusReflex.config.on_failed_sanity_checks == :ignore
       return if called_by_installer?
       return if called_by_generate_config?
+      return if called_by_rake?
 
       instance = new
       instance.check_caching_enabled
-      instance.check_javascript_package_version
+      # instance.check_default_url_config
     end
 
     private
@@ -24,131 +23,90 @@ class StimulusReflex::SanityChecker
     end
 
     def called_by_generate_config?
-      ARGV.include? "stimulus_reflex:config"
+      ARGV.include? "stimulus_reflex:initializer"
+    end
+
+    def called_by_rake?
+      File.basename($PROGRAM_NAME) == "rake"
     end
   end
 
   def check_caching_enabled
-    unless caching_enabled?
+    if caching_not_enabled?
       warn_and_exit <<~WARN
-        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+        👉 StimulusReflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
+
         To enable caching in development, run:
-            rails dev:cache
+
+          rails dev:cache
       WARN
     end
 
-    unless not_null_store?
+    if using_null_store?
       warn_and_exit <<~WARN
-        Stimulus Reflex requires caching to be enabled. Caching allows the session to be modified during ActionCable requests.
-        But your config.cache_store is set to :null_store, so it won't work.
+        👉 StimulusReflex requires caching to be enabled.
+
+        Caching allows the session to be modified during ActionCable requests. Your config.cache_store is set to :null_store, so it won't work.
       WARN
     end
   end
 
-  def check_javascript_package_version
-    if javascript_package_version.nil?
-      warn_and_exit <<~WARN
-        Can't locate the stimulus_reflex NPM package.
-        Either add it to your package.json as a dependency or use "yarn link stimulus_reflex" if you are doing development.
+  def check_default_url_config
+    return if StimulusReflex.config.on_missing_default_urls == :ignore
+    if default_url_config_missing?
+      puts <<~WARN
+        👉 StimulusReflex strongly suggests that you set default_url_options in your environment files. Otherwise, ActionController #{"and ActionMailer " if defined?(ActionMailer)}will default to example.com when rendering route helpers.
+
+        You can set your URL options in config/environments/#{Rails.env}.rb
+
+          config.action_controller.default_url_options = {host: "localhost", port: 3000}
+          #{"config.action_mailer.default_url_options = {host: \"localhost\", port: 3000}\n" if defined?(ActionMailer)}
+        Please update every environment with the appropriate URL. Typically, no port is necessary in production.
+
       WARN
     end
+  end
 
-    unless javascript_version_matches?
-      warn_and_exit <<~WARN
-        The Stimulus Reflex javascript package version (#{javascript_package_version}) does not match the Rubygem version (#{gem_version}).
-        To update the Stimulus Reflex npm package:
-            yarn upgrade stimulus_reflex@#{gem_version}
-      WARN
+  def caching_not_enabled?
+    Rails.application.config.action_controller.perform_caching == false
+  end
+
+  def using_null_store?
+    Rails.application.config.cache_store == :null_store
+  end
+
+  def initializer_missing?
+    File.exist?(Rails.root.join("config", "initializers", "stimulus_reflex.rb")) == false
+  end
+
+  def default_url_config_set?
+    if defined?(ActionMailer)
+      Rails.application.config.action_controller.default_url_options.blank? || Rails.application.config.action_mailer.default_url_options.blank?
+    else
+      Rails.application.config.action_controller.default_url_options.blank?
     end
-  end
-
-  private
-
-  def caching_enabled?
-    Rails.application.config.action_controller.perform_caching
-  end
-
-  def not_null_store?
-    Rails.application.config.cache_store != :null_store
-  end
-
-  def javascript_version_matches?
-    javascript_package_version == gem_version
-  end
-
-  def gem_version
-    @_gem_version ||= StimulusReflex::VERSION.gsub(".pre", "-pre")
-  end
-
-  def javascript_package_version
-    @_js_version ||= find_javascript_package_version
-  end
-
-  def find_javascript_package_version
-    if (match = search_file(package_json_path, regex: /version/))
-      match[JSON_VERSION_FORMAT, 1]
-    elsif (match = search_file(yarn_lock_path, regex: /^stimulus_reflex/))
-      match[NODE_VERSION_FORMAT, 1]
-    end
-  end
-
-  def search_file(path, regex:)
-    return unless File.exist?(path)
-    File.foreach(path).grep(regex).first
-  end
-
-  def package_json_path
-    Rails.root.join("node_modules", "stimulus_reflex", "package.json")
-  end
-
-  def yarn_lock_path
-    Rails.root.join("yarn.lock")
-  end
-
-  def initializer_path
-    @_initializer_path ||= Rails.root.join("config", "initializers", "stimulus_reflex.rb")
   end
 
   def warn_and_exit(text)
-    puts "WARNING:"
-    puts text
-    exit_with_info if StimulusReflex.config.on_failed_sanity_checks == :exit
-  end
-
-  def exit_with_info
     puts
-
-    # bundle exec rails generate stimulus_reflex:config
-    if File.exist?(initializer_path)
+    puts "Heads up! 🔥"
+    puts
+    puts text
+    puts
+    if StimulusReflex.config.on_failed_sanity_checks == :exit
       puts <<~INFO
-        If you know what you are doing and you want to start the application anyway,
-        you can add the following directive to the StimulusReflex initializer,
-        which is located at #{initializer_path}
+        To ignore any warnings and start the application anyway, you can set the SKIP_SANITY_CHECK environment variable:
+
+          SKIP_SANITY_CHECK=true rails
+
+        To do this permanently, add the following directive to the StimulusReflex initializer:
 
           StimulusReflex.configure do |config|
             config.on_failed_sanity_checks = :warn
           end
 
       INFO
-    else
-      puts <<~INFO
-        If you know what you are doing and you want to start the application anyway,
-        you can create a StimulusReflex initializer with the command:
-
-        bundle exec rails generate stimulus_reflex:config
-
-        Then open your initializer at
-
-        <RAILS_ROOT>/config/initializers/stimulus_reflex.rb
-
-        and then add the following directive:
-
-          StimulusReflex.configure do |config|
-            config.on_failed_sanity_checks = :warn
-          end
-
-      INFO
+      exit false unless Rails.env.test?
     end
-    exit false
   end
 end

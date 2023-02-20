@@ -5,36 +5,28 @@ module StimulusReflex
     def broadcast(_, data = {})
       morphs.each do |morph|
         selectors, html = morph
-        updates = selectors.is_a?(Hash) ? selectors : Hash[selectors, html]
-        updates.each do |key, value|
-          html = reflex.render(key) if key.is_a?(ActiveRecord::Base) && value.nil?
-          html = reflex.wrap(reflex.render(key), key) if key.is_a?(ActiveRecord::Relation) && value.nil?
-          fragment = Nokogiri::HTML.fragment(html&.to_s || "")
-
-          selector = key.is_a?(ActiveRecord::Base) || key.is_a?(ActiveRecord::Relation) ? reflex.dom_id(key) : key
-          match = fragment.at_css(selector)
+        updates = create_update_collection(selectors, html)
+        updates.each do |update|
+          document = StimulusReflex::HTML::DocumentFragment.new(update.html)
+          match = document.match(update.selector)
           if match.present?
-            operations << [selector, :morph]
-            cable_ready.morph(
-              selector: selector,
+            operations << [update.selector, StimulusReflex.config.morph_operation]
+            cable_ready.send StimulusReflex.config.morph_operation, {
+              selector: update.selector,
               html: match.inner_html,
               payload: payload,
               children_only: true,
               permanent_attribute_name: permanent_attribute_name,
-              stimulus_reflex: data.merge({
-                morph: to_sym
-              })
-            )
+              stimulus_reflex: data.merge(morph: to_sym)
+            }
           else
-            operations << [selector, :inner_html]
-            cable_ready.inner_html(
-              selector: selector,
-              html: fragment.to_html,
+            operations << [update.selector, StimulusReflex.config.replace_operation]
+            cable_ready.send StimulusReflex.config.replace_operation, {
+              selector: update.selector,
+              html: update.html.to_s,
               payload: payload,
-              stimulus_reflex: data.merge({
-                morph: to_sym
-              })
-            )
+              stimulus_reflex: data.merge(morph: to_sym)
+            }
           end
         end
       end
@@ -61,6 +53,15 @@ module StimulusReflex
 
     def to_s
       "Selector"
+    end
+
+    private
+
+    def create_update_collection(selectors, html)
+      updates = selectors.is_a?(Hash) ? selectors : {selectors => html}
+      updates.map do |key, value|
+        StimulusReflex::Broadcasters::Update.new(key, value, reflex)
+      end
     end
   end
 end

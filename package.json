@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.4.1",
+  "version": "3.5.0-pre9",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -18,40 +18,56 @@
     "dom",
     "morphdom"
   ],
-  "homepage": "https://docs.stimulusreflex.com/",
-  "bugs": {
-    "url": "https://github.com/hopsoft/stimulus_reflex/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:hopsoft/stimulus_reflex.git"
-  },
+  "homepage": "https://docs.stimulusreflex.com",
+  "bugs": "https://github.com/stimulusreflex/stimulus_reflex/issues",
+  "repository": "https://github.com/stimulusreflex/stimulus_reflex",
   "license": "MIT",
   "author": "Nathan Hopkins <natehop@gmail.com>",
-  "main": "./javascript/stimulus_reflex.js",
-  "module": "./javascript/stimulus_reflex.js",
+  "contributors": [
+    "Andrew Mason <andrewmcodes@protonmail.com>",
+    "Julian Rubisch <julian@julianrubisch.at>",
+    "Marco Roth <marco.roth@intergga.ch>",
+    "Nathan Hopkins <natehop@gmail.com>"
+  ],
+  "main": "./dist/stimulus_reflex.js",
+  "module": "./dist/stimulus_reflex.js",
+  "browser": "./dist/stimulus_reflex.js",
+  "import": "./dist/stimulus_reflex.js",
+  "unpkg": "./dist/stimulus_reflex.umd.js",
+  "umd": "./dist/stimulus_reflex.umd.js",
+  "files": [
+    "dist/*",
+    "javascript/*"
+  ],
   "scripts": {
-    "postinstall": "node ./javascript/scripts/post_install.js",
-    "prettier-standard:check": "yarn run prettier-standard --check ./javascript/*.js ./javascript/**/*.js",
-    "prettier-standard:format": "yarn run prettier-standard ./javascript/*.js ./javascript/**/*.js",
-    "test": "yarn run mocha --require @babel/register --require esm ./javascript/test"
+    "lint": "yarn run format --check",
+    "format": "yarn run prettier-standard ./javascript/**/*.js rollup.config.mjs",
+    "build": "yarn rollup -c",
+    "build:watch": "yarn rollup -wc",
+    "watch": "yarn build:watch",
+    "test": "web-test-runner javascript/test/**/*.test.js",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "peerDependencies": {
-    "stimulus": ">= 1.1"
+    "@hotwired/stimulus": ">= 3.0"
   },
   "dependencies": {
-    "@rails/actioncable": ">= 6.0",
-    "cable_ready": ">= 4.5.0"
+    "@hotwired/stimulus": ">= 3.0, < 4",
+    "@rails/actioncable": ">= 6.0, < 8",
+    "cable_ready": "5.0.0-pre10"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/register": "^7.6.2",
-    "assert": "^2.0.0",
-    "esm": "^3.2.25",
-    "jsdom": "^16.0.1",
-    "mocha": "^8.0.1",
-    "prettier-standard": "^16.1.0",
-    "stimulus": ">= 1.1"
+    "@open-wc/testing": "^3.1.7",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@web/dev-server-esbuild": "^0.3.3",
+    "@web/dev-server-rollup": "^0.3.21",
+    "@web/test-runner": "^0.15.0",
+    "prettier-standard": "^16.4.1",
+    "rollup": "^3.17.1",
+    "vitepress": "^1.0.0-alpha.47"
   }
 }

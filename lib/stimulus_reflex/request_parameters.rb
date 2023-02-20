@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StimulusReflex
   class RequestParameters
     def initialize(params:, req:, url:)

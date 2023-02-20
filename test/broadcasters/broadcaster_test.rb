@@ -7,6 +7,5 @@ class StimulusReflex::BroadcasterTest < StimulusReflex::BroadcasterTestCase
     broadcaster = StimulusReflex::Broadcaster.new(@reflex)
 
     assert_raises(NotImplementedError) { broadcaster.broadcast }
-    assert_raises(NotImplementedError) { broadcaster.broadcast_message(subject: "Test") }
   end
 end

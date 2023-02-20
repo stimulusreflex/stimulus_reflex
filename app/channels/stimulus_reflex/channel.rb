@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
+  attr_reader :reflex_data
+
   def stream_name
-    ids = connection.identifiers.map { |identifier| send(identifier).try(:id) || send(identifier) }
-    [
-      params[:channel],
-      ids.select(&:present?).join(";")
-    ].select(&:present?).join(":")
+    [params[:channel], connection.connection_identifier].reject(&:blank?).join(":")
   end
 
   def subscribed
@@ -15,51 +13,46 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def receive(data)
-    url = data["url"].to_s
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
-    target = data["target"].to_s
-    reflex_name, method_name = target.split("#")
-    reflex_name = reflex_name.camelize
-    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
-    arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
-    permanent_attribute_name = data["permanentAttributeName"]
-    form_data = Rack::Utils.parse_nested_query(data["formData"])
-    params = form_data.deep_merge(data["params"] || {})
+    @reflex_data = StimulusReflex::ReflexData.new(data)
 
     begin
       begin
-        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
-        reflex = reflex_class.new(
-          self,
-          url: url,
-          data: data,
-          selectors: selectors,
-          method_name: method_name,
-          params: params,
-          client_attributes: {
-            reflex_id: data["reflexId"],
-            xpath_controller: data["xpathController"],
-            xpath_element: data["xpathElement"],
-            reflex_controller: data["reflexController"],
-            permanent_attribute_name: permanent_attribute_name
-          }
-        )
-        delegate_call_to_reflex reflex, method_name, arguments
-      rescue => invoke_error
-        message = exception_message_with_backtrace(invoke_error)
-        body = "Reflex #{target} failed: #{message} [#{url}]"
+        reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
+        delegate_call_to_reflex reflex
+      rescue => exception
+        error = exception_with_backtrace(exception)
+        error_message = "\e[31mReflex #{reflex_data.target} failed: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
 
         if reflex
-          reflex.rescue_with_handler(invoke_error)
-          reflex.broadcast_message subject: "error", body: body, data: data, error: invoke_error
+          reflex.rescue_with_handler(exception)
+          reflex.logger&.error error_message
+          reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
-          puts "\e[31m#{body}\e[0m"
+          if exception.is_a? StimulusReflex::Reflex::VersionMismatchError
+            mismatch = "Reflex failed due to stimulus_reflex gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the \"x.y.z.preN\" version format, while NPM packages use \"x.y.z-preN\".\n\nstimulus_reflex gem: #{StimulusReflex::VERSION}\nstimulus_reflex NPM: #{data["version"]}"
 
-          if body.to_s.include? "No route matches"
+            StimulusReflex.config.logger.error("\n\e[31m#{mismatch}\e[0m") unless StimulusReflex.config.on_failed_sanity_checks == :ignore
+
+            if Rails.env.development?
+              CableReady::Channels.instance[stream_name].console_log(
+                message: mismatch,
+                level: "error",
+                id: data["id"]
+              ).broadcast
+            end
+
+            if StimulusReflex.config.on_failed_sanity_checks == :exit
+              sleep 0.1
+              exit!
+            end
+          else
+            StimulusReflex.config.logger.error error_message
+          end
+
+          if error_message.to_s.include? "No route matches"
             initializer_path = Rails.root.join("config", "initializers", "stimulus_reflex.rb")
 
-            puts <<~NOTE
+            StimulusReflex.config.logger.warn <<~NOTE
               \e[33mNOTE: StimulusReflex failed to locate a matching route and could not re-render the page.
 
               If your app uses Rack middleware to rewrite part of the request path, you must enable those middleware modules in StimulusReflex.
@@ -81,41 +74,35 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       end
 
       if reflex.halted?
-        reflex.broadcast_message subject: "halted", data: data
+        reflex.broadcast_halt data: data
+      elsif reflex.forbidden?
+        reflex.broadcast_forbid data: data
       else
         begin
-          reflex.broadcast(selectors, data)
-        rescue => render_error
-          reflex.rescue_with_handler(render_error)
-          message = exception_message_with_backtrace(render_error)
-          body = "Reflex failed to re-render: #{message} [#{url}]"
-          reflex.broadcast_message subject: "error", body: body, data: data, error: render_error
-          puts "\e[31m#{body}\e[0m"
+          reflex.broadcast(reflex_data.selectors, data)
+        rescue => exception
+          reflex.rescue_with_handler(exception)
+          error = exception_with_backtrace(exception)
+          reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
+          reflex.logger&.error "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
         end
       end
     ensure
       if reflex
         commit_session(reflex)
         report_failed_basic_auth(reflex) if reflex.controller?
-        reflex.logger.print
+        reflex.logger&.log_all_operations
       end
     end
   end
 
   private
 
-  def object_with_indifferent_access(object)
-    return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
-    object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
-    object
-  end
-
-  def is_reflex?(reflex_class)
-    reflex_class.ancestors.include? StimulusReflex::Reflex
-  end
-
-  def delegate_call_to_reflex(reflex, method_name, arguments = [])
+  def delegate_call_to_reflex(reflex)
+    method_name = reflex_data.method_name
+    arguments = reflex_data.arguments
     method = reflex.method(method_name)
+
     policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
 
     if policy.no_arguments?
@@ -123,26 +110,29 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     elsif policy.arguments?
       reflex.process(method_name, *arguments)
     else
-      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{required_params.inspect}, optional #{optional_params.inspect})")
+      raise ArgumentError.new("wrong number of arguments (given #{arguments.inspect}, expected #{policy.required_params.inspect}, optional #{policy.optional_params.inspect})")
     end
   end
 
   def commit_session(reflex)
-    store = reflex.request.session.instance_variable_get("@by")
+    store = reflex.request.session.instance_variable_get(:@by)
     store.commit_session reflex.request, reflex.controller.response
-  rescue => e
-    message = "Failed to commit session! #{exception_message_with_backtrace(e)}"
-    puts "\e[31m#{message}\e[0m"
+  rescue => exception
+    error = exception_with_backtrace(exception)
+    reflex.logger&.error "\e[31mFailed to commit session! #{error[:message]}\e[0m\n#{error[:backtrace]}"
   end
 
   def report_failed_basic_auth(reflex)
     if reflex.controller.response.status == 401
-      message = "Reflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication."
-      puts "\e[31m#{message}\e[0m"
+      reflex.logger&.error "\e[31mReflex failed to process controller action \"#{reflex.controller.class}##{reflex.controller.action_name}\" due to HTTP basic auth. Consider adding \"unless: -> { @stimulus_reflex }\" to the before_action or method responible for authentication.\e[0m"
     end
   end
 
-  def exception_message_with_backtrace(exception)
-    "#{exception}\n#{exception.backtrace.first}"
+  def exception_with_backtrace(exception)
+    {
+      message: exception.to_s,
+      backtrace: exception.backtrace.first.split(":in ")[0],
+      stack: exception.backtrace.join("\n")
+    }
   end
 end

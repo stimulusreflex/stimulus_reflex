@@ -2,12 +2,14 @@
 
 ENV["RAILS_ENV"] ||= "test"
 
-require "minitest/mock"
+require "mocha"
 require "rails"
 require "active_model"
 require "active_record"
 require "action_controller"
+require "minitest/mock"
 require "pry"
+
 require_relative "../lib/stimulus_reflex"
 
 class TestApp < Rails::Application
@@ -25,6 +27,9 @@ class TestController < ApplicationController
 end
 
 class SessionMock
+  def enabled?
+  end
+
   def load!
     nil
   end
@@ -41,6 +46,24 @@ class TestModel
   attr_accessor :id
   def is_a?(klass)
     klass == ActiveRecord::Base
+  end
+
+  def to_gid_param
+    "xxxyyyzzz"
+  end
+end
+
+module ActionCable
+  module Channel
+    class ConnectionStub
+      def connection_identifier
+        connection_gid identifiers.map { |id| send(id.to_sym) if id }.compact
+      end
+
+      def connection_gid(ids)
+        ids.map { |o| o.respond_to?(:to_gid_param) ? o.to_gid_param : o.to_s }.sort.join(":")
+      end
+    end
   end
 end
 

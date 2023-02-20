@@ -1,7 +1,7 @@
-import reflexes from './reflexes'
+import Deprecate from './deprecate'
+import Schema from './schema'
+
 import { elementToXPath, XPathToArray } from './utils'
-import Debug from './debug'
-// import Deprecate from './deprecate'
 
 const multipleInstances = element => {
   if (['checkbox', 'radio'].includes(element.type)) {
@@ -29,20 +29,23 @@ const collectCheckedOptions = element => {
 //
 //   attributeValue(['', 'one', null, 'two', 'three ']) // 'one two three'
 //
-export const attributeValue = (values = []) => {
-  const value = values
-    .filter(v => v && String(v).length)
-    .map(v => v.trim())
-    .join(' ')
-    .trim()
-  return value.length ? value : null
+const attributeValue = (values = []) => {
+  const value = Array.from(
+    new Set(
+      values
+      .filter(v => v && String(v).length)
+      .map(v => v.trim())
+    )
+  ).join(' ').trim()
+
+  return value.length > 0 ? value : null
 }
 
 // Returns an array for the passed string value by splitting on whitespace.
 //
 //   attributeValues('one two three ') // ['one', 'two', 'three']
 //
-export const attributeValues = value => {
+const attributeValues = value => {
   if (!value) return []
   if (!value.length) return []
   return value.split(' ').filter(v => v.trim().length)
@@ -50,7 +53,7 @@ export const attributeValues = value => {
 
 // Extracts attributes from a DOM element.
 //
-export const extractElementAttributes = element => {
+const extractElementAttributes = element => {
   let attrs = Array.from(element.attributes).reduce((memo, attr) => {
     memo[attr.name] = attr.value
     return memo
@@ -70,20 +73,26 @@ export const extractElementAttributes = element => {
   return attrs
 }
 
-// Extracts the dataset of an element and combines it with the data attributes from all specified tokens
+// Returns an array of elements for the provided tokens.
+// Tokens is an array of space separated string coming from the `data-reflex-dataset`
+// or `data-reflex-dataset-all` attribute.
+
 //
-export const extractElementDataset = element => {
+const getElementsFromTokens = (element, tokens) => {
+  if (!tokens || tokens.length === 0) return []
+
   let elements = [element]
+
   const xPath = elementToXPath(element)
-  const dataset = element.attributes[reflexes.app.schema.reflexDatasetAttribute]
-  const tokens = (dataset && dataset.value.split(' ')) || []
 
   tokens.forEach(token => {
     try {
       switch (token) {
         case 'combined':
-          // uncomment when SR#438 is merged
-          // if (Deprecate.enabled) console.warn("In the next version of StimulusReflex, the 'combined' option to data-reflex-dataset will become 'ancestors'.")
+          if (Deprecate.enabled)
+            console.warn(
+              "In the next version of StimulusReflex, the 'combined' option to data-reflex-dataset will become 'ancestors'."
+            )
           elements = [
             ...elements,
             ...XPathToArray(`${xPath}/ancestor::*`, true)
@@ -120,14 +129,55 @@ export const extractElementDataset = element => {
     }
   })
 
-  return elements.reduce((acc, ele) => {
+  return elements
+}
+
+// Extracts the dataset of an element and combines it with the data attributes from all specified tokens
+//
+const extractElementDataset = element => {
+  const dataset = element.attributes[Schema.reflexDataset]
+  const allDataset = element.attributes[Schema.reflexDatasetAll]
+
+  const tokens = (dataset && dataset.value.split(' ')) || []
+  const allTokens = (allDataset && allDataset.value.split(' ')) || []
+
+  const datasetElements = getElementsFromTokens(element, tokens)
+  const datasetAllElements = getElementsFromTokens(element, allTokens)
+
+  const datasetAttributes = datasetElements.reduce((acc, ele) => {
     return { ...extractDataAttributes(ele), ...acc }
   }, {})
+
+  const reflexElementAttributes = extractDataAttributes(element)
+
+  const elementDataset = {
+    dataset: { ...reflexElementAttributes, ...datasetAttributes },
+    datasetAll: {}
+  }
+
+  datasetAllElements.forEach(element => {
+    const elementAttributes = extractDataAttributes(element)
+
+    Object.keys(elementAttributes).forEach(key => {
+      const value = elementAttributes[key]
+
+      if (
+        elementDataset.datasetAll[key] &&
+        Array.isArray(elementDataset.datasetAll[key])
+      ) {
+        elementDataset.datasetAll[key].push(value)
+      } else {
+        elementDataset.datasetAll[key] = [value]
+      }
+    })
+  })
+
+  return elementDataset
 }
 
 // Extracts all data attributes from a DOM element.
 //
-export const extractDataAttributes = element => {
+const extractDataAttributes = element => {
   let attrs = {}
 
   if (element && element.attributes) {
@@ -139,4 +189,12 @@ export const extractDataAttributes = element => {
   }
 
   return attrs
+}
+
+export {
+  attributeValue,
+  attributeValues,
+  extractElementAttributes,
+  extractElementDataset,
+  extractDataAttributes
 }

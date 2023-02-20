@@ -1,30 +1,37 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/dataset"
+require "stimulus_reflex/utils/attribute_builder"
+
 class StimulusReflex::Element < OpenStruct
-  attr_reader :attributes, :data_attributes, :selector
+  include StimulusReflex::AttributeBuilder
+  include CableReady::Broadcaster
+
+  attr_reader :attrs, :dataset, :selector
   attr_accessor :cable_ready
 
-  def initialize(attrs: {}, dataset: {}, selector: nil, cable_ready: nil)
+  alias_method :data_attributes, :dataset
+
+  delegate :signed, :unsigned, :numeric, :boolean, :data_attrs, to: :dataset
+
+  def initialize(data = {}, selector: nil)
     @selector = selector
-    @cable_ready = cable_ready
 
-    @attributes = HashWithIndifferentAccess.new(attrs || {})
-    @data_attributes = HashWithIndifferentAccess.new(dataset || {})
-    all_attributes = @attributes.merge(@data_attributes)
-    super all_attributes.merge(all_attributes.transform_keys(&:underscore))
-    @data_attributes.transform_keys! { |key| key.delete_prefix "data-" }
+    @attrs = HashWithIndifferentAccess.new(data["attrs"] || {})
+    @dataset = StimulusReflex::Dataset.new(data)
+
+    all_attributes = @attrs.merge(@dataset.attrs)
+    super build_underscored(all_attributes)
   end
 
-  def signed
-    @signed ||= ->(accessor) { GlobalID::Locator.locate_signed(dataset[accessor]) }
+  def attributes
+    @attributes ||= OpenStruct.new(build_underscored(attrs))
   end
 
-  def unsigned
-    @unsigned ||= ->(accessor) { GlobalID::Locator.locate(dataset[accessor]) }
-  end
+  def to_dom_id
+    raise NoIDError.new "The element `morph` is called on must have a valid DOM ID" if id.blank?
 
-  def dataset
-    @dataset ||= OpenStruct.new(data_attributes.merge(data_attributes.transform_keys(&:underscore)))
+    "##{id}"
   end
 
   def update

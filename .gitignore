@@ -8,5 +8,13 @@
 tmp/
 node_modules
 .vscode
-/javascript/dist
 *~
+
+dist/**
+!dist/.keep
+
+app/assets/javascripts/**
+!app/assets/javascripts/.keep
+
+docs/.vitepress/dist/
+docs/.vitepress/cache/

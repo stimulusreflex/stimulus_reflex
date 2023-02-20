@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StimulusReflex
   module ConcernEnhancer
     extend ActiveSupport::Concern
@@ -6,12 +8,12 @@ module StimulusReflex
       def method_missing(name, *args)
         case ancestors
         when ->(a) { !(a & [StimulusReflex::Reflex]).empty? }
-          if (ActiveRecord::Base.public_methods + ActionController::Base.public_methods).include? name
+          if ((defined?(ActiveRecord) ? ActiveRecord::Base.public_methods : []) + ActionController::Base.public_methods).include? name
             nil
           else
             super
           end
-        when ->(a) { !(a & [ActiveRecord::Base, ActionController::Base]).empty? }
+        when ->(a) { !(a & (defined?(ActiveRecord) ? [ActiveRecord::Base, ActionController::Base] : [ActionController::Base])).empty? }
           if StimulusReflex::Reflex.public_methods.include? name
             nil
           else
@@ -25,8 +27,8 @@ module StimulusReflex
       def respond_to_missing?(name, include_all = false)
         case ancestors
         when ->(a) { !(a & [StimulusReflex::Reflex]).empty? }
-          (ActiveRecord::Base.public_methods + ActionController::Base.public_methods).include?(name) || super
-        when ->(a) { !(a & [ActiveRecord::Base, ActionController::Base]).empty? }
+          ((defined?(ActiveRecord) ? ActiveRecord::Base.public_methods : []) + ActionController::Base.public_methods).include?(name) || super
+        when ->(a) { !(a & (defined?(ActiveRecord) ? [ActiveRecord::Base, ActionController::Base] : [ActionController::Base])).empty? }
           StimulusReflex::Reflex.public_methods.include?(name) || super
         else
           super

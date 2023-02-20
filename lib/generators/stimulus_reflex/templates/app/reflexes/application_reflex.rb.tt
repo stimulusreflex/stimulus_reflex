@@ -1,12 +1,27 @@
 # frozen_string_literal: true
 
 class ApplicationReflex < StimulusReflex::Reflex
-  # Put application-wide Reflex behavior and callbacks in this file. 
+  # Put application-wide Reflex behavior and callbacks in this file.
   #
-  # Example:
+  # Learn more at: https://docs.stimulusreflex.com/guide/reflex-classes
   #
-  #   # If your ActionCable connection is: `identified_by :current_user`
+  # If your ActionCable connection is: `identified_by :current_user`
   #   delegate :current_user, to: :connection
   #
-  # Learn more at: https://docs.stimulusreflex.com/rtfm/reflex-classes
+  # current_user delegation alloqs you to use the Current pattern, too:
+  #   before_reflex do
+  #     Current.user = current_user
+  #   end
+  #
+  # To access view helpers inside Reflexes:
+  #   delegate :helpers, to: :ApplicationController
+  #
+  # If you need to localize your Reflexes, you can set the I18n locale here:
+  #
+  #   before_reflex do
+  #     I18n.locale = :fr
+  #   end
+  #
+  # For code examples, considerations and caveats, see:
+  # https://docs.stimulusreflex.com/guide/patterns#internationalization
 end

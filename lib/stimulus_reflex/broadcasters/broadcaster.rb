@@ -2,13 +2,14 @@
 
 module StimulusReflex
   class Broadcaster
-    attr_reader :reflex, :logger, :operations
-    delegate :cable_ready, :permanent_attribute_name, :payload, to: :reflex
+    attr_reader :reflex, :cable_ready, :logger, :operations
+    delegate :permanent_attribute_name, :payload, to: :reflex
 
     def initialize(reflex)
       @reflex = reflex
       @logger = Rails.logger if defined?(Rails.logger)
       @operations = []
+      @cable_ready = StimulusReflex::CableReadyChannels.new(reflex)
     end
 
     def nothing?
@@ -23,34 +24,43 @@ module StimulusReflex
       false
     end
 
-    def broadcast_message(subject:, body: nil, data: {}, error: nil)
-      logger.error "\e[31m#{body}\e[0m" if subject == "error"
+    def broadcast_halt(data: {})
       operations << ["document", :dispatch_event]
       cable_ready.dispatch_event(
-        name: "stimulus-reflex:server-message",
-        detail: {
-          reflexId: data["reflexId"],
-          payload: payload,
-          stimulus_reflex: data.merge(
-            morph: to_sym,
-            server_message: {subject: subject, body: error&.to_s}
-          )
-        }
-      )
-      cable_ready.broadcast
+        name: "stimulus-reflex:morph-halted",
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym)
+      ).broadcast
     end
 
-    # abstract method to be implemented by subclasses
+    def broadcast_forbid(data: {})
+      operations << ["document", :dispatch_event]
+      cable_ready.dispatch_event(
+        name: "stimulus-reflex:morph-forbidden",
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym)
+      ).broadcast
+    end
+
+    def broadcast_error(data: {}, error: nil)
+      operations << ["document", :dispatch_event]
+      cable_ready.dispatch_event(
+        name: "stimulus-reflex:morph-error",
+        payload: payload,
+        stimulus_reflex: data.merge(morph: to_sym),
+        error: error&.to_s
+      ).broadcast
+    end
+
+    # abstract methods to be implemented by subclasses
     def broadcast(*args)
       raise NotImplementedError
     end
 
-    # abstract method to be implemented by subclasses
     def to_sym
       raise NotImplementedError
     end
 
-    # abstract method to be implemented by subclasses
     def to_s
       raise NotImplementedError
     end
