@@ -50,7 +50,7 @@ class StimulusReflex::Element < OpenStruct
     end
   end
 
-  def respond_to_missing?(method_name)
+  def respond_to_missing?(method_name, include_private = false)
     cable_ready.respond_to?(method_name) || super
   end
 end
