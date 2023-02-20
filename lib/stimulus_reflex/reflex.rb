@@ -30,7 +30,7 @@ class StimulusReflex::Reflex
     @channel = channel
     @url = url
     @element = element
-    @element.cable_ready = @cable_ready
+    @element.cable_ready = @cable_ready if element
     @selectors = selectors
     @method_name = method_name
     @params = params
