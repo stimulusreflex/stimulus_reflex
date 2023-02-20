@@ -11,9 +11,8 @@ class StimulusReflex::Reflex
   prepend StimulusReflex::CableReadiness
 
   include ActiveSupport::Rescuable
-  include ActionView::Helpers::TagHelper
-
   include StimulusReflex::Callbacks
+  include ActionView::Helpers::TagHelper
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
@@ -31,6 +30,7 @@ class StimulusReflex::Reflex
     @channel = channel
     @url = url
     @element = element
+    @element.cable_ready = @cable_ready
     @selectors = selectors
     @method_name = method_name
     @params = params
@@ -39,8 +39,6 @@ class StimulusReflex::Reflex
     @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
     @payload = {}
     @headers = {}
-
-    @element.cable_ready = @cable_ready
 
     if version != StimulusReflex::VERSION && StimulusReflex.config.on_failed_sanity_checks != :ignore
       raise VersionMismatchError.new("stimulus_reflex gem / NPM package version mismatch")
@@ -118,8 +116,6 @@ class StimulusReflex::Reflex
     instance_variables.each { |name| @controller.instance_variable_set name, instance_variable_get(name) }
     @controller
   end
-
-@element
 
   def controller?
     !!defined? @controller

@@ -1,3 +1,4 @@
+import Debug from './debug'
 import Deprecate from './deprecate'
 import Schema from './schema'
 
@@ -76,7 +77,6 @@ const extractElementAttributes = element => {
 // Returns an array of elements for the provided tokens.
 // Tokens is an array of space separated string coming from the `data-reflex-dataset`
 // or `data-reflex-dataset-all` attribute.
-
 //
 const getElementsFromTokens = (element, tokens) => {
   if (!tokens || tokens.length === 0) return []

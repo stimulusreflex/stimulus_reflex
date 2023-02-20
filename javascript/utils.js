@@ -185,21 +185,3 @@ export {
   getReflexOptions,
   getReflexRoots
 }
-
-export const XPathToArray = (xpath, reverse = false) => {
-  const snapshotList = document.evaluate(
-    xpath,
-    document,
-    null,
-    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-    null
-  )
-
-  const snapshots = []
-
-  for (let i = 0; i < snapshotList.snapshotLength; i++) {
-    snapshots.push(snapshotList.snapshotItem(i))
-  }
-
-  return reverse ? snapshots.reverse() : snapshots
-}

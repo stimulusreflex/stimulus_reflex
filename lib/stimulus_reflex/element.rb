@@ -5,7 +5,6 @@ require "stimulus_reflex/utils/attribute_builder"
 
 class StimulusReflex::Element < OpenStruct
   include StimulusReflex::AttributeBuilder
-  include CableReady::Broadcaster
 
   attr_reader :attrs, :dataset, :selector
   attr_accessor :cable_ready

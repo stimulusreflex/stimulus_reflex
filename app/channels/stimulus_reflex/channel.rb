@@ -14,7 +14,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
   def receive(data)
     @reflex_data = StimulusReflex::ReflexData.new(data)
-
     begin
       begin
         reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
