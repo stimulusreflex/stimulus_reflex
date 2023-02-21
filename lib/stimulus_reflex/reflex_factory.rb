@@ -22,8 +22,7 @@ class StimulusReflex::ReflexFactory
           permanent_attribute_name: reflex_data.permanent_attribute_name,
           suppress_logging: reflex_data.suppress_logging,
           version: reflex_data.version
-        }
-      )
+        })
     end
 
     def reflex_class
