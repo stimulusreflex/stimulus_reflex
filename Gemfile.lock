@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.5.0.pre9)
+    stimulus_reflex (3.5.0.pre10)
       actioncable (>= 5.2, < 8)
       actionpack (>= 5.2, < 8)
       actionview (>= 5.2, < 8)
@@ -89,6 +89,7 @@ GEM
       railties (>= 5.2)
       thread-local (>= 1.1.0)
     concurrent-ruby (1.2.0)
+    connection_pool (2.3.0)
     crass (1.0.6)
     date (3.3.3)
     erubi (1.12.0)
@@ -161,7 +162,10 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
-    redis (4.6.0)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
+    redis-client (0.12.2)
+      connection_pool
     regexp_parser (2.7.0)
     rexml (3.2.5)
     rubocop (1.44.1)
