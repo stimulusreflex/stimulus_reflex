@@ -2,13 +2,10 @@
 
 ENV["RAILS_ENV"] ||= "test"
 
-require "mocha"
 require "rails"
 require "active_model"
 require "active_record"
 require "action_controller"
-require "minitest/mock"
-require "pry"
 
 require_relative "../lib/stimulus_reflex"
 
