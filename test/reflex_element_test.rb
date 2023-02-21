@@ -29,7 +29,7 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
 
   test "broadcasts updates using element.broadcast" do
     expected = build_payload(
-      {"selector"=>"#element-selector", "xpath"=>false, "html"=>"<p>Some HTML</p>", "reflexId"=>"666", "operation"=>"innerHtml"}
+      {"selector" => "#element-selector", "xpath" => false, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"}
     )
 
     assert_broadcast_on(@reflex.stream_name, expected) do
@@ -40,7 +40,7 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
 
   test "selector can be overwritten" do
     expected = build_payload(
-      {"selector"=>"#overwritten", "xpath"=>false, "html"=>"<p>Some HTML</p>", "reflexId"=>"666", "operation"=>"innerHtml"}
+      {"selector" => "#overwritten", "xpath" => false, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"}
     )
 
     assert_broadcast_on(@reflex.stream_name, expected) do
@@ -50,8 +50,8 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
 
   test "broadcasts using element.broadcast chained" do
     expected = build_payload [
-      {"selector"=>"#element-selector", "xpath"=>false, "html"=>"<p>Some HTML</p>", "reflexId"=>"666", "operation"=>"innerHtml"},
-      {"name"=>"abc", "detail"=>{"some"=>"key"}, "reflexId"=>"666", "selector"=>"#element-selector", "operation"=>"dispatchEvent"}
+      {"selector" => "#element-selector", "xpath" => false, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"},
+      {"name" => "abc", "detail" => {"some" => "key"}, "reflexId" => "666", "selector" => "#element-selector", "operation" => "dispatchEvent"}
     ]
 
     assert_broadcast_on(@reflex.stream_name, expected) do
