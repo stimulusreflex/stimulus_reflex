@@ -12,6 +12,7 @@ class StimulusReflex::Element < OpenStruct
   alias_method :data_attributes, :dataset
 
   delegate :signed, :unsigned, :numeric, :boolean, :data_attrs, to: :dataset
+  delegate :broadcast, to: :cable_ready
 
   def initialize(data = {}, selector: nil)
     @selector = selector
@@ -33,14 +34,10 @@ class StimulusReflex::Element < OpenStruct
     "##{id}"
   end
 
-  def update
-    cable_ready.broadcast
-  end
-
   def method_missing(method_name, *arguments, &block)
     if cable_ready.respond_to?(method_name)
       xpath = selector ? selector.starts_with?("//") : false
-      args = {selector: selector, xpath: xpath}.merge(arguments.first.to_h)
+      args = arguments.first.to_h.reverse_merge(selector: selector, xpath: xpath)
 
       cable_ready.send(method_name.to_sym, args)
 
