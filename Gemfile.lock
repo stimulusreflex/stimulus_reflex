@@ -2,15 +2,15 @@ PATH
   remote: .
   specs:
     stimulus_reflex (3.5.0.pre9)
-      actioncable (>= 5.2)
-      actionpack (>= 5.2)
-      actionview (>= 5.2)
-      activesupport (>= 5.2)
+      actioncable (>= 5.2, < 8)
+      actionpack (>= 5.2, < 8)
+      actionview (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
       cable_ready (>= 5.0.0.pre10)
-      nokogiri
-      rack
-      railties (>= 5.2)
-      redis
+      nokogiri (~> 1.0)
+      rack (~> 2.0)
+      railties (>= 5.2, < 8)
+      redis (>= 4.0, < 6.0)
 
 GEM
   remote: https://rubygems.org/
@@ -202,9 +202,9 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   magic_frozen_string_literal (~> 1.2)
-  mocha
-  rails (>= 5.2)
-  rake
+  mocha (~> 1.13)
+  rails (>= 5.2, < 8)
+  rake (~> 13.0)
   standard (~> 1.24)
   stimulus_reflex!
 
