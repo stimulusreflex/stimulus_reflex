@@ -16,7 +16,7 @@ class StimulusReflex::Reflex
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
+  attr_reader :channel, :url, :element, :controller_element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
 
@@ -26,11 +26,11 @@ class StimulusReflex::Reflex
   # TODO remove xpath_controller and xpath_element for v4
   delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
+  def initialize(channel, url: nil, element: nil, controller_element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
     @url = url
     @element = element
-    @element.cable_ready = @cable_ready if element
+    @controller_element = controller_element
     @selectors = selectors
     @method_name = method_name
     @params = params
