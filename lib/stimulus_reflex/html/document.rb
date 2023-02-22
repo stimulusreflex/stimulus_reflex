@@ -8,7 +8,7 @@ module StimulusReflex
       delegate :element, to: :@document
 
       def document_element
-        @document.root
+        @document.try(:root)
       end
 
       def outer_html
