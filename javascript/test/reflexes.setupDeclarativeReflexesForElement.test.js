@@ -224,7 +224,10 @@ describe('scanForReflexesOnElement', () => {
 
     assert.equal(button.dataset.reflex, 'click->Example#click')
     assert.equal(button.dataset.action, 'click->stimulus-reflex#__perform')
-    assert.equal(button.dataset.controller, 'something-different stimulus-reflex')
+    assert.equal(
+      button.dataset.controller,
+      'something-different stimulus-reflex'
+    )
   })
 
   it('should use correct data-controller from parent if parent holds multiple controllers', async () => {
