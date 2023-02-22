@@ -10,6 +10,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_equal "", fragment.outer_html
     assert_equal "", fragment.inner_html
 
+    assert_equal Nokogiri::HTML5::DocumentFragment, fragment.document_element.class
+
     assert_nil fragment.match("html").to_html
     assert_nil fragment.match("html").outer_html
     assert_nil fragment.match("html").inner_html
@@ -25,6 +27,44 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_equal "", fragment.to_html
     assert_equal "", fragment.outer_html
     assert_equal "", fragment.inner_html
+
+    assert_equal Nokogiri::HTML5::DocumentFragment, fragment.document_element.class
+
+    assert_nil fragment.match("html").to_html
+    assert_nil fragment.match("html").outer_html
+    assert_nil fragment.match("html").inner_html
+
+    assert_nil fragment.match("body").to_html
+    assert_nil fragment.match("body").outer_html
+    assert_nil fragment.match("body").inner_html
+  end
+
+  test "should handle string" do
+    fragment = StimulusReflex::HTML::DocumentFragment.new("Some String")
+
+    assert_equal "Some String", fragment.to_html
+    assert_equal "Some String", fragment.outer_html
+    assert_equal "Some String", fragment.inner_html
+
+    assert_equal Nokogiri::HTML5::DocumentFragment, fragment.document_element.class
+
+    assert_nil fragment.match("html").to_html
+    assert_nil fragment.match("html").outer_html
+    assert_nil fragment.match("html").inner_html
+
+    assert_nil fragment.match("body").to_html
+    assert_nil fragment.match("body").outer_html
+    assert_nil fragment.match("body").inner_html
+  end
+
+  test "should handle number" do
+    fragment = StimulusReflex::HTML::DocumentFragment.new(12312312)
+
+    assert_equal "12312312", fragment.to_html
+    assert_equal "12312312", fragment.outer_html
+    assert_equal "12312312", fragment.inner_html
+
+    assert_equal Nokogiri::HTML5::DocumentFragment, fragment.document_element.class
 
     assert_nil fragment.match("html").to_html
     assert_nil fragment.match("html").outer_html
@@ -48,6 +88,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     outer_title = "<h1 id=\"title\">#{inner_title}</h1>"
     inner_container = outer_title
     outer_container = "<div id=\"container\"> #{inner_container} </div>"
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
 
     assert_equal raw_html.squish, fragment.to_html.squish
     assert_equal outer_title.squish, fragment.inner_html.squish
@@ -77,6 +119,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     inner_body = "<h1>Home#index</h1> <p>Find me in app/views/home/index.html.erb</p>"
     outer_body = "<body id=\"body\"> #{inner_body} </body>"
+
+    assert_equal Nokogiri::XML::Element, fragment.document_element.class
 
     assert_equal outer_body, fragment.to_html.squish
     assert_equal inner_body, fragment.inner_html.squish
@@ -124,6 +168,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     inner_html = "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title>StimulusReflex Test</title> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"> <meta name=\"csrf-param\" content=\"authenticity_token\"> <meta name=\"csrf-token\" content=\"token\"> <link rel=\"stylesheet\" href=\"/assets/application.css\" data-turbo-track=\"reload\"> <script src=\"/assets/application.js\" data-turbo-track=\"reload\" defer></script> </head> #{outer_body}"
     outer_html = "<html> #{inner_html} </html>"
 
+    assert_equal Nokogiri::XML::Element, fragment.document_element.class
+
     assert_equal outer_html, fragment.to_html.squish
     assert_equal outer_html, fragment.outer_html.squish
     assert_equal inner_html, fragment.inner_html.squish
@@ -148,24 +194,104 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
   test "should properly handle a tr without the parent table" do
     html = "<tr><td>1</td><td>2</td></tr>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
     assert_equal html, fragment.to_html.squish
   end
 
   test "should properly handle a td without the parent table or td" do
     html = "<td>1</td>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
     assert_equal html, fragment.to_html.squish
   end
 
-  test "should properly return inner html of a complex tr when parsed as a fragment fragment" do
+  test "should properly parse <tr>" do
     html = '<tr data-foo="1" id="123" class="abc"><td>1</td><td>2</td></tr>'
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal '<tr data-foo="1" id="123" class="abc"><td>1</td><td>2</td></tr>', fragment.to_html.squish
+    assert_equal '<tr data-foo="1" id="123" class="abc"><td>1</td><td>2</td></tr>', fragment.outer_html.squish
     assert_equal "<td>1</td><td>2</td>", fragment.inner_html.squish
   end
 
-  test "should properly return inner html of a td when parsed as a fragment fragment" do
+  test "should properly parse <td>" do
     html = "<td>1</td>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<td>1</td>", fragment.to_html.squish
+    assert_equal "<td>1</td>", fragment.outer_html.squish
+    assert_equal "1", fragment.inner_html.squish
+  end
+
+  test "should properly parse <th>" do
+    html = "<th>1</th>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<th>1</th>", fragment.to_html.squish
+    assert_equal "<th>1</th>", fragment.outer_html.squish
+    assert_equal "1", fragment.inner_html.squish
+  end
+
+  test "should properly parse <thead>" do
+    html = "<thead><tr><th>1</th><th>2</th></tr></thead>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<thead><tr><th>1</th><th>2</th></tr></thead>", fragment.to_html.squish
+    assert_equal "<thead><tr><th>1</th><th>2</th></tr></thead>", fragment.outer_html.squish
+    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
+  end
+
+  test "should properly parse <tbody>" do
+    html = "<tbody><tr><th>1</th><th>2</th></tr></tbody>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<tbody><tr><th>1</th><th>2</th></tr></tbody>", fragment.to_html.squish
+    assert_equal "<tbody><tr><th>1</th><th>2</th></tr></tbody>", fragment.outer_html.squish
+    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
+  end
+
+  test "should properly parse <tfoot>" do
+    html = "<tfoot><tr><th>1</th><th>2</th></tr></tfoot>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<tfoot><tr><th>1</th><th>2</th></tr></tfoot>", fragment.to_html.squish
+    assert_equal "<tfoot><tr><th>1</th><th>2</th></tr></tfoot>", fragment.outer_html.squish
+    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
+  end
+
+  test "should properly parse <ul>" do
+    html = "<ul><li>1</li></ul>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<ul><li>1</li></ul>", fragment.to_html.squish
+    assert_equal "<ul><li>1</li></ul>", fragment.outer_html.squish
+    assert_equal "<li>1</li>", fragment.inner_html.squish
+  end
+
+  test "should properly parse <li>" do
+    html = "<li>1</li>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal Nokogiri::XML::NodeSet, fragment.document_element.class
+
+    assert_equal "<li>1</li>", fragment.to_html.squish
+    assert_equal "<li>1</li>", fragment.outer_html.squish
     assert_equal "1", fragment.inner_html.squish
   end
 end

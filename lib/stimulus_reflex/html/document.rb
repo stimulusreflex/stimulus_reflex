@@ -8,7 +8,7 @@ module StimulusReflex
       delegate :element, to: :@document
 
       def document_element
-        @document&.root
+        @document.root
       end
 
       def outer_html
@@ -21,7 +21,8 @@ module StimulusReflex
       end
 
       def initialize(html)
-        @document = parsing_class.parse(html.to_s)
+        @html = html.to_s
+        @document = parsing_class.parse(@html)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
