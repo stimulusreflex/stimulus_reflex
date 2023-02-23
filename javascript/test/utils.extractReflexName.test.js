@@ -37,6 +37,22 @@ describe('extractReflexName', () => {
     })
   })
 
+  describe('when the reflex class is camelcased', () => {
+    it('returns namespaced reflex name', () => {
+      assert.equal(
+        extractReflexName('click->SomethingElseReflex#create'),
+        'SomethingElse'
+      )
+    })
+
+    it('returns namespaced reflex name', () => {
+      assert.equal(
+        extractReflexName('click->SomethingElse#create'),
+        'SomethingElse'
+      )
+    })
+  })
+
   describe('when the reflex class is namespaced', () => {
     it('returns namespaced reflex name', () => {
       assert.equal(
