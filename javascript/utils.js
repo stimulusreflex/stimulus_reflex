@@ -169,19 +169,27 @@ const getReflexRoots = element => {
   return list
 }
 
+const reflexNameToControllerIdentifier = (reflexName) => {
+  return reflexName
+    .replace(/([a-z0–9])([A-Z])/g, '$1-$2')
+    .replace(/(::)/g, '--')
+    .toLowerCase()
+}
+
 export {
-  uuidv4,
-  serializeForm,
   camelize,
   debounce,
   dispatch,
-  extractReflexName,
-  emitEvent,
-  elementToXPath,
-  XPathToElement,
-  XPathToArray,
   elementInvalid,
+  elementToXPath,
+  emitEvent,
+  extractReflexName,
   getReflexElement,
   getReflexOptions,
-  getReflexRoots
+  getReflexRoots,
+  reflexNameToControllerIdentifier,
+  serializeForm,
+  uuidv4,
+  XPathToArray,
+  XPathToElement,
 }

@@ -2,7 +2,7 @@ import App from './app'
 import Schema from './schema'
 
 import { attributeValues } from './attributes'
-import { extractReflexName } from './utils'
+import { extractReflexName, reflexNameToControllerIdentifier } from './utils'
 
 // Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
@@ -40,12 +40,7 @@ const findControllerByReflexName = (reflexName, controllers) => {
   const controller = controllers.find(controller => {
     if (!controller.identifier) return
 
-    return (
-      extractReflexName(reflexName)
-        .replace(/([a-z0–9])([A-Z])/g, '$1-$2')
-        .replace(/(::)/g, '--')
-        .toLowerCase() === controller.identifier
-    )
+    return controller.identifier === reflexNameToControllerIdentifier(extractReflexName(reflexName))
   })
 
   return controller || controllers[0]
