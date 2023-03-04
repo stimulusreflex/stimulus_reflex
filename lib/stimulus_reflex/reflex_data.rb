@@ -85,6 +85,10 @@ class StimulusReflex::ReflexData
     data["reflexController"]
   end
 
+  def npm_version
+    data["version"].to_s
+  end
+
   def version
     data["version"].to_s.gsub("-pre", ".pre")
   end

@@ -7,6 +7,7 @@ module StimulusReflex
     def initialize(reflex)
       @stream_name = reflex.stream_name
       @id = reflex.id
+      CableReady.config.add_operation_name(:stimulus_reflex_version_mismatch)
     end
 
     def cable_ready_channels

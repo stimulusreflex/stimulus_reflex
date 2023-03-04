@@ -1,16 +1,27 @@
 # frozen_string_literal: true
 
 require "stimulus_reflex/cable_readiness"
+require "stimulus_reflex/version_checker"
 
 # TODO remove xpath_controller and xpath_element for v4
-ClientAttributes = Struct.new(:id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, keyword_init: true)
+ClientAttributes = Struct.new(
+  :id,
+  :tab_id,
+  :reflex_controller,
+  :xpath_controller,
+  :xpath_element,
+  :permanent_attribute_name,
+  :version,
+  :npm_version,
+  :suppress_logging,
+  keyword_init: true
+)
 
 class StimulusReflex::Reflex
-  class VersionMismatchError < StandardError; end
-
   prepend StimulusReflex::CableReadiness
-  include ActiveSupport::Rescuable
+  include StimulusReflex::VersionChecker
   include StimulusReflex::Callbacks
+  include ActiveSupport::Rescuable
   include ActionView::Helpers::TagHelper
   include CableReady::Identifiable
 
@@ -23,7 +34,7 @@ class StimulusReflex::Reflex
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :client_attributes
+  delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :client_attributes
 
   def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
     @channel = channel
@@ -38,9 +49,7 @@ class StimulusReflex::Reflex
     @payload = {}
     @headers = {}
 
-    if version != StimulusReflex::VERSION && StimulusReflex.config.on_failed_sanity_checks != :ignore
-      raise VersionMismatchError.new("stimulus_reflex gem / NPM package version mismatch")
-    end
+    check_version!
 
     self.params
   end

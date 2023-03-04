@@ -20,7 +20,8 @@ class StimulusReflex::ReflexFactory
           reflex_controller: reflex_data.reflex_controller,
           permanent_attribute_name: reflex_data.permanent_attribute_name,
           suppress_logging: reflex_data.suppress_logging,
-          version: reflex_data.version
+          version: reflex_data.version,
+          npm_version: reflex_data.npm_version
         })
     end
 
