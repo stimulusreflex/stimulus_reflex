@@ -170,7 +170,7 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(button.dataset.controller, 'example2')
   })
 
-  it('should', async () => {
+  it('should not add data-controller to reflex element if parent holds', async () => {
     App.app.register('example', ExampleController)
 
     const controllerElement = await fixture(html`
