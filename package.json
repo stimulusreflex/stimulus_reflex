@@ -67,7 +67,7 @@
     "@web/dev-server-rollup": "^0.3.21",
     "@web/test-runner": "^0.15.1",
     "prettier-standard": "^16.4.1",
-    "rollup": "^3.17.1",
+    "rollup": "^3.19.1",
     "vitepress": "^1.0.0-alpha.56"
   }
 }
