@@ -65,7 +65,7 @@
     "@rollup/plugin-terser": "^0.4.0",
     "@web/dev-server-esbuild": "^0.3.3",
     "@web/dev-server-rollup": "^0.3.21",
-    "@web/test-runner": "^0.15.0",
+    "@web/test-runner": "^0.15.1",
     "prettier-standard": "^16.4.1",
     "rollup": "^3.17.1",
     "vitepress": "^1.0.0-alpha.47"
