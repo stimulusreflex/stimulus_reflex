@@ -62,41 +62,55 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](/appendices/deployment#session-storage) page.
 :::
 
-We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
+We'll install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
+
+::: info
+We assume [Stimulus](https://stimulus.hotwired.dev) is present in your app, along with a Javascript bundling mechanism. If in doubt, please consult the READMEs of [jsbundling-rails](https://github.com/rails/jsbundling-rails) and [stimulus-rails](https://github.com/hotwired/stimulus-rails).
+
+StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
+:::
 
 ```ruby
 bundle add stimulus_reflex --version 3.5.0.pre10
+bundle add redis-session-store
 yarn add stimulus_reflex@3.5.0.pre10
 rails dev:cache # caching needs to be enabled
-rake webpacker:install:stimulus
 rails generate stimulus_reflex:initializer
 ```
-
-::: warning
-StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
-:::
 
 We need to modify our Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer. A new websocket connection is created if the consumer isn't found.
 
 ::: code-group
 ```javascript [app/javascript/controllers/index.js]
-import { Application } from 'stimulus'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
-import StimulusReflex from 'stimulus_reflex'
-import consumer from '../channels/consumer'
+import { application } from "./application"
+import applicationController from "./application_controller"
+import StimulusReflex from "stimulus_reflex"
+
+import controllers from "./**/*_controller.js"
+
+controllers.forEach((controller) => {
+  application.register(controller.name, controller.module.default)
+})
+
+StimulusReflex.initialize(application, { applicationController, isolate: true })
+
+// consider removing these options in production
+StimulusReflex.debug = true
+// end remove
+```
+```javascript [app/javascript/controllers/application.js]
+import { Application } from "@hotwired/stimulus"
+import consumer from "../channels/consumer"
 
 const application = Application.start()
-const context = require.context('controllers', true, /_controller\.js$/)
-application.load(definitionsFromContext(context))
+
+// Configure Stimulus development experience
+application.debug = false
 application.consumer = consumer
-StimulusReflex.initialize(application, { isolate: true })
+window.Stimulus   = application
+
+export { application }
 ```
-:::
-
-::: warning
-The installation information presented by the [StimulusJS handbook](https://stimulus.hotwired.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex assumes that you are following the Rails webpacker flow. Your application pack should simply `import 'controllers'`.
-
-If you require your controllers in both `application.js` and `index.js` it's likely that your controllers will load twice, causing all sorts of strange behavior.
 :::
 
 **Cookie-based session storage is not currently supported by StimulusReflex.**
@@ -112,7 +126,7 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } }
 
   # ADD the following line; it probably doesn't exist
-  config.session_store :cache_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
+  config.session_store :redis_session_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
 end
 ```
 :::
