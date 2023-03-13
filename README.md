@@ -109,7 +109,7 @@ yarn add stimulus_reflex
 
 # ...
 
-pin 'stimulus_reflex', to: 'stimulus_reflex.min.js', preload: true
+pin 'stimulus_reflex', to: 'stimulus_reflex.js', preload: true
 ```
 
 #### Rails Asset pipeline (Sprockets):
@@ -117,7 +117,7 @@ pin 'stimulus_reflex', to: 'stimulus_reflex.min.js', preload: true
 ```html+erb
 <!-- app/views/layouts/application.html.erb -->
 
-<%= javascript_include_tag "stimulus_reflex.umd.min.js", "data-turbo-track": "reload" %>
+<%= javascript_include_tag "stimulus_reflex.umd.js", "data-turbo-track": "reload" %>
 ```
 
 ## 🙏 Contributing

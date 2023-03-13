@@ -50,7 +50,7 @@ backup(importmap_path) do
 
   if !importmap.include?("pin \"@hotwired/stimulus\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
+      pin "@hotwired/stimulus", to: "stimulus.js", preload: true
     RUBY
     say "✅ pin @hotwired/stimulus"
   else
@@ -68,7 +68,7 @@ backup(importmap_path) do
 
   if !importmap.include?("pin \"cable_ready\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "cable_ready", to: "cable_ready.min.js", preload: true
+      pin "cable_ready", to: "cable_ready.js", preload: true
     RUBY
     say "✅ pin cable_ready"
   else
@@ -77,7 +77,7 @@ backup(importmap_path) do
 
   if !importmap.include?("pin \"stimulus_reflex\"")
     append_file(importmap_path, <<~RUBY, verbose: false)
-      pin "stimulus_reflex", to: "stimulus_reflex.min.js", preload: true
+      pin "stimulus_reflex", to: "stimulus_reflex.js", preload: true
     RUBY
     say "✅ pin stimulus_reflex"
   else

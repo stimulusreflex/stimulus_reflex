@@ -17,11 +17,7 @@ module StimulusReflex
     #
     PRECOMPILE_ASSETS = %w[
       stimulus_reflex.js
-      stimulus_reflex.min.js
-      stimulus_reflex.min.js.map
       stimulus_reflex.umd.js
-      stimulus_reflex.umd.min.js
-      stimulus_reflex.umd.min.js.map
     ]
 
     initializer "stimulus_reflex.assets" do |app|
