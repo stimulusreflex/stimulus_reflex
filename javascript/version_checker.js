@@ -4,9 +4,9 @@ import CableReady from "cable_ready"
 CableReady.operations.stimulusReflexVersionMismatch = operation => {
   const levels = {
     "info": {},
-    "success": { background: "rgb(0, 176, 155)" },
-    "warn": { background: "rgb(247, 187, 60)" },
-    "error": { background: "rgb(255, 95, 109)" },
+    "success": { background: "#198754", color: "white" },
+    "warn": { background: "#ffc107", color: "black" },
+    "error": { background: "#dc3545", color: "white" },
   }
 
   const defaults = {
@@ -37,7 +37,6 @@ function setupToastify() {
          padding: 12px 20px;
          color: #ffffff;
          display: inline-block;
-         box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
          background: -webkit-linear-gradient(315deg, #73a5ff, #5477f5);
          background: linear-gradient(135deg, #73a5ff, #5477f5);
          position: fixed;
