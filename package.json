@@ -46,6 +46,7 @@
     "build:watch": "yarn rollup -wc",
     "watch": "yarn build:watch",
     "test": "web-test-runner javascript/test/**/*.test.js",
+    "test:watch": "yarn test --watch",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs && cp docs/_redirects docs/.vitepress/dist",
     "docs:preview": "vitepress preview docs"
