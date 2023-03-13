@@ -1,6 +1,7 @@
 import { html, fixture, assert } from '@open-wc/testing'
 
 import ExampleController from './dummy/example_controller'
+import RegularController from './dummy/regular_controller'
 
 import { application } from './dummy/application'
 import { initialize } from '../stimulus_reflex'
@@ -37,9 +38,9 @@ describe('scanForReflexesOnElement', () => {
     App.app.register('example', ExampleController)
 
     const element = await fixture(html`
-      <a data-controller="example" data-reflex="click->Example#handle"
-        >Handle</a
-      >
+      <a data-controller="example" data-reflex="click->Example#handle">
+        Handle
+      </a>
     `)
 
     scanForReflexesOnElement(element)
@@ -153,7 +154,7 @@ describe('scanForReflexesOnElement', () => {
 
     const controllerElement = await fixture(html`
       <div data-controller="example1">
-        <a data-reflex="click->Example#click" data-controller="example2"
+        <a data-reflex="click->Example2#click" data-controller="example2"
           >Click</a
         >
       </div>
@@ -165,12 +166,12 @@ describe('scanForReflexesOnElement', () => {
 
     assert.equal(controllerElement.dataset.controller, 'example1')
 
-    assert.equal(button.dataset.reflex, 'click->Example#click')
+    assert.equal(button.dataset.reflex, 'click->Example2#click')
     assert.equal(button.dataset.action, 'click->example2#__perform')
     assert.equal(button.dataset.controller, 'example2')
   })
 
-  it('should not add data-controller to reflex element if parent holds', async () => {
+  it('should not add data-controller to reflex element if parent holds a controller', async () => {
     App.app.register('example', ExampleController)
 
     const controllerElement = await fixture(html`
@@ -186,8 +187,8 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(controllerElement.dataset.controller, 'example')
 
     assert.equal(button.dataset.reflex, 'click->SomethingDifferent#click')
-    assert.equal(button.dataset.action, 'click->example#__perform')
-    assert.equal(button.dataset.controller, undefined)
+    assert.equal(button.dataset.action, 'click->stimulus-reflex#__perform')
+    assert.equal(button.dataset.controller, 'stimulus-reflex')
   })
 
   it('should use correct data-controller if element holds multiple controllers', async () => {
@@ -198,8 +199,9 @@ describe('scanForReflexesOnElement', () => {
       <a
         data-reflex="click->SomethingDifferent#click"
         data-controller="example something-different"
-        >Click</a
       >
+        Click
+      </a>
     `)
 
     scanForReflexesOnElement(button)
@@ -216,8 +218,9 @@ describe('scanForReflexesOnElement', () => {
       <a
         data-reflex="click->Example#click"
         data-controller="something-different"
-        >Click</a
       >
+        Click
+      </a>
     `)
 
     scanForReflexesOnElement(button)
@@ -252,5 +255,21 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(button.dataset.reflex, 'click->SomethingDifferent#click')
     assert.equal(button.dataset.action, 'click->something-different#__perform')
     assert.equal(button.dataset.controller, undefined)
+  })
+
+  it('should use stimulus-reflex controller if matching controller is not a StimulusReflex controller', async () => {
+    App.app.register('example', RegularController)
+
+    const element = await fixture(html`
+      <a data-reflex="click->Example#click" data-controller="example">
+        Click
+      </a>
+    `)
+
+    scanForReflexesOnElement(element)
+
+    assert.equal(element.dataset.reflex, 'click->Example#click')
+    assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
+    assert.equal(element.dataset.controller, 'example stimulus-reflex')
   })
 })

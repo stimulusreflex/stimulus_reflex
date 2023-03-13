@@ -18,8 +18,14 @@ describe('reflexNameToControllerIdentifier', () => {
 
   describe('camelcased reflex name', () => {
     it('returns controller identifier', () => {
-      assert.equal(reflexNameToControllerIdentifier('SomethingElse'), 'something-else')
-      assert.equal(reflexNameToControllerIdentifier('SomethingElseReflex'), 'something-else')
+      assert.equal(
+        reflexNameToControllerIdentifier('SomethingElse'),
+        'something-else'
+      )
+      assert.equal(
+        reflexNameToControllerIdentifier('SomethingElseReflex'),
+        'something-else'
+      )
     })
   })
 

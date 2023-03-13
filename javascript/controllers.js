@@ -7,16 +7,14 @@ import { extractReflexName, reflexNameToControllerIdentifier } from './utils'
 // Returns StimulusReflex controllers local to the passed element based on the data-controller attribute.
 //
 const localReflexControllers = element => {
-  return attributeValues(element.getAttribute(Schema.controller)).reduce(
-    (memo, name) => {
-      const controller = App.app.getControllerForElementAndIdentifier(
-        element,
-        name
-      )
-      if (controller && controller.StimulusReflex) memo.push(controller)
-      return memo
-    },
-    []
+  const potentialIdentifiers = attributeValues(element.getAttribute(Schema.controller))
+
+  const potentialControllers = potentialIdentifiers.map(
+    identifier => App.app.getControllerForElementAndIdentifier(element, identifier)
+  )
+
+  return potentialControllers.filter(
+    controller => controller && controller.StimulusReflex
   )
 }
 
@@ -38,9 +36,11 @@ const allReflexControllers = element => {
 // it would select the 'test' controller.
 const findControllerByReflexName = (reflexName, controllers) => {
   const controller = controllers.find(controller => {
-    if (!controller.identifier) return
+    if (!controller || !controller.identifier) return
 
-    return controller.identifier === reflexNameToControllerIdentifier(extractReflexName(reflexName))
+    const identifier = reflexNameToControllerIdentifier(extractReflexName(reflexName))
+
+    return identifier === controller.identifier
   })
 
   return controller || controllers[0]
