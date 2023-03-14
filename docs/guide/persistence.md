@@ -18,7 +18,7 @@ We estimate that 80% of the pain points in web development are the direct result
 
 Imagine if you could focus almost all of your time and attention on the fun parts of web development again. Exploring the best way to implement features instead of worrying about data serialization and forgotten user flows. Smaller teams working smarter and faster, then going home on time.
 
-Designing applications in the StimulusReflex mindset is far simpler than what we're used to, and we don't have to give up responsive client functionality to see our productivity shoot through the roof. It does, however, require some unlearning of old habits. You're about to rethink how you approach persisting the state of your application. This can be jarring at first! Even positive changes feel like work.
+Designing applications in the StimulusReflex mindset is different than the request/response cycle we're used to, and we don't have to give up responsive client functionality to see our productivity shoot through the roof. It does, however, require some unlearning of old habits. You're about to rethink how you approach persisting the state of your application. This can be jarring at first! Even positive changes feel like work.
 
 ## The life of a Reflex
 
@@ -161,7 +161,7 @@ Rails.cache.fetch("preferences:colors:foreground:#{session.id}") { "blue" }
 
 If no key exists, it will evaluate the block, store the value for that key and return the value in one convenient, atomic action. Bam!
 
-If you're planning to do more than set an initial simple value for the fetch default, it's good idiomatic Ruby to move to the `do..end` form of block declaration:
+If you're planning to do more than set an initial value for the fetch default, it's good idiomatic Ruby to move to the `do..end` form of block declaration:
 
 ::: code-group
 ```html [fortune.html.erb]
