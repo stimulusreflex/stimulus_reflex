@@ -15,7 +15,7 @@ StimulusReflex gives you a set of callback events to control how your Reflex act
 ```ruby
 class ExampleReflex < StimulusReflex::Reflex
   # will run only if the element has the step attribute, can use "unless" instead of "if" for opposite condition
-  before_reflex :do_stuff, if: proc { |reflex| reflex.element.dataset[:step] }
+  before_reflex :do_stuff, if: proc { |reflex| reflex.element.dataset.step }
 
   # will run only if the reflex instance has a url attribute, can use "unless" instead of "if" for opposite condition
   before_reflex :do_stuff, if: :url

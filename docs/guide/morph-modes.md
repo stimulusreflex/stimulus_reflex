@@ -281,8 +281,8 @@ class PagyReflex < ApplicationReflex
   include Pagy::Backend
 
   def paginate
-    pagy, posts = pagy(Post.all, page: element.dataset[:page].to_i)
-    morph "#paginator", render(partial: "paginator", locals: {pagy: pagy})
+    pagy, posts = pagy(Post.all, page: element.dataset.page.to_i)
+    morph "#paginator", render(partial: "paginator", locals: { pagy: pagy })
     morph "#posts", render(posts)
   end
 end

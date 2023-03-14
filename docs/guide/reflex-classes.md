@@ -23,7 +23,7 @@ You can get and set values on the `session` object, and if you're using the (def
 ```ruby [app/reflexes/example_reflex.rb]
 class ExampleReflex < ApplicationReflex
   def test
-    @id = element.dataset["id"] # @id will be available inside your controller action if you're doing a Page Morph
+    @id = element.dataset.id # @id will be available inside your controller action if you're doing a Page Morph
   end
 end
 ```
@@ -126,6 +126,7 @@ Here's an example that outlines how you can interact with the `element` property
   checked
   data-reflex="change->Example#accessors"
   data-value="123"
+  data-enabled="true"
 />
 ```
 :::
@@ -159,6 +160,25 @@ class ExampleReflex < ApplicationReflex
     element.dataset[:value]     # => "123"
     element.dataset["value"]    # => "123"
 
+    element.numeric[:value]          # => 123.0
+    element.numeric["value"]         # => 123.0
+    element.numeric[:"data-value"]   # => 123.0
+    element.numeric["data-value"]    # => 123.0
+
+    element.dataset.numeric[:value]        # => 123.0
+    element.dataset.numeric["value"]       # => 123.0
+    element.dataset.numeric[:"data-value"] # => 123.0
+    element.dataset.numeric["data-value"]  # => 123.0
+
+    element.boolean[:enabled]                # => true
+    element.boolean["enabled"]               # => true
+    element.boolean[:"data-enabled"]         # => true
+    element.boolean["data-enabled"]          # => true
+
+    element.dataset.boolean[:enabled]        # => true
+    element.dataset.boolean["enabled"]       # => true
+    element.dataset.boolean[:"data-enabled"] # => true
+    element.dataset.boolean["data-enabled"]  # => true
   end
 end
 ```
