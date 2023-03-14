@@ -149,6 +149,7 @@ class ExampleReflex < ApplicationReflex
     element.checked             # => true
     element.label               # => "Example"
 
+    element.dataset.reflex      # => "change->Example#accessors"
     element.data_reflex         # => "change->Example#accessors"
     element["data-reflex"]      # => "change->Example#accessors"
     element.dataset[:reflex]    # => "change->Example#accessors"
