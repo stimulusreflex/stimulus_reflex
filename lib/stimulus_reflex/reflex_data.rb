@@ -36,7 +36,11 @@ class StimulusReflex::ReflexData
   end
 
   def element
-    StimulusReflex::Element.new(data)
+    @element ||= StimulusReflex::Element.new(data, selector: xpath_element)
+  end
+
+  def controller_element
+    @controller_element ||= StimulusReflex::Element.new(data, selector: xpath_controller)
   end
 
   def permanent_attribute_name

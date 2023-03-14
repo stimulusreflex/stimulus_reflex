@@ -98,6 +98,11 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   private
 
   def delegate_call_to_reflex(reflex)
+    if reflex.cable_ready
+      reflex.element.cable_ready = reflex.cable_ready if reflex.element
+      reflex.controller_element.cable_ready = reflex.cable_ready if reflex.controller_element
+    end
+
     method_name = reflex_data.method_name
     arguments = reflex_data.arguments
     method = reflex.method(method_name)

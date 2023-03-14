@@ -9,6 +9,7 @@ class StimulusReflex::ReflexFactory
       reflex_class.new(channel,
         url: reflex_data.url,
         element: reflex_data.element,
+        controller_element: reflex_data.controller_element,
         selectors: reflex_data.selectors,
         method_name: reflex_data.method_name,
         params: reflex_data.params,
