@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-include Rails.application.routes.url_helpers
-
 SR_STEPS = {
   "action_cable" => "Action Cable",
   "webpacker" => "Install StimulusReflex using Webpacker",

@@ -84,7 +84,7 @@ Please note that we are not actively providing support on Stack Overflow. If you
 
 ## 🚀 Installation and upgrading
 
-CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/setup).
+CLI and manual setup procedures are fully detailed in the [official docs](https://docs.stimulusreflex.com/hello-world/setup.html).
 
 ### Rubygem
 

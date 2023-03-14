@@ -34,20 +34,20 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
     end
 
     reflex_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
-    reflex_src = fetch("/app/reflexes/%file_name%_reflex.rb.tt")
+    reflex_src = "app/reflexes/%file_name%_reflex.rb.tt"
     reflex_path = Rails.root.join(reflex_entrypoint, "#{file_name}_reflex.rb")
-    stimulus_controller_src = fetch("/app/javascript/controllers/%file_name%_controller.js.tt")
+    stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
     stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
     template(reflex_src, reflex_path) unless options[:skip_reflex]
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"
-      controller_src = fetch("/app/controllers/examples_controller.rb.tt")
+      controller_src = "app/controllers/examples_controller.rb.tt"
       controller_path = Rails.root.join("app/controllers/examples_controller.rb")
       template(controller_src, controller_path)
 
-      view_src = fetch("/app/views/examples/show.html.erb.tt")
+      view_src = "app/views/examples/show.html.erb.tt"
       view_path = Rails.root.join("app/views/examples/show.html.erb")
       template(view_src, view_path)
 
@@ -82,11 +82,5 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
         end
       end
     end
-  end
-
-  private
-
-  def fetch(file)
-    source_paths.first + file
   end
 end

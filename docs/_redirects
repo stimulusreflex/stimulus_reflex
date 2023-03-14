@@ -1,0 +1,22 @@
+/welcome    /hello-world/index
+/setup      /hello-world/setup
+/quickstart /hello-world/quickstart
+
+/patterns           /guide/patterns
+/persistence        /guide/persistence
+/working-with-forms /guide/working-with-forms
+/authentication     /guide/authentication
+/morph-modes        /guide/morph-modes
+/lifecycle          /guide/lifecycle
+/cableready         /guide/cableready
+/reflex-classes     /guide/reflex-classes
+/reflexes           /guide/reflexes
+
+/events          /appendices/events
+/testing         /appendices/testing
+/deployment      /appendices/deployment
+/troubleshooting /appendices/troubleshooting
+/release-history /appendices/release-history
+/glossary        /appendices/glossary
+
+/rtfm/* /guide/:splat

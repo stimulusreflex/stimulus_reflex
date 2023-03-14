@@ -290,7 +290,7 @@ The `Current.user` accessor is now available in your Reflex action methods.
 ```ruby [app/reflexes/user_reflex.rb]
 class UserReflex < ApplicationReflex
   def follow
-    user = User.find(element.dataset[:user_id])
+    user = User.find(element.dataset.user_id)
     Current.user.follow(user)
 
     morph "#following", render(
@@ -336,7 +336,7 @@ CableReady - which is included and available for use in your Reflex classes - ex
 ```ruby [app/reflexes/user_reflex.rb]
 class UserReflex < ApplicationReflex
   def profile
-    user = User.find(element.dataset[:user_id])
+    user = User.find(element.dataset.user_id)
     morph dom_id(user), render(
       partial: "users/profile",
       locals: { user: user }

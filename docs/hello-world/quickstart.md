@@ -60,7 +60,7 @@ The other two attributes `data-step` and `data-count` are used to pass data to t
 ```ruby [app/reflexes/counter_reflex.rb]
 class CounterReflex < ApplicationReflex
   def increment
-    @count = element.dataset[:count].to_i + element.dataset[:step].to_i
+    @count = element.dataset.count.to_i + element.dataset.step.to_i
   end
 end
 ```

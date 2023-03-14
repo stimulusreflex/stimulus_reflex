@@ -55,4 +55,18 @@ describe('findControllerByReflexName', () => {
       controller
     )
   })
+
+  it('returns dasherized controller', () => {
+    const controller = { identifier: 'some-thing' }
+    const controllers = [
+      { identifier: 'first' },
+      controller,
+      { identifier: 'last' }
+    ]
+
+    assert.equal(
+      findControllerByReflexName('click->SomeThingReflex#create', controllers),
+      controller
+    )
+  })
 })

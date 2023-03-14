@@ -152,7 +152,10 @@ In the future, should you ever upgrade your version of StimulusReflex, it's very
 
 Since mismatched versions are the first step on the path to hell, by default StimulusReflex won't allow the server to start if your versions are mismatched.
 
-If you have special needs, you can override this setting in your initializer. `:warn` will emit the same text-based warning but not prevent the server process from starting. `:ignore` will silence all mismatched version warnings, if you really just DGAF. ¯\\_(ツ)\\_/¯
+You can override this setting in your initializer.
+* `:exit` (default) will prevent the server process from starting.
+* `:warn` will emit the same text-based warning but not prevent the server process from starting.
+* `:ignore` will silence all mismatched version warnings.
 
 ::: code-group
 ```ruby [config/initializers/stimulus_reflex.rb]

@@ -95,13 +95,13 @@ You might design your interface such that you have a deeply nested structure of 
 </div>
 ```
 
-This Reflex action will have `post-id` and `category-id` accessible:
+This Reflex action will have `post_id` and `category_id` accessible:
 
 ```ruby
 class CommentReflex < ApplicationReflex
   def create
-    puts element.dataset["post-id"]
-    puts element.dataset["category-id"]
+    puts element.dataset.post_id
+    puts element.dataset.category_id
   end
 end
 ```

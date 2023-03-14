@@ -36,13 +36,13 @@ lines = development_working_path.readlines
 
 if (index = lines.index { |line| line =~ /^[^#]*config.session_store/ })
   if /^[^#]*cookie_store/.match?(lines[index])
-    write_redis_recommendation(development_working_path, lines, index, gemfile_path)
+    write_redis_recommendation(development_working_path, lines, index, gemfile)
     halt "StimulusReflex does not support session cookies. See https://docs.stimulusreflex.com/hello-world/setup#session-storage"
     return
   elsif /^[^#]*redis_session_store/.match?(lines[index])
     say "⏩ Already using redis-session-store for session storage. Skipping."
   else
-    write_redis_recommendation(development_working_path, lines, index, gemfile_path)
+    write_redis_recommendation(development_working_path, lines, index, gemfile)
     say "🤷 We recommend using redis-session-store for session storage. See https://docs.stimulusreflex.com/hello-world/setup#session-storage"
   end
 # no session store defined, so let's opt-in to redis-session-store
