@@ -364,7 +364,7 @@ In previous versions, ActionCable was assumed; in future versions of the library
 * `stimulus-reflex:disconnected`
 * `stimulus-reflex:rejected`
 
-All events fire on `document`, expect `stimulus-reflex:ready` which is being dispatched on the StimulusReflex controller element itself.
+All events fire on `document`, except `stimulus-reflex:ready` which is being dispatched on the StimulusReflex controller element itself.
 
 `connected` fires when the ActionCable connection is established, which is a precondition of a successful call to `stimulate` - meaning that you can delay calls until the event arrives. It will also fire after a `disconnected` subscription is reconnected.
 
