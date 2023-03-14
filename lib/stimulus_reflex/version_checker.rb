@@ -40,11 +40,11 @@ module StimulusReflex
         level: level
       }
 
-      CableReady::Channels.instance[@channel.stream_name]
-        .console_log(log)
-        .dispatch_event(event)
-        .stimulus_reflex_version_mismatch(toast)
-        .broadcast
+      CableReady::Channels.instance[@channel.stream_name].tap { |channel|
+        channel.console_log(log)
+        channel.dispatch_event(event)
+        channel.stimulus_reflex_version_mismatch(toast) if Rails.env.development?
+      }.broadcast
 
       return if level == "warn"
 
