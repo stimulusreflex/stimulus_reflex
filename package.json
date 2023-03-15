@@ -55,8 +55,8 @@
     "@hotwired/stimulus": ">= 3.0"
   },
   "dependencies": {
-    "@hotwired/stimulus": ">= 3.0, < 4",
-    "@rails/actioncable": ">= 6.0, < 8",
+    "@hotwired/stimulus": "^3",
+    "@rails/actioncable": "^6 || ^7",
     "cable_ready": "5.0.0-pre10"
   },
   "devDependencies": {
