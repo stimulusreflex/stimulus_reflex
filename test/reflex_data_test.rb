@@ -6,7 +6,7 @@ class StimulusReflex::ReflexDataTest < ActiveSupport::TestCase
   reflex_data = StimulusReflex::ReflexData.new({
     "params" => {
       "user" => {"email" => "test@example.com"}
-                                                 },
+    },
     "url" => "http://example.com/?user[context]=regular"
   })
 
