@@ -27,24 +27,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           reflex.logger&.error error_message
           reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
-          if exception.is_a? StimulusReflex::Reflex::VersionMismatchError
-            mismatch = "Reflex failed due to stimulus_reflex gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the \"x.y.z.preN\" version format, while NPM packages use \"x.y.z-preN\".\n\nstimulus_reflex gem: #{StimulusReflex::VERSION}\nstimulus_reflex NPM: #{data["version"]}"
-
-            StimulusReflex.config.logger.error("\n\e[31m#{mismatch}\e[0m") unless StimulusReflex.config.on_failed_sanity_checks == :ignore
-
-            if Rails.env.development?
-              CableReady::Channels.instance[stream_name].console_log(
-                message: mismatch,
-                level: "error",
-                id: data["id"]
-              ).broadcast
-            end
-
-            if StimulusReflex.config.on_failed_sanity_checks == :exit
-              sleep 0.1
-              exit!
-            end
-          else
+          unless exception.is_a?(StimulusReflex::Reflex::VersionMismatchError)
             StimulusReflex.config.logger.error error_message
           end
 

@@ -52,7 +52,7 @@ class StimulusReflex::ReflexData
   end
 
   def params
-    form_params.merge(url_params)
+    form_params.deep_merge(url_params)
   end
 
   def form_params
@@ -83,6 +83,10 @@ class StimulusReflex::ReflexData
 
   def reflex_controller
     data["reflexController"]
+  end
+
+  def npm_version
+    data["version"].to_s
   end
 
   def version

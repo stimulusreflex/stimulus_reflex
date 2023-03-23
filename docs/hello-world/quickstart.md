@@ -60,7 +60,7 @@ The other two attributes `data-step` and `data-count` are used to pass data to t
 ```ruby [app/reflexes/counter_reflex.rb]
 class CounterReflex < ApplicationReflex
   def increment
-    @count = element.dataset[:count].to_i + element.dataset[:step].to_i
+    @count = element.dataset.count.to_i + element.dataset.step.to_i
   end
 end
 ```
@@ -160,7 +160,7 @@ In a typical Rails app, we would set the value of `@count` after fetching it fro
 We provide a generator that performs a scaffold-like functionality for StimulusReflex. It will generate files and classes appropriate to whether you specify a singular or pluralized name for your reflex class. For example, `user` and `users` are both valid and useful in different situations.
 
 ```bash
-bundle exec rails generate stimulus_reflex user
+rails generate stimulus_reflex user
 ```
 
 This will create but not overwrite the following files:
@@ -171,7 +171,7 @@ This will create but not overwrite the following files:
 4. `app/reflexes/user_reflex.rb`
 
 ::: warning
-If you later destroy a `stimulus_reflex` "scaffold" using `bundle exec rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
+If you later destroy a `stimulus_reflex` "scaffold" using `rails destroy stimulus_reflex user` your `application_reflex.rb` and `application_controller.js` will be preserved.
 :::
 
 ## StimulusReflex Cheatsheet

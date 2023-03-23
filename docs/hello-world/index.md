@@ -29,9 +29,7 @@ Wouldn't it be great if you could **focus on your product** instead of the techn
 * ✅ Facilitate simple, concise, and clear code 🤸
 * ✅ Integrate seamlessly with Ruby on Rails 🚝
 
-## New Release: v3.4 - Developer Happiness Edition
-
-![](/kittens.jpg)
+## New Release: v3.5
 
 Find out more and learn how to upgrade on the [Release History](/appendices/release-history) page.
 

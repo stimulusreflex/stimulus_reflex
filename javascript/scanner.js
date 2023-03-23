@@ -13,9 +13,11 @@ const scanForReflexes = debounce(() => {
   reflexElements.forEach(element => scanForReflexesOnElement(element))
 }, 20)
 
-const scanForReflexesOnElement = element => {
+const scanForReflexesOnElement = (element, controller = null) => {
   const controllerAttribute = element.getAttribute(Schema.controller)
-  const controllers = attributeValues(controllerAttribute)
+  const controllers = attributeValues(controllerAttribute).filter(
+    controller => controller !== 'stimulus-reflex'
+  )
 
   const reflexAttribute = element.getAttribute(Schema.reflex)
   const reflexAttributeNames = attributeValues(reflexAttribute)
@@ -26,16 +28,23 @@ const scanForReflexesOnElement = element => {
   )
 
   reflexAttributeNames.forEach(reflexName => {
-    const controller = findControllerByReflexName(
+    const potentialControllers = [controller].concat(allReflexControllers(element))
+
+    controller = findControllerByReflexName(
       reflexName,
-      allReflexControllers(element)
+      potentialControllers
     )
     const controllerName = controller
       ? controller.identifier
       : 'stimulus-reflex'
 
     actions.push(`${reflexName.split('->')[0]}->${controllerName}#__perform`)
-    controllers.push(controllerName)
+
+    const parentControllerElement = element.closest(`[data-controller~=${controllerName}]`)
+
+    if (!parentControllerElement) {
+      controllers.push(controllerName)
+    }
   })
 
   const controllerValue = attributeValue(controllers)

@@ -36,7 +36,7 @@ The fastest way to enable Reflex actions by using the `data-reflex` attribute. T
 <button data-reflex="click->Comment#create">Create</button>
 ```
 
-You can use additional data attributes to pass variables as part of your Reflex payload.
+You can use additional data attributes to pass variables as part of your Reflex:
 
 ```html
 <button
@@ -85,7 +85,7 @@ Also, you can only specify one action per event; this means `data-reflex="click-
 
 ### Inheriting data-attributes from parent elements
 
-You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex payload.
+You might design your interface such that you have a deeply nested structure of data attributes on parent elements. Instead of writing code to travel your DOM and access those values, you can use the `data-reflex-dataset="combined"` directive to scoop all data attributes up the hierarchy and pass them as part of the Reflex.
 
 ```html
 <div data-post-id="<%= @post.id %>">
@@ -95,13 +95,13 @@ You might design your interface such that you have a deeply nested structure of 
 </div>
 ```
 
-This Reflex action will have `post-id` and `category-id` accessible:
+This Reflex action will have `post_id` and `category_id` accessible:
 
 ```ruby
 class CommentReflex < ApplicationReflex
   def create
-    puts element.dataset["post-id"]
-    puts element.dataset["category-id"]
+    puts element.dataset.post_id
+    puts element.dataset.category_id
   end
 end
 ```
@@ -196,16 +196,6 @@ export default class extends ApplicationController {
 }
 ```
 
-### Aborting a Reflex
-
-It is possible that you might want to abort a Reflex and prevent it from executing. For example, the user might not have appropriate permissions to complete an action, or perhaps some other side effect like missing data would cause an exception if the Reflex was allowed to continue.
-
-We'll go into much deeper detail on life-cycle callbacks on the [Life-cycle](/guide/lifecycle) page, but for now it is important to know that if there is a `before_reflex` method in your Reflex class, it will be executed before the Reflex action. **If you call `raise :abort` in the `before_reflex` method, the Reflex action will not execute.** Instead, the client will receive a `halted` event and execute the `reflexHalted` callback if it's defined.
-
-::: info
-Halted Reflexes do not execute afterReflex callbacks on the server or client.
-:::
-
 ### Requesting a "refresh"
 
 If you are building advanced workflows, there are edge cases where you may want to initiate a Reflex action that does nothing but re-render the view template and morph any new changes into the DOM. While this shouldn't be your primary tool, it's possible for your data to be mutated by destructive external side effects. 🧟
@@ -260,7 +250,7 @@ These three attributes contain everything required to call the `remove` Reflex a
 StimulusReflex scans all content inserted into the DOM for `data-reflex` attributes, regardless of whether that content is there when the page loads or if it comes from a Reflex, an Ajax fetch, or your own local JavaScript logic. You don't have to do anything special to ensure that your UI is Reflex-enabled.
 :::
 
-What's really interesting about this is that you'll notice we don't have to add the `foo` Stimulus controller to the `button` element in order to be able to call `Foo` Reflexes. We are _not_ doing it magically in the background, either; there simply doesn't need to be a `foo` StimulusReflex Controller on the element in order for a declared Reflex to call `FooReflex#remove` on the server.
+What's really interesting about this is that you'll notice we don't have to add the `foo` Stimulus controller to the `button` element in order to be able to call `Foo` Reflexes. We are _not_ doing it magically in the background, either; there doesn't need to be a `foo` StimulusReflex Controller on the element in order for a declared Reflex to call `FooReflex#remove` on the server.
 
 **There might not even be a** `foo_controller.js`**,** **and that's okay.**
 

@@ -452,7 +452,7 @@ Do you have any more weird edge cases? Please let us know!
 
 ## Open Issues
 
-There are some things that we'd very much like to fix, but we simply haven't been able to or the responsibility falls to an upstream dependency we don't have direct access to.
+There are some things that we'd very much like to fix, but we haven't been able to or the responsibility falls to an upstream dependency we don't have direct access to.
 
 #### iframe gets refreshed despite `data-reflex-permanent`
 
@@ -558,7 +558,8 @@ If your `data-reflex-permanent` isn't being respected, try adding a unique `id` 
 StimulusReflex works best with Webpacker v5.4.
 :::
 
-::: info
+## The `spring` gem can be troublesome
+
 If _something_ goes wrong, it's often because of the **spring** gem. 💣👎
 
 You can test this by temporarily setting the `DISABLE_SPRING=1` environment variable and restarting your server.
@@ -569,7 +570,6 @@ To remove spring **forever**, here is the process we recommend:
 2. Edit your Gemfile and comment out **spring** and **spring-watcher-listen**
 3. `bin/spring binstub --remove --all`
 4. Comment out the line in `bin/rails` which says: `load File.expandpath("spring", _dir)`
-:::
 
 ## Be realistic
 

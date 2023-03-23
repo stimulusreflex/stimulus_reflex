@@ -183,28 +183,6 @@ Russian Doll caching is just stacking cache fragments inside each other, and the
 
 Nate Berkopec's excellent post "[The Complete Guide to Rails Caching](https://www.speedshop.co/2015/07/15/the-complete-guide-to-rails-caching.html)" is one of the best resources on the topic - and the source of the above examples. It's a half-hour incredibly well-spent.
 
-### Delegate render
-
-::: tip
-Since StimulusReflex v3.4, this is now done automatically. This section will be removed when the next major release arrives.
-:::
-
-If you are planning to render a lot of partials or ViewComponents in your Reflex action methods, you can delegate the `render` keyword to `ApplicationController`.
-
-::: code-group
-```ruby [app/reflexes/application_reflex.rb]
-class ApplicationReflex < StimulusReflex::Reflex
-  delegate :render, to: ApplicationController
-end
-```
-:::
-
-This means that you can now call `morph` with a more terse syntax:
-
-```ruby
-morph "#foo", render(partial: "path/to/foo")
-```
-
 ### Speed up page morphs
 
 Depending on what parts of your DOM are being morphed, it's possible that you don't need to render your layout template every time you run a Reflex. If your menus and sidebar are mostly static, you might want to experiment with constraining your update to just the template for the current action.
@@ -217,7 +195,7 @@ if @stimulus_reflex
 end
 ```
 
-Then make sure that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
+Then **make sure** that you're setting a `data-reflex-root` attribute containing a CSS selector that points to same DOM element where your template begins:
 
 ```html
 <div id="pow" data-reflex-root="#pow" data-reflex="click->Biff#pow">
@@ -234,13 +212,27 @@ You can read more about scoping Page Morphs:
 
 ### Internationalization
 
-If you're building an application for an international audience, you might want to your morphed partials to be aware of the current user's location. Set your `I18n.locale` using a helper that you can define in your `ApplicationReflex`.
+If you're building an application for an international audience, you might want to your Reflex class to be aware of the current user's location. It's important to remember that ActionCable Connections exist in their own context and will have the `I18n.default_locale` unless you change it.
+
+You can set your `I18n.locale` in a `before_reflex` callback in your `ApplicationReflex`:
 
 ::: code-group
 ```ruby [app/reflexes/application_reflex.rb]
 class ApplicationReflex < StimulusReflex::Reflex
-  def with_locale(&block)
-    I18n.with_locale(session[:locale]) { yield }
+  before_reflex do
+    I18n.locale = :fr
+  end
+end
+```
+:::
+
+You might also want to set locale in a more granular way:
+
+::: code-group
+```ruby [app/reflexes/application_reflex.rb]
+class ApplicationReflex < StimulusReflex::Reflex
+  def with_locale
+    I18n.with_locale(:de) { yield }
   end
 end
 ```
@@ -258,7 +250,56 @@ end
 ```
 :::
 
+
+Many developers will want to set the locale to a dynamic value from the `session` object:
+
+::: code-group
+```ruby [app/reflexes/application_reflex.rb]
+class ApplicationReflex < StimulusReflex::Reflex
+  before_reflex do
+    I18n.locale = session[:locale]
+  end
+end
+```
+:::
+
+This requires that you set the session variable in your `ApplicationController`, as described at length in the [Rails Internationalization Guide](https://guides.rubyonrails.org/i18n.html#managing-the-locale-across-requests):
+
+::: code-group
+```ruby [app/controllers/application_controller.rb]
+class ApplicationController < ActionController::Base
+  around_action :switch_locale
+  def switch_locale(&action)
+    locale = params[:locale] || I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
+end
+```
+:::
+
+It's also common to store a locale as a user preference:
+
+::: code-group
+```ruby [app/reflexes/application_reflex.rb]
+class ApplicationReflex < StimulusReflex::Reflex
+  delegate :current_user, to: :connection
+
+  before_reflex do
+    I18n.locale = current_user ? current_user.locale : I18n.default_locale
+  end
+end
+```
+:::
+
+If your ActionCable Connection could be established for users before they authenticate, make sure your logic can handle a `nil` value for `current_user`.
+
+::: warning
+Remember: if you're using Turbo Drive/Turbolinks, your ActionCable Connection will likely live across many page navigation events. ActionCable cannot access new session data until the Connection is reconnected. This usually happens with a hard page refresh, or you can [terminate the Connection manually](https://cableready.stimulusreflex.com/guide/action-cable#disconnect-a-user-from-their-actioncable-connection).
+:::
+
+::: tip Pro-tip
 If you're working on translations and would like to have your `.yml` files automatically reload when the browser refreshes, we've got you covered:
+:::
 
 ::: code-group
 ```ruby [app/controllers/application_controller.rb]
@@ -290,7 +331,7 @@ The `Current.user` accessor is now available in your Reflex action methods.
 ```ruby [app/reflexes/user_reflex.rb]
 class UserReflex < ApplicationReflex
   def follow
-    user = User.find(element.dataset[:user_id])
+    user = User.find(element.dataset.user_id)
     Current.user.follow(user)
 
     morph "#following", render(
@@ -336,7 +377,7 @@ CableReady - which is included and available for use in your Reflex classes - ex
 ```ruby [app/reflexes/user_reflex.rb]
 class UserReflex < ApplicationReflex
   def profile
-    user = User.find(element.dataset[:user_id])
+    user = User.find(element.dataset.user_id)
     morph dom_id(user), render(
       partial: "users/profile",
       locals: { user: user }
@@ -348,7 +389,7 @@ end
 
 ### ViewComponentReflex
 
-We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [`view_component_reflex`](https://github.com/joshleblanc/view_component_reflex) gem offers a simple mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
+We're big fans of using [ViewComponents](https://github.com/github/view_component) in our template rendering process. The [`view_component_reflex`](https://github.com/joshleblanc/view_component_reflex) gem offers a mechanism for persistent state in your ViewComponents by automatically storing your component state in the Rails session.
 
 <!-- Check out the [ViewComponentReflex Expo](http://view-component-reflex-expo.grep.sh) for inspiration and examples. -->
 

@@ -46,6 +46,7 @@
     "build:watch": "yarn rollup -wc",
     "watch": "yarn build:watch",
     "test": "web-test-runner javascript/test/**/*.test.js",
+    "test:watch": "yarn test --watch",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs && cp docs/_redirects docs/.vitepress/dist",
     "docs:preview": "vitepress preview docs"
@@ -54,8 +55,8 @@
     "@hotwired/stimulus": ">= 3.0"
   },
   "dependencies": {
-    "@hotwired/stimulus": ">= 3.0, < 4",
-    "@rails/actioncable": ">= 6.0, < 8",
+    "@hotwired/stimulus": "^3",
+    "@rails/actioncable": "^6 || ^7",
     "cable_ready": "5.0.0-pre10"
   },
   "devDependencies": {
@@ -68,6 +69,7 @@
     "@web/test-runner": "^0.15.1",
     "prettier-standard": "^16.4.1",
     "rollup": "^3.19.1",
+    "toastify-js": "^1.12.0",
     "vitepress": "^1.0.0-alpha.56"
   }
 }

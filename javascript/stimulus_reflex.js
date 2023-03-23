@@ -1,5 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
+import './version_checker'
+
 import ActionCableTransport from './transports/action_cable'
 import App from './app'
 import Debug from './debug'
@@ -226,7 +228,7 @@ const register = (controller, options = {}) => {
       }
     })
 
-  scanForReflexesOnElement(controller.element)
+  scanForReflexesOnElement(controller.element, controller)
 
   emitEvent('stimulus-reflex:controller-registered', { detail: { controller } })
 }
