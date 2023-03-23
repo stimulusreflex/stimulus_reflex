@@ -45,7 +45,7 @@ const output = distFolders
       file: `${distFolder}/${baseName}.js`,
       format: 'es',
       plugins: [pretty()]
-    },
+    }
   ])
   .flat()
 
