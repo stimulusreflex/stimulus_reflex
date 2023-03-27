@@ -13,10 +13,17 @@ export const received = data => {
   if (!data.cableReady) return
 
   if (data.version.replace('.pre', '-pre').replace(".rc", "-rc") !== CableReady.version) {
-    if (Debug.enabled)
-      console.error(
-        `Reflex failed due to cable_ready gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the "x.y.z.rcN" version format, while NPM packages use "x.y.z-rcN".\n\ncable_ready gem: ${data.version}\ncable_ready NPM: ${CableReady.version}`
-      )
+    const mismatch = `CableReady failed to execute your reflex action due to a version mismatch between your gem and JavaScript version. Package versions must match exactly.\n\ncable_ready gem: ${data.version}\ncable_ready npm: ${CableReady.version}`
+    
+    console.error(mismatch)
+
+    if (Debug.enabled) {
+      CableReady.operations.stimulusReflexVersionMismatch({
+        text: mismatch,
+        level: "error"
+      })
+    }
+    
     return
   }
 
