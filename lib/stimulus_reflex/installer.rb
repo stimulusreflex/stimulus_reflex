@@ -94,11 +94,11 @@ end
 ### memoized values
 
 def sr_npm_version
-  @sr_npm_version ||= StimulusReflex::VERSION.gsub(".pre", "-pre")
+  @sr_npm_version ||= StimulusReflex::VERSION.gsub(".pre", "-pre").gsub(".rc", "-rc")
 end
 
 def cr_npm_version
-  @cr_npm_version ||= CableReady::VERSION.gsub(".pre", "-pre")
+  @cr_npm_version ||= CableReady::VERSION.gsub(".pre", "-pre").gsub(".rc", "-rc")
 end
 
 def package_json
