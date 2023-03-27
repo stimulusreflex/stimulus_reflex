@@ -12,10 +12,10 @@ import { XPathToElement } from './utils'
 export const received = data => {
   if (!data.cableReady) return
 
-  if (data.version.replace('.pre', '-pre') !== CableReady.version) {
+  if (data.version.replace('.pre', '-pre').replace(".rc", "-rc") !== CableReady.version) {
     if (Debug.enabled)
       console.error(
-        `Reflex failed due to cable_ready gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the "x.y.z.preN" version format, while NPM packages use "x.y.z-preN".\n\ncable_ready gem: ${data.version}\ncable_ready NPM: ${CableReady.version}`
+        `Reflex failed due to cable_ready gem/NPM package version mismatch. Package versions must match exactly.\nNote that if you are using pre-release builds, gems use the "x.y.z.rcN" version format, while NPM packages use "x.y.z-rcN".\n\ncable_ready gem: ${data.version}\ncable_ready NPM: ${CableReady.version}`
       )
     return
   }
