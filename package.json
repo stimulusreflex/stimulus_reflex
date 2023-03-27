@@ -1,6 +1,6 @@
 {
   "name": "stimulus_reflex",
-  "version": "3.5.0-rc1",
+  "version": "3.5.0-rc2",
   "description": "Build reactive applications with the Rails tooling you already know and love.",
   "keywords": [
     "ruby",
@@ -57,7 +57,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3",
     "@rails/actioncable": "^6 || ^7",
-    "cable_ready": "5.0.0-rc1"
+    "cable_ready": "5.0.0-rc2"
   },
   "devDependencies": {
     "@open-wc/testing": "^3.1.7",
