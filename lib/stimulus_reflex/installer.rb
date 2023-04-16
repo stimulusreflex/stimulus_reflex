@@ -109,8 +109,12 @@ def entrypoint
   @entrypoint ||= File.read("tmp/stimulus_reflex_installer/entrypoint")
 end
 
+def bundler_raw
+  @bundler_raw ||= File.read("tmp/stimulus_reflex_installer/bundler")
+end
+
 def bundler
-  @bundler ||= File.read("tmp/stimulus_reflex_installer/bundler")
+  bundler_raw.inquiry
 end
 
 def network_issue_path

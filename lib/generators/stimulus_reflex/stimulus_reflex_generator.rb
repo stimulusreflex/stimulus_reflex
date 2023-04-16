@@ -2,6 +2,7 @@
 
 require "rails/generators"
 require "stimulus_reflex/version"
+require "stimulus_reflex/installer"
 
 class StimulusReflexGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)

@@ -20,7 +20,7 @@ if index_path.exist?
   say "⏩ #{friendly_index_path} already exists. Skipping"
 else
   backup(index_path, delete: true) do
-    copy_file(index_src, index_path)
+    template(index_src, index_path)
   end
   say "✅ Created #{friendly_index_path}"
 end
@@ -50,22 +50,22 @@ else
 end
 
 # create entrypoint/config/cable_ready.js and make sure it's imported in application.js
-copy_file(cable_ready_src, cable_ready_path) unless cable_ready_path.exist?
+template(cable_ready_src, cable_ready_path) unless cable_ready_path.exist?
 
 # create entrypoint/config/stimulus_reflex.js and make sure it's imported in application.js
-copy_file(stimulus_reflex_src, stimulus_reflex_path) unless stimulus_reflex_path.exist?
+template(stimulus_reflex_src, stimulus_reflex_path) unless stimulus_reflex_path.exist?
 
 if stimulus_reflex_path.read.include?("StimulusReflex.debug =")
   say "⏩ Development environment options are already set in #{friendly_stimulus_reflex_path}. Skipping"
 else
-  if ["webpacker", "shakapacker"].include?(bundler)
+  if bundler.webpacker? || bundler.shakapacker?
     append_file(stimulus_reflex_path, <<~JS, verbose: false)
 
       if (process.env.RAILS_ENV === 'development') {
         StimulusReflex.debug = true
       }
     JS
-  elsif bundler == "vite"
+  elsif bundler.vite?
     append_file(stimulus_reflex_path, <<~JS, verbose: false) unless stimulus_reflex_path.read.include?("StimulusReflex.debug")
 
       if (import.meta.env.MODE === "development") {

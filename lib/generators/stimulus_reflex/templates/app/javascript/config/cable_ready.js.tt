@@ -1,4 +1,8 @@
-import consumer from '../channels/consumer'
-import CableReady from 'cable_ready'
+<%- if bundler.importmap? -%>
+import consumer from "channels/consumer"
+<%- else -%>
+import consumer from "../channels/consumer"
+<%- end -%>
+import CableReady from "cable_ready"
 
 CableReady.initialize({ consumer })
