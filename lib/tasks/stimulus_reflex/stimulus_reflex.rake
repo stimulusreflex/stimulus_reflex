@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/installer"
+
 SR_STEPS = {
   "action_cable" => "Action Cable",
   "webpacker" => "Install StimulusReflex using Webpacker",
@@ -55,13 +57,13 @@ namespace :stimulus_reflex do
     FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/working"))
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
-    bundler = nil
+    used_bundler = nil
     options = {}
 
     ARGV.each do |arg|
       # make sure we have a valid build tool specified, or proceed to automatic detection
       if ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(arg)
-        bundler = arg
+        used_bundler = arg
       else
         kv = arg.split("=")
         if kv.length == 2
@@ -130,45 +132,17 @@ namespace :stimulus_reflex do
     end
 
     # verify their bundler before starting, unless they explicitly specified on CLI
-    if !bundler
-      # auto-detect build tool based on existing packages and configuration
-      if Rails.root.join("config/importmap.rb").exist?
-        bundler = "importmap"
-      elsif Rails.root.join("package.json").exist?
-        package_json = File.read(Rails.root.join("package.json"))
-        bundler = "webpacker" if package_json.include?('"@rails/webpacker":')
-        bundler = "esbuild" if package_json.include?('"esbuild":')
-        bundler = "vite" if package_json.include?('"vite":')
-        bundler = "shakapacker" if package_json.include?('"shakapacker":')
-        if !bundler
-          puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
-          exit
-        end
-      else
-        puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
-        exit
-      end
-
-      puts
-      puts "It looks like you're using \e[1m#{bundler}\e[22m as your bundler. Is that correct? (Y/n)"
-      print "> "
-      input = $stdin.gets.chomp
-      if input.downcase == "n"
-        puts
-        puts "StimulusReflex installation supports: esbuild, webpacker, vite, shakapacker and importmap."
-        puts "Please run \e[1;94mrails stimulus_reflex:install [bundler]\e[0m to install StimulusReflex and CableReady."
-        exit
-      end
+    if !used_bundler
+      used_bundler = auto_detect_bundler
     end
 
-    File.write("tmp/stimulus_reflex_installer/bundler", bundler)
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
     File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))
 
     `bin/spring stop` if defined?(Spring)
 
     # do the things
-    SR_BUNDLERS[bundler].each do |template|
+    SR_BUNDLERS[used_bundler].each do |template|
       run_install_template(template, trace: !!options["trace"])
     end
 

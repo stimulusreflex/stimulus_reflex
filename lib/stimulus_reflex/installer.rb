@@ -106,16 +106,45 @@ def package_json
 end
 
 def entrypoint
-  @entrypoint ||= File.read("tmp/stimulus_reflex_installer/entrypoint")
-end
-
-def bundler_raw
-  @bundler_raw ||= File.read("tmp/stimulus_reflex_installer/bundler")
+  path = "tmp/stimulus_reflex_installer/entrypoint"
+  @entrypoint ||= File.exist?(path) ? File.read(path) : nil
 end
 
 def bundler
-  bundler_raw.inquiry
+  auto_detect_bundler.inquiry
+end
 
+def auto_detect_bundler
+  # auto-detect build tool based on existing packages and configuration
+  if Rails.root.join("config/importmap.rb").exist?
+    bundler = "importmap"
+  elsif Rails.root.join("package.json").exist?
+    package_json = File.read(Rails.root.join("package.json"))
+    bundler = "webpacker" if package_json.include?('"@rails/webpacker":')
+    bundler = "esbuild" if package_json.include?('"esbuild":')
+    bundler = "vite" if package_json.include?('"vite":')
+    bundler = "shakapacker" if package_json.include?('"shakapacker":')
+    if !bundler
+      puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
+      exit
+    end
+  else
+    puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
+    exit
+  end
+
+  puts
+  puts "It looks like you're using \e[1m#{bundler}\e[22m as your bundler. Is that correct? (Y/n)"
+  print "> "
+  input = $stdin.gets.chomp
+  if input.downcase == "n"
+    puts
+    puts "StimulusReflex installation supports: esbuild, webpacker, vite, shakapacker and importmap."
+    puts "Please run \e[1;94mrails stimulus_reflex:install [bundler]\e[0m to install StimulusReflex and CableReady."
+    exit
+  end
+
+  bundler
 end
 
 def config_path
