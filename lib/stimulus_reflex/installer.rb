@@ -115,10 +115,7 @@ end
 
 def bundler
   bundler_raw.inquiry
-end
 
-def network_issue_path
-  @network_issue_path ||= Rails.root.join("tmp/stimulus_reflex_installer/network_issue")
 end
 
 def config_path
