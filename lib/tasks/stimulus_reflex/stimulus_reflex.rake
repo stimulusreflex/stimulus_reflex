@@ -53,8 +53,9 @@ end
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
-    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
-    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/working"))
+    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
+    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/working"))
+
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
     used_bundler = nil
@@ -92,9 +93,9 @@ namespace :stimulus_reflex do
     end
 
     # if there is an installation in progress, continue where we left off
-    cached_entrypoint = Rails.root.join("tmp/stimulus_reflex_installer/entrypoint")
-    if cached_entrypoint.exist?
-      entrypoint = File.read(cached_entrypoint)
+    if installer_entrypoint_path.exist?
+      entrypoint = installer_entrypoint_path.read
+
       puts "✨ Resuming \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m installation ✨"
       puts
       puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
@@ -108,6 +109,7 @@ namespace :stimulus_reflex do
       puts
       puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
       puts "or get help on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m. \e[38;5;196mWe are here for you.\e[0m 💙"
+
       if Rails.root.join(".git").exist?
         puts
         puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
@@ -116,24 +118,14 @@ namespace :stimulus_reflex do
       if options.key? "entrypoint"
         entrypoint = options["entrypoint"]
       else
-        entrypoint = [
-          "app/javascript",
-          "app/frontend"
-        ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
-
-        puts
-        puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
-        puts "Press enter to accept this, or type a different path."
-        print "> "
-        input = $stdin.gets.chomp
-        entrypoint = input unless input.blank?
+        entrypoint = auto_detect_entrypoint
       end
-      File.write(cached_entrypoint, entrypoint)
+      File.write(installer_entrypoint_path, entrypoint)
     end
 
     # verify their bundler before starting, unless they explicitly specified on CLI
     if !used_bundler
-      used_bundler = auto_detect_bundler
+      used_bundler = bundler
     end
 
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
