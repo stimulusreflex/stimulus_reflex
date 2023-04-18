@@ -135,7 +135,6 @@ def auto_detect_entrypoint
   entrypoint
 end
 
-
 def installer_bundler_path
   create_dir_for_file_if_not_exists("tmp/stimulus_reflex_installer/bundler")
 end

@@ -115,10 +115,10 @@ namespace :stimulus_reflex do
         puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
       end
 
-      if options.key? "entrypoint"
-        entrypoint = options["entrypoint"]
+      entrypoint = if options.key? "entrypoint"
+        options["entrypoint"]
       else
-        entrypoint = auto_detect_entrypoint
+        auto_detect_entrypoint
       end
       File.write(installer_entrypoint_path, entrypoint)
     end
