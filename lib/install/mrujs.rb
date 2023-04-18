@@ -45,14 +45,14 @@ if proceed
     end
   else
     # queue mrujs for installation
-    if package_json.read.include?('"mrujs":')
+    if package_json_path.read.include?('"mrujs":')
       say "⏩ mrujs already present. Skipping."
     else
       add_package "mrujs@^0.10.1"
     end
 
     # queue @rails/ujs for removal
-    if package_json.read.include?('"@rails/ujs":')
+    if package_json_path.read.include?('"@rails/ujs":')
       drop_package "@rails/ujs"
     else
       say "⏩ @rails/ujs not present. Skipping."

@@ -120,13 +120,16 @@ namespace :stimulus_reflex do
       else
         auto_detect_entrypoint
       end
-      File.write(installer_entrypoint_path, entrypoint)
+
+      installer_entrypoint_path.write(entrypoint)
     end
 
     # verify their bundler before starting, unless they explicitly specified on CLI
     if !used_bundler
       used_bundler = bundler
     end
+
+    installer_bundler_path.write(used_bundler)
 
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
     File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))

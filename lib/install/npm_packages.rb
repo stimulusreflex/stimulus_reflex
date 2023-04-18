@@ -2,7 +2,7 @@
 
 require "stimulus_reflex/installer"
 
-lines = package_json.readlines
+lines = package_json_path.readlines
 
 if !lines.index { |line| line =~ /^\s*["']cable_ready["']: ["'].*#{cr_npm_version}["']/ }
   add_package "cable_ready@#{cr_npm_version}"

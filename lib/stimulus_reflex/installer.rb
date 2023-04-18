@@ -101,8 +101,8 @@ def cr_npm_version
   @cr_npm_version ||= CableReady::VERSION.gsub(".pre", "-pre").gsub(".rc", "-rc")
 end
 
-def package_json
-  @package_json ||= Rails.root.join("package.json")
+def package_json_path
+  @package_json_path ||= Rails.root.join("package.json")
 end
 
 def installer_entrypoint_path
