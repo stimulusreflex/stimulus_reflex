@@ -2,9 +2,7 @@
 
 module StimulusReflex
   module CableReadiness
-    def cable_ready
-      @cable_ready
-    end
+    attr_reader :cable_ready
 
     def initialize(*args, **kwargs)
       super(*args, **kwargs)
