@@ -48,7 +48,7 @@ export default {
         text: "Hello World",
         collapisble: true,
         items: [
-          { text: "Welcome", link: "/hello-world/index" },
+          { text: "Welcome", link: "/hello-world/" },
           { text: "Setup", link: "/hello-world/setup" },
           { text: "Quick Start", link: "/hello-world/quickstart" },
         ]
