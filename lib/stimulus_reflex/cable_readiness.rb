@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
-require "active_support/concern"
-
 module StimulusReflex
   module CableReadiness
-    extend ActiveSupport::Concern
-
-    prepended do
-      attr_reader :cable_ready
-    end
+    attr_reader :cable_ready
 
     def initialize(*args, **kwargs)
       super(*args, **kwargs)
