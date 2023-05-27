@@ -12,11 +12,9 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
       @env ||= {}
     end
 
-    @element = StimulusReflex::Element.new({}, selector: "#element-selector")
-
-    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {id: "666", version: StimulusReflex::VERSION})
-    @cable_ready = StimulusReflex::CableReadyChannels.new(@reflex)
-    @element.cable_ready = @cable_ready
+    reflex_data = StimulusReflex::ReflexData.new(xpath_element: "/html/body/button[1]", url: "https://test.stimulusreflex.com", id: "666", version: StimulusReflex::VERSION)
+    @reflex = StimulusReflex::Reflex.new(subscribe, reflex_data: reflex_data)
+    @element = @reflex.element
   end
 
   def build_payload(operations = [])
@@ -29,7 +27,7 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
 
   test "broadcasts updates using element.broadcast" do
     expected = build_payload(
-      {"selector" => "#element-selector", "xpath" => false, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"}
+      {"selector" => "/html/body/button[1]", "xpath" => true, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"}
     )
 
     assert_broadcast_on(@reflex.stream_name, expected) do
@@ -50,8 +48,8 @@ class StimulusReflex::ReflexElementTest < ActionCable::Channel::TestCase
 
   test "broadcasts using element.broadcast chained" do
     expected = build_payload [
-      {"selector" => "#element-selector", "xpath" => false, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"},
-      {"name" => "abc", "detail" => {"some" => "key"}, "reflexId" => "666", "selector" => "#element-selector", "operation" => "dispatchEvent"}
+      {"selector" => "/html/body/button[1]", "xpath" => true, "html" => "<p>Some HTML</p>", "reflexId" => "666", "operation" => "innerHtml"},
+      {"name" => "abc", "detail" => {"some" => "key"}, "reflexId" => "666", "selector" => "/html/body/button[1]", "xpath" => true, "operation" => "dispatchEvent"}
     ]
 
     assert_broadcast_on(@reflex.stream_name, expected) do
