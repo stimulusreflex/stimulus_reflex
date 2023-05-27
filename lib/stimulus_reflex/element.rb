@@ -41,7 +41,7 @@ class StimulusReflex::Element < OpenStruct
 
       cable_ready.send(method_name.to_sym, args)
 
-      cable_ready
+      self
     else
       super
     end
