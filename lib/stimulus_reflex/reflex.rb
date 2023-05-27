@@ -109,6 +109,14 @@ class StimulusReflex::Reflex
     @controller
   end
 
+  def element
+    @element ||= StimulusReflex::Element.new(reflex_data.data, selector: xpath_element, cable_ready: cable_ready)
+  end
+
+  def controller_element
+    @controller_element ||= StimulusReflex::Element.new(selector: xpath_controller, cable_ready: cable_ready)
+  end
+
   def controller?
     !!defined? @controller
   end

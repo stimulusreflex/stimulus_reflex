@@ -35,10 +35,6 @@ class StimulusReflex::ReflexData
     data[:url].to_s
   end
 
-  def element
-    StimulusReflex::Element.new(data)
-  end
-
   def permanent_attribute_name
     data[:permanent_attribute_name]
   end
