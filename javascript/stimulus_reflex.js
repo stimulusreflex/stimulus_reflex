@@ -13,7 +13,7 @@ import ReflexData from './reflex_data'
 import Schema from './schema'
 import Transport from './transport'
 
-import { attributeValues } from './attributes'
+import { attributeValues, extractTargets } from './attributes'
 import { beforeDOMUpdate, afterDOMUpdate, routeReflexEvent } from './callbacks'
 import { dispatchLifecycleEvent } from './lifecycle'
 import { reflexes } from './reflexes'
@@ -169,6 +169,7 @@ const register = (controller, options = {}) => {
 
         reflex.data = {
           ...reflexData.valueOf(),
+          targets: extractTargets(),
           params,
           formData
         }

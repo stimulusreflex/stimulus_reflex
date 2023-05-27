@@ -19,7 +19,7 @@ class StimulusReflex::Reflex
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
 
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :reflex_data
+  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, :targets, to: :reflex_data
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
@@ -32,6 +32,7 @@ class StimulusReflex::Reflex
     @payload = {}
     @headers = {}
 
+    define_targets
     check_version!
   end
 
@@ -160,5 +161,21 @@ class StimulusReflex::Reflex
   def render_collection(resource, content = nil)
     content ||= render(resource)
     tag.div(content.html_safe, id: dom_id(resource).from(1))
+  end
+
+  private
+
+  def define_targets
+    targets.each do |name, details|
+      target_name = "#{name.to_s.underscore}_target".to_sym
+
+      define_singleton_method(target_name) do
+        StimulusReflex::Element.new(
+          details,
+          selector: details["selector"],
+          cable_ready: cable_ready
+        )
+      end
+    end
   end
 end

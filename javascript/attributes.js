@@ -191,10 +191,33 @@ const extractDataAttributes = element => {
   return attrs
 }
 
+// Extracts all reflex targets from the current page.
+// Reflex targets are later available in the triggered reflex class
+//
+const extractTargets = () => {
+  let targets = {}
+
+  const targetElements = document.querySelectorAll(`[${Schema.reflexTarget}]`)
+
+  targetElements.forEach(target => {
+    const targetName = target.dataset.reflexTarget
+
+    targets[targetName] = {
+      selector: elementToXPath(target),
+      name: targetName,
+      dataset: extractElementDataset(target),
+      attrs: extractElementAttributes(target)
+    }
+  })
+
+  return targets
+}
+
 export {
   attributeValue,
   attributeValues,
   extractElementAttributes,
   extractElementDataset,
-  extractDataAttributes
+  extractDataAttributes,
+  extractTargets
 }

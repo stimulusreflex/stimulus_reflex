@@ -23,6 +23,10 @@ class StimulusReflex::ReflexData
     data[:target].to_s
   end
 
+  def targets
+    data[:targets] || {}
+  end
+
   def method_name
     target.split("#").second
   end
