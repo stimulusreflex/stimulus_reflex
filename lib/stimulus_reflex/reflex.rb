@@ -3,20 +3,6 @@
 require "stimulus_reflex/cable_readiness"
 require "stimulus_reflex/version_checker"
 
-# TODO remove xpath_controller and xpath_element for v4
-ClientAttributes = Struct.new(
-  :id,
-  :tab_id,
-  :reflex_controller,
-  :xpath_controller,
-  :xpath_element,
-  :permanent_attribute_name,
-  :version,
-  :npm_version,
-  :suppress_logging,
-  keyword_init: true
-)
-
 class StimulusReflex::Reflex
   prepend StimulusReflex::CableReadiness
   include StimulusReflex::VersionChecker
@@ -26,26 +12,35 @@ class StimulusReflex::Reflex
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :channel, :url, :element, :selectors, :method_name, :broadcaster, :client_attributes, :logger
-
-  alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
+  attr_reader :channel, :data, :broadcaster
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
-  # TODO remove xpath_controller and xpath_element for v4
-  delegate :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :client_attributes
 
-  def initialize(channel, url: nil, element: nil, selectors: [], method_name: nil, params: {}, client_attributes: {})
+  # TODO remove xpath_controller and xpath_element for v4
+  delegate :url,
+           :element,
+           :selectors,
+           :method_name,
+           :form_params,
+           :id,
+           :tab_id,
+           :reflex_controller,
+           :xpath_controller,
+           :xpath_element,
+           :permanent_attribute_name,
+           :version,
+           :suppress_logging,
+           to: :data
+  # END TODO: remove
+
+  alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
+
+  def initialize(channel, data:)
     @channel = channel
-    @url = url
-    @element = element
-    @selectors = selectors
-    @method_name = method_name
-    @params = params
-    @client_attributes = ClientAttributes.new(client_attributes)
+    @data = data
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
-    @logger = suppress_logging ? nil : StimulusReflex::Logger.new(self)
     @payload = {}
     @headers = {}
 
@@ -60,6 +55,10 @@ class StimulusReflex::Reflex
     id
   end
   # END TODO: remove
+
+  def logger
+    StimulusReflex::Logger.new(self) unless suppress_logging
+  end
 
   def request
     @request ||= begin
@@ -91,7 +90,7 @@ class StimulusReflex::Reflex
       req = ActionDispatch::Request.new(env)
 
       # fetch path params (controller, action, ...) and apply them
-      request_params = StimulusReflex::RequestParameters.new(params: @params, req: req, url: url)
+      request_params = StimulusReflex::RequestParameters.new(params: form_params, req: req, url: url)
       req = request_params.apply!
 
       req

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
-  attr_reader :reflex_data
-
   def stream_name
     [params[:channel], connection.connection_identifier].reject(&:blank?).join(":")
   end
@@ -13,14 +11,13 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   end
 
   def receive(data)
-    @reflex_data = StimulusReflex::ReflexData.new(data)
     begin
       begin
-        reflex = StimulusReflex::ReflexFactory.create_reflex_from_data(self, @reflex_data)
+        reflex = StimulusReflex::ReflexFactory.new(self, data).call
         delegate_call_to_reflex reflex
       rescue => exception
         error = exception_with_backtrace(exception)
-        error_message = "\e[31mReflex #{reflex_data.target} failed: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
+        error_message = "\e[31mReflex #{reflex.data.target} failed: #{error[:message]} [#{reflex.url}]\e[0m\n#{error[:stack]}"
 
         if reflex
           reflex.rescue_with_handler(exception)
@@ -61,12 +58,12 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
         reflex.broadcast_forbid data: data
       else
         begin
-          reflex.broadcast(reflex_data.selectors, data)
+          reflex.broadcast(reflex.selectors, data)
         rescue => exception
           reflex.rescue_with_handler(exception)
           error = exception_with_backtrace(exception)
           reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
-          reflex.logger&.error "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex_data.url}]\e[0m\n#{error[:stack]}"
+          reflex.logger&.error "\e[31mReflex failed to re-render: #{error[:message]} [#{reflex.url}]\e[0m\n#{error[:stack]}"
         end
       end
     ensure
@@ -81,8 +78,8 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
   private
 
   def delegate_call_to_reflex(reflex)
-    method_name = reflex_data.method_name
-    arguments = reflex_data.arguments
+    method_name = reflex.method_name
+    arguments = reflex.data.arguments
     method = reflex.method(method_name)
 
     policy = StimulusReflex::ReflexMethodInvocationPolicy.new(method, arguments)
