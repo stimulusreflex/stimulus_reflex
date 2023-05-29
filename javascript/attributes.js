@@ -202,12 +202,14 @@ const extractTargets = () => {
   targetElements.forEach(target => {
     const targetName = target.dataset.reflexTarget
 
-    targets[targetName] = {
-      selector: elementToXPath(target),
+    if (!targets.hasOwnProperty(targetName)) { targets[targetName] = [] }
+
+    targets[targetName].push({
+      selector: `[${Schema.reflexTarget}='${targetName}']`,
       name: targetName,
       dataset: extractElementDataset(target),
       attrs: extractElementAttributes(target)
-    }
+    })
   })
 
   return targets

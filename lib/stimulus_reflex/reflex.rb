@@ -2,6 +2,7 @@
 
 require "stimulus_reflex/cable_readiness"
 require "stimulus_reflex/version_checker"
+require "stimulus_reflex/targets_collection"
 
 class StimulusReflex::Reflex
   prepend StimulusReflex::CableReadiness
@@ -166,15 +167,29 @@ class StimulusReflex::Reflex
   private
 
   def define_targets
-    targets.each do |name, details|
+    targets.each do |name, elements|
       target_name = "#{name.to_s.underscore}_target".to_sym
 
       define_singleton_method(target_name) do
         StimulusReflex::Element.new(
-          details,
-          selector: details["selector"],
+          elements[0],
+          selector: elements[0]["selector"],
           cable_ready: cable_ready
         )
+      end
+
+      if elements.many?
+        define_singleton_method("#{target_name}s") do
+          collection = elements.map do |element|
+            StimulusReflex::Element.new(
+              element,
+              selector: element["selector"],
+              cable_ready: cable_ready
+            )
+          end
+
+          StimulusReflex::TargetsCollection.new(collection, cable_ready: cable_ready)
+        end
       end
     end
   end
