@@ -27,6 +27,10 @@ class StimulusReflex::ReflexData
     data[:targets] || {}
   end
 
+  def target_scope
+    data.dig(:dataset, :dataset, :data_include_targets)
+  end
+
   def method_name
     target.split("#").second
   end

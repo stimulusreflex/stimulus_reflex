@@ -9,7 +9,8 @@ const defaultSchema = {
   reflexFormSelectorAttribute: 'data-reflex-form-selector',
   reflexIncludeInnerHtmlAttribute: 'data-reflex-include-inner-html',
   reflexIncludeTextContentAttribute: 'data-reflex-include-text-content',
-  reflexTargetAttribute: 'data-reflex-target'
+  reflexTargetAttribute: 'data-reflex-target',
+  includeTargetsAttribute: 'data-include-targets'
 }
 
 let schema = {}

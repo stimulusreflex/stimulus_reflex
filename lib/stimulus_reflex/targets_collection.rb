@@ -6,9 +6,11 @@ class StimulusReflex::TargetsCollection
   delegate *Array.instance_methods.excluding(:__send__, :object_id), to: :target_elements
   delegate :broadcast, to: :cable_ready
 
-  def initialize(elements = [], cable_ready: nil)
+  def initialize(elements = [], target_scope: nil, reflex_controller: nil, cable_ready: nil)
     @target_elements = elements
     @target_name = elements.first.dataset.reflex_target
+    @target_scope = target_scope
+    @reflex_controller = reflex_controller
     @cable_ready = cable_ready
   end
 
@@ -17,7 +19,8 @@ class StimulusReflex::TargetsCollection
   def method_missing(method_name, *arguments, &block)
     if cable_ready.respond_to?(method_name)
       args = arguments.first.to_h
-      selector = "[data-reflex-target='#{target_name}']"
+      parent = @target_scope == "controller" ? "[data-controller='#{@reflex_controller}'] " : nil
+      selector = "#{parent}[data-reflex-target='#{target_name}']"
 
       cable_ready.send(method_name.to_sym, args.merge(selector: selector, select_all: true))
 

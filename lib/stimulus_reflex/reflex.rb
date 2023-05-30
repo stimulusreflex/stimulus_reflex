@@ -19,7 +19,7 @@ class StimulusReflex::Reflex
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
 
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, :targets, to: :reflex_data
+  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, :targets, :target_scope, to: :reflex_data
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
@@ -170,26 +170,22 @@ class StimulusReflex::Reflex
     targets.each do |name, elements|
       target_name = "#{name.to_s.underscore}_target".to_sym
 
-      define_singleton_method(target_name) do
+      collection = elements.map do |element|
         StimulusReflex::Element.new(
-          elements[0],
-          selector: elements[0]["selector"],
+          element,
+          selector: element["selector"],
           cable_ready: cable_ready
         )
       end
 
-      if elements.many?
-        define_singleton_method("#{target_name}s") do
-          collection = elements.map do |element|
-            StimulusReflex::Element.new(
-              element,
-              selector: element["selector"],
-              cable_ready: cable_ready
-            )
-          end
+      define_singleton_method(target_name) do
+        collection.first
+      end
 
-          StimulusReflex::TargetsCollection.new(collection, cable_ready: cable_ready)
-        end
+      define_singleton_method("#{target_name}s") do
+        StimulusReflex::TargetsCollection.new(
+          collection, target_scope: target_scope, reflex_controller: reflex_controller, cable_ready: cable_ready
+        )
       end
     end
   end

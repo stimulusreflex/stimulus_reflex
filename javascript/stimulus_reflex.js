@@ -169,7 +169,7 @@ const register = (controller, options = {}) => {
 
         reflex.data = {
           ...reflexData.valueOf(),
-          targets: extractTargets(),
+          targets: extractTargets(reflexData.dataset.dataset[Schema.includeTargets], controllerElement),
           params,
           formData
         }

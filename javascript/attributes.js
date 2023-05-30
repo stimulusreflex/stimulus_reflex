@@ -194,17 +194,19 @@ const extractDataAttributes = element => {
 // Extracts all reflex targets from the current page.
 // Reflex targets are later available in the triggered reflex class
 //
-const extractTargets = () => {
-  let targets = {}
+const extractTargets = (includeTargets, controllerElement) => {
+  if (includeTargets === undefined) { return {} }
 
-  const targetElements = document.querySelectorAll(`[${Schema.reflexTarget}]`)
+  const targetsData = {}
+  const targetScope = (includeTargets === "controller") ? controllerElement : document
+  const targetElements = targetScope.querySelectorAll(`[${Schema.reflexTarget}]`)
 
   targetElements.forEach(target => {
     const targetName = target.dataset.reflexTarget
 
-    if (!targets.hasOwnProperty(targetName)) { targets[targetName] = [] }
+    if (!targetsData.hasOwnProperty(targetName)) { targetsData[targetName] = [] }
 
-    targets[targetName].push({
+    targetsData[targetName].push({
       selector: elementToXPath(target),
       name: targetName,
       dataset: extractElementDataset(target),
@@ -212,7 +214,7 @@ const extractTargets = () => {
     })
   })
 
-  return targets
+  return targetsData
 }
 
 export {
