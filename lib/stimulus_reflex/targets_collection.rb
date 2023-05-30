@@ -3,6 +3,7 @@
 class StimulusReflex::TargetsCollection
   attr_reader :target_name, :target_elements, :cable_ready
 
+  delegate *Array.instance_methods.excluding(:__send__, :object_id), to: :target_elements
   delegate :broadcast, to: :cable_ready
 
   def initialize(elements = [], cable_ready: nil)
@@ -21,12 +22,10 @@ class StimulusReflex::TargetsCollection
       cable_ready.send(method_name.to_sym, args.merge(selector: selector, select_all: true))
 
       self
-    else
-      target_elements.send(method_name)
     end
   end
 
   def respond_to_missing?(method_name, include_private = false)
-    cable_ready.respond_to?(method_name) || target_elements.respond_to?(method_name)
+    cable_ready.respond_to?(method_name)
   end
 end
