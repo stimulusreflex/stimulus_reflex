@@ -205,7 +205,7 @@ const extractTargets = () => {
     if (!targets.hasOwnProperty(targetName)) { targets[targetName] = [] }
 
     targets[targetName].push({
-      selector: `[${Schema.reflexTarget}='${targetName}']`,
+      selector: elementToXPath(target),
       name: targetName,
       dataset: extractElementDataset(target),
       attrs: extractElementAttributes(target)
