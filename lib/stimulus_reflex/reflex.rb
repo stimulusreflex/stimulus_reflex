@@ -3,6 +3,7 @@
 require "stimulus_reflex/cable_readiness"
 require "stimulus_reflex/version_checker"
 require "stimulus_reflex/targets_collection"
+require "stimulus_reflex/missing_target"
 
 class StimulusReflex::Reflex
   include StimulusReflex::VersionChecker
@@ -188,5 +189,17 @@ class StimulusReflex::Reflex
         )
       end
     end
+  end
+
+  def method_missing(method_name, *arguments, &block)
+    return super unless method_name.to_s.include? "_target"
+
+    target_missing(method_name)
+    StimulusReflex::MissingTarget.new
+  end
+
+  # Inheriting Reflex classes can override this method to customise missing target behaviour
+  def target_missing(target_name)
+    logger.info "#{self.class.name}: No #{target_name} present, skipping operations on #{target_name}"
   end
 end
