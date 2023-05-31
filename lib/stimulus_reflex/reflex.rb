@@ -185,7 +185,11 @@ class StimulusReflex::Reflex
 
       define_singleton_method("#{target_name}s") do
         StimulusReflex::TargetsCollection.new(
-          collection, target_scope: target_scope, reflex_controller: reflex_controller, cable_ready: cable_ready
+          collection,
+          target_name: name,
+          target_scope: target_scope,
+          reflex_controller: reflex_controller,
+          cable_ready: cable_ready
         )
       end
     end
