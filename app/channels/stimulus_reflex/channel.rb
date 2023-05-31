@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "stimulus_reflex/version_checker"
-
 class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.constantize
   attr_reader :reflex_data
 
