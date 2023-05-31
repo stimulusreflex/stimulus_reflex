@@ -11,7 +11,9 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
     def connection.env
       @env ||= {}
     end
-    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {id: "666", version: StimulusReflex::VERSION})
+
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", id: "666", version: StimulusReflex::VERSION)
+    @reflex = StimulusReflex::Reflex.new(subscribe, data: data)
     @reflex.controller_class.view_paths << Rails.root.join("test/views")
   end
 
@@ -33,7 +35,8 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
 
   test "params behave like ActionController::Parameters" do
     ActionDispatch::Request.any_instance.stubs(:parameters).returns({"a" => "1", "b" => "2", "c" => "3"})
-    reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", version: StimulusReflex::VERSION)
+    reflex = StimulusReflex::Reflex.new(subscribe, data: data)
 
     deleted_param = reflex.params.delete("a")
 

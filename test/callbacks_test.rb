@@ -29,7 +29,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = BeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = BeforeCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get(:@count)
   end
@@ -45,7 +46,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = BeforeBlockCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = BeforeBlockCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get(:@count)
   end
@@ -65,7 +67,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = AfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = AfterCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 1, reflex.instance_variable_get(:@count)
   end
@@ -81,7 +84,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = AfterBlockCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = AfterBlockCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 1, reflex.instance_variable_get(:@count)
   end
@@ -103,7 +107,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = AroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = AroundCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 14, reflex.instance_variable_get(:@count)
   end
@@ -131,7 +136,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = CallbackOrderReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = CallbackOrderReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 3, reflex.instance_variable_get(:@count)
   end
@@ -171,7 +177,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = IfCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = IfCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 23, reflex.instance_variable_get(:@count)
   end
@@ -203,7 +210,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = IfProcCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = IfProcCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 23, reflex.instance_variable_get(:@count)
   end
@@ -243,7 +251,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = UnlessCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = UnlessCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 23, reflex.instance_variable_get(:@count)
   end
@@ -275,7 +284,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = UnlessProcCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = UnlessProcCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 23, reflex.instance_variable_get(:@count)
   end
@@ -309,7 +319,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = OnlyCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :decrement, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#decrement", version: StimulusReflex::VERSION)
+    reflex = OnlyCallbackReflex.new(subscribe, data: data)
     reflex.process(:decrement)
     assert_equal(-8, reflex.instance_variable_get(:@count))
   end
@@ -317,7 +328,7 @@ class CallbacksTest < ActionCable::Channel::TestCase
   test "except option works" do
     class ExceptCallbackReflex < StimulusReflex::Reflex
       before_reflex :init
-      before_reflex :increment_bonus, except: [:decrement]
+      before_reflex :increment_bonus, except: :decrement
       before_reflex :decrement_bonus, except: :increment
 
       def increment
@@ -343,11 +354,13 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = ExceptCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = ExceptCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get(:@count)
 
-    reflex = ExceptCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :decrement, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#decrement", version: StimulusReflex::VERSION)
+    reflex = ExceptCallbackReflex.new(subscribe, data: data)
     reflex.process(:decrement)
     assert_equal(-8, reflex.instance_variable_get(:@count))
   end
@@ -381,7 +394,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SkipBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SkipBeforeCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get(:@count)
   end
@@ -415,7 +429,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SkipAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SkipAfterCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 1, reflex.instance_variable_get(:@count)
   end
@@ -453,7 +468,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SkipAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SkipAroundCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 7, reflex.instance_variable_get(:@count)
   end
@@ -482,7 +498,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = InheritedSkipApplicationReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = InheritedSkipApplicationReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 6, reflex.instance_variable_get(:@count)
   end
@@ -507,7 +524,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SimplePrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SimplePrependBeforeCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 3, reflex.instance_variable_get(:@count)
   end
@@ -527,7 +545,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = BlockPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = BlockPrependBeforeCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 3, reflex.instance_variable_get(:@count)
   end
@@ -557,7 +576,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = InheritedPrependBeforeCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = InheritedPrependBeforeCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 9, reflex.instance_variable_get(:@count)
   end
@@ -586,7 +606,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SimplePrependAroundCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SimplePrependAroundCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 26, reflex.instance_variable_get(:@count)
   end
@@ -611,7 +632,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = SimplePrependAfterCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = SimplePrependAfterCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 9, reflex.instance_variable_get(:@count)
   end
@@ -643,7 +665,8 @@ class CallbacksTest < ActionCable::Channel::TestCase
       end
     end
 
-    reflex = AppendCallbackReflex.new(subscribe, url: "https://test.stimulusreflex.com", method_name: :increment, client_attributes: {version: StimulusReflex::VERSION})
+    data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", target: "test#increment", version: StimulusReflex::VERSION)
+    reflex = AppendCallbackReflex.new(subscribe, data: data)
     reflex.process(:increment)
     assert_equal 25, reflex.instance_variable_get(:@count)
   end
