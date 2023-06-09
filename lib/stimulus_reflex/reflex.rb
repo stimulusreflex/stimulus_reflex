@@ -19,7 +19,7 @@ class StimulusReflex::Reflex
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
 
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :url, :element, :selectors, :method_name, :form_params, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :suppress_logging, to: :reflex_data
+  delegate :url, :element, :selectors, :method_name, :form_params, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :reflex_data
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
