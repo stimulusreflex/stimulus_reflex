@@ -5,7 +5,7 @@ require "stimulus_reflex/installer"
 return if pack_path_missing?
 
 # verify that all critical dependencies are up to date; if not, queue for later
-lines = package_json.readlines
+lines = package_json_path.readlines
 if !lines.index { |line| line =~ /^\s*["']webpack["']: ["']\^4.46.0["']/ }
   add_package "webpack@^4.46.0"
 else

@@ -2,6 +2,7 @@
 
 require "rails/generators"
 require "stimulus_reflex/version"
+require "stimulus_reflex/installer"
 
 class StimulusReflexGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
@@ -13,33 +14,20 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
   def execute
     actions.map!(&:underscore)
 
-    cached_entrypoint = Rails.root.join("tmp/stimulus_reflex_installer/entrypoint")
-    if cached_entrypoint.exist?
-      entrypoint = File.read(cached_entrypoint)
-    else
-      entrypoint = [
-        Rails.root.join("app/javascript"),
-        Rails.root.join("app/frontend")
-      ].find(&:exist?) || "app/javascript"
-      puts "Where do JavaScript files live in your app? Our best guess is: \e[1#{entrypoint}\e[22m 🤔"
-      puts "Press enter to accept this, or type a different path."
-      print "> "
-      input = Rails.env.test? ? "tmp/app/javascript" : $stdin.gets.chomp
-      entrypoint = input unless input.blank?
-    end
+    reflex_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
+    reflex_src = "app/reflexes/%file_name%_reflex.rb.tt"
+    reflex_path = Rails.root.join(reflex_entrypoint, "#{file_name}_reflex.rb")
+
+    template(reflex_src, reflex_path) unless options[:skip_reflex]
 
     if !options[:skip_stimulus] && entrypoint.blank?
       puts "❌ You must specify a valid JavaScript entrypoint."
       exit
     end
 
-    reflex_entrypoint = Rails.env.test? ? "tmp/app/reflexes" : "app/reflexes"
-    reflex_src = "app/reflexes/%file_name%_reflex.rb.tt"
-    reflex_path = Rails.root.join(reflex_entrypoint, "#{file_name}_reflex.rb")
     stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
     stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
 
-    template(reflex_src, reflex_path) unless options[:skip_reflex]
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 
     if file_name == "example"

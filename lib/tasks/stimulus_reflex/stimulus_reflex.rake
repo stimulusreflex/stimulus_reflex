@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "stimulus_reflex/installer"
+
 SR_STEPS = {
   "action_cable" => "Action Cable",
   "webpacker" => "Install StimulusReflex using Webpacker",
@@ -51,17 +53,18 @@ end
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
-    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
-    FileUtils.mkdir_p(Rails.root.join("tmp/stimulus_reflex_installer/working"))
+    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
+    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/working"))
+
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
-    bundler = nil
+    used_bundler = nil
     options = {}
 
     ARGV.each do |arg|
       # make sure we have a valid build tool specified, or proceed to automatic detection
       if ["webpacker", "esbuild", "vite", "shakapacker", "importmap"].include?(arg)
-        bundler = arg
+        used_bundler = arg
       else
         kv = arg.split("=")
         if kv.length == 2
@@ -90,9 +93,9 @@ namespace :stimulus_reflex do
     end
 
     # if there is an installation in progress, continue where we left off
-    cached_entrypoint = Rails.root.join("tmp/stimulus_reflex_installer/entrypoint")
-    if cached_entrypoint.exist?
-      entrypoint = File.read(cached_entrypoint)
+    if installer_entrypoint_path.exist?
+      entrypoint = installer_entrypoint_path.read
+
       puts "✨ Resuming \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m installation ✨"
       puts
       puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
@@ -106,69 +109,35 @@ namespace :stimulus_reflex do
       puts
       puts "If you have any setup issues, please consult \e[4;97mhttps://docs.stimulusreflex.com/hello-world/setup\e[0m"
       puts "or get help on Discord: \e[4;97mhttps://discord.gg/stimulus-reflex\e[0m. \e[38;5;196mWe are here for you.\e[0m 💙"
+
       if Rails.root.join(".git").exist?
         puts
         puts "We recommend running \e[1;94mgit commit\e[0m before proceeding. A diff will be generated at the end."
       end
 
-      if options.key? "entrypoint"
-        entrypoint = options["entrypoint"]
+      entrypoint = if options.key? "entrypoint"
+        options["entrypoint"]
       else
-        entrypoint = [
-          "app/javascript",
-          "app/frontend"
-        ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
-
-        puts
-        puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
-        puts "Press enter to accept this, or type a different path."
-        print "> "
-        input = $stdin.gets.chomp
-        entrypoint = input unless input.blank?
+        auto_detect_entrypoint
       end
-      File.write(cached_entrypoint, entrypoint)
+
+      installer_entrypoint_path.write(entrypoint)
     end
 
     # verify their bundler before starting, unless they explicitly specified on CLI
-    if !bundler
-      # auto-detect build tool based on existing packages and configuration
-      if Rails.root.join("config/importmap.rb").exist?
-        bundler = "importmap"
-      elsif Rails.root.join("package.json").exist?
-        package_json = File.read(Rails.root.join("package.json"))
-        bundler = "webpacker" if package_json.include?('"@rails/webpacker":')
-        bundler = "esbuild" if package_json.include?('"esbuild":')
-        bundler = "vite" if package_json.include?('"vite":')
-        bundler = "shakapacker" if package_json.include?('"shakapacker":')
-        if !bundler
-          puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
-          exit
-        end
-      else
-        puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
-        exit
-      end
-
-      puts
-      puts "It looks like you're using \e[1m#{bundler}\e[22m as your bundler. Is that correct? (Y/n)"
-      print "> "
-      input = $stdin.gets.chomp
-      if input.downcase == "n"
-        puts
-        puts "StimulusReflex installation supports: esbuild, webpacker, vite, shakapacker and importmap."
-        puts "Please run \e[1;94mrails stimulus_reflex:install [bundler]\e[0m to install StimulusReflex and CableReady."
-        exit
-      end
+    if !used_bundler
+      used_bundler = bundler
     end
 
-    File.write("tmp/stimulus_reflex_installer/bundler", bundler)
+    installer_bundler_path.write(used_bundler)
+
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
     File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))
 
     `bin/spring stop` if defined?(Spring)
 
     # do the things
-    SR_BUNDLERS[bundler].each do |template|
+    SR_BUNDLERS[used_bundler].each do |template|
       run_install_template(template, trace: !!options["trace"])
     end
 

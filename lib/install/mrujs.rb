@@ -17,7 +17,7 @@ if !File.exist?(mrujs_path)
 end
 
 if proceed
-  if bundler == "importmap"
+  if bundler.importmap?
 
     if !importmap_path.exist?
       halt "#{friendly_importmap_path} is missing. You need a valid importmap config file to proceed."
@@ -45,14 +45,14 @@ if proceed
     end
   else
     # queue mrujs for installation
-    if package_json.read.include?('"mrujs":')
+    if package_json_path.read.include?('"mrujs":')
       say "⏩ mrujs already present. Skipping."
     else
       add_package "mrujs@^0.10.1"
     end
 
     # queue @rails/ujs for removal
-    if package_json.read.include?('"@rails/ujs":')
+    if package_json_path.read.include?('"@rails/ujs":')
       drop_package "@rails/ujs"
     else
       say "⏩ @rails/ujs not present. Skipping."
@@ -70,10 +70,15 @@ if proceed
   index = index_path.read
   friendly_index_path = index_path.relative_path_from(Rails.root).to_s
   mrujs_pattern = /import ['"].\/mrujs['"]/
-  mrujs_import = "import '.\/mrujs'\n" # standard:disable Style/RedundantStringEscape
+
+  mrujs_import = if bundler.importmap?
+    %(import "config/mrujs"\n)
+  else
+    %(import "./mrujs"\n)
+  end
 
   if index.match?(mrujs_pattern)
-    say "⏩ mrujs alredy imported in #{friendly_index_path}. Skipping."
+    say "⏩ mrujs already imported in #{friendly_index_path}. Skipping."
   else
     append_file(index_path, mrujs_import, verbose: false)
     say "✅ mrujs imported in #{friendly_index_path}"

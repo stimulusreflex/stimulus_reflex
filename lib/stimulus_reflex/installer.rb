@@ -101,24 +101,105 @@ def cr_npm_version
   @cr_npm_version ||= CableReady::VERSION.gsub(".pre", "-pre").gsub(".rc", "-rc")
 end
 
-def package_json
-  @package_json ||= Rails.root.join("package.json")
+def package_json_path
+  @package_json_path ||= Rails.root.join("package.json")
+end
+
+def installer_entrypoint_path
+  create_dir_for_file_if_not_exists("tmp/stimulus_reflex_installer/entrypoint")
 end
 
 def entrypoint
-  @entrypoint ||= File.read("tmp/stimulus_reflex_installer/entrypoint")
+  path = installer_entrypoint_path
+  @entrypoint ||= File.exist?(path) ? File.read(path) : auto_detect_entrypoint
+end
+
+def auto_detect_entrypoint
+  entrypoint = [
+    "app/javascript",
+    "app/frontend",
+    "app/client",
+    "app/webpack"
+  ].find { |path| File.exist?(Rails.root.join(path)) } || "app/javascript"
+
+  puts
+  puts "Where do JavaScript files live in your app? Our best guess is: \e[1m#{entrypoint}\e[22m 🤔"
+  puts "Press enter to accept this, or type a different path."
+  print "> "
+
+  input = Rails.env.test? ? "tmp/app/javascript" : $stdin.gets.chomp
+  entrypoint = input unless input.blank?
+
+  File.write(installer_entrypoint_path, entrypoint)
+
+  entrypoint
+end
+
+def installer_bundler_path
+  create_dir_for_file_if_not_exists("tmp/stimulus_reflex_installer/bundler")
 end
 
 def bundler
-  @bundler ||= File.read("tmp/stimulus_reflex_installer/bundler")
+  path = installer_bundler_path
+  @bundler ||= File.exist?(path) ? File.read(path) : auto_detect_bundler
+
+  @bundler.inquiry
 end
 
-def network_issue_path
-  @network_issue_path ||= Rails.root.join("tmp/stimulus_reflex_installer/network_issue")
+def auto_detect_bundler
+  # auto-detect build tool based on existing packages and configuration
+  if importmap_path.exist?
+    bundler = "importmap"
+  elsif package_json_path.exist?
+    package_json = package_json_path.read
+
+    bundler = "webpacker" if package_json.include?('"@rails/webpacker":')
+    bundler = "esbuild" if package_json.include?('"esbuild":')
+    bundler = "vite" if package_json.include?('"vite":')
+    bundler = "shakapacker" if package_json.include?('"shakapacker":')
+
+    if !bundler
+      puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
+      exit
+    end
+  else
+    puts "❌ You must be using a node-based bundler such as esbuild, webpacker, vite or shakapacker (package.json) or importmap (config/importmap.rb) to use StimulusReflex."
+    exit
+  end
+
+  puts
+  puts "It looks like you're using \e[1m#{bundler}\e[22m as your bundler. Is that correct? (Y/n)"
+  print "> "
+
+  input = $stdin.gets.chomp
+
+  if input.downcase == "n"
+    puts
+    puts "StimulusReflex installation supports: esbuild, webpacker, vite, shakapacker and importmap."
+    puts "Please run \e[1;94mrails stimulus_reflex:install [bundler]\e[0m to install StimulusReflex and CableReady."
+    exit
+  end
+
+  File.write(installer_bundler_path, bundler)
+
+  bundler
+end
+
+def create_dir_if_not_exists(dir_path)
+  FileUtils.mkdir_p(dir_path)
+
+  Pathname.new(dir_path)
+end
+
+def create_dir_for_file_if_not_exists(file_path)
+  dir_path = File.dirname(file_path)
+  create_dir_if_not_exists(dir_path)
+
+  Pathname.new(file_path)
 end
 
 def config_path
-  @config_path ||= Rails.root.join(entrypoint, "config")
+  @config_path ||= create_dir_if_not_exists(Rails.root.join(entrypoint, "config"))
 end
 
 def importmap_path

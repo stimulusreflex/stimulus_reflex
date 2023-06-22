@@ -1,2 +1,7 @@
-import './cable_ready'
-import './stimulus_reflex'
+<%- if bundler.importmap? -%>
+import "config/cable_ready"
+import "config/stimulus_reflex"
+<%- else -%>
+import "./cable_ready"
+import "./stimulus_reflex"
+<%- end -%>
