@@ -19,15 +19,15 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
 
   setup do
-    File.delete(installer_entrypoint_path) if File.exists?(installer_entrypoint_path)
-    File.delete(installer_bundler_path) if File.exists?(installer_bundler_path)
+    File.delete(installer_entrypoint_path) if File.exist?(installer_entrypoint_path)
+    File.delete(installer_bundler_path) if File.exist?(installer_bundler_path)
     FileUtils.rm_rf("tmp/app")
     FileUtils.rm_rf("tmp/stimulus_reflex_installer")
   end
 
   teardown do
-    File.delete(installer_entrypoint_path) if File.exists?(installer_entrypoint_path)
-    File.delete(installer_bundler_path) if File.exists?(installer_bundler_path)
+    File.delete(installer_entrypoint_path) if File.exist?(installer_entrypoint_path)
+    File.delete(installer_bundler_path) if File.exist?(installer_bundler_path)
     FileUtils.rm_rf("tmp/app")
     FileUtils.rm_rf("tmp/stimulus_reflex_installer")
   end
