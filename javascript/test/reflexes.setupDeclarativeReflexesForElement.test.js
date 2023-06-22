@@ -272,4 +272,54 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
     assert.equal(element.dataset.controller, 'example stimulus-reflex')
   })
+
+  it('should use stimulus-reflex controller if matching controller is not a registered Stimulus controller using the data-reflex attribute shorthand', async () => {
+    const element = await fixture(html`
+      <a data-reflex="click" data-controller="doesnt-exist">
+        Click
+      </a>
+    `)
+
+    scanForReflexesOnElement(element)
+
+    assert.equal(element.dataset.reflex, 'click')
+    assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
+    assert.equal(element.dataset.controller, 'doesnt-exist stimulus-reflex')
+  })
+
+  it('should use stimulus-reflex controller if matching controller is a Stimulus controller but using the data-reflex attribute shorthand', async () => {
+    App.app.register('example', ExampleController)
+
+    const element = await fixture(html`
+      <a data-reflex="click" data-controller="example">
+        Click
+      </a>
+    `)
+
+    scanForReflexesOnElement(element)
+
+    assert.equal(element.dataset.reflex, 'click')
+    assert.equal(element.dataset.action, 'click->stimulus-reflex#__perform')
+    assert.equal(element.dataset.controller, 'example stimulus-reflex')
+  })
+
+  // https://github.com/stimulusreflex/stimulus_reflex/issues/659
+  it('should not add stimulus-reflex controller if parent element already has a StimulusReflex registered controller', async () => {
+    App.app.register('example', ExampleController)
+
+    const controllerElement = await fixture(html`
+      <div data-controller="example">
+        <a href="#" data-reflex="click->Example#call">Eat</a>
+      </div>
+    `)
+
+    const button = controllerElement.querySelector('a')
+
+    scanForReflexesOnElement(button)
+
+    assert.equal(controllerElement.dataset.controller, 'example')
+    assert.equal(button.dataset.reflex, 'click->Example#call')
+    assert.equal(button.dataset.action, 'click->example#__perform')
+    assert.equal(button.dataset.controller, undefined)
+  })
 })
