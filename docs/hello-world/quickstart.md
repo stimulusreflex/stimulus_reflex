@@ -20,7 +20,7 @@ Instead of _"Which Single Page App framework should I use?"_ we believe that Sti
 
 ## Video Tutorial: Introduction to StimulusReflex
 
-[Chris](https://twitter.com/excid3)from [GoRails](https://gorails.com)has released the first of hopefully many tutorial videos demonstrating how to get up and running with StimulusReflex in about ten minutes: ⏱️👍
+[Chris](https://twitter.com/excid3) from [GoRails](https://gorails.com) has released the first of hopefully many tutorial videos demonstrating how to get up and running with StimulusReflex in about ten minutes: ⏱️👍
 
 [![](https://img.youtube.com/vi/gbMbGOigjA8/maxresdefault.jpg)](https://gorails.com/episodes/stimulus-reflex-basics)
 

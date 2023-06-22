@@ -27,7 +27,7 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
           reflex.logger&.error error_message
           reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
         else
-          unless exception.is_a?(StimulusReflex::Reflex::VersionMismatchError)
+          unless exception.is_a?(StimulusReflex::VersionMismatchError)
             StimulusReflex.config.logger.error error_message
           end
 

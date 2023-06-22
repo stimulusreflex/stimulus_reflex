@@ -55,7 +55,7 @@ end
 ```
 :::
 
-If you plan to access `current_user` from all of your Reflex classes, delegate it your ApplicationReflex:
+If you plan to access `current_user` from all of your Reflex classes, delegate it in your `ApplicationReflex`:
 
 ::: code-group
 ```ruby [app/reflexes/application_reflex.rb]
