@@ -9,9 +9,7 @@ import { initialize } from '../stimulus_reflex'
 import App from '../app'
 import { scanForReflexesOnElement } from '../scanner'
 
-function registeredControllers () {
-  return Array.from(App.app.router.modulesByIdentifier.keys())
-}
+import { unloadAllControllers, registeredControllers } from './test_helpers'
 
 describe('scanForReflexesOnElement', () => {
   beforeEach(() => {
@@ -19,7 +17,7 @@ describe('scanForReflexesOnElement', () => {
   })
 
   afterEach(() => {
-    App.app.unload(registeredControllers())
+    unloadAllControllers()
   })
 
   it('should add the right action and controller attribute', async () => {

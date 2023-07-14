@@ -46,4 +46,4 @@ const findControllerByReflexName = (reflexName, controllers) => {
   return controller
 }
 
-export { allReflexControllers, findControllerByReflexName }
+export { localReflexControllers, allReflexControllers, findControllerByReflexName }
