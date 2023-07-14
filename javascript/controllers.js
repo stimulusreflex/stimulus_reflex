@@ -43,7 +43,7 @@ const findControllerByReflexName = (reflexName, controllers) => {
     return identifier === controller.identifier
   })
 
-  return controller || controllers[0]
+  return controller
 }
 
 export { allReflexControllers, findControllerByReflexName }

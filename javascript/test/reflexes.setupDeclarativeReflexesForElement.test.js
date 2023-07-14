@@ -322,4 +322,18 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(button.dataset.action, 'click->example#__perform')
     assert.equal(button.dataset.controller, undefined)
   })
+
+  it('test', async () => {
+    App.app.register('tooltip', ExampleController)
+
+    const controllerElement = await fixture(html`
+      <i data-controller="tooltip stimulus-reflex" data-reflex="click->ThumbRating#rate!"></i>
+    `)
+
+    scanForReflexesOnElement(controllerElement)
+
+    assert.equal(controllerElement.dataset.controller, 'tooltip stimulus-reflex')
+    assert.equal(controllerElement.dataset.reflex, 'click->ThumbRating#rate!')
+    assert.equal(controllerElement.dataset.action, 'click->stimulus-reflex#__perform')
+  })
 })

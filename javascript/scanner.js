@@ -28,7 +28,7 @@ const scanForReflexesOnElement = (element, controller = null) => {
   )
 
   reflexAttributeNames.forEach(reflexName => {
-    const potentialControllers = [controller].concat(allReflexControllers(element))
+    const potentialControllers = [controller].concat(allReflexControllers(element)).filter(c => c)
 
     controller = findControllerByReflexName(
       reflexName,
@@ -42,7 +42,7 @@ const scanForReflexesOnElement = (element, controller = null) => {
 
     const parentControllerElement = element.closest(`[data-controller~=${controllerName}]`)
 
-    if (!parentControllerElement) {
+    if (!parentControllerElement || (parentControllerElement && controllerName === 'stimulus-reflex')) {
       controllers.push(controllerName)
     }
   })
