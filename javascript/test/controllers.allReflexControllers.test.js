@@ -10,7 +10,11 @@ import App from '../app'
 import { application } from './dummy/application'
 import { allReflexControllers } from '../controllers'
 
-import { unloadAllControllers, registeredControllers, identifiers } from './test_helpers'
+import {
+  unloadAllControllers,
+  registeredControllers,
+  identifiers
+} from './test_helpers'
 
 describe('allReflexControllers', () => {
   beforeEach(() => {
@@ -22,12 +26,9 @@ describe('allReflexControllers', () => {
   })
 
   it('returns StimulusReflex-enabled controller from parent', async () => {
-    App.app.register("sr", ExampleController)
+    App.app.register('sr', ExampleController)
 
-    assert.deepEqual(registeredControllers(), [
-      "stimulus-reflex",
-      "sr"
-    ])
+    assert.deepEqual(registeredControllers(), ['stimulus-reflex', 'sr'])
 
     const element = await fixture(html`
       <div data-controller="sr">
@@ -36,16 +37,13 @@ describe('allReflexControllers', () => {
     `)
 
     const a = element.querySelector('a')
-    assert.deepEqual(identifiers(allReflexControllers(a)), ["sr"])
+    assert.deepEqual(identifiers(allReflexControllers(a)), ['sr'])
   })
 
   it('doesnt return regular controller from parent', async () => {
-    App.app.register("regular", RegularController)
+    App.app.register('regular', RegularController)
 
-    assert.deepEqual(registeredControllers(), [
-      "stimulus-reflex",
-      "regular"
-    ])
+    assert.deepEqual(registeredControllers(), ['stimulus-reflex', 'regular'])
 
     const element = await fixture(html`
       <div data-controller="regular">
@@ -58,10 +56,10 @@ describe('allReflexControllers', () => {
   })
 
   it('should return all reflex controllers from parents', async () => {
-    App.app.register("sr-one", ExampleController)
-    App.app.register("sr-two", ExampleController)
-    App.app.register("regular-one", RegularController)
-    App.app.register("regular-two", RegularController)
+    App.app.register('sr-one', ExampleController)
+    App.app.register('sr-two', ExampleController)
+    App.app.register('regular-one', RegularController)
+    App.app.register('regular-two', RegularController)
 
     const element = await fixture(html`
       <div data-controller="sr-one">
@@ -79,14 +77,11 @@ describe('allReflexControllers', () => {
 
     const controllers = allReflexControllers(a)
 
-    assert.deepEqual(identifiers(controllers), [
-      "sr-two",
-      "sr-one",
-    ])
+    assert.deepEqual(identifiers(controllers), ['sr-two', 'sr-one'])
   })
 
   it('should return controllers with same name', async () => {
-    App.app.register("sr", ExampleController)
+    App.app.register('sr', ExampleController)
 
     const outer = await fixture(html`
       <div data-controller="sr" id="outer">
@@ -100,10 +95,7 @@ describe('allReflexControllers', () => {
     const inner = outer.querySelector('#inner')
     const controllers = allReflexControllers(a)
 
-    assert.deepEqual(identifiers(controllers), [
-      "sr",
-      "sr",
-    ])
+    assert.deepEqual(identifiers(controllers), ['sr', 'sr'])
 
     assert.deepEqual(controllers[0].element, inner)
     assert.deepEqual(controllers[1].element, outer)

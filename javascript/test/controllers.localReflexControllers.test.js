@@ -8,7 +8,11 @@ import App from '../app'
 import { localReflexControllers } from '../controllers'
 import { initialize } from '../stimulus_reflex'
 
-import { unloadAllControllers, registeredControllers, identifiers } from './test_helpers'
+import {
+  unloadAllControllers,
+  registeredControllers,
+  identifiers
+} from './test_helpers'
 
 describe('localReflexControllers', () => {
   beforeEach(() => {
@@ -20,51 +24,46 @@ describe('localReflexControllers', () => {
   })
 
   it('returns StimulusReflex-enabled controller', async () => {
-    App.app.register("sr", ExampleController)
+    App.app.register('sr', ExampleController)
 
-    assert.deepEqual(registeredControllers(), [
-      "stimulus-reflex",
-      "sr"
-    ])
+    assert.deepEqual(registeredControllers(), ['stimulus-reflex', 'sr'])
 
     const element = await fixture(html`
       <div data-controller="sr"></div>
     `)
 
-    assert.deepEqual(identifiers(localReflexControllers(element)), ["sr"])
+    assert.deepEqual(identifiers(localReflexControllers(element)), ['sr'])
   })
 
   it('doesnt return regular controller', async () => {
-    App.app.register("sr", ExampleController)
-    App.app.register("regular", RegularController)
+    App.app.register('sr', ExampleController)
+    App.app.register('regular', RegularController)
 
     assert.deepEqual(registeredControllers(), [
-      "stimulus-reflex",
-      "sr",
-      "regular"
+      'stimulus-reflex',
+      'sr',
+      'regular'
     ])
 
     const element = await fixture(html`
       <div data-controller="sr regular"></div>
     `)
 
-    assert.deepEqual(identifiers(localReflexControllers(element)), [
-      "sr"
-    ])
+    assert.deepEqual(identifiers(localReflexControllers(element)), ['sr'])
   })
 
   it('returns all StimulusReflex-enabled controllers', async () => {
-    App.app.register("sr-one", ExampleController)
-    App.app.register("sr-two", ExampleController)
-    App.app.register("regular-one", RegularController)
-    App.app.register("regular-two", RegularController)
+    App.app.register('sr-one', ExampleController)
+    App.app.register('sr-two', ExampleController)
+    App.app.register('regular-one', RegularController)
+    App.app.register('regular-two', RegularController)
 
     assert.deepEqual(registeredControllers(), [
-      "stimulus-reflex",
-      "sr-one",
-      "sr-two",
-      "regular-one",
-      "regular-two"
+      'stimulus-reflex',
+      'sr-one',
+      'sr-two',
+      'regular-one',
+      'regular-two'
     ])
 
     const element = await fixture(html`
@@ -72,8 +71,8 @@ describe('localReflexControllers', () => {
     `)
 
     assert.deepEqual(identifiers(localReflexControllers(element)), [
-      "sr-two",
-      "sr-one"
+      'sr-two',
+      'sr-one'
     ])
   })
 })

@@ -5,7 +5,9 @@ import { findControllerByReflexName } from '../controllers'
 
 describe('findControllerByReflexName', () => {
   it('returns undefined if empty controllers array is passed', () => {
-    assert.isUndefined(findControllerByReflexName('click->TestReflex#create', []))
+    assert.isUndefined(
+      findControllerByReflexName('click->TestReflex#create', [])
+    )
     assert.isUndefined(findControllerByReflexName('click->Test#create', []))
   })
 
@@ -17,8 +19,12 @@ describe('findControllerByReflexName', () => {
       { identifier: 'last' }
     ]
 
-    assert.isUndefined(findControllerByReflexName('click->NoReflex#create', controllers))
-    assert.isUndefined(findControllerByReflexName('click->No#create', controllers))
+    assert.isUndefined(
+      findControllerByReflexName('click->NoReflex#create', controllers)
+    )
+    assert.isUndefined(
+      findControllerByReflexName('click->No#create', controllers)
+    )
   })
 
   it('returns matching controller', () => {

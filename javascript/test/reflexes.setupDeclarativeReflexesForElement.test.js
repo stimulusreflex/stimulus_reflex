@@ -325,7 +325,10 @@ describe('scanForReflexesOnElement', () => {
     App.app.register('example', ExampleController)
 
     const controllerElement = await fixture(html`
-      <div data-controller="example stimulus-reflex" data-reflex="click->Example#else"></div>
+      <div
+        data-controller="example stimulus-reflex"
+        data-reflex="click->Example#else"
+      ></div>
     `)
 
     scanForReflexesOnElement(controllerElement)
@@ -339,13 +342,22 @@ describe('scanForReflexesOnElement', () => {
     App.app.register('example', ExampleController)
 
     const controllerElement = await fixture(html`
-      <div data-controller="example stimulus-reflex" data-reflex="click->Something#else"></div>
+      <div
+        data-controller="example stimulus-reflex"
+        data-reflex="click->Something#else"
+      ></div>
     `)
 
     scanForReflexesOnElement(controllerElement)
 
-    assert.equal(controllerElement.dataset.controller, 'example stimulus-reflex')
+    assert.equal(
+      controllerElement.dataset.controller,
+      'example stimulus-reflex'
+    )
     assert.equal(controllerElement.dataset.reflex, 'click->Something#else')
-    assert.equal(controllerElement.dataset.action, 'click->stimulus-reflex#__perform')
+    assert.equal(
+      controllerElement.dataset.action,
+      'click->stimulus-reflex#__perform'
+    )
   })
 })
