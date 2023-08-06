@@ -9,9 +9,7 @@ import { initialize } from '../stimulus_reflex'
 import App from '../app'
 import { scanForReflexesOnElement } from '../scanner'
 
-function registeredControllers () {
-  return Array.from(App.app.router.modulesByIdentifier.keys())
-}
+import { unloadAllControllers, registeredControllers } from './test_helpers'
 
 describe('scanForReflexesOnElement', () => {
   beforeEach(() => {
@@ -19,7 +17,7 @@ describe('scanForReflexesOnElement', () => {
   })
 
   afterEach(() => {
-    App.app.unload(registeredControllers())
+    unloadAllControllers()
   })
 
   it('should add the right action and controller attribute', async () => {
@@ -321,5 +319,45 @@ describe('scanForReflexesOnElement', () => {
     assert.equal(button.dataset.reflex, 'click->Example#call')
     assert.equal(button.dataset.action, 'click->example#__perform')
     assert.equal(button.dataset.controller, undefined)
+  })
+
+  it('should remove stimulus-reflex controller when other controller is a matching StimulusReflex-enabled controller', async () => {
+    App.app.register('example', ExampleController)
+
+    const controllerElement = await fixture(html`
+      <div
+        data-controller="example stimulus-reflex"
+        data-reflex="click->Example#else"
+      ></div>
+    `)
+
+    scanForReflexesOnElement(controllerElement)
+
+    assert.equal(controllerElement.dataset.controller, 'example')
+    assert.equal(controllerElement.dataset.reflex, 'click->Example#else')
+    assert.equal(controllerElement.dataset.action, 'click->example#__perform')
+  })
+
+  it('should not remove stimulus-reflex controller when other controller is a non-matching StimulusReflex-enabled controller', async () => {
+    App.app.register('example', ExampleController)
+
+    const controllerElement = await fixture(html`
+      <div
+        data-controller="example stimulus-reflex"
+        data-reflex="click->Something#else"
+      ></div>
+    `)
+
+    scanForReflexesOnElement(controllerElement)
+
+    assert.equal(
+      controllerElement.dataset.controller,
+      'example stimulus-reflex'
+    )
+    assert.equal(controllerElement.dataset.reflex, 'click->Something#else')
+    assert.equal(
+      controllerElement.dataset.action,
+      'click->stimulus-reflex#__perform'
+    )
   })
 })

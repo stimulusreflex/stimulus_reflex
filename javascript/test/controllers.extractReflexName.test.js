@@ -5,13 +5,13 @@ import { findControllerByReflexName } from '../controllers'
 
 describe('findControllerByReflexName', () => {
   it('returns undefined if empty controllers array is passed', () => {
-    assert.equal(
-      findControllerByReflexName('click->TestReflex#create', []),
-      undefined
+    assert.isUndefined(
+      findControllerByReflexName('click->TestReflex#create', [])
     )
+    assert.isUndefined(findControllerByReflexName('click->Test#create', []))
   })
 
-  it('returns first controller if no matching controller is found', () => {
+  it('returns no controller if no matching controller is found', () => {
     const controller = { identifier: 'test' }
     const controllers = [
       { identifier: 'first' },
@@ -19,9 +19,11 @@ describe('findControllerByReflexName', () => {
       { identifier: 'last' }
     ]
 
-    assert.equal(
-      findControllerByReflexName('click->NoReflex#create', controllers),
-      controllers[0]
+    assert.isUndefined(
+      findControllerByReflexName('click->NoReflex#create', controllers)
+    )
+    assert.isUndefined(
+      findControllerByReflexName('click->No#create', controllers)
     )
   })
 
@@ -35,6 +37,11 @@ describe('findControllerByReflexName', () => {
 
     assert.equal(
       findControllerByReflexName('click->TestReflex#create', controllers),
+      controller
+    )
+
+    assert.equal(
+      findControllerByReflexName('click->Test#create', controllers),
       controller
     )
   })
@@ -54,6 +61,14 @@ describe('findControllerByReflexName', () => {
       ),
       controller
     )
+
+    assert.equal(
+      findControllerByReflexName(
+        'click->Some::Deep::Module::Test#create',
+        controllers
+      ),
+      controller
+    )
   })
 
   it('returns dasherized controller', () => {
@@ -66,6 +81,11 @@ describe('findControllerByReflexName', () => {
 
     assert.equal(
       findControllerByReflexName('click->SomeThingReflex#create', controllers),
+      controller
+    )
+
+    assert.equal(
+      findControllerByReflexName('click->SomeThing#create', controllers),
       controller
     )
   })

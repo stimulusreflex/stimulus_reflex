@@ -31,6 +31,13 @@ describe('attributeValue', () => {
     )
   })
 
+  it('returns expected attribute value for array with duplicate values', () => {
+    assert.equal(
+      attributeValue(['one', 'two', 'three', 'three', 'two', 'one']),
+      'one two three'
+    )
+  })
+
   it('returns expected attribute value for array with mixed and duplicate values', () => {
     assert.equal(
       attributeValue([
