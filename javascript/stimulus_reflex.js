@@ -32,7 +32,7 @@ import {
 // that have configured data-reflex. Note that this default can be overridden when initializing the application.
 // i.e. StimulusReflex.initialize(myStimulusApplication, MyCustomDefaultController)
 //
-class StimulusReflexController extends Controller {
+export class StimulusReflexController extends Controller {
   constructor (...args) {
     super(...args)
     register(this)
