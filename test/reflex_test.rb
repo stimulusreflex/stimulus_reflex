@@ -34,13 +34,12 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
   end
 
   test "params behave like ActionController::Parameters" do
-    ActionDispatch::Request.any_instance.stubs(:parameters).returns({"a" => "1", "b" => "2", "c" => "3"})
-    reflex_data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", version: StimulusReflex::VERSION)
+    params = {"a" => "1", "b" => "2", "c" => "3"}
+    reflex_data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", params: params, version: StimulusReflex::VERSION)
     reflex = StimulusReflex::Reflex.new(subscribe, reflex_data: reflex_data)
-
     deleted_param = reflex.params.delete("a")
 
     assert deleted_param == "1"
-    assert reflex.params.to_unsafe_h == {"b" => "2", "c" => "3"}
+    assert reflex.params.to_unsafe_h == {"controller" => "test", "action" => "index", "b" => "2", "c" => "3"}
   end
 end
