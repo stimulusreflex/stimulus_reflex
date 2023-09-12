@@ -34,6 +34,8 @@ class StimulusReflex::BroadcasterTestCase < ActionCable::Channel::TestCase
     def connection.env
       @env ||= {}
     end
-    @reflex = StimulusReflex::Reflex.new(subscribe, url: "https://test.stimulusreflex.com", client_attributes: {id: "666", version: StimulusReflex::VERSION})
+
+    reflex_data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", id: "666", version: StimulusReflex::VERSION)
+    @reflex = StimulusReflex::Reflex.new(subscribe, reflex_data: reflex_data)
   end
 end

@@ -4,7 +4,7 @@ class StimulusReflex::ReflexData
   attr_reader :data
 
   def initialize(data)
-    @data = data
+    @data = data.deep_transform_keys { |k| k.to_s.underscore }.with_indifferent_access
   end
 
   def reflex_name
@@ -14,13 +14,13 @@ class StimulusReflex::ReflexData
   end
 
   def selectors
-    selectors = (data["selectors"] || []).select(&:present?)
-    selectors = data["selectors"] = ["body"] if selectors.blank?
+    selectors = (data[:selectors] || []).select(&:present?)
+    selectors = data[:selectors] = ["body"] if selectors.blank?
     selectors
   end
 
   def target
-    data["target"].to_s
+    data[:target].to_s
   end
 
   def method_name
@@ -28,11 +28,11 @@ class StimulusReflex::ReflexData
   end
 
   def arguments
-    (data["args"] || []).map { |arg| object_with_indifferent_access arg } || []
+    (data[:args] || []).map { |arg| object_with_indifferent_access arg } || []
   end
 
   def url
-    data["url"].to_s
+    data[:url].to_s
   end
 
   def element
@@ -40,15 +40,15 @@ class StimulusReflex::ReflexData
   end
 
   def permanent_attribute_name
-    data["permanentAttributeName"]
+    data[:permanent_attribute_name]
   end
 
   def suppress_logging
-    data["suppressLogging"]
+    data[:suppress_logging]
   end
 
   def form_data
-    Rack::Utils.parse_nested_query(data["formData"])
+    Rack::Utils.parse_nested_query(data[:form_data])
   end
 
   def params
@@ -56,7 +56,7 @@ class StimulusReflex::ReflexData
   end
 
   def form_params
-    form_data.deep_merge(data["params"] || {})
+    form_data.deep_merge(data[:params] || {})
   end
 
   def url_params
@@ -64,33 +64,33 @@ class StimulusReflex::ReflexData
   end
 
   def id
-    data["id"]
+    data[:id]
   end
 
   def tab_id
-    data["tabId"]
+    data[:tab_id]
   end
 
   # TODO: remove this in v4
   def xpath_controller
-    data["xpathController"]
+    data[:xpath_controller]
   end
 
   def xpath_element
-    data["xpathElement"]
+    data[:xpath_element]
   end
   # END TODO remove
 
   def reflex_controller
-    data["reflexController"]
+    data[:reflex_controller]
   end
 
   def npm_version
-    data["version"].to_s
+    data[:version].to_s
   end
 
   def version
-    data["version"].to_s.gsub("-pre", ".pre").gsub("-rc", ".rc")
+    npm_version.gsub("-pre", ".pre").gsub("-rc", ".rc")
   end
 
   private
