@@ -8,27 +8,6 @@ description: How to prepare your app to use StimulusReflex
 
 # Setup
 
-## First: set up Webpacker
-
-**StimulusReflex was designed with Webpacker in mind.** It's possible to configure it to work with asset pipeline/Sprockets, import maps, Vite Rails, ESBuild and probably several other tools which will be directly supported by StimulusReflex 3.5 **when it is released**.
-
-_For now_, we recommend that you use the **webpacker 5.4.3** gem:
-
-```ruby
-gem "webpacker", "~> 5.4.3"
-```
-
-And set up your `package.json`:
-
-```json
-"dependencies": {
-  "@rails/webpacker": "5.4.3",
-},
-"devDependencies": {
-  "webpack-dev-server": "^3.11.2"
-}
-```
-
 ## Command-Line Install
 
 StimulusReflex relies on [Stimulus](https://stimulus.hotwired.dev), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6+ projects. For Rails 5.2, see [here](/hello-world/setup#rails-5-2-support).
@@ -39,14 +18,83 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](/appendices/deployment#session-storage).)
 
-```ruby
-bundle add stimulus_reflex --version 3.5.0.pre8
-rake stimulus_reflex:install
+### Step 1: Ruby
+
+Add the `stimulus_reflex` gem to `Gemfile` using `bundle add`:
+
+```shell
+bundle add stimulus_reflex --version 3.5.0.rc3
 ```
 
-::: warning
-There have been recent reports of a change in the Safari web browser that cause Action Cable connections to drop. You can find a hotfix to mitigate this issue [here](/appendices/troubleshooting#safari-nsurlsession-websocket-bug).
-:::
+or manually add this line to your `Gemfile`:
+```ruby
+gem 'stimulus_reflex', '3.5.0.rc3'
+```
+
+### Step 2: JavaScript
+
+StimulusReflex 3.5 is designed to work with all the asset bundling solutions Rails 7 supports.
+
+StimulusReflex's installer will try to automatically detect your bundling setup and asks you to confirm the choice.
+
+#### Automatic Setup
+
+The let the installer automatically detect your setup run:
+
+```shell
+rails stimulus_reflex:install
+```
+
+The installer tries to detect your setup and asks you to confirm the choice:
+
+```
+Where do JavaScript files live in your app? Our best guess is: app/javascript 🤔
+Press enter to accept this, or type a different path.
+>
+```
+
+Similar with the bundler choice:
+
+```
+It looks like you're using esbuild as your bundler. Is that correct? (Y/n)
+>
+```
+
+The bundler will continue and guide you through the install process.
+
+#### Manual selection
+
+If the installer can't automatically detect your setup or you want tell the installer which strategy to use you can run the `stimulus_reflex:install` command with an argument.
+
+##### Using Importmaps
+
+```bash
+rails stimulus_reflex:install importmap
+```
+
+##### Using esbuild
+
+```bash
+rails stimulus_reflex:install esbuild
+```
+
+##### Using Vite
+
+```bash
+rails stimulus_reflex:install vite
+```
+
+##### Using Webpacker
+
+```bash
+rails stimulus_reflex:install webpacker
+```
+
+##### Using Shackapacker
+
+```bash
+rails stimulus_reflex:install shakapacker
+```
 
 And that's it! You can start using StimulusReflex in your application with the `development` environment. You'll need to keep reading to set up [`test`](/appendices/testing#test-environment-setup) and [`production`](/appendices/deployment).
 
@@ -62,41 +110,55 @@ StimulusReflex requires Redis to be [installed and running](https://redis.io/top
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](/appendices/deployment#session-storage) page.
 :::
 
-We'll install the StimulusReflex gem and client library before enabling caching in your development environment. Then Webpacker and Stimulus are installed. An initializer called `stimulus_reflex.rb` will be created with default values.
+We'll install the StimulusReflex gem and client library before enabling caching in your development environment. An initializer called `stimulus_reflex.rb` will be created with default values.
 
-```ruby
-bundle add stimulus_reflex --version 3.5.0.pre9
-yarn add stimulus_reflex@3.5.0.pre9
-rails dev:cache # caching needs to be enabled
-rake webpacker:install:stimulus
-rails generate stimulus_reflex:initializer
-```
+::: info
+We assume [Stimulus](https://stimulus.hotwired.dev) is present in your app, along with a Javascript bundling mechanism. If in doubt, please consult the READMEs of [jsbundling-rails](https://github.com/rails/jsbundling-rails) and [stimulus-rails](https://github.com/hotwired/stimulus-rails).
 
-::: warning
 StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
 :::
+
+```ruby
+bundle add stimulus_reflex --version 3.5.0.rc3
+bundle add redis-session-store
+yarn add stimulus_reflex@3.5.0.rc3
+rails dev:cache # caching needs to be enabled
+rails generate stimulus_reflex:initializer
+```
 
 We need to modify our Stimulus configuration to import and initialize StimulusReflex, which will attempt to locate the existing ActionCable consumer. A new websocket connection is created if the consumer isn't found.
 
 ::: code-group
 ```javascript [app/javascript/controllers/index.js]
-import { Application } from 'stimulus'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
-import StimulusReflex from 'stimulus_reflex'
-import consumer from '../channels/consumer'
+import { application } from "./application"
+import applicationController from "./application_controller"
+import StimulusReflex from "stimulus_reflex"
+
+import controllers from "./**/*_controller.js"
+
+controllers.forEach((controller) => {
+  application.register(controller.name, controller.module.default)
+})
+
+StimulusReflex.initialize(application, { applicationController, isolate: true })
+
+// consider removing these options in production
+StimulusReflex.debug = true
+// end remove
+```
+```javascript [app/javascript/controllers/application.js]
+import { Application } from "@hotwired/stimulus"
+import consumer from "../channels/consumer"
 
 const application = Application.start()
-const context = require.context('controllers', true, /_controller\.js$/)
-application.load(definitionsFromContext(context))
+
+// Configure Stimulus development experience
+application.debug = false
 application.consumer = consumer
-StimulusReflex.initialize(application, { isolate: true })
+window.Stimulus   = application
+
+export { application }
 ```
-:::
-
-::: warning
-The installation information presented by the [StimulusJS handbook](https://stimulus.hotwired.dev/handbook/installing#using-webpack) conflicts slightly with the Rails default webpacker Stimulus installation. The handbook demonstrates requiring your controllers inside of your `application.js` pack file, while webpacker creates an `index.js` in your `app/javascript/controllers` folder. StimulusReflex assumes that you are following the Rails webpacker flow. Your application pack should simply `import 'controllers'`.
-
-If you require your controllers in both `application.js` and `index.js` it's likely that your controllers will load twice, causing all sorts of strange behavior.
 :::
 
 **Cookie-based session storage is not currently supported by StimulusReflex.**
@@ -112,7 +174,7 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } }
 
   # ADD the following line; it probably doesn't exist
-  config.session_store :cache_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
+  config.session_store :redis_session_store, key: "_sessions_development", compress: true, pool_size: 5, expire_after: 1.year
 end
 ```
 :::
@@ -269,43 +331,22 @@ import 'controllers'
 If you are interested in running the latest version of StimulusReflex, you can point to the `main` branch on GitHub:
 
 ::: code-group
-```javascript [package.json]
-"dependencies": {
-  "stimulus_reflex": "stimulusreflex/stimulus_reflex#main"
-}
-```
-:::
-
-::: code-group
 ```ruby [Gemfile]
 gem "stimulus_reflex", github: "stimulusreflex/stimulus_reflex", branch: "main"
 ```
 :::
+
+And for the JavaScript package your want to get the latest commit sha on `main` and use the first 7 characters of that commit.
+
+Replace the `[commit sha]` in the command below and it will install the latest version from main.
+
+::: code-group
+```bash [Terminal]
+yarn add stimulus_reflex@https://github.com/stimulusreflex/dev-builds/archive/refs/tags/stimulus_reflex/[commit sha].tar.gz
+```
 
 Restart your server(s) and refresh your page to see the latest.
 
 ::: warning
 It is really important to **always make sure that your Ruby and JavaScript package versions are the same**!
 :::
-
-### Running a branch to test a GitHub Pull Request
-
-Sometimes you want to test a new feature or bugfix before it is officially merged with the `main` branch. You can adapt the "Edge" instructions and run code from anywhere.
-
-Using [#335 - tab isolation mode v2](https://github.com/hopsoft/stimulus_reflex/pull/335) as an example, we first need the GitHub username of the author and the name of their local branch associated with the PR. In this case, the answers are `leastbad` and `isolation_optional`. This is a branch on the forked copy of the main project; a pull request is just a proposal to merge the changes in this branch into the `main` branch of the main project repository.
-
-::: code-group
-```javascript [package.json]
-"dependencies": {
-  "stimulus_reflex": "leastbad/stimulus_reflex#isolation_optional"
-}
-```
-:::
-
-::: code-group
-```ruby [Gemfile]
-gem "stimulus_reflex", github: "leastbad/stimulus_reflex", branch: "isolation_optional"
-```
-:::
-
-Restart your server(s) and refresh your page to see the latest.
