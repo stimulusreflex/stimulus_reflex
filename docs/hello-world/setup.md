@@ -6,6 +6,7 @@ description: How to prepare your app to use StimulusReflex
   import LinkComponent from '../components/LinkComponent.vue'
 </script>
 
+# Setup
 
 ## Command-Line Install
 
