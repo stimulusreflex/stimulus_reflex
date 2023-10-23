@@ -12,21 +12,22 @@ class StimulusReflex::Reflex
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :channel, :data, :broadcaster
+  attr_reader :channel, :reflex_data, :broadcaster
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
 
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :data
+  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :reflex_data
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
+  alias_method :data, :reflex_data
 
-  def initialize(channel, data:)
+  def initialize(channel, reflex_data:)
     @channel = channel
-    @data = data
+    @reflex_data = reflex_data
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
     @payload = {}
     @headers = {}
@@ -75,7 +76,7 @@ class StimulusReflex::Reflex
       req = ActionDispatch::Request.new(env)
 
       # fetch path params (controller, action, ...) and apply them
-      request_params = StimulusReflex::RequestParameters.new(params: data.params, req: req, url: url)
+      request_params = StimulusReflex::RequestParameters.new(params: reflex_data.params, req: req, url: url)
       req = request_params.apply!
 
       req

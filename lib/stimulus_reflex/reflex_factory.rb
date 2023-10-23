@@ -11,7 +11,7 @@ class StimulusReflex::ReflexFactory
   end
 
   def call
-    reflex_class.new(channel, data: data)
+    reflex_class.new(channel, reflex_data: data)
   end
 
   private
