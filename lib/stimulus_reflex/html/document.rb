@@ -21,10 +21,14 @@ module StimulusReflex
       end
 
       def initialize(html)
-        @document = parsing_class.parse(html.to_s)
+        @document = parse_html(html)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
+      end
+
+      def parse_html(html)
+        parsing_class.parse(html.to_s)
       end
 
       def empty?

@@ -230,4 +230,32 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_equal "<li>1</li>", fragment.outer_html.squish
     assert_equal "1", fragment.inner_html.squish
   end
+
+  test "should properly parse unclosed input with sibling tags" do
+    raw_html = "<div><label><input type=\"file\"><span></span></label></div>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(raw_html)
+    assert_equal "<div><label><input type=\"file\"><span></span></label></div>", fragment.to_html.squish
+    assert_equal "<div><label><input type=\"file\"><span></span></label></div>", fragment.outer_html.squish
+  end
+
+  test "should properly parse unclosed img with sibling tags" do
+    raw_html = "<div><label><img src=\"file\"><span></span></label></div>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(raw_html)
+    assert_equal "<div><label><img src=\"file\"><span></span></label></div>", fragment.to_html.squish
+    assert_equal "<div><label><img src=\"file\"><span></span></label></div>", fragment.outer_html.squish
+  end
+
+  test "should properly parse unclosed br with sibling tags" do
+    raw_html = "<div><label><br><span></span></label></div>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(raw_html)
+    assert_equal "<div><label><br><span></span></label></div>", fragment.to_html.squish
+    assert_equal "<div><label><br><span></span></label></div>", fragment.outer_html.squish
+  end
+
+  test "should properly parse img with closing tag" do
+    raw_html = "<div><label><img src=\"file\"></img><span></span></label></div>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(raw_html)
+    assert_equal "<div><label><img src=\"file\"><span></span></label></div>", fragment.to_html.squish
+    assert_equal "<div><label><img src=\"file\"><span></span></label></div>", fragment.outer_html.squish
+  end
 end
