@@ -7,13 +7,9 @@ module StimulusReflex
     class DocumentFragment < Document
       SELF_CLOSING_TAGS = %w[area base br col embed hr img input link meta param source track wbr].freeze
 
-      def parsing_class
-        Nokogiri
-      end
-
       def parse_html(html)
         html_string = fix_self_closing_tags(html.to_s)
-        parsing_class.parse(html_string)
+        Nokogiri.parse(html_string)
       end
 
       def fix_self_closing_tags(html_string)

@@ -28,15 +28,11 @@ module StimulusReflex
       end
 
       def parse_html(html)
-        parsing_class.parse(html.to_s)
+        Nokogiri::HTML5::Document.parse(html.to_s)
       end
 
       def empty?
         @document.content.empty?
-      end
-
-      def parsing_class
-        Nokogiri::HTML5::Document
       end
 
       def match(selector)
