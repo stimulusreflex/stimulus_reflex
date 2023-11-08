@@ -18,7 +18,7 @@ module StimulusReflex
 
       def fix_self_closing_tags(html_string)
         html_string.gsub(/(<(#{SELF_CLOSING_TAGS.join("|")})(\s+[^>]*[^>\/])*\s*)(?:>)/, '\1/>')
-                   .gsub(/<\/(#{SELF_CLOSING_TAGS.join("|")})\s*>/, '')
+          .gsub(/<\/(#{SELF_CLOSING_TAGS.join("|")})\s*>/, "")
       end
     end
   end
