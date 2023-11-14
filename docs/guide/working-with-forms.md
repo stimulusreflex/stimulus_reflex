@@ -15,7 +15,7 @@ The simple answer is... you don't! **Form submission in Rails is already really 
 
 ## StimulusReflex + mrujs = 🥰
 
-UJS-powered remote forms are great, especially now that we have [mrujs](https://mrujs.com), the spiritual successor to the classic `rails-ujs` library that shipped with Rails until recently. `mrujs` is excellent:
+UJS-powered remote forms are great, especially now that we have [mrujs](https://mrujs.netlify.app/), the spiritual successor to the classic `rails-ujs` library that shipped with Rails until recently. `mrujs` is excellent:
 
 * it provides a nearly 1:1 drop-in replacement for `rails-ujs`
 * it makes use of modern browser features like `fetch` (instead of XMLHttpRequest)
