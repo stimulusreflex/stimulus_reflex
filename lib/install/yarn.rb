@@ -13,7 +13,7 @@ add = package_list.exist? ? package_list.readlines.map(&:chomp) : []
 dev = dev_package_list.exist? ? dev_package_list.readlines.map(&:chomp) : []
 drop = drop_package_list.exist? ? drop_package_list.readlines.map(&:chomp) : []
 
-json = JSON.parse(package_json.read)
+json = JSON.parse(package_json_path.read)
 
 if add.present? || dev.present? || drop.present?
 
