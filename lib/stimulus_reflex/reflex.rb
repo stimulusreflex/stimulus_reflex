@@ -23,6 +23,7 @@ class StimulusReflex::Reflex
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
+  alias_method :data, :reflex_data
 
   def initialize(channel, reflex_data:)
     @channel = channel

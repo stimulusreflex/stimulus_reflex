@@ -16,13 +16,14 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
       delegate_call_to_reflex reflex
     rescue => exception
       error = exception_with_backtrace(exception)
-      error_message = "\e[31mReflex #{reflex.data.target} failed: #{error[:message]} [#{reflex.url}]\e[0m\n#{error[:stack]}"
 
       if reflex
+        error_message = "\e[31mReflex #{reflex.data.target} failed: #{error[:message]} [#{reflex.url}]\e[0m\n#{error[:stack]}"
         reflex.rescue_with_handler(exception)
         reflex.logger&.error error_message
         reflex.broadcast_error data: data, error: "#{exception} #{exception.backtrace.first.split(":in ")[0] if Rails.env.development?}"
       else
+        error_message = "\e[31mReflex failed: #{error[:message]} \e[0m\n#{error[:stack]}"
         unless exception.is_a?(StimulusReflex::VersionMismatchError)
           StimulusReflex.config.logger.error error_message
         end
