@@ -42,9 +42,9 @@ const scanForReflexesOnElement = (element, controller = null) => {
 
     const parentControllerElement = element.closest(`[data-controller~=${controllerName}]`)
 
-    const elementPrevisoulyHadStimulusReflexController = (element === parentControllerElement && controllerName === 'stimulus-reflex')
+    const elementPreviouslyHadStimulusReflexController = (element === parentControllerElement && controllerName === 'stimulus-reflex')
 
-    if (!parentControllerElement || elementPrevisoulyHadStimulusReflexController) {
+    if (!parentControllerElement || elementPreviouslyHadStimulusReflexController) {
       controllers.push(controllerName)
     }
   })
