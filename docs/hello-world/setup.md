@@ -39,7 +39,7 @@ StimulusReflex's installer will try to automatically detect your bundling setup 
 
 #### Automatic Setup
 
-The let the installer automatically detect your setup run:
+To let the installer automatically detect your setup run:
 
 ```shell
 rails stimulus_reflex:install
