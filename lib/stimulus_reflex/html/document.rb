@@ -21,18 +21,18 @@ module StimulusReflex
       end
 
       def initialize(html)
-        @document = parsing_class.parse(html.to_s)
+        @document = parse_html(html)
         @matches = {
           "body" => Match.new(@document.at_css("body"))
         }
       end
 
-      def empty?
-        @document.content.empty?
+      def parse_html(html)
+        Nokogiri::HTML5::Document.parse(html.to_s)
       end
 
-      def parsing_class
-        Nokogiri::HTML5::Document
+      def empty?
+        @document.content.empty?
       end
 
       def match(selector)
