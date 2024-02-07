@@ -37,7 +37,7 @@ Gem::Specification.new do |gem|
     "[A-Z]*"
   ]
 
-  gem.required_ruby_version = ">= 2.7.0"
+  gem.required_ruby_version = ">= 3.0.0"
 
   rails_version = [">= 5.2", "< 8"]
   gem.add_dependency "actioncable", *rails_version
