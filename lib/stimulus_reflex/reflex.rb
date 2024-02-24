@@ -5,7 +5,6 @@ require "stimulus_reflex/version_checker"
 require "stimulus_reflex/targets_collection"
 
 class StimulusReflex::Reflex
-  prepend StimulusReflex::CableReadiness
   include StimulusReflex::VersionChecker
   include StimulusReflex::Callbacks
   include ActiveSupport::Rescuable
@@ -13,7 +12,7 @@ class StimulusReflex::Reflex
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :channel, :reflex_data, :broadcaster
+  attr_reader :channel, :reflex_data, :cable_ready, :broadcaster
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
@@ -30,6 +29,7 @@ class StimulusReflex::Reflex
     @channel = channel
     @reflex_data = reflex_data
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(self)
     @payload = {}
     @headers = {}
 
