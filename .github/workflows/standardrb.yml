@@ -1,4 +1,4 @@
-name: StandardRB
+name: Standard
 
 on:
   pull_request:
@@ -10,16 +10,16 @@ on:
 
 jobs:
   standard:
-    name: StandardRB Check Action
+    name: Standard Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Ruby 3.1
+    - name: Set up Ruby 3.3
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.1
+        ruby-version: 3.3
         bundler-cache: true
 
-    - name: Run StandardRB
+    - name: Run Standard
       run: bundle exec standardrb --format progress
