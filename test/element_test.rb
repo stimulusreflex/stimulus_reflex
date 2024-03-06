@@ -3,7 +3,7 @@
 require_relative "test_helper"
 
 class StimulusReflex::ElementTest < ActiveSupport::TestCase
-  element = StimulusReflex::Element.new({
+  reflex_data = StimulusReflex::ReflexData.new({
     "attrs" => {
       "user" => "First User",
       "user-id" => "1"
@@ -16,6 +16,8 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
       "datasetAll" => {}
     }
   })
+
+  element = StimulusReflex::Element.new(reflex_data.data)
 
   test "should be able to access attributes on element itself" do
     assert_equal "First User", element.user
@@ -72,7 +74,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should pluralize keys from datasetAll" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-reflex" => "click",
@@ -84,9 +86,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-name" => ["steve", "bill", "steve", "mike"]
         }
       }
-    }
+    })
 
-    dataset_all_element = StimulusReflex::Element.new(data)
+    dataset_all_element = StimulusReflex::Element.new(reflex_data.data)
 
     assert_equal "click", dataset_all_element.dataset.reflex
     assert_equal "male", dataset_all_element.dataset.sex
@@ -97,7 +99,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should pluralize irregular words from datasetAll" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {},
         "datasetAll" => {
@@ -110,9 +112,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-mouse" => ["mouse"]
         }
       }
-    }
+    })
 
-    pluralize_element = StimulusReflex::Element.new(data)
+    pluralize_element = StimulusReflex::Element.new(reflex_data.data)
 
     assert_equal ["cat"], pluralize_element.dataset.cats
     assert_equal ["child"], pluralize_element.dataset.children
@@ -124,32 +126,32 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should not pluralize plural key" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "datasetAll" => {
           "data-ids" => ["1", "2"]
         }
       }
-    }
+    })
 
-    assert_equal ["1", "2"], StimulusReflex::Element.new(data).dataset.ids
-    assert_nil StimulusReflex::Element.new(data).dataset.idss
+    assert_equal ["1", "2"], StimulusReflex::Element.new(reflex_data.data).dataset.ids
+    assert_nil StimulusReflex::Element.new(reflex_data.data).dataset.idss
   end
 
   test "should not build array with pluralized key" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-ids" => "1"
         }
       }
-    }
+    })
 
-    assert_equal "1", StimulusReflex::Element.new(data).dataset.ids
+    assert_equal "1", StimulusReflex::Element.new(reflex_data.data).dataset.ids
   end
 
   test "should handle overlapping singluar and plural key names" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-id" => "1",
@@ -165,9 +167,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-duplicate-value" => ["20", "21", "22"]
         }
       }
-    }
+    })
 
-    overlapping_keys_element = StimulusReflex::Element.new(data)
+    overlapping_keys_element = StimulusReflex::Element.new(reflex_data.data)
 
     assert_equal "1", overlapping_keys_element.dataset.id
     assert_equal ["2", "3", "4"], overlapping_keys_element.dataset.ids
@@ -180,7 +182,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should return true for boolean data attributes" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-short" => "t",
@@ -189,9 +191,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-empty" => ""
         }
       }
-    }
+    })
 
-    element_with_boolean_attributes = StimulusReflex::Element.new(data)
+    element_with_boolean_attributes = StimulusReflex::Element.new(reflex_data.data)
 
     assert element_with_boolean_attributes.boolean[:short]
     assert element_with_boolean_attributes.boolean[:long]
@@ -205,7 +207,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should return false for falsey data attributes" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-short" => "f",
@@ -213,9 +215,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-num" => "0"
         }
       }
-    }
+    })
 
-    element_with_falsey_attributes = StimulusReflex::Element.new(data)
+    element_with_falsey_attributes = StimulusReflex::Element.new(reflex_data.data)
 
     refute element_with_falsey_attributes.boolean[:short]
     refute element_with_falsey_attributes.boolean[:long]
@@ -227,7 +229,7 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
   end
 
   test "should return numeric values" do
-    data = {
+    reflex_data = StimulusReflex::ReflexData.new({
       "dataset" => {
         "dataset" => {
           "data-int" => "123",
@@ -235,9 +237,9 @@ class StimulusReflex::ElementTest < ActiveSupport::TestCase
           "data-string" => "asdf"
         }
       }
-    }
+    })
 
-    element_with_numeric_attributes = StimulusReflex::Element.new(data)
+    element_with_numeric_attributes = StimulusReflex::Element.new(reflex_data.data)
 
     assert_equal 123.0, element_with_numeric_attributes.numeric[:int]
     assert_equal 123.456, element_with_numeric_attributes.numeric[:float]

@@ -4,7 +4,7 @@ class StimulusReflex::ReflexData
   attr_reader :data
 
   def initialize(data)
-    @data = data.deep_transform_keys { |k| k.to_s.underscore }.with_indifferent_access
+    @data = data.deep_merge(data.deep_transform_keys { |k| k.to_s.underscore }).with_indifferent_access
   end
 
   def reflex_name
