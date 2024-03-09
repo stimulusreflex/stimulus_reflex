@@ -8,7 +8,7 @@ module StimulusReflex
       events = []
 
       time = Benchmark.realtime do
-        ActiveSupport::Notifications.subscribed(lambda { |event| events << event }, /^sql.active_record|^render/) do
+        ActiveSupport::Notifications.subscribed(Proc.new{ |event| events << event }, /^sql.active_record|^render/) do
           yield
         end
       end
