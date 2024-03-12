@@ -29,6 +29,40 @@ class SessionMock
   end
 end
 
+class ApplicationReflex < StimulusReflex::Reflex
+  def application_reflex
+  end
+
+  private
+
+  def private_application_reflex
+  end
+end
+
+class PostReflex < ApplicationReflex
+  def post_reflex
+  end
+
+  private
+
+  def private_post_reflex
+  end
+end
+
+class NoReflex
+  def no_reflex
+  end
+end
+
+module CounterConcern
+  def increment
+  end
+end
+
+class CounterReflex < ApplicationReflex
+  include CounterConcern
+end
+
 class ActionDispatch::Request
   def session
     @session ||= SessionMock.new

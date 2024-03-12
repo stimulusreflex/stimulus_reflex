@@ -20,9 +20,9 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     selectors = (data["selectors"] || []).select(&:present?)
     selectors = data["selectors"] = ["body"] if selectors.blank?
     target = data["target"].to_s
-    reflex_name, method_name = target.split("#")
-    reflex_name = reflex_name.camelize
-    reflex_name = reflex_name.end_with?("Reflex") ? reflex_name : "#{reflex_name}Reflex"
+    factory = StimulusReflex::ReflexFactory.new(target)
+    reflex_class = factory.call
+    method_name = factory.method_name
     arguments = (data["args"] || []).map { |arg| object_with_indifferent_access arg }
     element = StimulusReflex::Element.new(data)
     permanent_attribute_name = data["permanentAttributeName"]
@@ -31,7 +31,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
 
     begin
       begin
-        reflex_class = reflex_name.constantize.tap { |klass| raise ArgumentError.new("#{reflex_name} is not a StimulusReflex::Reflex") unless is_reflex?(klass) }
         reflex = reflex_class.new(self,
           url: url,
           element: element,
@@ -107,10 +106,6 @@ class StimulusReflex::Channel < StimulusReflex.configuration.parent_channel.cons
     return object.with_indifferent_access if object.respond_to?(:with_indifferent_access)
     object.map! { |obj| object_with_indifferent_access obj } if object.is_a?(Array)
     object
-  end
-
-  def is_reflex?(reflex_class)
-    reflex_class.ancestors.include? StimulusReflex::Reflex
   end
 
   def delegate_call_to_reflex(reflex, method_name, arguments = [])
