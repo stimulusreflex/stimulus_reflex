@@ -7,7 +7,7 @@ class StimulusReflex::ReflexFactoryTest < ActionCable::Channel::TestCase
 
   test "reflex class needs to be an ancestor of StimulusReflex::Reflex" do
     exception = assert_raises(NameError) { StimulusReflex::ReflexFactory.new(subscribe, {target: "Object#inspect"}).call }
-    assert_equal "uninitialized constant ObjectReflex", exception.message
+    assert_includes exception.message.force_encoding("utf-8"), "uninitialized constant ObjectReflex"
 
     exception = assert_raises(ArgumentError) { StimulusReflex::ReflexFactory.new(subscribe, {target: "NoReflex#no_reflex"}).call }
     assert_equal "NoReflex is not a StimulusReflex::Reflex", exception.message
