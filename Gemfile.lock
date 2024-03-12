@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     stimulus_reflex (3.4.1)
-      cable_ready (>= 4.5)
+      cable_ready (~> 4.5)
       nokogiri
       rack
       rails (>= 5.2)
