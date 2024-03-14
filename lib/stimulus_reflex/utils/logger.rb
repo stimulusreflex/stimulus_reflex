@@ -10,7 +10,7 @@ module StimulusReflex
     def initialize(reflex)
       @reflex = reflex
       @current_operation = 1
-      @logger = StimulusReflex.config.logger
+      @logger = StimulusReflex.config.logger || ::Logger.new(nil)
     end
 
     def log_all_operations
