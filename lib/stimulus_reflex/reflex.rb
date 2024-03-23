@@ -118,7 +118,9 @@ class StimulusReflex::Reflex
     options = args.extract_options!
     (options[:locals] ||= {}).reverse_merge!(params: params)
     args << options.reverse_merge(layout: false)
-    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
+    StimulusReflex::Instrumentation.instrument_render(self, "reflex.render") do
+      controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
+    end
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks
