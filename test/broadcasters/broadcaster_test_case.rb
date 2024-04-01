@@ -29,6 +29,62 @@ class StimulusReflex::BroadcasterTestCase < ActionCable::Channel::TestCase
     assert message, "No messages sent with #{data} to #{stream}"
   end
 
+  def assert_morph(selector:, input_html:, output_html:)
+    broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+    broadcaster.append_morph(selector, input_html)
+
+    expected = {
+      "cableReady" => true,
+      "operations" => [
+        {
+          "selector" => selector,
+          "html" => output_html,
+          "payload" => {},
+          "childrenOnly" => true,
+          "permanentAttributeName" => nil,
+          "stimulusReflex" => {
+            "some" => "data",
+            "morph" => "selector"
+          },
+          "reflexId" => "666",
+          "operation" => "morph"
+        }
+      ],
+      "version" => CableReady::VERSION
+    }
+
+    assert_broadcast_on @reflex.stream_name, expected do
+      broadcaster.broadcast nil, some: :data
+    end
+  end
+
+  def assert_inner_html(selector:, input_html:, output_html:)
+    broadcaster = StimulusReflex::SelectorBroadcaster.new(@reflex)
+    broadcaster.append_morph(selector, input_html)
+
+    expected = {
+      "cableReady" => true,
+      "operations" => [
+        {
+          "selector" => selector,
+          "html" => output_html,
+          "payload" => {},
+          "stimulusReflex" => {
+            "some" => "data",
+            "morph" => "selector"
+          },
+          "reflexId" => "666",
+          "operation" => "innerHtml"
+        }
+      ],
+      "version" => CableReady::VERSION
+    }
+
+    assert_broadcast_on @reflex.stream_name, expected do
+      broadcaster.broadcast nil, some: :data
+    end
+  end
+
   setup do
     stub_connection(session_id: SecureRandom.uuid)
     def connection.env
