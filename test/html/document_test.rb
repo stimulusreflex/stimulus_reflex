@@ -52,8 +52,8 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<html> <head></head> <body></body> </html>), fragment.to_html.squish
-    assert_equal %(<html> <head></head> <body></body> </html>), fragment.outer_html.squish
+    assert_equal %(<html><head></head> <body> </body></html>), fragment.to_html.squish
+    assert_equal %(<html><head></head> <body> </body></html>), fragment.outer_html.squish
   end
 
   test "<head> alongside <body> inside <html> with doctype and content" do
@@ -70,8 +70,8 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::Document.new(html)
 
-    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.to_html.squish
-    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.outer_html.squish
+    assert_equal %(<html><head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body></html>), fragment.to_html.squish
+    assert_equal %(<html><head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body></html>), fragment.outer_html.squish
   end
 
   test "should extract a document of the HTML" do

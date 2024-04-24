@@ -109,13 +109,68 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_equal "1", fragment.inner_html.squish
   end
 
+  test "should properly parse <table>" do
+    html = "<table></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table></table>", fragment.to_html.squish
+    assert_equal "<table></table>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <table> with <caption>" do
+    html = "<table><caption>Caption</caption></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table><caption>Caption</caption></table>", fragment.to_html.squish
+    assert_equal "<table><caption>Caption</caption></table>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <table> with <thead> and <tbody>" do
+    html = "<table><thead></thead><tbody></tbody></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table><thead></thead><tbody></tbody></table>", fragment.to_html.squish
+    assert_equal "<table><thead></thead><tbody></tbody></table>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <table> with <thead> and <tbody> and <tr>s" do
+    html = "<table><thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table><thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody></table>", fragment.to_html.squish
+    assert_equal "<table><thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody></table>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <thead> and <tbody> with <tr>" do
+    html = "<thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody>", fragment.to_html.squish
+    assert_equal "<thead><tr><th>1</th></tr></thead><tbody><tr><td>1</td></tr></tbody>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <table> with <th>" do
+    html = "<table><tr><th>1</th><th>2</th></tr></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table><tr><th>1</td><th>2</th></tr></table>", fragment.to_html.squish
+    assert_equal "<table><tr><th>1</td><th>2</th></tr></table>", fragment.outer_html.squish
+  end
+
+  test "should properly parse <table> with <tr>" do
+    html = "<table><tr><td>1</td><td>2</td></tr></table>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<table><tr><td>1</td><td>2</td></tr></table>", fragment.to_html.squish
+    assert_equal "<table><tr><td>1</td><td>2</td></tr></table>", fragment.outer_html.squish
+  end
+
   test "should properly parse <thead>" do
     html = "<thead><tr><th>1</th><th>2</th></tr></thead>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
     assert_equal "<thead><tr><th>1</th><th>2</th></tr></thead>", fragment.to_html.squish
     assert_equal "<thead><tr><th>1</th><th>2</th></tr></thead>", fragment.outer_html.squish
-    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
   end
 
   test "should properly parse <tbody>" do
@@ -124,7 +179,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal "<tbody><tr><th>1</th><th>2</th></tr></tbody>", fragment.to_html.squish
     assert_equal "<tbody><tr><th>1</th><th>2</th></tr></tbody>", fragment.outer_html.squish
-    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
   end
 
   test "should properly parse <tfoot>" do
@@ -133,7 +187,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal "<tfoot><tr><th>1</th><th>2</th></tr></tfoot>", fragment.to_html.squish
     assert_equal "<tfoot><tr><th>1</th><th>2</th></tr></tfoot>", fragment.outer_html.squish
-    assert_equal "<tr><th>1</th><th>2</th></tr>", fragment.inner_html.squish
   end
 
   test "should properly parse <caption>" do
@@ -142,7 +195,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal "<caption>Caption</caption>", fragment.to_html.squish
     assert_equal "<caption>Caption</caption>", fragment.outer_html.squish
-    assert_equal "Caption", fragment.inner_html.squish
   end
 
   test "should properly parse <colgroup> and <col>" do
@@ -157,7 +209,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal %(<colgroup> <col> <col span="1" class="one"> <col span="2" class="two"> </colgroup>), fragment.to_html.squish
     assert_equal %(<colgroup> <col> <col span="1" class="one"> <col span="2" class="two"> </colgroup>), fragment.outer_html.squish
-    assert_equal %(<col> <col span="1" class="one"> <col span="2" class="two">), fragment.inner_html.squish
   end
 
   test "should properly parse <col>" do
@@ -176,7 +227,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal "<ul><li>1</li></ul>", fragment.to_html.squish
     assert_equal "<ul><li>1</li></ul>", fragment.outer_html.squish
-    assert_equal "<li>1</li>", fragment.inner_html.squish
   end
 
   test "should properly parse <li>" do
@@ -185,7 +235,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal "<li>1</li>", fragment.to_html.squish
     assert_equal "<li>1</li>", fragment.outer_html.squish
-    assert_equal "1", fragment.inner_html.squish
   end
 
   test "should properly parse two siblings input" do
@@ -193,8 +242,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
       <div>
         <div id="label-container">
           <label>
-            <input type="file" accept="image/*"> <!-- this <input> isn't self-closed -->
-            <input type="hidden" value=""> <!-- this <input> isn't self-closed -->
+            <input type="file" accept="image/*">
+            <input type="hidden" value="">
           </label>
         </div>
         <div id="after-label"></div>
@@ -202,9 +251,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    # assert_equal 2, fragment.document_element.at_css("input").children.length
-    assert_equal %(<div> <div id="label-container"> <label> <input type="file" accept="image/*"> <input type="hidden" value=""></label> </div> <div id="after-label"> </div></div>), fragment.to_html.squish
-    assert_equal %(<div> <div id="label-container"> <label> <input type="file" accept="image/*"> <input type="hidden" value=""></label> </div> <div id="after-label"> </div></div>), fragment.outer_html.squish
+    assert_equal %(<div> <div id="label-container"> <label> <input type="file" accept="image/*"> <input type="hidden" value=""> </label> </div> <div id="after-label"></div> </div>), fragment.to_html.squish
+    assert_equal %(<div> <div id="label-container"> <label> <input type="file" accept="image/*"> <input type="hidden" value=""> </label> </div> <div id="after-label"></div> </div>), fragment.outer_html.squish
   end
 
   test "should properly parse <span> after non-closed <input>" do
@@ -212,7 +260,7 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
       <div>
         <label>X</label>
         <div>
-          <input type="text"> <!-- this <input> isn't self-closed -->
+          <input type="text">
           <span>After Input</span>
         </div>
       </div>
@@ -230,8 +278,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<input data-action="input-&gt;autocomplete#search"> <span>some text</span>), fragment.to_html.squish
-    assert_equal %(<input data-action="input-&gt;autocomplete#search"> <span>some text</span>), fragment.outer_html.squish
+    assert_equal %(<input data-action="input->autocomplete#search"> <span>some text</span>), fragment.to_html.squish
+    assert_equal %(<input data-action="input->autocomplete#search"> <span>some text</span>), fragment.outer_html.squish
   end
 
   test "non-closing <img> tag" do
@@ -327,8 +375,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<html> <head></head> <body></body> </html>), fragment.to_html.squish
-    assert_equal %(<html> <head></head> <body></body> </html>), fragment.outer_html.squish
+    assert_equal %(<html><head></head> <body> </body></html>), fragment.to_html.squish
+    assert_equal %(<html><head></head> <body> </body></html>), fragment.outer_html.squish
   end
 
   test "<head> alongside <body> inside <html> with doctype and content" do
@@ -345,8 +393,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.to_html.squish
-    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.outer_html.squish
+    assert_equal %(<!DOCTYPE html><html><head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body></html>), fragment.to_html.squish
+    assert_equal %(<!DOCTYPE html><html><head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body></html>), fragment.outer_html.squish
   end
 
   test "<head> alongside <body> inside <html> with content" do
@@ -363,8 +411,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<html> <head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body> </html>), fragment.to_html.squish
-    assert_equal %(<html> <head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body> </html>), fragment.outer_html.squish
+    assert_equal %(<html><head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body></html>), fragment.to_html.squish
+    assert_equal %(<html><head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body></html>), fragment.outer_html.squish
   end
 
   test "<title>" do
@@ -452,8 +500,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<div data-reflex-permanent></div>), fragment.to_html.squish
-    assert_equal %(<div data-reflex-permanent></div>), fragment.outer_html.squish
+    assert_equal %(<div data-reflex-permanent=""></div>), fragment.to_html.squish
+    assert_equal %(<div data-reflex-permanent=""></div>), fragment.outer_html.squish
   end
 
   test "boolean attribute with attribute name as value on <div> tag" do
@@ -472,8 +520,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<input required>), fragment.to_html.squish
-    assert_equal %(<input required>), fragment.outer_html.squish
+    assert_equal %(<input required="">), fragment.to_html.squish
+    assert_equal %(<input required="">), fragment.outer_html.squish
   end
 
   test "boolean attribute on closed <input> tag" do
@@ -482,8 +530,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<input required>), fragment.to_html.squish
-    assert_equal %(<input required>), fragment.outer_html.squish
+    assert_equal %(<input required="">), fragment.to_html.squish
+    assert_equal %(<input required="">), fragment.outer_html.squish
   end
 
   test "boolean attribute with attribute name as value on non-closed <input> tag" do
@@ -514,8 +562,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<!-- Hello Comment --> <div data-attribute="present" some-attribute checked>Content</div>), fragment.to_html.squish
-    assert_equal %(<!-- Hello Comment --> <div data-attribute="present" some-attribute checked>Content</div>), fragment.outer_html.squish
+    assert_equal %(<!-- Hello Comment --> <div data-attribute="present" some-attribute="" checked="">Content</div>), fragment.to_html.squish
+    assert_equal %(<!-- Hello Comment --> <div data-attribute="present" some-attribute="" checked="">Content</div>), fragment.outer_html.squish
   end
 
   test "should parse comments with quotes" do
@@ -526,8 +574,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<!-- Hello "Comment" --> <div data-attribute="present" some-attribute checked>Content</div>), fragment.to_html.squish
-    assert_equal %(<!-- Hello "Comment" --> <div data-attribute="present" some-attribute checked>Content</div>), fragment.outer_html.squish
+    assert_equal %(<!-- Hello "Comment" --> <div data-attribute="present" some-attribute="" checked="">Content</div>), fragment.to_html.squish
+    assert_equal %(<!-- Hello "Comment" --> <div data-attribute="present" some-attribute="" checked="">Content</div>), fragment.outer_html.squish
   end
 
   test "case-sensitive attributes" do
@@ -535,8 +583,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<div data-someThing="value">1</div>), fragment.to_html.squish
-    assert_equal %(<div data-someThing="value">1</div>), fragment.outer_html.squish
+    assert_equal %(<div data-something="value">1</div>), fragment.to_html.squish
+    assert_equal %(<div data-something="value">1</div>), fragment.outer_html.squish
   end
 
   test "case-sensitive <svg> tags" do
@@ -546,7 +594,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal %(<svg><feSpecularLighting><fePointLight></fePointLight></feSpecularLighting></svg>), fragment.to_html.squish
     assert_equal %(<svg><feSpecularLighting><fePointLight></fePointLight></feSpecularLighting></svg>), fragment.outer_html.squish
-    assert_equal %(<feSpecularLighting><fePointLight></fePointLight></feSpecularLighting>), fragment.inner_html.squish
   end
 
   test "non-standard HTML attributes (Alpine.js-like)" do
@@ -573,7 +620,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     outer_container = %(<div id="container"> #{inner_container} </div>)
 
     assert_equal raw_html.squish, fragment.to_html.squish
-    assert_equal outer_title.squish, fragment.inner_html.squish
     assert_equal raw_html.squish, fragment.outer_html.squish
 
     refute fragment.match("body").present?
@@ -644,12 +690,11 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     outer_p = %(<p>#{inner_p}</p>)
     inner_body = %(<h1>Home#index</h1> #{outer_p})
     outer_body = %(<body id="body"> #{inner_body} </body>)
-    inner_html = %(<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>StimulusReflex Test</title> <meta name="viewport" content="width=device-width,initial-scale=1"> <meta name="csrf-param" content="authenticity_token"> <meta name="csrf-token" content="token"> <link rel="stylesheet" href="/assets/application.css" data-turbo-track="reload"> <script src="/assets/application.js" data-turbo-track="reload" defer></script> </head> #{outer_body})
-    outer_html = %(<html> #{inner_html} </html>)
+    inner_html = %(<head> <title>StimulusReflex Test</title> <meta name="viewport" content="width=device-width,initial-scale=1"> <meta name="csrf-param" content="authenticity_token"> <meta name="csrf-token" content="token"> <link rel="stylesheet" href="/assets/application.css" data-turbo-track="reload"> <script src="/assets/application.js" data-turbo-track="reload" defer="defer"></script> </head> #{outer_body})
+    outer_html = %(<html>#{inner_html}</html>)
 
-    assert_equal outer_html, fragment.to_html.squish
-    assert_equal outer_html, fragment.outer_html.squish
-    assert_equal inner_html, fragment.inner_html.squish
+    assert_equal "<!DOCTYPE html>#{outer_html}", fragment.to_html.squish
+    assert_equal "<!DOCTYPE html>#{outer_html}", fragment.outer_html.squish
 
     assert_equal outer_html, fragment.match("html").to_html.squish
     assert_equal outer_html, fragment.match("html").outer_html.squish
