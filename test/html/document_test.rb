@@ -43,6 +43,37 @@ class StimulusReflex::HTML::DocumentTest < ActiveSupport::TestCase
     assert_nil document.match("#selector").inner_html
   end
 
+  test "uppercase tags" do
+    html = %(
+      <HTML>
+        <HEAD></HEAD>
+        <BODY></BODY>
+      </HTML>
+    )
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal %(<html> <head></head> <body></body> </html>), fragment.to_html.squish
+    assert_equal %(<html> <head></head> <body></body> </html>), fragment.outer_html.squish
+  end
+
+  test "<head> alongside <body> inside <html> with doctype and content" do
+    html = %(
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Title</title>
+        </head>
+        <body id="body">
+          <h1>Header</h1>
+        </body>
+      </html>
+    )
+    fragment = StimulusReflex::HTML::Document.new(html)
+
+    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.to_html.squish
+    assert_equal %(<!DOCTYPE html> <html> <head> <title>Title</title> </head> <body id="body"> <h1>Header</h1> </body> </html>), fragment.outer_html.squish
+  end
+
   test "should extract a document of the HTML" do
     raw_html = <<-HTML
       <div id="container">
