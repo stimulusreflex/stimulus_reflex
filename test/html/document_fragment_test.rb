@@ -549,6 +549,15 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_equal %(<feSpecularLighting><fePointLight></fePointLight></feSpecularLighting>), fragment.inner_html.squish
   end
 
+  test "non-standard HTML attributes (Alpine.js-like)" do
+    html = %(<button @click.prevent="something">Button</button>)
+
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal %(<button @click.prevent="something">Button</button>), fragment.to_html.squish
+    assert_equal %(<button @click.prevent="something">Button</button>), fragment.outer_html.squish
+  end
+
   test "should extract a fragment of the HTML" do
     raw_html = <<-HTML
       <div id="container">
