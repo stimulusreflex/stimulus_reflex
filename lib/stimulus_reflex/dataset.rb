@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "ostruct"
 require "stimulus_reflex/utils/attribute_builder"
 
 class StimulusReflex::Dataset < OpenStruct
