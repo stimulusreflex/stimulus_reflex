@@ -35,7 +35,6 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     assert_nil fragment.match("body").inner_html
   end
 
-
   test "should handle string" do
     fragment = StimulusReflex::HTML::DocumentFragment.new("Some String")
 
@@ -267,8 +266,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<div> <label>X</label> <div> <input type=\"text\"> <span>After Input</span> </div> </div>), fragment.to_html.squish
-    assert_equal %(<div> <label>X</label> <div> <input type=\"text\"> <span>After Input</span> </div> </div>), fragment.outer_html.squish
+    assert_equal %(<div> <label>X</label> <div> <input type="text"> <span>After Input</span> </div> </div>), fragment.to_html.squish
+    assert_equal %(<div> <label>X</label> <div> <input type="text"> <span>After Input</span> </div> </div>), fragment.outer_html.squish
   end
 
   test "non-closing <input> tag with -> in attribute" do
