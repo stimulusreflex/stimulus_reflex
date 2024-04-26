@@ -153,16 +153,16 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     html = "<table><tr><th>1</th><th>2</th></tr></table>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal "<table><tr><th>1</td><th>2</th></tr></table>", fragment.to_html.squish
-    assert_equal "<table><tr><th>1</td><th>2</th></tr></table>", fragment.outer_html.squish
+    assert_equal "<table><tbody><tr><th>1</th><th>2</th></tr></tbody></table>", fragment.to_html.squish
+    assert_equal "<table><tbody><tr><th>1</th><th>2</th></tr></tbody></table>", fragment.outer_html.squish
   end
 
   test "should properly parse <table> with <tr>" do
     html = "<table><tr><td>1</td><td>2</td></tr></table>"
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal "<table><tr><td>1</td><td>2</td></tr></table>", fragment.to_html.squish
-    assert_equal "<table><tr><td>1</td><td>2</td></tr></table>", fragment.outer_html.squish
+    assert_equal "<table><tbody><tr><td>1</td><td>2</td></tr></tbody></table>", fragment.to_html.squish
+    assert_equal "<table><tbody><tr><td>1</td><td>2</td></tr></tbody></table>", fragment.outer_html.squish
   end
 
   test "should properly parse <thead>" do
@@ -603,6 +603,30 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
 
     assert_equal %(<button @click.prevent="something">Button</button>), fragment.to_html.squish
     assert_equal %(<button @click.prevent="something">Button</button>), fragment.outer_html.squish
+  end
+
+  test "<template> tag" do
+    html = "<template></template>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<template></template>", fragment.to_html.squish
+    assert_equal "<template></template>", fragment.outer_html.squish
+  end
+
+  test "<template> with <div>" do
+    html = "<template><div>1</div></template>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<template><div>1</div></template>", fragment.to_html.squish
+    assert_equal "<template><div>1</div></template>", fragment.outer_html.squish
+  end
+
+  test "<template> with <table>" do
+    html = "<template><table><tr><td></td></tr></table></template>"
+    fragment = StimulusReflex::HTML::DocumentFragment.new(html)
+
+    assert_equal "<template><table><tbody><tr><td></td></tr></tbody></table></template>", fragment.to_html.squish
+    assert_equal "<template><table><tbody><tr><td></td></tr></tbody></table></template>", fragment.outer_html.squish
   end
 
   test "should extract a fragment of the HTML" do
