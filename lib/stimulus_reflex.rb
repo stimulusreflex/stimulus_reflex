@@ -3,6 +3,7 @@
 require "uri"
 require "open-uri"
 require "rack"
+require "ostruct"
 require "active_support/all"
 require "action_dispatch"
 require "action_cable"
