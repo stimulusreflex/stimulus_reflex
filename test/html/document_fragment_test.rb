@@ -345,8 +345,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<head></head> <body></body>), fragment.to_html.squish
-    assert_equal %(<head></head> <body></body>), fragment.outer_html.squish
+    assert_equal %(<head></head><body> </body>), fragment.to_html.squish
+    assert_equal %(<head></head><body> </body>), fragment.outer_html.squish
   end
 
   test "<head> alongside <body> with content" do
@@ -361,8 +361,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body>), fragment.to_html.squish
-    assert_equal %(<head> <meta name="attribute" content="value"> </head> <body class="bg-green-200"> <h1>Hello World</h1> </body>), fragment.outer_html.squish
+    assert_equal %(<head> <meta name="attribute" content="value"> </head><body class="bg-green-200"> <h1>Hello World</h1> </body>), fragment.to_html.squish
+    assert_equal %(<head> <meta name="attribute" content="value"> </head><body class="bg-green-200"> <h1>Hello World</h1> </body>), fragment.outer_html.squish
   end
 
   test "<head> alongside <body> inside <html>" do
@@ -432,8 +432,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<head> <title>Title</title> </head>), fragment.to_html.squish
-    assert_equal %(<head> <title>Title</title> </head>), fragment.outer_html.squish
+    assert_equal %(<head> <title>Title</title> </head><body></body>), fragment.to_html.squish
+    assert_equal %(<head> <title>Title</title> </head><body></body>), fragment.outer_html.squish
   end
 
   test "non-closed <meta>" do
@@ -464,8 +464,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<head> <meta name="title" content="value"> </head>), fragment.to_html.squish
-    assert_equal %(<head> <meta name="title" content="value"> </head>), fragment.outer_html.squish
+    assert_equal %(<head> <meta name="title" content="value"> </head><body></body>), fragment.to_html.squish
+    assert_equal %(<head> <meta name="title" content="value"> </head><body></body>), fragment.outer_html.squish
   end
 
   test "closed <meta> in <head>" do
@@ -476,8 +476,8 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<head> <meta name="title" content="value"> </head>), fragment.to_html.squish
-    assert_equal %(<head> <meta name="title" content="value"> </head>), fragment.outer_html.squish
+    assert_equal %(<head> <meta name="title" content="value"> </head><body></body>), fragment.to_html.squish
+    assert_equal %(<head> <meta name="title" content="value"> </head><body></body>), fragment.outer_html.squish
   end
 
   test "uppercase tags" do
