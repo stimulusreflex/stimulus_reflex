@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/flavorjones/nokogiri-html5-inference
+  revision: 7426a3601d30bf6cb9794d6b5c2e767151a0fa6f
+  branch: flavorjones-always-return-nodeset
+  specs:
+    nokogiri-html5-inference (0.2.0)
+      nokogiri (~> 1.14)
+
 PATH
   remote: .
   specs:
@@ -128,8 +136,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
-    nokogiri-html5-inference (0.2.0)
-      nokogiri (~> 1.14)
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
@@ -214,6 +220,7 @@ DEPENDENCIES
   bundler (~> 2.0)
   magic_frozen_string_literal (~> 1.2)
   mocha (~> 1.13)
+  nokogiri-html5-inference!
   rails (>= 5.2, < 8)
   rake (~> 13.0)
   standard (~> 1.24)
