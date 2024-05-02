@@ -2,18 +2,18 @@
 
 require "stimulus_reflex/installer"
 
-if !package_json_path.exist?
+if !StimulusReflex::Installer.package_json_path.exist?
   say "⏩ No package.json file found. Skipping."
 
   return
 end
 
 # run yarn install only when packages are waiting to be added or removed
-add = package_list.exist? ? package_list.readlines.map(&:chomp) : []
-dev = dev_package_list.exist? ? dev_package_list.readlines.map(&:chomp) : []
-drop = drop_package_list.exist? ? drop_package_list.readlines.map(&:chomp) : []
+add = StimulusReflex::Installer.package_list.exist? ? StimulusReflex::Installer.package_list.readlines.map(&:chomp) : []
+dev = StimulusReflex::Installer.dev_package_list.exist? ? StimulusReflex::Installer.dev_package_list.readlines.map(&:chomp) : []
+drop = StimulusReflex::Installer.drop_package_list.exist? ? StimulusReflex::Installer.drop_package_list.readlines.map(&:chomp) : []
 
-json = JSON.parse(package_json_path.read)
+json = JSON.parse(StimulusReflex::Installer.package_json_path.read)
 
 if add.present? || dev.present? || drop.present?
 
@@ -36,20 +36,20 @@ if add.present? || dev.present? || drop.present?
     json["devDependencies"].delete(package)
   end
 
-  package_json_path.write JSON.pretty_generate(json)
+  StimulusReflex::Installer.package_json_path.write JSON.pretty_generate(json)
 
   system "yarn install --silent"
 else
   say "⏩ No yarn depdencies to add or remove. Skipping."
 end
 
-if bundler == "esbuild" && json["scripts"]["build"] != "node esbuild.config.mjs"
+if StimulusReflex::Installer.bundler == "esbuild" && json["scripts"]["build"] != "node esbuild.config.mjs"
   json["scripts"]["build:default"] = json["scripts"]["build"]
   json["scripts"]["build"] = "node esbuild.config.mjs"
-  package_json_path.write JSON.pretty_generate(json)
+  StimulusReflex::Installer.package_json_path.write JSON.pretty_generate(json)
   say "✅ Your yarn build script has been updated to use esbuild.config.mjs"
 else
   say "⏩ Your yarn build script is already setup. Skipping."
 end
 
-complete_step :yarn
+StimulusReflex::Installer.complete_step :yarn

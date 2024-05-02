@@ -2,17 +2,17 @@
 
 require "stimulus_reflex/installer"
 
-initializer = action_cable_initializer_working_path.read
+initializer = StimulusReflex::Installer.action_cable_initializer_working_path.read
 
-if gemfile.match?(/gem ['"]permessage_deflate['"]/)
+if StimulusReflex::Installer.gemfile.match?(/gem ['"]permessage_deflate['"]/)
   say "⏩ permessage_deflate already present in Gemfile. Skipping."
 else
-  add_gem "permessage_deflate@>= 0.1"
+  StimulusReflex::Installer.add_gem "permessage_deflate@>= 0.1"
 end
 
 # add permessage_deflate config to Action Cable initializer
 if initializer.exclude? "PermessageDeflate.configure"
-  create_or_append(action_cable_initializer_working_path, verbose: false) do
+  StimulusReflex::Installer.create_or_append(StimulusReflex::Installer.action_cable_initializer_working_path, verbose: false) do
     <<~RUBY
       module ActionCable
         module Connection
@@ -38,4 +38,4 @@ else
   say "⏩ Action Cable initializer is already patched to deflate websocket traffic. Skipping."
 end
 
-complete_step :compression
+StimulusReflex::Installer.complete_step :compression

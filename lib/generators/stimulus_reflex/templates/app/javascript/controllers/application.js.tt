@@ -1,5 +1,5 @@
 import { Application } from "@hotwired/stimulus"
-<%- if bundler.importmap? %>
+<%- if StimulusReflex::Installer.bundler.importmap? %>
 import consumer from "channels/consumer"
 <%- else %>
 import consumer from "../channels/consumer"

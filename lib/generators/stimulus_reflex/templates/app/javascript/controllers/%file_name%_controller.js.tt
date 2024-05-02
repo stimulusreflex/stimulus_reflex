@@ -1,4 +1,4 @@
-<%- if bundler.importmap? -%>
+<%- if StimulusReflex::Installer.bundler.importmap? -%>
 import ApplicationController from "controllers/application_controller"
 <%- else -%>
 import ApplicationController from "./application_controller"

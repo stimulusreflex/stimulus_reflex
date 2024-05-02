@@ -2,18 +2,18 @@
 
 require "stimulus_reflex/installer"
 
-if application_record_path.exist?
-  lines = application_record_path.readlines
+if StimulusReflex::Installer.application_record_path.exist?
+  lines = StimulusReflex::Installer.application_record_path.readlines
 
   if !lines.index { |line| line =~ /^\s*include CableReady::Updatable/ }
-    proceed = if options.key? "updatable"
-      options["updatable"]
+    proceed = if StimulusReflex::Installer.options.key? "updatable"
+      StimulusReflex::Installer.options["updatable"]
     else
       !no?("✨ Include CableReady::Updatable in Active Record model classes? (Y/n)")
     end
 
     unless proceed
-      complete_step :updatable
+      StimulusReflex::Installer.complete_step :updatable
 
       puts "⏩ Skipping."
       return
@@ -21,7 +21,7 @@ if application_record_path.exist?
 
     index = lines.index { |line| line.include?("class ApplicationRecord < ActiveRecord::Base") }
     lines.insert index + 1, "  include CableReady::Updatable\n"
-    application_record_path.write lines.join
+    StimulusReflex::Installer.application_record_path.write lines.join
 
     say "✅ included CableReady::Updatable in ApplicationRecord"
   else
@@ -31,4 +31,4 @@ else
   say "⏩ ApplicationRecord doesn't exist. Skipping."
 end
 
-complete_step :updatable
+StimulusReflex::Installer.complete_step :updatable

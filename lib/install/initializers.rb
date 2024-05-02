@@ -2,10 +2,10 @@
 
 require "stimulus_reflex/installer"
 
-sr_initializer_src = fetch("/", "config/initializers/stimulus_reflex.rb")
+sr_initializer_src = StimulusReflex::Installer.fetch("/", "config/initializers/stimulus_reflex.rb")
 sr_initializer_path = Rails.root.join("config/initializers/stimulus_reflex.rb")
 
-cr_initializer_src = fetch("/", "config/initializers/cable_ready.rb")
+cr_initializer_src = StimulusReflex::Installer.fetch("/", "config/initializers/cable_ready.rb")
 cr_initializer_path = Rails.root.join("config/initializers/cable_ready.rb")
 
 if !sr_initializer_path.exist?
@@ -22,4 +22,4 @@ else
   say "⏩ config/initializers/cable_ready.rb already exists. Skipping."
 end
 
-complete_step :initializers
+StimulusReflex::Installer.complete_step :initializers
