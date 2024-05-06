@@ -6,11 +6,11 @@ require "./lib/generators/stimulus_reflex/stimulus_reflex_generator"
 require "stimulus_reflex/installer"
 
 def stub_entrypoint(path = "tmp/app/javascript")
-  File.write(installer_entrypoint_path, path)
+  File.write(StimulusReflex::Installer.installer_entrypoint_path, path)
 end
 
 def stub_bundler(bundler = "importmaps")
-  File.write(installer_bundler_path, bundler)
+  File.write(StimulusReflex::Installer.installer_bundler_path, bundler)
 end
 
 class StimulusReflexGeneratorTest < Rails::Generators::TestCase
@@ -19,15 +19,15 @@ class StimulusReflexGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
 
   setup do
-    File.delete(installer_entrypoint_path) if File.exist?(installer_entrypoint_path)
-    File.delete(installer_bundler_path) if File.exist?(installer_bundler_path)
+    File.delete(StimulusReflex::Installer.installer_entrypoint_path) if File.exist?(StimulusReflex::Installer.installer_entrypoint_path)
+    File.delete(StimulusReflex::Installer.installer_bundler_path) if File.exist?(StimulusReflex::Installer.installer_bundler_path)
     FileUtils.rm_rf("tmp/app")
     FileUtils.rm_rf("tmp/stimulus_reflex_installer")
   end
 
   teardown do
-    File.delete(installer_entrypoint_path) if File.exist?(installer_entrypoint_path)
-    File.delete(installer_bundler_path) if File.exist?(installer_bundler_path)
+    File.delete(StimulusReflex::Installer.installer_entrypoint_path) if File.exist?(StimulusReflex::Installer.installer_entrypoint_path)
+    File.delete(StimulusReflex::Installer.installer_bundler_path) if File.exist?(StimulusReflex::Installer.installer_bundler_path)
     FileUtils.rm_rf("tmp/app")
     FileUtils.rm_rf("tmp/stimulus_reflex_installer")
   end

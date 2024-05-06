@@ -5,7 +5,7 @@ require "stimulus_reflex/installer"
 reflexes_path = Rails.root.join("app/reflexes")
 step_path = "/app/reflexes/"
 application_reflex_path = reflexes_path / "application_reflex.rb"
-application_reflex_src = fetch(step_path, "application_reflex.rb.tt")
+application_reflex_src = StimulusReflex::Installer.fetch(step_path, "application_reflex.rb.tt")
 
 # verify app/reflexes exists and create if necessary
 if reflexes_path.exist?
@@ -22,4 +22,4 @@ else
   say "✅ Created app/reflexes/application_reflex.rb"
 end
 
-complete_step :reflexes
+StimulusReflex::Installer.complete_step :reflexes

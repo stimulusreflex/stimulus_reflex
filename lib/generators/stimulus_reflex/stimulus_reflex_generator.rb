@@ -20,13 +20,13 @@ class StimulusReflexGenerator < Rails::Generators::NamedBase
 
     template(reflex_src, reflex_path) unless options[:skip_reflex]
 
-    if !options[:skip_stimulus] && entrypoint.blank?
+    if !options[:skip_stimulus] && StimulusReflex::Installer.entrypoint.blank?
       puts "❌ You must specify a valid JavaScript entrypoint."
       exit
     end
 
     stimulus_controller_src = "app/javascript/controllers/%file_name%_controller.js.tt"
-    stimulus_controller_path = Rails.root.join(entrypoint, "controllers/#{file_name}_controller.js")
+    stimulus_controller_path = Rails.root.join(StimulusReflex::Installer.entrypoint, "controllers/#{file_name}_controller.js")
 
     template(stimulus_controller_src, stimulus_controller_path) unless options[:skip_stimulus]
 

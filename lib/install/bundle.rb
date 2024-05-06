@@ -2,14 +2,14 @@
 
 require "stimulus_reflex/installer"
 
-hash = gemfile_hash
+hash = StimulusReflex::Installer.gemfile_hash
 
 # run bundle only when gems are waiting to be added or removed
-add = add_gem_list.exist? ? add_gem_list.readlines.map(&:chomp) : []
-remove = remove_gem_list.exist? ? remove_gem_list.readlines.map(&:chomp) : []
+add = StimulusReflex::Installer.add_gem_list.exist? ? StimulusReflex::Installer.add_gem_list.readlines.map(&:chomp) : []
+remove = StimulusReflex::Installer.remove_gem_list.exist? ? StimulusReflex::Installer.remove_gem_list.readlines.map(&:chomp) : []
 
 if add.present? || remove.present?
-  lines = gemfile_path.readlines
+  lines = StimulusReflex::Installer.gemfile_path.readlines
 
   remove.each do |name|
     index = lines.index { |line| line =~ /gem ['"]#{name}['"]/ }
@@ -40,17 +40,17 @@ if add.present? || remove.present?
     end
   end
 
-  gemfile_path.write lines.join
+  StimulusReflex::Installer.gemfile_path.write lines.join
 
-  bundle_command("install --quiet", "BUNDLE_IGNORE_MESSAGES" => "1") if hash != gemfile_hash
+  bundle_command("install --quiet", "BUNDLE_IGNORE_MESSAGES" => "1") if hash != StimulusReflex::Installer.gemfile_hash
 else
   say "⏩ No rubygems depedencies to install. Skipping."
 end
 
-FileUtils.cp(development_working_path, development_path)
+FileUtils.cp(StimulusReflex::Installer.development_working_path, StimulusReflex::Installer.development_path)
 say "✅ development environment configuration installed"
 
-FileUtils.cp(action_cable_initializer_working_path, action_cable_initializer_path)
+FileUtils.cp(StimulusReflex::Installer.action_cable_initializer_working_path, StimulusReflex::Installer.action_cable_initializer_path)
 say "✅ Action Cable initializer installed"
 
-complete_step :bundle
+StimulusReflex::Installer.complete_step :bundle

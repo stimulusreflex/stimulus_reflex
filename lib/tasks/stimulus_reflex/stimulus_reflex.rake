@@ -53,8 +53,8 @@ end
 namespace :stimulus_reflex do
   desc "✨ Install StimulusReflex and CableReady ✨"
   task :install do
-    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
-    create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/working"))
+    StimulusReflex::Installer.create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/templates"))
+    StimulusReflex::Installer.create_dir_if_not_exists(Rails.root.join("tmp/stimulus_reflex_installer/working"))
 
     install_complete = Rails.root.join("tmp/stimulus_reflex_installer/complete")
 
@@ -93,8 +93,8 @@ namespace :stimulus_reflex do
     end
 
     # if there is an installation in progress, continue where we left off
-    if installer_entrypoint_path.exist?
-      entrypoint = installer_entrypoint_path.read
+    if StimulusReflex::Installer.installer_entrypoint_path.exist?
+      entrypoint = StimulusReflex::Installer.installer_entrypoint_path.read
 
       puts "✨ Resuming \e[38;5;220mStimulusReflex\e[0m and \e[38;5;220mCableReady\e[0m installation ✨"
       puts
@@ -118,18 +118,18 @@ namespace :stimulus_reflex do
       entrypoint = if options.key? "entrypoint"
         options["entrypoint"]
       else
-        auto_detect_entrypoint
+        StimulusReflex::Installer.auto_detect_entrypoint
       end
 
-      installer_entrypoint_path.write(entrypoint)
+      StimulusReflex::Installer.installer_entrypoint_path.write(entrypoint)
     end
 
     # verify their bundler before starting, unless they explicitly specified on CLI
     if !used_bundler
-      used_bundler = bundler
+      used_bundler = StimulusReflex::Installer.bundler
     end
 
-    installer_bundler_path.write(used_bundler)
+    StimulusReflex::Installer.installer_bundler_path.write(used_bundler)
 
     FileUtils.touch("tmp/stimulus_reflex_installer/backups")
     File.write("tmp/stimulus_reflex_installer/template_src", File.expand_path("../../generators/stimulus_reflex/templates/", __dir__))
