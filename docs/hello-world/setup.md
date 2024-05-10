@@ -23,12 +23,12 @@ The terminal commands below will ensure that both Stimulus and StimulusReflex ar
 Add the `stimulus_reflex` gem to `Gemfile` using `bundle add`:
 
 ```shell
-bundle add stimulus_reflex --version 3.5.0.rc3
+bundle add stimulus_reflex
 ```
 
 or manually add this line to your `Gemfile`:
 ```ruby
-gem 'stimulus_reflex', '3.5.0.rc3'
+gem 'stimulus_reflex', '3.5.0'
 ```
 
 ### Step 2: JavaScript
@@ -119,9 +119,9 @@ StimulusReflex happily supports Stimulus versions 1.1, 2 and 3.
 :::
 
 ```ruby
-bundle add stimulus_reflex --version 3.5.0.rc3
+bundle add stimulus_reflex
 bundle add redis-session-store
-yarn add stimulus_reflex@3.5.0.rc3
+yarn add stimulus_reflex
 rails dev:cache # caching needs to be enabled
 rails generate stimulus_reflex:initializer
 ```
