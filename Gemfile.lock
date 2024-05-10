@@ -215,6 +215,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   magic_frozen_string_literal (~> 1.2)
+  minitest (= 5.18.1)
   mocha (~> 1.13)
   rails (>= 5.2, < 8)
   rake (~> 13.0)
