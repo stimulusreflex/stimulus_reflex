@@ -1452,10 +1452,10 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
-cable_ready@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.4.tgz#88b5bff27871be402f6ea049d65126bb1995d147"
-  integrity sha512-HZLj3SjgEDB4H2GqtKHmg2lOu8YCti0hsPR9XC2mMfz6WOkHK4FWt1/NJ0OIKAcQAEnxEJEtlIgBv6tP1m958g==
+cable_ready@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.5.tgz#45dd12ae5b3c5c53a1b42c10785e79ff87a5be22"
+  integrity sha512-qPC6zaI8h59BzMH3MxtpuMC+H33VJTA2eVddL6fZSWz01jJ2Y3okld01oYWQoKwE2yle/tvHbyuhoKxD4mhEuw==
   dependencies:
     morphdom "2.6.1"
 
