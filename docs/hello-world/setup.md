@@ -13,7 +13,7 @@ description: How to prepare your app to use StimulusReflex
 StimulusReflex relies on [Stimulus](https://stimulus.hotwired.dev), an excellent library from the creators of Rails. You can easily install StimulusReflex to new and existing Rails 6+ projects. For Rails 5.2, see [here](/hello-world/setup#rails-5-2-support).
 
 ::: warning
-StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
+StimulusReflex recommends to use [Redis](https://redis.io/topics/quickstart). Details on how to setup StimulusReflex without Redis are provided [here](/appendices/no-redis).
 :::
 
 The terminal commands below will ensure that both Stimulus and StimulusReflex are installed. It creates common files and an example to get you started. It also handles some of the configuration outlined below, **including enabling caching in your development environment**. (You can read more about why we enable caching [here](/appendices/deployment#session-storage).)
@@ -105,7 +105,7 @@ And that's it! You can start using StimulusReflex in your application with the `
 Some developers will need more control than a one-size-fits-all install task, so we're going to step through what's actually required to get up and running with StimulusReflex in your Rails 6+ project in the _development_ environment. You'll need to keep reading to set up [test](/appendices/testing#test-environment-setup) and [production](/appendices/deployment). For Rails 5.2, see [here](/hello-world/setup#rails-5-2-support).
 
 ::: warning
-StimulusReflex requires Redis to be [installed and running](https://redis.io/topics/quickstart).
+StimulusReflex recommends to use [Redis](https://redis.io/topics/quickstart). Details on how to setup StimulusReflex without Redis are provided [here](/appendices/no-redis).
 
 You can learn more about optimizing your Redis configuration, why we enable caching in development and why we don't currently support cookie sessions on the [Deployment](/appendices/deployment#session-storage) page.
 :::
