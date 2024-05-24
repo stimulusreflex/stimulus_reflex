@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "thor"
+
 module StimulusReflex
   class Installer
     include Thor::Base
