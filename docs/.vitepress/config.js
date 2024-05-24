@@ -74,6 +74,7 @@ export default {
         items: [
           { text: "Working with Events", link: "/appendices/events" },
           { text: "Testing (WIP)", link: "/appendices/testing" },
+          { text: "StimulusReflex without Redis", link: "/appendices/no-redis" },
           { text: "Deployment", link: "/appendices/deployment" },
           { text: "Troubleshooting", link: "/appendices/troubleshooting" },
           { text: "Release History", link: "/appendices/release-history" },
