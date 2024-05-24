@@ -28,11 +28,11 @@ Afterward, configure your Rails environments to use these gems.
 
 ```ruby
 Rails.application.configure do
-    # CHANGE the following line; it's :memory_store by default
-    config.cache_store = :solid_cache_store
+  # CHANGE the following line; it's :memory_store by default
+  config.cache_store = :solid_cache_store
     
-    # ADD the following line; it probably doesn't exist
-    config.session_store :active_record_store, key: "_sessions_development"
+  # ADD the following line; it probably doesn't exist
+  config.session_store :active_record_store, key: "_session_development"
 end
 ```
 
