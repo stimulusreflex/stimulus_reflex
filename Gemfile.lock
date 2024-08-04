@@ -174,8 +174,8 @@ GEM
     redis-client (0.14.0)
       connection_pool
     regexp_parser (2.7.0)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.3)
+      strscan
     rubocop (1.44.1)
       json (~> 2.3)
       parallel (~> 1.10)
