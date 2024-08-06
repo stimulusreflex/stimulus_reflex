@@ -23,6 +23,14 @@ class StimulusReflex::ReflexData
     data[:target].to_s
   end
 
+  def targets
+    data[:targets] || {}
+  end
+
+  def target_scope
+    data.dig(:dataset, :dataset, :data_include_targets)
+  end
+
   def method_name
     target.split("#").second
   end
@@ -33,10 +41,6 @@ class StimulusReflex::ReflexData
 
   def url
     data[:url].to_s
-  end
-
-  def element
-    StimulusReflex::Element.new(data)
   end
 
   def permanent_attribute_name
