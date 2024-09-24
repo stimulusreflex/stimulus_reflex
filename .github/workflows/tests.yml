@@ -28,8 +28,11 @@ jobs:
       - name: Yarn install
         run: yarn
 
+      - name: Yarn
+        run: yarn build
+
       - name: Run JavaScript Tests
-        run: yarn run test
+        run: yarn test
 
 
   ruby_test:
