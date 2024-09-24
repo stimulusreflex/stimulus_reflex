@@ -14,7 +14,7 @@ class StimulusReflex::ReflexTest < ActionCable::Channel::TestCase
 
     reflex_data = StimulusReflex::ReflexData.new(url: "https://test.stimulusreflex.com", id: "666", version: StimulusReflex::VERSION)
     @reflex = StimulusReflex::Reflex.new(subscribe, reflex_data: reflex_data)
-    @reflex.controller_class.view_paths << Rails.root.join("test/views")
+    @reflex.controller_class.append_view_path(Rails.root.join("test/views"))
   end
 
   test "render plain" do
