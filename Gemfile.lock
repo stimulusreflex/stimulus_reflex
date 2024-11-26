@@ -202,8 +202,7 @@ GEM
     regexp_parser (2.7.0)
     reline (0.5.10)
       io-console (~> 0.5)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.9)
     rubocop (1.44.1)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -225,7 +224,6 @@ GEM
       rubocop (= 1.44.1)
       rubocop-performance (= 1.15.2)
     stringio (3.1.1)
-    strscan (3.1.0)
     thor (1.3.2)
     thread-local (1.1.0)
     timeout (0.4.1)
