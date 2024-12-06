@@ -8,7 +8,9 @@ const defaultSchema = {
   reflexSerializeFormAttribute: 'data-reflex-serialize-form',
   reflexFormSelectorAttribute: 'data-reflex-form-selector',
   reflexIncludeInnerHtmlAttribute: 'data-reflex-include-inner-html',
-  reflexIncludeTextContentAttribute: 'data-reflex-include-text-content'
+  reflexIncludeTextContentAttribute: 'data-reflex-include-text-content',
+  reflexTargetAttribute: 'data-reflex-target',
+  includeTargetsAttribute: 'data-include-targets'
 }
 
 let schema = {}
