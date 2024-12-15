@@ -187,7 +187,7 @@ The Reflex class makes use of the `session.id`, the `data-id` attributes from in
 
 If Redis is your Rails cache store, you're already one step ahead!
 
-Depending on your application and the kind of data you're working with, [calling the Redis engine directly](/appendices/deployment#use-redis-as-your-cache-store) (through the `redis` gem, in tandem with the `hiredis` gem for optimal performance) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
+Depending on your application and the kind of data you're working with, [calling the Redis engine directly](/appendices/deployment#use-redis-as-your-cache-store) (through the `redis` gem) from your Reflex methods allows you to work with the full suite of data structure manipulation tools that are available in response to the state change operations your users initiate.
 
 Using Redis is beyond the scope of this document, but an excellent starting point is Jesus Castello's excellent "[How to Use the Redis Database in Ruby](https://www.rubyguides.com/2019/04/ruby-redis)".
 

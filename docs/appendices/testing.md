@@ -20,8 +20,7 @@ Install [Redis](https://redis.io/download). Make sure that it's running and acce
 
 ::: code-group
 ```ruby [Gemfile]
-gem "redis", ">= 4.0", :require => ["redis", "redis/connection/hiredis"]
-gem "hiredis"
+gem "redis", ">= 4.0", require: ["redis"]
 ```
 :::
 
@@ -47,7 +46,10 @@ Configure your cache store and turn on ActionController caching:
 ::: code-group
 ```ruby [config/environments/test.rb]
 config.action_controller.perform_caching = true
-config.cache_store = :redis_cache_store, {driver: :hiredis, url: Rails.application.credentials.redis_url}
+
+config.cache_store = :redis_cache_store, {
+  url: Rails.application.credentials.redis_url
+}
 ```
 :::
 

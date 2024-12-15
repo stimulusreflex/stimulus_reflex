@@ -16,12 +16,11 @@ Instead, we make the best of things by enabling caching in the development envir
 
 ### Use Redis as your cache store
 
-We want to change the cache store to make use of Redis. First we should enable the `redis` gem, as well as `hiredis`, a native wrapper which is much faster than the Ruby gem alone.
+We want to change the cache store to make use of Redis. First we should enable the `redis` gem.
 
 ::: code-group
 ```ruby [Gemfile]
-gem "redis", ">= 4.0", require: ["redis", "redis/connection/hiredis"]
-gem "hiredis"
+gem "redis", ">= 4.0", require: ["redis"]
 ```
 :::
 
@@ -30,7 +29,6 @@ Now that Redis is available to your application, you need to configure your deve
 ::: code-group
 ```ruby [config/environments/development.rb]
 config.cache_store = :redis_cache_store, {
-  driver: :hiredis,
   url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
 }
 
@@ -71,7 +69,6 @@ Install the `redis-session-store` gem into your project, and then in your `produ
 ::: code-group
 ```ruby [config/environments/production.rb]
 config.cache_store = :redis_cache_store, {
-  driver: :hiredis,
   url: ENV.fetch("REDIS_URL")
 }
 
@@ -80,7 +77,6 @@ config.session_store(
   key: "_session_production",
   serializer: :json,
   redis: {
-    driver: :hiredis,
     expire_after: 1.year,
     ttl: 1.year,
     key_prefix: "app:session:",
