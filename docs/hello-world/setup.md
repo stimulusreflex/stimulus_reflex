@@ -28,12 +28,12 @@ bundle add stimulus_reflex
 
 or manually add this line to your `Gemfile`:
 ```ruby
-gem 'stimulus_reflex', '3.5.0'
+gem 'stimulus_reflex', '~> 3.5'
 ```
 
 ### Step 2: JavaScript
 
-StimulusReflex 3.5 is designed to work with all the asset bundling solutions Rails 7 supports.
+StimulusReflex 3.5 is designed to work with all the asset bundling solutions Rails 7 and Rails 8 supports.
 
 StimulusReflex's installer will try to automatically detect your bundling setup and asks you to confirm the choice.
 
@@ -61,40 +61,6 @@ It looks like you're using esbuild as your bundler. Is that correct? (Y/n)
 ```
 
 The bundler will continue and guide you through the install process.
-
-#### Manual selection
-
-If the installer can't automatically detect your setup or you want tell the installer which strategy to use you can run the `stimulus_reflex:install` command with an argument.
-
-##### Using Importmaps
-
-```bash
-rails stimulus_reflex:install importmap
-```
-
-##### Using esbuild
-
-```bash
-rails stimulus_reflex:install esbuild
-```
-
-##### Using Vite
-
-```bash
-rails stimulus_reflex:install vite
-```
-
-##### Using Webpacker
-
-```bash
-rails stimulus_reflex:install webpacker
-```
-
-##### Using Shackapacker
-
-```bash
-rails stimulus_reflex:install shakapacker
-```
 
 And that's it! You can start using StimulusReflex in your application with the `development` environment. You'll need to keep reading to set up [`test`](/appendices/testing#test-environment-setup) and [`production`](/appendices/deployment).
 
