@@ -57,7 +57,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3",
     "@rails/actioncable": "^6 || ^7",
-    "cable_ready": "^5.0.5"
+    "cable_ready": "^5.0.6"
   },
   "devDependencies": {
     "@open-wc/testing": "^4.0.0",
