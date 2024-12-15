@@ -2,15 +2,15 @@ PATH
   remote: .
   specs:
     stimulus_reflex (3.5.2)
-      actioncable (>= 5.2, < 8)
-      actionpack (>= 5.2, < 8)
-      actionview (>= 5.2, < 8)
-      activesupport (>= 5.2, < 8)
+      actioncable (>= 5.2)
+      actionpack (>= 5.2)
+      actionview (>= 5.2)
+      activesupport (>= 5.2)
       cable_ready (~> 5.0)
       nokogiri (~> 1.0)
       nokogiri-html5-inference (~> 0.3)
       rack (>= 2, < 4)
-      railties (>= 5.2, < 8)
+      railties (>= 5.2)
       redis (>= 4.0, < 6.0)
 
 GEM
@@ -249,7 +249,7 @@ DEPENDENCIES
   magic_frozen_string_literal (~> 1.2)
   minitest (= 5.18.1)
   mocha (~> 1.13)
-  rails (>= 5.2, < 8)
+  rails (>= 5.2)
   rake (~> 13.0)
   standard (~> 1.24)
   stimulus_reflex!
