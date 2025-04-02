@@ -51,6 +51,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rack", ">= 2", "< 4"
   gem.add_dependency "redis", ">= 4.0", "< 6.0"
   gem.add_dependency "nokogiri-html5-inference", "~> 0.3"
+  gem.add_dependency "ostruct", "~> 0.6"
 
   gem.add_development_dependency "bundler", "~> 2.0"
   gem.add_development_dependency "magic_frozen_string_literal", "~> 1.2"
