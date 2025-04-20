@@ -2,6 +2,7 @@
 
 require "stimulus_reflex/cable_readiness"
 require "stimulus_reflex/version_checker"
+require "stimulus_reflex/instrumentation"
 
 class StimulusReflex::Reflex
   prepend StimulusReflex::CableReadiness
@@ -117,12 +118,16 @@ class StimulusReflex::Reflex
     options = args.extract_options!
     (options[:locals] ||= {}).reverse_merge!(params: params)
     args << options.reverse_merge(layout: false)
-    controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
+    StimulusReflex::Instrumentation.instrument_render(self, "reflex.render") do
+      controller_class.renderer.new(connection.env.merge("SCRIPT_NAME" => "")).render(*args)
+    end
   end
 
   # Invoke the reflex action specified by `name` and run all callbacks
   def process(name, *args)
-    run_callbacks(:process) { public_send(name, *args) }
+    StimulusReflex::Instrumentation.track(self) do
+      run_callbacks(:process) { public_send(name, *args) }
+    end
   end
 
   # Indicates if the callback chain was halted via a throw(:abort) in a before_reflex callback.
