@@ -6,15 +6,19 @@ require "stimulus_reflex/utils/attribute_builder"
 class StimulusReflex::Element < OpenStruct
   include StimulusReflex::AttributeBuilder
 
-  attr_reader :attrs, :dataset
+  attr_reader :attrs, :dataset, :selector
+  attr_accessor :cable_ready
 
   alias_method :data_attributes, :dataset
 
   delegate :signed, :unsigned, :numeric, :boolean, :data_attrs, to: :dataset
+  delegate :broadcast, to: :cable_ready
 
-  def initialize(data = {})
+  def initialize(data = {}, selector: nil, cable_ready: nil)
+    @selector = selector
     @attrs = HashWithIndifferentAccess.new(data["attrs"] || {})
     @dataset = StimulusReflex::Dataset.new(data)
+    @cable_ready = cable_ready
 
     all_attributes = @attrs.merge(@dataset.attrs)
     super build_underscored(all_attributes)
@@ -28,5 +32,22 @@ class StimulusReflex::Element < OpenStruct
     raise NoIDError.new "The element `morph` is called on must have a valid DOM ID" if id.blank?
 
     "##{id}"
+  end
+
+  def method_missing(method_name, *arguments, &block)
+    if cable_ready.respond_to?(method_name)
+      args = arguments.first.to_h
+      xpath = (args[:selector] || selector).starts_with?("/")
+
+      cable_ready.send(method_name.to_sym, args.reverse_merge(selector: selector, xpath: xpath))
+
+      self
+    else
+      super
+    end
+  end
+
+  def respond_to_missing?(method_name, include_private = false)
+    cable_ready.respond_to?(method_name) || super
   end
 end
