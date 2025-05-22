@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@hotwired/stimulus": "^3",
-    "@rails/actioncable": "^6 || ^7",
+    "@rails/actioncable": "^6 || ^7 || ^8",
     "cable_ready": "^5.0.6"
   },
   "devDependencies": {
