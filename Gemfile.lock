@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stimulus_reflex (3.5.3)
+    stimulus_reflex (3.5.4)
       actioncable (>= 5.2)
       actionpack (>= 5.2)
       actionview (>= 5.2)
@@ -247,6 +247,7 @@ GEM
     zeitwerk (2.6.18)
 
 PLATFORMS
+  arm64-darwin-23
   arm64-darwin-24
   x86_64-darwin-19
   x86_64-darwin-22
