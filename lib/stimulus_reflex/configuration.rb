@@ -14,7 +14,7 @@ module StimulusReflex
   end
 
   class Configuration
-    attr_accessor :on_failed_sanity_checks, :on_missing_default_urls, :parent_channel, :logging, :logger, :middleware, :morph_operation, :replace_operation, :precompile_assets
+    attr_accessor :on_failed_sanity_checks, :on_missing_default_urls, :parent_channel, :logging, :logger, :middleware, :morph_operation, :replace_operation, :precompile_assets, :instrument_reflexes
 
     DEFAULT_LOGGING = proc { "[#{session_id}] #{operation_counter.magenta} #{reflex_info.green} -> #{selector.cyan} via #{mode} Morph (#{operation.yellow})" }
 
@@ -36,6 +36,7 @@ module StimulusReflex
       @morph_operation = :morph
       @replace_operation = :inner_html
       @precompile_assets = true
+      @instrument_reflexes = Rails.env.development?
     end
   end
 end
