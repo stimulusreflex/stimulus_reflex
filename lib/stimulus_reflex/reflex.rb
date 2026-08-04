@@ -2,9 +2,10 @@
 
 require "stimulus_reflex/cable_readiness"
 require "stimulus_reflex/version_checker"
+require "stimulus_reflex/targets_collection"
+require "stimulus_reflex/missing_target"
 
 class StimulusReflex::Reflex
-  prepend StimulusReflex::CableReadiness
   include StimulusReflex::VersionChecker
   include StimulusReflex::Callbacks
   include ActiveSupport::Rescuable
@@ -12,14 +13,14 @@ class StimulusReflex::Reflex
   include CableReady::Identifiable
 
   attr_accessor :payload, :headers
-  attr_reader :channel, :reflex_data, :broadcaster
+  attr_reader :channel, :reflex_data, :cable_ready, :broadcaster
 
   delegate :connection, :stream_name, to: :channel
   delegate :controller_class, :flash, :session, to: :request
   delegate :broadcast, :broadcast_halt, :broadcast_forbid, :broadcast_error, to: :broadcaster
 
   # TODO remove xpath_controller and xpath_element for v4
-  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, to: :reflex_data
+  delegate :url, :element, :selectors, :method_name, :id, :tab_id, :reflex_controller, :xpath_controller, :xpath_element, :permanent_attribute_name, :version, :npm_version, :suppress_logging, :targets, :target_scope, to: :reflex_data
   # END TODO: remove
 
   alias_method :action_name, :method_name # for compatibility with controller libraries like Pundit that expect an action name
@@ -29,9 +30,11 @@ class StimulusReflex::Reflex
     @channel = channel
     @reflex_data = reflex_data
     @broadcaster = StimulusReflex::PageBroadcaster.new(self)
+    @cable_ready = StimulusReflex::CableReadyChannels.new(self)
     @payload = {}
     @headers = {}
 
+    define_targets
     check_version!
   end
 
@@ -109,6 +112,14 @@ class StimulusReflex::Reflex
     @controller
   end
 
+  def element
+    @element ||= StimulusReflex::Element.new(reflex_data.data, selector: xpath_element, cable_ready: cable_ready)
+  end
+
+  def controller_element
+    @controller_element ||= StimulusReflex::Element.new(selector: xpath_controller, cable_ready: cable_ready)
+  end
+
   def controller?
     !!defined? @controller
   end
@@ -152,5 +163,47 @@ class StimulusReflex::Reflex
   def render_collection(resource, content = nil)
     content ||= render(resource)
     tag.div(content.html_safe, id: dom_id(resource).from(1))
+  end
+
+  private
+
+  def define_targets
+    targets.each do |name, elements|
+      target_name = "#{name.to_s.underscore}_target".to_sym
+
+      collection = elements.map do |element|
+        StimulusReflex::Element.new(
+          element,
+          selector: element["selector"],
+          cable_ready: cable_ready
+        )
+      end
+
+      define_singleton_method(target_name) do
+        collection.first
+      end
+
+      define_singleton_method("#{target_name}s") do
+        StimulusReflex::TargetsCollection.new(
+          collection,
+          target_name: name,
+          target_scope: target_scope,
+          reflex_controller: reflex_controller,
+          cable_ready: cable_ready
+        )
+      end
+    end
+  end
+
+  def method_missing(method_name, *arguments, &block)
+    return super unless method_name.to_s.include? "_target"
+
+    target_missing(method_name)
+    StimulusReflex::MissingTarget.new
+  end
+
+  # Inheriting Reflex classes can override this method to customise missing target behaviour
+  def target_missing(target_name)
+    logger.info "#{self.class.name}: No #{target_name} present, skipping operations on #{target_name}"
   end
 end
