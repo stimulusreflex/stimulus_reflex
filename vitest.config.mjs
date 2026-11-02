@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import { playwright } from '@vitest/browser-playwright'
 
 const filteredLogs = [
   'Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.'
@@ -6,9 +7,14 @@ const filteredLogs = [
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
     globals: true,
     include: ['javascript/test/**/*.test.js'],
-    onConsoleLog: log => !filteredLogs.some(l => log.includes(l))
+    onConsoleLog: log => !filteredLogs.some(l => log.includes(l)),
+    browser: {
+      enabled: true,
+      provider: playwright(),
+      headless: true,
+      instances: [{ browser: 'chromium' }]
+    }
   }
 })

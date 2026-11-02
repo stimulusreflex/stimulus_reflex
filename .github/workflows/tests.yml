@@ -31,6 +31,9 @@ jobs:
       - name: Yarn
         run: yarn build
 
+      - name: Install Playwright Chromium
+        run: yarn playwright install --with-deps chromium
+
       - name: Run JavaScript Tests
         run: yarn test
 
