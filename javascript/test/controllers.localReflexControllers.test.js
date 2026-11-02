@@ -1,4 +1,5 @@
-import { html, fixture, assert, nextFrame, oneEvent } from '@open-wc/testing'
+import { assert } from 'vitest'
+import { html, fixture, nextFrame, oneEvent } from '@open-wc/testing-helpers'
 
 import { application } from './dummy/application'
 import ExampleController from './dummy/example_controller'

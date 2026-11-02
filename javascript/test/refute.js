@@ -1,4 +1,4 @@
-import { assert } from '@open-wc/testing'
+import { assert } from 'vitest'
 
 export default value => {
   return assert(!value)

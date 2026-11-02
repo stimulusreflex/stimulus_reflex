@@ -1,9 +1,10 @@
-import { html, fixture, assert } from '@open-wc/testing'
+import { assert } from 'vitest'
+import { html, fixture } from '@open-wc/testing-helpers'
 
 import { serializeForm } from '../utils'
 
 describe('formSerialize', async () => {
-  context('basic', async () => {
+  describe('basic', async () => {
     it('should output an empty string if no form is present (null)', async () => {
       const actual = serializeForm(null)
       const expected = ''
@@ -90,7 +91,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<input type="checkbox">', async () => {
+  describe('<input type="checkbox">', async () => {
     it('should serialize checkboxes', async () => {
       const form = await fixture(html`
         <form>
@@ -129,7 +130,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<input type="radio">', async () => {
+  describe('<input type="radio">', async () => {
     it('should serialize radio button with no checked input', async () => {
       const form = await fixture(html`
         <form>
@@ -181,7 +182,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<input> - buttons', async () => {
+  describe('<input> - buttons', async () => {
     it('should not serialize buttons', async () => {
       const form = await fixture(html`
         <form>
@@ -200,7 +201,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<input> - brackets notation', async () => {
+  describe('<input> - brackets notation', async () => {
     it('should serialize text inputs with brackets notation', async () => {
       const form = await fixture(html`
         <form>
@@ -336,7 +337,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<select>', async () => {
+  describe('<select>', async () => {
     it('should serialize select', async () => {
       const form = await fixture(html`
         <form>
@@ -367,7 +368,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('<select multiple>', async () => {
+  describe('<select multiple>', async () => {
     it('should serialize select multiple', async () => {
       const form = await fixture(html`
         <form>
@@ -448,7 +449,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('attach input name if input triggered action', async () => {
+  describe('attach input name if input triggered action', async () => {
     it('should serialize button if button triggered action', async () => {
       const form = await fixture(html`
         <form>
@@ -580,7 +581,7 @@ An exciting new way to build modern, reactive, real-time apps with Ruby on Rails
     })
   })
 
-  context('url encodings', async () => {
+  describe('url encodings', async () => {
     it('should encode space', async () => {
       const form = await fixture(html`
         <form><input type="text" name="na me" value="Stimulus Reflex" /></form>

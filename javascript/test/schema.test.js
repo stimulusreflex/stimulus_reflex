@@ -1,4 +1,5 @@
-import { fixture, html, expect, assert } from '@open-wc/testing'
+import { assert } from 'vitest'
+import { fixture, html } from '@open-wc/testing-helpers'
 
 import ReflexData from '../reflex_data'
 import Schema, { defaultSchema } from '../schema'
