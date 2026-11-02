@@ -37,7 +37,7 @@ Gem::Specification.new do |gem|
     "[A-Z]*"
   ]
 
-  gem.required_ruby_version = ">= 3.0.0"
+  gem.required_ruby_version = ">= 3.2.0"
 
   rails_version = ">= 5.2"
   gem.add_dependency "actioncable", rails_version
@@ -52,12 +52,4 @@ Gem::Specification.new do |gem|
   gem.add_dependency "redis", ">= 4.0", "< 6.0"
   gem.add_dependency "nokogiri-html5-inference", "~> 0.3"
   gem.add_dependency "ostruct", "~> 0.6"
-
-  gem.add_development_dependency "bundler", "~> 2.0"
-  gem.add_development_dependency "magic_frozen_string_literal", "~> 1.2"
-  gem.add_development_dependency "mocha", "~> 1.13"
-  gem.add_development_dependency "rails", rails_version
-  gem.add_development_dependency "rake", "~> 13.0"
-  gem.add_development_dependency "standard", "~> 1.24"
-  gem.add_development_dependency "minitest", "5.18.1"
 end
