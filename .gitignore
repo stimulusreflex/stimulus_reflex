@@ -18,3 +18,5 @@ app/assets/javascripts/**
 
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+
+.vitest/
