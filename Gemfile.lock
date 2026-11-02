@@ -259,7 +259,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bundler (~> 2.0)
   cgi
   magic_frozen_string_literal (~> 1.2)
   minitest (= 5.26.1)
