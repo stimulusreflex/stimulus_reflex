@@ -1,4 +1,5 @@
-import { html, fixture, assert } from '@open-wc/testing'
+import { assert } from 'vitest'
+import { html, fixture } from '@open-wc/testing-helpers'
 
 import { extractDataAttributes } from '../attributes'
 

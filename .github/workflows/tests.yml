@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [18, 20, 22]
+        node: [22, 24, 26]
 
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +30,9 @@ jobs:
 
       - name: Yarn
         run: yarn build
+
+      - name: Install Playwright Chromium
+        run: yarn playwright install --with-deps chromium
 
       - name: Run JavaScript Tests
         run: yarn test

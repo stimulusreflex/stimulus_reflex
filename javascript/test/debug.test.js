@@ -1,4 +1,4 @@
-import { assert } from '@open-wc/testing'
+import { assert } from 'vitest'
 import refute from './refute'
 import Debug from '../debug'
 import DebugInOtherFile from '../debug'

@@ -1,4 +1,4 @@
-import { assert } from '@open-wc/testing'
+import { assert } from 'vitest'
 import refute from './refute'
 
 import { findControllerByReflexName } from '../controllers'
