@@ -1,14 +1,18 @@
 import { defineConfig } from 'rolldown'
 
+const comments = { legal: true, annotation: true, jsdoc: false }
+
 const esConfig = {
   format: 'es',
-  codeSplitting: false
+  codeSplitting: false,
+  comments
 }
 
 const umdConfig = {
   name: 'StimulusReflex',
   format: 'umd',
   exports: 'named',
+  comments,
   strict: false,
   intro: '"use strict";',
   globals: {
