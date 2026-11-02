@@ -54,10 +54,11 @@ Gem::Specification.new do |gem|
   gem.add_dependency "ostruct", "~> 0.6"
 
   gem.add_development_dependency "bundler", "~> 2.0"
+  gem.add_development_dependency "cgi"
   gem.add_development_dependency "magic_frozen_string_literal", "~> 1.2"
-  gem.add_development_dependency "mocha", "~> 1.13"
+  gem.add_development_dependency "mocha", "~> 2.0"
   gem.add_development_dependency "rails", rails_version
   gem.add_development_dependency "rake", "~> 13.0"
   gem.add_development_dependency "standard", "~> 1.24"
-  gem.add_development_dependency "minitest", "5.18.1"
+  gem.add_development_dependency "minitest", "5.26.1"
 end
