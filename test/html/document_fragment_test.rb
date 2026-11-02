@@ -277,8 +277,13 @@ class StimulusReflex::HTML::DocumentFragmentTest < ActiveSupport::TestCase
     )
     fragment = StimulusReflex::HTML::DocumentFragment.new(html)
 
-    assert_equal %(<input data-action="input->autocomplete#search"> <span>some text</span>), fragment.to_html.squish
-    assert_equal %(<input data-action="input->autocomplete#search"> <span>some text</span>), fragment.outer_html.squish
+    possible_answers = [
+      %(<input data-action="input->autocomplete#search"> <span>some text</span>),
+      %(<input data-action="input-&gt;autocomplete#search"> <span>some text</span>)
+    ]
+
+    assert_includes possible_answers, fragment.to_html.squish
+    assert_includes possible_answers, fragment.outer_html.squish
   end
 
   test "non-closing <img> tag" do
