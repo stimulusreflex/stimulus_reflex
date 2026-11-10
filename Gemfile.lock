@@ -166,7 +166,7 @@ GEM
     psych (5.1.2)
       stringio
     racc (1.8.1)
-    rack (3.1.8)
+    rack (3.1.23)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
